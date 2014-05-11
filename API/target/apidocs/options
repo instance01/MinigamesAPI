@@ -1,0 +1,26 @@
+-classpath
+'C:/Users/Rnetwork/AppData/Roaming/.minecraft/eclipse/MinigamesAPI/API/target/classes;C:/Users/Rnetwork/.m2/repository/net/milkbowl/vault/Vault/1.2.27/Vault-1.2.27.jar;C:/Users/Rnetwork/AppData/Roaming/.minecraft/eclipse/MinigamesAPI/1_7_R3/target/MinigamesAPI-1_7_R3-v1_7_R3.jar;C:/Users/Rnetwork/.m2/repository/org/bukkit/craftbukkit/1.7.9-R0.1-SNAPSHOT/craftbukkit-1.7.9-R0.1-SNAPSHOT.jar;C:/Users/Rnetwork/.m2/repository/org/bukkit/bukkit/1.7.9-R0.1-SNAPSHOT/bukkit-1.7.9-R0.1-SNAPSHOT.jar;C:/Users/Rnetwork/.m2/repository/com/comze_instancelabs/MinigamesAPI/API/MinigamesAPI-API.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/Users/Rnetwork/AppData/Roaming/.minecraft/eclipse/MinigamesAPI/API/src'
+-author
+-bottom
+'Copyright &#169; 2014. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Rnetwork/AppData/Roaming/.minecraft/eclipse/MinigamesAPI/API/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'MinigamesAPI-API 1.0.0 API'
+-link
+'http://jd.bukkit.org/apidocs'
+-linkoffline
+'http://download.oracle.com/javase/6/docs/api' 'C:/Users/Rnetwork/AppData/Roaming/.minecraft/eclipse/MinigamesAPI/API/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'MinigamesAPI-API 1.0.0 API'

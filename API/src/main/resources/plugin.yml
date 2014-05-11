@@ -1,0 +1,9 @@
+name: MinigamesAPI
+main: com.comze_instancelabs.minigamesapi.MinigamesAPI
+version: 1.0.0
+author: InstanceLabs
+softdepend: [Vault]
+commands:
+   mapi:
+      description: Main command
+      usage: /mapi [action]
