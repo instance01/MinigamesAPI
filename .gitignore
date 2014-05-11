@@ -6,3 +6,4 @@ bin
 *.rar
 *.zip
 *.class
+target/
