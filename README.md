@@ -15,6 +15,7 @@ Features
 - Economy
 - Overall Customization/Attributes like player counts, countdowns, spawns, etc.
 - Signs and corresponding Arena states
+- Map regeneration mechanisms
 - Moar stuff :D
 
 
