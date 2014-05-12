@@ -20,11 +20,26 @@
       <version>1.7.9-R0.1-SNAPSHOT</version>
       <type>jar</type>
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>com.comze_instancelabs</groupId>
       <artifactId>MinigamesAPI</artifactId>
-      <version>API</version>
+      <version>1.0.0</version>
       <type>jar</type>
-    </dependency>
+      <optional>true</optional>
+    </dependency>-->
   </dependencies>
+  
+  <build>
+  <plugins>
+     <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-compiler-plugin</artifactId>
+         <version>2.3.2</version>
+         <configuration>
+             <source>1.6</source>
+             <target>1.6</target>
+         </configuration>
+     </plugin>
+  </plugins>
+  </build>
 </project>
