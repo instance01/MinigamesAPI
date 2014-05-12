@@ -1,7 +1,7 @@
-MinigamesAPI
+MinigamesAPI [![Build Status](https://drone.io/github.com/instance01/MinigamesAPI/status.png)](https://drone.io/github.com/instance01/MinigamesAPI/latest)
 ============
 
-Rich MinigamesAPI supporting different types of Minigames.  [![Build Status](https://drone.io/github.com/instance01/MinigamesAPI/status.png)](https://drone.io/github.com/instance01/MinigamesAPI/latest)
+Rich MinigamesAPI supporting different types of Minigames.
 
 
 Features
@@ -22,3 +22,8 @@ Features
 Oh and of course a bunch of premade Minigames and examples.
 
 
+Downloads
+---------
+
+
+Development Files can be found [here](https://drone.io/github.com/instance01/MinigamesAPI/files).
