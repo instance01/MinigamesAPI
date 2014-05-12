@@ -1,7 +1,7 @@
 MinigamesAPI
 ============
 
-Rich MinigamesAPI supporting different types of Minigames. 
+Rich MinigamesAPI supporting different types of Minigames.  [![Build Status](https://drone.io/github.com/instance01/MinigamesAPI/status.png)](https://drone.io/github.com/instance01/MinigamesAPI/latest)
 
 
 Features
