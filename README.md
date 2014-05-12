@@ -16,6 +16,7 @@ Features
 - Overall Customization/Attributes like player counts, countdowns, spawns, etc.
 - Signs and corresponding Arena states
 - Map regeneration mechanisms
+- Kits/Classes
 - Moar stuff :D
 
 
@@ -26,4 +27,4 @@ Downloads
 ---------
 
 
-Development Files can be found [here](https://drone.io/github.com/instance01/MinigamesAPI/files).
+Development Files can be found [here](https://drone.io/github.com/instance01/MinigamesAPI/files), the original and sources jars won't work though (use the one in the mid).
