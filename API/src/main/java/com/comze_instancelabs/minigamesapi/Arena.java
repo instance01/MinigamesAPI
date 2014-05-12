@@ -41,7 +41,7 @@ public class Arena {
 	
 	private Arena currentarena;
 	
-	/***
+	/**
 	 * Creates a normal singlespawn arena
 	 * @param name
 	 */
@@ -50,7 +50,7 @@ public class Arena {
 		this.name = name;
 	}
 	
-	/***
+	/**
 	 * Creates an arena of given arenatype
 	 * @param name
 	 * @param type
@@ -69,6 +69,12 @@ public class Arena {
 		this.viparena = viparena;
 		this.min_players = min_players;
 		this.max_players = max_players;
+	}
+	
+	// This is for loading existing arenas
+	public Arena initArena(Location signloc, Location spawn, Location mainlobby, Location waitinglobby, int max_players, int min_players, boolean viparena){
+		this.init(signloc, spawn, mainlobby, waitinglobby, max_players, min_players, viparena);
+		return this;
 	}
 
 	public Arena getArena(){
@@ -130,7 +136,7 @@ public class Arena {
 		}
 	}
 	
-	/***
+	/**
 	 * Leaves the current arena, won't do anything if not present in any arena
 	 * @param playername
 	 * @param fullLeave Determines if player left only minigame or the server
@@ -158,6 +164,10 @@ public class Arena {
 	int currentlobbycount = 0;
 	int currentingamecount = 0;
 	int currenttaskid = 0;
+	/**
+	 * Starts the lobby countdown and the arena afterwards
+	 * You can insta-start a arena by using Arena.start();
+	 */
 	public void startLobby(){
 		if(currentstate != ArenaState.JOIN){
 			return;
@@ -176,6 +186,9 @@ public class Arena {
 		}, 5L, 20).getTaskId();
 	}
 	
+	/**
+	 * Instantly starts the arena, teleports players and udpates the arena
+	 */
 	public void start(){
 		if(currentarena.getArena().getArenaType() == ArenaType.SINGLESPAWN){
 			Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawn);
@@ -195,10 +208,16 @@ public class Arena {
 		}, 5L, 20).getTaskId();
 	}
 	
+	/**
+	 * Stops the arena and teleports all players to the mainlobby
+	 */
 	public void stop(){
 		
 	}
 	
+	/**
+	 * TODO: Add regeneration support
+	 */
 	public void reset(){
 		
 	}
