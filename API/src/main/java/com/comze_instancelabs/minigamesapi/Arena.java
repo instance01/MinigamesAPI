@@ -7,12 +7,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class Arena {
 
+	JavaPlugin plugin;
+	
 	// multispawn
 	private ArrayList<Location> multispawns = new ArrayList<Location>();
 	private HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
@@ -45,8 +48,9 @@ public class Arena {
 	 * Creates a normal singlespawn arena
 	 * @param name
 	 */
-	public Arena(String name){
+	public Arena(JavaPlugin plugin, String name){
 		currentarena = this;
+		this.plugin = plugin;
 		this.name = name;
 	}
 	
@@ -55,8 +59,8 @@ public class Arena {
 	 * @param name
 	 * @param type
 	 */
-	public Arena(String name, ArenaType type) {
-		this(name);
+	public Arena(JavaPlugin plugin, String name, ArenaType type) {
+		this(plugin, name);
 		this.type = type;
 	}
 	
@@ -212,6 +216,7 @@ public class Arena {
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
 	public void stop(){
+		this.setArenaState(ArenaState.RESTARTING);
 		
 	}
 	
@@ -219,7 +224,14 @@ public class Arena {
 	 * TODO: Add regeneration support
 	 */
 	public void reset(){
-		
+		/*Runnable r = new Runnable() {
+	        public void run() {
+	        	loadArenaFromFileSYNC(arena);
+	        }
+	    };
+	    new Thread(r).start();*/
+		// when finished resetting: (not needed of course for non-regeneration minigames
+		this.setArenaState(ArenaState.JOIN);
 	}
 	
 	
