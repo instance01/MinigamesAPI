@@ -16,14 +16,10 @@ public class Arena {
 
 	JavaPlugin plugin;
 	
-	// multispawn
-	private ArrayList<Location> multispawns = new ArrayList<Location>();
+	private ArrayList<Location> spawns = new ArrayList<Location>();
 	private HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
 	private HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
-	
-	// singlespawn
-	private Location spawn;
-	
+
 	private Location mainlobby;
 	private Location waitinglobby;
 	private Location signloc;
@@ -36,9 +32,9 @@ public class Arena {
 	
 	private ArrayList<String> players = new ArrayList<String>();
 	
-	private ArenaType type = ArenaType.SINGLESPAWN;
+	private ArenaType type = ArenaType.DEFAULT;
 	private ArenaState currentstate = ArenaState.JOIN;
-	private String name = "mainarena";
+	String name = "mainarena";
 	
 	private boolean shouldClearInventoryOnJoin = true;
 	
@@ -65,9 +61,9 @@ public class Arena {
 	}
 	
 	// This is for loading existing arenas
-	public void init(Location signloc, Location spawn, Location mainlobby, Location waitinglobby, int max_players, int min_players, boolean viparena){
+	public void init(Location signloc, ArrayList<Location> spawns, Location mainlobby, Location waitinglobby, int max_players, int min_players, boolean viparena){
 		this.signloc = signloc;
-		this.spawn = spawn;
+		this.spawns = spawns;
 		this.mainlobby = mainlobby;
 		this.waitinglobby = waitinglobby;
 		this.viparena = viparena;
@@ -76,13 +72,17 @@ public class Arena {
 	}
 	
 	// This is for loading existing arenas
-	public Arena initArena(Location signloc, Location spawn, Location mainlobby, Location waitinglobby, int max_players, int min_players, boolean viparena){
+	public Arena initArena(Location signloc, ArrayList<Location> spawn, Location mainlobby, Location waitinglobby, int max_players, int min_players, boolean viparena){
 		this.init(signloc, spawn, mainlobby, waitinglobby, max_players, min_players, viparena);
 		return this;
 	}
 
 	public Arena getArena(){
 		return this;
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	public boolean isVIPArena(){
@@ -126,7 +126,7 @@ public class Arena {
 				pinv.put(playername, p.getInventory().getContents());
 				pinv_armor.put(playername, p.getInventory().getArmorContents());
 				if(this.getArenaType() == ArenaType.JUMPNRUN){
-					Util.teleportPlayerFixed(p, this.spawn);
+					Util.teleportPlayerFixed(p, this.spawns.get(0));
 				}else{
 					Util.teleportPlayerFixed(p, this.waitinglobby);
 				}
@@ -135,7 +135,6 @@ public class Arena {
 						Util.clearInv(p);
 					}
 				}, 10L);
-				
 			}
 		}
 	}
@@ -194,11 +193,7 @@ public class Arena {
 	 * Instantly starts the arena, teleports players and udpates the arena
 	 */
 	public void start(){
-		if(currentarena.getArena().getArenaType() == ArenaType.SINGLESPAWN){
-			Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawn);
-		}else if(currentarena.getArena().getArenaType() == ArenaType.MULTISPAWN){
-			Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().multispawns);
-		}
+		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable(){
 			public void run(){
 				currentingamecount++;
@@ -217,21 +212,22 @@ public class Arena {
 	 */
 	public void stop(){
 		this.setArenaState(ArenaState.RESTARTING);
-		
+		Util.teleportAllPlayers(players, mainlobby);
+		if(this.getArenaType() == ArenaType.REGENERATION){
+			reset();
+		}else{
+			this.setArenaState(ArenaState.JOIN);
+		}
 	}
-	
-	/**
-	 * TODO: Add regeneration support
-	 */
+
+
 	public void reset(){
-		/*Runnable r = new Runnable() {
+		Runnable r = new Runnable() {
 	        public void run() {
-	        	loadArenaFromFileSYNC(arena);
+	        	Util.loadArenaFromFileSYNC(currentarena);
 	        }
 	    };
-	    new Thread(r).start();*/
-		// when finished resetting: (not needed of course for non-regeneration minigames
-		this.setArenaState(ArenaState.JOIN);
+	    new Thread(r).start();
 	}
 	
 	

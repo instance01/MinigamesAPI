@@ -11,15 +11,14 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class Util {
@@ -40,7 +39,7 @@ public class Util {
 		l.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
 	}
 	
-	// singlespawn
+
 	public static void teleportAllPlayers(ArrayList<String> players, final Location l){
 		Long delay = 1L;
 		for(String pl : players){
@@ -57,7 +56,7 @@ public class Util {
 		}
 	}
 	
-	// multispawn
+
 	public static void teleportAllPlayers(ArrayList<String> players, ArrayList<Location> locs){
 		//TODO 
 	}
@@ -101,7 +100,7 @@ public class Util {
 	}
 	
 
-    public void saveArenaToFile(String arena){
+    public static void saveArenaToFile(String arena){
     	File f = new File(MinigamesAPI.getAPI().plugin.getDataFolder() + "/" + arena);
     	Cuboid c = new Cuboid(Util.getComponentForArena(arena, "boundary", "1"), Util.getComponentForArena(arena, "boundary", "2"));
     	Location start = c.getLowLoc();
@@ -152,11 +151,11 @@ public class Util {
 		MinigamesAPI.getAPI().getLogger().info("saved");
     }
 
-    public void loadArenaFromFileSYNC(String arena){
+    public static void loadArenaFromFileSYNC(Arena arena){
     	int failcount = 0;
     	final ArrayList<ArenaBlock> failedblocks = new ArrayList<ArenaBlock>();
     	
-    	File f = new File(MinigamesAPI.getAPI().plugin.getDataFolder() + "/" + arena);
+    	File f = new File(MinigamesAPI.getAPI().plugin.getDataFolder() + "/" + arena.getName());
 		FileInputStream fis = null;
 		BukkitObjectInputStream ois = null;
 		try {
@@ -173,13 +172,15 @@ public class Util {
 				try{
 					b = ois.readObject();
 				}catch(EOFException e){
-					MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena + ".");
+					MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena.getName() + ".");
 					
 					//TODO update sign
 					/*Sign s = Util.getSignFromArena(arena);
 					s.setLine(2, "§2[Join]");
 					s.setLine(3, "0/" + Integer.toString(this.maxplayers_perteam * 2));
 					s.update();*/
+					arena.setArenaState(ArenaState.JOIN);
+					
 				}
 				
 				if(b != null){

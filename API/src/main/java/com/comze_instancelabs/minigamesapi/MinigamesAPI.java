@@ -1,10 +1,10 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -16,6 +16,8 @@ public class MinigamesAPI extends JavaPlugin {
 	public static JavaPlugin plugin = null;
 	
 	public static HashMap<String, Arena> global_players = new HashMap<String, Arena>();
+	public static HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
+	public static ArrayList<String> global_leftplayers = new ArrayList<String>();
 	
 	int lobby_countdown = 30;
 	int ingame_countdown = 10;
