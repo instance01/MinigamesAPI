@@ -12,6 +12,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.util.io.BukkitObjectInputStream;
@@ -227,4 +229,30 @@ public class Util {
 
 		return;
     }
+    
+    public Sign getSignFromArena(String arena) {
+		Location b_ = new Location(Bukkit.getServer().getWorld(MinigamesAPI.getAPI().arenasconfig.getConfig().getString("arenas." + arena + ".sign.world")), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt("arenas." + arena + ".sign.loc.x"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt("arenas." + arena + ".sign.loc.y"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt("arenas." + arena + ".sign.loc.z"));
+		BlockState bs = b_.getBlock().getState();
+		Sign s_ = null;
+		if (bs instanceof Sign) {
+			s_ = (Sign) bs;
+		} else {
+		}
+		return s_;
+	}
+    
+	public void updateSign(Arena arena){
+		Sign s = getSignFromArena(arena.getName());
+		int count = arena.getAllPlayers().size();
+		int maxcount = arena.getMaxPlayers();
+		if(s != null){
+			s.setLine(0, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.setLine(1, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.setLine(2, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.setLine(3, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.update();
+		}
+	}
+	
+	
 }

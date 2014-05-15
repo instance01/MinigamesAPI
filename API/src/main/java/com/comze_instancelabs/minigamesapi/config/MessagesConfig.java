@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.ArenaState;
+
 public class MessagesConfig {
 
     private FileConfiguration arenaConfig = null;
@@ -16,6 +18,30 @@ public class MessagesConfig {
     
     public MessagesConfig(JavaPlugin plugin){
     	this.plugin = plugin;
+    	for(int i = 0; i < 10; i++){
+    		squares += Character.toString((char)254);
+    	}
+    	this.init();
+    }
+    
+    private String squares = Character.toString((char)254);
+    
+    public String signs_join_0;
+    public String signs_join_1;
+    public String signs_join_2;
+    public String signs_join_3;
+    
+    public void init(){
+    	// all signs
+    	for(String state : ArenaState.getAllStateNames()){
+    		this.getConfig().addDefault("signs." + state.toLowerCase() + ".0", squares);
+        	this.getConfig().addDefault("signs." + state.toLowerCase() + ".1", "<arena>");
+        	this.getConfig().addDefault("signs." + state.toLowerCase() + ".2", "<count>/<maxcount>");
+        	this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", squares);
+    	}
+    	
+    	this.getConfig().options().copyDefaults(true);
+    	this.saveConfig();
     }
     
     public FileConfiguration getConfig() {

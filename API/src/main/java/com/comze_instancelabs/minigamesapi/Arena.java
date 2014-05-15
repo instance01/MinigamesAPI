@@ -84,6 +84,14 @@ public class Arena {
 	public String getName(){
 		return name;
 	}
+
+	public int getMaxPlayers(){
+		return this.max_players;
+	}
+	
+	public int getMinPlayers(){
+		return this.min_players;
+	}
 	
 	public boolean isVIPArena(){
 		return this.viparena;
@@ -218,6 +226,11 @@ public class Arena {
 		}else{
 			this.setArenaState(ArenaState.JOIN);
 		}
+		
+		//TODO possibly run that stuff later to avoid lag related bugs
+		players.clear();
+		pinv.clear();
+		pinv_armor.clear();
 	}
 
 

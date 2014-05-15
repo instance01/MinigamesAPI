@@ -30,11 +30,7 @@ public class MinigamesAPI extends JavaPlugin {
 
 		String version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + version + ".");
-	
-		//TODO setup Config
-		
-		//TODO setup NMS
-		
+
 		//TODO setup Vault
 		
 		//TODO setup Updater and Metrics
@@ -46,11 +42,16 @@ public class MinigamesAPI extends JavaPlugin {
 		
 	}
 	
+	/**
+	 * Sets up the API, stuff won't work without that
+	 * @param plugin_
+	 * @return
+	 */
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_){
 		arenasconfig = new ArenasConfig(plugin_);
 		messagesconfig = new MessagesConfig(plugin_);
 		plugin = plugin_;
-		
+		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		return instance;
 	}
 	

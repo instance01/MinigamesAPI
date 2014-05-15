@@ -228,6 +228,7 @@ public class ArenaListener implements Listener{
    				return;
    			}
    		}
+		//TODO change that
 		if(MinigamesAPI.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()){
        		if(!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")){
        			event.getPlayer().sendMessage("");
