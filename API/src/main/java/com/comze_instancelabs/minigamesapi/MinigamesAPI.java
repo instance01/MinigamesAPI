@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 
@@ -57,6 +58,10 @@ public class MinigamesAPI extends JavaPlugin {
 	
 	public static MinigamesAPI getAPI(){
 		return instance;
+	}
+	
+	public static CommandHandler getCommandHandler(){
+		return new CommandHandler();
 	}
 	
 }

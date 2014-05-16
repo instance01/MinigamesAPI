@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,6 +13,10 @@ import com.comze_instancelabs.minigamesapi.ArenaState;
 
 public class MessagesConfig {
 
+	//TODO add loading/saving into config
+	public String no_perm = ChatColor.RED + "You don't have permission.";
+	public String successfully_reloaded = ChatColor.GREEN + "Successfully reloaded";
+	
     private FileConfiguration arenaConfig = null;
     private File arenaFile = null;
     private JavaPlugin plugin = null;
