@@ -1,11 +1,11 @@
 package com.comze_instancelabs.minigamesapi.commands;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
@@ -20,7 +20,7 @@ public class CommandHandler {
 	 * @param args
 	 * @return
 	 */
-	public static boolean handleArgs(String uber_permission, String cmd, CommandSender sender, String args[]){
+	public static boolean handleArgs(JavaPlugin plugin, String uber_permission, String cmd, CommandSender sender, String args[]){
 		if(args.length > 0){
 			if(!(sender instanceof Player)){
 				return true;
@@ -65,7 +65,7 @@ public class CommandHandler {
 					return true;
 				}
 				if(args.length > 1){
-					ArenaSetup.saveArena(MinigamesAPI.plugin, args[1]);
+					ArenaSetup.saveArena(plugin, args[1]);
 				}else{
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
@@ -124,7 +124,7 @@ public class CommandHandler {
 				
 			}else if(action.equalsIgnoreCase("reload")){
 				MinigamesAPI.getAPI().reloadConfig();
-				MinigamesAPI.getAPI().plugin.reloadConfig();
+				plugin.reloadConfig();
 				MinigamesAPI.getAPI().messagesconfig.reloadConfig();
 				MinigamesAPI.getAPI().arenasconfig.reloadConfig();
 				sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.successfully_reloaded);

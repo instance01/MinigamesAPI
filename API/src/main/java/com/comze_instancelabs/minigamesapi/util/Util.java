@@ -16,6 +16,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
@@ -102,8 +103,8 @@ public class Util {
 	}
 	
 
-    public static void saveArenaToFile(String arena){
-    	File f = new File(MinigamesAPI.getAPI().plugin.getDataFolder() + "/" + arena);
+    public static void saveArenaToFile(JavaPlugin plugin, String arena){
+    	File f = new File(plugin.getDataFolder() + "/" + arena);
     	Cuboid c = new Cuboid(Util.getComponentForArena(arena, "boundary", "1"), Util.getComponentForArena(arena, "boundary", "2"));
     	Location start = c.getLowLoc();
     	Location end = c.getHighLoc();
@@ -153,11 +154,11 @@ public class Util {
 		MinigamesAPI.getAPI().getLogger().info("saved");
     }
 
-    public static void loadArenaFromFileSYNC(Arena arena){
+    public static void loadArenaFromFileSYNC(JavaPlugin plugin, Arena arena){
     	int failcount = 0;
     	final ArrayList<ArenaBlock> failedblocks = new ArrayList<ArenaBlock>();
     	
-    	File f = new File(MinigamesAPI.getAPI().plugin.getDataFolder() + "/" + arena.getName());
+    	File f = new File(plugin.getDataFolder() + "/" + arena.getName());
 		FileInputStream fis = null;
 		BukkitObjectInputStream ois = null;
 		try {

@@ -14,7 +14,9 @@ import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 public class MinigamesAPI extends JavaPlugin {
 
 	static MinigamesAPI instance = null;
-	public static JavaPlugin plugin = null;
+	
+	//TODO Apply to configs too:
+	public static HashMap<JavaPlugin, ArrayList<Arena>> parenas = new HashMap<JavaPlugin, ArrayList<Arena>>();
 	
 	public static HashMap<String, Arena> global_players = new HashMap<String, Arena>();
 	public static HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
@@ -51,7 +53,8 @@ public class MinigamesAPI extends JavaPlugin {
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_){
 		arenasconfig = new ArenasConfig(plugin_);
 		messagesconfig = new MessagesConfig(plugin_);
-		plugin = plugin_;
+		parenas.put(plugin_, new ArrayList<Arena>());
+		//plugin = plugin_;
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		return instance;
 	}

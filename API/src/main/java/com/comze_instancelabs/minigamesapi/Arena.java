@@ -14,6 +14,7 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class Arena {
 
+	// Plugin the arena belongs to
 	JavaPlugin plugin;
 	
 	private ArrayList<Location> spawns = new ArrayList<Location>();
@@ -237,7 +238,7 @@ public class Arena {
 	public void reset(){
 		Runnable r = new Runnable() {
 	        public void run() {
-	        	Util.loadArenaFromFileSYNC(currentarena);
+	        	Util.loadArenaFromFileSYNC(plugin, currentarena);
 	        }
 	    };
 	    new Thread(r).start();
