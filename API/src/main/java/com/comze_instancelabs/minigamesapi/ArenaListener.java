@@ -163,10 +163,10 @@ public class ArenaListener implements Listener{
 		}
 		
 		
-		if(MinigamesAPI.arenasconfig.getConfig().getBoolean("config.game_on_join")){
+		if(MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getBoolean("config.game_on_join")){
 			int c = 0;
 			final List<String> arenas = new ArrayList<String>();
-			for (String arena : MinigamesAPI.arenasconfig.getConfig().getKeys(false)) {
+			for (String arena : MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getKeys(false)) {
 				if (!arena.equalsIgnoreCase("mainlobby") && !arena.equalsIgnoreCase("strings") && !arena.equalsIgnoreCase("config")) {
 					c++;
 					arenas.add(arena);

@@ -21,6 +21,29 @@ public class PluginInstance {
 		this.plugin = plugin;
 	}
 	
+	public ArenasConfig getArenasConfig(){
+		return arenasconfig;
+	}
+	
+	public MessagesConfig getMessagesConfig(){
+		return messagesconfig;
+	}
+	
+	public ArrayList<Arena> getArenas(){
+		return arenas;
+	}
+	
+	public void addArena(Arena arena){
+		arenas.add(arena);
+	}
+	
+	public boolean removeArena(Arena arena){
+		if(arenas.contains(arena)){
+			arenas.remove(arena);
+			return true;
+		}
+		return false;
+	}
 	
 	
 }

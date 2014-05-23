@@ -15,8 +15,7 @@ public class MinigamesAPI extends JavaPlugin {
 
 	static MinigamesAPI instance = null;
 	
-	//TODO Apply to configs too:
-	public static ArrayList<PluginInstance> pinstances = new ArrayList<PluginInstance>();
+	public static HashMap<JavaPlugin, PluginInstance> pinstances = new HashMap<JavaPlugin, PluginInstance>();
 	
 	public static HashMap<String, Arena> global_players = new HashMap<String, Arena>();
 	public static HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
@@ -24,10 +23,7 @@ public class MinigamesAPI extends JavaPlugin {
 	
 	int lobby_countdown = 30;
 	int ingame_countdown = 10;
-	
-	public static ArenasConfig arenasconfig = null;
-	public static MessagesConfig messagesconfig = null;
-	
+
 	public void onEnable(){
 		instance = this;
 
@@ -51,9 +47,9 @@ public class MinigamesAPI extends JavaPlugin {
 	 * @return
 	 */
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_){
-		arenasconfig = new ArenasConfig(plugin_);
-		messagesconfig = new MessagesConfig(plugin_);
-		pinstances.add(new PluginInstance(plugin_, arenasconfig, messagesconfig, loadArenas(plugin_)));
+		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
+		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
+		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, loadArenas(plugin_)));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		return instance;
 	}
@@ -67,7 +63,7 @@ public class MinigamesAPI extends JavaPlugin {
 	}
 	
 	public static ArrayList<Arena> loadArenas(JavaPlugin plugin){
-		
+		//TODO loading arenas
 		return null;
 	}
 	

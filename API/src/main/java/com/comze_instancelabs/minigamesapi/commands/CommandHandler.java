@@ -29,21 +29,21 @@ public class CommandHandler {
 			String action = args[0];
 			if(action.equalsIgnoreCase("setspawn")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 1){
-					ArenaSetup.setSpawn(args[1], p.getLocation());
+					ArenaSetup.setSpawn(plugin, args[1], p.getLocation());
 				}else{
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
 			}else if(action.equalsIgnoreCase("setlobby")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 1){
-					ArenaSetup.setLobby(args[1], p.getLocation());
+					ArenaSetup.setLobby(plugin, args[1], p.getLocation());
 				}else{
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
@@ -51,7 +51,7 @@ public class CommandHandler {
 				
 			}else if(action.equalsIgnoreCase("setbounds")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 2){
@@ -61,7 +61,7 @@ public class CommandHandler {
 				}
 			}else if(action.equalsIgnoreCase("savearena")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 1){
@@ -71,7 +71,7 @@ public class CommandHandler {
 				}
 			}else if(action.equalsIgnoreCase("setmaxplayers")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 2){
@@ -81,7 +81,7 @@ public class CommandHandler {
 				}
 			}else if(action.equalsIgnoreCase("setminplayers")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 2){
@@ -91,7 +91,7 @@ public class CommandHandler {
 				}
 			}else if(action.equalsIgnoreCase("setarenavip")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 2){
@@ -109,7 +109,7 @@ public class CommandHandler {
 				
 			}else if(action.equalsIgnoreCase("removearena")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
-					sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.no_perm);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
 				if(args.length > 1){
@@ -123,11 +123,11 @@ public class CommandHandler {
 			}else if(action.equalsIgnoreCase("list")){
 				
 			}else if(action.equalsIgnoreCase("reload")){
-				MinigamesAPI.getAPI().reloadConfig();
+				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().reloadConfig();
 				plugin.reloadConfig();
-				MinigamesAPI.getAPI().messagesconfig.reloadConfig();
-				MinigamesAPI.getAPI().arenasconfig.reloadConfig();
-				sender.sendMessage(MinigamesAPI.getAPI().messagesconfig.successfully_reloaded);
+				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().reloadConfig();
+				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().reloadConfig();
+				sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_reloaded);
 			}
 		}else{
 			// show help

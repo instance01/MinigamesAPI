@@ -64,48 +64,48 @@ public class Util {
 		//TODO 
 	}
 	
-	public static Location getComponentForArena(String arenaname, String component, String count){
+	public static Location getComponentForArena(JavaPlugin plugin, String arenaname, String component, String count){
 		if(Validator.isArenaValid(arenaname)){
 			String base = "arenas." + arenaname + "." + component + count;
-			return new Location(Bukkit.getWorld(MinigamesAPI.getAPI().arenasconfig.getConfig().getString(base + ".world")), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt(base + ".location.x"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt(base + ".location.y"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt(base + ".location.z"), (float)MinigamesAPI.getAPI().arenasconfig.getConfig().getDouble(base + ".location.yaw"), (float)MinigamesAPI.getAPI().arenasconfig.getConfig().getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getString(base + ".world")), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt(base + ".location.x"), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt(base + ".location.y"), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt(base + ".location.z"), (float)MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float)MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
 
-	public static Location getComponentForArena(String arenaname, String component){
+	public static Location getComponentForArena(JavaPlugin plugin, String arenaname, String component){
 		if(Validator.isArenaValid(arenaname)){
 			String base = "arenas." + arenaname + "." + component;
-			return new Location(Bukkit.getWorld(MinigamesAPI.getAPI().arenasconfig.getConfig().getString(base + ".world")), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt(base + ".location.x"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt(base + ".location.y"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt(base + ".location.z"), (float)MinigamesAPI.getAPI().arenasconfig.getConfig().getDouble(base + ".location.yaw"), (float)MinigamesAPI.getAPI().arenasconfig.getConfig().getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getString(base + ".world")), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt(base + ".location.x"), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt(base + ".location.y"), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt(base + ".location.z"), (float)MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float)MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
 
-	public static void saveComponentForArena(String arenaname, String component, Location comploc){
+	public static void saveComponentForArena(JavaPlugin plugin, String arenaname, String component, Location comploc){
 		String base = "arenas." + arenaname + "." + component;
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".world", comploc.getWorld().getName());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.x", comploc.getBlockX());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.y", comploc.getBlockY());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.z", comploc.getBlockZ());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.yaw", comploc.getYaw());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.pitch", comploc.getPitch());
-		MinigamesAPI.getAPI().arenasconfig.saveConfig();
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".world", comploc.getWorld().getName());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.x", comploc.getBlockX());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.y", comploc.getBlockY());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.z", comploc.getBlockZ());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.yaw", comploc.getYaw());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.pitch", comploc.getPitch());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
 	}
 	
-	public static void saveMainLobby(Location comploc){
+	public static void saveMainLobby(JavaPlugin plugin, Location comploc){
 		String base = "mainlobby";
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".world", comploc.getWorld().getName());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.x", comploc.getBlockX());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.y", comploc.getBlockY());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.z", comploc.getBlockZ());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.yaw", comploc.getYaw());
-		MinigamesAPI.getAPI().arenasconfig.getConfig().set(base + ".location.pitch", comploc.getPitch());
-		MinigamesAPI.getAPI().arenasconfig.saveConfig();
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".world", comploc.getWorld().getName());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.x", comploc.getBlockX());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.y", comploc.getBlockY());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.z", comploc.getBlockZ());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.yaw", comploc.getYaw());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".location.pitch", comploc.getPitch());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
 	}
 	
 
     public static void saveArenaToFile(JavaPlugin plugin, String arena){
     	File f = new File(plugin.getDataFolder() + "/" + arena);
-    	Cuboid c = new Cuboid(Util.getComponentForArena(arena, "boundary", "1"), Util.getComponentForArena(arena, "boundary", "2"));
+    	Cuboid c = new Cuboid(Util.getComponentForArena(plugin, arena, "boundary", "1"), Util.getComponentForArena(plugin, arena, "boundary", "2"));
     	Location start = c.getLowLoc();
     	Location end = c.getHighLoc();
 
@@ -231,8 +231,8 @@ public class Util {
 		return;
     }
     
-    public Sign getSignFromArena(String arena) {
-		Location b_ = new Location(Bukkit.getServer().getWorld(MinigamesAPI.getAPI().arenasconfig.getConfig().getString("arenas." + arena + ".sign.world")), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt("arenas." + arena + ".sign.loc.x"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt("arenas." + arena + ".sign.loc.y"), MinigamesAPI.getAPI().arenasconfig.getConfig().getInt("arenas." + arena + ".sign.loc.z"));
+    public Sign getSignFromArena(JavaPlugin plugin, String arena) {
+		Location b_ = new Location(Bukkit.getServer().getWorld(MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getString("arenas." + arena + ".sign.world")), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.x"), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.y"), MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.z"));
 		BlockState bs = b_.getBlock().getState();
 		Sign s_ = null;
 		if (bs instanceof Sign) {
@@ -242,15 +242,15 @@ public class Util {
 		return s_;
 	}
     
-	public void updateSign(Arena arena){
-		Sign s = getSignFromArena(arena.getName());
+	public void updateSign(JavaPlugin plugin, Arena arena){
+		Sign s = getSignFromArena(plugin, arena.getName());
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();
 		if(s != null){
-			s.setLine(0, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
-			s.setLine(1, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
-			s.setLine(2, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
-			s.setLine(3, MinigamesAPI.getAPI().messagesconfig.getConfig().getString("signs." + arena.getArenaState().toString() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.setLine(0, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.setLine(1, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.setLine(2, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
+			s.setLine(3, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()));
 			s.update();
 		}
 	}

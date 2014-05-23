@@ -15,8 +15,8 @@ public class ArenaSetup {
 	 * @param arenaname
 	 * @param l Location of the spawn
 	 */
-	public static void setSpawn(String arenaname, Location l){
-		Util.saveComponentForArena(arenaname, "spawn0", l); //TODO test
+	public static void setSpawn(JavaPlugin plugin, String arenaname, Location l){
+		Util.saveComponentForArena(plugin, arenaname, "spawn0", l); //TODO test
 	}
 
 	/**
@@ -25,8 +25,8 @@ public class ArenaSetup {
 	 * @param l Location of the spawn
 	 * @param count Index of the spawn; if the given index is already set, the spawn location will be overwritten
 	 */
-	public static void setSpawn(String arenaname, Location l, int count){
-		Util.saveComponentForArena(arenaname, "spawn" + Integer.toString(count), l);
+	public static void setSpawn(JavaPlugin plugin, String arenaname, Location l, int count){
+		Util.saveComponentForArena(plugin, arenaname, "spawn" + Integer.toString(count), l);
 	}
 	
 	/**
@@ -34,16 +34,16 @@ public class ArenaSetup {
 	 * @param arenaname
 	 * @param l Location of the lobby
 	 */
-	public static void setLobby(String arenaname, Location l){
-		Util.saveComponentForArena(arenaname, "lobby", l);
+	public static void setLobby(JavaPlugin plugin, String arenaname, Location l){
+		Util.saveComponentForArena(plugin, arenaname, "lobby", l);
 	}
 	
 	/**
 	 * Sets the main lobby
 	 * @param l Location of the lobby
 	 */
-	public static void setMainLobby(Location l){
-		Util.saveMainLobby(l);
+	public static void setMainLobby(JavaPlugin plugin, Location l){
+		Util.saveMainLobby(plugin, l);
 	}
 	
 	
