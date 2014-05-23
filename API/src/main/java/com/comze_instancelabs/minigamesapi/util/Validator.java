@@ -1,5 +1,9 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.comze_instancelabs.minigamesapi.Arena;
 
 public class Validator {
@@ -10,7 +14,10 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean isPlayerOnline(String player){
-		
+		Player p = Bukkit.getPlayer(player);
+		if(p != null){
+			return true;
+		}
 		return false;
 	}
 	
@@ -20,8 +27,7 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean isPlayerValid(String player, Arena arena){
-		
-		return false;
+		return isPlayerValid(player, arena.getName());
 	}
 	
 	/***
@@ -30,7 +36,12 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean isPlayerValid(String player, String arena){
-		
+		if(!isPlayerOnline(player)){
+			return false;
+		}
+
+		//TODO important, add that
+
 		return false;
 	}
 	
@@ -39,9 +50,9 @@ public class Validator {
 	 * @param arena
 	 * @return
 	 */
-	public static boolean isArenaValid(Arena arena){
-		
-		return false;
+	@Deprecated
+	public static boolean isArenaValid(JavaPlugin plugin, Arena arena){
+		return isArenaValid(plugin, arena.getName());
 	}
 
 	/***
@@ -49,8 +60,10 @@ public class Validator {
 	 * @param arena
 	 * @return
 	 */
-	public static boolean isArenaValid(String arena){
-		
+	public static boolean isArenaValid(JavaPlugin plugin, String arena){
+
+		//TODO important, add that
+
 		return false;
 	}
 	

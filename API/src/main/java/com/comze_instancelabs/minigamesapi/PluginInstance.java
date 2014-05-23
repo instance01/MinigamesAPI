@@ -33,8 +33,9 @@ public class PluginInstance {
 		return arenas;
 	}
 	
-	public void addArena(Arena arena){
+	public ArrayList<Arena> addArena(Arena arena){
 		arenas.add(arena);
+		return getArenas();
 	}
 	
 	public boolean removeArena(Arena arena){

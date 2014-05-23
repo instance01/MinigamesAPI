@@ -5,11 +5,13 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
+import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class MinigamesAPI extends JavaPlugin {
 
@@ -49,7 +51,7 @@ public class MinigamesAPI extends JavaPlugin {
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_){
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
-		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, loadArenas(plugin_)));
+		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, Util.loadArenas(plugin_)));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		return instance;
 	}
@@ -61,10 +63,6 @@ public class MinigamesAPI extends JavaPlugin {
 	public static CommandHandler getCommandHandler(){
 		return new CommandHandler();
 	}
-	
-	public static ArrayList<Arena> loadArenas(JavaPlugin plugin){
-		//TODO loading arenas
-		return null;
-	}
+
 	
 }

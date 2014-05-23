@@ -1,5 +1,5 @@
 package com.comze_instancelabs.minigamesapi;
 
-public class ArenaKits {
+public class Classes {
 
 }
