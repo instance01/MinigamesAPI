@@ -1,10 +1,12 @@
 package com.comze_instancelabs.minigamesapi.util;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class Validator {
 
@@ -42,7 +44,7 @@ public class Validator {
 
 		//TODO important, add that
 
-		return false;
+		return true;
 	}
 	
 	/***
@@ -61,10 +63,11 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean isArenaValid(JavaPlugin plugin, String arena){
-
-		//TODO important, add that
-
-		return false;
+		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		if(!config.isSet("arenas." + arena + ".lobby") || !config.isSet("arenas." + arena + ".spawns.spawn0")){
+			return false;
+		}
+		return true;
 	}
 	
 }
