@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaListener implements Listener{
@@ -45,15 +46,15 @@ public class ArenaListener implements Listener{
 	public void onPlayerDeath(PlayerDeathEvent event){
 		if(MinigamesAPI.global_players.containsKey(event.getEntity().getName())){
 			event.getEntity().setHealth(20D);
-			Player p = event.getEntity();
+			final Player p = event.getEntity();
 			
 			MinigamesAPI.global_lost.put(p.getName(), MinigamesAPI.global_players.get(p.getName()));
-			final Player p__ = p;
 			final Arena arena = MinigamesAPI.global_players.get(p.getName());
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					try {
-						//TODO spectate or leave game?
+						MinigamesAPI.global_players.get(p.getName()).spectate(p.getName());
+						//TODO broadcast message saying how many people are left
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -78,25 +79,17 @@ public class ArenaListener implements Listener{
 			}
 		}
 	}
-	
-	
-	//TODO sign listeners
+
+
 	@EventHandler
 	public void onSignUse(PlayerInteractEvent event) {
 		if (event.hasBlock()) {
 			if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN) {
 				final Sign s = (Sign) event.getClickedBlock().getState();
-				//TODO sign stuffs
-				if (s.getLine(0).toLowerCase().contains("")) {
-					//if (s.getLine(1).equalsIgnoreCase("§2[join]")) {
-					/*if(arenastate.get(s.getLine(2)).equalsIgnoreCase("join")){
-						if(isValidArena(s.getLine(2))){
-							joinLobby(event.getPlayer(), s.getLine(2));
-						}else{
-							event.getPlayer().sendMessage(arena_invalid);
-						}
-					}*/
-					//}
+				// people will most likely do strange formats, so let's just try to get signs by location rather than locally by reading the sign
+				Arena arena = Util.getArenaBySignLocation(plugin, event.getClickedBlock().getLocation());
+				if(arena != null){
+					arena.joinPlayerLobby(event.getPlayer().getName());
 				}
 			}
 		}
@@ -108,6 +101,7 @@ public class ArenaListener implements Listener{
 				return;
 			}
 			if(event.getItem().getTypeId() == 399){
+				//TODO kit gui
 				//Util.openGUI(m, p.getName());
 			}
 		}
@@ -116,46 +110,43 @@ public class ArenaListener implements Listener{
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		Player p = event.getPlayer();
-		//TODO sign stuffs
-		/*if (event.getLine(0).toLowerCase().equalsIgnoreCase("")) {
+		if (event.getLine(0).toLowerCase().equalsIgnoreCase("")) {
 			if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
-				if (!event.getLine(2).equalsIgnoreCase("")) {
-					String arena = event.getLine(2);
-					if (isValidArena(arena)) {
-						MinigamesAPI.arenasconfig.getConfig().set(arena + ".sign.world", p.getWorld().getName());
-						MinigamesAPI.arenasconfig.getConfig().set(arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
-						MinigamesAPI.arenasconfig.getConfig().set(arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
-						MinigamesAPI.arenasconfig.getConfig().set(arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
-						this.saveConfig();
+				if (!event.getLine(1).equalsIgnoreCase("")) {
+					String arena = event.getLine(1);
+					if (Validator.isArenaValid(plugin, arena)) {
+						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
+						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
+						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
+						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
+						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+						//TODO messages
 						p.sendMessage("§2Successfully created arena sign.");
 					} else {
-						p.sendMessage(arena_invalid_component);
+						//p.sendMessage(arena_invalid_component);
 						event.getBlock().breakNaturally();
 					}
-					
-					Sign s = (Sign) event.getBlock().getState();
-					
-					m.updateSign(arena, "join", 0, getArenaMaxPlayers(arena), event);
-					
-					
-					event.setLine(1, "§2[Join]");
-					event.setLine(2, arena);
-					event.setLine(3, "0/" + Integer.toString(getArenaMaxPlayers(arena)));
-					
+
+					Arena a = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(arena);
+					//Sign s = (Sign) event.getBlock().getState();
+					if(a != null){
+						Util.updateSign(plugin, a);
+					}else{
+						//TODO tell player that arena is not initialized (most likely forgot to save)
+					}
 				}
 			}
-		}*/
+		}
 	}
 	
-	//TODO player join/leave listeners
+
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
 		if (MinigamesAPI.getAPI().global_leftplayers.contains(event.getPlayer().getName())) {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
-					//TODO save mainlobby somewhere?
-					//p.teleport(getMainLobby());
+					Util.teleportPlayerFixed(p, Util.getMainLobby(plugin));
 					p.setFlying(false);
 				}
 			}, 5);
@@ -199,13 +190,7 @@ public class ArenaListener implements Listener{
 			}
 
 			try {
-				//updateSign(arena, "join", count, getArenaMaxPlayers(arena));
-				/*Sign s = this.getSignFromArena(arena);
-				if (s != null) {
-					s.setLine(1, "§2[Join]");
-					s.setLine(3, Integer.toString(count - 1) + "/" + Integer.toString(getArenaMaxPlayers(arena)));
-					s.update();
-				}*/
+				Util.updateSign(plugin, MinigamesAPI.getAPI().global_players.get(event.getPlayer().getName()));
 			} catch (Exception e) {
 				MinigamesAPI.getAPI().getLogger().warning("You forgot to set a sign for arena " + arena + "! This might lead to errors.");
 			}
@@ -214,10 +199,9 @@ public class ArenaListener implements Listener{
 			MinigamesAPI.getAPI().global_leftplayers.add(event.getPlayer().getName());
 		}
 	}
-	
-	
-	
-	//TODO player command listener
+
+
+
 	@EventHandler
    	public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
 		if(event.getMessage().equalsIgnoreCase("/leave")){
@@ -237,5 +221,5 @@ public class ArenaListener implements Listener{
         	}
        	}
     }
-	
+
 }

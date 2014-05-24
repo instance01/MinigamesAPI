@@ -273,8 +273,17 @@ public class Util {
 			return null;
 		}
 	}
+	
+	public static Arena getArenaBySignLocation(JavaPlugin plugin, Location sign){
+		for(Arena arena : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()){
+			if(sign.distance(arena.getArena().getSignLocation()) < 2){
+				return arena;
+			}
+		}
+		return null;
+	}
 
-	public void updateSign(JavaPlugin plugin, Arena arena) {
+	public static void updateSign(JavaPlugin plugin, Arena arena) {
 		Sign s = getSignFromArena(plugin, arena.getName());
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();

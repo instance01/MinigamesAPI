@@ -82,6 +82,10 @@ public class Arena {
 		return this;
 	}
 	
+	public Location getSignLocation(){
+		return this.signloc;
+	}
+	
 	public String getName(){
 		return name;
 	}
@@ -127,6 +131,14 @@ public class Arena {
 	 * @param playername
 	 */
 	public void joinPlayerLobby(String playername){
+		if(this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING){
+			// arena ingame or restarting
+			return;
+		}
+		if(this.getAllPlayers().size() > this.max_players - 1){
+			// arena full
+			return;
+		}
 		MinigamesAPI.getAPI().global_players.put(playername, this);
 		this.players.add(playername);
 		if(Validator.isPlayerValid(playername, this)){
@@ -163,7 +175,7 @@ public class Arena {
 			// TODO temporary save player to restore his stuff and teleport him into lobby when he joins back
 			return;
 		}
-		Player p = Bukkit.getPlayer(playername);
+		final Player p = Bukkit.getPlayer(playername);
 		Util.clearInv(p);
 		p.getInventory().setContents(pinv.get(playername));
 		p.getInventory().setArmorContents(pinv_armor.get(playername));
@@ -171,6 +183,24 @@ public class Arena {
 		
 		//TODO might need delay through runnable, will bring issues on laggier servers
 		Util.teleportPlayerFixed(p, this.waitinglobby);
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
+			public void run (){
+				p.setFlying(false);
+				if(!p.isOp()){
+					p.setAllowFlight(false);
+				}	
+			}
+		}, 5L);
+	}
+	
+	public void spectate(String playername){
+		if(Validator.isPlayerValid(playername, this)){
+			Player p = Bukkit.getPlayer(playername);
+			MinigamesAPI.getAPI().global_lost.put(playername, this);
+			p.setAllowFlight(true);
+			p.setFlying(true);
+			Util.teleportPlayerFixed(p, this.spawns.get(0).add(0D, 30D, 0D));
+		}
 	}
 	
 	int currentlobbycount = 0;
@@ -178,7 +208,7 @@ public class Arena {
 	int currenttaskid = 0;
 	/**
 	 * Starts the lobby countdown and the arena afterwards
-	 * You can insta-start a arena by using Arena.start();
+	 * You can insta-start an arena by using Arena.start();
 	 */
 	public void startLobby(){
 		if(currentstate != ArenaState.JOIN){
