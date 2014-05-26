@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class CommandHandler {
 	
@@ -48,7 +49,11 @@ public class CommandHandler {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
 			}else if(action.equalsIgnoreCase("setmainlobby")){
-				
+				if(!sender.hasPermission(uber_permission + ".setup")){
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					return true;
+				}
+				ArenaSetup.setMainLobby(plugin, p.getLocation());
 			}else if(action.equalsIgnoreCase("setbounds")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
@@ -74,8 +79,11 @@ public class CommandHandler {
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
+				if(!Util.isNumeric(args[2])){
+					return true;
+				}
 				if(args.length > 2){
-					//TODO set max players
+					ArenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), true);
 				}else{
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
 				}
@@ -84,8 +92,11 @@ public class CommandHandler {
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
+				if(!Util.isNumeric(args[2])){
+					return true;
+				}
 				if(args.length > 2){
-					//TODO set min players
+					ArenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), false);
 				}else{
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
 				}
@@ -94,19 +105,22 @@ public class CommandHandler {
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
+				if(!args[2].equalsIgnoreCase("true") || !args[2].equalsIgnoreCase("false")){
+					return true;
+				}
 				if(args.length > 2){
-					// TODO set arena vip
+					ArenaSetup.setArenaVIP(plugin, args[1], Boolean.parseBoolean(args[2]));
 				}else{
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 				}
 			}else if(action.equalsIgnoreCase("join")){
-				
+				//TODO add command
 			}else if(action.equalsIgnoreCase("leave")){
-				
+				//TODO add command
 			}else if(action.equalsIgnoreCase("start")){
-				
+				//TODO add command
 			}else if(action.equalsIgnoreCase("stop")){
-				
+				//TODO add command
 			}else if(action.equalsIgnoreCase("removearena")){
 				if(!sender.hasPermission(uber_permission + ".setup")){
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
@@ -121,7 +135,7 @@ public class CommandHandler {
 				// show help
 				sendHelp(cmd, sender);
 			}else if(action.equalsIgnoreCase("list")){
-				
+				//TODO add command
 			}else if(action.equalsIgnoreCase("reload")){
 				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().reloadConfig();
 				plugin.reloadConfig();

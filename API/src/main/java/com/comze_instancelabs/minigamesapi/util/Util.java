@@ -308,5 +308,10 @@ public class Util {
 		a.init(getSignLocationFromArena(plugin, arena), getAllSpawns(plugin, arena), getMainLobby(plugin), getComponentForArena(plugin, arena, "lobby"), ArenaSetup.getPlayerCount(plugin, arena, true), ArenaSetup.getPlayerCount(plugin, arena, false), ArenaSetup.getArenaVIP(plugin, arena));
 		return a;
 	}
+	
+	
+	public static boolean isNumeric(String s) {  
+	    return s.matches("[-+]?\\d*\\.?\\d+");  
+	}
 
 }
