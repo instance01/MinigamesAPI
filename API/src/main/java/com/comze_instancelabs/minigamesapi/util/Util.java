@@ -199,14 +199,8 @@ public class Util {
 				} catch (EOFException e) {
 					MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena.getName() + ".");
 
-					// TODO update sign
-					/*
-					 * Sign s = Util.getSignFromArena(arena); s.setLine(2,
-					 * "§2[Join]"); s.setLine(3, "0/" +
-					 * Integer.toString(this.maxplayers_perteam * 2));
-					 * s.update();
-					 */
 					arena.setArenaState(ArenaState.JOIN);
+					Util.updateSign(plugin, arena);
 
 				}
 
