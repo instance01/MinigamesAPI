@@ -21,7 +21,8 @@ public class MinigamesAPI extends JavaPlugin {
 	static MinigamesAPI instance = null;
 	public static Economy econ = null;
 	public boolean economy = true;
-
+	public boolean arcade = false;
+	
 	public static HashMap<JavaPlugin, PluginInstance> pinstances = new HashMap<JavaPlugin, PluginInstance>();
 
 	public static HashMap<String, Arena> global_players = new HashMap<String, Arena>();

@@ -107,8 +107,7 @@ public class ArenaListener implements Listener {
 				return;
 			}
 			if (event.getItem().getTypeId() == 399) {
-				// TODO kit gui
-				// Util.openGUI(m, p.getName());
+				Classes.openGUI(plugin, p.getName());
 			}
 		}
 	}
