@@ -27,6 +27,7 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 
 public class Util {
 
@@ -291,9 +292,9 @@ public class Util {
 		}
 	}
 
-	public static ArrayList<Arena> loadArenas(JavaPlugin plugin) {
+	public static ArrayList<Arena> loadArenas(JavaPlugin plugin, ArenasConfig cf) {
 		ArrayList<Arena> ret = new ArrayList<Arena>();
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		FileConfiguration config = cf.getConfig();
 		if(!config.isSet("arenas")){
 			return ret;
 		}

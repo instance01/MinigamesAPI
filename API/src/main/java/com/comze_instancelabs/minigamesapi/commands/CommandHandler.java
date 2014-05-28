@@ -88,10 +88,10 @@ public class CommandHandler {
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
-				if (!Util.isNumeric(args[2])) {
-					return true;
-				}
 				if (args.length > 2) {
+					if (!Util.isNumeric(args[2])) {
+						return true;
+					}
 					ArenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), true);
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "max players"));
 				} else {
@@ -102,10 +102,10 @@ public class CommandHandler {
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
-				if (!Util.isNumeric(args[2])) {
-					return true;
-				}
 				if (args.length > 2) {
+					if (!Util.isNumeric(args[2])) {
+						return true;
+					}
 					ArenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), false);
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "min players"));
 				} else {
@@ -116,10 +116,10 @@ public class CommandHandler {
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 					return true;
 				}
-				if (!args[2].equalsIgnoreCase("true") || !args[2].equalsIgnoreCase("false")) {
-					return true;
-				}
 				if (args.length > 2) {
+					if (!args[2].equalsIgnoreCase("true") || !args[2].equalsIgnoreCase("false")) {
+						return true;
+					}
 					ArenaSetup.setArenaVIP(plugin, args[1], Boolean.parseBoolean(args[2]));
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "vip value"));
 				} else {

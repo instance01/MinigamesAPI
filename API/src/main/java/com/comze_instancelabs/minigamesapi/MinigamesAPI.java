@@ -63,7 +63,7 @@ public class MinigamesAPI extends JavaPlugin {
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
 		ClassesConfig classesconfig = new ClassesConfig(plugin_);
-		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, Util.loadArenas(plugin_)));
+		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, Util.loadArenas(plugin_, arenasconfig)));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		return instance;
 	}

@@ -16,6 +16,8 @@ public class ArenasConfig {
     
     public ArenasConfig(JavaPlugin plugin){
     	this.plugin = plugin;
+    	this.getConfig().options().copyDefaults(true);
+    	this.saveConfig();
     }
     
     public FileConfiguration getConfig() {
