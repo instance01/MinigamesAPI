@@ -75,9 +75,9 @@ public class CommandHandler {
 				}
 				if (args.length > 1) {
 					Arena temp = ArenaSetup.saveArena(plugin, args[1]);
-					if(temp != null){
+					if (temp != null) {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_saved_arena.replaceAll("<arena>", args[1]));
-					}else{
+					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
 					}
 				} else {
@@ -128,19 +128,19 @@ public class CommandHandler {
 			} else if (action.equalsIgnoreCase("join")) {
 				if (args.length > 1) {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
-					if(temp != null){
+					if (temp != null) {
 						temp.joinPlayerLobby(p.getName());
-					}else{
+					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
 
 				}
 			} else if (action.equalsIgnoreCase("leave")) {
-				if(MinigamesAPI.getAPI().global_players.containsKey(p.getName())){
+				if (MinigamesAPI.getAPI().global_players.containsKey(p.getName())) {
 					MinigamesAPI.getAPI().global_players.get(p.getName()).leavePlayer(p.getName(), false);
-				}else{
-					
+				} else {
+
 				}
 			} else if (action.equalsIgnoreCase("start")) {
 				if (!sender.hasPermission(uber_permission + ".start")) {
@@ -149,9 +149,9 @@ public class CommandHandler {
 				}
 				if (args.length > 1) {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
-					if(temp != null){
+					if (temp != null) {
 						temp.start();
-					}else{
+					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
@@ -164,9 +164,9 @@ public class CommandHandler {
 				}
 				if (args.length > 1) {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
-					if(temp != null){
+					if (temp != null) {
 						temp.stop();
-					}else{
+					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
@@ -178,7 +178,9 @@ public class CommandHandler {
 					return true;
 				}
 				if (args.length > 1) {
-					// TODO remove arena
+					MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + args[1], null);
+					MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+					// TODO remove arena file if present
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}

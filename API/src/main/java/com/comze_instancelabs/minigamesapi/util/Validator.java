@@ -41,9 +41,12 @@ public class Validator {
 		if(!isPlayerOnline(player)){
 			return false;
 		}
-
-		//TODO important, add that
-
+		if(!MinigamesAPI.getAPI().global_players.containsKey(player)){
+			return false;
+		}
+		if(!MinigamesAPI.getAPI().global_players.get(player).getName().equalsIgnoreCase(arena)){
+			return false;
+		}
 		return true;
 	}
 	
@@ -52,7 +55,6 @@ public class Validator {
 	 * @param arena
 	 * @return
 	 */
-	@Deprecated
 	public static boolean isArenaValid(JavaPlugin plugin, Arena arena){
 		return isArenaValid(plugin, arena.getName());
 	}

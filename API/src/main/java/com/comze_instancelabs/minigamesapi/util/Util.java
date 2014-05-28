@@ -292,7 +292,6 @@ public class Util {
 	}
 
 	public static ArrayList<Arena> loadArenas(JavaPlugin plugin) {
-		// TODO loading arenas
 		ArrayList<Arena> ret = new ArrayList<Arena>();
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
 		if(!config.isSet("arenas")){

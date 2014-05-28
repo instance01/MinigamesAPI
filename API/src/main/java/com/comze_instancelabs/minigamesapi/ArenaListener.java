@@ -24,8 +24,6 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaListener implements Listener {
 
-	// TODO there's still much to do here
-
 	JavaPlugin plugin = null;
 
 	public ArenaListener(JavaPlugin plugin) {
@@ -54,8 +52,8 @@ public class ArenaListener implements Listener {
 				public void run() {
 					try {
 						MinigamesAPI.global_players.get(p.getName()).spectate(p.getName());
-						for(String p_ : arena.getAllPlayers()){
-							if(Validator.isPlayerOnline(p_)){
+						for (String p_ : arena.getAllPlayers()) {
+							if (Validator.isPlayerOnline(p_)) {
 								Player p__ = Bukkit.getPlayer(p_);
 								p__.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
 							}
