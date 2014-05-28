@@ -274,5 +274,16 @@ public class Arena {
 	    new Thread(r).start();
 	}
 	
+	public String getPlayerCount(){
+		int alive = 0;
+		for(String p_ : getAllPlayers()){
+			if(MinigamesAPI.getAPI().global_lost.containsKey(p_)){
+				continue;
+			}else{
+				alive++;
+			}
+		}
+		return Integer.toString(alive) + "/" + Integer.toString(getAllPlayers().size());
+	}
 	
 }

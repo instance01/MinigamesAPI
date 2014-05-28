@@ -54,8 +54,12 @@ public class ArenaListener implements Listener {
 				public void run() {
 					try {
 						MinigamesAPI.global_players.get(p.getName()).spectate(p.getName());
-						// TODO broadcast message saying how many people are
-						// left
+						for(String p_ : arena.getAllPlayers()){
+							if(Validator.isPlayerOnline(p_)){
+								Player p__ = Bukkit.getPlayer(p_);
+								p__.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
+							}
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -122,10 +126,9 @@ public class ArenaListener implements Listener {
 						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
 						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
 						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
-						// TODO messages
-						p.sendMessage("§2Successfully created arena sign.");
+						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
 					} else {
-						// p.sendMessage(arena_invalid_component);
+						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid);
 						event.getBlock().breakNaturally();
 					}
 
@@ -171,9 +174,7 @@ public class ArenaListener implements Listener {
 
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
-					// TODO need to save global_arenas in main class to get it
-					// here
-					// joinLobby(p, arenas.get(0));
+					MinigamesAPI.getAPI().pinstances.get(plugin).getArenas().get(0).joinPlayerLobby(p.getName());
 				}
 			}, 30L);
 		}

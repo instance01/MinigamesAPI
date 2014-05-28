@@ -71,6 +71,8 @@ public class MessagesConfig {
 	public String successfully_saved_arena = "&aSuccessfully saved &3<arena>&a.";
 	public String failed_saving_arena = "&cFailed to save &3<arena>&c.";
 	public String arena_invalid = "&3<arena> &cappears to be invalid.";
+	public String broadcast_players_left = "&eThere are <count> players left!";
+	public String player_died = "&c<player> died.";
 
     
     public FileConfiguration getConfig() {
