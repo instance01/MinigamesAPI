@@ -13,10 +13,6 @@ import com.comze_instancelabs.minigamesapi.ArenaState;
 
 public class MessagesConfig {
 
-	//TODO add loading/saving into config
-	public String no_perm = ChatColor.RED + "You don't have permission.";
-	public String successfully_reloaded = ChatColor.GREEN + "Successfully reloaded";
-	
     private FileConfiguration arenaConfig = null;
     private File arenaFile = null;
     private JavaPlugin plugin = null;
@@ -44,10 +40,38 @@ public class MessagesConfig {
         	this.getConfig().addDefault("signs." + state.toLowerCase() + ".2", "<count>/<maxcount>");
         	this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", squares);
     	}
-    	
+
+    	this.getConfig().addDefault("messages.no_perm", no_perm);
+    	this.getConfig().addDefault("messages.successfully_reloaded", successfully_reloaded);
+    	this.getConfig().addDefault("messages.successfully_set", successfully_set);
+    	this.getConfig().addDefault("messages.successfully_saved_arena", successfully_saved_arena);
+    	this.getConfig().addDefault("messages.arena_invalid", arena_invalid);
+    	this.getConfig().addDefault("messages.failed_saving_arena", failed_saving_arena);
+
+
+
+    	// save
     	this.getConfig().options().copyDefaults(true);
     	this.saveConfig();
+    	
+    	// load
+    	this.no_perm = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.no_perm"));
+    	this.successfully_reloaded = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_reloaded"));
+    	this.successfully_set = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_set"));
+    	this.successfully_saved_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_saved_arena"));
+    	this.failed_saving_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.failed_saving_arena"));
+    	this.arena_invalid = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_invalid"));
+
+    
     }
+    
+	public String no_perm = "&cYou don't have permission.";
+	public String successfully_reloaded = "&aSuccessfully reloaded all configs.";
+	public String successfully_set = "&aSuccessfully set &3<component>&a.";
+	public String successfully_saved_arena = "&aSuccessfully saved &3<arena>&a.";
+	public String failed_saving_arena = "&cFailed to save &3<arena>&c.";
+	public String arena_invalid = "&3<arena> &cappears to be invalid.";
+
     
     public FileConfiguration getConfig() {
         if (arenaConfig == null) {

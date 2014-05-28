@@ -14,8 +14,6 @@ import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class CommandHandler {
 
-	// TODO Add messages
-
 	/**
 	 * Handles the default commands needed for arena management.
 	 * 
@@ -76,7 +74,12 @@ public class CommandHandler {
 					return true;
 				}
 				if (args.length > 1) {
-					ArenaSetup.saveArena(plugin, args[1]);
+					Arena temp = ArenaSetup.saveArena(plugin, args[1]);
+					if(temp != null){
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_saved_arena.replaceAll("<arena>", args[1]));
+					}else{
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
+					}
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
@@ -90,6 +93,7 @@ public class CommandHandler {
 				}
 				if (args.length > 2) {
 					ArenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), true);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "max players"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
 				}
@@ -103,6 +107,7 @@ public class CommandHandler {
 				}
 				if (args.length > 2) {
 					ArenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), false);
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "min players"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
 				}
@@ -116,12 +121,18 @@ public class CommandHandler {
 				}
 				if (args.length > 2) {
 					ArenaSetup.setArenaVIP(plugin, args[1], Boolean.parseBoolean(args[2]));
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "vip value"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 				}
 			} else if (action.equalsIgnoreCase("join")) {
 				if (args.length > 1) {
-					MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]).joinPlayerLobby(p.getName());
+					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
+					if(temp != null){
+						temp.joinPlayerLobby(p.getName());
+					}else{
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+					}
 				} else {
 
 				}
@@ -137,7 +148,12 @@ public class CommandHandler {
 					return true;
 				}
 				if (args.length > 1) {
-					MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]).start();
+					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
+					if(temp != null){
+						temp.start();
+					}else{
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+					}
 				} else {
 
 				}
@@ -147,7 +163,12 @@ public class CommandHandler {
 					return true;
 				}
 				if (args.length > 1) {
-					MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]).stop();
+					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
+					if(temp != null){
+						temp.stop();
+					}else{
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+					}
 				} else {
 
 				}
@@ -164,11 +185,11 @@ public class CommandHandler {
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
+				sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Arenas" + ChatColor.DARK_GRAY + " -------");
 				for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
 					sender.sendMessage(ChatColor.GREEN + a.getName());
 				}
 			} else if (action.equalsIgnoreCase("reload")) {
-				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().reloadConfig();
 				plugin.reloadConfig();
 				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().reloadConfig();
 				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().reloadConfig();

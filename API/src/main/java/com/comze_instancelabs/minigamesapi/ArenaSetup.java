@@ -1,5 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -68,6 +70,7 @@ public class ArenaSetup {
 	 */
 	public static Arena saveArena(JavaPlugin plugin, String arenaname) {
 		if (!Validator.isArenaValid(plugin, arenaname)) {
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Arena " + arenaname + " appears to be invalid.");
 			return null;
 		}
 		// TODO arena saving (to file too)
