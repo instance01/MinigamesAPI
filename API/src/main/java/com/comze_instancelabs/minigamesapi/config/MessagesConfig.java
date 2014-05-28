@@ -47,6 +47,8 @@ public class MessagesConfig {
     	this.getConfig().addDefault("messages.successfully_saved_arena", successfully_saved_arena);
     	this.getConfig().addDefault("messages.arena_invalid", arena_invalid);
     	this.getConfig().addDefault("messages.failed_saving_arena", failed_saving_arena);
+    	this.getConfig().addDefault("messages.broadcast_players_left", broadcast_players_left);
+    	this.getConfig().addDefault("messages.player_died", player_died);
 
 
 
@@ -61,6 +63,8 @@ public class MessagesConfig {
     	this.successfully_saved_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_saved_arena"));
     	this.failed_saving_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.failed_saving_arena"));
     	this.arena_invalid = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_invalid"));
+    	this.player_died = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_died"));
+    	this.broadcast_players_left = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.broadcast_players_left"));
 
     
     }

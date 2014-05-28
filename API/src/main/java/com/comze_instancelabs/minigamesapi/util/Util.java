@@ -18,6 +18,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -314,4 +315,23 @@ public class Util {
 	    return s.matches("[-+]?\\d*\\.?\\d+");  
 	}
 
+	
+	// example items: 267#1;3#64;3#64
+	@SuppressWarnings("unused")
+	public static ArrayList<ItemStack> parseItems(String rawitems){
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		
+		String[] a = rawitems.split(";");
+		for(String b : a){
+			String[] c = b.split("#");
+			String itemid = c[0];
+			String itemamount = c[1];
+			ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount));
+			ret.add(nitem);
+		}
+		if(ret == null){
+			MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
+		}
+		return ret;
+	}
 }
