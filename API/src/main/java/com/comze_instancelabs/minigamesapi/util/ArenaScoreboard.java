@@ -9,6 +9,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class ArenaScoreboard {
@@ -17,19 +18,17 @@ public class ArenaScoreboard {
 	Objective objective;
 	public HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
 
-	
-	// TODO think about that
-	// I'm not sure yet how to handle scoreboards, so let's just save some code from my old Arenasystem here
-	
-	/*public void updateScoreboard(final String arena) {
+	//TODO implement that
+	@Unused
+	public void updateScoreboard(final Arena arena) {
 
 		Bukkit.getScheduler().runTask(MinigamesAPI.getAPI(), new Runnable(){
 			public void run(){
-				for (Player pl : arenap.keySet()) {
-					if(!arenap.get(pl).equalsIgnoreCase(arena)){
+				for (String p__ : arena.getAllPlayers()) {
+					if(!Validator.isPlayerValid(p__, arena)){
 						return;
 					}
-					Player p = pl;
+					Player p = Bukkit.getPlayer(p__);
 					if (board == null) {
 						board = Bukkit.getScoreboardManager().getNewScoreboard();
 					}
@@ -39,21 +38,24 @@ public class ArenaScoreboard {
 
 					objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-					objective.setDisplayName("[" + arenap.get(p) + "]");
+					objective.setDisplayName("[" + arena.getName() + "]");
 
-					for (Player pl_ : arenap.keySet()) {
-						Player p_ = pl_;
-						if (!lost.containsKey(pl_)) {
+					for (String p___ : arena.getAllPlayers()) {
+						if(!Validator.isPlayerOnline(p___)){
+							continue;
+						}
+						Player p_ = Bukkit.getPlayer(p___);
+						if (!MinigamesAPI.getAPI().global_lost.containsKey(p___)) {
 							int score = 0;
-							if (currentscore.containsKey(pl_.getName())) {
-								int oldscore = currentscore.get(pl_.getName());
+							if (currentscore.containsKey(p___)) {
+								int oldscore = currentscore.get(p___);
 								if (score > oldscore) {
-									currentscore.put(pl_.getName(), score);
+									currentscore.put(p___, score);
 								} else {
 									score = oldscore;
 								}
 							} else {
-								currentscore.put(pl_.getName(), score);
+								currentscore.put(p___, score);
 							}
 							try{
 								if(p_.getName().length() < 15){
@@ -63,9 +65,9 @@ public class ArenaScoreboard {
 								}
 							}catch(Exception e){
 							}
-						} else if (lost.containsKey(pl_)){
-							if (currentscore.containsKey(pl_.getName())) {
-								int score = currentscore.get(pl_.getName());
+						} else if (MinigamesAPI.getAPI().global_lost.containsKey(p___)){
+							if (currentscore.containsKey(p___)) {
+								int score = currentscore.get(p___);
 								try{
 									if(p_.getName().length() < 15){
 										board.resetScores(Bukkit.getOfflinePlayer("§a" + p_.getName()));
@@ -84,7 +86,7 @@ public class ArenaScoreboard {
 				}
 			}
 		});
-	}*/
+	}
 
 	public void removeScoreboard(String arena, Player p) {
 		try {
