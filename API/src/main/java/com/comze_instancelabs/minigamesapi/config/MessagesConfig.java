@@ -16,16 +16,16 @@ public class MessagesConfig {
     private FileConfiguration arenaConfig = null;
     private File arenaFile = null;
     private JavaPlugin plugin = null;
-    
+
     public MessagesConfig(JavaPlugin plugin){
     	this.plugin = plugin;
     	for(int i = 0; i < 10; i++){
-    		squares += Character.toString((char)254);
+    		squares += Character.toString((char)0x25A0);
     	}
     	this.init();
     }
-    
-    private String squares = Character.toString((char)254);
+
+    private String squares = Character.toString((char)0x25A0);
     
     public String signs_join_0;
     public String signs_join_1;

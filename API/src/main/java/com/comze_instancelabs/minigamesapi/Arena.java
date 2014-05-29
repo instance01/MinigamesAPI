@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +21,7 @@ public class Arena {
 	private ArrayList<Location> spawns = new ArrayList<Location>();
 	private HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
 	private HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
+	private HashMap<String, GameMode> pgamemode = new HashMap<String, GameMode>();
 
 	private Location mainlobby;
 	private Location waitinglobby;
@@ -156,6 +158,8 @@ public class Arena {
 						Util.clearInv(p);
 						p.getInventory().addItem(new ItemStack(plugin.getConfig().getInt("config.classes_selection_item")));
 						p.updateInventory();
+						pgamemode.put(p.getName(), p.getGameMode());
+						p.setGameMode(GameMode.SURVIVAL);
 					}
 				}, 10L);
 				if(this.getAllPlayers().size() > this.min_players - 1){
@@ -193,7 +197,10 @@ public class Arena {
 				p.setFlying(false);
 				if(!p.isOp()){
 					p.setAllowFlight(false);
-				}	
+				}
+				if(pgamemode.containsKey(p.getName())){
+					p.setGameMode(pgamemode.get(p.getName()));
+				}
 			}
 		}, 5L);
 	}
