@@ -13,7 +13,7 @@ public class DefaultConfig {
 		config.addDefault("config.lobby_countdown", 30);
 		config.addDefault("config.ingame_countdown", 10);
 		
-		config.options().copyDefaults(false);
+		config.options().copyDefaults(true);
 		plugin.saveConfig();
 	}
 	

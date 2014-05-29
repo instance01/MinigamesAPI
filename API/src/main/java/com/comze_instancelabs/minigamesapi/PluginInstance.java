@@ -29,6 +29,14 @@ public class PluginInstance {
 		this.plugin = plugin;
 	}
 	
+	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig){
+		this.arenasconfig = arenasconfig;
+		this.messagesconfig = messagesconfig;
+		this.classesconfig = classesconfig;
+		this.arenas = new ArrayList<Arena>();
+		this.plugin = plugin;
+	}
+	
 	public ArenasConfig getArenasConfig(){
 		return arenasconfig;
 	}

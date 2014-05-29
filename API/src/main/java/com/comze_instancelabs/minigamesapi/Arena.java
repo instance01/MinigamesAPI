@@ -187,7 +187,7 @@ public class Arena {
 		p.updateInventory();
 		
 		//TODO might need delay through runnable, will bring issues on laggier servers
-		Util.teleportPlayerFixed(p, this.waitinglobby);
+		Util.teleportPlayerFixed(p, this.mainlobby);
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 			public void run (){
 				p.setFlying(false);

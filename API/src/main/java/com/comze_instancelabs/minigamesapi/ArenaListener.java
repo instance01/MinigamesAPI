@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -84,9 +85,23 @@ public class ArenaListener implements Listener {
 	}
 
 	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event){
+		if(event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN){
+			Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());
+			if(arena != null){
+				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena.getName() + ".sign", null);
+				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+			}
+		}
+	}
+	
+	@EventHandler
 	public void onSignUse(PlayerInteractEvent event) {
 		if (event.hasBlock()) {
 			if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN) {
+				if(event.getAction() != Action.RIGHT_CLICK_BLOCK){
+					return;
+				}
 				final Sign s = (Sign) event.getClickedBlock().getState();
 				// people will most likely do strange formats, so let's just try
 				// to get signs by location rather than locally by reading the
@@ -113,7 +128,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		Player p = event.getPlayer();
-		if (event.getLine(0).toLowerCase().equalsIgnoreCase("")) {
+		if (event.getLine(0).toLowerCase().equalsIgnoreCase("minigame")) {
 			if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
 				if (!event.getLine(1).equalsIgnoreCase("")) {
 					String arena = event.getLine(1);
@@ -132,7 +147,7 @@ public class ArenaListener implements Listener {
 					Arena a = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(arena);
 					// Sign s = (Sign) event.getBlock().getState();
 					if (a != null) {
-						Util.updateSign(plugin, a);
+						Util.updateSign(plugin, a, event);
 					} else {
 						// TODO tell player that arena is not initialized (most
 						// likely forgot to save)

@@ -39,6 +39,7 @@ public class CommandHandler {
 				}
 				if (args.length > 1) {
 					ArenaSetup.setSpawn(plugin, args[1], p.getLocation());
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "spawn"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
@@ -49,6 +50,7 @@ public class CommandHandler {
 				}
 				if (args.length > 1) {
 					ArenaSetup.setLobby(plugin, args[1], p.getLocation());
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "waiting lobby"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
@@ -58,6 +60,7 @@ public class CommandHandler {
 					return true;
 				}
 				ArenaSetup.setMainLobby(plugin, p.getLocation());
+				sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "main lobby"));
 			} else if (action.equalsIgnoreCase("setbounds")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
 					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);

@@ -72,4 +72,17 @@ public class Validator {
 		return true;
 	}
 	
+	/***
+	 * returns true if given arena was set up correctly
+	 * @param arena
+	 * @return
+	 */
+	public static boolean isArenaValid(JavaPlugin plugin, String arena, FileConfiguration cf){
+		FileConfiguration config = cf;
+		if(!config.isSet("arenas." + arena + ".lobby") || !config.isSet("arenas." + arena + ".spawns.spawn0")){
+			return false;
+		}
+		return true;
+	}
+	
 }
