@@ -51,6 +51,7 @@ public class Classes {
 
 	public static void setClass(JavaPlugin plugin, String classname, String player) {
 		if (!kitPlayerHasPermission(plugin, classname, Bukkit.getPlayer(player))) {
+			// TODO this string can't be found in config:
 			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("strings.nokitperm"));
 			return;
 		}
@@ -58,6 +59,10 @@ public class Classes {
 			kitTakeMoney(plugin, Bukkit.getPlayer(player), classname.toLowerCase());
 		}
 		MinigamesAPI.getAPI().pinstances.get(plugin).pclass.put(player, MinigamesAPI.getAPI().pinstances.get(plugin).aclasses.get(classname));
+	}
+	
+	public static boolean hasClass(JavaPlugin plugin, String player){
+		return MinigamesAPI.getAPI().pinstances.get(plugin).pclass.containsKey(player);
 	}
 
 	public static void loadClasses(JavaPlugin plugin) {

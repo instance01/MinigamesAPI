@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
+import com.comze_instancelabs.minigamesapi.config.DefaultConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
@@ -59,10 +60,30 @@ public class MinigamesAPI extends JavaPlugin {
 	 * @param plugin_
 	 * @return
 	 */
+	// Allow loading of arenas with own extended arena class into PluginInstance:
+	// after this setup, get the PluginInstance, load the arenas by yourself
+	// and add the loaded arenas w/ custom arena class into the PluginInstance
+	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass) {
+		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
+		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
+		ClassesConfig classesconfig = new ClassesConfig(plugin_);
+		DefaultConfig.init(plugin_);
+		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, new ArrayList<Arena>()));
+		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
+		return instance;
+	}
+
+	/**
+	 * Sets up the API, stuff won't work without that
+	 * 
+	 * @param plugin_
+	 * @return
+	 */
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_) {
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
 		ClassesConfig classesconfig = new ClassesConfig(plugin_);
+		DefaultConfig.init(plugin_);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, Util.loadArenas(plugin_, arenasconfig)));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		return instance;

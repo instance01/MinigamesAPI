@@ -93,14 +93,14 @@ public class ArenaSetup {
 	public static int getPlayerCount(JavaPlugin plugin, String arena, boolean max) {
 		if (!max) {
 			if (!MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().isSet("arenas." + arena + ".min_players")) {
-				setPlayerCount(plugin, arena, 2, max);
-				return 2;
+				setPlayerCount(plugin, arena, plugin.getConfig().getInt("config.default_min_players"), max);
+				return plugin.getConfig().getInt("config.default_min_players");
 			}
 			return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".min_players");
 		}
 		if (!MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().isSet("arenas." + arena + ".max_players")) {
-			setPlayerCount(plugin, arena, 4, max);
-			return 4;
+			setPlayerCount(plugin, arena, plugin.getConfig().getInt("config.default_max_players"), max);
+			return plugin.getConfig().getInt("config.default_max_players");
 		}
 		return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".max_players");
 	}

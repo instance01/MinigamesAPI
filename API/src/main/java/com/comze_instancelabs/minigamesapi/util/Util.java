@@ -179,7 +179,7 @@ public class Util {
 		MinigamesAPI.getAPI().getLogger().info("saved");
 	}
 
-	public static void loadArenaFromFileSYNC(JavaPlugin plugin, Arena arena) {
+	public static void loadArenaFromFileSYNC(final JavaPlugin plugin, final Arena arena) {
 		int failcount = 0;
 		final ArrayList<ArenaBlock> failedblocks = new ArrayList<ArenaBlock>();
 
@@ -202,7 +202,11 @@ public class Util {
 					MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena.getName() + ".");
 
 					arena.setArenaState(ArenaState.JOIN);
-					Util.updateSign(plugin, arena);
+					Bukkit.getScheduler().runTask(plugin, new Runnable(){
+						public void run(){
+							Util.updateSign(plugin, arena);
+						}
+					});
 
 				}
 

@@ -67,5 +67,8 @@ public class PluginInstance {
 		return false;
 	}
 	
+	public void addLoadedArenas(ArrayList<Arena> arenas){
+		this.arenas = arenas;
+	}
 	
 }

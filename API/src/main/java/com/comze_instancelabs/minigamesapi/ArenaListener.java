@@ -104,7 +104,7 @@ public class ArenaListener implements Listener {
 			if (!MinigamesAPI.global_players.containsKey(p.getName())) {
 				return;
 			}
-			if (event.getItem().getTypeId() == 399) {
+			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
 				Classes.openGUI(plugin, p.getName());
 			}
 		}

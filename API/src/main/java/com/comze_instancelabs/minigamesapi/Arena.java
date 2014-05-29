@@ -154,8 +154,13 @@ public class Arena {
 				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable(){
 					public void run(){
 						Util.clearInv(p);
+						p.getInventory().addItem(new ItemStack(plugin.getConfig().getInt("config.classes_selection_item")));
+						p.updateInventory();
 					}
 				}, 10L);
+				if(this.getAllPlayers().size() > this.min_players - 1){
+					this.startLobby();
+				}
 			}
 		}
 	}
@@ -233,11 +238,18 @@ public class Arena {
 	 */
 	public void start(){
 		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+		final Arena a = this;
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable(){
 			public void run(){
 				currentingamecount++;
 				if(currentingamecount > MinigamesAPI.getAPI().ingame_countdown){
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
+					for(String p_ : a.getAllPlayers()){
+						if(!Classes.hasClass(plugin, p_)){
+							Classes.setClass(plugin, "default", p_);
+						}
+						Classes.getClass(plugin, p_);
+					}
 					try{
 						Bukkit.getScheduler().cancelTask(currenttaskid);
 					}catch(Exception e){}

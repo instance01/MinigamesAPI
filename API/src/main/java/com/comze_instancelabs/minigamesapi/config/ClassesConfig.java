@@ -16,6 +16,15 @@ public class ClassesConfig {
     
     public ClassesConfig(JavaPlugin plugin){
     	this.plugin = plugin;
+    	this.getConfig().addDefault("config.kits.default.name", "default");
+    	this.getConfig().addDefault("config.kits.default.items", "376#1");
+    	this.getConfig().addDefault("config.kits.default.lore", "The default class.");
+    	this.getConfig().addDefault("config.kits.default.requires_money", false);
+    	this.getConfig().addDefault("config.kits.default.requires_permission", false);
+    	this.getConfig().addDefault("config.kits.default.money_amount", 100);
+    	this.getConfig().addDefault("config.kits.default.permission_node", "minigames.kits.default");
+    	this.getConfig().options().copyDefaults(true);
+    	this.saveConfig();
     }
     
     public FileConfiguration getConfig() {
