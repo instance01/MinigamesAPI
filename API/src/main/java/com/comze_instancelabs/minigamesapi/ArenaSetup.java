@@ -59,8 +59,12 @@ public class ArenaSetup {
 	}
 
 	// TODO bounds setup
-	public static void setBoundaries() {
-
+	public static void setBoundaries(JavaPlugin plugin, String arenaname, Location l, boolean low) {
+		if(low){
+			Util.saveComponentForArena(plugin, arenaname, "bounds.low", l);
+		}else{
+			Util.saveComponentForArena(plugin, arenaname, "bounds.high", l);
+		}
 	}
 
 	/**

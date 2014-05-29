@@ -68,6 +68,15 @@ public class CommandHandler {
 				}
 				if (args.length > 2) {
 					// TODO bounds setup command
+					if (args[2].equalsIgnoreCase("low")) {
+						ArenaSetup.setBoundaries(plugin, args[1], p.getLocation(), true);
+					}else if(args[2].equalsIgnoreCase("high")){
+						ArenaSetup.setBoundaries(plugin, args[1], p.getLocation(), false);
+					}else{
+						sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <low/high>");
+						return true;
+					}
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "boundary"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <low/high>");
 				}
