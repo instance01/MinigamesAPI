@@ -12,11 +12,13 @@ Features
 - Customizable Messages
 - Different minigame types
 - VIP Arenas
-- Economy
+- Economy and item rewards
 - Overall Customization/Attributes like player counts, countdowns, spawns, etc.
 - Signs and corresponding Arena states
 - Map regeneration mechanisms
 - Kits/Classes
+- Arcade System
+- MySQL/SQLite support
 - Moar stuff :D
 
 
