@@ -39,6 +39,8 @@ public class MinigamesAPI extends JavaPlugin {
 		String version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + version + ".");
 
+		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
 		if (economy) {
 			if (!setupEconomy()) {
 				getLogger().severe(String.format("[%s] - No iConomy dependency found! Disabling Economy.", getDescription().getName()));
@@ -60,7 +62,8 @@ public class MinigamesAPI extends JavaPlugin {
 	 * @param plugin_
 	 * @return
 	 */
-	// Allow loading of arenas with own extended arena class into PluginInstance:
+	// Allow loading of arenas with own extended arena class into
+	// PluginInstance:
 	// after this setup, get the PluginInstance, load the arenas by yourself
 	// and add the loaded arenas w/ custom arena class into the PluginInstance
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass) {
