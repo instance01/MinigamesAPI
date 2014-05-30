@@ -67,7 +67,6 @@ public class CommandHandler {
 					return true;
 				}
 				if (args.length > 2) {
-					// TODO bounds setup command
 					if (args[2].equalsIgnoreCase("low")) {
 						ArenaSetup.setBoundaries(plugin, args[1], p.getLocation(), true);
 					}else if(args[2].equalsIgnoreCase("high")){

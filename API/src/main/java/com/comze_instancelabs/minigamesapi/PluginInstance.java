@@ -17,66 +17,67 @@ public class PluginInstance {
 	private MessagesConfig messagesconfig = null;
 	private JavaPlugin plugin = null;
 	private ArrayList<Arena> arenas = new ArrayList<Arena>();
-	public static HashMap<String, AClass> pclass = new HashMap<String, AClass>(); // player -> class
-	public static HashMap<String, AClass> aclasses = new HashMap<String, AClass>(); // classname -> class
+	public static HashMap<String, AClass> pclass = new HashMap<String, AClass>();
+	public static HashMap<String, AClass> aclasses = new HashMap<String, AClass>();
+	private Rewards rew = null;
 
-	
-	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, ArrayList<Arena> arenas){
+	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
 		this.classesconfig = classesconfig;
 		this.arenas = arenas;
 		this.plugin = plugin;
+		rew = new Rewards(plugin);
 	}
-	
-	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig){
-		this.arenasconfig = arenasconfig;
-		this.messagesconfig = messagesconfig;
-		this.classesconfig = classesconfig;
-		this.arenas = new ArrayList<Arena>();
-		this.plugin = plugin;
+
+	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig) {
+		this(plugin, arenasconfig, messagesconfig, classesconfig, new ArrayList<Arena>());
 	}
-	
-	public ArenasConfig getArenasConfig(){
+
+	public ArenasConfig getArenasConfig() {
 		return arenasconfig;
 	}
-	
-	public MessagesConfig getMessagesConfig(){
+
+	public MessagesConfig getMessagesConfig() {
 		return messagesconfig;
 	}
-	
-	public ClassesConfig getClassesConfig(){
+
+	public ClassesConfig getClassesConfig() {
 		return classesconfig;
 	}
-	
-	public ArrayList<Arena> getArenas(){
+
+	public Rewards getRewardsInstance() {
+		return rew;
+	}
+
+	public ArrayList<Arena> getArenas() {
 		return arenas;
 	}
-	
-	public ArrayList<Arena> addArena(Arena arena){
+
+	public ArrayList<Arena> addArena(Arena arena) {
 		arenas.add(arena);
 		return getArenas();
 	}
-	
-	public Arena getArenaByName(String arenaname){
-		for(Arena a : getArenas()){
-			if(a.getName().equalsIgnoreCase(arenaname)){
+
+	public Arena getArenaByName(String arenaname) {
+		for (Arena a : getArenas()) {
+			if (a.getName().equalsIgnoreCase(arenaname)) {
 				return a;
 			}
 		}
 		return null;
 	}
-	
-	public boolean removeArena(Arena arena){
-		if(arenas.contains(arena)){
+
+	public boolean removeArena(Arena arena) {
+		if (arenas.contains(arena)) {
 			arenas.remove(arena);
 			return true;
 		}
 		return false;
 	}
-	
-	public void addLoadedArenas(ArrayList<Arena> arenas){
+
+	public void addLoadedArenas(ArrayList<Arena> arenas) {
 		this.arenas = arenas;
 	}
-	
+
 }
