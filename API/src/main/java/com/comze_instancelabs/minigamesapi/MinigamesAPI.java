@@ -21,8 +21,8 @@ public class MinigamesAPI extends JavaPlugin {
 
 	static MinigamesAPI instance = null;
 	public static Economy econ = null;
-	public boolean economy = true;
-	public boolean arcade = false;
+	public static boolean economy = true;
+	public static boolean arcade = false;
 
 	public static HashMap<JavaPlugin, PluginInstance> pinstances = new HashMap<JavaPlugin, PluginInstance>();
 
@@ -73,6 +73,7 @@ public class MinigamesAPI extends JavaPlugin {
 		DefaultConfig.init(plugin_);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, new ArrayList<Arena>()));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
+		Classes.loadClasses(plugin_);
 		return instance;
 	}
 
@@ -90,6 +91,7 @@ public class MinigamesAPI extends JavaPlugin {
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig));
 		pinstances.get(plugin_).addLoadedArenas(Util.loadArenas(plugin_, arenasconfig));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
+		Classes.loadClasses(plugin_);
 		return instance;
 	}
 

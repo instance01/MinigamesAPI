@@ -162,6 +162,7 @@ public class CommandHandler {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
 					if (temp != null) {
 						temp.start();
+						//TODO messages
 					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
@@ -177,6 +178,7 @@ public class CommandHandler {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
 					if (temp != null) {
 						temp.stop();
+						//TODO messages
 					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}

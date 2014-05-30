@@ -13,16 +13,16 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 public class Rewards {
 
 	private JavaPlugin plugin = null;
-	
+
 	private boolean economyrewards;
 	private boolean itemrewards;
 	private boolean commandrewards;
-	
+
 	private int econ_reward = 0;
 	private String command = "";
 	private ItemStack[] items = null;
-	
-	public Rewards(JavaPlugin plugin){
+
+	public Rewards(JavaPlugin plugin) {
 		this.plugin = plugin;
 		economyrewards = plugin.getConfig().getBoolean("config.rewards.economy");
 		itemrewards = plugin.getConfig().getBoolean("config.rewards.item_reward");
@@ -30,35 +30,35 @@ public class Rewards {
 
 		econ_reward = plugin.getConfig().getInt("config.rewards.economy_reward");
 		command = plugin.getConfig().getString("config.rewards.command");
-		items = (ItemStack[]) Util.parseItems(plugin.getConfig().getString("config.rewards.item_reward_ids")).toArray();
-		
-		if(!MinigamesAPI.getAPI().economy){
+		items = Util.parseItems(plugin.getConfig().getString("config.rewards.item_reward_ids")).toArray(new ItemStack[0]);
+
+		if (!MinigamesAPI.economy) {
 			economyrewards = false;
 		}
 	}
-	
-	public void giveRewardsToWinners(Arena arena){
-		for(String p_ : arena.getAllPlayers()){
+
+	public void giveRewardsToWinners(Arena arena) {
+		for (String p_ : arena.getAllPlayers()) {
 			giveReward(p_);
 		}
 	}
-	
-	public void giveReward(String p_){
-		if(!MinigamesAPI.getAPI().global_lost.containsKey(p_)){
-			if(Validator.isPlayerOnline(p_)){
+
+	public void giveReward(String p_) {
+		if (!MinigamesAPI.getAPI().global_lost.containsKey(p_)) {
+			if (Validator.isPlayerOnline(p_)) {
 				Player p = Bukkit.getPlayer(p_);
-				if(economyrewards){
+				if (economyrewards) {
 					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward);
 				}
-				if(itemrewards){
+				if (itemrewards) {
 					p.getInventory().addItem(items);
 					p.updateInventory();
 				}
-				if(commandrewards){
+				if (commandrewards) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 				}
 			}
 		}
 	}
-	
+
 }

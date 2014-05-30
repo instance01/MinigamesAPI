@@ -282,7 +282,10 @@ public class Arena {
 	 */
 	public void stop() {
 		this.setArenaState(ArenaState.RESTARTING);
-		Util.teleportAllPlayers(players, mainlobby);
+		for(String p_ : this.getAllPlayers()){
+			leavePlayer(p_, false);
+		}
+		//Util.teleportAllPlayers(players, mainlobby);
 		if (this.getArenaType() == ArenaType.REGENERATION) {
 			reset();
 		} else {
