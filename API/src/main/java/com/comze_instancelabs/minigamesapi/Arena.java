@@ -196,8 +196,10 @@ public class Arena {
 		p.getInventory().setArmorContents(pinv_armor.get(playername));
 		p.updateInventory();
 
-		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(p.getName());
+		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
 
+		MinigamesAPI.global_players.remove(playername);
+		
 		// TODO might need delay through runnable, will bring issues on laggier
 		// servers
 		Util.teleportPlayerFixed(p, this.mainlobby);

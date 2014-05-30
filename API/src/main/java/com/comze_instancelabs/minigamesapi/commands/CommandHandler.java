@@ -141,17 +141,18 @@ public class CommandHandler {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
 					if (temp != null) {
 						temp.joinPlayerLobby(p.getName());
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
 					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
-
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 				}
 			} else if (action.equalsIgnoreCase("leave")) {
 				if (MinigamesAPI.getAPI().global_players.containsKey(p.getName())) {
 					MinigamesAPI.getAPI().global_players.get(p.getName()).leavePlayer(p.getName(), false);
 				} else {
-
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_in_arena);
 				}
 			} else if (action.equalsIgnoreCase("start")) {
 				if (!sender.hasPermission(uber_permission + ".start")) {
@@ -162,12 +163,12 @@ public class CommandHandler {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
 					if (temp != null) {
 						temp.start();
-						//TODO messages
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "started"));
 					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
-
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 				}
 			} else if (action.equalsIgnoreCase("stop")) {
 				if (!sender.hasPermission(uber_permission + ".stop")) {
@@ -178,12 +179,12 @@ public class CommandHandler {
 					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
 					if (temp != null) {
 						temp.stop();
-						//TODO messages
+						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "stopped"));
 					} else {
 						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
-
+					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 				}
 			} else if (action.equalsIgnoreCase("removearena")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
