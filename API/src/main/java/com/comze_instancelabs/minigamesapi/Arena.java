@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
@@ -200,6 +201,8 @@ public class Arena {
 
 		MinigamesAPI.global_players.remove(playername);
 
+		final String arenaname = this.getName();
+
 		// TODO might need delay through runnable, will bring issues on laggier
 		// servers
 		Util.teleportPlayerFixed(p, this.mainlobby);
@@ -212,6 +215,11 @@ public class Arena {
 				if (pgamemode.containsKey(p.getName())) {
 					p.setGameMode(pgamemode.get(p.getName()));
 				}
+				try {
+					ArenaScoreboard.removeScoreboard(arenaname, p);
+				} catch (Exception e) {
+					//
+				}
 			}
 		}, 5L);
 	}
@@ -223,6 +231,7 @@ public class Arena {
 			p.setAllowFlight(true);
 			p.setFlying(true);
 			Util.teleportPlayerFixed(p, this.spawns.get(0).add(0D, 30D, 0D));
+			ArenaScoreboard.updateScoreboard(this);
 		}
 	}
 
@@ -259,6 +268,7 @@ public class Arena {
 	public void start() {
 		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		final Arena a = this;
+		ArenaScoreboard.updateScoreboard(a);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentingamecount++;
