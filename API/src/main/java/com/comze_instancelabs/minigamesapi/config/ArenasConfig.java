@@ -16,6 +16,7 @@ public class ArenasConfig {
     
     public ArenasConfig(JavaPlugin plugin){
     	this.plugin = plugin;
+    	this.getConfig().options().header("Used for saving arena details.");
     	this.getConfig().options().copyDefaults(true);
     	this.saveConfig();
     }

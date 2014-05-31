@@ -15,6 +15,7 @@ import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.config.DefaultConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
+import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class MinigamesAPI extends JavaPlugin {
@@ -70,8 +71,9 @@ public class MinigamesAPI extends JavaPlugin {
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
 		ClassesConfig classesconfig = new ClassesConfig(plugin_);
+		StatsConfig statsconfig = new StatsConfig(plugin_);
 		DefaultConfig.init(plugin_);
-		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, new ArrayList<Arena>()));
+		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		Classes.loadClasses(plugin_);
 		return instance;
@@ -87,8 +89,9 @@ public class MinigamesAPI extends JavaPlugin {
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
 		ClassesConfig classesconfig = new ClassesConfig(plugin_);
+		StatsConfig statsconfig = new StatsConfig(plugin_);
 		DefaultConfig.init(plugin_);
-		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig));
+		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig));
 		pinstances.get(plugin_).addLoadedArenas(Util.loadArenas(plugin_, arenasconfig));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
 		Classes.loadClasses(plugin_);

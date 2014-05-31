@@ -160,6 +160,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
+		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().update(p.getName());
 		if (MinigamesAPI.getAPI().global_leftplayers.contains(event.getPlayer().getName())) {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {

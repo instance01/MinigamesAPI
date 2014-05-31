@@ -34,6 +34,7 @@ public class MessagesConfig {
     
     public void init(){
     	// all signs
+    	this.getConfig().options().header("Contains all messages for easy translation.");
     	for(String state : ArenaState.getAllStateNames()){
     		this.getConfig().addDefault("signs." + state.toLowerCase() + ".0", squares);
         	this.getConfig().addDefault("signs." + state.toLowerCase() + ".1", "<arena>");

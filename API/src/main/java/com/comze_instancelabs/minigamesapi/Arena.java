@@ -199,7 +199,7 @@ public class Arena {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
 
 		MinigamesAPI.global_players.remove(playername);
-		
+
 		// TODO might need delay through runnable, will bring issues on laggier
 		// servers
 		Util.teleportPlayerFixed(p, this.mainlobby);
@@ -284,10 +284,10 @@ public class Arena {
 	 */
 	public void stop() {
 		this.setArenaState(ArenaState.RESTARTING);
-		for(String p_ : this.getAllPlayers()){
+		for (String p_ : this.getAllPlayers()) {
 			leavePlayer(p_, false);
 		}
-		//Util.teleportAllPlayers(players, mainlobby);
+		// Util.teleportAllPlayers(players, mainlobby);
 		if (this.getArenaType() == ArenaType.REGENERATION) {
 			reset();
 		} else {

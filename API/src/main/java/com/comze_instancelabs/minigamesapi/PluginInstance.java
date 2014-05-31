@@ -8,6 +8,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
+import com.comze_instancelabs.minigamesapi.config.StatsConfig;
+import com.comze_instancelabs.minigamesapi.sql.MainSQL;
 import com.comze_instancelabs.minigamesapi.util.AClass;
 
 public class PluginInstance {
@@ -15,23 +17,29 @@ public class PluginInstance {
 	private ArenasConfig arenasconfig = null;
 	private ClassesConfig classesconfig = null;
 	private MessagesConfig messagesconfig = null;
+	private StatsConfig statsconfig = null;
 	private JavaPlugin plugin = null;
 	private ArrayList<Arena> arenas = new ArrayList<Arena>();
 	public static HashMap<String, AClass> pclass = new HashMap<String, AClass>();
 	public static HashMap<String, AClass> aclasses = new HashMap<String, AClass>();
 	private Rewards rew = null;
+	private MainSQL sql = null;
+	private Stats stats = null;
 
-	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, ArrayList<Arena> arenas) {
+	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
 		this.classesconfig = classesconfig;
+		this.statsconfig = statsconfig;
 		this.arenas = arenas;
 		this.plugin = plugin;
 		rew = new Rewards(plugin);
+		stats = new Stats(plugin);
+		sql = new MainSQL(plugin, false);
 	}
 
-	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig) {
-		this(plugin, arenasconfig, messagesconfig, classesconfig, new ArrayList<Arena>());
+	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig) {
+		this(plugin, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>());
 	}
 
 	public ArenasConfig getArenasConfig() {
@@ -46,8 +54,20 @@ public class PluginInstance {
 		return classesconfig;
 	}
 
+	public StatsConfig getStatsConfig() {
+		return statsconfig;
+	}
+
 	public Rewards getRewardsInstance() {
 		return rew;
+	}
+
+	public MainSQL getSQLInstance() {
+		return sql;
+	}
+
+	public Stats getStatsInstance() {
+		return stats;
 	}
 
 	public ArrayList<Arena> getArenas() {

@@ -57,6 +57,8 @@ public class Rewards {
 				if (commandrewards) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 				}
+				//TODO add custom point rewards!
+				MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(p_, 10);
 			}
 		}
 	}

@@ -8,22 +8,18 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ClassesConfig {
+public class StatsConfig {
 
     private FileConfiguration arenaConfig = null;
     private File arenaFile = null;
     private JavaPlugin plugin = null;
     
-    public ClassesConfig(JavaPlugin plugin){
+    public StatsConfig(JavaPlugin plugin){
     	this.plugin = plugin;
-    	this.getConfig().options().header("Used for saving classes. Default class:");
-    	this.getConfig().addDefault("config.kits.default.name", "default");
-    	this.getConfig().addDefault("config.kits.default.items", "376#1");
-    	this.getConfig().addDefault("config.kits.default.lore", "The default class.");
-    	this.getConfig().addDefault("config.kits.default.requires_money", false);
-    	this.getConfig().addDefault("config.kits.default.requires_permission", false);
-    	this.getConfig().addDefault("config.kits.default.money_amount", 100);
-    	this.getConfig().addDefault("config.kits.default.permission_node", "minigames.kits.default");
+    	this.getConfig().options().header("Used for saving user statistics. Example user stats:");
+    	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.wins", 1);
+    	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.points", 10);
+    	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.name", "InstanceLabs");
     	this.getConfig().options().copyDefaults(true);
     	this.saveConfig();
     }
@@ -48,11 +44,11 @@ public class ClassesConfig {
     
     public void reloadConfig() {
         if (arenaFile == null) {
-        	arenaFile = new File(plugin.getDataFolder(), "classes.yml");
+        	arenaFile = new File(plugin.getDataFolder(), "stats.yml");
         }
         arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
 
-        InputStream defConfigStream = plugin.getResource("classes.yml");
+        InputStream defConfigStream = plugin.getResource("stats.yml");
         if (defConfigStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
             arenaConfig.setDefaults(defConfig);
