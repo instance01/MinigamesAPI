@@ -74,7 +74,7 @@ public class MinigamesAPI extends JavaPlugin {
 		StatsConfig statsconfig = new StatsConfig(plugin_);
 		DefaultConfig.init(plugin_);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
-		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
+		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_, pinstances.get(plugin_)), plugin_);
 		Classes.loadClasses(plugin_);
 		return instance;
 	}
@@ -93,7 +93,7 @@ public class MinigamesAPI extends JavaPlugin {
 		DefaultConfig.init(plugin_);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig));
 		pinstances.get(plugin_).addLoadedArenas(Util.loadArenas(plugin_, arenasconfig));
-		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_), plugin_);
+		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_, pinstances.get(plugin_)), plugin_);
 		Classes.loadClasses(plugin_);
 		return instance;
 	}

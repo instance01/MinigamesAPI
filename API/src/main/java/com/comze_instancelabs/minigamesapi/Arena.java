@@ -90,6 +90,10 @@ public class Arena {
 	public Location getSignLocation() {
 		return this.signloc;
 	}
+	
+	public ArrayList<Location> getSpawns() {
+		return this.spawns;
+	}
 
 	public String getName() {
 		return name;

@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -17,6 +21,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,9 +31,54 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 public class ArenaListener implements Listener {
 
 	JavaPlugin plugin = null;
+	PluginInstance pinstance = null;
 
-	public ArenaListener(JavaPlugin plugin) {
+	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance) {
 		this.plugin = plugin;
+		this.pinstance = pinstance;
+	}
+
+	// TODO add move listener -> player dead when fell
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onMove(PlayerMoveEvent event) {
+		try {
+			final Player p = event.getPlayer();
+			if (MinigamesAPI.getAPI().global_players.containsKey(p.getName())) {
+				final Arena a = MinigamesAPI.getAPI().global_players.get(p.getName());
+				if (!MinigamesAPI.getAPI().global_lost.containsKey(p.getName())) {
+					if (a.getArenaState() == ArenaState.INGAME) {
+						if (p.getLocation().getBlockY() + 4 < a.getSpawns().get(0).getBlockY()) {
+							if (a.getArenaType() == ArenaType.JUMPNRUN) {
+								Util.teleportPlayerFixed(p, a.getSpawns().get(0));
+							} else {
+								a.spectate(p.getName());
+							}
+						}
+					}
+				} else {
+					if (a.getArenaState() == ArenaState.INGAME) {
+						if (event.getPlayer().getLocation().getBlockY() < (a.getSpawns().get(0).getBlockY() + 30D) || event.getPlayer().getLocation().getBlockY() > (a.getSpawns().get(0).getBlockY() + 30D)) {
+							final float b = p.getLocation().getYaw();
+							final float c = p.getLocation().getPitch();
+							Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+								@Override
+								public void run() {
+									p.setAllowFlight(true);
+									p.setFlying(true);
+									p.teleport(new Location(p.getWorld(), p.getLocation().getBlockX(), (a.getSpawns().get(0).getBlockY() + 30D), p.getLocation().getBlockZ(), b, c));
+								}
+							}, 5);
+						}
+					}
+				}
+
+			}
+		} catch (Exception e) {
+			for (StackTraceElement et : e.getStackTrace()) {
+				System.out.println(et);
+			}
+		}
+
 	}
 
 	@EventHandler
@@ -85,21 +135,21 @@ public class ArenaListener implements Listener {
 	}
 
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event){
-		if(event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN){
+	public void onBlockBreak(BlockBreakEvent event) {
+		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
 			Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());
-			if(arena != null){
+			if (arena != null) {
 				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena.getName() + ".sign", null);
 				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onSignUse(PlayerInteractEvent event) {
 		if (event.hasBlock()) {
 			if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN) {
-				if(event.getAction() != Action.RIGHT_CLICK_BLOCK){
+				if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 					return;
 				}
 				final Sign s = (Sign) event.getClickedBlock().getState();
