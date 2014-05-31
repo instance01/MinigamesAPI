@@ -28,6 +28,7 @@ public class CommandHandler {
 	public static boolean handleArgs(JavaPlugin plugin, String uber_permission, String cmd, CommandSender sender, String args[]) {
 		if (args.length > 0) {
 			if (!(sender instanceof Player)) {
+				sender.sendMessage("Please execute this command ingame.");
 				return true;
 			}
 			Player p = (Player) sender;

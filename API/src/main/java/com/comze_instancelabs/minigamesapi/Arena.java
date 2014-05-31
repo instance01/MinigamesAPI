@@ -90,7 +90,7 @@ public class Arena {
 	public Location getSignLocation() {
 		return this.signloc;
 	}
-	
+
 	public ArrayList<Location> getSpawns() {
 		return this.spawns;
 	}
@@ -252,9 +252,18 @@ public class Arena {
 			return;
 		}
 		this.setArenaState(ArenaState.STARTING);
+		final Arena a = this;
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentlobbycount++;
+				if (currentlobbycount == 60 || currentlobbycount == 30 || currentlobbycount == 15 || currentlobbycount == 10 || currentlobbycount < 6) {
+					for (String p_ : a.getAllPlayers()) {
+						if (Validator.isPlayerOnline(p_)) {
+							Player p = Bukkit.getPlayer(p_);
+							p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().teleporting_to_arena_in.replaceAll("<count>", Integer.toString(currentlobbycount)));
+						}
+					}
+				}
 				if (currentlobbycount > MinigamesAPI.getAPI().lobby_countdown) {
 					currentarena.getArena().start();
 					try {
@@ -276,6 +285,14 @@ public class Arena {
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentingamecount++;
+				if (currentingamecount == 60 || currentingamecount == 30 || currentingamecount == 15 || currentingamecount == 10 || currentingamecount < 6) {
+					for (String p_ : a.getAllPlayers()) {
+						if (Validator.isPlayerOnline(p_)) {
+							Player p = Bukkit.getPlayer(p_);
+							p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().starting_in.replaceAll("<count>", Integer.toString(currentingamecount)));
+						}
+					}
+				}
 				if (currentingamecount > MinigamesAPI.getAPI().ingame_countdown) {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
 					for (String p_ : a.getAllPlayers()) {

@@ -26,6 +26,11 @@ public class PluginInstance {
 	private MainSQL sql = null;
 	private Stats stats = null;
 
+	// TODO remove that
+	public boolean pvp;
+	public boolean die_when_falling;
+	public boolean show_scoreboard;
+
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
