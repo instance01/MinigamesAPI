@@ -1,15 +1,14 @@
 package com.comze_instancelabs.minigamesapi.config;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.comze_instancelabs.minigamesapi.ArenaState;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comze_instancelabs.minigamesapi.ArenaState;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MessagesConfig {
 

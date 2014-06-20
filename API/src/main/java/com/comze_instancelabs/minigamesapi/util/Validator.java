@@ -1,12 +1,11 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class Validator {
 

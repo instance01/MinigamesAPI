@@ -1,12 +1,11 @@
 package com.comze_instancelabs.minigamesapi;
 
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.comze_instancelabs.minigamesapi.util.Util;
-import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaSetup {
 

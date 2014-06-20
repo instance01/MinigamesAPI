@@ -1,22 +1,16 @@
 package com.comze_instancelabs.minigamesapi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
+import com.comze_instancelabs.minigamesapi.config.*;
+import com.comze_instancelabs.minigamesapi.util.Util;
 import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
-import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
-import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
-import com.comze_instancelabs.minigamesapi.config.DefaultConfig;
-import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
-import com.comze_instancelabs.minigamesapi.config.StatsConfig;
-import com.comze_instancelabs.minigamesapi.util.Util;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MinigamesAPI extends JavaPlugin {
 
@@ -57,6 +51,29 @@ public class MinigamesAPI extends JavaPlugin {
 
 	}
 
+	/**
+	 * Sets up the API allowing
+	 * @param plugin_
+	 * @param arenaclass
+	 * @param arenasconfig
+	 * @param messagesconfig
+	 * @param classesconfig
+	 * @param statsconfig
+	 * @param arenalistener
+	 * @return
+	 */
+	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArenaListener arenalistener) {
+		arenasconfig = new ArenasConfig(plugin_);
+		messagesconfig = new MessagesConfig(plugin_);
+		classesconfig = new ClassesConfig(plugin_);
+		statsconfig = new StatsConfig(plugin_);
+		DefaultConfig.init(plugin_);
+		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
+		Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
+		Classes.loadClasses(plugin_);
+		return instance;
+	}
+	
 	/**
 	 * Sets up the API, stuff won't work without that
 	 * 

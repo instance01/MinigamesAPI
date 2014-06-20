@@ -1,11 +1,11 @@
 package com.comze_instancelabs.minigamesapi.util;
 
-import java.io.Serializable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+
+import java.io.Serializable;
  
 public class ArenaBlock implements Serializable
 {

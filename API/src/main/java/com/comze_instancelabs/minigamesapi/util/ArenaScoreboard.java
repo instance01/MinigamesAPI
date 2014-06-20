@@ -1,7 +1,7 @@
 package com.comze_instancelabs.minigamesapi.util;
 
-import java.util.HashMap;
-
+import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -9,8 +9,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import java.util.HashMap;
 
 public class ArenaScoreboard {
 

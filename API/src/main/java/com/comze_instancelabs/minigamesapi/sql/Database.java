@@ -1,4 +1,4 @@
-package com.comze_instancelabs.minigamesapi.sql; // replace this with yours 
+package com.comze_instancelabs.minigamesapi.sql; // replace this with yours
   
   
 import java.sql.Connection;

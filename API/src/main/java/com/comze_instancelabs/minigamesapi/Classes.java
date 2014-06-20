@@ -1,16 +1,14 @@
 package com.comze_instancelabs.minigamesapi;
 
+import com.comze_instancelabs.minigamesapi.util.AClass;
+import com.comze_instancelabs.minigamesapi.util.IconMenu;
+import com.comze_instancelabs.minigamesapi.util.Util;
 import net.milkbowl.vault.economy.EconomyResponse;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.comze_instancelabs.minigamesapi.util.AClass;
-import com.comze_instancelabs.minigamesapi.util.IconMenu;
-import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class Classes {
 

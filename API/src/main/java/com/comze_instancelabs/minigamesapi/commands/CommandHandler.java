@@ -1,16 +1,15 @@
 package com.comze_instancelabs.minigamesapi.commands;
 
-import java.util.LinkedHashMap;
-
+import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaSetup;
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.ArenaSetup;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
-import com.comze_instancelabs.minigamesapi.util.Util;
+import java.util.LinkedHashMap;
 
 public class CommandHandler {
 

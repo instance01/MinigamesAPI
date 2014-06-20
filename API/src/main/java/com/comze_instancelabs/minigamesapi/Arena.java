@@ -1,8 +1,8 @@
 package com.comze_instancelabs.minigamesapi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -10,9 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
-import com.comze_instancelabs.minigamesapi.util.Util;
-import com.comze_instancelabs.minigamesapi.util.Validator;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Arena {
 

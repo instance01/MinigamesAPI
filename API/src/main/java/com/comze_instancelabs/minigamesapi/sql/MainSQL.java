@@ -1,10 +1,10 @@
 package com.comze_instancelabs.minigamesapi.sql;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainSQL {
 

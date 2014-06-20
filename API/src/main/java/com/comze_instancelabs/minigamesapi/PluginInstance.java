@@ -1,16 +1,15 @@
 package com.comze_instancelabs.minigamesapi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.sql.MainSQL;
 import com.comze_instancelabs.minigamesapi.util.AClass;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PluginInstance {
 
