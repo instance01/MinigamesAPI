@@ -17,7 +17,11 @@ public class ArenaScoreboard {
 	static Objective objective;
 	public static HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
 
-	public static void updateScoreboard(final Arena arena) {
+	public ArenaScoreboard() {
+
+	}
+
+	public void updateScoreboard(final Arena arena) {
 
 		Bukkit.getScheduler().runTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
@@ -85,7 +89,7 @@ public class ArenaScoreboard {
 		});
 	}
 
-	public static void removeScoreboard(String arena, Player p) {
+	public void removeScoreboard(String arena, Player p) {
 		try {
 			ScoreboardManager manager = Bukkit.getScoreboardManager();
 			Scoreboard sc = manager.getNewScoreboard();

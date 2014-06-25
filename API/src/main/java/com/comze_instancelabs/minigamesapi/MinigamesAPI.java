@@ -1,16 +1,23 @@
 package com.comze_instancelabs.minigamesapi;
 
-import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
-import com.comze_instancelabs.minigamesapi.config.*;
-import com.comze_instancelabs.minigamesapi.util.Util;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
+import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
+import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
+import com.comze_instancelabs.minigamesapi.config.DefaultConfig;
+import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
+import com.comze_instancelabs.minigamesapi.config.StatsConfig;
+import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
+import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class MinigamesAPI extends JavaPlugin {
 
@@ -27,6 +34,8 @@ public class MinigamesAPI extends JavaPlugin {
 
 	int lobby_countdown = 30;
 	int ingame_countdown = 10;
+
+	public static ArenaScoreboard scoreboardManager = new ArenaScoreboard();
 
 	public void onEnable() {
 		instance = this;
@@ -53,6 +62,7 @@ public class MinigamesAPI extends JavaPlugin {
 
 	/**
 	 * Sets up the API allowing to override all configs
+	 * 
 	 * @param plugin_
 	 * @param arenaclass
 	 * @param arenasconfig
@@ -68,17 +78,17 @@ public class MinigamesAPI extends JavaPlugin {
 		statsconfig = new StatsConfig(plugin_, false);
 		DefaultConfig.init(plugin_, false);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
-		if(!customlistener){
+		if (!customlistener) {
 			Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_, pinstances.get(plugin_)), plugin_);
 		}
 		Classes.loadClasses(plugin_);
 		return instance;
 	}
-	
-	public static void registerArenaListenerLater(JavaPlugin plugin_, ArenaListener arenalistener){
+
+	public static void registerArenaListenerLater(JavaPlugin plugin_, ArenaListener arenalistener) {
 		Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
 	}
-	
+
 	/**
 	 * Sets up the API, stuff won't work without that
 	 * 

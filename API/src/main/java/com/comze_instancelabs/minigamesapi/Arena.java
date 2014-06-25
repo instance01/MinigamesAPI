@@ -219,7 +219,7 @@ public class Arena {
 					p.setGameMode(pgamemode.get(p.getName()));
 				}
 				try {
-					ArenaScoreboard.removeScoreboard(arenaname, p);
+					MinigamesAPI.scoreboardManager.removeScoreboard(arenaname, p);
 				} catch (Exception e) {
 					//
 				}
@@ -234,7 +234,7 @@ public class Arena {
 			p.setAllowFlight(true);
 			p.setFlying(true);
 			Util.teleportPlayerFixed(p, this.spawns.get(0).add(0D, 30D, 0D));
-			ArenaScoreboard.updateScoreboard(this);
+			MinigamesAPI.scoreboardManager.updateScoreboard(this);
 		}
 	}
 
@@ -281,7 +281,7 @@ public class Arena {
 		currentingamecount = MinigamesAPI.getAPI().ingame_countdown;
 		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		final Arena a = this;
-		ArenaScoreboard.updateScoreboard(a);
+		MinigamesAPI.scoreboardManager.updateScoreboard(a);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentingamecount--;
