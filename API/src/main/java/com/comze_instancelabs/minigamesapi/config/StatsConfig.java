@@ -14,12 +14,14 @@ public class StatsConfig {
     private File arenaFile = null;
     private JavaPlugin plugin = null;
     
-    public StatsConfig(JavaPlugin plugin){
+    public StatsConfig(JavaPlugin plugin, boolean custom){
     	this.plugin = plugin;
-    	this.getConfig().options().header("Used for saving user statistics. Example user stats:");
-    	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.wins", 1);
-    	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.points", 10);
-    	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.name", "InstanceLabs");
+    	if(!custom){
+    		this.getConfig().options().header("Used for saving user statistics. Example user stats:");
+        	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.wins", 1);
+        	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.points", 10);
+        	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.name", "InstanceLabs");
+    	}
     	this.getConfig().options().copyDefaults(true);
     	this.saveConfig();
     }

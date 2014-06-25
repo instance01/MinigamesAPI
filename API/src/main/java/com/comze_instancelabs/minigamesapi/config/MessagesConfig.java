@@ -24,7 +24,7 @@ public class MessagesConfig {
 		this.init();
 	}
 
-	private String squares = Character.toString((char) 0x25A0);
+	public static String squares = Character.toString((char) 0x25A0);
 
 	public String signs_join_0;
 	public String signs_join_1;
@@ -35,10 +35,10 @@ public class MessagesConfig {
 		// all signs
 		this.getConfig().options().header("Contains all messages for easy translation.");
 		for (String state : ArenaState.getAllStateNames()) {
-			this.getConfig().addDefault("signs." + state.toLowerCase() + ".0", squares);
+			this.getConfig().addDefault("signs." + state.toLowerCase() + ".0", "[]");
 			this.getConfig().addDefault("signs." + state.toLowerCase() + ".1", "<arena>");
 			this.getConfig().addDefault("signs." + state.toLowerCase() + ".2", "<count>/<maxcount>");
-			this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", squares);
+			this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", "[]");
 		}
 
 		this.getConfig().addDefault("messages.no_perm", no_perm);

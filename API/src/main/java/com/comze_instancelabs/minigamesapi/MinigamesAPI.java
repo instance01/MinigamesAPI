@@ -52,26 +52,31 @@ public class MinigamesAPI extends JavaPlugin {
 	}
 
 	/**
-	 * Sets up the API allowing
+	 * Sets up the API allowing to override all configs
 	 * @param plugin_
 	 * @param arenaclass
 	 * @param arenasconfig
 	 * @param messagesconfig
 	 * @param classesconfig
 	 * @param statsconfig
-	 * @param arenalistener
 	 * @return
 	 */
-	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArenaListener arenalistener) {
+	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, boolean customlistener) {
 		arenasconfig = new ArenasConfig(plugin_);
 		messagesconfig = new MessagesConfig(plugin_);
-		classesconfig = new ClassesConfig(plugin_);
-		statsconfig = new StatsConfig(plugin_);
-		DefaultConfig.init(plugin_);
+		classesconfig = new ClassesConfig(plugin_, false);
+		statsconfig = new StatsConfig(plugin_, false);
+		DefaultConfig.init(plugin_, false);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
-		Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
+		if(!customlistener){
+			Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_, pinstances.get(plugin_)), plugin_);
+		}
 		Classes.loadClasses(plugin_);
 		return instance;
+	}
+	
+	public static void registerArenaListenerLater(JavaPlugin plugin_, ArenaListener arenalistener){
+		Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
 	}
 	
 	/**
@@ -87,9 +92,9 @@ public class MinigamesAPI extends JavaPlugin {
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass) {
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
-		ClassesConfig classesconfig = new ClassesConfig(plugin_);
-		StatsConfig statsconfig = new StatsConfig(plugin_);
-		DefaultConfig.init(plugin_);
+		ClassesConfig classesconfig = new ClassesConfig(plugin_, false);
+		StatsConfig statsconfig = new StatsConfig(plugin_, false);
+		DefaultConfig.init(plugin_, false);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_, pinstances.get(plugin_)), plugin_);
 		Classes.loadClasses(plugin_);
@@ -105,9 +110,9 @@ public class MinigamesAPI extends JavaPlugin {
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_) {
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
-		ClassesConfig classesconfig = new ClassesConfig(plugin_);
-		StatsConfig statsconfig = new StatsConfig(plugin_);
-		DefaultConfig.init(plugin_);
+		ClassesConfig classesconfig = new ClassesConfig(plugin_, false);
+		StatsConfig statsconfig = new StatsConfig(plugin_, false);
+		DefaultConfig.init(plugin_, false);
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig));
 		pinstances.get(plugin_).addLoadedArenas(Util.loadArenas(plugin_, arenasconfig));
 		Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_, pinstances.get(plugin_)), plugin_);

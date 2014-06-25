@@ -14,16 +14,18 @@ public class ClassesConfig {
     private File arenaFile = null;
     private JavaPlugin plugin = null;
     
-    public ClassesConfig(JavaPlugin plugin){
+    public ClassesConfig(JavaPlugin plugin, boolean custom){
     	this.plugin = plugin;
-    	this.getConfig().options().header("Used for saving classes. Default class:");
-    	this.getConfig().addDefault("config.kits.default.name", "default");
-    	this.getConfig().addDefault("config.kits.default.items", "351:6#DAMAGE_ALL:2#KNOCKBACK*1");
-    	this.getConfig().addDefault("config.kits.default.lore", "The default class.");
-    	this.getConfig().addDefault("config.kits.default.requires_money", false);
-    	this.getConfig().addDefault("config.kits.default.requires_permission", false);
-    	this.getConfig().addDefault("config.kits.default.money_amount", 100);
-    	this.getConfig().addDefault("config.kits.default.permission_node", "minigames.kits.default");
+    	if(!custom){
+    		this.getConfig().options().header("Used for saving classes. Default class:");
+        	this.getConfig().addDefault("config.kits.default.name", "default");
+        	this.getConfig().addDefault("config.kits.default.items", "351:6#DAMAGE_ALL:2#KNOCKBACK*1");
+        	this.getConfig().addDefault("config.kits.default.lore", "The default class.");
+        	this.getConfig().addDefault("config.kits.default.requires_money", false);
+        	this.getConfig().addDefault("config.kits.default.requires_permission", false);
+        	this.getConfig().addDefault("config.kits.default.money_amount", 100);
+        	this.getConfig().addDefault("config.kits.default.permission_node", "minigames.kits.default");
+    	}
     	this.getConfig().options().copyDefaults(true);
     	this.saveConfig();
     }
