@@ -15,7 +15,7 @@ public class DefaultConfig {
 		config.addDefault("config.rewards.economy", true);
 		config.addDefault("config.rewards.economy_reward", 10);
 		config.addDefault("config.rewards.item_reward", false);
-		config.addDefault("config.rewards.item_reward_ids", "264#1;11#1");
+		config.addDefault("config.rewards.item_reward_ids", "264*1;11*1");
 		config.addDefault("config.rewards.command_reward", false);
 		config.addDefault("config.rewards.command", "pex user <player> add SKILLZ.*");
 

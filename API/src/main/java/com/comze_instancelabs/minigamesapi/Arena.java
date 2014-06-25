@@ -238,8 +238,8 @@ public class Arena {
 		}
 	}
 
-	int currentlobbycount = 0;
-	int currentingamecount = 0;
+	int currentlobbycount = 10;
+	int currentingamecount = 10;
 	int currenttaskid = 0;
 
 	/**
@@ -278,12 +278,13 @@ public class Arena {
 	 * Instantly starts the arena, teleports players and udpates the arena
 	 */
 	public void start() {
+		currentingamecount = MinigamesAPI.getAPI().ingame_countdown;
 		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		final Arena a = this;
 		ArenaScoreboard.updateScoreboard(a);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				currentingamecount++;
+				currentingamecount--;
 				if (currentingamecount == 60 || currentingamecount == 30 || currentingamecount == 15 || currentingamecount == 10 || currentingamecount < 6) {
 					for (String p_ : a.getAllPlayers()) {
 						if (Validator.isPlayerOnline(p_)) {
@@ -292,7 +293,7 @@ public class Arena {
 						}
 					}
 				}
-				if (currentingamecount > MinigamesAPI.getAPI().ingame_countdown) {
+				if (currentingamecount < 1) {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
 					for (String p_ : a.getAllPlayers()) {
 						if (!Classes.hasClass(plugin, p_)) {

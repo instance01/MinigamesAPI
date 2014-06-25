@@ -13,10 +13,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -60,6 +62,7 @@ public class Util {
 
 	public static void teleportAllPlayers(ArrayList<String> players, ArrayList<Location> locs) {
 		// TODO
+		Util.teleportAllPlayers(players, locs.get(0));
 	}
 
 	public static Location getComponentForArena(JavaPlugin plugin, String arenaname, String component, String count) {
@@ -332,17 +335,46 @@ public class Util {
 	}
 
 	
-	// example items: 267#1;3#64;3#64
+	// example items: 351:6#ALL_DAMAGE:2#KNOCKBACK:2*1;267*1;3*64;3*64
 	@SuppressWarnings("unused")
 	public static ArrayList<ItemStack> parseItems(String rawitems){
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		
 		String[] a = rawitems.split(";");
+		
 		for(String b : a){
-			String[] c = b.split("#");
+			String[] c = b.split("\\*");
 			String itemid = c[0];
+			String itemdata = "0";
+			String[] enchantments_ = itemid.split("#");
+			String[] enchantments = new String[enchantments_.length - 1];
+			if(enchantments_.length > 1){
+				for(int i = 1; i < enchantments_.length; i++){
+					enchantments[i-1] = enchantments_[i];
+				}
+			}
+			itemid = enchantments_[0];
+			String[] d = itemid.split(":");
+			if(d.length > 1){
+				itemid = d[0];
+				itemdata = d[1];
+			}
 			String itemamount = c[1];
-			ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount));
+			ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount), (short)Integer.parseInt(itemdata));
+			ItemMeta m = nitem.getItemMeta();
+			for(String enchant : enchantments){
+				
+				String[] e = enchant.split(":");
+				String ench = e[0];
+				String lv = "1";
+				if(e.length > 1){
+					lv = e[1];
+				}
+				if(Enchantment.getByName(ench) != null){
+					m.addEnchant(Enchantment.getByName(ench), Integer.parseInt(lv), true);
+				}
+			}
+			nitem.setItemMeta(m);
 			ret.add(nitem);
 		}
 		if(ret == null){
