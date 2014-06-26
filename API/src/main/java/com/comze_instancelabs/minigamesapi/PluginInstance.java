@@ -19,8 +19,8 @@ public class PluginInstance {
 	private StatsConfig statsconfig = null;
 	private JavaPlugin plugin = null;
 	private ArrayList<Arena> arenas = new ArrayList<Arena>();
-	public static HashMap<String, AClass> pclass = new HashMap<String, AClass>();
-	public static HashMap<String, AClass> aclasses = new HashMap<String, AClass>();
+	private HashMap<String, AClass> pclass = new HashMap<String, AClass>();
+	private HashMap<String, AClass> aclasses = new HashMap<String, AClass>();
 	private Rewards rew = null;
 	private MainSQL sql = null;
 	private Stats stats = null;
@@ -44,6 +44,22 @@ public class PluginInstance {
 
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig) {
 		this(plugin, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>());
+	}
+
+	public HashMap<String, AClass> getAClasses() {
+		return this.aclasses;
+	}
+	
+	public HashMap<String, AClass> getPClasses() {
+		return this.pclass;
+	}
+	
+	public void addAClass(String name, AClass a) {
+		this.aclasses.put(name, a);
+	}
+	
+	public void setPClass(String player, AClass a) {
+		this.pclass.put(player, a);
 	}
 
 	public ArenasConfig getArenasConfig() {

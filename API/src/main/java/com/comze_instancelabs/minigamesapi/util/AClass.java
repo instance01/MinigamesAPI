@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class AClass {
 
 	private JavaPlugin plugin;
-	public String name;
-	public ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+	private String name;
+	private ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 	
 	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items){
 		this.plugin = plugin;

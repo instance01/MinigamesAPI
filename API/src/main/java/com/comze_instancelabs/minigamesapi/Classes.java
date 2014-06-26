@@ -18,7 +18,7 @@ public class Classes {
 			public void onOptionClick(IconMenu.OptionClickEvent event) {
 				String d = event.getName();
 				Player p = event.getPlayer();
-				if (MinigamesAPI.getAPI().pinstances.get(plugin).aclasses.containsKey(d)) {
+				if (MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().containsKey(d)) {
 					Classes.setClass(plugin, d, p.getName());
 				}
 				event.setWillClose(true);
@@ -26,7 +26,7 @@ public class Classes {
 		}, plugin);
 
 		int c = 0;
-		for (String ac : MinigamesAPI.getAPI().pinstances.get(plugin).aclasses.keySet()) {
+		for (String ac : MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().keySet()) {
 			iconm.setOption(c, new ItemStack(Material.SLIME_BALL), ac, MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("config.kits." + ac + ".lore"));
 			c++;
 		}
@@ -35,7 +35,7 @@ public class Classes {
 	}
 
 	public static void getClass(JavaPlugin plugin, String player) {
-		AClass c = MinigamesAPI.getAPI().pinstances.get(plugin).pclass.get(player);
+		AClass c = MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player);
 		Player p = Bukkit.getServer().getPlayer(player);
 		p.getInventory().clear();
 		p.getInventory().setHelmet(null);
@@ -56,18 +56,18 @@ public class Classes {
 		if (kitRequiresMoney(plugin, classname)) {
 			kitTakeMoney(plugin, Bukkit.getPlayer(player), classname.toLowerCase());
 		}
-		MinigamesAPI.getAPI().pinstances.get(plugin).pclass.put(player, MinigamesAPI.getAPI().pinstances.get(plugin).aclasses.get(classname));
+		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().get(classname));
 	}
 	
 	public static boolean hasClass(JavaPlugin plugin, String player){
-		return MinigamesAPI.getAPI().pinstances.get(plugin).pclass.containsKey(player);
+		return MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().containsKey(player);
 	}
 
 	public static void loadClasses(JavaPlugin plugin) {
 		if (MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().isSet("config.kits")) {
 			for (String aclass : MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getConfigurationSection("config.kits.").getKeys(false)) {
 				AClass n = new AClass(plugin, aclass, Util.parseItems(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("config.kits." + aclass + ".items")));
-				MinigamesAPI.getAPI().pinstances.get(plugin).aclasses.put(aclass, n);
+				MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(aclass, n);
 				if (!MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().isSet("config.kits." + aclass + ".items") || !MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().isSet("config.kits." + aclass + ".lore")) {
 					plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
 				}
