@@ -18,7 +18,7 @@ public class ArenaSetup {
 	 * @param l
 	 *            Location of the spawn
 	 */
-	public static void setSpawn(JavaPlugin plugin, String arenaname, Location l) {
+	public void setSpawn(JavaPlugin plugin, String arenaname, Location l) {
 		Util.saveComponentForArena(plugin, arenaname, "spawns.spawn0", l);
 	}
 
@@ -32,7 +32,7 @@ public class ArenaSetup {
 	 *            Index of the spawn; if the given index is already set, the
 	 *            spawn location will be overwritten
 	 */
-	public static void setSpawn(JavaPlugin plugin, String arenaname, Location l, int count) {
+	public void setSpawn(JavaPlugin plugin, String arenaname, Location l, int count) {
 		Util.saveComponentForArena(plugin, arenaname, "spawns.spawn" + Integer.toString(count), l);
 	}
 
@@ -43,7 +43,7 @@ public class ArenaSetup {
 	 * @param l
 	 *            Location of the lobby
 	 */
-	public static void setLobby(JavaPlugin plugin, String arenaname, Location l) {
+	public void setLobby(JavaPlugin plugin, String arenaname, Location l) {
 		Util.saveComponentForArena(plugin, arenaname, "lobby", l);
 	}
 
@@ -53,7 +53,7 @@ public class ArenaSetup {
 	 * @param l
 	 *            Location of the lobby
 	 */
-	public static void setMainLobby(JavaPlugin plugin, Location l) {
+	public void setMainLobby(JavaPlugin plugin, Location l) {
 		Util.saveMainLobby(plugin, l);
 	}
 
@@ -67,7 +67,7 @@ public class ArenaSetup {
 	 * @param low
 	 *            True if it's the low boundary, false if it's the high boundary
 	 */
-	public static void setBoundaries(JavaPlugin plugin, String arenaname, Location l, boolean low) {
+	public void setBoundaries(JavaPlugin plugin, String arenaname, Location l, boolean low) {
 		if (low) {
 			Util.saveComponentForArena(plugin, arenaname, "bounds.low", l);
 		} else {
@@ -80,19 +80,19 @@ public class ArenaSetup {
 	 * 
 	 * @return Arena or null if setup failed
 	 */
-	public static Arena saveArena(JavaPlugin plugin, String arenaname) {
+	public Arena saveArena(JavaPlugin plugin, String arenaname) {
 		if (!Validator.isArenaValid(plugin, arenaname)) {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Arena " + arenaname + " appears to be invalid.");
 			return null;
 		}
 		// TODO arena saving (to file too)
 		Arena a = Util.initArena(plugin, arenaname);
-		ArenaSetup.setArenaVIP(plugin, arenaname, false);
+		this.setArenaVIP(plugin, arenaname, false);
 		MinigamesAPI.getAPI().pinstances.get(plugin).addArena(a);
 		return a;
 	}
 
-	public static void setPlayerCount(JavaPlugin plugin, String arena, int count, boolean max) {
+	public void setPlayerCount(JavaPlugin plugin, String arena, int count, boolean max) {
 		String component = "max_players";
 		if (!max) {
 			component = "min_players";
@@ -102,7 +102,7 @@ public class ArenaSetup {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
 	}
 
-	public static int getPlayerCount(JavaPlugin plugin, String arena, boolean max) {
+	public int getPlayerCount(JavaPlugin plugin, String arena, boolean max) {
 		if (!max) {
 			if (!MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().isSet("arenas." + arena + ".min_players")) {
 				setPlayerCount(plugin, arena, plugin.getConfig().getInt("config.default_min_players"), max);
@@ -117,12 +117,12 @@ public class ArenaSetup {
 		return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".max_players");
 	}
 
-	public static void setArenaVIP(JavaPlugin plugin, String arena, boolean vip) {
+	public void setArenaVIP(JavaPlugin plugin, String arena, boolean vip) {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".is_vip", vip);
 		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
 	}
 
-	public static boolean getArenaVIP(JavaPlugin plugin, String arena) {
+	public boolean getArenaVIP(JavaPlugin plugin, String arena) {
 		return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getBoolean("arenas." + arena + ".is_vip");
 	}
 }

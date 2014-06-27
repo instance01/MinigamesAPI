@@ -6,6 +6,8 @@ import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.sql.MainSQL;
 import com.comze_instancelabs.minigamesapi.util.AClass;
+import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -30,6 +32,9 @@ public class PluginInstance {
 	public boolean die_when_falling;
 	public boolean show_scoreboard;
 
+	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
+	public ArenaSetup arenaSetup = new ArenaSetup();
+
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
@@ -49,15 +54,15 @@ public class PluginInstance {
 	public HashMap<String, AClass> getAClasses() {
 		return this.aclasses;
 	}
-	
+
 	public HashMap<String, AClass> getPClasses() {
 		return this.pclass;
 	}
-	
+
 	public void addAClass(String name, AClass a) {
 		this.aclasses.put(name, a);
 	}
-	
+
 	public void setPClass(String player, AClass a) {
 		this.pclass.put(player, a);
 	}

@@ -35,8 +35,6 @@ public class MinigamesAPI extends JavaPlugin {
 	int lobby_countdown = 30;
 	int ingame_countdown = 10;
 
-	public static ArenaScoreboard scoreboardManager = new ArenaScoreboard();
-
 	public void onEnable() {
 		instance = this;
 
@@ -82,6 +80,14 @@ public class MinigamesAPI extends JavaPlugin {
 
 	public static void registerArenaListenerLater(JavaPlugin plugin_, ArenaListener arenalistener) {
 		Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
+	}
+
+	public static void registerArenaSetup(JavaPlugin plugin_, ArenaSetup arenasetup) {
+		pinstances.get(plugin_).arenaSetup = arenasetup;
+	}
+
+	public static void registerScoreboard(JavaPlugin plugin_, ArenaScoreboard board) {
+		pinstances.get(plugin_).scoreboardManager = board;
 	}
 
 	/**

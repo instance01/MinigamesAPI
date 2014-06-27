@@ -219,7 +219,7 @@ public class Arena {
 					p.setGameMode(pgamemode.get(p.getName()));
 				}
 				try {
-					MinigamesAPI.scoreboardManager.removeScoreboard(arenaname, p);
+					MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.removeScoreboard(arenaname, p);
 				} catch (Exception e) {
 					//
 				}
@@ -234,7 +234,7 @@ public class Arena {
 			p.setAllowFlight(true);
 			p.setFlying(true);
 			Util.teleportPlayerFixed(p, this.spawns.get(0).add(0D, 30D, 0D));
-			MinigamesAPI.scoreboardManager.updateScoreboard(this);
+			MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(this);
 		}
 	}
 
@@ -243,8 +243,8 @@ public class Arena {
 	int currenttaskid = 0;
 
 	/**
-	 * Starts the lobby countdown and the arena afterwards You can insta-start
-	 * an arena by using Arena.start();
+	 * Starts the lobby countdown and the arena afterwards
+	 * You can insta-start an arena by using Arena.start();
 	 */
 	public void startLobby() {
 		if (currentstate != ArenaState.JOIN) {
@@ -281,7 +281,7 @@ public class Arena {
 		currentingamecount = MinigamesAPI.getAPI().ingame_countdown;
 		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		final Arena a = this;
-		MinigamesAPI.scoreboardManager.updateScoreboard(a);
+		MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(a);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentingamecount--;
