@@ -186,6 +186,16 @@ public class Util {
 		final ArrayList<ArenaBlock> failedblocks = new ArrayList<ArenaBlock>();
 
 		File f = new File(plugin.getDataFolder() + "/" + arena.getName());
+		if (!f.exists()) {
+			plugin.getLogger().warning("Could not find arena file for " + arena.getName());
+			arena.setArenaState(ArenaState.JOIN);
+			Bukkit.getScheduler().runTask(plugin, new Runnable() {
+				public void run() {
+					Util.updateSign(plugin, arena);
+				}
+			});
+			return;
+		}
 		FileInputStream fis = null;
 		BukkitObjectInputStream ois = null;
 		try {
@@ -247,7 +257,6 @@ public class Util {
 					Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).getTypeId();
 					Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).setType(ablock.getMaterial());
 				}
-
 			}
 		}, 40L);
 		MinigamesAPI.getAPI().getLogger().info("Successfully finished!");

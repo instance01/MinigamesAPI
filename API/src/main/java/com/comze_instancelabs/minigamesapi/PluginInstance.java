@@ -113,6 +113,19 @@ public class PluginInstance {
 		return null;
 	}
 
+	public Arena removeArenaByName(String arenaname) {
+		Arena torem = null;
+		for (Arena a : getArenas()) {
+			if (a.getName().equalsIgnoreCase(arenaname)) {
+				torem = a;
+			}
+		}
+		if (torem != null) {
+			removeArena(torem);
+		}
+		return null;
+	}
+
 	public boolean removeArena(Arena arena) {
 		if (arenas.contains(arena)) {
 			arenas.remove(arena);

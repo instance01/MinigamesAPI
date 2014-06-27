@@ -29,8 +29,7 @@ public class ArenaSetup {
 	 * @param l
 	 *            Location of the spawn
 	 * @param count
-	 *            Index of the spawn; if the given index is already set, the
-	 *            spawn location will be overwritten
+	 *            Index of the spawn; if the given index is already set, the spawn location will be overwritten
 	 */
 	public void setSpawn(JavaPlugin plugin, String arenaname, Location l, int count) {
 		Util.saveComponentForArena(plugin, arenaname, "spawns.spawn" + Integer.toString(count), l);
@@ -86,9 +85,13 @@ public class ArenaSetup {
 			return null;
 		}
 		// TODO arena saving (to file too)
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		if (pli.getArenaByName(arenaname) != null) {
+			pli.removeArenaByName(arenaname);
+		}
 		Arena a = Util.initArena(plugin, arenaname);
 		this.setArenaVIP(plugin, arenaname, false);
-		MinigamesAPI.getAPI().pinstances.get(plugin).addArena(a);
+		pli.addArena(a);
 		return a;
 	}
 

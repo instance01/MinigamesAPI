@@ -110,6 +110,14 @@ public class Arena {
 		return this.min_players;
 	}
 
+	public void setMinPlayers(int i) {
+		this.min_players = i;
+	}
+
+	public void setMaxPlayers(int i) {
+		this.max_players = i;
+	}
+
 	public boolean isVIPArena() {
 		return this.viparena;
 	}
@@ -229,6 +237,11 @@ public class Arena {
 				}
 			}
 		}, 5L);
+
+		// TODO test out if 2 ppl
+		if (this.getAllPlayers().size() < 1) {
+			this.stop();
+		}
 	}
 
 	public void spectate(String playername) {
@@ -254,10 +267,11 @@ public class Arena {
 			return;
 		}
 		this.setArenaState(ArenaState.STARTING);
+		currentlobbycount = MinigamesAPI.getAPI().lobby_countdown;
 		final Arena a = this;
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				currentlobbycount++;
+				currentlobbycount--;
 				if (currentlobbycount == 60 || currentlobbycount == 30 || currentlobbycount == 15 || currentlobbycount == 10 || currentlobbycount < 6) {
 					for (String p_ : a.getAllPlayers()) {
 						if (Validator.isPlayerOnline(p_)) {
@@ -266,8 +280,12 @@ public class Arena {
 						}
 					}
 				}
-				if (currentlobbycount > MinigamesAPI.getAPI().lobby_countdown) {
-					currentarena.getArena().start();
+				if (currentlobbycount < 0) {
+					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+						public void run() {
+							currentarena.getArena().start();
+						}
+					}, 10L);
 					try {
 						Bukkit.getScheduler().cancelTask(currenttaskid);
 					} catch (Exception e) {
@@ -281,7 +299,15 @@ public class Arena {
 	 * Instantly starts the arena, teleports players and udpates the arena
 	 */
 	public void start() {
+		try {
+			Bukkit.getScheduler().cancelTask(currenttaskid);
+		} catch (Exception e) {
+		}
 		currentingamecount = MinigamesAPI.getAPI().ingame_countdown;
+		for (String p_ : currentarena.getArena().getAllPlayers()) {
+			Player p = Bukkit.getPlayer(p_);
+			p.setWalkSpeed(0.0F);
+		}
 		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		final Arena a = this;
 		MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(a);
@@ -303,6 +329,8 @@ public class Arena {
 							Classes.setClass(plugin, "default", p_);
 						}
 						Classes.getClass(plugin, p_);
+						Player p = Bukkit.getPlayer(p_);
+						p.setWalkSpeed(0.2F);
 					}
 					try {
 						Bukkit.getScheduler().cancelTask(currenttaskid);
@@ -317,6 +345,11 @@ public class Arena {
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
 	public void stop() {
+		try {
+			Bukkit.getScheduler().cancelTask(currenttaskid);
+		} catch (Exception e) {
+
+		}
 		this.setArenaState(ArenaState.RESTARTING);
 		ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
 		for (String p_ : temp) {

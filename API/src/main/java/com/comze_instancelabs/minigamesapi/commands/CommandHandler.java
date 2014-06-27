@@ -106,6 +106,9 @@ public class CommandHandler {
 						return true;
 					}
 					pli.arenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), true);
+					if (pli.getArenaByName(args[1]) != null) {
+						pli.getArenaByName(args[1]).setMaxPlayers(Integer.parseInt(args[2]));
+					}
 					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "max players"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
@@ -120,6 +123,9 @@ public class CommandHandler {
 						return true;
 					}
 					pli.arenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), false);
+					if (pli.getArenaByName(args[1]) != null) {
+						pli.getArenaByName(args[1]).setMinPlayers(Integer.parseInt(args[2]));
+					}
 					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "min players"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
@@ -134,6 +140,9 @@ public class CommandHandler {
 						return true;
 					}
 					pli.arenaSetup.setArenaVIP(plugin, args[1], Boolean.parseBoolean(args[2]));
+					if (pli.getArenaByName(args[1]) != null) {
+						pli.getArenaByName(args[1]).setVIPArena(Boolean.parseBoolean(args[2]));
+					}
 					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "vip value"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
@@ -196,9 +205,9 @@ public class CommandHandler {
 				if (args.length > 1) {
 					pli.getArenasConfig().getConfig().set("arenas." + args[1], null);
 					pli.getArenasConfig().saveConfig();
-					if(pli.removeArena(pli.getArenaByName(args[1]))){
+					if (pli.removeArena(pli.getArenaByName(args[1]))) {
 						sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "removed"));
-					}else{
+					} else {
 						sender.sendMessage(pli.getMessagesConfig().failed_removing_arena.replaceAll("<arena>", args[1]));
 					}
 					// TODO remove arena file if present
@@ -210,9 +219,9 @@ public class CommandHandler {
 			} else if (action.equalsIgnoreCase("list")) {
 				sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Arenas" + ChatColor.DARK_GRAY + " -------");
 				for (Arena a : pli.getArenas()) {
-					if(args.length > 1){
+					if (args.length > 1) {
 						sender.sendMessage(ChatColor.GREEN + a.getName() + "[" + a.getClass().getSimpleName().toString() + "]");
-					}else{
+					} else {
 						sender.sendMessage(ChatColor.GREEN + a.getName());
 					}
 				}
