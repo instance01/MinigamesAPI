@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class CommandHandler {
@@ -31,169 +32,175 @@ public class CommandHandler {
 				return true;
 			}
 			Player p = (Player) sender;
+			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 			String action = args[0];
 			if (action.equalsIgnoreCase("setspawn")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 1) {
-					MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setSpawn(plugin, args[1], p.getLocation());
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "spawn"));
+					pli.arenaSetup.setSpawn(plugin, args[1], p.getLocation());
+					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "spawn"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
 			} else if (action.equalsIgnoreCase("setlobby")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 1) {
-					MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setLobby(plugin, args[1], p.getLocation());
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "waiting lobby"));
+					pli.arenaSetup.setLobby(plugin, args[1], p.getLocation());
+					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "waiting lobby"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
 			} else if (action.equalsIgnoreCase("setmainlobby")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
-				MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setMainLobby(plugin, p.getLocation());
-				sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "main lobby"));
+				pli.arenaSetup.setMainLobby(plugin, p.getLocation());
+				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "main lobby"));
 			} else if (action.equalsIgnoreCase("setbounds")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 2) {
 					if (args[2].equalsIgnoreCase("low")) {
-						MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setBoundaries(plugin, args[1], p.getLocation(), true);
+						pli.arenaSetup.setBoundaries(plugin, args[1], p.getLocation(), true);
 					} else if (args[2].equalsIgnoreCase("high")) {
-						MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setBoundaries(plugin, args[1], p.getLocation(), false);
+						pli.arenaSetup.setBoundaries(plugin, args[1], p.getLocation(), false);
 					} else {
 						sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <low/high>");
 						return true;
 					}
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "boundary"));
+					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "boundary"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <low/high>");
 				}
 			} else if (action.equalsIgnoreCase("savearena")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 1) {
-					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.saveArena(plugin, args[1]);
+					Arena temp = pli.arenaSetup.saveArena(plugin, args[1]);
 					if (temp != null) {
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_saved_arena.replaceAll("<arena>", args[1]));
+						sender.sendMessage(pli.getMessagesConfig().successfully_saved_arena.replaceAll("<arena>", args[1]));
 					} else {
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
+						sender.sendMessage(pli.getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
 					}
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 				}
 			} else if (action.equalsIgnoreCase("setmaxplayers")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 2) {
 					if (!Util.isNumeric(args[2])) {
 						return true;
 					}
-					MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), true);
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "max players"));
+					pli.arenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), true);
+					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "max players"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
 				}
 			} else if (action.equalsIgnoreCase("setminplayers")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 2) {
 					if (!Util.isNumeric(args[2])) {
 						return true;
 					}
-					MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), false);
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "min players"));
+					pli.arenaSetup.setPlayerCount(plugin, args[1], Integer.parseInt(args[2]), false);
+					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "min players"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
 				}
 			} else if (action.equalsIgnoreCase("setarenavip")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 2) {
 					if (!args[2].equalsIgnoreCase("true") || !args[2].equalsIgnoreCase("false")) {
 						return true;
 					}
-					MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup.setArenaVIP(plugin, args[1], Boolean.parseBoolean(args[2]));
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "vip value"));
+					pli.arenaSetup.setArenaVIP(plugin, args[1], Boolean.parseBoolean(args[2]));
+					sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "vip value"));
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 				}
 			} else if (action.equalsIgnoreCase("join")) {
 				if (args.length > 1) {
-					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
+					Arena temp = pli.getArenaByName(args[1]);
 					if (temp != null) {
 						temp.joinPlayerLobby(p.getName());
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
+						sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
 					} else {
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+						sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+					sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 				}
 			} else if (action.equalsIgnoreCase("leave")) {
 				if (MinigamesAPI.getAPI().global_players.containsKey(p.getName())) {
 					MinigamesAPI.getAPI().global_players.get(p.getName()).leavePlayer(p.getName(), false);
 				} else {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_in_arena);
+					sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 				}
 			} else if (action.equalsIgnoreCase("start")) {
 				if (!sender.hasPermission(uber_permission + ".start")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 1) {
-					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
+					Arena temp = pli.getArenaByName(args[1]);
 					if (temp != null) {
 						temp.start();
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "started"));
+						sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "started"));
 					} else {
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+						sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+					sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 				}
 			} else if (action.equalsIgnoreCase("stop")) {
 				if (!sender.hasPermission(uber_permission + ".stop")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 1) {
-					Arena temp = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(args[1]);
+					Arena temp = pli.getArenaByName(args[1]);
 					if (temp != null) {
 						temp.stop();
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "stopped"));
+						sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "stopped"));
 					} else {
-						sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+						sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 					}
 				} else {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+					sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 				}
 			} else if (action.equalsIgnoreCase("removearena")) {
 				if (!sender.hasPermission(uber_permission + ".setup")) {
-					sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+					sender.sendMessage(pli.getMessagesConfig().no_perm);
 					return true;
 				}
 				if (args.length > 1) {
-					MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + args[1], null);
-					MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+					pli.getArenasConfig().getConfig().set("arenas." + args[1], null);
+					pli.getArenasConfig().saveConfig();
+					if(pli.removeArena(pli.getArenaByName(args[1]))){
+						sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "removed"));
+					}else{
+						sender.sendMessage(pli.getMessagesConfig().failed_removing_arena.replaceAll("<arena>", args[1]));
+					}
 					// TODO remove arena file if present
 				} else {
 					sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
@@ -202,14 +209,18 @@ public class CommandHandler {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
 				sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Arenas" + ChatColor.DARK_GRAY + " -------");
-				for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
-					sender.sendMessage(ChatColor.GREEN + a.getName());
+				for (Arena a : pli.getArenas()) {
+					if(args.length > 1){
+						sender.sendMessage(ChatColor.GREEN + a.getName() + "[" + a.getClass().getSimpleName().toString() + "]");
+					}else{
+						sender.sendMessage(ChatColor.GREEN + a.getName());
+					}
 				}
 			} else if (action.equalsIgnoreCase("reload")) {
 				plugin.reloadConfig();
-				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().reloadConfig();
-				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().reloadConfig();
-				sender.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_reloaded);
+				pli.getMessagesConfig().reloadConfig();
+				pli.getArenasConfig().reloadConfig();
+				sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
 			}
 		} else {
 			sendHelp(cmd, sender);

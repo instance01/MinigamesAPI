@@ -53,6 +53,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.not_in_arena", not_in_arena);
 		this.getConfig().addDefault("messages.teleporting_to_arena_in", teleporting_to_arena_in);
 		this.getConfig().addDefault("messages.starting_in", starting_in);
+		this.getConfig().addDefault("messages.failed_removing_arena", failed_removing_arena);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -71,6 +72,7 @@ public class MessagesConfig {
 		this.not_in_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.not_in_arena"));
 		this.teleporting_to_arena_in = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.teleporting_to_arena_in"));
 		this.starting_in = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.starting_in"));
+		this.failed_removing_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.failed_removing_arena"));
 
 	}
 
@@ -79,6 +81,7 @@ public class MessagesConfig {
 	public String successfully_set = "&aSuccessfully set &3<component>&a.";
 	public String successfully_saved_arena = "&aSuccessfully saved &3<arena>&a.";
 	public String failed_saving_arena = "&cFailed to save &3<arena>&c.";
+	public String failed_removing_arena = "&cFailed to remove &3<arena>&c.";
 	public String arena_invalid = "&3<arena> &cappears to be invalid.";
 	public String broadcast_players_left = "&eThere are &4<count> &eplayers left!";
 	public String player_died = "&c<player> died.";
