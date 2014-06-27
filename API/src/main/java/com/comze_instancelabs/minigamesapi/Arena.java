@@ -90,6 +90,10 @@ public class Arena {
 		return this.signloc;
 	}
 
+	public void setSignLocation(Location l) {
+		this.signloc = l;
+	}
+
 	public ArrayList<Location> getSpawns() {
 		return this.spawns;
 	}
@@ -243,8 +247,7 @@ public class Arena {
 	int currenttaskid = 0;
 
 	/**
-	 * Starts the lobby countdown and the arena afterwards
-	 * You can insta-start an arena by using Arena.start();
+	 * Starts the lobby countdown and the arena afterwards You can insta-start an arena by using Arena.start();
 	 */
 	public void startLobby() {
 		if (currentstate != ArenaState.JOIN) {

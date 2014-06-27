@@ -177,21 +177,23 @@ public class ArenaListener implements Listener {
 			if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
 				if (!event.getLine(1).equalsIgnoreCase("")) {
 					String arena = event.getLine(1);
+					PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 					if (Validator.isArenaValid(plugin, arena)) {
-						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
-						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
-						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
-						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
-						MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
-						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
+						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
+						pli.getArenasConfig().saveConfig();
+						p.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
 					} else {
-						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arena_invalid);
+						p.sendMessage(pli.getMessagesConfig().arena_invalid);
 						event.getBlock().breakNaturally();
 					}
 
-					Arena a = MinigamesAPI.getAPI().pinstances.get(plugin).getArenaByName(arena);
+					Arena a = pli.getArenaByName(arena);
 					// Sign s = (Sign) event.getBlock().getState();
 					if (a != null) {
+						a.setSignLocation(event.getBlock().getLocation());
 						Util.updateSign(plugin, a, event);
 					} else {
 						// TODO tell player that arena is not initialized (most
