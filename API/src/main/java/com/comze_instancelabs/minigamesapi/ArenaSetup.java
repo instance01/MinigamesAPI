@@ -90,6 +90,13 @@ public class ArenaSetup {
 			pli.removeArenaByName(arenaname);
 		}
 		Arena a = Util.initArena(plugin, arenaname);
+		if(a.getArenaType() == ArenaType.REGENERATION){
+			if(Util.isComponentForArenaValid(plugin, arenaname, "bounds")){
+				Util.saveArenaToFile(plugin, arenaname);
+			}else{
+				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Could not save arena to file because boundaries were not set up.");
+			}
+		}
 		this.setArenaVIP(plugin, arenaname, false);
 		pli.addArena(a);
 		return a;

@@ -89,6 +89,16 @@ public class Util {
 		return null;
 	}
 
+	public static boolean isComponentForArenaValid(JavaPlugin plugin, String arenaname, String component) {
+		if (Validator.isArenaValid(plugin, arenaname)) {
+			String base = "arenas." + arenaname + "." + component;
+			if (MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().isSet(base)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static void saveComponentForArena(JavaPlugin plugin, String arenaname, String component, Location comploc) {
 		String base = "arenas." + arenaname + "." + component;
 		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base + ".world", comploc.getWorld().getName());
@@ -133,7 +143,7 @@ public class Util {
 
 	public static void saveArenaToFile(JavaPlugin plugin, String arena) {
 		File f = new File(plugin.getDataFolder() + "/" + arena);
-		Cuboid c = new Cuboid(Util.getComponentForArena(plugin, arena, "boundary", "1"), Util.getComponentForArena(plugin, arena, "boundary", "2"));
+		Cuboid c = new Cuboid(Util.getComponentForArena(plugin, arena, "bounds.low"), Util.getComponentForArena(plugin, arena, "bounds.high"));
 		Location start = c.getLowLoc();
 		Location end = c.getHighLoc();
 

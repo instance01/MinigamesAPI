@@ -211,6 +211,7 @@ public class Arena {
 		p.getInventory().setContents(pinv.get(playername));
 		p.getInventory().setArmorContents(pinv_armor.get(playername));
 		p.updateInventory();
+		p.setWalkSpeed(0.2F);
 
 		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
 
