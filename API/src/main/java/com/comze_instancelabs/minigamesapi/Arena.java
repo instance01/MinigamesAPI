@@ -315,7 +315,8 @@ public class Arena {
 	 */
 	public void stop() {
 		this.setArenaState(ArenaState.RESTARTING);
-		for (String p_ : this.getAllPlayers()) {
+		ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
+		for (String p_ : temp) {
 			leavePlayer(p_, false);
 		}
 		// Util.teleportAllPlayers(players, mainlobby);
