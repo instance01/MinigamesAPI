@@ -22,7 +22,7 @@ Features
 - Moar stuff :D
 
 
-Oh and of course a bunch of premade Minigames and examples.
+Oh and of course a bunch of [premade Minigames and examples](https://github.com/MC-Minigames/).
 
 
 Downloads
