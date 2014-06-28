@@ -100,6 +100,14 @@ public class PluginInstance {
 		return stats;
 	}
 
+	public int getIngameCountdown() {
+		return this.ingame_countdown;
+	}
+
+	public int getLobbyCountdown() {
+		return this.lobby_countdown;
+	}
+
 	public ArrayList<Arena> getArenas() {
 		return arenas;
 	}

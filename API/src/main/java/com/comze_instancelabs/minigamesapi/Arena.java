@@ -161,7 +161,7 @@ public class Arena {
 			return;
 		}
 		if (this.getAllPlayers().size() == this.max_players - 1) {
-			if(currentlobbycount > 16){
+			if (currentlobbycount > 16 && this.getArenaState() == ArenaState.STARTING) {
 				currentlobbycount = 16;
 			}
 		}
@@ -221,10 +221,10 @@ public class Arena {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
 
 		MinigamesAPI.global_players.remove(playername);
-		if(MinigamesAPI.getAPI().global_lost.containsKey(playername)){
+		if (MinigamesAPI.getAPI().global_lost.containsKey(playername)) {
 			MinigamesAPI.getAPI().global_lost.remove(playername);
 		}
-		
+
 		final String arenaname = this.getName();
 
 		// TODO might need delay through runnable, will bring issues on laggier
@@ -267,6 +267,14 @@ public class Arena {
 	int currentlobbycount = 10;
 	int currentingamecount = 10;
 	int currenttaskid = 0;
+
+	public void setTaskId(int id) {
+		this.currenttaskid = id;
+	}
+
+	public int getTaskId() {
+		return this.currenttaskid;
+	}
 
 	/**
 	 * Starts the lobby countdown and the arena afterwards
