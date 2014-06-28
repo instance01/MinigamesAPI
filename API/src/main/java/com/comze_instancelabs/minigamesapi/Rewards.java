@@ -52,7 +52,7 @@ public class Rewards {
 					p.updateInventory();
 				}
 				if (commandrewards) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("<player>", p_));
 				}
 				//TODO add custom point rewards!
 				MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(p_, 10);
