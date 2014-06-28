@@ -5,6 +5,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class DefaultConfig {
 
+	public DefaultConfig(JavaPlugin plugin, boolean custom){
+		DefaultConfig.init(plugin, custom);
+	}
+	
+	
 	public static void init(JavaPlugin plugin, boolean custom){
 		FileConfiguration config = plugin.getConfig();
 		if(!custom){

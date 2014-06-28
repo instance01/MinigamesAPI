@@ -69,7 +69,7 @@ public class MinigamesAPI extends JavaPlugin {
 	 * @param statsconfig
 	 * @return
 	 */
-	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, boolean customlistener) {
+	public static MinigamesAPI setupAPI(JavaPlugin plugin_, Class<?> arenaclass, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, DefaultConfig defaultconfig, boolean customlistener) {
 		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
 		if (!customlistener) {
 			Bukkit.getPluginManager().registerEvents(new ArenaListener(plugin_, pinstances.get(plugin_)), plugin_);
