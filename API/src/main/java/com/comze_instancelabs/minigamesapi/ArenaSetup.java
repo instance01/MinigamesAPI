@@ -23,6 +23,19 @@ public class ArenaSetup {
 	}
 
 	/**
+	 * Sets a new spawn for a multi-spawn arena without the need of a given index
+	 * 
+	 * @param plugin
+	 * @param arenaname
+	 * @param l
+	 *            Location of the spawn
+	 */
+	public void autoSetSpawn(JavaPlugin plugin, String arenaname, Location l) {
+		int count = Util.getAllSpawns(plugin, arenaname).size();
+		Util.saveComponentForArena(plugin, arenaname, "spawns.spawn" + Integer.toString(count), l);
+	}
+
+	/**
 	 * Sets one of multiple spawns for a multi-spawn arena
 	 * 
 	 * @param arenaname
@@ -90,10 +103,10 @@ public class ArenaSetup {
 			pli.removeArenaByName(arenaname);
 		}
 		Arena a = Util.initArena(plugin, arenaname);
-		if(a.getArenaType() == ArenaType.REGENERATION){
-			if(Util.isComponentForArenaValid(plugin, arenaname, "bounds")){
+		if (a.getArenaType() == ArenaType.REGENERATION) {
+			if (Util.isComponentForArenaValid(plugin, arenaname, "bounds")) {
 				Util.saveArenaToFile(plugin, arenaname);
-			}else{
+			} else {
 				Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Could not save arena to file because boundaries were not set up.");
 			}
 		}
