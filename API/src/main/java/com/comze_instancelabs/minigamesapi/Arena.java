@@ -160,6 +160,11 @@ public class Arena {
 			// arena full
 			return;
 		}
+		if (this.getAllPlayers().size() == this.max_players - 1) {
+			if(currentlobbycount > 16){
+				currentlobbycount = 16;
+			}
+		}
 		MinigamesAPI.getAPI().global_players.put(playername, this);
 		this.players.add(playername);
 		if (Validator.isPlayerValid(playername, this)) {
@@ -273,7 +278,7 @@ public class Arena {
 			return;
 		}
 		this.setArenaState(ArenaState.STARTING);
-		currentlobbycount = MinigamesAPI.getAPI().lobby_countdown;
+		currentlobbycount = MinigamesAPI.getAPI().pinstances.get(plugin).lobby_countdown;
 		final Arena a = this;
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
@@ -309,7 +314,7 @@ public class Arena {
 			Bukkit.getScheduler().cancelTask(currenttaskid);
 		} catch (Exception e) {
 		}
-		currentingamecount = MinigamesAPI.getAPI().ingame_countdown;
+		currentingamecount = MinigamesAPI.getAPI().pinstances.get(plugin).ingame_countdown;
 		for (String p_ : currentarena.getArena().getAllPlayers()) {
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.0F);

@@ -32,9 +32,6 @@ public class MinigamesAPI extends JavaPlugin {
 	public static HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
 	public static ArrayList<String> global_leftplayers = new ArrayList<String>();
 
-	int lobby_countdown = 30;
-	int ingame_countdown = 10;
-
 	public void onEnable() {
 		instance = this;
 

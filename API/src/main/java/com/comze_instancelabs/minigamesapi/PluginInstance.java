@@ -35,6 +35,9 @@ public class PluginInstance {
 	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
 	public ArenaSetup arenaSetup = new ArenaSetup();
 
+	int lobby_countdown = 30;
+	int ingame_countdown = 10;
+
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
@@ -45,6 +48,8 @@ public class PluginInstance {
 		rew = new Rewards(plugin);
 		stats = new Stats(plugin);
 		sql = new MainSQL(plugin, false);
+		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
+		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
 	}
 
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig) {
