@@ -186,7 +186,7 @@ public class ArenaListener implements Listener {
 						pli.getArenasConfig().saveConfig();
 						p.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
 					} else {
-						p.sendMessage(pli.getMessagesConfig().arena_invalid);
+						p.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
 						event.getBlock().breakNaturally();
 					}
 
@@ -196,8 +196,7 @@ public class ArenaListener implements Listener {
 						a.setSignLocation(event.getBlock().getLocation());
 						Util.updateSign(plugin, a, event);
 					} else {
-						// TODO tell player that arena is not initialized (most
-						// likely forgot to save)
+						// TODO tell player that arena is not initialized (most likely forgot to save)
 					}
 				}
 			}

@@ -67,8 +67,17 @@ public class Util {
 	}
 
 	public static void teleportAllPlayers(ArrayList<String> players, ArrayList<Location> locs) {
-		// TODO
-		Util.teleportAllPlayers(players, locs.get(0));
+		// TODO test out
+		int currentid = 0;
+		int locslength = locs.size();
+		for(String p_ : players){
+			Player p = Bukkit.getPlayer(p_);
+			Util.teleportPlayerFixed(p, locs.get(currentid));
+			currentid++;
+			if(currentid > locslength - 1){
+				currentid = 0;
+			}
+		}
 	}
 
 	public static Location getComponentForArena(JavaPlugin plugin, String arenaname, String component, String count) {

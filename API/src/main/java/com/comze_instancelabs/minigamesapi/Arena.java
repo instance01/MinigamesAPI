@@ -216,7 +216,10 @@ public class Arena {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
 
 		MinigamesAPI.global_players.remove(playername);
-
+		if(MinigamesAPI.getAPI().global_lost.containsKey(playername)){
+			MinigamesAPI.getAPI().global_lost.remove(playername);
+		}
+		
 		final String arenaname = this.getName();
 
 		// TODO might need delay through runnable, will bring issues on laggier
@@ -261,7 +264,9 @@ public class Arena {
 	int currenttaskid = 0;
 
 	/**
-	 * Starts the lobby countdown and the arena afterwards You can insta-start an arena by using Arena.start();
+	 * Starts the lobby countdown and the arena afterwards
+	 * 
+	 * You can insta-start an arena by using Arena.start();
 	 */
 	public void startLobby() {
 		if (currentstate != ArenaState.JOIN) {
@@ -281,7 +286,7 @@ public class Arena {
 						}
 					}
 				}
-				if (currentlobbycount < 0) {
+				if (currentlobbycount < 1) {
 					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 						public void run() {
 							currentarena.getArena().start();

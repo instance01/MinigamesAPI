@@ -29,10 +29,12 @@ public class ArenaSetup {
 	 * @param arenaname
 	 * @param l
 	 *            Location of the spawn
+	 * @return the automatically used index
 	 */
-	public void autoSetSpawn(JavaPlugin plugin, String arenaname, Location l) {
+	public int autoSetSpawn(JavaPlugin plugin, String arenaname, Location l) {
 		int count = Util.getAllSpawns(plugin, arenaname).size();
 		Util.saveComponentForArena(plugin, arenaname, "spawns.spawn" + Integer.toString(count), l);
+		return count;
 	}
 
 	/**
