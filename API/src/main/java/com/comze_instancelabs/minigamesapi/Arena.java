@@ -259,7 +259,8 @@ public class Arena {
 			MinigamesAPI.getAPI().global_lost.put(playername, this);
 			p.setAllowFlight(true);
 			p.setFlying(true);
-			Util.teleportPlayerFixed(p, this.spawns.get(0).add(0D, 30D, 0D));
+			Location temp = this.spawns.get(0);
+			Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
 			MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(this);
 		}
 	}
