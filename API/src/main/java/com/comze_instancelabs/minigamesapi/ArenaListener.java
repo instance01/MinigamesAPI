@@ -27,10 +27,12 @@ public class ArenaListener implements Listener {
 
 	JavaPlugin plugin = null;
 	PluginInstance pinstance = null;
+	String minigame = "minigame";
 
-	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance) {
+	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame) {
 		this.plugin = plugin;
 		this.pinstance = pinstance;
+		this.minigame = minigame;
 	}
 
 	// TODO add move listener -> player dead when fell
@@ -173,7 +175,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		Player p = event.getPlayer();
-		if (event.getLine(0).toLowerCase().equalsIgnoreCase("minigame")) {
+		if (event.getLine(0).toLowerCase().equalsIgnoreCase(minigame)) {
 			if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
 				if (!event.getLine(1).equalsIgnoreCase("")) {
 					String arena = event.getLine(1);
