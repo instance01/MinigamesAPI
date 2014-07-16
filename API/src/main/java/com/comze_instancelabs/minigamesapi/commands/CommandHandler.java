@@ -311,7 +311,7 @@ public class CommandHandler {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}
 		} else {
-			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
 		}
 		return true;
 	}
