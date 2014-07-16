@@ -20,6 +20,7 @@ public class ClassesConfig {
     		this.getConfig().options().header("Used for saving classes. Default class:");
         	this.getConfig().addDefault("config.kits.default.name", "default");
         	this.getConfig().addDefault("config.kits.default.items", "351:5#DAMAGE_ALL:1#KNOCKBACK*1");
+        	this.getConfig().addDefault("config.kits.default.icon", "351:5#DAMAGE_ALL:1#KNOCKBACK*1");
         	this.getConfig().addDefault("config.kits.default.lore", "The default class.");
         	this.getConfig().addDefault("config.kits.default.requires_money", false);
         	this.getConfig().addDefault("config.kits.default.requires_permission", false);

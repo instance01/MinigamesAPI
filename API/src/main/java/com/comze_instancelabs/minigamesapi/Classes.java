@@ -1,14 +1,15 @@
 package com.comze_instancelabs.minigamesapi;
 
+import net.milkbowl.vault.economy.EconomyResponse;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
-import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Classes {
 
@@ -27,7 +28,8 @@ public class Classes {
 
 		int c = 0;
 		for (String ac : MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().keySet()) {
-			iconm.setOption(c, new ItemStack(Material.SLIME_BALL), ac, MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("config.kits." + ac + ".lore"));
+			AClass ac_ = MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().get(ac);
+			iconm.setOption(c, ac_.getIcon(), ac, MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("config.kits." + ac + ".lore"));
 			c++;
 		}
 
@@ -64,11 +66,17 @@ public class Classes {
 	}
 
 	public static void loadClasses(JavaPlugin plugin) {
-		if (MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().isSet("config.kits")) {
-			for (String aclass : MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getConfigurationSection("config.kits.").getKeys(false)) {
-				AClass n = new AClass(plugin, aclass, Util.parseItems(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("config.kits." + aclass + ".items")));
+		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig();
+		if (config.isSet("config.kits")) {
+			for (String aclass : config.getConfigurationSection("config.kits.").getKeys(false)) {
+				AClass n;
+				if(config.isSet("config.kits." + aclass + ".icon")){
+					n = new AClass(plugin, aclass, Util.parseItems(config.getString("config.kits." + aclass + ".items")), Util.parseItems(config.getString("config.kits." + aclass + ".icon")).get(0));
+				}else{
+					n = new AClass(plugin, aclass, Util.parseItems(config.getString("config.kits." + aclass + ".items")));
+				}
 				MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(aclass, n);
-				if (!MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().isSet("config.kits." + aclass + ".items") || !MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().isSet("config.kits." + aclass + ".lore")) {
+				if (!config.isSet("config.kits." + aclass + ".items") || !config.isSet("config.kits." + aclass + ".lore")) {
 					plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
 				}
 			}

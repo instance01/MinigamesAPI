@@ -11,11 +11,20 @@ public class AClass {
 	private JavaPlugin plugin;
 	private String name;
 	private ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+	private ItemStack icon;
 	
 	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items){
 		this.plugin = plugin;
 		this.name = name;
 		this.items = items;
+		this.icon = items.get(0);
+	}
+	
+	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items, ItemStack icon){
+		this.plugin = plugin;
+		this.name = name;
+		this.items = items;
+		this.icon = icon;
 	}
 	
 	public ItemStack[] getItems(){
@@ -26,5 +35,9 @@ public class AClass {
 			c++;
 		}
 		return ret;
+	}
+	
+	public ItemStack getIcon(){
+		return this.icon;
 	}
 }
