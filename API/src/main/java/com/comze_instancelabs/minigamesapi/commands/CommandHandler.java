@@ -270,8 +270,8 @@ public class CommandHandler {
 	}
 	
 	public boolean leaveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
-		if (MinigamesAPI.getAPI().global_players.containsKey(p.getName())) {
-			MinigamesAPI.getAPI().global_players.get(p.getName()).leavePlayer(p.getName(), false);
+		if (pli.global_players.containsKey(p.getName())) {
+			pli.global_players.get(p.getName()).leavePlayer(p.getName(), false);
 		} else {
 			sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 		}

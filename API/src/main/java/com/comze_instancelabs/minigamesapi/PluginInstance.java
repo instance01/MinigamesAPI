@@ -15,6 +15,9 @@ import java.util.HashMap;
 
 public class PluginInstance {
 
+	public HashMap<String, Arena> global_players = new HashMap<String, Arena>();
+	public HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
+	
 	private ArenasConfig arenasconfig = null;
 	private ClassesConfig classesconfig = null;
 	private MessagesConfig messagesconfig = null;

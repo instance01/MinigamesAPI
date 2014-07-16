@@ -27,8 +27,8 @@ public class Validator {
 	 * @param arena
 	 * @return
 	 */
-	public static boolean isPlayerValid(String player, Arena arena){
-		return isPlayerValid(player, arena.getName());
+	public static boolean isPlayerValid(JavaPlugin plugin, String player, Arena arena){
+		return isPlayerValid(plugin, player, arena.getName());
 	}
 	
 	/***
@@ -36,14 +36,14 @@ public class Validator {
 	 * @param arena
 	 * @return
 	 */
-	public static boolean isPlayerValid(String player, String arena){
+	public static boolean isPlayerValid(JavaPlugin plugin, String player, String arena){
 		if(!isPlayerOnline(player)){
 			return false;
 		}
-		if(!MinigamesAPI.getAPI().global_players.containsKey(player)){
+		if(!MinigamesAPI.getAPI().pinstances.get(plugin).global_players.containsKey(player)){
 			return false;
 		}
-		if(!MinigamesAPI.getAPI().global_players.get(player).getName().equalsIgnoreCase(arena)){
+		if(!MinigamesAPI.getAPI().pinstances.get(plugin).global_players.get(player).getName().equalsIgnoreCase(arena)){
 			return false;
 		}
 		return true;

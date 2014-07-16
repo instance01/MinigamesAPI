@@ -165,9 +165,9 @@ public class Arena {
 				currentlobbycount = 16;
 			}
 		}
-		MinigamesAPI.getAPI().global_players.put(playername, this);
+		MinigamesAPI.getAPI().pinstances.get(plugin).global_players.put(playername, this);
 		this.players.add(playername);
-		if (Validator.isPlayerValid(playername, this)) {
+		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
 			if (shouldClearInventoryOnJoin) {
 				pinv.put(playername, p.getInventory().getContents());
@@ -205,7 +205,7 @@ public class Arena {
 			return;
 		}
 		this.players.remove(playername);
-		MinigamesAPI.global_players.remove(playername);
+		MinigamesAPI.getAPI().pinstances.get(plugin).global_players.remove(playername);
 		if (fullLeave) {
 			// TODO temporary save player to restore his stuff and teleport him
 			// into lobby when he joins back
@@ -220,9 +220,9 @@ public class Arena {
 
 		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
 
-		MinigamesAPI.global_players.remove(playername);
-		if (MinigamesAPI.getAPI().global_lost.containsKey(playername)) {
-			MinigamesAPI.getAPI().global_lost.remove(playername);
+		MinigamesAPI.getAPI().pinstances.get(plugin).global_players.remove(playername);
+		if (MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(playername)) {
+			MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.remove(playername);
 		}
 
 		final String arenaname = this.getName();
@@ -254,14 +254,14 @@ public class Arena {
 	}
 
 	public void spectate(String playername) {
-		if (Validator.isPlayerValid(playername, this)) {
+		if (Validator.isPlayerValid(plugin, playername, this)) {
 			Player p = Bukkit.getPlayer(playername);
-			MinigamesAPI.getAPI().global_lost.put(playername, this);
+			MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.put(playername, this);
 			p.setAllowFlight(true);
 			p.setFlying(true);
 			Location temp = this.spawns.get(0);
 			Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
-			MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(this);
+			MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(plugin, this);
 		}
 	}
 
@@ -330,7 +330,7 @@ public class Arena {
 		}
 		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		final Arena a = this;
-		MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(a);
+		MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(plugin, a);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentingamecount--;
@@ -400,7 +400,7 @@ public class Arena {
 	public String getPlayerCount() {
 		int alive = 0;
 		for (String p_ : getAllPlayers()) {
-			if (MinigamesAPI.getAPI().global_lost.containsKey(p_)) {
+			if (MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {
 				continue;
 			} else {
 				alive++;

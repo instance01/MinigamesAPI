@@ -40,9 +40,9 @@ public class ArenaListener implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		try {
 			final Player p = event.getPlayer();
-			if (MinigamesAPI.getAPI().global_players.containsKey(p.getName())) {
-				final Arena a = MinigamesAPI.getAPI().global_players.get(p.getName());
-				if (!MinigamesAPI.getAPI().global_lost.containsKey(p.getName())) {
+			if (pinstance.global_players.containsKey(p.getName())) {
+				final Arena a = pinstance.global_players.get(p.getName());
+				if (!pinstance.global_lost.containsKey(p.getName())) {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						if (p.getLocation().getBlockY() + 4 < a.getSpawns().get(0).getBlockY()) {
 							if (a.getArenaType() == ArenaType.JUMPNRUN) {
@@ -82,7 +82,7 @@ public class ArenaListener implements Listener {
 	public void onHunger(FoodLevelChangeEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player p = (Player) event.getEntity();
-			if (MinigamesAPI.global_players.containsKey(p.getName())) {
+			if (pinstance.global_players.containsKey(p.getName())) {
 				event.setCancelled(true);
 			}
 		}
@@ -90,16 +90,16 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
-		if (MinigamesAPI.global_players.containsKey(event.getEntity().getName())) {
+		if (pinstance.global_players.containsKey(event.getEntity().getName())) {
 			event.getEntity().setHealth(20D);
 			final Player p = event.getEntity();
 
-			MinigamesAPI.global_lost.put(p.getName(), MinigamesAPI.global_players.get(p.getName()));
-			final Arena arena = MinigamesAPI.global_players.get(p.getName());
+			pinstance.global_lost.put(p.getName(), pinstance.global_players.get(p.getName()));
+			final Arena arena = pinstance.global_players.get(p.getName());
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					try {
-						MinigamesAPI.global_players.get(p.getName()).spectate(p.getName());
+						pinstance.global_players.get(p.getName()).spectate(p.getName());
 						for (String p_ : arena.getAllPlayers()) {
 							if (Validator.isPlayerOnline(p_)) {
 								Player p__ = Bukkit.getPlayer(p_);
@@ -114,10 +114,10 @@ public class ArenaListener implements Listener {
 
 			int count = 0;
 
-			for (String p_ : MinigamesAPI.global_players.keySet()) {
+			for (String p_ : pinstance.global_players.keySet()) {
 				if (Validator.isPlayerOnline(p_)) {
-					if (MinigamesAPI.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
-						if (!MinigamesAPI.global_lost.containsKey(p_)) {
+					if (pinstance.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
+						if (!pinstance.global_lost.containsKey(p_)) {
 							count++;
 						}
 					}
@@ -163,7 +163,7 @@ public class ArenaListener implements Listener {
 		// netherstar to open kit gui; needs customizable item id
 		if (event.hasItem()) {
 			final Player p = event.getPlayer();
-			if (!MinigamesAPI.global_players.containsKey(p.getName())) {
+			if (!pinstance.global_players.containsKey(p.getName())) {
 				return;
 			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
@@ -243,18 +243,18 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
-		if (MinigamesAPI.global_players.containsKey(event.getPlayer().getName())) {
-			Arena arena = MinigamesAPI.global_players.get(event.getPlayer().getName());
+		if (pinstance.global_players.containsKey(event.getPlayer().getName())) {
+			Arena arena = pinstance.global_players.get(event.getPlayer().getName());
 			MinigamesAPI.getAPI().getLogger().info(arena.getName());
 			int count = 0;
-			for (String p_ : MinigamesAPI.global_players.keySet()) {
-				if (MinigamesAPI.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
+			for (String p_ : pinstance.global_players.keySet()) {
+				if (pinstance.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
 					count++;
 				}
 			}
 
 			try {
-				Util.updateSign(plugin, MinigamesAPI.getAPI().global_players.get(event.getPlayer().getName()));
+				Util.updateSign(plugin, pinstance.global_players.get(event.getPlayer().getName()));
 			} catch (Exception e) {
 				MinigamesAPI.getAPI().getLogger().warning("You forgot to set a sign for arena " + arena + "! This might lead to errors.");
 			}
@@ -267,15 +267,15 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
 		if (event.getMessage().equalsIgnoreCase("/leave")) {
-			if (MinigamesAPI.global_players.containsKey(event.getPlayer().getName())) {
-				Arena arena = MinigamesAPI.global_players.get(event.getPlayer().getName());
+			if (pinstance.global_players.containsKey(event.getPlayer().getName())) {
+				Arena arena = pinstance.global_players.get(event.getPlayer().getName());
 				arena.leavePlayer(event.getPlayer().getName(), true);
 				event.setCancelled(true);
 				return;
 			}
 		}
 		// TODO change that
-		if (MinigamesAPI.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
+		if (pinstance.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
 			if (!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")) {
 				event.getPlayer().sendMessage("");
 				event.setCancelled(true);

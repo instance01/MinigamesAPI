@@ -1,15 +1,17 @@
 package com.comze_instancelabs.minigamesapi.util;
 
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import java.util.HashMap;
+import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class ArenaScoreboard {
 
@@ -21,12 +23,12 @@ public class ArenaScoreboard {
 
 	}
 
-	public void updateScoreboard(final Arena arena) {
+	public void updateScoreboard(final JavaPlugin plugin, final Arena arena) {
 
 		Bukkit.getScheduler().runTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				for (String p__ : arena.getAllPlayers()) {
-					if (!Validator.isPlayerValid(p__, arena)) {
+					if (!Validator.isPlayerValid(plugin, p__, arena)) {
 						return;
 					}
 					Player p = Bukkit.getPlayer(p__);
@@ -46,7 +48,7 @@ public class ArenaScoreboard {
 							continue;
 						}
 						Player p_ = Bukkit.getPlayer(p___);
-						if (!MinigamesAPI.getAPI().global_lost.containsKey(p___)) {
+						if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p___)) {
 							int score = 0;
 							if (currentscore.containsKey(p___)) {
 								int oldscore = currentscore.get(p___);
@@ -66,7 +68,7 @@ public class ArenaScoreboard {
 								}
 							} catch (Exception e) {
 							}
-						} else if (MinigamesAPI.getAPI().global_lost.containsKey(p___)) {
+						} else if (MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p___)) {
 							if (currentscore.containsKey(p___)) {
 								int score = currentscore.get(p___);
 								try {

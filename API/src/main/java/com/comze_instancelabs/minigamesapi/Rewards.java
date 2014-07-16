@@ -41,7 +41,7 @@ public class Rewards {
 	}
 
 	public void giveReward(String p_) {
-		if (!MinigamesAPI.getAPI().global_lost.containsKey(p_)) {
+		if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {
 			if (Validator.isPlayerOnline(p_)) {
 				Player p = Bukkit.getPlayer(p_);
 				if (economyrewards) {
