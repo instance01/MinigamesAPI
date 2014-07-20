@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi;
 
+import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 import org.bukkit.Bukkit;
@@ -48,6 +49,26 @@ public class ArenaSetup {
 	 */
 	public void setSpawn(JavaPlugin plugin, String arenaname, Location l, int count) {
 		Util.saveComponentForArena(plugin, arenaname, "spawns.spawn" + Integer.toString(count), l);
+	}
+
+	/**
+	 * Removes a spawn at the given index
+	 * 
+	 * @param plugin
+	 * @param arenaname
+	 * @param count
+	 *            Index of the spawn
+	 */
+	public boolean removeSpawn(JavaPlugin plugin, String arenaname, int count) {
+		ArenasConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig();
+		String path = "arenas." + arenaname + ".spawns.spawn" + Integer.toString(count);
+		boolean ret = false;
+		if(config.getConfig().isSet(path)){
+			ret = true;
+		}
+		config.getConfig().set(path, null);
+		config.saveConfig();
+		return ret;
 	}
 
 	/**

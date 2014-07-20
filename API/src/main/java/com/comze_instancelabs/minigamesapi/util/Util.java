@@ -73,7 +73,6 @@ public class Util {
 	}
 
 	public static void teleportAllPlayers(ArrayList<String> players, ArrayList<Location> locs) {
-		// TODO test out
 		int currentid = 0;
 		int locslength = locs.size();
 		for(String p_ : players){

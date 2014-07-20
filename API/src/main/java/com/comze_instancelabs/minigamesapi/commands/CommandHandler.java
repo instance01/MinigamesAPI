@@ -60,6 +60,8 @@ public class CommandHandler {
 				return this.stopArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("removearena")) {
 				return this.removeArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("removespawn")) {
+				return this.removeSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
@@ -332,6 +334,27 @@ public class CommandHandler {
 			// TODO remove arena file if present
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
+		}
+		return true;
+	}
+	
+	public boolean removeSpawn(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 2) {
+			if(Util.isNumeric(args[2])){
+				if(pli.arenaSetup.removeSpawn(plugin, args[1], Integer.parseInt(args[2]))){
+					sender.sendMessage(pli.getMessagesConfig().successfully_removed.replaceAll("<component>", "spawn " + args[2]));
+				}else{
+					sender.sendMessage(pli.getMessagesConfig().failed_removing_component.replaceAll("<component>", "spawn " + args[2]).replaceAll("<cause>", "Possibly the provided count couldn't be found: " + args[2]));
+				}
+			}else{
+				
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
 		}
 		return true;
 	}

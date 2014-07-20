@@ -54,6 +54,8 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.teleporting_to_arena_in", teleporting_to_arena_in);
 		this.getConfig().addDefault("messages.starting_in", starting_in);
 		this.getConfig().addDefault("messages.failed_removing_arena", failed_removing_arena);
+		this.getConfig().addDefault("messages.successfully_removed", successfully_removed);
+		this.getConfig().addDefault("messages.failed_removing_component", failed_removing_component);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -73,6 +75,8 @@ public class MessagesConfig {
 		this.teleporting_to_arena_in = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.teleporting_to_arena_in"));
 		this.starting_in = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.starting_in"));
 		this.failed_removing_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.failed_removing_arena"));
+		this.successfully_removed = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_removed"));
+		this.failed_removing_component = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.failed_removing_component"));
 
 	}
 
@@ -89,7 +93,9 @@ public class MessagesConfig {
 	public String not_in_arena = "&cYou don't seem to be in an arena right now.";
 	public String teleporting_to_arena_in = "&7Teleporting to arena in <count>.";
 	public String starting_in = "&aStarting in <count>!";
-
+	public String successfully_removed = "&cSuccessfully removed &3<component>&c!";
+	public String failed_removing_component = "&cFailed removing &3<component>&c. <cause>.";
+	
 	public FileConfiguration getConfig() {
 		if (arenaConfig == null) {
 			reloadConfig();
