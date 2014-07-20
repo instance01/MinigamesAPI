@@ -17,6 +17,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -44,6 +45,11 @@ public class Util {
 
 	public static void teleportPlayerFixed(final Player p, Location l) {
 		// TODO might need Runnable fix?
+		if(p.isInsideVehicle()){
+			Entity ent = p.getVehicle();
+			p.leaveVehicle();
+			ent.eject();
+		}
 		p.teleport(l, TeleportCause.PLUGIN);
 		p.setFallDistance(0F);
 		p.setVelocity(new Vector(0D, 0D, 0D));

@@ -344,6 +344,7 @@ public class Arena {
 				}
 				if (currentingamecount < 1) {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
+					started();
 					for (String p_ : a.getAllPlayers()) {
 						if (!Classes.hasClass(plugin, p_)) {
 							Classes.setClass(plugin, "default", p_);
@@ -361,6 +362,10 @@ public class Arena {
 		}, 5L, 20).getTaskId();
 	}
 
+	public void started(){
+		
+	}
+	
 	/**
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
