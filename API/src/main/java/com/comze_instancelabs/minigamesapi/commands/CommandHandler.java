@@ -286,7 +286,7 @@ public class CommandHandler {
 		if (args.length > 1) {
 			Arena temp = pli.getArenaByName(args[1]);
 			if (temp != null) {
-				temp.start();
+				temp.start(true);
 				sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "started"));
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));

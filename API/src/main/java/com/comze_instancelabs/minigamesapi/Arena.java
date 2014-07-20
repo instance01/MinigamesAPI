@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi;
 
+import com.comze_instancelabs.minigamesapi.events.ArenaStartedEvent;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
@@ -247,8 +248,7 @@ public class Arena {
 			}
 		}, 5L);
 
-		// TODO test out if 2 ppl
-		if (this.getAllPlayers().size() < 1) {
+		if (this.getAllPlayers().size() < 2) {
 			this.stop();
 		}
 	}
@@ -303,7 +303,7 @@ public class Arena {
 				if (currentlobbycount < 1) {
 					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 						public void run() {
-							currentarena.getArena().start();
+							currentarena.getArena().start(true);
 						}
 					}, 10L);
 					try {
@@ -318,7 +318,7 @@ public class Arena {
 	/**
 	 * Instantly starts the arena, teleports players and udpates the arena
 	 */
-	public void start() {
+	public void start(boolean tp) {
 		try {
 			Bukkit.getScheduler().cancelTask(currenttaskid);
 		} catch (Exception e) {
@@ -328,7 +328,9 @@ public class Arena {
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.0F);
 		}
-		Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+		if(tp){
+			Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+		}
 		final Arena a = this;
 		MinigamesAPI.getAPI().pinstances.get(plugin).scoreboardManager.updateScoreboard(plugin, a);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
@@ -362,8 +364,9 @@ public class Arena {
 		}, 5L, 20).getTaskId();
 	}
 
+
 	public void started(){
-		
+		System.out.println(this.getName() + " started.");
 	}
 	
 	/**
@@ -412,6 +415,18 @@ public class Arena {
 			}
 		}
 		return Integer.toString(alive) + "/" + Integer.toString(getAllPlayers().size());
+	}
+	
+	public int getPlayerAlive(){
+		int alive = 0;
+		for (String p_ : getAllPlayers()) {
+			if (MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {
+				continue;
+			} else {
+				alive++;
+			}
+		}
+		return alive;
 	}
 
 }

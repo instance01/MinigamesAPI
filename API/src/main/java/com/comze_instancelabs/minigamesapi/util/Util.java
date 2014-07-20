@@ -317,7 +317,7 @@ public class Util {
 	public static Arena getArenaBySignLocation(JavaPlugin plugin, Location sign) {
 		for (Arena arena : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
 			if (sign != null && arena.getArena().getSignLocation() != null) {
-				if (sign.distance(arena.getArena().getSignLocation()) < 2) {
+				if (sign.distance(arena.getArena().getSignLocation()) < 1) {
 					return arena;
 				}
 			}

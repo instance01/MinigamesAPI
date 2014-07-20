@@ -37,7 +37,7 @@ public class MinigamesAPI extends JavaPlugin {
 
 		String version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + version + ".");
-
+		
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
 		if (economy) {
