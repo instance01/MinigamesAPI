@@ -1,6 +1,5 @@
 package com.comze_instancelabs.minigamesapi;
 
-import com.comze_instancelabs.minigamesapi.events.ArenaStartedEvent;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
