@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -326,8 +328,9 @@ public class Arena {
 		for (String p_ : currentarena.getArena().getAllPlayers()) {
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.0F);
+			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -5));
 		}
-		if(tp){
+		if (tp) {
 			Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		}
 		final Arena a = this;
@@ -345,7 +348,6 @@ public class Arena {
 				}
 				if (currentingamecount < 1) {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
-					started();
 					for (String p_ : a.getAllPlayers()) {
 						if (!Classes.hasClass(plugin, p_)) {
 							Classes.setClass(plugin, "default", p_);
@@ -353,7 +355,9 @@ public class Arena {
 						Classes.getClass(plugin, p_);
 						Player p = Bukkit.getPlayer(p_);
 						p.setWalkSpeed(0.2F);
+						p.removePotionEffect(PotionEffectType.JUMP);
 					}
+					started();
 					try {
 						Bukkit.getScheduler().cancelTask(currenttaskid);
 					} catch (Exception e) {
@@ -363,11 +367,10 @@ public class Arena {
 		}, 5L, 20).getTaskId();
 	}
 
-
-	public void started(){
+	public void started() {
 		System.out.println(this.getName() + " started.");
 	}
-	
+
 	/**
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
@@ -415,8 +418,8 @@ public class Arena {
 		}
 		return Integer.toString(alive) + "/" + Integer.toString(getAllPlayers().size());
 	}
-	
-	public int getPlayerAlive(){
+
+	public int getPlayerAlive() {
 		int alive = 0;
 		for (String p_ : getAllPlayers()) {
 			if (MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {
