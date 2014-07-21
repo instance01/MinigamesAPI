@@ -26,11 +26,6 @@ public class MessagesConfig {
 
 	public static String squares = Character.toString((char) 0x25A0);
 
-	public String signs_join_0;
-	public String signs_join_1;
-	public String signs_join_2;
-	public String signs_join_3;
-
 	public void init() {
 		// all signs
 		this.getConfig().options().header("Contains all messages for easy translation.");
@@ -40,6 +35,12 @@ public class MessagesConfig {
 			this.getConfig().addDefault("signs." + state.toLowerCase() + ".2", "<count>/<maxcount>");
 			this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", "[]");
 		}
+		
+		// Arcade sign
+		this.getConfig().addDefault("signs.arcade.0", "[]");
+		this.getConfig().addDefault("signs.arcade.1", "&cArcade");
+		this.getConfig().addDefault("signs.arcade.2", "<count>/<maxcount>");
+		this.getConfig().addDefault("signs.arcade.3", "[]");
 
 		this.getConfig().addDefault("messages.no_perm", no_perm);
 		this.getConfig().addDefault("messages.successfully_reloaded", successfully_reloaded);
@@ -95,7 +96,7 @@ public class MessagesConfig {
 	public String starting_in = "&aStarting in <count>!";
 	public String successfully_removed = "&cSuccessfully removed &3<component>&c!";
 	public String failed_removing_component = "&cFailed removing &3<component>&c. <cause>.";
-	
+
 	public FileConfiguration getConfig() {
 		if (arenaConfig == null) {
 			reloadConfig();

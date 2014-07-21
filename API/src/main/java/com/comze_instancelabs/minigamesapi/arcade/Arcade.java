@@ -1,5 +1,9 @@
 package com.comze_instancelabs.minigamesapi.arcade;
 
+import java.util.ArrayList;
+
+import com.comze_instancelabs.minigamesapi.PluginInstance;
+
 public class Arcade {
 
 	// TODO Arcade
@@ -12,4 +16,12 @@ public class Arcade {
 	 * 
 	 */
 	
+	
+	// single server Arcade:
+
+	public Arcade(){
+		
+	}
+
+
 }

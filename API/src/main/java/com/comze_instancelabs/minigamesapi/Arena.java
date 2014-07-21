@@ -222,6 +222,7 @@ public class Arena {
 		p.removePotionEffect(PotionEffectType.JUMP);
 
 		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
+		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(playername, 10);
 
 		MinigamesAPI.getAPI().pinstances.get(plugin).global_players.remove(playername);
 		if (MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(playername)) {
