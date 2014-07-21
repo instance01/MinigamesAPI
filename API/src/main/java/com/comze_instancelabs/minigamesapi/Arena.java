@@ -219,6 +219,7 @@ public class Arena {
 		p.getInventory().setArmorContents(pinv_armor.get(playername));
 		p.updateInventory();
 		p.setWalkSpeed(0.2F);
+		p.removePotionEffect(PotionEffectType.JUMP);
 
 		MinigamesAPI.getAPI().pinstances.get(plugin).getRewardsInstance().giveReward(playername);
 
