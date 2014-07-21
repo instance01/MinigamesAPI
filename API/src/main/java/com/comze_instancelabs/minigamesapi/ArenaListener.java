@@ -26,12 +26,12 @@ import java.util.List;
 public class ArenaListener implements Listener {
 
 	JavaPlugin plugin = null;
-	PluginInstance pinstance = null;
+	PluginInstance pli = null;
 	String minigame = "minigame";
 
 	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame) {
 		this.plugin = plugin;
-		this.pinstance = pinstance;
+		this.pli = pinstance;
 		this.minigame = minigame;
 	}
 
@@ -40,9 +40,9 @@ public class ArenaListener implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		try {
 			final Player p = event.getPlayer();
-			if (pinstance.global_players.containsKey(p.getName())) {
-				final Arena a = pinstance.global_players.get(p.getName());
-				if (!pinstance.global_lost.containsKey(p.getName())) {
+			if (pli.global_players.containsKey(p.getName())) {
+				final Arena a = pli.global_players.get(p.getName());
+				if (!pli.global_lost.containsKey(p.getName())) {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						if (p.getLocation().getBlockY() + 4 < a.getSpawns().get(0).getBlockY()) {
 							if (a.getArenaType() == ArenaType.JUMPNRUN) {
@@ -82,7 +82,7 @@ public class ArenaListener implements Listener {
 	public void onHunger(FoodLevelChangeEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player p = (Player) event.getEntity();
-			if (pinstance.global_players.containsKey(p.getName())) {
+			if (pli.global_players.containsKey(p.getName())) {
 				event.setCancelled(true);
 			}
 		}
@@ -90,20 +90,20 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
-		if (pinstance.global_players.containsKey(event.getEntity().getName())) {
+		if (pli.global_players.containsKey(event.getEntity().getName())) {
 			event.getEntity().setHealth(20D);
 			final Player p = event.getEntity();
 
-			pinstance.global_lost.put(p.getName(), pinstance.global_players.get(p.getName()));
-			final Arena arena = pinstance.global_players.get(p.getName());
+			pli.global_lost.put(p.getName(), pli.global_players.get(p.getName()));
+			final Arena arena = pli.global_players.get(p.getName());
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					try {
-						pinstance.global_players.get(p.getName()).spectate(p.getName());
+						pli.global_players.get(p.getName()).spectate(p.getName());
 						for (String p_ : arena.getAllPlayers()) {
 							if (Validator.isPlayerOnline(p_)) {
 								Player p__ = Bukkit.getPlayer(p_);
-								p__.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
+								p__.sendMessage(pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
 							}
 						}
 					} catch (Exception e) {
@@ -114,10 +114,10 @@ public class ArenaListener implements Listener {
 
 			int count = 0;
 
-			for (String p_ : pinstance.global_players.keySet()) {
+			for (String p_ : pli.global_players.keySet()) {
 				if (Validator.isPlayerOnline(p_)) {
-					if (pinstance.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
-						if (!pinstance.global_lost.containsKey(p_)) {
+					if (pli.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
+						if (!pli.global_lost.containsKey(p_)) {
 							count++;
 						}
 					}
@@ -136,8 +136,8 @@ public class ArenaListener implements Listener {
 		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
 			Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());
 			if (arena != null) {
-				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena.getName() + ".sign", null);
-				MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+				pli.getArenasConfig().getConfig().set("arenas." + arena.getName() + ".sign", null);
+				pli.getArenasConfig().saveConfig();
 			}
 		}
 	}
@@ -163,7 +163,7 @@ public class ArenaListener implements Listener {
 		// netherstar to open kit gui; needs customizable item id
 		if (event.hasItem()) {
 			final Player p = event.getPlayer();
-			if (!pinstance.global_players.containsKey(p.getName())) {
+			if (!pli.global_players.containsKey(p.getName())) {
 				return;
 			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
@@ -179,7 +179,6 @@ public class ArenaListener implements Listener {
 			if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
 				if (!event.getLine(1).equalsIgnoreCase("")) {
 					String arena = event.getLine(1);
-					PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 					if (Validator.isArenaValid(plugin, arena)) {
 						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
 						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
@@ -208,7 +207,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
-		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().update(p.getName());
+		pli.getStatsInstance().update(p.getName());
 		if (MinigamesAPI.getAPI().global_leftplayers.contains(event.getPlayer().getName())) {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
@@ -219,10 +218,10 @@ public class ArenaListener implements Listener {
 			MinigamesAPI.getAPI().global_leftplayers.remove(event.getPlayer().getName());
 		}
 
-		if (MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getBoolean("config.game_on_join")) {
+		if (pli.getArenasConfig().getConfig().getBoolean("config.game_on_join")) {
 			int c = 0;
 			final List<String> arenas = new ArrayList<String>();
-			for (String arena : MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getKeys(false)) {
+			for (String arena : pli.getArenasConfig().getConfig().getKeys(false)) {
 				if (!arena.equalsIgnoreCase("mainlobby") && !arena.equalsIgnoreCase("strings") && !arena.equalsIgnoreCase("config")) {
 					c++;
 					arenas.add(arena);
@@ -235,7 +234,7 @@ public class ArenaListener implements Listener {
 
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
-					MinigamesAPI.getAPI().pinstances.get(plugin).getArenas().get(0).joinPlayerLobby(p.getName());
+					pli.getArenas().get(0).joinPlayerLobby(p.getName());
 				}
 			}, 30L);
 		}
@@ -243,18 +242,18 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
-		if (pinstance.global_players.containsKey(event.getPlayer().getName())) {
-			Arena arena = pinstance.global_players.get(event.getPlayer().getName());
+		if (pli.global_players.containsKey(event.getPlayer().getName())) {
+			Arena arena = pli.global_players.get(event.getPlayer().getName());
 			MinigamesAPI.getAPI().getLogger().info(arena.getName());
 			int count = 0;
-			for (String p_ : pinstance.global_players.keySet()) {
-				if (pinstance.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
+			for (String p_ : pli.global_players.keySet()) {
+				if (pli.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
 					count++;
 				}
 			}
 
 			try {
-				Util.updateSign(plugin, pinstance.global_players.get(event.getPlayer().getName()));
+				Util.updateSign(plugin, pli.global_players.get(event.getPlayer().getName()));
 			} catch (Exception e) {
 				MinigamesAPI.getAPI().getLogger().warning("You forgot to set a sign for arena " + arena + "! This might lead to errors.");
 			}
@@ -267,15 +266,15 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
 		if (event.getMessage().equalsIgnoreCase("/leave")) {
-			if (pinstance.global_players.containsKey(event.getPlayer().getName())) {
-				Arena arena = pinstance.global_players.get(event.getPlayer().getName());
+			if (pli.global_players.containsKey(event.getPlayer().getName())) {
+				Arena arena = pli.global_players.get(event.getPlayer().getName());
 				arena.leavePlayer(event.getPlayer().getName(), true);
 				event.setCancelled(true);
 				return;
 			}
 		}
 		// TODO change that
-		if (pinstance.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
+		if (pli.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
 			if (!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")) {
 				event.getPlayer().sendMessage("");
 				event.setCancelled(true);
