@@ -23,6 +23,7 @@ Features
 
 
 Oh and of course a bunch of [premade Minigames and examples](https://github.com/MC-Minigames/).
+
 See the [wiki](https://github.com/instance01/MinigamesAPI/wiki) for more information on API usage.
 
 
