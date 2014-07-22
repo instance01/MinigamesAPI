@@ -273,7 +273,11 @@ public class CommandHandler {
 	
 	public boolean leaveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
 		if (pli.global_players.containsKey(p.getName())) {
-			pli.global_players.get(p.getName()).leavePlayer(p.getName(), false);
+			Arena a = pli.global_players.get(p.getName());
+			a.leavePlayer(p.getName(), false);
+			if(a.getArcadeInstance() != null){
+				a.getArcadeInstance().leaveArcade(p.getName());
+			}
 		} else {
 			sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 		}

@@ -1,8 +1,8 @@
 package com.comze_instancelabs.minigamesapi;
 
-import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
-import com.comze_instancelabs.minigamesapi.util.Util;
-import com.comze_instancelabs.minigamesapi.util.Validator;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,14 +12,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class Arena {
 
 	// Plugin the arena belongs to
 	JavaPlugin plugin;
 	PluginInstance pli;
+	private ArcadeInstance ai;
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
 	private HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
@@ -173,6 +175,7 @@ public class Arena {
 		this.players.add(playername);
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
+			p.sendMessage(pli.getMessagesConfig().joined_arena.replaceAll("<arena>", this.getName()));
 			if (shouldClearInventoryOnJoin) {
 				pinv.put(playername, p.getInventory().getContents());
 				pinv_armor.put(playername, p.getInventory().getArmorContents());
@@ -195,6 +198,11 @@ public class Arena {
 				}
 			}
 		}
+	}
+
+	public void joinPlayerLobby(String playername, ArcadeInstance ai) {
+		this.ai = ai;
+		joinPlayerLobby(playername);
 	}
 
 	/**
@@ -400,6 +408,11 @@ public class Arena {
 		players.clear();
 		pinv.clear();
 		pinv_armor.clear();
+
+		if (ai != null) {
+			ai.nextMinigame();
+			ai = null;
+		}
 	}
 
 	public void reset() {
@@ -433,6 +446,18 @@ public class Arena {
 			}
 		}
 		return alive;
+	}
+
+	public Location getWaitingLobbyTemp() {
+		return this.waitinglobby;
+	}
+
+	public Location getMainLobbyTemp() {
+		return this.mainlobby;
+	}
+
+	public ArcadeInstance getArcadeInstance() {
+		return ai;
 	}
 
 }
