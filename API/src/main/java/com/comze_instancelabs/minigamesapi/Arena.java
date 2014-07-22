@@ -51,7 +51,10 @@ public class Arena {
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
+	 * @param plugin
+	 *            JavaPlugin the arena belongs to
 	 * @param name
+	 *            name of the arena
 	 */
 	public Arena(JavaPlugin plugin, String name) {
 		currentarena = this;
@@ -64,7 +67,9 @@ public class Arena {
 	 * Creates an arena of given arenatype
 	 * 
 	 * @param name
+	 *            name of the arena
 	 * @param type
+	 *            arena type
 	 */
 	public Arena(JavaPlugin plugin, String name, ArenaType type) {
 		this(plugin, name);
@@ -156,6 +161,7 @@ public class Arena {
 	 * Joins the waiting lobby of an arena
 	 * 
 	 * @param playername
+	 *            the playername
 	 */
 	public void joinPlayerLobby(String playername) {
 		if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) {
@@ -200,6 +206,14 @@ public class Arena {
 		}
 	}
 
+	/**
+	 * Joins the waiting lobby of an arena
+	 * 
+	 * @param playername
+	 *            the playername
+	 * @param ai
+	 *            the ArcadeInstance
+	 */
 	public void joinPlayerLobby(String playername, ArcadeInstance ai) {
 		this.ai = ai;
 		joinPlayerLobby(playername);
@@ -266,6 +280,12 @@ public class Arena {
 		}
 	}
 
+	/**
+	 * Spectates the game
+	 * 
+	 * @param playername
+	 *            the playername
+	 */
 	public void spectate(String playername) {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			Player p = Bukkit.getPlayer(playername);
@@ -379,6 +399,9 @@ public class Arena {
 		}, 5L, 20).getTaskId();
 	}
 
+	/**
+	 * Gets executed after an arena started (after lobby countdown)
+	 */
 	public void started() {
 		System.out.println(this.getName() + " started.");
 	}
@@ -415,6 +438,9 @@ public class Arena {
 		}
 	}
 
+	/**
+	 * Rebuilds an arena from file (only for arenas of REGENERATION type)
+	 */
 	public void reset() {
 		Runnable r = new Runnable() {
 			public void run() {
