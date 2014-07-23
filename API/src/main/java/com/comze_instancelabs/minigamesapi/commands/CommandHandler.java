@@ -99,10 +99,11 @@ public class CommandHandler {
 		cmddesc.put("setminplayers <arena> <count>", "Sets the min players needed to start to given count.");
 		cmddesc.put("setarenavip <arena> <true/false>", "Sets whether arena needs permission to join.");
 		cmddesc.put("removearena <arena>", "Deletes an arena from config.");
+		cmddesc.put("removespawn <arena> <count>", "Deletes a spawn from config.");
 		cmddesc.put("join <arena>", "Joins the arena.");
 		cmddesc.put("leave", "Leaves the arena.");
-		cmddesc.put("start <arena>", "Force-starts the arena.");
-		cmddesc.put("stop <arena>", "Force-stop the arena.");
+		cmddesc.put("start <arena>", "Forces the arena to start.");
+		cmddesc.put("stop <arena>", "Forces the arena to stop.");
 		cmddesc.put("list", "Lists all arenas.");
 		cmddesc.put("reload", "Reloads the config.");
 	}

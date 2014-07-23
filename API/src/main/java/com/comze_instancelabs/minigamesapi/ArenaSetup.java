@@ -67,7 +67,7 @@ public class ArenaSetup {
 		ArenasConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig();
 		String path = "arenas." + arenaname + ".spawns.spawn" + Integer.toString(count);
 		boolean ret = false;
-		if(config.getConfig().isSet(path)){
+		if (config.getConfig().isSet(path)) {
 			ret = true;
 		}
 		config.getConfig().set(path, null);
@@ -139,12 +139,12 @@ public class ArenaSetup {
 		}
 		this.setArenaVIP(plugin, arenaname, false);
 		pli.addArena(a);
-		
+
 		// experimental:
 		Class clazz = plugin.getClass();
 		try {
 			Method method = clazz.getDeclaredMethod("loadArenas", JavaPlugin.class, pli.getArenasConfig().getClass());
-			if(method != null){
+			if (method != null) {
 				method.setAccessible(true);
 				Object ret = method.invoke(this, plugin, pli.getArenasConfig());
 				System.out.println(ret);
@@ -152,10 +152,10 @@ public class ArenaSetup {
 				pli.addLoadedArenas((ArrayList<Arena>) ret);
 			}
 		} catch (Exception e) {
-			System.out.println("Failed updating Arenas list, please reload the server.");
+			System.out.println("Failed to update Arena list, please reload the server.");
 			e.printStackTrace();
 		}
-		
+
 		return a;
 	}
 
