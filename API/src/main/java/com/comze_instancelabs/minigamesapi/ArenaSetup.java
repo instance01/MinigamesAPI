@@ -1,12 +1,16 @@
 package com.comze_instancelabs.minigamesapi;
 
-import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
-import com.comze_instancelabs.minigamesapi.util.Util;
-import com.comze_instancelabs.minigamesapi.util.Validator;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaSetup {
 
@@ -135,6 +139,23 @@ public class ArenaSetup {
 		}
 		this.setArenaVIP(plugin, arenaname, false);
 		pli.addArena(a);
+		
+		// experimental:
+		Class clazz = plugin.getClass();
+		try {
+			Method method = clazz.getDeclaredMethod("loadArenas", JavaPlugin.class, pli.getArenasConfig().getClass());
+			if(method != null){
+				method.setAccessible(true);
+				Object ret = method.invoke(this, plugin, pli.getArenasConfig());
+				System.out.println(ret);
+				pli.clearArenas();
+				pli.addLoadedArenas((ArrayList<Arena>) ret);
+			}
+		} catch (Exception e) {
+			System.out.println("Failed updating Arenas list, please reload the server.");
+			e.printStackTrace();
+		}
+		
 		return a;
 	}
 

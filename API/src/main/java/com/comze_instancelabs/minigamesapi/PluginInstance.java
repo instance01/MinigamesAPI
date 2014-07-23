@@ -17,7 +17,7 @@ public class PluginInstance {
 
 	public HashMap<String, Arena> global_players = new HashMap<String, Arena>();
 	public HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
-	
+
 	private ArenasConfig arenasconfig = null;
 	private ClassesConfig classesconfig = null;
 	private MessagesConfig messagesconfig = null;
@@ -113,6 +113,10 @@ public class PluginInstance {
 
 	public ArrayList<Arena> getArenas() {
 		return arenas;
+	}
+	
+	public void clearArenas() {
+		arenas.clear();
 	}
 
 	public ArrayList<Arena> addArena(Arena arena) {
