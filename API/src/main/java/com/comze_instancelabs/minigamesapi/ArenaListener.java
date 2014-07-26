@@ -156,6 +156,7 @@ public class ArenaListener implements Listener {
 				Arena arena = Util.getArenaBySignLocation(plugin, event.getClickedBlock().getLocation());
 				if (arena != null) {
 					arena.joinPlayerLobby(event.getPlayer().getName());
+					Util.updateSign(plugin, arena);
 				}
 			}
 		}

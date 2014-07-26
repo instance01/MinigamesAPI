@@ -58,6 +58,8 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.successfully_removed", successfully_removed);
 		this.getConfig().addDefault("messages.failed_removing_component", failed_removing_component);
 		this.getConfig().addDefault("messages.joined_arena", joined_arena);
+		this.getConfig().addDefault("messages.you_won", you_won);
+		this.getConfig().addDefault("messages.you_lost", you_lost);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -80,6 +82,9 @@ public class MessagesConfig {
 		this.successfully_removed = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_removed"));
 		this.failed_removing_component = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.failed_removing_component"));
 		this.joined_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.joined_arena"));
+		this.you_won = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_won"));
+		this.you_lost = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_lost"));
+
 	}
 
 	public String no_perm = "&cYou don't have permission.";
@@ -98,6 +103,8 @@ public class MessagesConfig {
 	public String successfully_removed = "&cSuccessfully removed &3<component>&c!";
 	public String failed_removing_component = "&cFailed removing &3<component>&c. <cause>.";
 	public String joined_arena = "&aYou joined &3<arena>&a.";
+	public String you_won = "&aYou &4won &athe game!";
+	public String you_lost = "&cYou &2lost &cthe game.";
 
 	public FileConfiguration getConfig() {
 		if (arenaConfig == null) {

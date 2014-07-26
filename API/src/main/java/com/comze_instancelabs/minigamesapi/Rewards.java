@@ -41,9 +41,9 @@ public class Rewards {
 	}
 
 	public void giveReward(String p_) {
-		if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {
-			if (Validator.isPlayerOnline(p_)) {
-				Player p = Bukkit.getPlayer(p_);
+		if (Validator.isPlayerOnline(p_)) {
+			Player p = Bukkit.getPlayer(p_);
+			if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {
 				if (economyrewards) {
 					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward);
 				}
@@ -54,8 +54,13 @@ public class Rewards {
 				if (commandrewards) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("<player>", p_));
 				}
-				//TODO add custom point rewards!
+
 				MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(p_, 10);
+
+				p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_won);
+
+			} else {
+				p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_lost);
 			}
 		}
 	}

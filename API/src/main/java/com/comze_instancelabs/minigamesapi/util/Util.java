@@ -335,7 +335,7 @@ public class Util {
 		Sign s = getSignFromArena(plugin, arena.getName());
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();
-		System.out.println(s.getLine(0) + " " + s.getLocation());
+		//System.out.println(s.getLine(0) + " " + s.getLocation());
 		if (s != null) {
 			s.setLine(0, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", MessagesConfig.squares));
 			s.setLine(1, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", MessagesConfig.squares));

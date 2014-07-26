@@ -246,13 +246,14 @@ public class Arena {
 		p.removePotionEffect(PotionEffectType.JUMP);
 
 		pli.getRewardsInstance().giveReward(playername);
-		pli.getStatsInstance().win(playername, 10);
 
 		pli.global_players.remove(playername);
 		if (pli.global_lost.containsKey(playername)) {
 			pli.global_lost.remove(playername);
 		}
 
+		Util.updateSign(plugin, this);
+		
 		final String arenaname = this.getName();
 
 		// TODO might need delay through runnable, will bring issues on laggier
@@ -431,6 +432,8 @@ public class Arena {
 		players.clear();
 		pinv.clear();
 		pinv_armor.clear();
+		
+		Util.updateSign(plugin, this);
 
 		if (ai != null) {
 			ai.nextMinigame();
