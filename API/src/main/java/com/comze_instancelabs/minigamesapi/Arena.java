@@ -381,6 +381,7 @@ public class Arena {
 				}
 				if (currentingamecount < 1) {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
+					Util.updateSign(plugin, a);
 					for (String p_ : a.getAllPlayers()) {
 						if (!Classes.hasClass(plugin, p_)) {
 							Classes.setClass(plugin, "default", p_);

@@ -1,14 +1,16 @@
 package com.comze_instancelabs.minigamesapi.config;
 
-import com.comze_instancelabs.minigamesapi.ArenaState;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import com.comze_instancelabs.minigamesapi.ArenaState;
 
 public class MessagesConfig {
 
@@ -29,11 +31,13 @@ public class MessagesConfig {
 	public void init() {
 		// all signs
 		this.getConfig().options().header("Contains all messages for easy translation.");
-		for (String state : ArenaState.getAllStateNames()) {
-			this.getConfig().addDefault("signs." + state.toLowerCase() + ".0", "[]");
-			this.getConfig().addDefault("signs." + state.toLowerCase() + ".1", "<arena>");
-			this.getConfig().addDefault("signs." + state.toLowerCase() + ".2", "<count>/<maxcount>");
-			this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", "[]");
+		HashMap<String, String> namecol = ArenaState.getAllStateNameColors();
+		for (String state : namecol.keySet()) {
+			String color = namecol.get(state);
+			this.getConfig().addDefault("signs." + state.toLowerCase() + ".0", color + "[]");
+			this.getConfig().addDefault("signs." + state.toLowerCase() + ".1", color + "<arena>");
+			this.getConfig().addDefault("signs." + state.toLowerCase() + ".2", color + "<count>/<maxcount>");
+			this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", color + "[]");
 		}
 
 		// Arcade sign
@@ -103,8 +107,8 @@ public class MessagesConfig {
 	public String successfully_removed = "&cSuccessfully removed &3<component>&c!";
 	public String failed_removing_component = "&cFailed removing &3<component>&c. <cause>.";
 	public String joined_arena = "&aYou joined &3<arena>&a.";
-	public String you_won = "&aYou &4won &athe game!";
-	public String you_lost = "&cYou &2lost &cthe game.";
+	public String you_won = "&aYou &2won &athe game!";
+	public String you_lost = "&cYou &4lost &cthe game.";
 
 	public FileConfiguration getConfig() {
 		if (arenaConfig == null) {
