@@ -18,6 +18,7 @@ public class PluginInstance {
 	public HashMap<String, Arena> global_players = new HashMap<String, Arena>();
 	public HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
 
+	private ArenaListener arenalistener = null;
 	private ArenasConfig arenasconfig = null;
 	private ClassesConfig classesconfig = null;
 	private MessagesConfig messagesconfig = null;
@@ -103,6 +104,14 @@ public class PluginInstance {
 		return stats;
 	}
 
+	public ArenaListener getArenaListener() {
+		return this.arenalistener;
+	}
+
+	public void setArenaListener(ArenaListener al) {
+		this.arenalistener = al;
+	}
+
 	public int getIngameCountdown() {
 		return this.ingame_countdown;
 	}
@@ -114,7 +123,7 @@ public class PluginInstance {
 	public ArrayList<Arena> getArenas() {
 		return arenas;
 	}
-	
+
 	public void clearArenas() {
 		arenas.clear();
 	}

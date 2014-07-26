@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,6 +30,8 @@ public class ArenaListener implements Listener {
 	PluginInstance pli = null;
 	String minigame = "minigame";
 
+	public int loseY = 4;
+	
 	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame) {
 		this.plugin = plugin;
 		this.pli = pinstance;
@@ -44,7 +47,7 @@ public class ArenaListener implements Listener {
 				final Arena a = pli.global_players.get(p.getName());
 				if (!pli.global_lost.containsKey(p.getName())) {
 					if (a.getArenaState() == ArenaState.INGAME) {
-						if (p.getLocation().getBlockY() + 4 < a.getSpawns().get(0).getBlockY()) {
+						if (p.getLocation().getBlockY() + loseY < a.getSpawns().get(0).getBlockY()) {
 							if (a.getArenaType() == ArenaType.JUMPNRUN) {
 								Util.teleportPlayerFixed(p, a.getSpawns().get(0));
 							} else {
@@ -62,6 +65,11 @@ public class ArenaListener implements Listener {
 								public void run() {
 									p.setAllowFlight(true);
 									p.setFlying(true);
+									if (p.isInsideVehicle()) {
+										Entity ent = p.getVehicle();
+										p.leaveVehicle();
+										ent.eject();
+									}
 									p.teleport(new Location(p.getWorld(), p.getLocation().getBlockX(), (a.getSpawns().get(0).getBlockY() + 30D), p.getLocation().getBlockZ(), b, c));
 								}
 							}, 5);
