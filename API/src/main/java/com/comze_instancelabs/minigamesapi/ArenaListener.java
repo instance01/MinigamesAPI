@@ -31,7 +31,7 @@ public class ArenaListener implements Listener {
 	String minigame = "minigame";
 
 	public int loseY = 4;
-	
+
 	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame) {
 		this.plugin = plugin;
 		this.pli = pinstance;
@@ -107,7 +107,9 @@ public class ArenaListener implements Listener {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					try {
-						pli.global_players.get(p.getName()).spectate(p.getName());
+						if (pli.global_players.containsKey(p.getName())) {
+							pli.global_players.get(p.getName()).spectate(p.getName());
+						}
 						for (String p_ : arena.getAllPlayers()) {
 							if (Validator.isPlayerOnline(p_)) {
 								Player p__ = Bukkit.getPlayer(p_);
