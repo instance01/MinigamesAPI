@@ -67,6 +67,17 @@ public final class Cuboid {
 				&& lowPoints.getBlockY() <= loc.getBlockY()
 				&& highPoints.getBlockY() >= loc.getBlockY();
 	}
+	
+	public boolean containsLocWithoutY(Location loc) {
+		if (loc == null || !loc.getWorld().equals(highPoints.getWorld())) {
+			return false;
+		}
+
+		return lowPoints.getBlockX() <= loc.getBlockX()
+				&& highPoints.getBlockX() >= loc.getBlockX()
+				&& lowPoints.getBlockZ() <= loc.getBlockZ()
+				&& highPoints.getBlockZ() >= loc.getBlockZ();
+	}
 
 	/**
 	 * Returns the volume of this cuboid.
