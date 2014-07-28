@@ -262,7 +262,7 @@ public class CommandHandler {
 			Arena temp = pli.getArenaByName(args[1]);
 			if (temp != null) {
 				temp.joinPlayerLobby(p.getName());
-				sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
+				//sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}

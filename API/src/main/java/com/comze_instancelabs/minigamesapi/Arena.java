@@ -181,7 +181,7 @@ public class Arena {
 		this.players.add(playername);
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
-			p.sendMessage(pli.getMessagesConfig().joined_arena.replaceAll("<arena>", this.getName()));
+			p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", this.getName()).replaceAll("<action>", "joined"));
 			if (shouldClearInventoryOnJoin) {
 				pinv.put(playername, p.getInventory().getContents());
 				pinv_armor.put(playername, p.getInventory().getArmorContents());
