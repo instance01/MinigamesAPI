@@ -65,6 +65,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.you_won", you_won);
 		this.getConfig().addDefault("messages.you_lost", you_lost);
 		this.getConfig().addDefault("messages.you_got_a_kill", you_got_a_kill);
+		this.getConfig().addDefault("messages.arena_not_initialized", arena_not_initialized);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -90,6 +91,7 @@ public class MessagesConfig {
 		this.you_won = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_won"));
 		this.you_lost = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_lost"));
 		this.you_got_a_kill = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_kill"));
+		this.arena_not_initialized = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_not_initialized"));
 
 	}
 
@@ -103,6 +105,7 @@ public class MessagesConfig {
 	public String broadcast_players_left = "&eThere are &4<count> &eplayers left!";
 	public String player_died = "&c<player> died.";
 	public String arena_action = "&aYou <action> arena &3<arena>&a!";
+	public String arena_not_initialized = "&cThe arena appears to be not initialized, did you save the arena?";
 	public String not_in_arena = "&cYou don't seem to be in an arena right now.";
 	public String teleporting_to_arena_in = "&7Teleporting to arena in <count>.";
 	public String starting_in = "&aStarting in <count>!";

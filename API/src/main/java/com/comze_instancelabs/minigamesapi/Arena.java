@@ -24,8 +24,8 @@ public class Arena {
 	private ArcadeInstance ai;
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
-	private HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
-	private HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
+	HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
+	HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
 	private HashMap<String, GameMode> pgamemode = new HashMap<String, GameMode>();
 
 	private Location mainlobby;
@@ -234,8 +234,8 @@ public class Arena {
 		this.players.remove(playername);
 		pli.global_players.remove(playername);
 		if (fullLeave) {
-			// TODO temporary save player to restore his stuff and teleport him
-			// into lobby when he joins back
+			plugin.getConfig().set("temp.left_players." + playername, playername);
+			plugin.saveConfig();
 			return;
 		}
 		final Player p = Bukkit.getPlayer(playername);
@@ -246,7 +246,10 @@ public class Arena {
 		p.setWalkSpeed(0.2F);
 		p.removePotionEffect(PotionEffectType.JUMP);
 
-		pli.getRewardsInstance().giveReward(playername);
+		System.out.println(this.getArenaState());
+		if (this.getArenaState() == ArenaState.INGAME || this.getArenaState() == ArenaState.RESTARTING) {
+			pli.getRewardsInstance().giveWinReward(playername);
+		}
 
 		pli.global_players.remove(playername);
 		if (pli.global_lost.containsKey(playername)) {
@@ -254,11 +257,9 @@ public class Arena {
 		}
 
 		Util.updateSign(plugin, this);
-		
+
 		final String arenaname = this.getName();
 
-		// TODO might need delay through runnable, will bring issues on laggier
-		// servers
 		Util.teleportPlayerFixed(p, this.mainlobby);
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
@@ -413,29 +414,30 @@ public class Arena {
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
 	public void stop() {
+		final Arena a = this;
 		try {
 			Bukkit.getScheduler().cancelTask(currenttaskid);
 		} catch (Exception e) {
 
 		}
-		this.setArenaState(ArenaState.RESTARTING);
+
 		ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
 		for (String p_ : temp) {
 			leavePlayer(p_, false);
 		}
-		// Util.teleportAllPlayers(players, mainlobby);
-		if (this.getArenaType() == ArenaType.REGENERATION) {
+
+		this.setArenaState(ArenaState.RESTARTING);
+
+		if (a.getArenaType() == ArenaType.REGENERATION) {
 			reset();
 		} else {
-			this.setArenaState(ArenaState.JOIN);
+			a.setArenaState(ArenaState.JOIN);
+			Util.updateSign(plugin, a);
 		}
 
-		// TODO possibly run that stuff later to avoid lag related bugs
 		players.clear();
 		pinv.clear();
 		pinv_armor.clear();
-		
-		Util.updateSign(plugin, this);
 
 		if (ai != null) {
 			ai.nextMinigame();

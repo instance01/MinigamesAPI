@@ -30,7 +30,7 @@ public class MinigamesAPI extends JavaPlugin {
 
 	// public static HashMap<String, Arena> global_players = new HashMap<String, Arena>();
 	// public static HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
-	public static ArrayList<String> global_leftplayers = new ArrayList<String>();
+	public static HashMap<String, Arena> global_leftplayers = new HashMap<String, Arena>();
 
 	public void onEnable() {
 		instance = this;

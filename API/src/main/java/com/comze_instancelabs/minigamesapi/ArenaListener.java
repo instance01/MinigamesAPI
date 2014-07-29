@@ -3,6 +3,7 @@ package com.comze_instancelabs.minigamesapi;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -20,6 +21,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,6 @@ public class ArenaListener implements Listener {
 		this.minigame = minigame;
 	}
 
-	// TODO add move listener -> player dead when fell
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onMove(PlayerMoveEvent event) {
 		try {
@@ -212,7 +213,7 @@ public class ArenaListener implements Listener {
 						a.setSignLocation(event.getBlock().getLocation());
 						Util.updateSign(plugin, a, event);
 					} else {
-						// TODO tell player that arena is not initialized (most likely forgot to save)
+						p.sendMessage(pli.getMessagesConfig().arena_not_initialized);
 					}
 				}
 			}
@@ -223,14 +224,28 @@ public class ArenaListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
 		pli.getStatsInstance().update(p.getName());
-		if (MinigamesAPI.getAPI().global_leftplayers.contains(event.getPlayer().getName())) {
+		if (MinigamesAPI.getAPI().global_leftplayers.containsKey(p.getName()) || plugin.getConfig().isSet("temp.left_players." + p.getName())) {
+			final Arena a = MinigamesAPI.getAPI().global_leftplayers.get(p.getName());
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					Util.teleportPlayerFixed(p, Util.getMainLobby(plugin));
 					p.setFlying(false);
+					try {
+						if (a != null) {
+							p.getInventory().setContents(a.pinv.get(p.getName()));
+							p.getInventory().setArmorContents(a.pinv_armor.get(p.getName()));
+							p.updateInventory();
+						}
+						p.setWalkSpeed(0.2F);
+						p.removePotionEffect(PotionEffectType.JUMP);
+					} catch (Exception e) {
+						p.sendMessage(ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");
+					}
 				}
 			}, 5);
 			MinigamesAPI.getAPI().global_leftplayers.remove(event.getPlayer().getName());
+			plugin.getConfig().set("temp.left_players." + p.getName(), null);
+			plugin.saveConfig();
 		}
 
 		if (pli.getArenasConfig().getConfig().getBoolean("config.game_on_join")) {
@@ -274,7 +289,7 @@ public class ArenaListener implements Listener {
 			}
 
 			arena.leavePlayer(event.getPlayer().getName(), true);
-			MinigamesAPI.getAPI().global_leftplayers.add(event.getPlayer().getName());
+			MinigamesAPI.getAPI().global_leftplayers.put(event.getPlayer().getName(), arena);
 		}
 	}
 
