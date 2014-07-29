@@ -119,8 +119,8 @@ public class CommandHandler {
 			sender.sendMessage(ChatColor.DARK_AQUA + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
 		}
 	}
-	
-	public boolean setSpawn(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean setSpawn(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -133,8 +133,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean setLobby(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean setLobby(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -147,8 +147,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean setMainLobby(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean setMainLobby(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -157,8 +157,8 @@ public class CommandHandler {
 		sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "main lobby"));
 		return true;
 	}
-	
-	public boolean setBounds(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean setBounds(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -178,8 +178,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean saveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean saveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -196,8 +196,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean setMaxPlayers(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean setMaxPlayers(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -216,8 +216,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean setMinPlayers(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean setMinPlayers(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -236,8 +236,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean setArenaVIP(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean setArenaVIP(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -256,13 +256,17 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean joinArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean joinArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (args.length > 1) {
 			Arena temp = pli.getArenaByName(args[1]);
 			if (temp != null) {
-				temp.joinPlayerLobby(p.getName());
-				//sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
+				if (!temp.containsPlayer(p.getName())) {
+					temp.joinPlayerLobby(p.getName());
+				} else {
+					p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", temp.getName()).replaceAll("<action>", "already seem to be in"));
+				}
+				// sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}
@@ -271,12 +275,12 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean leaveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean leaveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
 			a.leavePlayer(p.getName(), false);
-			if(a.getArcadeInstance() != null){
+			if (a.getArcadeInstance() != null) {
 				a.getArcadeInstance().leaveArcade(p.getName());
 			}
 		} else {
@@ -284,8 +288,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean startArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean startArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".start")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -303,8 +307,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean stopArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean stopArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".stop")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -322,8 +326,8 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean removeArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean removeArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
@@ -342,21 +346,21 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	public boolean removeSpawn(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p){
+
+	public boolean removeSpawn(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
 		}
 		if (args.length > 2) {
-			if(Util.isNumeric(args[2])){
-				if(pli.arenaSetup.removeSpawn(plugin, args[1], Integer.parseInt(args[2]))){
+			if (Util.isNumeric(args[2])) {
+				if (pli.arenaSetup.removeSpawn(plugin, args[1], Integer.parseInt(args[2]))) {
 					sender.sendMessage(pli.getMessagesConfig().successfully_removed.replaceAll("<component>", "spawn " + args[2]));
-				}else{
+				} else {
 					sender.sendMessage(pli.getMessagesConfig().failed_removing_component.replaceAll("<component>", "spawn " + args[2]).replaceAll("<cause>", "Possibly the provided count couldn't be found: " + args[2]));
 				}
-			}else{
-				
+			} else {
+
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
