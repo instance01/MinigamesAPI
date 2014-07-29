@@ -36,11 +36,23 @@ public class Rewards {
 
 	public void giveRewardsToWinners(Arena arena) {
 		for (String p_ : arena.getAllPlayers()) {
-			giveReward(p_);
+			giveWinReward(p_);
 		}
 	}
 
 	public void giveReward(String p_) {
+		if (Validator.isPlayerOnline(p_)) {
+			Player p = Bukkit.getPlayer(p_);
+
+			if (economyrewards) {
+				MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward);
+			}
+
+			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(p_, 10);
+		}
+	}
+	
+	public void giveWinReward(String p_){
 		if (Validator.isPlayerOnline(p_)) {
 			Player p = Bukkit.getPlayer(p_);
 			if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {

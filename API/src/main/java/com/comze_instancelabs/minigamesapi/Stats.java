@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.config.StatsConfig;
+
 public class Stats {
 
 	// used for wins and points
@@ -46,23 +48,25 @@ public class Stats {
 	}
 
 	private void addWin(String playername) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().getConfig();
+		StatsConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig();
 		int temp = 0;
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
-		if (config.isSet("players." + uuid + ".wins")) {
-			temp = config.getInt("players." + uuid + ".wins");
+		if (config.getConfig().isSet("players." + uuid + ".wins")) {
+			temp = config.getConfig().getInt("players." + uuid + ".wins");
 		}
-		config.set("players." + uuid + ".wins", temp + 1);
+		config.getConfig().set("players." + uuid + ".wins", temp + 1);
+		config.saveConfig();
 	}
 
 	private void addPoints(String playername, int count) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().getConfig();
+		StatsConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig();
 		int temp = 0;
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
-		if (config.isSet("players." + uuid + ".points")) {
-			temp = config.getInt("players." + uuid + ".points");
+		if (config.getConfig().isSet("players." + uuid + ".points")) {
+			temp = config.getConfig().getInt("players." + uuid + ".points");
 		}
-		config.set("players." + uuid + ".points", temp + count);
+		config.getConfig().set("players." + uuid + ".points", temp + count);
+		config.saveConfig();
 	}
 
 	public int getPoints(String playername) {

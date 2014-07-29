@@ -64,6 +64,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.joined_arena", joined_arena);
 		this.getConfig().addDefault("messages.you_won", you_won);
 		this.getConfig().addDefault("messages.you_lost", you_lost);
+		this.getConfig().addDefault("messages.you_got_a_kill", you_got_a_kill);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -88,6 +89,7 @@ public class MessagesConfig {
 		this.joined_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.joined_arena"));
 		this.you_won = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_won"));
 		this.you_lost = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_lost"));
+		this.you_got_a_kill = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_kill"));
 
 	}
 
@@ -109,6 +111,7 @@ public class MessagesConfig {
 	public String joined_arena = "&aYou joined &3<arena>&a.";
 	public String you_won = "&aYou &2won &athe game!";
 	public String you_lost = "&cYou &4lost &cthe game.";
+	public String you_got_a_kill = "&aYou killed &2<player>! &2+10";
 
 	public FileConfiguration getConfig() {
 		if (arenaConfig == null) {
