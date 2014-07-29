@@ -48,6 +48,8 @@ public class Arena {
 
 	private Arena currentarena;
 
+	boolean started = false;
+
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -246,8 +248,7 @@ public class Arena {
 		p.setWalkSpeed(0.2F);
 		p.removePotionEffect(PotionEffectType.JUMP);
 
-		System.out.println(this.getArenaState());
-		if (this.getArenaState() == ArenaState.INGAME || this.getArenaState() == ArenaState.RESTARTING) {
+		if (started) {
 			pli.getRewardsInstance().giveWinReward(playername);
 		}
 
@@ -259,10 +260,10 @@ public class Arena {
 		Util.updateSign(plugin, this);
 
 		final String arenaname = this.getName();
-
-		Util.teleportPlayerFixed(p, this.mainlobby);
+		final Arena a = this;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
+				Util.teleportPlayerFixed(p, a.mainlobby);
 				p.setFlying(false);
 				if (!p.isOp()) {
 					p.setAllowFlight(false);
@@ -295,9 +296,18 @@ public class Arena {
 			pli.global_lost.put(playername, this);
 			p.setAllowFlight(true);
 			p.setFlying(true);
-			Location temp = this.spawns.get(0);
-			Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
 			pli.scoreboardManager.updateScoreboard(plugin, this);
+			if (this.getPlayerAlive() < 2) {
+				final Arena a = this;
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						a.stop();
+					}
+				}, 20L);
+			} else {
+				Location temp = this.spawns.get(0);
+				Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+			}
 		}
 	}
 
@@ -393,6 +403,7 @@ public class Arena {
 						p.setWalkSpeed(0.2F);
 						p.removePotionEffect(PotionEffectType.JUMP);
 					}
+					started = true;
 					started();
 					try {
 						Bukkit.getScheduler().cancelTask(currenttaskid);
@@ -421,12 +432,12 @@ public class Arena {
 
 		}
 
+		this.setArenaState(ArenaState.RESTARTING);
+
 		ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
 		for (String p_ : temp) {
 			leavePlayer(p_, false);
 		}
-
-		this.setArenaState(ArenaState.RESTARTING);
 
 		if (a.getArenaType() == ArenaType.REGENERATION) {
 			reset();
@@ -438,6 +449,8 @@ public class Arena {
 		players.clear();
 		pinv.clear();
 		pinv_armor.clear();
+
+		started = false;
 
 		if (ai != null) {
 			ai.nextMinigame();

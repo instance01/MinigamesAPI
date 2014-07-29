@@ -73,7 +73,8 @@ public class ArenaListener implements Listener {
 									}
 									p.teleport(new Location(p.getWorld(), p.getLocation().getBlockX(), (a.getSpawns().get(0).getBlockY() + 30D), p.getLocation().getBlockZ(), b, c));
 								}
-							}, 5);
+							}, 1);
+							return;
 						}
 					}
 				}
