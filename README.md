@@ -19,6 +19,7 @@ Features
 - Kits/Classes and Classesmenu
 - Arcade system
 - MySQL/SQLite support
+- Guns API
 - Moar stuff :D
 
 
