@@ -1,17 +1,19 @@
 package com.comze_instancelabs.minigamesapi;
 
-import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
-import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
-import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
-import com.comze_instancelabs.minigamesapi.config.StatsConfig;
-import com.comze_instancelabs.minigamesapi.sql.MainSQL;
-import com.comze_instancelabs.minigamesapi.util.AClass;
-import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
+import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
+import com.comze_instancelabs.minigamesapi.config.GunsConfig;
+import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
+import com.comze_instancelabs.minigamesapi.config.StatsConfig;
+import com.comze_instancelabs.minigamesapi.guns.Gun;
+import com.comze_instancelabs.minigamesapi.sql.MainSQL;
+import com.comze_instancelabs.minigamesapi.util.AClass;
+import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 
 public class PluginInstance {
 
@@ -23,10 +25,12 @@ public class PluginInstance {
 	private ClassesConfig classesconfig = null;
 	private MessagesConfig messagesconfig = null;
 	private StatsConfig statsconfig = null;
+	private GunsConfig gunsconfig = null;
 	private JavaPlugin plugin = null;
 	private ArrayList<Arena> arenas = new ArrayList<Arena>();
 	private HashMap<String, AClass> pclass = new HashMap<String, AClass>();
 	private HashMap<String, AClass> aclasses = new HashMap<String, AClass>();
+	private HashMap<String, Gun> guns = new HashMap<String, Gun>();
 	private Rewards rew = null;
 	private MainSQL sql = null;
 	private Stats stats = null;
@@ -47,6 +51,7 @@ public class PluginInstance {
 		this.messagesconfig = messagesconfig;
 		this.classesconfig = classesconfig;
 		this.statsconfig = statsconfig;
+		this.gunsconfig = new GunsConfig(plugin, false);
 		this.arenas = arenas;
 		this.plugin = plugin;
 		rew = new Rewards(plugin);
@@ -76,6 +81,10 @@ public class PluginInstance {
 		this.pclass.put(player, a);
 	}
 
+	public void addGun(String name, Gun g) {
+		this.guns.put(name, g);
+	}
+
 	public ArenasConfig getArenasConfig() {
 		return arenasconfig;
 	}
@@ -90,6 +99,10 @@ public class PluginInstance {
 
 	public StatsConfig getStatsConfig() {
 		return statsconfig;
+	}
+
+	public GunsConfig getGunsConfig() {
+		return gunsconfig;
 	}
 
 	public Rewards getRewardsInstance() {

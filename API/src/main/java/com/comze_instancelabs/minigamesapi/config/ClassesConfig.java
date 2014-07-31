@@ -10,8 +10,8 @@ import java.io.InputStream;
 
 public class ClassesConfig {
 
-    private FileConfiguration arenaConfig = null;
-    private File arenaFile = null;
+    private FileConfiguration classesConfig = null;
+    private File classesFile = null;
     private JavaPlugin plugin = null;
     
     public ClassesConfig(JavaPlugin plugin, boolean custom){
@@ -32,33 +32,33 @@ public class ClassesConfig {
     }
     
     public FileConfiguration getConfig() {
-        if (arenaConfig == null) {
+        if (classesConfig == null) {
             reloadConfig();
         }
-        return arenaConfig;
+        return classesConfig;
     }
     
     public void saveConfig() {
-        if (arenaConfig == null || arenaFile == null) {
+        if (classesConfig == null || classesFile == null) {
             return;
         }
         try {
-            getConfig().save(arenaFile);
+            getConfig().save(classesFile);
         } catch (IOException ex) {
             
         }
     }
     
     public void reloadConfig() {
-        if (arenaFile == null) {
-        	arenaFile = new File(plugin.getDataFolder(), "classes.yml");
+        if (classesFile == null) {
+        	classesFile = new File(plugin.getDataFolder(), "classes.yml");
         }
-        arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
+        classesConfig = YamlConfiguration.loadConfiguration(classesFile);
 
         InputStream defConfigStream = plugin.getResource("classes.yml");
         if (defConfigStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-            arenaConfig.setDefaults(defConfig);
+            classesConfig.setDefaults(defConfig);
         }
     }
     

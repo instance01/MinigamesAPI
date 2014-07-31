@@ -14,8 +14,8 @@ import com.comze_instancelabs.minigamesapi.ArenaState;
 
 public class MessagesConfig {
 
-	private FileConfiguration arenaConfig = null;
-	private File arenaFile = null;
+	private FileConfiguration messagesConfig = null;
+	private File messagesFile = null;
 	private JavaPlugin plugin = null;
 
 	public MessagesConfig(JavaPlugin plugin) {
@@ -117,33 +117,33 @@ public class MessagesConfig {
 	public String you_got_a_kill = "&aYou killed &2<player>! &2+10";
 
 	public FileConfiguration getConfig() {
-		if (arenaConfig == null) {
+		if (messagesConfig == null) {
 			reloadConfig();
 		}
-		return arenaConfig;
+		return messagesConfig;
 	}
 
 	public void saveConfig() {
-		if (arenaConfig == null || arenaFile == null) {
+		if (messagesConfig == null || messagesFile == null) {
 			return;
 		}
 		try {
-			getConfig().save(arenaFile);
+			getConfig().save(messagesFile);
 		} catch (IOException ex) {
 
 		}
 	}
 
 	public void reloadConfig() {
-		if (arenaFile == null) {
-			arenaFile = new File(plugin.getDataFolder(), "messages.yml");
+		if (messagesFile == null) {
+			messagesFile = new File(plugin.getDataFolder(), "messages.yml");
 		}
-		arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
+		messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
 
 		InputStream defConfigStream = plugin.getResource("messages.yml");
 		if (defConfigStream != null) {
 			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-			arenaConfig.setDefaults(defConfig);
+			messagesConfig.setDefaults(defConfig);
 		}
 	}
 
