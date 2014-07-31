@@ -81,6 +81,10 @@ public class PluginInstance {
 		this.pclass.put(player, a);
 	}
 
+	public HashMap<String, Gun> getAllGuns() {
+		return this.guns;
+	}
+
 	public void addGun(String name, Gun g) {
 		this.guns.put(name, g);
 	}

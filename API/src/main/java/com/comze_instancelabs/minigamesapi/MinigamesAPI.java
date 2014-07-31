@@ -16,6 +16,7 @@ import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.config.DefaultConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
+import com.comze_instancelabs.minigamesapi.guns.Guns;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
@@ -74,6 +75,7 @@ public class MinigamesAPI extends JavaPlugin {
 			Bukkit.getPluginManager().registerEvents(al, plugin_);
 		}
 		Classes.loadClasses(plugin_);
+		Guns.loadGuns(plugin_);
 		return instance;
 	}
 
@@ -110,6 +112,7 @@ public class MinigamesAPI extends JavaPlugin {
 		pinstances.get(plugin_).setArenaListener(al);
 		Bukkit.getPluginManager().registerEvents(al, plugin_);
 		Classes.loadClasses(plugin_);
+		Guns.loadGuns(plugin_);
 		return instance;
 	}
 
@@ -131,6 +134,7 @@ public class MinigamesAPI extends JavaPlugin {
 		pinstances.get(plugin_).setArenaListener(al);
 		Bukkit.getPluginManager().registerEvents(al, plugin_);
 		Classes.loadClasses(plugin_);
+		Guns.loadGuns(plugin_);
 		return instance;
 	}
 

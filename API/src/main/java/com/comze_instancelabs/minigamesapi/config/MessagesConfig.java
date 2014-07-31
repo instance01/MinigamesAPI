@@ -66,6 +66,10 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.you_lost", you_lost);
 		this.getConfig().addDefault("messages.you_got_a_kill", you_got_a_kill);
 		this.getConfig().addDefault("messages.arena_not_initialized", arena_not_initialized);
+		this.getConfig().addDefault("messages.guns.attributelevel_increased", attributelevel_increased);
+		this.getConfig().addDefault("messages.guns.not_enough_credits", not_enough_credits);
+		this.getConfig().addDefault("messages.guns.too_many_main_guns", too_many_main_guns);
+		this.getConfig().addDefault("messages.guns.successfully_set_main_gun", successfully_set_main_gun);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -93,6 +97,11 @@ public class MessagesConfig {
 		this.you_got_a_kill = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_kill"));
 		this.arena_not_initialized = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_not_initialized"));
 
+		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
+		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
+		this.too_many_main_guns = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.too_many_main_guns"));
+		this.successfully_set_main_gun = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.successfully_set_main_gun"));
+
 	}
 
 	public String no_perm = "&cYou don't have permission.";
@@ -115,6 +124,10 @@ public class MessagesConfig {
 	public String you_won = "&aYou &2won &athe game!";
 	public String you_lost = "&cYou &4lost &cthe game.";
 	public String you_got_a_kill = "&aYou killed &2<player>! &2+10";
+	public String attributelevel_increased = "&aThe <attribute> level was increased successfully!";
+	public String not_enough_credits = "&cThe max level of 3 was reached or you don't have enough credits. Needed: <credits>";
+	public String too_many_main_guns = "&cYou already have 2 main guns, remove one first.";
+	public String successfully_set_main_gun = "&aSuccessfully set a main gun (of a maximum of two).";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

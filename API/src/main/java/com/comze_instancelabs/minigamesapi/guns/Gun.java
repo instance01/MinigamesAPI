@@ -19,21 +19,28 @@ public class Gun {
 	public Class<? extends Projectile> bullet = Egg.class;
 	public JavaPlugin plugin;
 	public double knockback_multiplier = 1.1D;
-
+	public String name = "Gun";
+	
 	boolean canshoot = true;
+	
+	ArrayList<ItemStack> items;
+	ArrayList<ItemStack> icon;
 
-	public Gun(JavaPlugin plugin, double speed, int shoot_amount, int durability, double knockback_multiplier, Class<? extends Projectile> bullet, ArrayList<ItemStack> items, ArrayList<ItemStack> icon) {
+	public Gun(JavaPlugin plugin, String name, double speed, int shoot_amount, int durability, double knockback_multiplier, Class<? extends Projectile> bullet, ArrayList<ItemStack> items, ArrayList<ItemStack> icon) {
 		this.plugin = plugin;
+		this.name = name;
 		this.speed = speed;
 		this.shoot_amount = shoot_amount;
 		this.durability = durability;
 		this.max_durability = durability;
 		this.bullet = bullet;
 		this.knockback_multiplier = knockback_multiplier;
+		this.items = items;
+		this.icon = icon;
 	}
 
 	public Gun(JavaPlugin plugin, ArrayList<ItemStack> items, ArrayList<ItemStack> icon) {
-		this(plugin, 1D, 1, 50, 1.1D, Egg.class, items, icon);
+		this(plugin, "Gun", 1D, 1, 50, 1.1D, Egg.class, items, icon);
 	}
 
 	public void shoot(Player p) {
