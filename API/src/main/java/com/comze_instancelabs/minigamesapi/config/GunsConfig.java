@@ -20,15 +20,15 @@ public class GunsConfig {
 		this.plugin = plugin;
 		if (!custom) {
 			this.getConfig().options().header("Used for saving classes. Default class:");
-			this.getConfig().addDefault("config.guns.default.name", "Pistol");
-			this.getConfig().addDefault("config.guns.default.items", "256#DAMAGE_ALL:1#KNOCKBACK*1");
-			this.getConfig().addDefault("config.guns.default.icon", "256#DAMAGE_ALL:1#KNOCKBACK*1");
-			this.getConfig().addDefault("config.guns.default.lore", "The Pistol.");
-			this.getConfig().addDefault("config.guns.default.speed", 1D);
-			this.getConfig().addDefault("config.guns.default.durability", 50);
-			this.getConfig().addDefault("config.guns.default.shoot_amount", 1);
-			this.getConfig().addDefault("config.guns.default.knockback_multiplier", 1.1D);
-			this.getConfig().addDefault("config.guns.default.permission_node", "minigames.guns.default");
+			this.getConfig().addDefault("config.guns.pistol.name", "Pistol");
+			this.getConfig().addDefault("config.guns.pistol.items", "256#DAMAGE_ALL:1#KNOCKBACK*1");
+			this.getConfig().addDefault("config.guns.pistol.icon", "256#DAMAGE_ALL:1#KNOCKBACK*1");
+			this.getConfig().addDefault("config.guns.pistol.lore", "The Pistol.");
+			this.getConfig().addDefault("config.guns.pistol.speed", 1D);
+			this.getConfig().addDefault("config.guns.pistol.durability", 50);
+			this.getConfig().addDefault("config.guns.pistol.shoot_amount", 1);
+			this.getConfig().addDefault("config.guns.pistol.knockback_multiplier", 1.1D);
+			this.getConfig().addDefault("config.guns.pistol.permission_node", "minigames.guns.pistol");
 
 			this.getConfig().addDefault("config.guns.sniper.name", "Sniper");
 			this.getConfig().addDefault("config.guns.sniper.items", "292#DAMAGE_ALL:1#KNOCKBACK*1");

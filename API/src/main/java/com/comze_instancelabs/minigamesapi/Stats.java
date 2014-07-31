@@ -40,11 +40,13 @@ public class Stats {
 	public void setWins(String playername, int count) {
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().getConfig().set("players." + uuid + ".wins", count);
+		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().saveConfig();
 	}
 
 	public void setPoints(String playername, int count) {
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().getConfig().set("players." + uuid + ".points", count);
+		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().saveConfig();
 	}
 
 	public void addWin(String playername) {
