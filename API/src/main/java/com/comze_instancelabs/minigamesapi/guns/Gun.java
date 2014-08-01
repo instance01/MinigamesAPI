@@ -65,9 +65,9 @@ public class Gun {
 			canshoot_.put(p.getName(), true);
 		}
 		if(canshoot_.get(p.getName())){
-			for (int i = 0; i < shoot_amount; i++) {
+			for (int i = 0; i < shoot_amount + 1; i++) {
 				p.launchProjectile(bullet);
-				this.durability -= 1;
+				this.durability -= (int) (10D / durability);
 			}
 			canshoot_.put(p.getName(), false);
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){

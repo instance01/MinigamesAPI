@@ -50,7 +50,7 @@ public class Guns {
 	public HashMap<String, IconMenu> lastupgradeiconm = new HashMap<String, IconMenu>();
 
 	// TODO this means only for one plugin for now
-	public HashMap<String, int[]> pgunattributes = new HashMap<String, int[]>();
+	public HashMap<String, HashMap<Gun, int[]>> pgunattributes = new HashMap<String, HashMap<Gun, int[]>>();
 
 	public JavaPlugin plugin;
 
@@ -77,7 +77,15 @@ public class Guns {
 						Gun g = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().get(gun);
 						if (g != null) {
 							int[] pattributes = getPlayerGunAttributeLevels(plugin, p.getName(), g);
-							pgunattributes.put(p.getName(), pattributes);
+							HashMap<Gun, int[]> t;
+							if(pgunattributes.containsKey(p.getName())){
+								t = pgunattributes.get(p.getName());
+								t.put(g, pattributes);
+							}else{
+								t = new HashMap<Gun, int[]>();
+								t.put(g, pattributes);
+							}
+							pgunattributes.put(p.getName(), t);
 							boolean done = false;
 							double cost = 0.0D;
 							if (d.startsWith("Speed")) {
@@ -144,7 +152,15 @@ public class Guns {
 		ret[1] = config.isSet(path + "durability") ? config.getInt(path + "durability") : 0;
 		ret[2] = config.isSet(path + "shoot") ? config.getInt(path + "shoot") : 0;
 		ret[3] = config.isSet(path + "knockback") ? config.getInt(path + "knockback") : 0;
-		pgunattributes.put(p, ret);
+		HashMap<Gun, int[]> t;
+		if(pgunattributes.containsKey(p)){
+			t = pgunattributes.get(p);
+			t.put(g, ret);
+		}else{
+			t = new HashMap<Gun, int[]>();
+			t.put(g, ret);
+		}
+		pgunattributes.put(p, t);
 		return ret;
 	}
 
