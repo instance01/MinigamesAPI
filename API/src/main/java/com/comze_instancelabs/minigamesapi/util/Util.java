@@ -94,7 +94,7 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component + count;
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
-			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getInt(base + ".location.x"), pli.getArenasConfig().getConfig().getInt(base + ".location.y"), pli.getArenasConfig().getConfig().getInt(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
@@ -103,7 +103,7 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component;
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
-			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getInt(base + ".location.x"), pli.getArenasConfig().getConfig().getInt(base + ".location.y"), pli.getArenasConfig().getConfig().getInt(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
@@ -122,9 +122,9 @@ public class Util {
 		String base = "arenas." + arenaname + "." + component;
 		ArenasConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig();
 		config.getConfig().set(base + ".world", comploc.getWorld().getName());
-		config.getConfig().set(base + ".location.x", comploc.getBlockX());
-		config.getConfig().set(base + ".location.y", comploc.getBlockY());
-		config.getConfig().set(base + ".location.z", comploc.getBlockZ());
+		config.getConfig().set(base + ".location.x", comploc.getX());
+		config.getConfig().set(base + ".location.y", comploc.getY());
+		config.getConfig().set(base + ".location.z", comploc.getZ());
 		config.getConfig().set(base + ".location.yaw", comploc.getYaw());
 		config.getConfig().set(base + ".location.pitch", comploc.getPitch());
 		config.saveConfig();
@@ -134,9 +134,9 @@ public class Util {
 		String base = "mainlobby";
 		ArenasConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig();
 		config.getConfig().set(base + ".world", comploc.getWorld().getName());
-		config.getConfig().set(base + ".location.x", comploc.getBlockX());
-		config.getConfig().set(base + ".location.y", comploc.getBlockY());
-		config.getConfig().set(base + ".location.z", comploc.getBlockZ());
+		config.getConfig().set(base + ".location.x", comploc.getX());
+		config.getConfig().set(base + ".location.y", comploc.getY());
+		config.getConfig().set(base + ".location.z", comploc.getZ());
 		config.getConfig().set(base + ".location.yaw", comploc.getYaw());
 		config.getConfig().set(base + ".location.pitch", comploc.getPitch());
 		config.saveConfig();
@@ -284,7 +284,8 @@ public class Util {
 			public void run() {
 				// restore spigot blocks!
 				for (ArenaBlock ablock : failedblocks) {
-					//Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).setType(Material.WOOL);
+					// Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x,
+					// ablock.y, ablock.z)).setType(Material.WOOL);
 					Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).getTypeId();
 					Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).setType(ablock.getMaterial());
 				}
