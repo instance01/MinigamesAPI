@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi.guns;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Egg;
@@ -22,6 +23,7 @@ public class Gun {
 	public String name = "Gun";
 	
 	boolean canshoot = true;
+	HashMap<String, Boolean> canshoot_ = new HashMap<String, Boolean>();
 	
 	ArrayList<ItemStack> items;
 	ArrayList<ItemStack> icon;
@@ -53,6 +55,24 @@ public class Gun {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
 				public void run(){
 					canshoot = true;
+				}
+			}, (long) (20D / speed));
+		}
+	}
+	
+	public void shoot(final Player p, int shoot_amount, int durability, int speed) {
+		if(!canshoot_.containsKey(p.getName())){
+			canshoot_.put(p.getName(), true);
+		}
+		if(canshoot_.get(p.getName())){
+			for (int i = 0; i < shoot_amount; i++) {
+				p.launchProjectile(bullet);
+				this.durability -= 1;
+			}
+			canshoot_.put(p.getName(), false);
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
+				public void run(){
+					canshoot_.put(p.getName(), true);
 				}
 			}, (long) (20D / speed));
 		}

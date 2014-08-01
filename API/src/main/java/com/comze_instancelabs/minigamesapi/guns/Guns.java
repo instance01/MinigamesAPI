@@ -1,6 +1,9 @@
 package com.comze_instancelabs.minigamesapi.guns;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
@@ -33,19 +37,28 @@ public class Guns {
 	// that gives us 4*4*3 = 48 levels
 
 	// how much more the next level of an attribute will cost
-	public static double level_multiplier = 3D;
+	public double level_multiplier = 3D;
 
 	// attribute base costs
-	public static int speed_cost = 40;
-	public static int durability_cost = 30;
-	public static int shoot_amount_cost = 70;
-	public static int knockback_multiplier_cost = 100;
+	public int speed_cost = 40;
+	public int durability_cost = 30;
+	public int shoot_amount_cost = 70;
+	public int knockback_multiplier_cost = 100;
 
-	public static HashMap<String, IconMenu> lastmainiconm = new HashMap<String, IconMenu>();
-	public static HashMap<String, IconMenu> lastmainediticonm = new HashMap<String, IconMenu>();
-	public static HashMap<String, IconMenu> lastupgradeiconm = new HashMap<String, IconMenu>();
+	public HashMap<String, IconMenu> lastmainiconm = new HashMap<String, IconMenu>();
+	public HashMap<String, IconMenu> lastmainediticonm = new HashMap<String, IconMenu>();
+	public HashMap<String, IconMenu> lastupgradeiconm = new HashMap<String, IconMenu>();
 
-	public static void openGUI(final JavaPlugin plugin, String p) {
+	// TODO this means only for one plugin for now
+	public HashMap<String, int[]> pgunattributes = new HashMap<String, int[]>();
+
+	public JavaPlugin plugin;
+
+	public Guns(JavaPlugin plugin) {
+		this.plugin = plugin;
+	}
+
+	public void openGUI(String p) {
 		final int credits = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().getPoints(p);
 		IconMenu iconm;
 		if (lastmainiconm.containsKey(p)) {
@@ -57,20 +70,21 @@ public class Guns {
 					String d = event.getName();
 					Player p = event.getPlayer();
 					if (MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().containsKey(d)) {
-						openGunMainEditGUI(plugin, p.getName(), d);
+						openGunMainEditGUI(p.getName(), d);
 					} else {
 						String raw = event.getItem().getItemMeta().getLore().get(0);
 						String gun = raw.substring(0, raw.indexOf(" "));
 						Gun g = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().get(gun);
 						if (g != null) {
 							int[] pattributes = getPlayerGunAttributeLevels(plugin, p.getName(), g);
+							pgunattributes.put(p.getName(), pattributes);
 							boolean done = false;
 							double cost = 0.0D;
 							if (d.startsWith("Speed")) {
 								int i = pattributes[0];
 								cost = Math.pow(level_multiplier, i) * speed_cost;
 								if (i < 3 && credits >= cost) {
-									openUpgradeGUI(plugin, p.getName(), gun, "speed", pattributes[0] + 1, cost);
+									openUpgradeGUI(p.getName(), gun, "speed", pattributes[0] + 1, cost);
 									done = true;
 									// setPlayerGunLevel(plugin, p.getName(), gun, "speed", pattributes[0] + 1);
 								}
@@ -78,21 +92,21 @@ public class Guns {
 								int i = pattributes[1];
 								cost = Math.pow(level_multiplier, i) * durability_cost;
 								if (i < 3 && credits >= cost) {
-									openUpgradeGUI(plugin, p.getName(), gun, "durability", pattributes[1] + 1, cost);
+									openUpgradeGUI(p.getName(), gun, "durability", pattributes[1] + 1, cost);
 									done = true;
 								}
 							} else if (d.startsWith("Shoot")) {
 								int i = pattributes[2];
 								cost = Math.pow(level_multiplier, i) * shoot_amount_cost;
 								if (i < 3 && credits >= cost) {
-									openUpgradeGUI(plugin, p.getName(), gun, "shoot", pattributes[2] + 1, cost);
+									openUpgradeGUI(p.getName(), gun, "shoot", pattributes[2] + 1, cost);
 									done = true;
 								}
 							} else if (d.startsWith("Knockback")) {
 								int i = pattributes[3];
 								cost = Math.pow(level_multiplier, i) * knockback_multiplier_cost;
 								if (i < 3 && credits >= cost) {
-									openUpgradeGUI(plugin, p.getName(), gun, "knockback", pattributes[3] + 1, cost);
+									openUpgradeGUI(p.getName(), gun, "knockback", pattributes[3] + 1, cost);
 									done = true;
 								}
 							}
@@ -122,7 +136,7 @@ public class Guns {
 		iconm.open(Bukkit.getPlayerExact(p));
 	}
 
-	public static int[] getPlayerGunAttributeLevels(JavaPlugin plugin, String p, Gun g) {
+	public int[] getPlayerGunAttributeLevels(JavaPlugin plugin, String p, Gun g) {
 		int[] ret = new int[4];
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + "." + g.name + ".";
@@ -130,10 +144,11 @@ public class Guns {
 		ret[1] = config.isSet(path + "durability") ? config.getInt(path + "durability") : 0;
 		ret[2] = config.isSet(path + "shoot") ? config.getInt(path + "shoot") : 0;
 		ret[3] = config.isSet(path + "knockback") ? config.getInt(path + "knockback") : 0;
+		pgunattributes.put(p, ret);
 		return ret;
 	}
 
-	public static void setPlayerGunLevel(JavaPlugin plugin, String p, String g, String attribute, int level, double cost) {
+	public void setPlayerGunLevel(JavaPlugin plugin, String p, String g, String attribute, int level, double cost) {
 		int credits = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().getPoints(p);
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + "." + g + ".";
@@ -142,7 +157,7 @@ public class Guns {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().setPoints(p, (int) (credits - cost));
 	}
 
-	public static void setPlayerGunMain(JavaPlugin plugin, String p, String g, boolean val) {
+	public void setPlayerGunMain(JavaPlugin plugin, String p, String g, boolean val) {
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + "." + g + ".main";
 		if (getPlayerAllMainGunsCount(plugin, p) > 1 && val) {
@@ -153,7 +168,7 @@ public class Guns {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().saveConfig();
 	}
 
-	public static int getPlayerAllMainGunsCount(JavaPlugin plugin, String p) {
+	public int getPlayerAllMainGunsCount(JavaPlugin plugin, String p) {
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + ".";
 		int ret = 0;
@@ -169,7 +184,7 @@ public class Guns {
 		return ret;
 	}
 
-	public static void openGunMainEditGUI(final JavaPlugin plugin, String p, final String g) {
+	public void openGunMainEditGUI(String p, final String g) {
 		IconMenu iconm;
 		if (lastmainediticonm.containsKey(p)) {
 			iconm = lastmainediticonm.get(p);
@@ -184,7 +199,7 @@ public class Guns {
 					} else if (d.startsWith("Remove")) {
 						setPlayerGunMain(plugin, p.getName(), g, false);
 					}
-					openGUI(plugin, p.getName());
+					openGUI(p.getName());
 					event.setWillClose(false);
 					event.setWillDestroy(true);
 				}
@@ -197,7 +212,7 @@ public class Guns {
 		iconm.open(Bukkit.getPlayerExact(p));
 	}
 
-	public static void openUpgradeGUI(final JavaPlugin plugin, String p, final String g, final String attribute, final int level, final double cost) {
+	public void openUpgradeGUI(String p, final String g, final String attribute, final int level, final double cost) {
 		IconMenu iconm;
 		if (lastupgradeiconm.containsKey(p)) {
 			iconm = lastupgradeiconm.get(p);
@@ -211,7 +226,7 @@ public class Guns {
 						setPlayerGunLevel(plugin, p.getName(), g, attribute, level, cost);
 						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().attributelevel_increased.replaceAll("<attribute>", attribute));
 					}
-					openGUI(plugin, p.getName());
+					openGUI(p.getName());
 					event.setWillClose(false);
 					event.setWillDestroy(true);
 				}
@@ -231,6 +246,54 @@ public class Guns {
 				String path = "config.guns." + gun + ".";
 				Gun n = new Gun(plugin, gun, config.getDouble(path + "speed"), config.getInt(path + "durability"), config.getInt(path + "shoot_amount"), config.getDouble(path + "knockback_multiplier"), Egg.class, Util.parseItems(config.getString(path + "items")), Util.parseItems(config.getString(path + "icon")));
 				MinigamesAPI.getAPI().pinstances.get(plugin).addGun(gun, n);
+			}
+		}
+	}
+
+	public void giveMainGuns(Player p) {
+		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		if (config.isSet("players." + p.getName() + ".")) {
+			int count = 0;
+			for (String gun : config.getConfigurationSection("players." + p.getName() + ".").getKeys(false)) {
+				String path = "players." + p.getName() + "." + gun + ".main";
+				if (config.isSet(path)) {
+					if (config.getBoolean(path)) {
+						// main gun
+						Gun g = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().get(gun);
+						if (g != null) {
+							p.updateInventory();
+							for (ItemStack i : g.items) {
+								ItemStack temp = i;
+								ItemMeta itemm = temp.getItemMeta();
+								itemm.setDisplayName(gun);
+								System.out.println(itemm.getDisplayName());
+								temp.setItemMeta(itemm);
+								p.getInventory().addItem(temp);
+							}
+							p.updateInventory();
+							count++;
+						}
+					}
+				}
+			}
+			if (count < 1) {
+				// player doesn't have any main, give random gun
+				HashMap<String, Gun> guns = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns();
+				List<String> t = new ArrayList<String>(guns.keySet());
+				String gun = t.get((new Random()).nextInt(t.size()));
+				Gun g = guns.get(gun);
+				if (g != null) {
+					p.updateInventory();
+					for (ItemStack i : g.items) {
+						ItemStack temp = i;
+						ItemMeta itemm = temp.getItemMeta();
+						itemm.setDisplayName(gun);
+						temp.setItemMeta(itemm);
+						p.getInventory().addItem(temp);
+					}
+					p.updateInventory();
+					count++;
+				}
 			}
 		}
 	}
