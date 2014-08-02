@@ -30,14 +30,14 @@ public class ArenaListener implements Listener {
 
 	JavaPlugin plugin = null;
 	PluginInstance pli = null;
-	String minigame = "minigame";
+	private String minigame = "minigame";
 
 	public int loseY = 4;
 
 	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame) {
 		this.plugin = plugin;
 		this.pli = pinstance;
-		this.minigame = minigame;
+		this.setName(minigame);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -192,7 +192,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		Player p = event.getPlayer();
-		if (event.getLine(0).toLowerCase().equalsIgnoreCase(minigame)) {
+		if (event.getLine(0).toLowerCase().equalsIgnoreCase(getName())) {
 			if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
 				if (!event.getLine(1).equalsIgnoreCase("")) {
 					String arena = event.getLine(1);
@@ -312,6 +312,14 @@ public class ArenaListener implements Listener {
 				return;
 			}
 		}
+	}
+
+	public String getName() {
+		return minigame;
+	}
+
+	public void setName(String minigame) {
+		this.minigame = minigame;
 	}
 
 }
