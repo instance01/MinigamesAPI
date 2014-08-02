@@ -271,7 +271,7 @@ public class CommandHandler {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}
 		} else {
-			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
 		}
 		return true;
 	}
@@ -279,10 +279,10 @@ public class CommandHandler {
 	public boolean leaveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
-			a.leavePlayer(p.getName(), false);
 			if (a.getArcadeInstance() != null) {
 				a.getArcadeInstance().leaveArcade(p.getName());
 			}
+			a.leavePlayer(p.getName(), false);
 		} else {
 			sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 		}
@@ -303,7 +303,7 @@ public class CommandHandler {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}
 		} else {
-			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
 		}
 		return true;
 	}
