@@ -170,6 +170,10 @@ public class Arena {
 			// arena ingame or restarting
 			return;
 		}
+		if(!pli.arenaSetup.getArenaEnabled(plugin, this.getName())){
+			Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().arena_disabled);
+			return;
+		}
 		if (this.getAllPlayers().size() > this.max_players - 1) {
 			// arena full
 			return;
@@ -453,8 +457,12 @@ public class Arena {
 
 		started = false;
 
-		pli.getStatsInstance().updateSkulls();
-		
+		try {
+			pli.getStatsInstance().updateSkulls();
+		} catch (Exception e) {
+
+		}
+
 		if (ai != null) {
 			ai.nextMinigame();
 			ai = null;
@@ -465,14 +473,11 @@ public class Arena {
 	 * Rebuilds an arena from file (only for arenas of REGENERATION type)
 	 */
 	public void reset() {
-		/*Runnable r = new Runnable() {
+		/*
+		 * Runnable r = new Runnable() { public void run() { Util.loadArenaFromFileSYNC(plugin, currentarena); } }; new Thread(r).start();
+		 */
+		Bukkit.getScheduler().runTask(plugin, new Runnable() {
 			public void run() {
-				Util.loadArenaFromFileSYNC(plugin, currentarena);
-			}
-		};
-		new Thread(r).start();*/
-		Bukkit.getScheduler().runTask(plugin, new Runnable(){
-			public void run(){
 				Util.loadArenaFromFileSYNC(plugin, currentarena);
 			}
 		});

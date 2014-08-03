@@ -71,6 +71,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.guns.too_many_main_guns", too_many_main_guns);
 		this.getConfig().addDefault("messages.guns.successfully_set_main_gun", successfully_set_main_gun);
 		this.getConfig().addDefault("messages.arcade_next_minigame", arcade_next_minigame);
+		this.getConfig().addDefault("messages.arena_disabled", arena_disabled);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -98,6 +99,7 @@ public class MessagesConfig {
 		this.you_got_a_kill = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_kill"));
 		this.arena_not_initialized = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_not_initialized"));
 		this.arcade_next_minigame = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_next_minigame"));
+		this.arena_disabled = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_disabled"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -131,6 +133,7 @@ public class MessagesConfig {
 	public String too_many_main_guns = "&cYou already have 2 main guns, remove one first.";
 	public String successfully_set_main_gun = "&aSuccessfully set a main gun (of a maximum of two).";
 	public String arcade_next_minigame = "&6Next Arcade game: &4<minigame>&6!";
+	public String arena_disabled = "&cThe arena is disabled thus you can't join.";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

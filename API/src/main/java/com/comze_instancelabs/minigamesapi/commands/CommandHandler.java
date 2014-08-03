@@ -64,6 +64,8 @@ public class CommandHandler {
 				return this.removeSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setskull")) {
 				return this.setSkull(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("setenabled")) {
+				return this.setEnabled(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
@@ -102,6 +104,7 @@ public class CommandHandler {
 		cmddesc.put("setarenavip <arena> <true/false>", "Sets whether arena needs permission to join.");
 		cmddesc.put("removearena <arena>", "Deletes an arena from config.");
 		cmddesc.put("removespawn <arena> <count>", "Deletes a spawn from config.");
+		cmddesc.put("setenabled", "Enables/Disables the arena.");
 		cmddesc.put("join <arena>", "Joins the arena.");
 		cmddesc.put("leave", "Leaves the arena.");
 		cmddesc.put("start <arena>", "Forces the arena to start.");
@@ -375,7 +378,7 @@ public class CommandHandler {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
 		}
-		//TODO add to help
+		// TODO add to help
 		if (args.length > 1) {
 			if (Util.isNumeric(args[1])) {
 				int count = Integer.parseInt(args[1]);
@@ -386,7 +389,24 @@ public class CommandHandler {
 
 			}
 		} else {
-			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <count>");
+		}
+		return true;
+	}
+
+	public boolean setEnabled(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 2) {
+			if (args[2].equalsIgnoreCase("true") || args[2].equalsIgnoreCase("false")) {
+				pli.arenaSetup.setArenaEnabled(plugin, args[1], Boolean.parseBoolean(args[2]));
+			} else {
+				sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 		}
 		return true;
 	}

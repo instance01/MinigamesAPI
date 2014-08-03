@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -191,5 +192,15 @@ public class ArenaSetup {
 
 	public boolean getArenaVIP(JavaPlugin plugin, String arena) {
 		return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getBoolean("arenas." + arena + ".is_vip");
+	}
+
+	public void setArenaEnabled(JavaPlugin plugin, String arena, boolean enabled) {
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".enabled", enabled);
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+	}
+
+	public boolean getArenaEnabled(JavaPlugin plugin, String arena) {
+		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		return config.isSet("arenas." + arena + ".enabled") ? config.getBoolean("arenas." + arena + ".enabled") : true;
 	}
 }
