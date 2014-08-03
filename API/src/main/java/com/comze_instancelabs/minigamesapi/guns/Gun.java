@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 public class Gun {
 
@@ -74,12 +75,22 @@ public class Gun {
 				public void run(){
 					canshoot_.put(p.getName(), true);
 				}
-			}, (long) (20D / speed));
+			}, (long) (60D / speed));
 		}
 	}
 
-	public void onHit(Entity ent) {
-		ent.setVelocity(ent.getLocation().getDirection().multiply((-1D) * knockback_multiplier));
+	public void onHit(Entity ent, int knockback_multiplier) {
+		if(this.name.equalsIgnoreCase("freeze")){
+			final Player p = (Player) ent;
+			p.setWalkSpeed(0.0F);
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable(){
+				public void run(){
+					p.setWalkSpeed(0.2F);
+				}
+			}, 20L + 20L * knockback_multiplier);
+		}else{
+			ent.setVelocity(ent.getLocation().getDirection().multiply((-1D) * knockback_multiplier));
+		}
 	}
 
 	public void reloadGun(){

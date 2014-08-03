@@ -402,6 +402,7 @@ public class CommandHandler {
 		if (args.length > 2) {
 			if (args[2].equalsIgnoreCase("true") || args[2].equalsIgnoreCase("false")) {
 				pli.arenaSetup.setArenaEnabled(plugin, args[1], Boolean.parseBoolean(args[2]));
+				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", " enabled state"));
 			} else {
 				sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 			}
