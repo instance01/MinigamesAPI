@@ -170,6 +170,9 @@ public class Stats {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().saveConfig();
 	}
 
+	/*
+	 * Since Mojangs new public API this seems to be lagging hardcore (and they're disallowing more than 1 connection per minute, gg)
+	 */
 	public void updateSkulls() {
 		TreeMap<String, Double> sorted_wins = getTop();
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().getConfig();

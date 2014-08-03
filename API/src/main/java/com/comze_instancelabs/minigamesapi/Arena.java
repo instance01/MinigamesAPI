@@ -457,11 +457,11 @@ public class Arena {
 
 		started = false;
 
-		try {
+		/*try {
 			pli.getStatsInstance().updateSkulls();
 		} catch (Exception e) {
 
-		}
+		}*/
 
 		if (ai != null) {
 			ai.nextMinigame();
