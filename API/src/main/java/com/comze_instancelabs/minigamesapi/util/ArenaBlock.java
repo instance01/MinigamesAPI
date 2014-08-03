@@ -1,11 +1,13 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import java.io.Serializable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-
-import java.io.Serializable;
+import org.bukkit.block.Chest;
+import org.bukkit.inventory.ItemStack;
  
 public class ArenaBlock implements Serializable
 {
@@ -14,14 +16,20 @@ public class ArenaBlock implements Serializable
     public int x, y, z;
     public String world;
     public Material m;
+    public byte data;
+    public ItemStack[] inv;
  
-    public ArenaBlock(Block b)
+    public ArenaBlock(Block b, boolean c)
     {
     	m = b.getType();
         x = b.getX();
         y = b.getY();
         z = b.getZ();
+        data = b.getData();
         world = b.getWorld().getName();
+        if(c){
+        	inv = ((Chest) b.getState()).getInventory().getContents();
+        }
     }
  
     public Block getBlock()
@@ -35,6 +43,14 @@ public class ArenaBlock implements Serializable
     
     public Material getMaterial(){
     	return m;
+    }
+    
+    public Byte getData(){
+    	return data;
+    }
+    
+    public ItemStack[] getInventory(){
+    	return inv;
     }
  
 }

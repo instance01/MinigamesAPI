@@ -51,8 +51,8 @@ public class Rewards {
 			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(p_, 10);
 		}
 	}
-	
-	public void giveWinReward(String p_){
+
+	public void giveWinReward(String p_) {
 		if (Validator.isPlayerOnline(p_)) {
 			Player p = Bukkit.getPlayer(p_);
 			if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p_)) {
@@ -73,6 +73,7 @@ public class Rewards {
 
 			} else {
 				p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_lost);
+				MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().lose(p_);
 			}
 		}
 	}

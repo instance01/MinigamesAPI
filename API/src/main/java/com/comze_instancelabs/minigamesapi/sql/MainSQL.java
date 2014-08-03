@@ -9,96 +9,120 @@ import java.sql.SQLException;
 public class MainSQL {
 
 	// used for rewards and stats
-	
+
 	JavaPlugin plugin = null;
 	private boolean mysql = true; // false for sqlite
 	MySQL MySQL;
 	SQLite SQLite;
-	
-	public MainSQL(JavaPlugin plugin, boolean mysql){
+
+	public MainSQL(JavaPlugin plugin, boolean mysql) {
 		this.plugin = plugin;
 		this.mysql = mysql;
-		
-		if(mysql){
-			//TODO add into default config
+
+		if (mysql) {
+			// TODO add into default config
 			MySQL = new MySQL(plugin.getConfig().getString("mysql.host"), "3306", plugin.getConfig().getString("mysql.database"), plugin.getConfig().getString("mysql.user"), plugin.getConfig().getString("mysql.pw"));
-		}else{
+		} else {
 			SQLite = new SQLite(plugin.getConfig().getString("mysql.database"), plugin.getConfig().getString("mysql.user"), plugin.getConfig().getString("mysql.pw"));
 		}
 	}
-	
-	public void createTables(){
-		//TODO auto create tables
+
+	public void createTables() {
+		// TODO auto create tables
 	}
-	
-	public void updateWinnerStats(String p_, int reward){
-		if(!plugin.getConfig().getBoolean("mysql.enabled")){
+
+	public void updateWinnerStats(String p_, int reward) {
+		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
 			return;
 		}
-		if(!mysql){
+		if (!mysql) {
 			// TODO SQLite
 		}
-    	Connection c = null;
-    	c = MySQL.open();
-		
+		Connection c = null;
+		c = MySQL.open();
+
 		try {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM minigames WHERE player='" + p_ + "'");
-			if(!res3.isBeforeFirst()){
+			if (!res3.isBeforeFirst()) {
 				// there's no such user
-				c.createStatement().executeUpdate("INSERT INTO minigames VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '1')");
+				c.createStatement().executeUpdate("INSERT INTO minigames VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '1', '0')");
 				return;
 			}
 			res3.next();
 			int points = res3.getInt("points") + reward;
 			int wins = res3.getInt("wins") + 1;
-			
+
 			c.createStatement().executeUpdate("UPDATE minigames SET points='" + Integer.toString(points) + "', wins='" + Integer.toString(wins) + "' WHERE player='" + p_ + "'");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public int getPoints(String p_){
-		if(!plugin.getConfig().getBoolean("mysql.enabled")){
-			return -1;
+
+	public void updateLoserStats(String p_) {
+		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
+			return;
 		}
-		if(!mysql){
+		if (!mysql) {
 			// TODO SQLite
 		}
-    	Connection c = null;
-    	c = MySQL.open();
-		
+		Connection c = null;
+		c = MySQL.open();
+
+		try {
+			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM minigames WHERE player='" + p_ + "'");
+			if (!res3.isBeforeFirst()) {
+				// there's no such user
+				c.createStatement().executeUpdate("INSERT INTO minigames VALUES('0', '" + p_ + "', '0', '0', '1')");
+				return;
+			}
+			res3.next();
+			int loses = res3.getInt("loses") + 1;
+
+			c.createStatement().executeUpdate("UPDATE minigames SET loses='" + Integer.toString(loses) + "' WHERE player='" + p_ + "'");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getPoints(String p_) {
+		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
+			return -1;
+		}
+		if (!mysql) {
+			// TODO SQLite
+		}
+		Connection c = null;
+		c = MySQL.open();
+
 		try {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM minigames WHERE player='" + p_ + "'");
 
-			/*if(res3.next()){
-				int points = res3.getInt("points");
-				return points;
-			}
-			return -1;*/
-			
+			/*
+			 * if(res3.next()){ int points = res3.getInt("points"); return points; } return -1;
+			 */
+
 			res3.next();
 			int credits = res3.getInt("points");
 			return credits;
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.out.println("New User detected.");
 		}
 		return -1;
 	}
-	
-	public int getWins(String p_){
-		if(!plugin.getConfig().getBoolean("mysql.enabled")){
+
+	public int getWins(String p_) {
+		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
 			return -1;
 		}
-		if(!mysql){
+		if (!mysql) {
 			// TODO SQLite
 		}
-    	Connection c = null;
-    	c = MySQL.open();
-		
+		Connection c = null;
+		c = MySQL.open();
+
 		try {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM minigames WHERE player='" + p_ + "'");
 
@@ -110,5 +134,5 @@ public class MainSQL {
 		}
 		return -1;
 	}
-	
+
 }

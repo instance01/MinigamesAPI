@@ -293,6 +293,7 @@ public class Arena {
 	public void spectate(String playername) {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			Player p = Bukkit.getPlayer(playername);
+			Util.clearInv(p);
 			pli.global_lost.put(playername, this);
 			p.setAllowFlight(true);
 			p.setFlying(true);
@@ -462,12 +463,17 @@ public class Arena {
 	 * Rebuilds an arena from file (only for arenas of REGENERATION type)
 	 */
 	public void reset() {
-		Runnable r = new Runnable() {
+		/*Runnable r = new Runnable() {
 			public void run() {
 				Util.loadArenaFromFileSYNC(plugin, currentarena);
 			}
 		};
-		new Thread(r).start();
+		new Thread(r).start();*/
+		Bukkit.getScheduler().runTask(plugin, new Runnable(){
+			public void run(){
+				Util.loadArenaFromFileSYNC(plugin, currentarena);
+			}
+		});
 	}
 
 	public String getPlayerCount() {

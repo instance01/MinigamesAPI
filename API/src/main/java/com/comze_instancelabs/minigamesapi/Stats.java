@@ -26,12 +26,18 @@ public class Stats {
 		MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateWinnerStats(playername, count);
 	}
 
+	public void lose(String playername) {
+		addLose(playername);
+		MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateLoserStats(playername);
+	}
+
 	/**
 	 * Gets called on player join to ensure file stats are up to date (with mysql stats)
+	 * 
 	 * @param playername
 	 */
 	public void update(String playername) {
-		if(plugin.getConfig().getBoolean("mysql.enabled")){
+		if (plugin.getConfig().getBoolean("mysql.enabled")) {
 			setWins(playername, MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().getWins(playername));
 			setPoints(playername, MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().getPoints(playername));
 		}
@@ -57,6 +63,19 @@ public class Stats {
 			temp = config.getConfig().getInt("players." + uuid + ".wins");
 		}
 		config.getConfig().set("players." + uuid + ".wins", temp + 1);
+		config.getConfig().set("players." + uuid + ".playername", playername);
+		config.saveConfig();
+	}
+
+	public void addLose(String playername) {
+		StatsConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig();
+		int temp = 0;
+		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
+		if (config.getConfig().isSet("players." + uuid + ".loses")) {
+			temp = config.getConfig().getInt("players." + uuid + ".loses");
+		}
+		config.getConfig().set("players." + uuid + ".loses", temp + 1);
+		config.getConfig().set("players." + uuid + ".playername", playername);
 		config.saveConfig();
 	}
 

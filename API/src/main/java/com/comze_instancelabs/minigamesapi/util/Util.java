@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -58,6 +59,13 @@ public class Util {
 		p.teleport(l, TeleportCause.PLUGIN);
 		p.setFallDistance(0F);
 		p.setVelocity(new Vector(0D, 0D, 0D));
+		/*for (Player p_ : Bukkit.getOnlinePlayers()){
+			p_.getLocation().getChunk().load(true);
+            p.getWorld().loadChunk(l.getChunk().getX(), l.getChunk().getZ());
+            p.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
+            p_.showPlayer(p);
+            p.showPlayer(p_);
+        }*/
 		l.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
 	}
 
@@ -190,7 +198,7 @@ public class Util {
 					Block change = c.getWorld().getBlockAt(start.getBlockX() + i, start.getBlockY() + j, start.getBlockZ() + k);
 
 					// if(change.getType() != Material.AIR){
-					ArenaBlock bl = new ArenaBlock(change);
+					ArenaBlock bl = change.getType() == Material.CHEST ? new ArenaBlock(change, true) : new ArenaBlock(change, false);
 
 					try {
 						oos.writeObject(bl);
@@ -256,8 +264,18 @@ public class Util {
 				if (b != null) {
 					ArenaBlock ablock = (ArenaBlock) b;
 					try {
-						if (!ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+						/*if (!ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
 							ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).setType(ablock.getMaterial());
+						}*/
+						Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+							b_.setType(ablock.getMaterial());
+							b_.setData(ablock.getData());
+							// .setTypeIdAndData(ablock.getMaterial().getId(), ablock.getData(), false);
+						}
+						if(b_.getType() == Material.CHEST){
+							((Chest)b_.getState()).getInventory().setContents(ablock.getInventory());
+							((Chest)b_.getState()).update();
 						}
 					} catch (IllegalStateException e) {
 						failcount += 1;
@@ -286,8 +304,18 @@ public class Util {
 				for (ArenaBlock ablock : failedblocks) {
 					// Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x,
 					// ablock.y, ablock.z)).setType(Material.WOOL);
-					Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).getTypeId();
-					Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).setType(ablock.getMaterial());
+					Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+					if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+						b_.setType(ablock.getMaterial());
+						b_.setData(ablock.getData());
+						// .setTypeIdAndData(ablock.getMaterial().getId(), ablock.getData(), false);
+					}
+					if(b_.getType() == Material.CHEST){
+						((Chest)b_.getState()).getInventory().setContents(ablock.getInventory());
+						((Chest)b_.getState()).update();
+					}
+					//Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).getTypeId();
+					//Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).setType(ablock.getMaterial());
 				}
 			}
 		}, 40L);
@@ -324,8 +352,10 @@ public class Util {
 	public static Arena getArenaBySignLocation(JavaPlugin plugin, Location sign) {
 		for (Arena arena : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
 			if (sign != null && arena.getArena().getSignLocation() != null) {
-				if (sign.distance(arena.getArena().getSignLocation()) < 1) {
-					return arena;
+				if(sign.getWorld().getName().equalsIgnoreCase(arena.getSignLocation().getWorld().getName())){
+					if (sign.distance(arena.getArena().getSignLocation()) < 1) {
+						return arena;
+					}	
 				}
 			}
 		}
