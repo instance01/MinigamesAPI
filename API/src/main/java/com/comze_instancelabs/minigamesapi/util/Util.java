@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import java.awt.List;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -59,13 +61,10 @@ public class Util {
 		p.teleport(l, TeleportCause.PLUGIN);
 		p.setFallDistance(0F);
 		p.setVelocity(new Vector(0D, 0D, 0D));
-		/*for (Player p_ : Bukkit.getOnlinePlayers()){
-			p_.getLocation().getChunk().load(true);
-            p.getWorld().loadChunk(l.getChunk().getX(), l.getChunk().getZ());
-            p.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
-            p_.showPlayer(p);
-            p.showPlayer(p_);
-        }*/
+		/*
+		 * for (Player p_ : Bukkit.getOnlinePlayers()){ p_.getLocation().getChunk().load(true); p.getWorld().loadChunk(l.getChunk().getX(),
+		 * l.getChunk().getZ()); p.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ()); p_.showPlayer(p); p.showPlayer(p_); }
+		 */
 		l.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
 	}
 
@@ -102,7 +101,8 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component + count;
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
-			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig()
+					.getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
@@ -111,7 +111,8 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component;
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
-			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig()
+					.getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
@@ -264,18 +265,20 @@ public class Util {
 				if (b != null) {
 					ArenaBlock ablock = (ArenaBlock) b;
 					try {
-						/*if (!ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
-							ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).setType(ablock.getMaterial());
-						}*/
+						/*
+						 * if (!ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).getType().toString().equalsIgnoreCase(ablock.
+						 * getMaterial().toString())) {
+						 * ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).setType(ablock.getMaterial()); }
+						 */
 						Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
 						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
 							b_.setType(ablock.getMaterial());
 							b_.setData(ablock.getData());
 							// .setTypeIdAndData(ablock.getMaterial().getId(), ablock.getData(), false);
 						}
-						if(b_.getType() == Material.CHEST){
-							((Chest)b_.getState()).getInventory().setContents(ablock.getInventory());
-							((Chest)b_.getState()).update();
+						if (b_.getType() == Material.CHEST) {
+							((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+							((Chest) b_.getState()).update();
 						}
 					} catch (IllegalStateException e) {
 						failcount += 1;
@@ -310,12 +313,14 @@ public class Util {
 						b_.setData(ablock.getData());
 						// .setTypeIdAndData(ablock.getMaterial().getId(), ablock.getData(), false);
 					}
-					if(b_.getType() == Material.CHEST){
-						((Chest)b_.getState()).getInventory().setContents(ablock.getInventory());
-						((Chest)b_.getState()).update();
+					if (b_.getType() == Material.CHEST) {
+						((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+						((Chest) b_.getState()).update();
 					}
-					//Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).getTypeId();
-					//Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x, ablock.y, ablock.z)).setType(ablock.getMaterial());
+					// Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x,
+					// ablock.y, ablock.z)).getTypeId();
+					// Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x,
+					// ablock.y, ablock.z)).setType(ablock.getMaterial());
 				}
 			}
 		}, 40L);
@@ -352,10 +357,10 @@ public class Util {
 	public static Arena getArenaBySignLocation(JavaPlugin plugin, Location sign) {
 		for (Arena arena : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
 			if (sign != null && arena.getArena().getSignLocation() != null) {
-				if(sign.getWorld().getName().equalsIgnoreCase(arena.getSignLocation().getWorld().getName())){
+				if (sign.getWorld().getName().equalsIgnoreCase(arena.getSignLocation().getWorld().getName())) {
 					if (sign.distance(arena.getArena().getSignLocation()) < 1) {
 						return arena;
-					}	
+					}
 				}
 			}
 		}
@@ -410,7 +415,7 @@ public class Util {
 		return s.matches("[-+]?\\d*\\.?\\d+");
 	}
 
-	// example items: 351:6#ALL_DAMAGE:2#KNOCKBACK:2*1;267*1;3*64;3*64
+	// example items: 351:6#ALL_DAMAGE:2#KNOCKBACK:2*1=NAME:LORE;267*1;3*64;3*64
 	@SuppressWarnings("unused")
 	public static ArrayList<ItemStack> parseItems(String rawitems) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
@@ -418,6 +423,7 @@ public class Util {
 		String[] a = rawitems.split(";");
 
 		for (String b : a) {
+			int nameindex = b.indexOf("=");
 			String[] c = b.split("\\*");
 			String itemid = c[0];
 			String itemdata = "0";
@@ -435,6 +441,9 @@ public class Util {
 				itemdata = d[1];
 			}
 			String itemamount = c[1];
+			if (nameindex > -1) {
+				itemamount = c[1].substring(0, c[1].indexOf("="));
+			}
 			ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount), (short) Integer.parseInt(itemdata));
 			ItemMeta m = nitem.getItemMeta();
 			for (String enchant : enchantments) {
@@ -448,6 +457,21 @@ public class Util {
 				if (Enchantment.getByName(ench) != null) {
 					m.addEnchant(Enchantment.getByName(ench), Integer.parseInt(lv), true);
 				}
+			}
+
+			if (nameindex > -1) {
+				String namelore = b.substring(nameindex + 1);
+				String name = "";
+				String lore = "";
+				int i = namelore.indexOf(":");
+				if (i > -1) {
+					name = namelore.substring(0, i);
+					lore = namelore.substring(i + 1);
+				} else {
+					name = namelore;
+				}
+				m.setDisplayName(name);
+				m.setLore(Arrays.asList(lore));
 			}
 			nitem.setItemMeta(m);
 			ret.add(nitem);
