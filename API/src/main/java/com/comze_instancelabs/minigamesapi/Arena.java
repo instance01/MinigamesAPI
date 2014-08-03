@@ -229,7 +229,7 @@ public class Arena {
 	 * @param fullLeave
 	 *            Determines if player left only minigame or the server
 	 */
-	public void leavePlayer(String playername, boolean fullLeave) {
+	public void leavePlayer(final String playername, boolean fullLeave) {
 		if (!this.containsPlayer(playername)) {
 			return;
 		}
@@ -453,6 +453,8 @@ public class Arena {
 
 		started = false;
 
+		pli.getStatsInstance().updateSkulls();
+		
 		if (ai != null) {
 			ai.nextMinigame();
 			ai = null;

@@ -3,6 +3,7 @@ package com.comze_instancelabs.minigamesapi.arcade;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaState;
@@ -17,23 +18,24 @@ public class ArcadeInstance {
 	// add minigames shuffle
 	public ArrayList<PluginInstance> minigames = new ArrayList<PluginInstance>();
 	int currentindex = 0;
-	int min_players = 1;
-	int max_players = 16;
 	public ArrayList<String> players = new ArrayList<String>();
 	Arena arena;
+	JavaPlugin plugin;
 
 	boolean started;
 
-	public ArcadeInstance(ArrayList<PluginInstance> minigames, Arena arena) {
+	public ArcadeInstance(JavaPlugin plugin, ArrayList<PluginInstance> minigames, Arena arena) {
 		this.minigames = minigames;
 		this.arena = arena;
+		this.plugin = plugin;
 	}
 
+	// TODO max 16 players!
 	public void joinArcade(String playername) {
 		if (!players.contains(playername)) {
 			players.add(playername);
 		}
-		if (players.size() >= min_players && !started) {
+		if (players.size() >= plugin.getConfig().getInt("config.arcade.min_players") && !started) {
 			startArcade();
 			started = true;
 		}

@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -185,6 +186,19 @@ public class ArenaListener implements Listener {
 			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
 				Classes.openGUI(plugin, p.getName());
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		Player p = event.getPlayer();
+		if (pli.getStatsInstance().skullsetup.contains(p.getName())) {
+			if (event.getBlock().getType() == Material.SKULL_ITEM || event.getBlock().getType() == Material.SKULL) {
+				if (event.getItemInHand().hasItemMeta()) {
+					pli.getStatsInstance().saveSkull(event.getBlock().getLocation(), Integer.parseInt(event.getItemInHand().getItemMeta().getDisplayName()));
+					pli.getStatsInstance().skullsetup.remove(p.getName());
+				}
 			}
 		}
 	}

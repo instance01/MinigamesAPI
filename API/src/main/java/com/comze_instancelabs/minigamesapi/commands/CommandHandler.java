@@ -62,6 +62,8 @@ public class CommandHandler {
 				return this.removeArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("removespawn")) {
 				return this.removeSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("setskull")) {
+				return this.setSkull(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
@@ -359,6 +361,27 @@ public class CommandHandler {
 				} else {
 					sender.sendMessage(pli.getMessagesConfig().failed_removing_component.replaceAll("<component>", "spawn " + args[2]).replaceAll("<cause>", "Possibly the provided count couldn't be found: " + args[2]));
 				}
+			} else {
+
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <count>");
+		}
+		return true;
+	}
+
+	public boolean setSkull(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		//TODO add to help
+		if (args.length > 1) {
+			if (Util.isNumeric(args[1])) {
+				int count = Integer.parseInt(args[1]);
+				p.getInventory().addItem(pli.getStatsInstance().giveSkull(args[1]));
+				p.updateInventory();
+				pli.getStatsInstance().skullsetup.add(p.getName());
 			} else {
 
 			}

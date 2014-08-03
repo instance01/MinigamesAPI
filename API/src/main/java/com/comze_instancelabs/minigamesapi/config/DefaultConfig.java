@@ -24,6 +24,8 @@ public class DefaultConfig {
 			config.addDefault("config.rewards.item_reward_ids", "264*1;11*1");
 			config.addDefault("config.rewards.command_reward", false);
 			config.addDefault("config.rewards.command", "pex user <player> add SKILLZ.*");
+			config.addDefault("config.arcade.min_players", 1);
+			config.addDefault("config.arcade.max_players", 16);
 		}
 		config.options().copyDefaults(true);
 		plugin.saveConfig();

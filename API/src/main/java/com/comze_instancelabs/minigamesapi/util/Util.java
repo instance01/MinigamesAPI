@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -480,5 +485,21 @@ public class Util {
 			MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
 		}
 		return ret;
+	}
+
+	public static class ValueComparator implements Comparator<String> {
+		Map<String, Double> base;
+
+		public ValueComparator(Map<String, Double> base) {
+			this.base = base;
+		}
+
+		public int compare(String a, String b) {
+			if (base.get(a) >= base.get(b)) {
+				return -1;
+			} else {
+				return 1;
+			}
+		}
 	}
 }
