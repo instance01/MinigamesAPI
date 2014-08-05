@@ -73,7 +73,8 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.guns.all_guns", all_guns);
 		this.getConfig().addDefault("messages.arcade_next_minigame", arcade_next_minigame);
 		this.getConfig().addDefault("messages.arena_disabled", arena_disabled);
-
+		this.getConfig().addDefault("messages.you_can_leave_with", you_can_leave_with);
+		
 		// save
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
@@ -101,6 +102,7 @@ public class MessagesConfig {
 		this.arena_not_initialized = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_not_initialized"));
 		this.arcade_next_minigame = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_next_minigame"));
 		this.arena_disabled = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_disabled"));
+		this.you_can_leave_with = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_can_leave_with"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -137,6 +139,7 @@ public class MessagesConfig {
 	public String arcade_next_minigame = "&6Next Arcade game: &4<minigame>&6!";
 	public String arena_disabled = "&cThe arena is disabled thus you can't join.";
 	public String all_guns = "&aYour current main guns: &2<guns>";
+	public String you_can_leave_with = "&cYou can leave with /leave!";
 	
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

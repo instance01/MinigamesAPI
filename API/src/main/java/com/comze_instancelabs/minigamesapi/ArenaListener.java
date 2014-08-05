@@ -313,18 +313,18 @@ public class ArenaListener implements Listener {
 		if (event.getMessage().equalsIgnoreCase("/leave")) {
 			if (pli.global_players.containsKey(event.getPlayer().getName())) {
 				Arena arena = pli.global_players.get(event.getPlayer().getName());
-				arena.leavePlayer(event.getPlayer().getName(), true);
+				arena.leavePlayer(event.getPlayer().getName(), false);
 				event.setCancelled(true);
 				return;
 			}
 		}
 		// TODO change that
 		if (pli.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
-			if (!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")) {
-				event.getPlayer().sendMessage("");
-				event.setCancelled(true);
-				return;
-			}
+			// if (!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")) {
+			event.getPlayer().sendMessage(pli.getMessagesConfig().you_can_leave_with);
+			event.setCancelled(true);
+			return;
+			// }
 		}
 	}
 
