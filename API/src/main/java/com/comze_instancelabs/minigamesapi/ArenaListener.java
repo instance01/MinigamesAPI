@@ -185,7 +185,7 @@ public class ArenaListener implements Listener {
 				return;
 			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
-				Classes.openGUI(plugin, p.getName());
+				pli.getClassesHandler().openGUI(p.getName());
 			}
 		}
 	}

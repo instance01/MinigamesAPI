@@ -34,6 +34,7 @@ public class PluginInstance {
 	private Rewards rew = null;
 	private MainSQL sql = null;
 	private Stats stats = null;
+	private Classes classes = null;
 
 	// TODO remove that
 	public boolean pvp;
@@ -57,6 +58,7 @@ public class PluginInstance {
 		rew = new Rewards(plugin);
 		stats = new Stats(plugin);
 		sql = new MainSQL(plugin, false);
+		classes = new Classes(plugin);
 		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
 		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
 	}
@@ -127,6 +129,14 @@ public class PluginInstance {
 
 	public void setArenaListener(ArenaListener al) {
 		this.arenalistener = al;
+	}
+
+	public Classes getClassesHandler() {
+		return this.classes;
+	}
+
+	public void setClassesHandler(Classes c) {
+		this.classes = c;
 	}
 
 	public int getIngameCountdown() {

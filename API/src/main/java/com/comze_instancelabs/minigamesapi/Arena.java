@@ -400,10 +400,10 @@ public class Arena {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
 					Util.updateSign(plugin, a);
 					for (String p_ : a.getAllPlayers()) {
-						if (!Classes.hasClass(plugin, p_)) {
-							Classes.setClass(plugin, "default", p_);
+						if (!pli.getClassesHandler().hasClass(p_)) {
+							pli.getClassesHandler().setClass("default", p_);
 						}
-						Classes.getClass(plugin, p_);
+						pli.getClassesHandler().getClass(p_);
 						Player p = Bukkit.getPlayer(p_);
 						p.setWalkSpeed(0.2F);
 						p.removePotionEffect(PotionEffectType.JUMP);
