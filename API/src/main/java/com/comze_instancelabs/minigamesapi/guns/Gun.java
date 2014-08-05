@@ -42,7 +42,7 @@ public class Gun {
 		this.items = items;
 		this.icon = icon;
 		if(name.equalsIgnoreCase("grenade")){
-			bullet = Snowball.class;
+			this.bullet = Snowball.class;
 		}
 	}
 
