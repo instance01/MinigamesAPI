@@ -194,6 +194,7 @@ public class Arena {
 				pinv_armor.put(playername, p.getInventory().getArmorContents());
 				if (this.getArenaType() == ArenaType.JUMPNRUN) {
 					Util.teleportPlayerFixed(p, this.spawns.get(0));
+					return;
 				} else {
 					Util.teleportPlayerFixed(p, this.waitinglobby);
 				}
@@ -234,6 +235,14 @@ public class Arena {
 	 *            Determines if player left only minigame or the server
 	 */
 	public void leavePlayer(final String playername, boolean fullLeave) {
+		this.leavePlayerRaw(playername, fullLeave);
+
+		if (this.getAllPlayers().size() < 2) {
+			this.stop();
+		}
+	}
+	
+	public void leavePlayerRaw(final String playername, boolean fullLeave){
 		if (!this.containsPlayer(playername)) {
 			return;
 		}
@@ -282,10 +291,6 @@ public class Arena {
 				}
 			}
 		}, 5L);
-
-		if (this.getAllPlayers().size() < 2) {
-			this.stop();
-		}
 	}
 
 	/**

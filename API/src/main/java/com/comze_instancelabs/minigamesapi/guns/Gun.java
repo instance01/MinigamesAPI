@@ -24,7 +24,7 @@ public class Gun {
 	public String name = "Gun";
 	
 	boolean canshoot = true;
-	HashMap<String, Boolean> canshoot_ = new HashMap<String, Boolean>();
+	public HashMap<String, Boolean> canshoot_ = new HashMap<String, Boolean>();
 	
 	ArrayList<ItemStack> items;
 	ArrayList<ItemStack> icon;

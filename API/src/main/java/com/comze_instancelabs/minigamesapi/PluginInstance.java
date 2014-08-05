@@ -115,6 +115,10 @@ public class PluginInstance {
 		return rew;
 	}
 
+	public void setRewardsInstance(Rewards r) {
+		rew = r;
+	}
+
 	public MainSQL getSQLInstance() {
 		return sql;
 	}
