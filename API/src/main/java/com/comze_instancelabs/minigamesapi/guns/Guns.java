@@ -78,10 +78,10 @@ public class Guns {
 						if (g != null) {
 							int[] pattributes = getPlayerGunAttributeLevels(plugin, p.getName(), g);
 							HashMap<Gun, int[]> t;
-							if(pgunattributes.containsKey(p.getName())){
+							if (pgunattributes.containsKey(p.getName())) {
 								t = pgunattributes.get(p.getName());
 								t.put(g, pattributes);
-							}else{
+							} else {
 								t = new HashMap<Gun, int[]>();
 								t.put(g, pattributes);
 							}
@@ -153,10 +153,10 @@ public class Guns {
 		ret[2] = config.isSet(path + "shoot") ? config.getInt(path + "shoot") : 0;
 		ret[3] = config.isSet(path + "knockback") ? config.getInt(path + "knockback") : 0;
 		HashMap<Gun, int[]> t;
-		if(pgunattributes.containsKey(p)){
+		if (pgunattributes.containsKey(p)) {
 			t = pgunattributes.get(p);
 			t.put(g, ret);
-		}else{
+		} else {
 			t = new HashMap<Gun, int[]>();
 			t.put(g, ret);
 		}
@@ -202,6 +202,17 @@ public class Guns {
 
 	public void openGunMainEditGUI(String p, final String g) {
 		IconMenu iconm;
+		Player p_ = Bukkit.getPlayer(p);
+		String guns = "";
+		for (String gun : getAllMainGuns(p_)) {
+			guns += gun + ", ";
+		}
+		if(guns.equalsIgnoreCase("")){
+			guns = "-";
+		}
+		guns = guns.substring(0, guns.length() - 2);
+		p_.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().all_guns.replaceAll("<guns>", guns));
+		
 		if (lastmainediticonm.containsKey(p)) {
 			iconm = lastmainediticonm.get(p);
 		} else {
@@ -264,6 +275,20 @@ public class Guns {
 				MinigamesAPI.getAPI().pinstances.get(plugin).addGun(gun, n);
 			}
 		}
+	}
+
+	public ArrayList<String> getAllMainGuns(Player p) {
+		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		ArrayList<String> ret = new ArrayList<String>();
+		for (String gun : config.getConfigurationSection("players." + p.getName() + ".").getKeys(false)) {
+			String path = "players." + p.getName() + "." + gun + ".main";
+			if (config.isSet(path)) {
+				if(config.getBoolean(path)){
+					ret.add(gun);
+				}
+			}
+		}
+		return ret;
 	}
 
 	public void giveMainGuns(Player p) {

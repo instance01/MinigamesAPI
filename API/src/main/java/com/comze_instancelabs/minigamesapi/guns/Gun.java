@@ -8,6 +8,7 @@ import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -40,6 +41,9 @@ public class Gun {
 		this.knockback_multiplier = knockback_multiplier;
 		this.items = items;
 		this.icon = icon;
+		if(name.equalsIgnoreCase("grenade")){
+			bullet = Snowball.class;
+		}
 	}
 
 	public Gun(JavaPlugin plugin, ArrayList<ItemStack> items, ArrayList<ItemStack> icon) {

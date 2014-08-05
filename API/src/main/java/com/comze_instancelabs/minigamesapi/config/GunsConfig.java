@@ -44,7 +44,7 @@ public class GunsConfig {
 			this.getConfig().addDefault("config.guns.grenade.items", "257#DAMAGE_ALL:1#KNOCKBACK*1");
 			this.getConfig().addDefault("config.guns.grenade.icon", "257#DAMAGE_ALL:1#KNOCKBACK*1");
 			this.getConfig().addDefault("config.guns.grenade.lore", "The Grenade Launcher.");
-			this.getConfig().addDefault("config.guns.grenade.speed", 0.2D);
+			this.getConfig().addDefault("config.guns.grenade.speed", 0.1D);
 			this.getConfig().addDefault("config.guns.grenade.durability", 10);
 			this.getConfig().addDefault("config.guns.grenade.shoot_amount", 1);
 			this.getConfig().addDefault("config.guns.grenade.knockback_multiplier", 2.5D);
