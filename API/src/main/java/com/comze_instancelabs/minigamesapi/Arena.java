@@ -51,6 +51,8 @@ public class Arena {
 
 	boolean started = false;
 
+	private boolean showArenascoreboard = true;
+
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -88,6 +90,7 @@ public class Arena {
 		this.viparena = viparena;
 		this.min_players = min_players;
 		this.max_players = max_players;
+		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getName());
 	}
 
 	// This is for loading existing arenas
@@ -98,6 +101,10 @@ public class Arena {
 
 	public Arena getArena() {
 		return this;
+	}
+
+	public boolean getShowScoreboard() {
+		return this.showArenascoreboard;
 	}
 
 	public Location getSignLocation() {

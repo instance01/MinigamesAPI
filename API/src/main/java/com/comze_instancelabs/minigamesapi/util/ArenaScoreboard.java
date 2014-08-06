@@ -24,6 +24,9 @@ public class ArenaScoreboard {
 	}
 
 	public void updateScoreboard(final JavaPlugin plugin, final Arena arena) {
+		if (!arena.getShowScoreboard()) {
+			return;
+		}
 
 		Bukkit.getScheduler().runTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {

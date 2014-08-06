@@ -203,4 +203,14 @@ public class ArenaSetup {
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
 		return config.isSet("arenas." + arena + ".enabled") ? config.getBoolean("arenas." + arena + ".enabled") : true;
 	}
+
+	public void setShowScoreboard(JavaPlugin plugin, String arena, boolean enabled) {
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".showscoreboard", enabled);
+		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+	}
+
+	public boolean getShowScoreboard(JavaPlugin plugin, String arena) {
+		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		return config.isSet("arenas." + arena + ".showscoreboard") ? config.getBoolean("arenas." + arena + ".showscoreboard") : true;
+	}
 }

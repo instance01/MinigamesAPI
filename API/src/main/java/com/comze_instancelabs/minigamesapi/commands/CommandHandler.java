@@ -66,6 +66,8 @@ public class CommandHandler {
 				return this.setSkull(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setenabled")) {
 				return this.setEnabled(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("setshowscoreboard")) {
+				return this.setShowScoreboard(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
@@ -402,7 +404,25 @@ public class CommandHandler {
 		if (args.length > 2) {
 			if (args[2].equalsIgnoreCase("true") || args[2].equalsIgnoreCase("false")) {
 				pli.arenaSetup.setArenaEnabled(plugin, args[1], Boolean.parseBoolean(args[2]));
-				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", " enabled state"));
+				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "enabled state"));
+			} else {
+				sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
+		}
+		return true;
+	}
+
+	public boolean setShowScoreboard(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 2) {
+			if (args[2].equalsIgnoreCase("true") || args[2].equalsIgnoreCase("false")) {
+				pli.arenaSetup.setShowScoreboard(plugin, args[1], Boolean.parseBoolean(args[2]));
+				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "scoreboard state"));
 			} else {
 				sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 			}
