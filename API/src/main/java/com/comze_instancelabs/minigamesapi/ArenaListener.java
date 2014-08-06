@@ -105,8 +105,13 @@ public class ArenaListener implements Listener {
 			event.getEntity().setHealth(20D);
 			final Player p = event.getEntity();
 
-			pli.global_lost.put(p.getName(), pli.global_players.get(p.getName()));
 			final Arena arena = pli.global_players.get(p.getName());
+			if (arena.getArenaState() == ArenaState.JOIN) {
+				Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
+				return;
+			}
+
+			pli.global_lost.put(p.getName(), pli.global_players.get(p.getName()));
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					try {
