@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -170,7 +171,7 @@ public class Arena {
 			// arena ingame or restarting
 			return;
 		}
-		if(!pli.arenaSetup.getArenaEnabled(plugin, this.getName())){
+		if (!pli.arenaSetup.getArenaEnabled(plugin, this.getName())) {
 			Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().arena_disabled);
 			return;
 		}
@@ -201,7 +202,11 @@ public class Arena {
 				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 					public void run() {
 						Util.clearInv(p);
-						p.getInventory().addItem(new ItemStack(plugin.getConfig().getInt("config.classes_selection_item")));
+						ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
+						ItemMeta cimeta = classes_item.getItemMeta();
+						cimeta.setDisplayName("Classes");
+						classes_item.setItemMeta(cimeta);
+						p.getInventory().addItem(classes_item);
 						p.updateInventory();
 						pgamemode.put(p.getName(), p.getGameMode());
 						p.setGameMode(GameMode.SURVIVAL);
@@ -241,8 +246,8 @@ public class Arena {
 			this.stop();
 		}
 	}
-	
-	public void leavePlayerRaw(final String playername, boolean fullLeave){
+
+	public void leavePlayerRaw(final String playername, boolean fullLeave) {
 		if (!this.containsPlayer(playername)) {
 			return;
 		}
@@ -462,11 +467,11 @@ public class Arena {
 
 		started = false;
 
-		/*try {
-			pli.getStatsInstance().updateSkulls();
-		} catch (Exception e) {
-
-		}*/
+		/*
+		 * try { pli.getStatsInstance().updateSkulls(); } catch (Exception e) {
+		 * 
+		 * }
+		 */
 
 		if (ai != null) {
 			ai.nextMinigame();
