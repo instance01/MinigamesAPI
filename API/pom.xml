@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.comze_instancelabs</groupId>
   <artifactId>MinigamesAPI</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <packaging>jar</packaging>
   <name>MinigamesAPI-API</name>
   <description>Rich Minigames API</description>
