@@ -33,12 +33,21 @@ public class ArenaListener implements Listener {
 	PluginInstance pli = null;
 	private String minigame = "minigame";
 
+	private ArrayList<String> cmds = new ArrayList<String>();
+
 	public int loseY = 4;
 
 	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame) {
 		this.plugin = plugin;
 		this.pli = pinstance;
 		this.setName(minigame);
+	}
+
+	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame, ArrayList<String> cmds) {
+		this.plugin = plugin;
+		this.pli = pinstance;
+		this.setName(minigame);
+		this.cmds = cmds;
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -326,9 +335,17 @@ public class ArenaListener implements Listener {
 		// TODO change that
 		if (pli.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
 			// if (!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")) {
-			event.getPlayer().sendMessage(pli.getMessagesConfig().you_can_leave_with);
-			event.setCancelled(true);
-			return;
+			boolean cont = false;
+			for (String cmd : cmds) {
+				if (event.getMessage().startsWith(cmd)) {
+					cont = true;
+				}
+			}
+			if (!cont) {
+				event.getPlayer().sendMessage(pli.getMessagesConfig().you_can_leave_with);
+				event.setCancelled(true);
+				return;
+			}
 			// }
 		}
 	}

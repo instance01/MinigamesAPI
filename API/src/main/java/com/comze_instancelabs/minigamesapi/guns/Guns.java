@@ -280,11 +280,13 @@ public class Guns {
 	public ArrayList<String> getAllMainGuns(Player p) {
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
 		ArrayList<String> ret = new ArrayList<String>();
-		for (String gun : config.getConfigurationSection("players." + p.getName() + ".").getKeys(false)) {
-			String path = "players." + p.getName() + "." + gun + ".main";
-			if (config.isSet(path)) {
-				if(config.getBoolean(path)){
-					ret.add(gun);
+		if(config.isSet("player." + p.getName())){
+			for (String gun : config.getConfigurationSection("players." + p.getName() + ".").getKeys(false)) {
+				String path = "players." + p.getName() + "." + gun + ".main";
+				if (config.isSet(path)) {
+					if(config.getBoolean(path)){
+						ret.add(gun);
+					}
 				}
 			}
 		}
