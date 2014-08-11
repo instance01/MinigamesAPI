@@ -309,7 +309,7 @@ public class Guns {
 								ItemStack temp = i;
 								ItemMeta itemm = temp.getItemMeta();
 								itemm.setDisplayName(gun);
-								System.out.println(itemm.getDisplayName());
+								//System.out.println(itemm.getDisplayName());
 								temp.setItemMeta(itemm);
 								p.getInventory().addItem(temp);
 							}

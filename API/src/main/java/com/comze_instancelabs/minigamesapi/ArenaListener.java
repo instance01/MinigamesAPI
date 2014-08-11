@@ -277,7 +277,7 @@ public class ArenaListener implements Listener {
 			plugin.saveConfig();
 		}
 
-		if (pli.getArenasConfig().getConfig().getBoolean("config.game_on_join")) {
+		if (plugin.getConfig().getBoolean("config.game_on_join")) {
 			int c = 0;
 			final List<String> arenas = new ArrayList<String>();
 			for (String arena : pli.getArenasConfig().getConfig().getKeys(false)) {

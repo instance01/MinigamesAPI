@@ -14,6 +14,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
+import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
@@ -479,6 +480,25 @@ public class Arena {
 		 * 
 		 * }
 		 */
+
+		if (plugin.getConfig().getBoolean("config.bungee.teleport_all_to_server_on_stop")) {
+			final String server = plugin.getConfig().getString("config.bungee.teleport_all_to_server_on_stop.server");
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					for (Player p : Bukkit.getOnlinePlayers()) {
+						BungeeUtil.connectToServer(plugin, p.getName(), server);
+					}
+				}
+			}, 30L);
+			return;
+		}
+
+		if (plugin.getConfig().getBoolean("config.execute_cmds_on_stop")) {
+			String[] cmds = plugin.getConfig().getString("config.cmds").split(";");
+			for (String cmd : cmds) {
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+			}
+		}
 
 		if (ai != null) {
 			ai.nextMinigame();
