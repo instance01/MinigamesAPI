@@ -27,7 +27,7 @@ public class DefaultConfig {
 			config.addDefault("config.arcade.min_players", 1);
 			config.addDefault("config.arcade.max_players", 16);
 			config.addDefault("config.bungee.game_on_join", false);
-			config.addDefault("config.bungee.teleport_all_to_server_on_stop", false);
+			config.addDefault("config.bungee.teleport_all_to_server_on_stop.tp", false);
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.server", "lobby");
 			config.addDefault("config.execute_cmds_on_stop", false);
 			config.addDefault("config.cmds", "say SERVER STOPPING;stop");
