@@ -221,7 +221,49 @@ public class Arena {
 					}
 				}, 10L);
 				if (this.getAllPlayers().size() > this.min_players - 1) {
-					this.startLobby();
+					this.startLobby(true);
+				}
+			}
+		}
+	}
+
+	public void joinPlayerLobby(String playername, boolean countdown) {
+		if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) {
+			return;
+		}
+		if (this.getAllPlayers().size() > this.max_players - 1) {
+			return;
+		}
+		pli.global_players.put(playername, this);
+		this.players.add(playername);
+		if (Validator.isPlayerValid(plugin, playername, this)) {
+			final Player p = Bukkit.getPlayer(playername);
+			p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", this.getName()).replaceAll("<action>", "joined"));
+			Util.updateSign(plugin, this);
+			if (shouldClearInventoryOnJoin) {
+				pinv.put(playername, p.getInventory().getContents());
+				pinv_armor.put(playername, p.getInventory().getArmorContents());
+				if (this.getArenaType() == ArenaType.JUMPNRUN) {
+					Util.teleportPlayerFixed(p, this.spawns.get(0));
+					return;
+				} else {
+					Util.teleportPlayerFixed(p, this.waitinglobby);
+				}
+				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+					public void run() {
+						Util.clearInv(p);
+						ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
+						ItemMeta cimeta = classes_item.getItemMeta();
+						cimeta.setDisplayName("Classes");
+						classes_item.setItemMeta(cimeta);
+						p.getInventory().addItem(classes_item);
+						p.updateInventory();
+						pgamemode.put(p.getName(), p.getGameMode());
+						p.setGameMode(GameMode.SURVIVAL);
+					}
+				}, 10L);
+				if (this.getAllPlayers().size() > this.min_players - 1) {
+					this.startLobby(countdown);
 				}
 			}
 		}
@@ -237,7 +279,7 @@ public class Arena {
 	 */
 	public void joinPlayerLobby(String playername, ArcadeInstance ai) {
 		this.ai = ai;
-		joinPlayerLobby(playername);
+		joinPlayerLobby(playername, false); // join playerlobby without lobby countdown
 	}
 
 	/**
@@ -352,12 +394,26 @@ public class Arena {
 	 * You can insta-start an arena by using Arena.start();
 	 */
 	public void startLobby() {
+		startLobby(true);
+	}
+
+	public void startLobby(boolean countdown) {
 		if (currentstate != ArenaState.JOIN) {
 			return;
 		}
 		this.setArenaState(ArenaState.STARTING);
 		currentlobbycount = pli.lobby_countdown;
 		final Arena a = this;
+
+		// skip countdown
+		if (!countdown) {
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					currentarena.getArena().start(true);
+				}
+			}, 10L);
+		}
+
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentlobbycount--;

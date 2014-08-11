@@ -72,6 +72,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.guns.successfully_set_main_gun", successfully_set_main_gun);
 		this.getConfig().addDefault("messages.guns.all_guns", all_guns);
 		this.getConfig().addDefault("messages.arcade_next_minigame", arcade_next_minigame);
+		this.getConfig().addDefault("messages.arcade_joined_waiting", arcade_joined_waiting);
 		this.getConfig().addDefault("messages.arena_disabled", arena_disabled);
 		this.getConfig().addDefault("messages.you_can_leave_with", you_can_leave_with);
 		
@@ -103,6 +104,7 @@ public class MessagesConfig {
 		this.arcade_next_minigame = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_next_minigame"));
 		this.arena_disabled = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_disabled"));
 		this.you_can_leave_with = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_can_leave_with"));
+		this.arcade_joined_waiting = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_joined_waiting"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -140,7 +142,8 @@ public class MessagesConfig {
 	public String arena_disabled = "&cThe arena is disabled thus you can't join.";
 	public String all_guns = "&aYour current main guns: &2<guns>";
 	public String you_can_leave_with = "&cYou can leave with /leave!";
-	
+	public String arcade_joined_waiting = "&6You joined Arcade! Waiting for <count> more players to start.";
+
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {
 			reloadConfig();
