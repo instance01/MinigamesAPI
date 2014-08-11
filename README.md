@@ -20,7 +20,8 @@ Features
 - Arcade system
 - MySQL/SQLite support
 - Guns API
-- Moar stuff :D
+- Bungee support
+- More stuff
 
 
 Oh and of course a bunch of [premade Minigames and examples](https://github.com/MC-Minigames/).
