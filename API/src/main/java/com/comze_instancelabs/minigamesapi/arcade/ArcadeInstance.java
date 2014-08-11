@@ -56,7 +56,10 @@ public class ArcadeInstance {
 		}
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				Util.teleportPlayerFixed(Bukkit.getPlayer(playername), arena.getMainLobbyTemp());
+				Player p = Bukkit.getPlayer(playername);
+				if(p != null){
+					Util.teleportPlayerFixed(p, arena.getMainLobbyTemp());
+				}
 			}
 		}, 20L);
 		clean();
