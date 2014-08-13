@@ -208,7 +208,7 @@ public class Guns {
 			guns += gun + ", ";
 		}
 		if(guns.equalsIgnoreCase("")){
-			guns = "-";
+			guns = "--";
 		}
 		guns = guns.substring(0, guns.length() - 2);
 		p_.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().all_guns.replaceAll("<guns>", guns));
@@ -280,7 +280,7 @@ public class Guns {
 	public ArrayList<String> getAllMainGuns(Player p) {
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
 		ArrayList<String> ret = new ArrayList<String>();
-		if(config.isSet("player." + p.getName())){
+		if(config.isSet("players." + p.getName())){
 			for (String gun : config.getConfigurationSection("players." + p.getName() + ".").getKeys(false)) {
 				String path = "players." + p.getName() + "." + gun + ".main";
 				if (config.isSet(path)) {
