@@ -4,6 +4,9 @@ MinigamesAPI [![Build Status](https://drone.io/github.com/instance01/MinigamesAP
 Rich MinigamesAPI supporting different types of Minigames.
 
 
+Development Files can be found at https://drone.io/github.com/instance01/MinigamesAPI/files, use the release in the mid.
+
+
 Features
 --------
 
@@ -29,8 +32,3 @@ Oh and of course a bunch of [premade Minigames and examples](https://github.com/
 See the [wiki](https://github.com/instance01/MinigamesAPI/wiki) or the [JavaDocs](http://www.instancedev.com/bukkitdev/MinigamesAPI/javadocs/) for more information on API usage.
 
 
-Downloads
----------
-
-
-Development Files can be found [here](https://drone.io/github.com/instance01/MinigamesAPI/files), use the release in the mid.
