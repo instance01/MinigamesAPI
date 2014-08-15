@@ -337,7 +337,7 @@ public class ArenaListener implements Listener {
 			// if (!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")) {
 			boolean cont = false;
 			for (String cmd : cmds) {
-				if (event.getMessage().startsWith(cmd)) {
+				if (event.getMessage().toLowerCase().startsWith(cmd.toLowerCase())) {
 					cont = true;
 				}
 			}

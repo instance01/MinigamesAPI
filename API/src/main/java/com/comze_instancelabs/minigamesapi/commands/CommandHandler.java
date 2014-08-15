@@ -250,7 +250,7 @@ public class CommandHandler {
 			return true;
 		}
 		if (args.length > 2) {
-			if (!args[2].equalsIgnoreCase("true") || !args[2].equalsIgnoreCase("false")) {
+			if (!args[2].equalsIgnoreCase("true") && !args[2].equalsIgnoreCase("false")) {
 				return true;
 			}
 			pli.arenaSetup.setArenaVIP(plugin, args[1], Boolean.parseBoolean(args[2]));

@@ -183,6 +183,14 @@ public class Arena {
 			Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().arena_disabled);
 			return;
 		}
+		if (ai == null && this.isVIPArena()) {
+			if (Validator.isPlayerOnline(playername)) {
+				if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getName())) {
+					Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().no_perm_to_join_arena.replaceAll("<arena>", this.getName()));
+					return;
+				}
+			}
+		}
 		if (this.getAllPlayers().size() > this.max_players - 1) {
 			// arena full
 			return;
@@ -227,6 +235,12 @@ public class Arena {
 		}
 	}
 
+	/**
+	 * Primarily used for ArcadeInstance to join a waiting lobby without countdown
+	 * 
+	 * @param playername
+	 * @param countdown
+	 */
 	public void joinPlayerLobby(String playername, boolean countdown) {
 		if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) {
 			return;
@@ -310,9 +324,6 @@ public class Arena {
 		}
 		final Player p = Bukkit.getPlayer(playername);
 		Util.clearInv(p);
-		p.getInventory().setContents(pinv.get(playername));
-		p.getInventory().setArmorContents(pinv_armor.get(playername));
-		p.updateInventory();
 		p.setWalkSpeed(0.2F);
 		p.removePotionEffect(PotionEffectType.JUMP);
 
@@ -339,6 +350,9 @@ public class Arena {
 				if (pgamemode.containsKey(p.getName())) {
 					p.setGameMode(pgamemode.get(p.getName()));
 				}
+				p.getInventory().setContents(pinv.get(playername));
+				p.getInventory().setArmorContents(pinv_armor.get(playername));
+				p.updateInventory();
 				try {
 					pli.scoreboardManager.removeScoreboard(arenaname, p);
 				} catch (Exception e) {
@@ -525,9 +539,13 @@ public class Arena {
 			Util.updateSign(plugin, a);
 		}
 
-		players.clear();
-		pinv.clear();
-		pinv_armor.clear();
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				players.clear();
+				pinv.clear();
+				pinv_armor.clear();
+			}
+		}, 10L);
 
 		started = false;
 
@@ -536,6 +554,13 @@ public class Arena {
 		 * 
 		 * }
 		 */
+
+		if (plugin.getConfig().getBoolean("config.execute_cmds_on_stop")) {
+			String[] cmds = plugin.getConfig().getString("config.cmds").split(";");
+			for (String cmd : cmds) {
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+			}
+		}
 
 		if (plugin.getConfig().getBoolean("config.bungee.teleport_all_to_server_on_stop.tp")) {
 			final String server = plugin.getConfig().getString("config.bungee.teleport_all_to_server_on_stop.server");
@@ -549,17 +574,14 @@ public class Arena {
 			return;
 		}
 
-		if (plugin.getConfig().getBoolean("config.execute_cmds_on_stop")) {
-			String[] cmds = plugin.getConfig().getString("config.cmds").split(";");
-			for (String cmd : cmds) {
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				if (ai != null) {
+					ai.nextMinigame();
+					ai = null;
+				}
 			}
-		}
-
-		if (ai != null) {
-			ai.nextMinigame();
-			ai = null;
-		}
+		}, 10L);
 	}
 
 	/**
