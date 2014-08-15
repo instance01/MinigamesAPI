@@ -43,12 +43,12 @@ public class MinigamesAPI extends JavaPlugin {
 
 		if (economy) {
 			if (!setupEconomy()) {
-				getLogger().severe(String.format("[%s] - No iConomy dependency found! Disabling Economy.", getDescription().getName()));
+				getLogger().severe(String.format("[%s] - No Economy (Vault) dependency found! Disabling Economy.", getDescription().getName()));
 				economy = false;
 			}
 		}
 
-		// TODO setup Updater and Metrics
+		// TODO setup Updater and Metrics?
 
 	}
 
