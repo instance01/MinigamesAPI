@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +19,8 @@ import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.guns.Guns;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
+import com.comze_instancelabs.minigamesapi.util.Metrics;
+import com.comze_instancelabs.minigamesapi.util.Updater;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class MinigamesAPI extends JavaPlugin {
@@ -48,7 +51,22 @@ public class MinigamesAPI extends JavaPlugin {
 			}
 		}
 
-		// TODO setup Updater and Metrics?
+		// TODO setup Updater and Metrics
+		getConfig().options().header("Want bugfree versions? Set this to true:");
+		getConfig().addDefault("config.auto_updating", true);
+
+		getConfig().options().copyDefaults(true);
+		this.saveConfig();
+
+		try {
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+		} catch (IOException e) {
+		}
+
+		if (getConfig().getBoolean("config.auto_updating")) {
+			Updater updater = new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
+		}
 
 	}
 
