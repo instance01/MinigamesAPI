@@ -31,6 +31,11 @@ public class DefaultConfig {
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.server", "lobby");
 			config.addDefault("config.execute_cmds_on_stop", false);
 			config.addDefault("config.cmds", "say SERVER STOPPING;stop");
+			config.addDefault("mysql.enabled", false);
+			config.addDefault("mysql.host", "127.0.0.1");
+			config.addDefault("mysql.user", "root");
+			config.addDefault("mysql.pw", "root");
+			config.addDefault("mysql.database", "minecraft");
 		}
 		config.options().copyDefaults(true);
 		plugin.saveConfig();

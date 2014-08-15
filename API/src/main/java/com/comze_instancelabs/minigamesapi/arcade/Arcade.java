@@ -6,7 +6,6 @@ import com.comze_instancelabs.minigamesapi.PluginInstance;
 
 public class Arcade {
 
-	// TODO Arcade
 	/*
 	 * 
 	 * Ability to play all registered Minigames in a row
