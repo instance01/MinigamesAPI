@@ -325,6 +325,7 @@ public class Arena {
 		final Player p = Bukkit.getPlayer(playername);
 		Util.clearInv(p);
 		p.setWalkSpeed(0.2F);
+		p.setFoodLevel(20);
 		p.removePotionEffect(PotionEffectType.JUMP);
 
 		if (started) {
@@ -466,7 +467,8 @@ public class Arena {
 		for (String p_ : currentarena.getArena().getAllPlayers()) {
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.0F);
-			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -5));
+			p.setFoodLevel(5);
+			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
 		}
 		if (tp) {
 			Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
@@ -494,6 +496,7 @@ public class Arena {
 						pli.getClassesHandler().getClass(p_);
 						Player p = Bukkit.getPlayer(p_);
 						p.setWalkSpeed(0.2F);
+						p.setFoodLevel(20);
 						p.removePotionEffect(PotionEffectType.JUMP);
 					}
 					started = true;
