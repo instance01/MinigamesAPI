@@ -35,7 +35,7 @@ public class DefaultConfig {
 			config.addDefault("mysql.host", "127.0.0.1");
 			config.addDefault("mysql.user", "root");
 			config.addDefault("mysql.pw", "root");
-			config.addDefault("mysql.database", "minecraft");
+			config.addDefault("mysql.database", "mcminigames");
 		}
 		config.options().copyDefaults(true);
 		plugin.saveConfig();

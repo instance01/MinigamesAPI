@@ -8,3 +8,4 @@ bin
 *.class
 target/
 javadocs/
+*.iml

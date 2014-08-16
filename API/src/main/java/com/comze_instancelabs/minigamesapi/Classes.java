@@ -58,7 +58,6 @@ public class Classes {
 
 	public void setClass(String classname, String player) {
 		if (!kitPlayerHasPermission(classname, Bukkit.getPlayer(player))) {
-			// TODO this string can't be found in config:
 			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 			return;
 		}

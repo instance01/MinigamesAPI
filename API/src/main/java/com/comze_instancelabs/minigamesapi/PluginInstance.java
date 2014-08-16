@@ -57,7 +57,7 @@ public class PluginInstance {
 		this.plugin = plugin;
 		rew = new Rewards(plugin);
 		stats = new Stats(plugin);
-		sql = new MainSQL(plugin, false);
+		sql = new MainSQL(plugin, true);
 		classes = new Classes(plugin);
 		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
 		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;

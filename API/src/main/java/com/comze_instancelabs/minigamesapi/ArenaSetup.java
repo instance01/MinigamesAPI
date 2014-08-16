@@ -125,7 +125,6 @@ public class ArenaSetup {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Arena " + arenaname + " appears to be invalid.");
 			return null;
 		}
-		// TODO arena saving (to file too)
 		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (pli.getArenaByName(arenaname) != null) {
 			pli.removeArenaByName(arenaname);
