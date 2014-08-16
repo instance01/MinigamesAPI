@@ -26,8 +26,6 @@ public class Stats {
 	// you can get points for pretty much everything in the games,
 	// but these points are just for top stats, nothing more
 
-	// TODO Add MySQL support
-
 	private JavaPlugin plugin = null;
 
 	public ArrayList<String> skullsetup = new ArrayList<String>();
