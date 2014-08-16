@@ -35,7 +35,6 @@ public class MainSQL {
 	}
 
 	public void createTables() {
-		// TODO auto create tables
 		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
 			return;
 		}
@@ -46,10 +45,6 @@ public class MainSQL {
 
 		try {
 			c.createStatement().execute("CREATE DATABASE IF NOT EXISTS " + plugin.getConfig().getString("mysql.database"));
-			// ResultSet res = c.createStatement().executeQuery("SELECT count(*) FROM information_schema.TABLES WHERE (TABLE_SCHEMA = '" +
-			// plugin.getConfig().getString("mysql.database") + "') AND (TABLE_NAME = '" + plugin.getName() + "')");
-			// if(!res.isBeforeFirst()){
-			// table doesn't exist, let's create it:
 			c.createStatement().execute("CREATE TABLE IF NOT EXISTS " + plugin.getName() + " (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, player VARCHAR(100), points INT, wins INT, loses INT)");
 			// }
 		} catch (SQLException e) {
@@ -126,12 +121,15 @@ public class MainSQL {
 			 * if(res3.next()){ int points = res3.getInt("points"); return points; } return -1;
 			 */
 
-			res3.next();
-			int credits = res3.getInt("points");
-			return credits;
+			if (res3.isBeforeFirst()) {
+				res3.next();
+				int credits = res3.getInt("points");
+				return credits;
+			} else {
+				// System.out.println("New User detected.");
+			}
 		} catch (SQLException e) {
-			// e.printStackTrace();
-			System.out.println("New User detected.");
+			//
 		}
 		return -1;
 	}
@@ -148,11 +146,15 @@ public class MainSQL {
 		try {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 
-			res3.next();
-			int wins = res3.getInt("wins");
-			return wins;
+			if (res3.isBeforeFirst()) {
+				res3.next();
+				int wins = res3.getInt("wins");
+				return wins;
+			} else {
+				// System.out.println("New User detected.");
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//
 		}
 		return -1;
 	}
