@@ -15,9 +15,9 @@ import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class ArenaScoreboard {
 
-	static Scoreboard board;
-	static Objective objective;
-	public static HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
+	Scoreboard board;
+	Objective objective;
+	HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
 
 	public ArenaScoreboard() {
 
@@ -117,4 +117,7 @@ public class ArenaScoreboard {
 		}
 	}
 
+	public void setCurrentScoreMap(HashMap<String, Integer> newcurrentscore) {
+		this.currentscore = newcurrentscore;
+	}
 }
