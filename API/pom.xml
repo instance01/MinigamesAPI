@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.comze_instancelabs</groupId>
-  <artifactId>MinigamesAPI</artifactId>
+  <artifactId>MinigamesLib</artifactId>
   <version>1.4.0</version>
   <packaging>jar</packaging>
-  <name>MinigamesAPI-API</name>
+  <name>MinigamesLib-API</name>
   <description>Rich Minigames API</description>
   
   <parent>
     <groupId>com.comze_instancelabs</groupId>
-    <artifactId>MinigamesAPI-parent</artifactId>
+    <artifactId>MinigamesLib-parent</artifactId>
     <version>parent</version>
   </parent>
   

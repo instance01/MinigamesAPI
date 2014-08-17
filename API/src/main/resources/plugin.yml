@@ -1,4 +1,4 @@
-name: MinigamesAPI
+name: MinigamesLib
 main: com.comze_instancelabs.minigamesapi.MinigamesAPI
 version: 1.4.0
 author: InstanceLabs
