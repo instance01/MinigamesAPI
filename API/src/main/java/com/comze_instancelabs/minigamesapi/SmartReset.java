@@ -51,6 +51,7 @@ public class SmartReset {
 				if (b_.getType() == Material.CHEST) {
 					b_.setType(ablock.getMaterial());
 					b_.setData(ablock.getData());
+					((Chest) b_.getState()).getBlockInventory().clear();
 					for(ItemStack i : ablock.getInventory()){
 						//System.out.println(i);
 						if(i != null){

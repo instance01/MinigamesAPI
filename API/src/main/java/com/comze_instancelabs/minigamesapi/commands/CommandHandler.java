@@ -70,6 +70,8 @@ public class CommandHandler {
 				return this.setEnabled(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setshowscoreboard")) {
 				return this.setShowScoreboard(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("reset")) {
+				return this.resetArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
