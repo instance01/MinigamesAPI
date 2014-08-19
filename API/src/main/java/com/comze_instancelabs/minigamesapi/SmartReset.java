@@ -38,58 +38,66 @@ public class SmartReset {
 
 	public void reset() {
 		System.out.println(changed.size() + " to reset.");
-		int failcount = 0;
+
 		final ArrayList<ArenaBlock> failedblocks = new ArrayList<ArenaBlock>();
 
-		for (ArenaBlock ablock : changed.values()) {
-			try {
-				Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
-				if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
-					b_.setType(ablock.getMaterial());
-					b_.setData(ablock.getData());
+		Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
+			public void run() {
+				int failcount = 0;
+				for (final ArenaBlock ablock : changed.values()) {
+					try {
+						final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+							b_.setType(ablock.getMaterial());
+							b_.setData(ablock.getData());
+						}
+						if (b_.getType() == Material.CHEST) {
+							// System.out.println(ablock.getInventory()[0]);
+							for (ItemStack i : ablock.getInventory()) {
+								// System.out.println(i);
+								if (i != null) {
+									// System.out.println(i);
+									((Chest) b_.getState()).getBlockInventory().addItem(new ItemStack(i.getType(), i.getAmount() + 1));
+								}
+							}
+							// ((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+							((Chest) b_.getState()).update();
+
+							// System.out.println(((Chest) b_.getState()).getInventory().getContents()[0]);
+
+							// ((Chest) b_.getState()).getBlockInventory().setContents(ablock.getInventory());
+							// ((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+
+						}
+					} catch (IllegalStateException e) {
+						failcount += 1;
+						failedblocks.add(ablock);
+					}
 				}
-				if (b_.getType() == Material.CHEST) {
-					b_.setType(ablock.getMaterial());
-					b_.setData(ablock.getData());
-					((Chest) b_.getState()).getBlockInventory().clear();
-					for(ItemStack i : ablock.getInventory()){
-						//System.out.println(i);
-						if(i != null){
-							((Chest) b_.getState()).getBlockInventory().addItem(i);
+
+				System.out.println(failcount + " to redo.");
+
+				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), new Runnable() {
+					public void run() {
+						changed.clear();
+						for (ArenaBlock ablock : failedblocks) {
+							Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+							if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+								b_.setType(ablock.getMaterial());
+								b_.setData(ablock.getData());
+							}
+							if (b_.getType() == Material.CHEST) {
+								b_.setType(ablock.getMaterial());
+								b_.setData(ablock.getData());
+								((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+								((Chest) b_.getState()).update();
+							}
 						}
 					}
-					//((Chest) b_.getState()).getBlockInventory().setContents(ablock.getInventory());
-					//((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
-					((Chest) b_.getState()).update(true);
-					((Chest) b_.getState()).update();
-				}
-			} catch (IllegalStateException e) {
-				failcount += 1;
-				failedblocks.add(ablock);
+				}, 40L);
 			}
-		}
+		});
 
-		System.out.println(failcount + " to redo.");
-
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), new Runnable() {
-			public void run() {
-				for (ArenaBlock ablock : failedblocks) {
-					Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
-					if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
-						b_.setType(ablock.getMaterial());
-						b_.setData(ablock.getData());
-					}
-					if (b_.getType() == Material.CHEST) {
-						b_.setType(ablock.getMaterial());
-						b_.setData(ablock.getData());
-						((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
-						((Chest) b_.getState()).update();
-					}
-				}
-			}
-		}, 40L);
-
-		changed.clear();
 		a.setArenaState(ArenaState.JOIN);
 		Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
 			public void run() {
