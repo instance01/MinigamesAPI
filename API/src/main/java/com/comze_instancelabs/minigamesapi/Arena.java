@@ -310,6 +310,10 @@ public class Arena {
 			this.stop();
 		}
 	}
+	
+	public void leavePlayer(final String playername, boolean fullLeave, boolean endofGame) {
+		this.leavePlayerRaw(playername, fullLeave);
+	}
 
 	public void leavePlayerRaw(final String playername, boolean fullLeave) {
 		if (!this.containsPlayer(playername)) {
@@ -532,7 +536,7 @@ public class Arena {
 
 		ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
 		for (String p_ : temp) {
-			leavePlayer(p_, false);
+			leavePlayer(p_, false, true);
 		}
 
 		if (a.getArenaType() == ArenaType.REGENERATION) {
