@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.inventory.ItemStack;
 
 import com.comze_instancelabs.minigamesapi.util.ArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
@@ -48,7 +49,17 @@ public class SmartReset {
 					b_.setData(ablock.getData());
 				}
 				if (b_.getType() == Material.CHEST) {
-					((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+					b_.setType(ablock.getMaterial());
+					b_.setData(ablock.getData());
+					for(ItemStack i : ablock.getInventory()){
+						//System.out.println(i);
+						if(i != null){
+							((Chest) b_.getState()).getBlockInventory().addItem(i);
+						}
+					}
+					//((Chest) b_.getState()).getBlockInventory().setContents(ablock.getInventory());
+					//((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+					((Chest) b_.getState()).update(true);
 					((Chest) b_.getState()).update();
 				}
 			} catch (IllegalStateException e) {
@@ -68,6 +79,8 @@ public class SmartReset {
 						b_.setData(ablock.getData());
 					}
 					if (b_.getType() == Material.CHEST) {
+						b_.setType(ablock.getMaterial());
+						b_.setData(ablock.getData());
 						((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
 						((Chest) b_.getState()).update();
 					}

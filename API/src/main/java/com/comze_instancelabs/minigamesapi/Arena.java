@@ -605,12 +605,13 @@ public class Arena {
 		/*
 		 * Runnable r = new Runnable() { public void run() { Util.loadArenaFromFileSYNC(plugin, currentarena); } }; new Thread(r).start();
 		 */
-		Bukkit.getScheduler().runTask(plugin, new Runnable() {
+		sr.reset();
+		/*Bukkit.getScheduler().runTask(plugin, new Runnable() {
 			public void run() {
 				// Util.loadArenaFromFileSYNC(plugin, currentarena);
 				sr.reset();
 			}
-		});
+		});*/
 	}
 
 	public String getPlayerCount() {

@@ -2,6 +2,7 @@ package com.comze_instancelabs.minigamesapi.commands;
 
 import java.util.LinkedHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class CommandHandler {
 
@@ -426,6 +428,30 @@ public class CommandHandler {
 			} else {
 				sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
+		}
+		return true;
+	}
+	
+	//TODO add as command and test out
+	public boolean resetArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".reset")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 1) {
+				final Arena a = pli.getArenaByName(args[1]);
+				if(a != null){
+					if(Validator.isArenaValid(plugin, a)){
+						Bukkit.getScheduler().runTask(plugin, new Runnable() {
+							public void run() {
+								Util.loadArenaFromFileSYNC(plugin, a);
+							}
+						});
+					}
+				}
+				
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <true/false>");
 		}

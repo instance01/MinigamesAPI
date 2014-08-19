@@ -256,7 +256,9 @@ public class ArenaListener implements Listener {
 				Player p = event.getPlayer();
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
-					a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
+					if (a.getArenaState() == ArenaState.INGAME) {
+						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
+					}
 				}
 			}
 		}
