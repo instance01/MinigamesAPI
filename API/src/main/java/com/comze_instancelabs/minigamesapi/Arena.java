@@ -54,6 +54,8 @@ public class Arena {
 
 	private boolean showArenascoreboard = true;
 
+	SmartReset sr = null;
+
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -66,6 +68,7 @@ public class Arena {
 		currentarena = this;
 		this.plugin = plugin;
 		this.name = name;
+		sr = new SmartReset(this);
 		this.pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 	}
 
@@ -102,6 +105,10 @@ public class Arena {
 
 	public Arena getArena() {
 		return this;
+	}
+
+	public SmartReset getSmartReset() {
+		return this.sr;
 	}
 
 	public boolean getShowScoreboard() {
@@ -310,7 +317,7 @@ public class Arena {
 			this.stop();
 		}
 	}
-	
+
 	public void leavePlayer(final String playername, boolean fullLeave, boolean endofGame) {
 		this.leavePlayerRaw(playername, fullLeave);
 	}
@@ -600,7 +607,8 @@ public class Arena {
 		 */
 		Bukkit.getScheduler().runTask(plugin, new Runnable() {
 			public void run() {
-				Util.loadArenaFromFileSYNC(plugin, currentarena);
+				// Util.loadArenaFromFileSYNC(plugin, currentarena);
+				sr.reset();
 			}
 		});
 	}

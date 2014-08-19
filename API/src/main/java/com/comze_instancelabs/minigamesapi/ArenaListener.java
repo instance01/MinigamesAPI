@@ -1,12 +1,15 @@
 package com.comze_instancelabs.minigamesapi;
 
-import com.comze_instancelabs.minigamesapi.util.Util;
-import com.comze_instancelabs.minigamesapi.util.Validator;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,16 +19,22 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.player.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.comze_instancelabs.minigamesapi.util.Cuboid;
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaListener implements Listener {
 
@@ -159,12 +168,66 @@ public class ArenaListener implements Listener {
 	}
 
 	@EventHandler
+	public void onExplode(EntityExplodeEvent event) {
+		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				if (c != null) {
+					if (c.containsLocWithoutY(event.getEntity().getLocation())) {
+						for (Block b : event.blockList()) {
+							a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+		if (event.getEntity() instanceof Enderman) {
+			for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+				if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+					Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+					if (c != null) {
+						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
+							a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
+		Player p = event.getPlayer();
+		if (pli.global_players.containsKey(p.getName())) {
+			Arena a = pli.global_players.get(p.getName());
+			a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+		}
 		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
 			Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());
 			if (arena != null) {
 				pli.getArenasConfig().getConfig().set("arenas." + arena.getName() + ".sign", null);
 				pli.getArenasConfig().saveConfig();
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		Player p = event.getPlayer();
+		if (pli.global_players.containsKey(p.getName())) {
+			Arena a = pli.global_players.get(p.getName());
+			a.getSmartReset().addChanged(event.getBlock().getLocation());
+		}
+		if (pli.getStatsInstance().skullsetup.contains(p.getName())) {
+			if (event.getBlock().getType() == Material.SKULL_ITEM || event.getBlock().getType() == Material.SKULL) {
+				if (event.getItemInHand().hasItemMeta()) {
+					pli.getStatsInstance().saveSkull(event.getBlock().getLocation(), Integer.parseInt(event.getItemInHand().getItemMeta().getDisplayName()));
+					pli.getStatsInstance().skullsetup.remove(p.getName());
+				}
 			}
 		}
 	}
@@ -189,6 +252,12 @@ public class ArenaListener implements Listener {
 						p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", arena.getName()).replaceAll("<action>", "already seem to be in"));
 					}
 				}
+			} else if (event.getClickedBlock().getType() == Material.CHEST) {
+				Player p = event.getPlayer();
+				if (pli.global_players.containsKey(p.getName())) {
+					Arena a = pli.global_players.get(p.getName());
+					a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
+				}
 			}
 		}
 
@@ -200,19 +269,6 @@ public class ArenaListener implements Listener {
 			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
 				pli.getClassesHandler().openGUI(p.getName());
-			}
-		}
-	}
-
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		Player p = event.getPlayer();
-		if (pli.getStatsInstance().skullsetup.contains(p.getName())) {
-			if (event.getBlock().getType() == Material.SKULL_ITEM || event.getBlock().getType() == Material.SKULL) {
-				if (event.getItemInHand().hasItemMeta()) {
-					pli.getStatsInstance().saveSkull(event.getBlock().getLocation(), Integer.parseInt(event.getItemInHand().getItemMeta().getDisplayName()));
-					pli.getStatsInstance().skullsetup.remove(p.getName());
-				}
 			}
 		}
 	}
