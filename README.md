@@ -32,3 +32,23 @@ Oh and of course a bunch of [premade Minigames and examples](https://github.com/
 See the [wiki](https://github.com/instance01/MinigamesAPI/wiki) or the [JavaDocs](http://www.instancedev.com/bukkitdev/MinigamesAPI/javadocs/) for more information on API usage.
 
 
+Maven
+-----
+
+```
+
+<repository>
+  <id>MinigamesAPI-Repo</id>
+  <name>MinigamesAPI Repository</name>
+  <url>http://www.instancedev.com/bukkitdev/MinigamesAPI/maven/</url>
+</repository>
+
+<dependency>
+  <groupId>com.comze_instancelabs</groupId>
+  <artifactId>MinigamesLib</artifactId>
+  <version>1.4.0</version>
+</dependency>
+
+
+```
+
