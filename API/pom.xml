@@ -35,13 +35,13 @@
 			<version>1.3.01</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+		<!--  <dependency>
 			<groupId>com.comze_instancelabs</groupId>
 			<artifactId>MinigamesAPI-1_7_R3</artifactId>
 			<version>v1_7_R3</version>
 			<type>jar</type>
 			<optional>true</optional>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 <properties>
