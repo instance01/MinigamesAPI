@@ -333,10 +333,13 @@ public class Arena {
 		this.players.remove(playername);
 		pli.global_players.remove(playername);
 		if (fullLeave) {
-			plugin.getConfig().set("temp.left_players." + playername, playername);
-			// TODO save current minigame and items
-			// plugin.getConfig().set("temp.left_players." + playername + ".minigame", playername);
-			// plugin.getConfig().set("temp.left_players." + playername + ".items", playername); // items?
+			plugin.getConfig().set("temp.left_players." + playername + ".name", playername);
+			plugin.getConfig().set("temp.left_players." + playername + ".plugin", plugin.getName());
+			for (ItemStack i : pinv.get(playername)) {
+				if (i != null) {
+					plugin.getConfig().set("temp.left_players." + playername + ".items." + Integer.toString((int)Math.round(Math.random() * 10000)) + i.getType().toString(), i);
+				}
+			}
 			plugin.saveConfig();
 			return;
 		}
@@ -397,8 +400,8 @@ public class Arena {
 	public void spectate(String playername) {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			Player p = Bukkit.getPlayer(playername);
-			if(!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")){
-				this.leavePlayer(playername, false, false);
+			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
+				this.leavePlayer(playername, false, true);
 			}
 			Util.clearInv(p);
 			pli.global_lost.put(playername, this);

@@ -168,7 +168,7 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
@@ -332,28 +332,31 @@ public class ArenaListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
 		pli.getStatsInstance().update(p.getName());
-		if (MinigamesAPI.getAPI().global_leftplayers.containsKey(p.getName()) || plugin.getConfig().isSet("temp.left_players." + p.getName())) {
-			final Arena a = MinigamesAPI.getAPI().global_leftplayers.get(p.getName());
+		if (plugin.getConfig().isSet("temp.left_players." + p.getName())) {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					Util.teleportPlayerFixed(p, Util.getMainLobby(plugin));
 					p.setFlying(false);
 					try {
-						if (a != null) {
-							p.getInventory().setContents(a.pinv.get(p.getName()));
-							p.getInventory().setArmorContents(a.pinv_armor.get(p.getName()));
-							p.updateInventory();
+						p.getInventory().clear();
+						p.updateInventory();
+						//System.out.println(plugin.getName() + " " + plugin.getConfig().isSet("temp.left_players." + p.getName() + ".items"));
+						if (plugin.getConfig().isSet("temp.left_players." + p.getName() + ".items")) {
+							for (String key : plugin.getConfig().getConfigurationSection("temp.left_players." + p.getName() + ".items").getKeys(false)) {
+								p.getInventory().addItem(plugin.getConfig().getItemStack("temp.left_players." + p.getName() + ".items." + key));
+							}
 						}
+						p.updateInventory();
 						p.setWalkSpeed(0.2F);
 						p.removePotionEffect(PotionEffectType.JUMP);
 					} catch (Exception e) {
+						e.printStackTrace();
 						p.sendMessage(ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");
 					}
+					plugin.getConfig().set("temp.left_players." + p.getName(), null);
+					plugin.saveConfig();
 				}
 			}, 5);
-			MinigamesAPI.getAPI().global_leftplayers.remove(event.getPlayer().getName());
-			plugin.getConfig().set("temp.left_players." + p.getName(), null);
-			plugin.saveConfig();
 		}
 
 		if (plugin.getConfig().getBoolean("config.bungee.game_on_join")) {
@@ -397,7 +400,6 @@ public class ArenaListener implements Listener {
 			}
 
 			arena.leavePlayer(event.getPlayer().getName(), true, false);
-			MinigamesAPI.getAPI().global_leftplayers.put(event.getPlayer().getName(), arena);
 		}
 	}
 

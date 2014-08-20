@@ -34,7 +34,7 @@ public class MinigamesAPI extends JavaPlugin {
 
 	// public static HashMap<String, Arena> global_players = new HashMap<String, Arena>();
 	// public static HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
-	public static HashMap<String, Arena> global_leftplayers = new HashMap<String, Arena>();
+	// public static HashMap<String, Arena> global_leftplayers = new HashMap<String, Arena>();
 
 	public void onEnable() {
 		instance = this;
@@ -70,7 +70,13 @@ public class MinigamesAPI extends JavaPlugin {
 	}
 
 	public void onDisable() {
-
+		for (PluginInstance pli : this.pinstances.values()) {
+			for (Arena a : pli.getArenas()) {
+				for (String p_ : a.getAllPlayers()) {
+					a.leavePlayer(p_, true);
+				}
+			}
+		}
 	}
 
 	/**
