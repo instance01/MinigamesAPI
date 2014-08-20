@@ -2,6 +2,7 @@ package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,7 +30,7 @@ public class PluginInstance {
 	private JavaPlugin plugin = null;
 	private ArrayList<Arena> arenas = new ArrayList<Arena>();
 	private HashMap<String, AClass> pclass = new HashMap<String, AClass>();
-	private HashMap<String, AClass> aclasses = new HashMap<String, AClass>();
+	private LinkedHashMap<String, AClass> aclasses = new LinkedHashMap<String, AClass>();
 	private HashMap<String, Gun> guns = new HashMap<String, Gun>();
 	private Rewards rew = null;
 	private MainSQL sql = null;
