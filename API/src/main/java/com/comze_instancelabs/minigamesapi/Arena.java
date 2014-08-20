@@ -397,6 +397,9 @@ public class Arena {
 	public void spectate(String playername) {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			Player p = Bukkit.getPlayer(playername);
+			if(!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")){
+				this.leavePlayer(playername, false, false);
+			}
 			Util.clearInv(p);
 			pli.global_lost.put(playername, this);
 			p.setAllowFlight(true);

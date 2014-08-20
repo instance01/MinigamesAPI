@@ -37,11 +37,6 @@ public class PluginInstance {
 	private Stats stats = null;
 	private Classes classes = null;
 
-	// TODO remove that
-	public boolean pvp;
-	public boolean die_when_falling;
-	public boolean show_scoreboard;
-
 	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
 	public ArenaSetup arenaSetup = new ArenaSetup();
 
