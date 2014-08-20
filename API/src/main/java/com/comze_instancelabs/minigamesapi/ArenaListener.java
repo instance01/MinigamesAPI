@@ -260,6 +260,14 @@ public class ArenaListener implements Listener {
 						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
 					}
 				}
+			} else if (event.getPlayer().getItemInHand().getType() == Material.WATER_BUCKET || event.getPlayer().getItemInHand().getType() == Material.WATER) {
+				Player p = event.getPlayer();
+				if (pli.global_players.containsKey(p.getName())) {
+					Arena a = pli.global_players.get(p.getName());
+					if (a.getArenaState() == ArenaState.INGAME) {
+						a.getSmartReset().addChanged(event.getClickedBlock().getLocation().add(0D, 1D, 0D));
+					}
+				}
 			}
 		}
 
