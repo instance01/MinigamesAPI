@@ -375,7 +375,7 @@ public class ArenaListener implements Listener {
 				MinigamesAPI.getAPI().getLogger().warning("You forgot to set a sign for arena " + arena + "! This might lead to errors.");
 			}
 
-			arena.leavePlayer(event.getPlayer().getName(), true);
+			arena.leavePlayer(event.getPlayer().getName(), true, false);
 			MinigamesAPI.getAPI().global_leftplayers.put(event.getPlayer().getName(), arena);
 		}
 	}
@@ -385,7 +385,7 @@ public class ArenaListener implements Listener {
 		if (event.getMessage().equalsIgnoreCase("/leave")) {
 			if (pli.global_players.containsKey(event.getPlayer().getName())) {
 				Arena arena = pli.global_players.get(event.getPlayer().getName());
-				arena.leavePlayer(event.getPlayer().getName(), false);
+				arena.leavePlayer(event.getPlayer().getName(), false, false);
 				event.setCancelled(true);
 				return;
 			}

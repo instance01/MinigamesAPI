@@ -6,6 +6,8 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -312,14 +314,16 @@ public class Arena {
 	 */
 	public void leavePlayer(final String playername, boolean fullLeave) {
 		this.leavePlayerRaw(playername, fullLeave);
-
-		if (this.getAllPlayers().size() < 2) {
-			this.stop();
-		}
 	}
 
 	public void leavePlayer(final String playername, boolean fullLeave, boolean endofGame) {
-		this.leavePlayerRaw(playername, fullLeave);
+		this.leavePlayer(playername, fullLeave);
+
+		if (!endofGame) {
+			if (this.getAllPlayers().size() < 2) {
+				this.stop();
+			}
+		}
 	}
 
 	public void leavePlayerRaw(final String playername, boolean fullLeave) {
@@ -330,6 +334,9 @@ public class Arena {
 		pli.global_players.remove(playername);
 		if (fullLeave) {
 			plugin.getConfig().set("temp.left_players." + playername, playername);
+			// TODO save current minigame and items
+			// plugin.getConfig().set("temp.left_players." + playername + ".minigame", playername);
+			// plugin.getConfig().set("temp.left_players." + playername + ".items", playername); // items?
 			plugin.saveConfig();
 			return;
 		}
@@ -338,6 +345,13 @@ public class Arena {
 		p.setWalkSpeed(0.2F);
 		p.setFoodLevel(20);
 		p.removePotionEffect(PotionEffectType.JUMP);
+
+		// TODO test out
+		for (Entity e : p.getNearbyEntities(50D, 50D, 50D)) {
+			if (e.getType() == EntityType.DROPPED_ITEM) {
+				e.remove();
+			}
+		}
 
 		if (started) {
 			pli.getRewardsInstance().giveWinReward(playername);
@@ -606,12 +620,10 @@ public class Arena {
 		 * Runnable r = new Runnable() { public void run() { Util.loadArenaFromFileSYNC(plugin, currentarena); } }; new Thread(r).start();
 		 */
 		sr.reset();
-		/*Bukkit.getScheduler().runTask(plugin, new Runnable() {
-			public void run() {
-				// Util.loadArenaFromFileSYNC(plugin, currentarena);
-				sr.reset();
-			}
-		});*/
+		/*
+		 * Bukkit.getScheduler().runTask(plugin, new Runnable() { public void run() { // Util.loadArenaFromFileSYNC(plugin, currentarena); sr.reset();
+		 * } });
+		 */
 	}
 
 	public String getPlayerCount() {

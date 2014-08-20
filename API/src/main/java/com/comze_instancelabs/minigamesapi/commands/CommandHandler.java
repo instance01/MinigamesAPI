@@ -293,7 +293,7 @@ public class CommandHandler {
 			if (a.getArcadeInstance() != null) {
 				a.getArcadeInstance().leaveArcade(p.getName());
 			}
-			a.leavePlayer(p.getName(), false);
+			a.leavePlayer(p.getName(), false, false);
 		} else {
 			sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 		}

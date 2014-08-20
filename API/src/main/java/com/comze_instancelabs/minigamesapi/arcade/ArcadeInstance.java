@@ -52,7 +52,7 @@ public class ArcadeInstance {
 			players.remove(playername);
 		}
 		if (minigames.get(currentindex).getArenas().get(0).containsPlayer(playername)) {
-			minigames.get(currentindex).getArenas().get(0).leavePlayer(playername, false);
+			minigames.get(currentindex).getArenas().get(0).leavePlayer(playername, false, false);
 		}
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
