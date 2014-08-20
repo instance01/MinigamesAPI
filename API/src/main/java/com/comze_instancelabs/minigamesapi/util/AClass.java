@@ -11,19 +11,18 @@ public class AClass {
 	private String name;
 	private ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 	private ItemStack icon;
+	private boolean enabled = true;
 
-	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items) {
-		this.plugin = plugin;
-		this.name = name;
-		this.items = items;
-		this.icon = items.get(0);
+	public AClass(JavaPlugin plugin, String name, boolean enabled, ArrayList<ItemStack> items) {
+		this(plugin, name, enabled, items, items.get(0));
 	}
 
-	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items, ItemStack icon) {
+	public AClass(JavaPlugin plugin, String name, boolean enabled, ArrayList<ItemStack> items, ItemStack icon) {
 		this.plugin = plugin;
 		this.name = name;
 		this.items = items;
 		this.icon = icon;
+		this.enabled = enabled;
 	}
 
 	public ItemStack[] getItems() {
@@ -42,5 +41,9 @@ public class AClass {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 }
