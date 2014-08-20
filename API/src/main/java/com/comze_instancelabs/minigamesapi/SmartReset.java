@@ -52,22 +52,14 @@ public class SmartReset {
 							b_.setData(ablock.getData());
 						}
 						if (b_.getType() == Material.CHEST) {
-							// System.out.println(ablock.getInventory()[0]);
-							for (ItemStack i : ablock.getInventory()) {
-								// System.out.println(i);
+							((Chest) b_.getState()).getBlockInventory().clear();
+							((Chest) b_.getState()).update();
+							for (ItemStack i : ablock.getNewInventory()) {
 								if (i != null) {
-									// System.out.println(i);
-									((Chest) b_.getState()).getBlockInventory().addItem(new ItemStack(i.getType(), i.getAmount() + 1));
+									((Chest) b_.getState()).getBlockInventory().addItem(new ItemStack(i.getType(), i.getAmount()));
 								}
 							}
-							// ((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
 							((Chest) b_.getState()).update();
-
-							// System.out.println(((Chest) b_.getState()).getInventory().getContents()[0]);
-
-							// ((Chest) b_.getState()).getBlockInventory().setContents(ablock.getInventory());
-							// ((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
-
 						}
 					} catch (IllegalStateException e) {
 						failcount += 1;

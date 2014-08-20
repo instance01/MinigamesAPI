@@ -340,7 +340,6 @@ public class ArenaListener implements Listener {
 					try {
 						p.getInventory().clear();
 						p.updateInventory();
-						//System.out.println(plugin.getName() + " " + plugin.getConfig().isSet("temp.left_players." + p.getName() + ".items"));
 						if (plugin.getConfig().isSet("temp.left_players." + p.getName() + ".items")) {
 							for (String key : plugin.getConfig().getConfigurationSection("temp.left_players." + p.getName() + ".items").getKeys(false)) {
 								p.getInventory().addItem(plugin.getConfig().getItemStack("temp.left_players." + p.getName() + ".items." + key));

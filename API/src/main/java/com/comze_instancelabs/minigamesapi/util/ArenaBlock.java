@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi.util;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,15 +10,20 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ArenaBlock implements Serializable {
 	private static final long serialVersionUID = -1894759842709524780L;
 
-	public int x, y, z;
-	public String world;
-	public Material m;
-	public byte data;
-	public ItemStack[] inv;
+	private int x, y, z;
+	private String world;
+	private Material m;
+	private byte data;
+	private ArrayList<Material> item_mats;
+	private ArrayList<Integer> item_amounts;
+	private ArrayList<String> item_displaynames;
+
+	private ItemStack[] inv;
 
 	public ArenaBlock(Block b, boolean c) {
 		m = b.getType();
@@ -28,6 +34,16 @@ public class ArenaBlock implements Serializable {
 		world = b.getWorld().getName();
 		if (c) {
 			inv = ((Chest) b.getState()).getInventory().getContents();
+			item_mats = new ArrayList<Material>();
+			item_amounts = new ArrayList<Integer>();
+			item_displaynames = new ArrayList<String>();
+			for (ItemStack i : ((Chest) b.getState()).getInventory().getContents()) {
+				if (i != null) {
+					item_mats.add(i.getType());
+					item_amounts.add(i.getAmount());
+					item_displaynames.add(i.getItemMeta().getDisplayName());
+				}
+			}
 		}
 	}
 
@@ -57,6 +73,18 @@ public class ArenaBlock implements Serializable {
 
 	public ItemStack[] getInventory() {
 		return inv;
+	}
+
+	public ArrayList<ItemStack> getNewInventory() {
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		for (int i = 0; i < item_mats.size(); i++) {
+			ItemStack item = new ItemStack(item_mats.get(i), item_amounts.get(i));
+			ItemMeta im = item.getItemMeta();
+			im.setDisplayName(item_displaynames.get(i));
+			item.setItemMeta(im);
+			ret.add(item);
+		}
+		return ret;
 	}
 
 }
