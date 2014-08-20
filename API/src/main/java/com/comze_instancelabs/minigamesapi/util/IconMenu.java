@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi.util;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -151,7 +152,7 @@ public class IconMenu implements Listener {
  
     private ItemStack setItemNameAndLore(ItemStack item, String name, String[] lore) {
         ItemMeta im = item.getItemMeta();
-        im.setDisplayName(name);
+        im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         im.setLore(Arrays.asList(lore));
         item.setItemMeta(im);
         return item;
