@@ -14,7 +14,7 @@
 
 	<modules>
 		<module>API</module>
-		<module>1_7_R3</module>
+		
 	</modules>
 
 	<repositories>
