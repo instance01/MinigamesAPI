@@ -20,9 +20,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -163,6 +165,17 @@ public class ArenaListener implements Listener {
 			if (count < 2) {
 				// last man standing!
 				arena.stop();
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			Player p = (Player) event.getEntity();
+			if (event.getCause().equals(DamageCause.ENTITY_ATTACK) && pli.global_lost.containsKey(p.getName())) {
+				// disable entity damage for spectators
+				event.setCancelled(true);
 			}
 		}
 	}
