@@ -275,7 +275,7 @@ public class CommandHandler {
 				if (!temp.containsPlayer(p.getName())) {
 					temp.joinPlayerLobby(p.getName());
 				} else {
-					p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", temp.getName()).replaceAll("<action>", "already seem to be in"));
+					p.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getName()));
 				}
 				// sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
 			} else {

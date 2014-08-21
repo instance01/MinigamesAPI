@@ -55,6 +55,8 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.broadcast_players_left", broadcast_players_left);
 		this.getConfig().addDefault("messages.player_died", player_died);
 		this.getConfig().addDefault("messages.arena_action", arena_action);
+		this.getConfig().addDefault("messages.you_already_are_in_arena", you_already_are_in_arena);
+		this.getConfig().addDefault("messages.you_joined_arena", you_joined_arena);
 		this.getConfig().addDefault("messages.not_in_arena", not_in_arena);
 		this.getConfig().addDefault("messages.teleporting_to_arena_in", teleporting_to_arena_in);
 		this.getConfig().addDefault("messages.starting_in", starting_in);
@@ -91,6 +93,8 @@ public class MessagesConfig {
 		this.player_died = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_died"));
 		this.broadcast_players_left = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.broadcast_players_left"));
 		this.arena_action = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_action"));
+		this.you_already_are_in_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_already_are_in_arena"));
+		this.you_joined_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_joined_arena"));
 		this.not_in_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.not_in_arena"));
 		this.teleporting_to_arena_in = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.teleporting_to_arena_in"));
 		this.starting_in = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.starting_in"));
@@ -126,6 +130,8 @@ public class MessagesConfig {
 	public String broadcast_players_left = "&eThere are &4<count> &eplayers left!";
 	public String player_died = "&c<player> died.";
 	public String arena_action = "&aYou <action> arena &3<arena>&a!";
+	public String you_joined_arena = "&aYou joined arena &3<arena>&a!";
+	public String you_already_are_in_arena = "&aYou already seem to be in arena &3<arena>&a!";
 	public String arena_not_initialized = "&cThe arena appears to be not initialized, did you save the arena?";
 	public String not_in_arena = "&cYou don't seem to be in an arena right now.";
 	public String teleporting_to_arena_in = "&7Teleporting to arena in <count>.";

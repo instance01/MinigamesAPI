@@ -262,7 +262,7 @@ public class ArenaListener implements Listener {
 					if (!arena.containsPlayer(p.getName())) {
 						arena.joinPlayerLobby(p.getName());
 					} else {
-						p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", arena.getName()).replaceAll("<action>", "already seem to be in"));
+						p.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getName()));
 					}
 				}
 			} else if (event.getClickedBlock().getType() == Material.CHEST) {

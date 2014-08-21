@@ -213,7 +213,7 @@ public class Arena {
 		this.players.add(playername);
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
-			p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", this.getName()).replaceAll("<action>", "joined"));
+			p.sendMessage(pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
 			Util.updateSign(plugin, this);
 			if (shouldClearInventoryOnJoin) {
 				pinv.put(playername, p.getInventory().getContents());
@@ -261,7 +261,7 @@ public class Arena {
 		this.players.add(playername);
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
-			p.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", this.getName()).replaceAll("<action>", "joined"));
+			p.sendMessage(pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
 			Util.updateSign(plugin, this);
 			if (shouldClearInventoryOnJoin) {
 				pinv.put(playername, p.getInventory().getContents());
@@ -337,7 +337,7 @@ public class Arena {
 			plugin.getConfig().set("temp.left_players." + playername + ".plugin", plugin.getName());
 			for (ItemStack i : pinv.get(playername)) {
 				if (i != null) {
-					plugin.getConfig().set("temp.left_players." + playername + ".items." + Integer.toString((int)Math.round(Math.random() * 10000)) + i.getType().toString(), i);
+					plugin.getConfig().set("temp.left_players." + playername + ".items." + Integer.toString((int) Math.round(Math.random() * 10000)) + i.getType().toString(), i);
 				}
 			}
 			plugin.saveConfig();
@@ -347,9 +347,9 @@ public class Arena {
 		Util.clearInv(p);
 		p.setWalkSpeed(0.2F);
 		p.setFoodLevel(20);
+		p.setHealth(20D);
 		p.removePotionEffect(PotionEffectType.JUMP);
 
-		// TODO test out
 		for (Entity e : p.getNearbyEntities(50D, 50D, 50D)) {
 			if (e.getType() == EntityType.DROPPED_ITEM) {
 				e.remove();
