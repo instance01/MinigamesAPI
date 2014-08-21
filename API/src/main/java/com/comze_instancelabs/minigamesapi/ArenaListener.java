@@ -17,15 +17,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -229,6 +229,20 @@ public class ArenaListener implements Listener {
 	}
 
 	@EventHandler
+	public void onBlockBurn(BlockBurnEvent event) {
+		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				if (c != null) {
+					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player p = event.getPlayer();
 		if (pli.global_players.containsKey(p.getName())) {
@@ -273,7 +287,7 @@ public class ArenaListener implements Listener {
 						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
 					}
 				}
-			} else if (event.getPlayer().getItemInHand().getType() == Material.WATER_BUCKET || event.getPlayer().getItemInHand().getType() == Material.WATER  || event.getPlayer().getItemInHand().getType() == Material.LAVA_BUCKET  || event.getPlayer().getItemInHand().getType() == Material.LAVA) {
+			} else if (event.getPlayer().getItemInHand().getType() == Material.WATER_BUCKET || event.getPlayer().getItemInHand().getType() == Material.WATER || event.getPlayer().getItemInHand().getType() == Material.LAVA_BUCKET || event.getPlayer().getItemInHand().getType() == Material.LAVA) {
 				Player p = event.getPlayer();
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
