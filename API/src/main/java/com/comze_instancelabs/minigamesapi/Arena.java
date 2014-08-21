@@ -214,6 +214,14 @@ public class Arena {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
 			p.sendMessage(pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
+			for (String p_ : this.getAllPlayers()) {
+				if (Validator.isPlayerOnline(p_) && !p_.equalsIgnoreCase(p.getName())) {
+					Player p__ = Bukkit.getPlayer(p_);
+					int count = this.getAllPlayers().size();
+					int maxcount = this.getMaxPlayers();
+					p__.sendMessage(pli.getMessagesConfig().broadcast_player_joined.replaceAll("<player>", p.getName()).replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)));
+				}
+			}
 			Util.updateSign(plugin, this);
 			if (shouldClearInventoryOnJoin) {
 				pinv.put(playername, p.getInventory().getContents());
@@ -261,6 +269,7 @@ public class Arena {
 		this.players.add(playername);
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
+			// TODO possibly remove join message in arcade?
 			p.sendMessage(pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
 			Util.updateSign(plugin, this);
 			if (shouldClearInventoryOnJoin) {

@@ -53,6 +53,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.arena_invalid", arena_invalid);
 		this.getConfig().addDefault("messages.failed_saving_arena", failed_saving_arena);
 		this.getConfig().addDefault("messages.broadcast_players_left", broadcast_players_left);
+		this.getConfig().addDefault("messages.broadcast_player_joined", broadcast_player_joined);
 		this.getConfig().addDefault("messages.player_died", player_died);
 		this.getConfig().addDefault("messages.arena_action", arena_action);
 		this.getConfig().addDefault("messages.you_already_are_in_arena", you_already_are_in_arena);
@@ -92,6 +93,7 @@ public class MessagesConfig {
 		this.arena_invalid = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_invalid"));
 		this.player_died = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_died"));
 		this.broadcast_players_left = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.broadcast_players_left"));
+		this.broadcast_player_joined = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.broadcast_player_joined"));
 		this.arena_action = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_action"));
 		this.you_already_are_in_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_already_are_in_arena"));
 		this.you_joined_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_joined_arena"));
@@ -128,6 +130,7 @@ public class MessagesConfig {
 	public String failed_removing_arena = "&cFailed to remove &3<arena>&c.";
 	public String arena_invalid = "&3<arena> &cappears to be invalid.";
 	public String broadcast_players_left = "&eThere are &4<count> &eplayers left!";
+	public String broadcast_player_joined = "&2<player> &ajoined the arena! (<count>/<maxcount>)";
 	public String player_died = "&c<player> died.";
 	public String arena_action = "&aYou <action> arena &3<arena>&a!";
 	public String you_joined_arena = "&aYou joined arena &3<arena>&a!";
