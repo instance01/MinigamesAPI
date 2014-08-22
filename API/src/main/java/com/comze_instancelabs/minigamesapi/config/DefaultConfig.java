@@ -5,14 +5,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class DefaultConfig {
 
-	public DefaultConfig(JavaPlugin plugin, boolean custom){
+	public DefaultConfig(JavaPlugin plugin, boolean custom) {
 		DefaultConfig.init(plugin, custom);
 	}
-	
-	
-	public static void init(JavaPlugin plugin, boolean custom){
+
+	public static void init(JavaPlugin plugin, boolean custom) {
 		FileConfiguration config = plugin.getConfig();
-		if(!custom){
+		if (!custom) {
 			config.addDefault("config.classes_selection_item", 399);
 			config.addDefault("config.spectator_after_fall_or_death", true);
 			config.addDefault("config.default_max_players", 4);
@@ -30,6 +29,7 @@ public class DefaultConfig {
 			config.addDefault("config.bungee.game_on_join", false);
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.tp", false);
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.server", "lobby");
+			config.addDefault("config.bungee.whitelist_while_game_running", false);
 			config.addDefault("config.execute_cmds_on_stop", false);
 			config.addDefault("config.cmds", "say SERVER STOPPING;stop");
 			config.addDefault("mysql.enabled", false);
@@ -41,5 +41,5 @@ public class DefaultConfig {
 		config.options().copyDefaults(true);
 		plugin.saveConfig();
 	}
-	
+
 }

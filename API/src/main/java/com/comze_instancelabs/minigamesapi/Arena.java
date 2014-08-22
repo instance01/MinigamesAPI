@@ -539,6 +539,9 @@ public class Arena {
 						p.setFoodLevel(20);
 						p.removePotionEffect(PotionEffectType.JUMP);
 					}
+					if (plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running")) {
+						Bukkit.setWhitelist(true);
+					}
 					started = true;
 					started();
 					try {
@@ -615,6 +618,9 @@ public class Arena {
 				}
 			}, 30L);
 			return;
+		}
+		if (plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running")) {
+			Bukkit.setWhitelist(false);
 		}
 
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
