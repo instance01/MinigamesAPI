@@ -79,6 +79,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.arena_disabled", arena_disabled);
 		this.getConfig().addDefault("messages.you_can_leave_with", you_can_leave_with);
 		this.getConfig().addDefault("messages.no_perm_to_join_arena", no_perm_to_join_arena);
+		this.getConfig().addDefault("messages.set_kit", set_kit);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -113,6 +114,7 @@ public class MessagesConfig {
 		this.you_can_leave_with = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_can_leave_with"));
 		this.arcade_joined_waiting = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_joined_waiting"));
 		this.no_perm_to_join_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.no_perm_to_join_arena"));
+		this.set_kit = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.set_kit"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -155,6 +157,7 @@ public class MessagesConfig {
 	public String you_can_leave_with = "&cYou can leave with /leave!";
 	public String arcade_joined_waiting = "&6You joined Arcade! Waiting for <count> more players to start.";
 	public String no_perm_to_join_arena = "&cYou don't have permission (arenas.<arena>) to join this arena as it's vip!";
+	public String set_kit = "&aSuccessfully set &2<kit>&a!";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

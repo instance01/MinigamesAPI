@@ -1,5 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.util.HashMap;
+
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.Bukkit;
@@ -14,6 +16,7 @@ import com.comze_instancelabs.minigamesapi.util.Util;
 public class Classes {
 
 	JavaPlugin plugin;
+	public HashMap<String, IconMenu> lasticonm = new HashMap<String, IconMenu>();
 
 	public Classes(JavaPlugin plugin) {
 		this.plugin = plugin;
@@ -21,17 +24,22 @@ public class Classes {
 
 	public void openGUI(String p) {
 		final Classes cl = this;
-		IconMenu iconm = new IconMenu("Classes", 27, new IconMenu.OptionClickEventHandler() {
-			@Override
-			public void onOptionClick(IconMenu.OptionClickEvent event) {
-				String d = event.getName();
-				Player p = event.getPlayer();
-				if (MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().containsKey(d)) {
-					cl.setClass(d, p.getName());
+		IconMenu iconm;
+		if (lasticonm.containsKey(p)) {
+			iconm = lasticonm.get(p);
+		} else {
+			iconm = new IconMenu("Classes", 27, new IconMenu.OptionClickEventHandler() {
+				@Override
+				public void onOptionClick(IconMenu.OptionClickEvent event) {
+					String d = event.getName();
+					Player p = event.getPlayer();
+					if (MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().containsKey(d)) {
+						cl.setClass(d, p.getName());
+					}
+					event.setWillClose(true);
 				}
-				event.setWillClose(true);
-			}
-		}, plugin);
+			}, plugin);
+		}
 
 		int c = 0;
 		for (String ac : MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().keySet()) {
@@ -43,6 +51,7 @@ public class Classes {
 		}
 
 		iconm.open(Bukkit.getPlayerExact(p));
+		lasticonm.put(p, iconm);
 	}
 
 	public void getClass(String player) {
@@ -67,6 +76,7 @@ public class Classes {
 			kitTakeMoney(Bukkit.getPlayer(player), classname.toLowerCase());
 		}
 		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().get(classname));
+		Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", classname));
 	}
 
 	public boolean hasClass(String player) {
