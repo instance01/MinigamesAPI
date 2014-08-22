@@ -52,7 +52,7 @@ public class MainSQL {
 		}
 	}
 
-	public void updateWinnerStats(String p_, int reward) {
+	public void updateWinnerStats(String p_, int reward, boolean addwin) {
 		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
 			return;
 		}
@@ -61,16 +61,18 @@ public class MainSQL {
 		}
 		Connection c = MySQL.open();
 
+		int wincount = addwin ? 1 : 0;
+		
 		try {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 			if (!res3.isBeforeFirst()) {
 				// there's no such user
-				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '1', '0')");
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '" + Integer.toString(wincount) + "', '0')");
 				return;
 			}
 			res3.next();
 			int points = res3.getInt("points") + reward;
-			int wins = res3.getInt("wins") + 1;
+			int wins = res3.getInt("wins") + wincount;
 
 			c.createStatement().executeUpdate("UPDATE " + plugin.getName() + " SET points='" + Integer.toString(points) + "', wins='" + Integer.toString(wins) + "' WHERE player='" + p_ + "'");
 

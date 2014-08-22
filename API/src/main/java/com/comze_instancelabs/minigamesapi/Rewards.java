@@ -2,6 +2,7 @@ package com.comze_instancelabs.minigamesapi;
 
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,9 +15,13 @@ public class Rewards {
 	private boolean economyrewards;
 	private boolean itemrewards;
 	private boolean commandrewards;
+	private boolean kill_economyrewards;
+	private boolean kill_commandrewards;
 
 	private int econ_reward = 0;
+	private int kill_econ_reward = 0;
 	private String command = "";
+	private String kill_command = "";
 	private ItemStack[] items = null;
 
 	public Rewards(JavaPlugin plugin) {
@@ -24,10 +29,14 @@ public class Rewards {
 		economyrewards = plugin.getConfig().getBoolean("config.rewards.economy");
 		itemrewards = plugin.getConfig().getBoolean("config.rewards.item_reward");
 		commandrewards = plugin.getConfig().getBoolean("config.rewards.command_reward");
+		kill_economyrewards = plugin.getConfig().getBoolean("config.rewards.economy_for_kills");
+		kill_commandrewards = plugin.getConfig().getBoolean("config.rewards.command_reward_for_kills");
 
 		econ_reward = plugin.getConfig().getInt("config.rewards.economy_reward");
 		command = plugin.getConfig().getString("config.rewards.command");
 		items = Util.parseItems(plugin.getConfig().getString("config.rewards.item_reward_ids")).toArray(new ItemStack[0]);
+		kill_econ_reward = plugin.getConfig().getInt("config.rewards.economy_reward_for_kills");
+		kill_command = plugin.getConfig().getString("config.rewards.command_for_kills");
 
 		if (!MinigamesAPI.economy) {
 			economyrewards = false;
@@ -49,6 +58,22 @@ public class Rewards {
 			}
 
 			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(p_, 10);
+		}
+	}
+
+	public void giveKillReward(String p_, int reward) {
+		if (Validator.isPlayerOnline(p_)) {
+			Player p = Bukkit.getPlayer(p_);
+
+			if (kill_economyrewards) {
+				MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), kill_econ_reward);
+			}
+			if (kill_commandrewards) {
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), kill_command.replaceAll("<player>", p_));
+			}
+
+			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().addPoints(p_, reward);
+			MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateWinnerStats(p_, reward, false);
 		}
 	}
 

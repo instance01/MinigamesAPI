@@ -32,6 +32,8 @@ public class Arena {
 	HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
 	private HashMap<String, GameMode> pgamemode = new HashMap<String, GameMode>();
 
+	HashMap<String, String> lastdamager = new HashMap<String, String>();
+
 	private Location mainlobby;
 	private Location waitinglobby;
 	private Location signloc;
@@ -49,11 +51,8 @@ public class Arena {
 	String name = "mainarena";
 
 	private boolean shouldClearInventoryOnJoin = true;
-
 	private Arena currentarena;
-
 	boolean started = false;
-
 	private boolean showArenascoreboard = true;
 
 	SmartReset sr = null;
@@ -408,6 +407,7 @@ public class Arena {
 	 */
 	public void spectate(String playername) {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
+			this.onEliminated(playername);
 			Player p = Bukkit.getPlayer(playername);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
 				this.leavePlayer(playername, false, true);
@@ -645,6 +645,23 @@ public class Arena {
 		 * Bukkit.getScheduler().runTask(plugin, new Runnable() { public void run() { // Util.loadArenaFromFileSYNC(plugin, currentarena); sr.reset();
 		 * } });
 		 */
+	}
+
+	/***
+	 * Use this when someone got killed/pushed down/eliminated in some way by a player
+	 * 
+	 * @param playername
+	 *            The player that got eliminated
+	 */
+	public void onEliminated(String playername) {
+		if (lastdamager.containsKey(playername)) {
+			Player killer = Bukkit.getPlayer(lastdamager.get(playername));
+			if (killer != null) {
+				pli.getRewardsInstance().giveKillReward(killer.getName(), 2);
+				killer.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
+			}
+			lastdamager.remove(playername);
+		}
 	}
 
 	public String getPlayerCount() {

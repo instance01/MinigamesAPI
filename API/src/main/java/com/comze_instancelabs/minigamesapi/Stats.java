@@ -37,7 +37,7 @@ public class Stats {
 	public void win(String playername, int count) {
 		addWin(playername);
 		addPoints(playername, count);
-		MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateWinnerStats(playername, count);
+		MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateWinnerStats(playername, count, true);
 	}
 
 	public void lose(String playername) {

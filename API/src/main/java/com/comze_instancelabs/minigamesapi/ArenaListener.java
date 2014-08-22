@@ -12,6 +12,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,6 +22,7 @@ import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -176,6 +178,29 @@ public class ArenaListener implements Listener {
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK) && pli.global_lost.containsKey(p.getName())) {
 				// disable entity damage for spectators
 				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof Player) {
+			Player p = (Player) event.getEntity();
+			Player attacker;
+			if (event.getDamager() instanceof Projectile) {
+				Projectile projectile = (Projectile) event.getDamager();
+				attacker = (Player) projectile.getShooter();
+			} else if (event.getDamager() instanceof Player) {
+				attacker = (Player) event.getDamager();
+			} else {
+				return;
+			}
+
+			if (pli.global_players.containsKey(p.getName()) && pli.global_players.containsKey(attacker.getName())) {
+				Arena a = (Arena) pli.global_players.get(p.getName());
+				if (a.getArenaState() == ArenaState.INGAME) {
+					a.lastdamager.put(p.getName(), attacker.getName());
+				}
 			}
 		}
 	}

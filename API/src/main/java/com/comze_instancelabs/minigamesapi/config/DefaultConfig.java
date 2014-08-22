@@ -18,12 +18,19 @@ public class DefaultConfig {
 			config.addDefault("config.default_min_players", 2);
 			config.addDefault("config.lobby_countdown", 30);
 			config.addDefault("config.ingame_countdown", 10);
+
 			config.addDefault("config.rewards.economy", true);
 			config.addDefault("config.rewards.economy_reward", 10);
 			config.addDefault("config.rewards.item_reward", false);
 			config.addDefault("config.rewards.item_reward_ids", "264*1;11*1");
 			config.addDefault("config.rewards.command_reward", false);
 			config.addDefault("config.rewards.command", "pex user <player> add SKILLZ.*");
+			
+			config.addDefault("config.rewards.economy_for_kills", true);
+			config.addDefault("config.rewards.economy_reward_for_kills", 5);
+			config.addDefault("config.rewards.command_reward_for_kills", false);
+			config.addDefault("config.rewards.command_for_kills", "pex user <player> add SKILLZ.*");
+			
 			config.addDefault("config.arcade.min_players", 1);
 			config.addDefault("config.arcade.max_players", 16);
 			config.addDefault("config.bungee.game_on_join", false);
@@ -32,6 +39,7 @@ public class DefaultConfig {
 			config.addDefault("config.bungee.whitelist_while_game_running", false);
 			config.addDefault("config.execute_cmds_on_stop", false);
 			config.addDefault("config.cmds", "say SERVER STOPPING;stop");
+
 			config.addDefault("mysql.enabled", false);
 			config.addDefault("mysql.host", "127.0.0.1");
 			config.addDefault("mysql.user", "root");

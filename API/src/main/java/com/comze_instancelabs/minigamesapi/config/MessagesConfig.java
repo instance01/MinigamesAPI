@@ -146,7 +146,7 @@ public class MessagesConfig {
 	public String joined_arena = "&aYou joined &3<arena>&a.";
 	public String you_won = "&aYou &2won &athe game!";
 	public String you_lost = "&cYou &4lost &cthe game.";
-	public String you_got_a_kill = "&aYou killed &2<player>! &2+10";
+	public String you_got_a_kill = "&aYou killed &2<player>!";
 	public String attributelevel_increased = "&aThe <attribute> level was increased successfully!";
 	public String not_enough_credits = "&cThe max level of 3 was reached or you don't have enough credits. Needed: <credits>";
 	public String too_many_main_guns = "&cYou already have 2 main guns, remove one first.";
