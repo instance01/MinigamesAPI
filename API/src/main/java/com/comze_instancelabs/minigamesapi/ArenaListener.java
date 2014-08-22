@@ -133,6 +133,8 @@ public class ArenaListener implements Listener {
 				return;
 			}
 
+			arena.onEliminated(p.getName());
+
 			pli.global_lost.put(p.getName(), pli.global_players.get(p.getName()));
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
