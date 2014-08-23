@@ -29,7 +29,7 @@ public class Stats {
 	private JavaPlugin plugin = null;
 
 	public ArrayList<String> skullsetup = new ArrayList<String>();
-	
+
 	public Stats(JavaPlugin plugin) {
 		this.plugin = plugin;
 	}
@@ -122,8 +122,27 @@ public class Stats {
 		return 0;
 	}
 
-	public void getTop(int count) {
-		// TODO top wins
+	public TreeMap<String, Double> getTop(int count, boolean wins) {
+		int c = 0;
+		String key = "wins";
+		if(!wins){
+			key = "points";
+		}
+		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().getConfig();
+		HashMap<String, Double> pwins = new HashMap<String, Double>();
+		if (config.isSet("players.")) {
+			for (String p : config.getConfigurationSection("players.").getKeys(false)) {
+				c++;
+				if (c > 100) {
+					break;
+				}
+				pwins.put(config.getString("players." + p + ".playername"), (double) config.getInt("players." + p + "." + key));
+			}
+		}
+		ValueComparator bvc = new ValueComparator(pwins);
+		TreeMap<String, Double> sorted_wins = new TreeMap<String, Double>(bvc);
+		sorted_wins.putAll(pwins);
+		return sorted_wins;
 	}
 
 	public TreeMap<String, Double> getTop() {
@@ -148,7 +167,7 @@ public class Stats {
 		item.setItemMeta(skullmeta);
 		return item;
 	}
-	
+
 	public void saveSkull(Location t, int count) {
 		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().getConfig();
 		String base = "skulls." + UUID.randomUUID().toString() + ".";
@@ -158,13 +177,13 @@ public class Stats {
 		config.set(base + "z", t.getBlockZ());
 		config.set(base + "pos", count);
 		BlockState state = t.getBlock().getState();
-		if(state instanceof Skull){
+		if (state instanceof Skull) {
 			Skull skull_ = (Skull) state;
 			config.set(base + "dir", skull_.getRotation().toString());
-		}else{
+		} else {
 			config.set(base + "dir", "SELF");
 		}
-		
+
 		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsConfig().saveConfig();
 	}
 

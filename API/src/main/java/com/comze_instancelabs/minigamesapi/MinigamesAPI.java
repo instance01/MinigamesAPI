@@ -77,14 +77,14 @@ public class MinigamesAPI extends JavaPlugin {
 				}
 			}
 		}
-		
-		try{
+
+		try {
 			for (PluginInstance pli : this.pinstances.values()) {
 				for (Arena a : pli.getArenas()) {
 					a.stop();
 				}
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			System.out.println("Error while stopping arenas: " + e.getMessage());
 		}
 	}

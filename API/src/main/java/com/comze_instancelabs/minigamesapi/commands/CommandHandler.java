@@ -1,6 +1,8 @@
 package com.comze_instancelabs.minigamesapi.commands;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -72,6 +74,8 @@ public class CommandHandler {
 				return this.setShowScoreboard(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("reset")) {
 				return this.resetArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb")) {
+				return this.getLeaderboards(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
@@ -384,7 +388,6 @@ public class CommandHandler {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
 		}
-		// TODO add to help
 		if (args.length > 1) {
 			if (Util.isNumeric(args[1])) {
 				int count = Integer.parseInt(args[1]);
@@ -435,29 +438,95 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
-	//TODO add as command and test out
+
+	// TODO add to help
 	public boolean resetArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".reset")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
 		}
 		if (args.length > 1) {
-				final Arena a = pli.getArenaByName(args[1]);
-				if(a != null){
-					if(Validator.isArenaValid(plugin, a)){
-						Bukkit.getScheduler().runTask(plugin, new Runnable() {
-							public void run() {
-								Util.loadArenaFromFileSYNC(plugin, a);
-							}
-						});
-					}
+			final Arena a = pli.getArenaByName(args[1]);
+			if (a != null) {
+				if (Validator.isArenaValid(plugin, a)) {
+					Bukkit.getScheduler().runTask(plugin, new Runnable() {
+						public void run() {
+							Util.loadArenaFromFileSYNC(plugin, a);
+						}
+					});
+					sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "reset"));
 				}
-				
+			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 		}
 		return true;
+	}
+
+	public boolean getLeaderboards(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		boolean wins = true;
+		int count = 10;
+		if (args.length > 2) {
+			if (Util.isNumeric(args[2])) {
+				count = Integer.parseInt(args[2]);
+				if (!args[1].equalsIgnoreCase("wins")) {
+					wins = false;
+				}
+			} else {
+				if (Util.isNumeric(args[1])) {
+					count = Integer.parseInt(args[1]);
+				}
+				if (!args[2].equalsIgnoreCase("wins")) {
+					wins = false;
+				}
+			}
+		} else if (args.length > 1 && args.length < 3) {
+			if (Util.isNumeric(args[1])) {
+				count = Integer.parseInt(args[1]);
+			} else {
+				if (!args[1].equalsIgnoreCase("wins")) {
+					wins = false;
+				}
+			}
+		}
+		sendLeaderboards(pli, sender, count, wins);
+		return true;
+	}
+
+	/**
+	 * Send the leaderboards to a player
+	 * 
+	 * @param sender
+	 *            Player to send the leaderboards to
+	 * @param count
+	 *            Amount of result items to show
+	 * @param wins
+	 *            whether to check for wins or points leaderboards
+	 */
+	private void sendLeaderboards(PluginInstance pli, CommandSender sender, int count, boolean wins) {
+		int c = 0;
+		if (wins) {
+			sender.sendMessage(ChatColor.DARK_GREEN + "--- Leaderboards: Wins ---");
+			TreeMap<String, Double> sorted_wins = pli.getStatsInstance().getTop(count, true);
+			for (Map.Entry<String, Double> entry : sorted_wins.entrySet()) {
+				c++;
+				if (c > count) {
+					break;
+				}
+				sender.sendMessage(ChatColor.GREEN + "" + Integer.toString((int) entry.getValue().doubleValue()) + ChatColor.DARK_GREEN + " - " + ChatColor.GREEN + "" + entry.getKey());
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GREEN + "-- Leaderboards: Points --");
+			TreeMap<String, Double> sorted_wins = pli.getStatsInstance().getTop(count, false);
+			for (Map.Entry<String, Double> entry : sorted_wins.entrySet()) {
+				c++;
+				if (c > count) {
+					break;
+				}
+				sender.sendMessage(ChatColor.GREEN + "" + Integer.toString((int) entry.getValue().doubleValue()) + ChatColor.DARK_GREEN + " - " + ChatColor.GREEN + "" + entry.getKey());
+			}
+		}
+
 	}
 
 }
