@@ -16,7 +16,6 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArcadeInstance {
 
-	// TODO Arcade Config
 	public ArrayList<PluginInstance> minigames = new ArrayList<PluginInstance>();
 	int currentindex = 0;
 	public ArrayList<String> players = new ArrayList<String>();
@@ -37,8 +36,7 @@ public class ArcadeInstance {
 			players.add(playername);
 		}
 		if (players.size() >= plugin.getConfig().getInt("config.arcade.min_players")) {
-			if(!started){
-				started = true;
+			if (!started) {
 				startArcade();
 			}
 			Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
@@ -57,7 +55,7 @@ public class ArcadeInstance {
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				Player p = Bukkit.getPlayer(playername);
-				if(p != null){
+				if (p != null) {
 					Util.teleportPlayerFixed(p, arena.getMainLobbyTemp());
 				}
 			}
@@ -72,6 +70,10 @@ public class ArcadeInstance {
 	int currenttaskid = 0;
 
 	public void startArcade() {
+		if (started) {
+			return;
+		}
+		started = true;
 		Collections.shuffle(minigames);
 
 		currentlobbycount = plugin.getConfig().getInt("config.arcade.lobby_countdown") + 1;
@@ -91,14 +93,17 @@ public class ArcadeInstance {
 				}
 				if (currentlobbycount < 1) {
 					for (String p_ : players) {
-						PluginInstance mg = minigames.get(currentindex);
+						currentindex--;
+						ai.nextMinigame();
+						/*PluginInstance mg = minigames.get(currentindex);
 						Arena a = mg.getArenas().get(0);
 						if (a.getArenaState() == ArenaState.JOIN) {
 							a.joinPlayerLobby(p_, ai);
 							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
 						} else {
+							// TODO try out other arenas too before going to next minigame
 							ai.nextMinigame();
-						}
+						}*/
 					}
 					try {
 						Bukkit.getScheduler().cancelTask(currenttaskid);
@@ -118,15 +123,18 @@ public class ArcadeInstance {
 		started = false;
 		this.currentindex = 0;
 	}
-	
-	public void stopCurrentMinigame(){
+
+	public void stopCurrentMinigame() {
 		if (currentindex < minigames.size()) {
 			minigames.get(currentindex).getArenas().get(0).stop();
 		}
 	}
 
 	public void nextMinigame() {
-		// System.out.println(currentindex + " " + minigames.size());
+		nextMinigame(30L);
+	}
+
+	public void nextMinigame(long delay) {
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
@@ -136,13 +144,43 @@ public class ArcadeInstance {
 		final ArcadeInstance ai = this;
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				for (String p_ : players) {
+				ArrayList<String> temp = new ArrayList<String>(players);
+				for (String p_ : temp) {
 					PluginInstance mg = minigames.get(currentindex);
-					mg.getArenas().get(0).joinPlayerLobby(p_, ai);
-					Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
+					if (mg.getPlugin().getConfig().getBoolean("config.arcade.enabled")) {
+						Arena a = null;
+						if (mg.getPlugin().getConfig().getBoolean("config.arcade.arena_to_prefer.enabled")) {
+							String arenaname = mg.getPlugin().getConfig().getString("config.arcade.arena_to_prefer.arena");
+							a = mg.getArenaByName(arenaname);
+							if (a == null) {
+								for (Arena a_ : mg.getArenas()) {
+									if (a_.getArenaState() == ArenaState.JOIN) {
+										a = a_;
+										break;
+									}
+								}
+							}
+						} else {
+							for (Arena a_ : mg.getArenas()) {
+								if (a_.getArenaState() == ArenaState.JOIN) {
+									a = a_;
+									break;
+								}
+							}
+						}
+						if (a != null) {
+							a.joinPlayerLobby(p_, ai);
+							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
+						} else {
+							nextMinigame(5L);
+						}
+					} else {
+						nextMinigame(5L);
+					}
+
 				}
 			}
-		}, 30L);
+		}, delay);
 	}
 
 	public void clean() {

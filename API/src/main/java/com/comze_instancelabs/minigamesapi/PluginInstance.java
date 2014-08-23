@@ -63,6 +63,10 @@ public class PluginInstance {
 		this(plugin, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>());
 	}
 
+	public JavaPlugin getPlugin() {
+		return plugin;
+	}
+
 	public HashMap<String, AClass> getAClasses() {
 		return this.aclasses;
 	}

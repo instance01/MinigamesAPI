@@ -31,8 +31,12 @@ public class DefaultConfig {
 			config.addDefault("config.rewards.command_reward_for_kills", false);
 			config.addDefault("config.rewards.command_for_kills", "pex user <player> add SKILLZ.*");
 			
+			config.addDefault("config.arcade.enabled", true);
 			config.addDefault("config.arcade.min_players", 1);
 			config.addDefault("config.arcade.max_players", 16);
+			config.addDefault("config.arcade.arena_to_prefer.enabled", false);
+			config.addDefault("config.arcade.arena_to_prefer.arena", "arena1");
+			config.addDefault("config.arcade.lobby_countdown", 20);
 			config.addDefault("config.bungee.game_on_join", false);
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.tp", false);
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.server", "lobby");
