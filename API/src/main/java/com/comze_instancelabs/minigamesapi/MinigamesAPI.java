@@ -8,8 +8,10 @@ import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
 
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -72,20 +74,11 @@ public class MinigamesAPI extends JavaPlugin {
 	public void onDisable() {
 		for (PluginInstance pli : this.pinstances.values()) {
 			for (Arena a : pli.getArenas()) {
-				for (String p_ : a.getAllPlayers()) {
+				ArrayList<String> temp = new ArrayList<String>(a.getAllPlayers());
+				for (String p_ : temp) {
 					a.leavePlayer(p_, true);
 				}
 			}
-		}
-
-		try {
-			for (PluginInstance pli : this.pinstances.values()) {
-				for (Arena a : pli.getArenas()) {
-					a.stop();
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("Error while stopping arenas: " + e.getMessage());
 		}
 	}
 
