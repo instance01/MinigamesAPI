@@ -26,6 +26,9 @@ public class SmartReset {
 
 	public void addChanged(Block b, boolean c) {
 		if (!changed.containsKey(b.getLocation())) {
+			/*if (b.getType() == Material.LAVA || b.getType() == Material.OBSIDIAN || b.getType() == Material.WATER) {
+				System.out.println(b);
+			}*/
 			changed.put(b.getLocation(), new ArenaBlock(b, c));
 		}
 	}
@@ -47,6 +50,9 @@ public class SmartReset {
 				for (final ArenaBlock ablock : changed.values()) {
 					try {
 						final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+						if (ablock.getMaterial() == Material.LAVA || ablock.getMaterial() == Material.OBSIDIAN || ablock.getMaterial() == Material.WATER) {
+							System.out.println(b_);
+						}
 						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
 							b_.setType(ablock.getMaterial());
 							b_.setData(ablock.getData());
@@ -66,6 +72,7 @@ public class SmartReset {
 						failedblocks.add(ablock);
 					}
 				}
+				changed.clear();
 
 				System.out.println(failcount + " to redo.");
 

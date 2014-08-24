@@ -329,6 +329,7 @@ public class Arena {
 	 * @param fullLeave
 	 *            Determines if player left only minigame or the server
 	 */
+	@Deprecated
 	public void leavePlayer(final String playername, boolean fullLeave) {
 		this.leavePlayerRaw(playername, fullLeave);
 	}
@@ -645,7 +646,7 @@ public class Arena {
 		} else {
 			// Map rotation only works without Arcade
 			// check if there is only one player or none left
-			if(temp.size() < 2){
+			if (temp.size() < 2) {
 				return;
 			}
 			if (plugin.getConfig().getBoolean("config.map_rotation")) {

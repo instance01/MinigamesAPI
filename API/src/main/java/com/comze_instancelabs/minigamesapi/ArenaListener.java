@@ -30,6 +30,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -230,8 +231,19 @@ public class ArenaListener implements Listener {
 		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
-				if (c != null) {
+				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getToBlock().getLocation())) {
+						/*
+						 * BlockFace face = event.getFace(); int x = event.getBlock().getX(); int y = event.getBlock().getY(); int z =
+						 * event.getBlock().getZ(); Block b = event.getBlock().getWorld().getBlockAt(x + face.getModX(), y + face.getModY(), z +
+						 * face.getModZ()); a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+						 * a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+						 * a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
+						 */
+						// a.getSmartReset().addChanged(event.getBlock().getLocation());
+						// a.getSmartReset().addChanged(event.getToBlock().getLocation());
+
+						//a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 						a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
 					}
 				}
@@ -244,7 +256,7 @@ public class ArenaListener implements Listener {
 		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
-				if (c != null) {
+				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 					}
@@ -293,6 +305,29 @@ public class ArenaListener implements Listener {
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
+		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				if (c != null) {
+					Block start = event.getBlockClicked();
+					if (c.containsLocWithoutY(start.getLocation())) {
+						//System.out.println("t");
+						for (int x = -2; x < 2; x++) {
+							for (int y = -2; y < 2; y++) {
+								for (int z = -2; z < 2; z++) {
+									Block b = start.getLocation().clone().add(x, y, z).getBlock();
+									a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+								}
+							}
+						}
 					}
 				}
 			}
@@ -349,7 +384,8 @@ public class ArenaListener implements Listener {
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
-						a.getSmartReset().addChanged(event.getClickedBlock().getLocation().add(0D, 1D, 0D));
+						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
+						// a.getSmartReset().addChanged(event.getClickedBlock().getLocation().add(0D, 1D, 0D));
 					}
 				}
 			}
