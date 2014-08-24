@@ -245,7 +245,7 @@ public class Arena {
 						Util.clearInv(p);
 						ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
 						ItemMeta cimeta = classes_item.getItemMeta();
-						cimeta.setDisplayName("Classes");
+						cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
 						classes_item.setItemMeta(cimeta);
 						p.getInventory().addItem(classes_item);
 						p.updateInventory();
