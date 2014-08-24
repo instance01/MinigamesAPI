@@ -44,14 +44,11 @@ public class ArenaScoreboard {
 						aobjective.put(arena.getName(), ascore.get(arena.getName()).registerNewObjective(arena.getName(), "dummy"));
 					}
 
-					System.out.println(plugin.getName() + " " + arena.getName() + " " + p__ + " " + aobjective.get(arena.getName()).getName());
-
 					aobjective.get(arena.getName()).setDisplaySlot(DisplaySlot.SIDEBAR);
 
 					aobjective.get(arena.getName()).setDisplayName("[" + arena.getName() + "]");
 
 					for (String p___ : arena.getAllPlayers()) {
-						System.out.println("ADD " + plugin.getName() + " " + arena.getName() + " " + p__ + " " + aobjective.get(arena.getName()).getName());
 						if (!Validator.isPlayerOnline(p___)) {
 							continue;
 						}

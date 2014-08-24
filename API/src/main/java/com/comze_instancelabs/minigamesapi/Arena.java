@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -583,7 +584,7 @@ public class Arena {
 
 		this.setArenaState(ArenaState.RESTARTING);
 
-		ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
+		final ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
 		for (String p_ : temp) {
 			leavePlayer(p_, false, true);
 		}
@@ -634,14 +635,28 @@ public class Arena {
 			Bukkit.setWhitelist(false);
 		}
 
-		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-			public void run() {
-				if (ai != null) {
+		if (ai != null) {
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
 					ai.nextMinigame();
 					ai = null;
 				}
+			}, 10L);
+		} else {
+			// Map rotation only works without Arcade
+			// check if there is only one player or none left
+			if(temp.size() < 2){
+				return;
 			}
-		}, 10L);
+			if (plugin.getConfig().getBoolean("config.map_rotation")) {
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						a.nextArenaOnMapRotation(temp);
+					}
+				}, 35L);
+			}
+		}
+
 	}
 
 	/**
@@ -672,6 +687,24 @@ public class Arena {
 				killer.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
 			}
 			lastdamager.remove(playername);
+		}
+	}
+
+	/**
+	 * Will shuffle all arenas and join the next available arena
+	 * 
+	 * @param players
+	 */
+	public void nextArenaOnMapRotation(ArrayList<String> players) {
+		ArrayList<Arena> arenas = pli.getArenas();
+		Collections.shuffle(arenas);
+		for (Arena a : arenas) {
+			if (a.getArenaState() == ArenaState.JOIN && a != this) {
+				System.out.println(plugin.getName() + ": Next arena on map rotation: " + a.getName());
+				for (String p_ : players) {
+					a.joinPlayerLobby(p_, false);
+				}
+			}
 		}
 	}
 
