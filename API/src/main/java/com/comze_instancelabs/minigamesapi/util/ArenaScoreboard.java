@@ -15,8 +15,10 @@ import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class ArenaScoreboard {
 
-	Scoreboard board;
-	Objective objective;
+	// Scoreboard board;
+	// Objective objective;
+	HashMap<String, Scoreboard> ascore = new HashMap<String, Scoreboard>();
+	HashMap<String, Objective> aobjective = new HashMap<String, Objective>();
 	HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
 
 	public ArenaScoreboard() {
@@ -35,18 +37,21 @@ public class ArenaScoreboard {
 						return;
 					}
 					Player p = Bukkit.getPlayer(p__);
-					if (board == null) {
-						board = Bukkit.getScoreboardManager().getNewScoreboard();
+					if (!ascore.containsKey(arena.getName())) {
+						ascore.put(arena.getName(), Bukkit.getScoreboardManager().getNewScoreboard());
 					}
-					if (objective == null) {
-						objective = board.registerNewObjective("test", "dummy");
+					if (!aobjective.containsKey(arena.getName())) {
+						aobjective.put(arena.getName(), ascore.get(arena.getName()).registerNewObjective(arena.getName(), "dummy"));
 					}
 
-					objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+					System.out.println(plugin.getName() + " " + arena.getName() + " " + p__ + " " + aobjective.get(arena.getName()).getName());
 
-					objective.setDisplayName("[" + arena.getName() + "]");
+					aobjective.get(arena.getName()).setDisplaySlot(DisplaySlot.SIDEBAR);
+
+					aobjective.get(arena.getName()).setDisplayName("[" + arena.getName() + "]");
 
 					for (String p___ : arena.getAllPlayers()) {
+						System.out.println("ADD " + plugin.getName() + " " + arena.getName() + " " + p__ + " " + aobjective.get(arena.getName()).getName());
 						if (!Validator.isPlayerOnline(p___)) {
 							continue;
 						}
@@ -65,9 +70,9 @@ public class ArenaScoreboard {
 							}
 							try {
 								if (p_.getName().length() < 15) {
-									objective.getScore(Bukkit.getOfflinePlayer("§a" + p_.getName())).setScore(score);
+									aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer("§a" + p_.getName())).setScore(score);
 								} else {
-									objective.getScore(Bukkit.getOfflinePlayer("§a" + p_.getName().substring(0, p_.getName().length() - 3))).setScore(score);
+									aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer("§a" + p_.getName().substring(0, p_.getName().length() - 3))).setScore(score);
 								}
 							} catch (Exception e) {
 							}
@@ -76,11 +81,11 @@ public class ArenaScoreboard {
 								int score = currentscore.get(p___);
 								try {
 									if (p_.getName().length() < 15) {
-										board.resetScores(Bukkit.getOfflinePlayer("§a" + p_.getName()));
-										objective.getScore(Bukkit.getOfflinePlayer("§c" + p_.getName())).setScore(score);
+										ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer("§a" + p_.getName()));
+										aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer("§c" + p_.getName())).setScore(score);
 									} else {
-										board.resetScores(Bukkit.getOfflinePlayer("§a" + p_.getName().substring(0, p_.getName().length() - 3)));
-										objective.getScore(Bukkit.getOfflinePlayer("§c" + p_.getName().substring(0, p_.getName().length() - 3))).setScore(score);
+										ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer("§a" + p_.getName().substring(0, p_.getName().length() - 3)));
+										aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer("§c" + p_.getName().substring(0, p_.getName().length() - 3))).setScore(score);
 									}
 								} catch (Exception e) {
 								}
@@ -88,7 +93,7 @@ public class ArenaScoreboard {
 						}
 					}
 
-					p.setScoreboard(board);
+					p.setScoreboard(ascore.get(arena.getName()));
 				}
 			}
 		});
@@ -100,11 +105,11 @@ public class ArenaScoreboard {
 			Scoreboard sc = manager.getNewScoreboard();
 			try {
 				if (p.getName().length() < 15) {
-					board.resetScores(Bukkit.getOfflinePlayer("§c" + p.getName()));
-					board.resetScores(Bukkit.getOfflinePlayer("§a" + p.getName()));
+					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§c" + p.getName()));
+					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§a" + p.getName()));
 				} else {
-					board.resetScores(Bukkit.getOfflinePlayer("§c" + p.getName().substring(0, p.getName().length() - 3)));
-					board.resetScores(Bukkit.getOfflinePlayer("§a" + p.getName().substring(0, p.getName().length() - 3)));
+					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§c" + p.getName().substring(0, p.getName().length() - 3)));
+					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§a" + p.getName().substring(0, p.getName().length() - 3)));
 				}
 
 			} catch (Exception e) {
