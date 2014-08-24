@@ -50,9 +50,9 @@ public class SmartReset {
 				for (final ArenaBlock ablock : changed.values()) {
 					try {
 						final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
-						if (ablock.getMaterial() == Material.LAVA || ablock.getMaterial() == Material.OBSIDIAN || ablock.getMaterial() == Material.WATER) {
+						/*if (ablock.getMaterial() == Material.LAVA || ablock.getMaterial() == Material.OBSIDIAN || ablock.getMaterial() == Material.WATER) {
 							System.out.println(b_);
-						}
+						}*/
 						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
 							b_.setType(ablock.getMaterial());
 							b_.setData(ablock.getData());

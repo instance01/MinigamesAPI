@@ -9,24 +9,26 @@ public class AClass {
 
 	private JavaPlugin plugin;
 	private String name;
+	private String internalname;
 	private ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 	private ItemStack icon;
 	private boolean enabled = true;
 
-	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items) {
-		this(plugin, name, true, items, items.get(0));
+	public AClass(JavaPlugin plugin, String name, String internalname, ArrayList<ItemStack> items) {
+		this(plugin, name, internalname, true, items, items.get(0));
 	}
 
-	public AClass(JavaPlugin plugin, String name, boolean enabled, ArrayList<ItemStack> items) {
-		this(plugin, name, enabled, items, items.get(0));
+	public AClass(JavaPlugin plugin, String name, String internalname, boolean enabled, ArrayList<ItemStack> items) {
+		this(plugin, name, internalname, enabled, items, items.get(0));
 	}
 
-	public AClass(JavaPlugin plugin, String name, boolean enabled, ArrayList<ItemStack> items, ItemStack icon) {
+	public AClass(JavaPlugin plugin, String name, String internalname, boolean enabled, ArrayList<ItemStack> items, ItemStack icon) {
 		this.plugin = plugin;
 		this.name = name;
 		this.items = items;
 		this.icon = icon;
 		this.enabled = enabled;
+		this.internalname = internalname;
 	}
 
 	public ItemStack[] getItems() {
@@ -45,6 +47,10 @@ public class AClass {
 
 	public String getName() {
 		return this.name;
+	}
+	
+	public String getInternalName() {
+		return this.internalname;
 	}
 
 	public boolean isEnabled() {
