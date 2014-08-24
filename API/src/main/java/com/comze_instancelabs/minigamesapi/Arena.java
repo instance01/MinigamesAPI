@@ -229,7 +229,14 @@ public class Arena {
 					Util.teleportPlayerFixed(p, this.spawns.get(0));
 					return;
 				} else {
-					Util.teleportPlayerFixed(p, this.waitinglobby);
+					if (currenttaskid != 0) {
+						p.setWalkSpeed(0.0F);
+						p.setFoodLevel(5);
+						p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
+						Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+					} else {
+						Util.teleportPlayerFixed(p, this.waitinglobby);
+					}
 				}
 				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 					public void run() {
