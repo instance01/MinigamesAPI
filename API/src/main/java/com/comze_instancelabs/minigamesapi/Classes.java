@@ -25,10 +25,11 @@ public class Classes {
 	public void openGUI(String p) {
 		final Classes cl = this;
 		IconMenu iconm;
+		int mincount = MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().keySet().size();
 		if (lasticonm.containsKey(p)) {
 			iconm = lasticonm.get(p);
 		} else {
-			iconm = new IconMenu("Classes", 27, new IconMenu.OptionClickEventHandler() {
+			iconm = new IconMenu("Classes", (9 * plugin.getConfig().getInt("config.classes_gui_rows") > mincount - 1) ? 9 * plugin.getConfig().getInt("config.classes_gui_rows") : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
 				@Override
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
 					String d = event.getName();

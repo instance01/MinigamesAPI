@@ -53,6 +53,7 @@ public class Arena {
 	private boolean shouldClearInventoryOnJoin = true;
 	private Arena currentarena;
 	boolean started = false;
+	boolean startedIngameCountdown = false;
 	private boolean showArenascoreboard = true;
 
 	SmartReset sr = null;
@@ -229,7 +230,7 @@ public class Arena {
 					Util.teleportPlayerFixed(p, this.spawns.get(0));
 					return;
 				} else {
-					if (currenttaskid != 0) {
+					if (startedIngameCountdown) {
 						p.setWalkSpeed(0.0F);
 						p.setFoodLevel(5);
 						p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
@@ -524,6 +525,7 @@ public class Arena {
 		pli.scoreboardManager.updateScoreboard(plugin, a);
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
+				startedIngameCountdown = true;
 				currentingamecount--;
 				if (currentingamecount == 60 || currentingamecount == 30 || currentingamecount == 15 || currentingamecount == 10 || currentingamecount < 6) {
 					for (String p_ : a.getAllPlayers()) {
@@ -535,6 +537,7 @@ public class Arena {
 				}
 				if (currentingamecount < 1) {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
+					startedIngameCountdown = false;
 					Util.updateSign(plugin, a);
 					for (String p_ : a.getAllPlayers()) {
 						if (!pli.getClassesHandler().hasClass(p_)) {
@@ -601,6 +604,7 @@ public class Arena {
 		}, 10L);
 
 		started = false;
+		startedIngameCountdown = false;
 
 		/*
 		 * try { pli.getStatsInstance().updateSkulls(); } catch (Exception e) {
