@@ -20,6 +20,7 @@ public class ArenaBlock implements Serializable {
 	private Material m;
 	private byte data;
 	private ArrayList<Material> item_mats;
+	private ArrayList<Byte> item_data;
 	private ArrayList<Integer> item_amounts;
 	private ArrayList<String> item_displaynames;
 
@@ -35,11 +36,13 @@ public class ArenaBlock implements Serializable {
 		if (c) {
 			inv = ((Chest) b.getState()).getInventory().getContents();
 			item_mats = new ArrayList<Material>();
+			item_data = new ArrayList<Byte>();
 			item_amounts = new ArrayList<Integer>();
 			item_displaynames = new ArrayList<String>();
 			for (ItemStack i : ((Chest) b.getState()).getInventory().getContents()) {
 				if (i != null) {
 					item_mats.add(i.getType());
+					item_data.add(i.getData().getData());
 					item_amounts.add(i.getAmount());
 					item_displaynames.add(i.getItemMeta().getDisplayName());
 				}
@@ -78,7 +81,7 @@ public class ArenaBlock implements Serializable {
 	public ArrayList<ItemStack> getNewInventory() {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		for (int i = 0; i < item_mats.size(); i++) {
-			ItemStack item = new ItemStack(item_mats.get(i), item_amounts.get(i));
+			ItemStack item = new ItemStack(item_mats.get(i), item_amounts.get(i), item_data.get(i));
 			ItemMeta im = item.getItemMeta();
 			im.setDisplayName(item_displaynames.get(i));
 			item.setItemMeta(im);

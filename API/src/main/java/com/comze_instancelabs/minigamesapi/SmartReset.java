@@ -56,7 +56,7 @@ public class SmartReset {
 							((Chest) b_.getState()).update();
 							for (ItemStack i : ablock.getNewInventory()) {
 								if (i != null) {
-									((Chest) b_.getState()).getBlockInventory().addItem(new ItemStack(i.getType(), i.getAmount()));
+									((Chest) b_.getState()).getBlockInventory().addItem(new ItemStack(i.getType(), i.getAmount(), i.getData().getData()));
 								}
 							}
 							((Chest) b_.getState()).update();
