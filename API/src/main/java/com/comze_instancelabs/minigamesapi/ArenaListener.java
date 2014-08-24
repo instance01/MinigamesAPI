@@ -19,6 +19,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockFadeEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -217,6 +219,34 @@ public class ArenaListener implements Listener {
 						for (Block b : event.blockList()) {
 							a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
 						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockFromTo(BlockFromToEvent event) {
+		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				if (c != null) {
+					if (c.containsLocWithoutY(event.getToBlock().getLocation())) {
+						a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockFade(BlockFadeEvent event) {
+		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				if (c != null) {
+					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 					}
 				}
 			}
