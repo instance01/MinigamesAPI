@@ -251,6 +251,21 @@ public class Arena {
 						p.setFoodLevel(5);
 						p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
 						Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+						Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+							public void run() {
+								Util.clearInv(p);
+								ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
+								ItemMeta cimeta = classes_item.getItemMeta();
+								cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
+								classes_item.setItemMeta(cimeta);
+								p.getInventory().addItem(classes_item);
+								p.updateInventory();
+								pgamemode.put(p.getName(), p.getGameMode());
+								p.setGameMode(GameMode.SURVIVAL);
+							}
+						}, 10L);
+						pli.scoreboardManager.updateScoreboard(plugin, this);
+						return;
 					} else {
 						Util.teleportPlayerFixed(p, this.waitinglobby);
 					}
