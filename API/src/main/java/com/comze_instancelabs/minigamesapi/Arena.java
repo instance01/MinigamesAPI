@@ -18,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
 import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
+import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
@@ -64,6 +65,8 @@ public class Arena {
 
 	SmartReset sr = null;
 
+	Cuboid boundaries;
+
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -103,6 +106,9 @@ public class Arena {
 		this.min_players = min_players;
 		this.max_players = max_players;
 		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getName());
+		if(this.getArenaType() == ArenaType.REGENERATION){
+			this.boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "bounds.low"), Util.getComponentForArena(plugin, this.getName(), "bounds.high"));
+		}
 	}
 
 	// This is for loading existing arenas
@@ -133,6 +139,10 @@ public class Arena {
 
 	public ArrayList<Location> getSpawns() {
 		return this.spawns;
+	}
+
+	public Cuboid getBoundaries() {
+		return this.boundaries;
 	}
 
 	public String getName() {

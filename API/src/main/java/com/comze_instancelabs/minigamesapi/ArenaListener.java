@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -38,6 +39,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.Util;
@@ -79,6 +81,15 @@ public class ArenaListener implements Listener {
 								Util.teleportPlayerFixed(p, a.getSpawns().get(0));
 							} else {
 								a.spectate(p.getName());
+							}
+							return;
+						}
+						if (a.getArenaType() == ArenaType.REGENERATION) {
+							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
+								// TODO test out: player out of bounds
+								Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
+								p.setVelocity(direction);
+								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
 							}
 						}
 					}
@@ -243,7 +254,7 @@ public class ArenaListener implements Listener {
 						// a.getSmartReset().addChanged(event.getBlock().getLocation());
 						// a.getSmartReset().addChanged(event.getToBlock().getLocation());
 
-						//a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+						// a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 						a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
 					}
 				}
@@ -319,7 +330,7 @@ public class ArenaListener implements Listener {
 				if (c != null) {
 					Block start = event.getBlockClicked();
 					if (c.containsLocWithoutY(start.getLocation())) {
-						//System.out.println("t");
+						// System.out.println("t");
 						for (int x = -2; x < 2; x++) {
 							for (int y = -2; y < 2; y++) {
 								for (int z = -2; z < 2; z++) {
