@@ -14,6 +14,11 @@ public class AClass {
 	private ItemStack icon;
 	private boolean enabled = true;
 
+	@Deprecated
+	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items) {
+		this(plugin, name, name, true, items, items.get(0));
+	}
+	
 	public AClass(JavaPlugin plugin, String name, String internalname, ArrayList<ItemStack> items) {
 		this(plugin, name, internalname, true, items, items.get(0));
 	}

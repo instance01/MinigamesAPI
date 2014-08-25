@@ -64,7 +64,7 @@ public class Util {
 			ent.eject();
 		}
 		p.teleport(l, TeleportCause.PLUGIN);
-		p.setFallDistance(0F);
+		p.setFallDistance(-1F);
 		p.setVelocity(new Vector(0D, 0D, 0D));
 		/*
 		 * for (Player p_ : Bukkit.getOnlinePlayers()){ p_.getLocation().getChunk().load(true); p.getWorld().loadChunk(l.getChunk().getX(),
