@@ -425,65 +425,76 @@ public class Util {
 	public static ArrayList<ItemStack> parseItems(String rawitems) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
-		String[] a = rawitems.split(";");
+		try {
+			String[] a = rawitems.split(";");
 
-		for (String b : a) {
-			int nameindex = b.indexOf("=");
-			String[] c = b.split("\\*");
-			String itemid = c[0];
-			String itemdata = "0";
-			String[] enchantments_ = itemid.split("#");
-			String[] enchantments = new String[enchantments_.length - 1];
-			if (enchantments_.length > 1) {
-				for (int i = 1; i < enchantments_.length; i++) {
-					enchantments[i - 1] = enchantments_[i];
+			for (String b : a) {
+				int nameindex = b.indexOf("=");
+				String[] c = b.split("\\*");
+				String itemid = c[0];
+				String itemdata = "0";
+				String[] enchantments_ = itemid.split("#");
+				String[] enchantments = new String[enchantments_.length - 1];
+				if (enchantments_.length > 1) {
+					for (int i = 1; i < enchantments_.length; i++) {
+						enchantments[i - 1] = enchantments_[i];
+					}
 				}
-			}
-			itemid = enchantments_[0];
-			String[] d = itemid.split(":");
-			if (d.length > 1) {
-				itemid = d[0];
-				itemdata = d[1];
-			}
-			String itemamount = c[1];
-			if (nameindex > -1) {
-				itemamount = c[1].substring(0, c[1].indexOf("="));
-			}
-			ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount), (short) Integer.parseInt(itemdata));
-			ItemMeta m = nitem.getItemMeta();
-			for (String enchant : enchantments) {
+				itemid = enchantments_[0];
+				String[] d = itemid.split(":");
+				if (d.length > 1) {
+					itemid = d[0];
+					itemdata = d[1];
+				}
+				String itemamount = c[1];
+				if (nameindex > -1) {
+					itemamount = c[1].substring(0, c[1].indexOf("="));
+				}
+				ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount), (short) Integer.parseInt(itemdata));
+				ItemMeta m = nitem.getItemMeta();
+				for (String enchant : enchantments) {
 
-				String[] e = enchant.split(":");
-				String ench = e[0];
-				String lv = "1";
-				if (e.length > 1) {
-					lv = e[1];
+					String[] e = enchant.split(":");
+					String ench = e[0];
+					String lv = "1";
+					if (e.length > 1) {
+						lv = e[1];
+					}
+					if (Enchantment.getByName(ench) != null) {
+						m.addEnchant(Enchantment.getByName(ench), Integer.parseInt(lv), true);
+					}
 				}
-				if (Enchantment.getByName(ench) != null) {
-					m.addEnchant(Enchantment.getByName(ench), Integer.parseInt(lv), true);
-				}
-			}
 
-			if (nameindex > -1) {
-				String namelore = b.substring(nameindex + 1);
-				String name = "";
-				String lore = "";
-				int i = namelore.indexOf(":");
-				if (i > -1) {
-					name = namelore.substring(0, i);
-					lore = namelore.substring(i + 1);
-				} else {
-					name = namelore;
+				if (nameindex > -1) {
+					String namelore = b.substring(nameindex + 1);
+					String name = "";
+					String lore = "";
+					int i = namelore.indexOf(":");
+					if (i > -1) {
+						name = namelore.substring(0, i);
+						lore = namelore.substring(i + 1);
+					} else {
+						name = namelore;
+					}
+					m.setDisplayName(name);
+					m.setLore(Arrays.asList(lore));
 				}
-				m.setDisplayName(name);
-				m.setLore(Arrays.asList(lore));
+				nitem.setItemMeta(m);
+				ret.add(nitem);
 			}
-			nitem.setItemMeta(m);
-			ret.add(nitem);
+			if (ret == null) {
+				MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
+			}
+		} catch (Exception e) {
+			ret.add(new ItemStack(Material.STAINED_GLASS_PANE));
+			System.out.println("Failed to load class items: " + e.getMessage() + " at [1] " + e.getStackTrace()[1].getLineNumber() + " [0] " + e.getStackTrace()[0].getLineNumber());
+			ItemStack rose = new ItemStack(Material.RED_ROSE);
+			ItemMeta im = rose.getItemMeta();
+			im.setDisplayName(ChatColor.RED + "Sowwy, failed to load class.");
+			rose.setItemMeta(im);
+			ret.add(rose);
 		}
-		if (ret == null) {
-			MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
-		}
+
 		return ret;
 	}
 

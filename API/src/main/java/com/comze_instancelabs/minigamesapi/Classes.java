@@ -65,13 +65,15 @@ public class Classes {
 		p.getInventory().setLeggings(null);
 		p.getInventory().setBoots(null);
 		p.updateInventory();
-		System.out.println(c);
-		System.out.println(c.getInternalName());
-		System.out.println(c.getItems());
 		p.getInventory().setContents(c.getItems());
 		p.updateInventory();
 	}
 
+	/**
+	 * Sets the current class of a player
+	 * @param classname the INTERNAL classname
+	 * @param player
+	 */
 	public void setClass(String classname, String player) {
 		if (!kitPlayerHasPermission(classname, Bukkit.getPlayer(player))) {
 			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
@@ -80,7 +82,7 @@ public class Classes {
 		if (kitRequiresMoney(classname)) {
 			kitTakeMoney(Bukkit.getPlayer(player), classname.toLowerCase());
 		}
-		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().get(classname));
+		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(classname));
 		Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', classname)));
 	}
 
