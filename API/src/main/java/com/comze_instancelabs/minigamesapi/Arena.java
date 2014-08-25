@@ -33,6 +33,11 @@ public class Arena {
 	HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
 	private HashMap<String, GameMode> pgamemode = new HashMap<String, GameMode>();
 
+	/**
+	 * Used when players leave with command, they shouldn't get rewards!
+	 */
+	private ArrayList<String> pnoreward = new ArrayList<String>();
+
 	HashMap<String, String> lastdamager = new HashMap<String, String>();
 
 	private Location mainlobby;
@@ -335,6 +340,10 @@ public class Arena {
 	}
 
 	public void leavePlayer(final String playername, boolean fullLeave, boolean endofGame) {
+		if (!endofGame) {
+			pnoreward.add(playername);
+		}
+
 		this.leavePlayer(playername, fullLeave);
 
 		if (!endofGame) {
@@ -375,7 +384,11 @@ public class Arena {
 		}
 
 		if (started) {
-			pli.getRewardsInstance().giveWinReward(playername);
+			if (!pnoreward.contains(playername)) {
+				pli.getRewardsInstance().giveWinReward(playername);
+			} else {
+				pnoreward.remove(playername);
+			}
 		}
 
 		pli.global_players.remove(playername);
@@ -602,6 +615,7 @@ public class Arena {
 				players.clear();
 				pinv.clear();
 				pinv_armor.clear();
+				pnoreward.clear();
 			}
 		}, 10L);
 
