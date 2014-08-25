@@ -106,7 +106,7 @@ public class Arena {
 		this.min_players = min_players;
 		this.max_players = max_players;
 		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getName());
-		if(this.getArenaType() == ArenaType.REGENERATION){
+		if (this.getArenaType() == ArenaType.REGENERATION) {
 			this.boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "bounds.low"), Util.getComponentForArena(plugin, this.getName(), "bounds.high"));
 		}
 	}
@@ -565,10 +565,14 @@ public class Arena {
 					startedIngameCountdown = false;
 					Util.updateSign(plugin, a);
 					for (String p_ : a.getAllPlayers()) {
-						if (!pli.getClassesHandler().hasClass(p_)) {
-							pli.getClassesHandler().setClass("default", p_);
+						try {
+							if (!pli.getClassesHandler().hasClass(p_)) {
+								pli.getClassesHandler().setClass(pli.getClassesHandler().getClassByInternalname("default").getName(), p_);
+							}
+							pli.getClassesHandler().getClass(p_);
+						} catch (Exception e) {
+							System.out.println("Failed to set class: " + e.getMessage());
 						}
-						pli.getClassesHandler().getClass(p_);
 						Player p = Bukkit.getPlayer(p_);
 						p.setWalkSpeed(0.2F);
 						p.setFoodLevel(20);

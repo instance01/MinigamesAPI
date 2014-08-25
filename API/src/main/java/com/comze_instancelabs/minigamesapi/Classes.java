@@ -36,7 +36,7 @@ public class Classes {
 					String d = event.getName();
 					Player p = event.getPlayer();
 					if (MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().containsKey(d)) {
-						cl.setClass(d, p.getName());
+						cl.setClass(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesHandler().getInternalNameByName(d), p.getName());
 					}
 					event.setWillClose(true);
 				}
@@ -65,6 +65,9 @@ public class Classes {
 		p.getInventory().setLeggings(null);
 		p.getInventory().setBoots(null);
 		p.updateInventory();
+		System.out.println(c);
+		System.out.println(c.getInternalName());
+		System.out.println(c.getItems());
 		p.getInventory().setContents(c.getItems());
 		p.updateInventory();
 	}
@@ -81,27 +84,51 @@ public class Classes {
 		Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', classname)));
 	}
 
+	public String getInternalNameByName(String name) {
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		for (AClass ac : pli.getAClasses().values()) {
+			if (ac.getName().equalsIgnoreCase(name)) {
+				return ac.getInternalName();
+			}
+		}
+		return "default";
+	}
+	
+	public AClass getClassByInternalname(String internalname) {
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		for (AClass ac : pli.getAClasses().values()) {
+			if (ac.getInternalName().equalsIgnoreCase(internalname)) {
+				return ac;
+			}
+		}
+		return null;
+	}
+
 	public boolean hasClass(String player) {
 		return MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().containsKey(player);
 	}
 
 	public void loadClasses() {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig();
-		if (config.isSet("config.kits")) {
-			for (String aclass : config.getConfigurationSection("config.kits.").getKeys(false)) {
-				AClass n;
-				if (config.isSet("config.kits." + aclass + ".icon")) {
-					n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")), Util.parseItems(config.getString("config.kits." + aclass + ".icon")).get(0));
-				} else {
-					n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")));
-				}
-				// MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(aclass, n);
-				MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(config.getString("config.kits." + aclass + ".name"), n);
-				if (!config.isSet("config.kits." + aclass + ".items") || !config.isSet("config.kits." + aclass + ".lore")) {
-					plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig();
+				if (config.isSet("config.kits")) {
+					for (String aclass : config.getConfigurationSection("config.kits.").getKeys(false)) {
+						AClass n;
+						if (config.isSet("config.kits." + aclass + ".icon")) {
+							n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")), Util.parseItems(config.getString("config.kits." + aclass + ".icon")).get(0));
+						} else {
+							n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")));
+						}
+						// MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(aclass, n);
+						MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(config.getString("config.kits." + aclass + ".name"), n);
+						if (!config.isSet("config.kits." + aclass + ".items") || !config.isSet("config.kits." + aclass + ".lore")) {
+							plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
+						}
+					}
 				}
 			}
-		}
+		}, 20L);
 	}
 
 	/**
@@ -110,23 +137,27 @@ public class Classes {
 	 * @param plugin
 	 */
 	@Deprecated
-	public static void loadClasses(JavaPlugin plugin) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig();
-		if (config.isSet("config.kits")) {
-			for (String aclass : config.getConfigurationSection("config.kits.").getKeys(false)) {
-				AClass n;
-				if (config.isSet("config.kits." + aclass + ".icon")) {
-					n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")), Util.parseItems(config.getString("config.kits." + aclass + ".icon")).get(0));
-				} else {
-					n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")));
-				}
-				// MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(aclass, n);
-				MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(config.getString("config.kits." + aclass + ".name"), n);
-				if (!config.isSet("config.kits." + aclass + ".items") || !config.isSet("config.kits." + aclass + ".lore")) {
-					plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
+	public static void loadClasses(final JavaPlugin plugin) {
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig();
+				if (config.isSet("config.kits")) {
+					for (String aclass : config.getConfigurationSection("config.kits.").getKeys(false)) {
+						AClass n;
+						if (config.isSet("config.kits." + aclass + ".icon")) {
+							n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")), Util.parseItems(config.getString("config.kits." + aclass + ".icon")).get(0));
+						} else {
+							n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")));
+						}
+						// MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(aclass, n);
+						MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(config.getString("config.kits." + aclass + ".name"), n);
+						if (!config.isSet("config.kits." + aclass + ".items") || !config.isSet("config.kits." + aclass + ".lore")) {
+							plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
+						}
+					}
 				}
 			}
-		}
+		}, 20L);
 	}
 
 	public boolean kitRequiresMoney(String kit) {

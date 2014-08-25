@@ -86,7 +86,6 @@ public class ArenaListener implements Listener {
 						}
 						if (a.getArenaType() == ArenaType.REGENERATION) {
 							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
-								// TODO test out: player out of bounds
 								Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
 								p.setVelocity(direction);
 								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
