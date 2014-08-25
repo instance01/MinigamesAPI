@@ -369,7 +369,7 @@ public class Arena {
 		p.removePotionEffect(PotionEffectType.JUMP);
 
 		for (Entity e : p.getNearbyEntities(50D, 50D, 50D)) {
-			if (e.getType() == EntityType.DROPPED_ITEM) {
+			if (e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER) {
 				e.remove();
 			}
 		}
