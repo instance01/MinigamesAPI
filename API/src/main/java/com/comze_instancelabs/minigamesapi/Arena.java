@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
 import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
+import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
@@ -645,6 +646,10 @@ public class Arena {
 				pinv.clear();
 				pinv_armor.clear();
 				pnoreward.clear();
+				for(IconMenu im : pli.getClassesHandler().lasticonm.values()){
+					im.destroy();
+				}
+				pli.getClassesHandler().lasticonm.clear();
 			}
 		}, 10L);
 

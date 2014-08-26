@@ -58,6 +58,9 @@ public class Classes {
 
 	public void getClass(String player) {
 		AClass c = MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player);
+		System.out.println("test");
+		System.out.println("A " + c);
+		System.out.println("B " + c.getName());
 		Player p = Bukkit.getServer().getPlayer(player);
 		p.getInventory().clear();
 		p.getInventory().setHelmet(null);
@@ -74,16 +77,17 @@ public class Classes {
 	 * @param classname the INTERNAL classname
 	 * @param player
 	 */
-	public void setClass(String classname, String player) {
-		if (!kitPlayerHasPermission(classname, Bukkit.getPlayer(player))) {
+	public void setClass(String internalname, String player) {
+		if (!kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
 			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 			return;
 		}
-		if (kitRequiresMoney(classname)) {
-			kitTakeMoney(Bukkit.getPlayer(player), classname.toLowerCase());
+		if (kitRequiresMoney(internalname)) {
+			kitTakeMoney(Bukkit.getPlayer(player), internalname.toLowerCase());
 		}
-		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(classname));
-		Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', classname)));
+		System.out.println(internalname + " " + getClassByInternalname(internalname).getName());
+		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(internalname));
+		Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', internalname)));
 	}
 
 	public String getInternalNameByName(String name) {
