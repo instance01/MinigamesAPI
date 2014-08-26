@@ -58,9 +58,9 @@ public class Classes {
 
 	public void getClass(String player) {
 		AClass c = MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player);
-		System.out.println("test");
-		System.out.println("A " + c);
-		System.out.println("B " + c.getName());
+		//System.out.println("test");
+		//System.out.println("A " + c);
+		//System.out.println("B " + c.getName());
 		Player p = Bukkit.getServer().getPlayer(player);
 		p.getInventory().clear();
 		p.getInventory().setHelmet(null);

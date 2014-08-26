@@ -411,7 +411,7 @@ public class Arena {
 
 		if (started) {
 			if (!pnoreward.contains(playername)) {
-				pli.getRewardsInstance().giveWinReward(playername);
+				pli.getRewardsInstance().giveWinReward(playername, this);
 			} else {
 				pnoreward.remove(playername);
 			}
@@ -583,7 +583,7 @@ public class Arena {
 					for (String p_ : a.getAllPlayers()) {
 						try {
 							if (!pli.getClassesHandler().hasClass(p_)) {
-								pli.getClassesHandler().setClass(pli.getClassesHandler().getClassByInternalname("default").getName(), p_);
+								pli.getClassesHandler().setClass("default", p_);
 							}
 							pli.getClassesHandler().getClass(p_);
 						} catch (Exception e) {

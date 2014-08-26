@@ -45,6 +45,7 @@ public class DefaultConfig {
 			config.addDefault("config.cmds", "say SERVER STOPPING;stop");
 			config.addDefault("config.classes_gui_rows", 3);
 			config.addDefault("config.map_rotation", false);
+			config.addDefault("config.broadcast_win", true);
 
 			config.addDefault("mysql.enabled", false);
 			config.addDefault("mysql.host", "127.0.0.1");
