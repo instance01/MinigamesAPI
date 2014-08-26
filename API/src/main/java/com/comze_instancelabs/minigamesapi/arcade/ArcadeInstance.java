@@ -49,8 +49,10 @@ public class ArcadeInstance {
 		if (players.contains(playername)) {
 			players.remove(playername);
 		}
-		if (minigames.get(currentindex).getArenas().get(0).containsPlayer(playername)) {
-			minigames.get(currentindex).getArenas().get(0).leavePlayer(playername, false, false);
+		if (minigames.get(currentindex).getArenas().size() > 0) {
+			if (minigames.get(currentindex).getArenas().get(0).containsPlayer(playername)) {
+				minigames.get(currentindex).getArenas().get(0).leavePlayer(playername, false, false);
+			}
 		}
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
@@ -95,15 +97,13 @@ public class ArcadeInstance {
 					for (String p_ : players) {
 						currentindex--;
 						ai.nextMinigame();
-						/*PluginInstance mg = minigames.get(currentindex);
-						Arena a = mg.getArenas().get(0);
-						if (a.getArenaState() == ArenaState.JOIN) {
-							a.joinPlayerLobby(p_, ai);
-							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
-						} else {
-							// TODO try out other arenas too before going to next minigame
-							ai.nextMinigame();
-						}*/
+						/*
+						 * PluginInstance mg = minigames.get(currentindex); Arena a = mg.getArenas().get(0); if (a.getArenaState() == ArenaState.JOIN)
+						 * { a.joinPlayerLobby(p_, ai);
+						 * Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>",
+						 * mg.getArenaListener().getName())); } else { // TODO try out other arenas too before going to next minigame
+						 * ai.nextMinigame(); }
+						 */
 					}
 					try {
 						Bukkit.getScheduler().cancelTask(currenttaskid);
@@ -126,7 +126,9 @@ public class ArcadeInstance {
 
 	public void stopCurrentMinigame() {
 		if (currentindex < minigames.size()) {
-			minigames.get(currentindex).getArenas().get(0).stop();
+			if (minigames.get(currentindex).getArenas().size() > 0) {
+				minigames.get(currentindex).getArenas().get(0).stop();
+			}
 		}
 	}
 
