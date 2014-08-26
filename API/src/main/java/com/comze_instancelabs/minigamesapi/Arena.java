@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -108,7 +109,11 @@ public class Arena {
 		this.max_players = max_players;
 		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getName());
 		if (this.getArenaType() == ArenaType.REGENERATION) {
-			this.boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "bounds.low"), Util.getComponentForArena(plugin, this.getName(), "bounds.high"));
+			try {
+				this.boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "bounds.low"), Util.getComponentForArena(plugin, this.getName(), "bounds.high"));
+			} catch (Exception e) {
+				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup.");
+			}
 		}
 	}
 
@@ -646,7 +651,7 @@ public class Arena {
 				pinv.clear();
 				pinv_armor.clear();
 				pnoreward.clear();
-				for(IconMenu im : pli.getClassesHandler().lasticonm.values()){
+				for (IconMenu im : pli.getClassesHandler().lasticonm.values()) {
 					im.destroy();
 				}
 				pli.getClassesHandler().lasticonm.clear();
