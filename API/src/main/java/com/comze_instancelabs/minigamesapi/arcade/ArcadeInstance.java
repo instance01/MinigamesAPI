@@ -22,6 +22,8 @@ public class ArcadeInstance {
 	Arena arena;
 	JavaPlugin plugin;
 
+	boolean in_a_game = false;
+	Arena currentarena = null;
 	boolean started;
 
 	public ArcadeInstance(JavaPlugin plugin, ArrayList<PluginInstance> minigames, Arena arena) {
@@ -32,12 +34,30 @@ public class ArcadeInstance {
 
 	// TODO max 16 players!
 	public void joinArcade(String playername) {
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (!players.contains(playername)) {
 			players.add(playername);
 		}
 		if (players.size() >= plugin.getConfig().getInt("config.arcade.min_players")) {
 			if (!started) {
 				startArcade();
+			} else {
+				// TODO test
+				if (currentindex < minigames.size()) {
+					if (in_a_game) {
+						if (currentarena != null) {
+							Player p = Bukkit.getPlayer(playername);
+							if (p != null) {
+								pli.global_players.put(playername, currentarena);
+								pli.global_lost.put(playername, currentarena);
+								Util.teleportPlayerFixed(p, currentarena.getSpawns().get(0).clone().add(0D, 30D, 0D));
+								p.setAllowFlight(true);
+								p.setFlying(true);
+								pli.scoreboardManager.updateScoreboard(plugin, currentarena);
+							}
+						}
+					}
+				}
 			}
 			Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
 		} else {
@@ -112,6 +132,8 @@ public class ArcadeInstance {
 		}
 		players.clear();
 		started = false;
+		in_a_game = false;
+		currentarena = null;
 		this.currentindex = 0;
 	}
 
@@ -128,13 +150,14 @@ public class ArcadeInstance {
 	}
 
 	public void nextMinigame(long delay) {
+		in_a_game = false;
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
 			stopArcade();
 			return;
 		}
-		//System.out.println(delay + " " + currentindex);
+		// System.out.println(delay + " " + currentindex);
 		final ArcadeInstance ai = this;
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
@@ -163,6 +186,8 @@ public class ArcadeInstance {
 						}
 					}
 					if (a != null) {
+						in_a_game = true;
+						currentarena = a;
 						for (String p_ : temp) {
 							a.joinPlayerLobby(p_, ai);
 							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
