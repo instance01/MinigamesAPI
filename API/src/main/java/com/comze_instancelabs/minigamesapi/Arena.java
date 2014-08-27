@@ -250,6 +250,9 @@ public class Arena {
 				pinv_armor.put(playername, p.getInventory().getArmorContents());
 				if (this.getArenaType() == ArenaType.JUMPNRUN) {
 					Util.teleportPlayerFixed(p, this.spawns.get(0));
+					Util.clearInv(p);
+					pgamemode.put(p.getName(), p.getGameMode());
+					p.setGameMode(GameMode.SURVIVAL);
 					return;
 				} else {
 					if (startedIngameCountdown) {

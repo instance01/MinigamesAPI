@@ -94,17 +94,8 @@ public class ArcadeInstance {
 					}
 				}
 				if (currentlobbycount < 1) {
-					for (String p_ : players) {
-						currentindex--;
-						ai.nextMinigame();
-						/*
-						 * PluginInstance mg = minigames.get(currentindex); Arena a = mg.getArenas().get(0); if (a.getArenaState() == ArenaState.JOIN)
-						 * { a.joinPlayerLobby(p_, ai);
-						 * Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>",
-						 * mg.getArenaListener().getName())); } else { // TODO try out other arenas too before going to next minigame
-						 * ai.nextMinigame(); }
-						 */
-					}
+					currentindex--;
+					ai.nextMinigame();
 					try {
 						Bukkit.getScheduler().cancelTask(currenttaskid);
 					} catch (Exception e) {
@@ -143,43 +134,44 @@ public class ArcadeInstance {
 			stopArcade();
 			return;
 		}
+		//System.out.println(delay + " " + currentindex);
 		final ArcadeInstance ai = this;
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				ArrayList<String> temp = new ArrayList<String>(players);
-				for (String p_ : temp) {
-					PluginInstance mg = minigames.get(currentindex);
-					if (mg.getPlugin().getConfig().getBoolean("config.arcade.enabled")) {
-						Arena a = null;
-						if (mg.getPlugin().getConfig().getBoolean("config.arcade.arena_to_prefer.enabled")) {
-							String arenaname = mg.getPlugin().getConfig().getString("config.arcade.arena_to_prefer.arena");
-							a = mg.getArenaByName(arenaname);
-							if (a == null) {
-								for (Arena a_ : mg.getArenas()) {
-									if (a_.getArenaState() == ArenaState.JOIN) {
-										a = a_;
-										break;
-									}
-								}
-							}
-						} else {
+
+				PluginInstance mg = minigames.get(currentindex);
+				if (mg.getPlugin().getConfig().getBoolean("config.arcade.enabled")) {
+					Arena a = null;
+					if (mg.getPlugin().getConfig().getBoolean("config.arcade.arena_to_prefer.enabled")) {
+						String arenaname = mg.getPlugin().getConfig().getString("config.arcade.arena_to_prefer.arena");
+						a = mg.getArenaByName(arenaname);
+						if (a == null) {
 							for (Arena a_ : mg.getArenas()) {
-								if (a_.getArenaState() == ArenaState.JOIN) {
+								if (a_.getArenaState() == ArenaState.JOIN || a_.getArenaState() == ArenaState.STARTING) {
 									a = a_;
 									break;
 								}
 							}
 						}
-						if (a != null) {
+					} else {
+						for (Arena a_ : mg.getArenas()) {
+							if (a_.getArenaState() == ArenaState.JOIN || a_.getArenaState() == ArenaState.STARTING) {
+								a = a_;
+								break;
+							}
+						}
+					}
+					if (a != null) {
+						for (String p_ : temp) {
 							a.joinPlayerLobby(p_, ai);
 							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
-						} else {
-							nextMinigame(5L);
 						}
 					} else {
 						nextMinigame(5L);
 					}
-
+				} else {
+					nextMinigame(5L);
 				}
 			}
 		}, delay);
