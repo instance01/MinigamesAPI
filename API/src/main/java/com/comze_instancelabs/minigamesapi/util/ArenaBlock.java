@@ -2,6 +2,10 @@ package com.comze_instancelabs.minigamesapi.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,8 +13,11 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.Potion;
 
 public class ArenaBlock implements Serializable {
 	private static final long serialVersionUID = -1894759842709524780L;
@@ -23,6 +30,11 @@ public class ArenaBlock implements Serializable {
 	private ArrayList<Byte> item_data;
 	private ArrayList<Integer> item_amounts;
 	private ArrayList<String> item_displaynames;
+
+	// optional stuff
+	private ArrayList<Enchantment> item_enchantments;
+	private ArrayList<Integer> item_enchantmentslv;
+	private ArrayList<Boolean> item_splash;
 
 	private ItemStack[] inv;
 
@@ -39,12 +51,32 @@ public class ArenaBlock implements Serializable {
 			item_data = new ArrayList<Byte>();
 			item_amounts = new ArrayList<Integer>();
 			item_displaynames = new ArrayList<String>();
+			item_enchantments = new ArrayList<Enchantment>();
+			item_enchantmentslv = new ArrayList<Integer>();
+			item_splash = new ArrayList<Boolean>();
 			for (ItemStack i : ((Chest) b.getState()).getInventory().getContents()) {
 				if (i != null) {
 					item_mats.add(i.getType());
 					item_data.add(i.getData().getData());
 					item_amounts.add(i.getAmount());
 					item_displaynames.add(i.getItemMeta().getDisplayName());
+					System.out.println(i.getType() + " " + i.getItemMeta());
+					if (i.getType() == Material.POTION) {
+						Potion potion = Potion.fromDamage(i.getDurability() & 0x3F);
+						item_splash.add(potion.isSplash());
+						//item_enchantments.add(i.getEnchantments().size() > 0 ? i.getEnchantments().get : new TreeMap<Enchantment, Integer>());
+						System.out.println(potion.isSplash());
+					} else if (i.getType() == Material.ENCHANTED_BOOK) {
+						EnchantmentStorageMeta meta = (EnchantmentStorageMeta) i.getItemMeta();
+						Map.Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
+						item_enchantments.add(entry.getKey());
+						item_enchantmentslv.add(entry.getValue());
+						System.out.println(meta.getStoredEnchants());
+						item_splash.add(false);
+					} else {
+						//item_enchantments.add(i.getEnchantments().size() > 0 ? i.getEnchantments() : new TreeMap<Enchantment, Integer>());
+						item_splash.add(false);
+					}
 				}
 			}
 		}
@@ -79,15 +111,42 @@ public class ArenaBlock implements Serializable {
 	}
 
 	public ArrayList<ItemStack> getNewInventory() {
+		int c = 0;
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		for (int i = 0; i < item_mats.size(); i++) {
 			ItemStack item = new ItemStack(item_mats.get(i), item_amounts.get(i), item_data.get(i));
 			ItemMeta im = item.getItemMeta();
 			im.setDisplayName(item_displaynames.get(i));
 			item.setItemMeta(im);
+			System.out.println(item_splash.get(i));
+			if (item.getType() == Material.POTION) {
+				System.out.println("-> ");
+				Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
+				potion.setSplash(item_splash.get(i));
+				item = potion.toItemStack(item_amounts.get(i));
+			} else if (item.getType() == Material.ENCHANTED_BOOK) {
+				ItemStack neww = new ItemStack(Material.ENCHANTED_BOOK);
+				EnchantmentStorageMeta meta = (EnchantmentStorageMeta) neww.getItemMeta();
+				meta.addStoredEnchant(item_enchantments.get(c), item_enchantmentslv.get(c), true);
+				meta.addEnchant(item_enchantments.get(c), item_enchantmentslv.get(c), true);
+				c++;
+				neww.setItemMeta(meta);
+				item = neww;
+			}
 			ret.add(item);
 		}
 		return ret;
+	}
+
+	public static ItemStack getEnchantmentBook(Map<Enchantment, Integer> t) {
+		ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
+		ItemMeta meta = book.getItemMeta();
+		int i = 0;
+		for (Enchantment e : t.keySet()) {
+			meta.addEnchant(e, t.get(e), true);
+		}
+		book.setItemMeta(meta);
+		return book;
 	}
 
 }

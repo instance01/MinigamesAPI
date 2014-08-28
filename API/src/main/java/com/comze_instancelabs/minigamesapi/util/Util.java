@@ -209,7 +209,7 @@ public class Util {
 					try {
 						oos.writeObject(bl);
 					} catch (IOException e) {
-						e.printStackTrace();
+						System.out.println(e.getMessage());
 					}
 					// }
 
