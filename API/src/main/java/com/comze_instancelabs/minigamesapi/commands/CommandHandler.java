@@ -94,6 +94,13 @@ public class CommandHandler {
 				pli.getMessagesConfig().reloadConfig();
 				pli.getArenasConfig().reloadConfig();
 				sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
+			} else {
+				sendHelp(cmd, sender);
+				for (String cmd_ : cmddesc.keySet()) {
+					if (cmd_.toLowerCase().contains(action.toLowerCase())) {
+						sender.sendMessage(ChatColor.RED + "Did you mean " + ChatColor.DARK_RED + cmd + " " + cmd_ + ChatColor.RED + "?");
+					}
+				}
 			}
 		} else {
 			sendHelp(cmd, sender);
