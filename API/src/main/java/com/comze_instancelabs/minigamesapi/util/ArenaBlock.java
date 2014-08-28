@@ -32,8 +32,6 @@ public class ArenaBlock implements Serializable {
 	private ArrayList<String> item_displaynames;
 
 	// optional stuff
-	private ArrayList<Enchantment> item_enchantments;
-	private ArrayList<Integer> item_enchantmentslv;
 	private ArrayList<Boolean> item_splash;
 
 	private ItemStack[] inv;
@@ -51,30 +49,18 @@ public class ArenaBlock implements Serializable {
 			item_data = new ArrayList<Byte>();
 			item_amounts = new ArrayList<Integer>();
 			item_displaynames = new ArrayList<String>();
-			item_enchantments = new ArrayList<Enchantment>();
-			item_enchantmentslv = new ArrayList<Integer>();
 			item_splash = new ArrayList<Boolean>();
+
 			for (ItemStack i : ((Chest) b.getState()).getInventory().getContents()) {
 				if (i != null) {
 					item_mats.add(i.getType());
 					item_data.add(i.getData().getData());
 					item_amounts.add(i.getAmount());
 					item_displaynames.add(i.getItemMeta().getDisplayName());
-					System.out.println(i.getType() + " " + i.getItemMeta());
 					if (i.getType() == Material.POTION) {
 						Potion potion = Potion.fromDamage(i.getDurability() & 0x3F);
 						item_splash.add(potion.isSplash());
-						//item_enchantments.add(i.getEnchantments().size() > 0 ? i.getEnchantments().get : new TreeMap<Enchantment, Integer>());
-						System.out.println(potion.isSplash());
-					} else if (i.getType() == Material.ENCHANTED_BOOK) {
-						EnchantmentStorageMeta meta = (EnchantmentStorageMeta) i.getItemMeta();
-						Map.Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-						item_enchantments.add(entry.getKey());
-						item_enchantmentslv.add(entry.getValue());
-						System.out.println(meta.getStoredEnchants());
-						item_splash.add(false);
 					} else {
-						//item_enchantments.add(i.getEnchantments().size() > 0 ? i.getEnchantments() : new TreeMap<Enchantment, Integer>());
 						item_splash.add(false);
 					}
 				}
@@ -118,20 +104,10 @@ public class ArenaBlock implements Serializable {
 			ItemMeta im = item.getItemMeta();
 			im.setDisplayName(item_displaynames.get(i));
 			item.setItemMeta(im);
-			System.out.println(item_splash.get(i));
 			if (item.getType() == Material.POTION) {
-				System.out.println("-> ");
 				Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
 				potion.setSplash(item_splash.get(i));
 				item = potion.toItemStack(item_amounts.get(i));
-			} else if (item.getType() == Material.ENCHANTED_BOOK) {
-				ItemStack neww = new ItemStack(Material.ENCHANTED_BOOK);
-				EnchantmentStorageMeta meta = (EnchantmentStorageMeta) neww.getItemMeta();
-				meta.addStoredEnchant(item_enchantments.get(c), item_enchantmentslv.get(c), true);
-				meta.addEnchant(item_enchantments.get(c), item_enchantmentslv.get(c), true);
-				c++;
-				neww.setItemMeta(meta);
-				item = neww;
 			}
 			ret.add(item);
 		}
