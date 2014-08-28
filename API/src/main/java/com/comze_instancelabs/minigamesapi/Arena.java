@@ -263,12 +263,7 @@ public class Arena {
 						Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 							public void run() {
 								Util.clearInv(p);
-								ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
-								ItemMeta cimeta = classes_item.getItemMeta();
-								cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
-								classes_item.setItemMeta(cimeta);
-								p.getInventory().addItem(classes_item);
-								p.updateInventory();
+								Util.giveLobbyItems(plugin, p);
 								pgamemode.put(p.getName(), p.getGameMode());
 								p.setGameMode(GameMode.SURVIVAL);
 							}
@@ -282,12 +277,7 @@ public class Arena {
 				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 					public void run() {
 						Util.clearInv(p);
-						ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
-						ItemMeta cimeta = classes_item.getItemMeta();
-						cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
-						classes_item.setItemMeta(cimeta);
-						p.getInventory().addItem(classes_item);
-						p.updateInventory();
+						Util.giveLobbyItems(plugin, p);
 						pgamemode.put(p.getName(), p.getGameMode());
 						p.setGameMode(GameMode.SURVIVAL);
 					}
@@ -316,7 +306,6 @@ public class Arena {
 		this.players.add(playername);
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
-			// TODO possibly remove join message in arcade?
 			p.sendMessage(pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
 			Util.updateSign(plugin, this);
 			if (shouldClearInventoryOnJoin) {
@@ -331,12 +320,7 @@ public class Arena {
 				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 					public void run() {
 						Util.clearInv(p);
-						ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
-						ItemMeta cimeta = classes_item.getItemMeta();
-						cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
-						classes_item.setItemMeta(cimeta);
-						p.getInventory().addItem(classes_item);
-						p.updateInventory();
+						Util.giveLobbyItems(plugin, p);
 						pgamemode.put(p.getName(), p.getGameMode());
 						p.setGameMode(GameMode.SURVIVAL);
 					}

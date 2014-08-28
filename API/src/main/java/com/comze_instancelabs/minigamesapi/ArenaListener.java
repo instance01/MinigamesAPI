@@ -322,6 +322,10 @@ public class ArenaListener implements Listener {
 		Player p = event.getPlayer();
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
+			if (a.getArenaState() != ArenaState.INGAME) {
+				event.setCancelled(true);
+				return;
+			}
 			a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 		}
 		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
@@ -375,6 +379,10 @@ public class ArenaListener implements Listener {
 		Player p = event.getPlayer();
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
+			if (a.getArenaState() != ArenaState.INGAME) {
+				event.setCancelled(true);
+				return;
+			}
 			a.getSmartReset().addChanged(event.getBlock().getLocation());
 		}
 		if (pli.getStatsInstance().skullsetup.contains(p.getName())) {
@@ -435,6 +443,10 @@ public class ArenaListener implements Listener {
 			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
 				pli.getClassesHandler().openGUI(p.getName());
+				event.setCancelled(true);
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.exit_item")) {
+				pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
+				event.setCancelled(true);
 			}
 		}
 	}
