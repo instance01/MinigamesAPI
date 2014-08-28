@@ -70,7 +70,7 @@ public class Arena {
 	Cuboid boundaries;
 
 	boolean temp_countdown = true;
-	
+
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -300,40 +300,17 @@ public class Arena {
 	public void joinPlayerLobby(String playername, boolean countdown) {
 		temp_countdown = countdown;
 		joinPlayerLobby(playername);
-		/*if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) {
-			return;
-		}
-		if (this.getAllPlayers().size() > this.max_players - 1) {
-			return;
-		}
-		pli.global_players.put(playername, this);
-		this.players.add(playername);
-		if (Validator.isPlayerValid(plugin, playername, this)) {
-			final Player p = Bukkit.getPlayer(playername);
-			p.sendMessage(pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
-			Util.updateSign(plugin, this);
-			if (shouldClearInventoryOnJoin) {
-				pinv.put(playername, p.getInventory().getContents());
-				pinv_armor.put(playername, p.getInventory().getArmorContents());
-				if (this.getArenaType() == ArenaType.JUMPNRUN) {
-					Util.teleportPlayerFixed(p, this.spawns.get(0));
-					return;
-				} else {
-					Util.teleportPlayerFixed(p, this.waitinglobby);
-				}
-				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
-					public void run() {
-						Util.clearInv(p);
-						Util.giveLobbyItems(plugin, p);
-						pgamemode.put(p.getName(), p.getGameMode());
-						p.setGameMode(GameMode.SURVIVAL);
-					}
-				}, 10L);
-				if (this.getAllPlayers().size() > this.min_players - 1) {
-					this.startLobby(countdown);
-				}
-			}
-		}*/
+		/*
+		 * if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) { return; } if (this.getAllPlayers().size() >
+		 * this.max_players - 1) { return; } pli.global_players.put(playername, this); this.players.add(playername); if
+		 * (Validator.isPlayerValid(plugin, playername, this)) { final Player p = Bukkit.getPlayer(playername);
+		 * p.sendMessage(pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName())); Util.updateSign(plugin, this); if
+		 * (shouldClearInventoryOnJoin) { pinv.put(playername, p.getInventory().getContents()); pinv_armor.put(playername,
+		 * p.getInventory().getArmorContents()); if (this.getArenaType() == ArenaType.JUMPNRUN) { Util.teleportPlayerFixed(p, this.spawns.get(0));
+		 * return; } else { Util.teleportPlayerFixed(p, this.waitinglobby); } Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable()
+		 * { public void run() { Util.clearInv(p); Util.giveLobbyItems(plugin, p); pgamemode.put(p.getName(), p.getGameMode());
+		 * p.setGameMode(GameMode.SURVIVAL); } }, 10L); if (this.getAllPlayers().size() > this.min_players - 1) { this.startLobby(countdown); } } }
+		 */
 	}
 
 	/**
@@ -397,7 +374,14 @@ public class Arena {
 		p.setWalkSpeed(0.2F);
 		p.setFoodLevel(20);
 		p.setHealth(20D);
+		p.setFireTicks(0);
 		p.removePotionEffect(PotionEffectType.JUMP);
+
+		for (PotionEffect effect : p.getActivePotionEffects()) {
+			if (effect != null) {
+				p.removePotionEffect(effect.getType());
+			}
+		}
 
 		for (Entity e : p.getNearbyEntities(50D, 50D, 50D)) {
 			if (e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER) {
@@ -424,21 +408,24 @@ public class Arena {
 		final Arena a = this;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
-				Util.teleportPlayerFixed(p, a.mainlobby);
-				p.setFlying(false);
-				if (!p.isOp()) {
-					p.setAllowFlight(false);
-				}
-				if (pgamemode.containsKey(p.getName())) {
-					p.setGameMode(pgamemode.get(p.getName()));
-				}
-				p.getInventory().setContents(pinv.get(playername));
-				p.getInventory().setArmorContents(pinv_armor.get(playername));
-				p.updateInventory();
-				try {
-					pli.scoreboardManager.removeScoreboard(arenaname, p);
-				} catch (Exception e) {
-					//
+				if(p != null){
+					Util.teleportPlayerFixed(p, a.mainlobby);
+					p.setFireTicks(0);
+					p.setFlying(false);
+					if (!p.isOp()) {
+						p.setAllowFlight(false);
+					}
+					if (pgamemode.containsKey(p.getName())) {
+						p.setGameMode(pgamemode.get(p.getName()));
+					}
+					p.getInventory().setContents(pinv.get(playername));
+					p.getInventory().setArmorContents(pinv_armor.get(playername));
+					p.updateInventory();
+					try {
+						pli.scoreboardManager.removeScoreboard(arenaname, p);
+					} catch (Exception e) {
+						//
+					}
 				}
 			}
 		}, 5L);
@@ -521,7 +508,7 @@ public class Arena {
 					for (String p_ : a.getAllPlayers()) {
 						if (Validator.isPlayerOnline(p_)) {
 							Player p = Bukkit.getPlayer(p_);
-							if(countdown){
+							if (countdown) {
 								p.sendMessage(pli.getMessagesConfig().teleporting_to_arena_in.replaceAll("<count>", Integer.toString(currentlobbycount)));
 							}
 						}
@@ -655,7 +642,7 @@ public class Arena {
 		startedIngameCountdown = false;
 
 		temp_countdown = true;
-		
+
 		/*
 		 * try { pli.getStatsInstance().updateSkulls(); } catch (Exception e) {
 		 * 
