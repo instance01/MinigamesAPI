@@ -158,7 +158,7 @@ public class MessagesConfig {
 	public String arcade_next_minigame = "&6Next Arcade game: &4<minigame>&6!";
 	public String arena_disabled = "&cThe arena is disabled thus you can't join.";
 	public String all_guns = "&aYour current main guns: &2<guns>";
-	public String you_can_leave_with = "&cYou can leave with /leave!";
+	public String you_can_leave_with = "&cYou can leave with /leave or /l!";
 	public String arcade_joined_waiting = "&6You joined Arcade! Waiting for <count> more players to start.";
 	public String no_perm_to_join_arena = "&cYou don't have permission (arenas.<arena>) to join this arena as it's vip!";
 	public String set_kit = "&aSuccessfully set &2<kit>&a!";

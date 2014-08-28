@@ -31,11 +31,14 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
@@ -66,6 +69,29 @@ public class ArenaListener implements Listener {
 		this.pli = pinstance;
 		this.setName(minigame);
 		this.cmds = cmds;
+	}
+
+	@EventHandler
+	public void onPlayerDrop(PlayerDropItemEvent event) {
+		if (pli.global_players.containsKey(event.getPlayer().getName())) {
+			Arena a = pli.global_players.get(event.getPlayer().getName());
+			if (a.getArenaState() == ArenaState.STARTING) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if (event.getWhoClicked() instanceof Player) {
+			Player p = (Player) event.getWhoClicked();
+			if (pli.global_players.containsKey(p.getName())) {
+				Arena a = pli.global_players.get(p.getName());
+				if (a.getArenaState() == ArenaState.STARTING) {
+					event.setCancelled(true);
+				}
+			}
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -521,7 +547,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
-		if (event.getMessage().equalsIgnoreCase("/leave")) {
+		if (event.getMessage().equalsIgnoreCase("/leave") || event.getMessage().equalsIgnoreCase("/l")) {
 			if (pli.global_players.containsKey(event.getPlayer().getName())) {
 				Arena arena = pli.global_players.get(event.getPlayer().getName());
 				arena.leavePlayer(event.getPlayer().getName(), false, false);

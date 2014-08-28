@@ -62,6 +62,8 @@ public class CommandHandler {
 				return this.startArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("stop")) {
 				return this.stopArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("stopall")) {
+				return this.stopAllArenas(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("removearena")) {
 				return this.removeArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("removespawn")) {
@@ -338,6 +340,17 @@ public class CommandHandler {
 			}
 		} else {
 			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
+		}
+		return true;
+	}
+
+	public boolean stopAllArenas(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".stop")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		for (Arena a : pli.getArenas()) {
+			a.stop();
 		}
 		return true;
 	}
