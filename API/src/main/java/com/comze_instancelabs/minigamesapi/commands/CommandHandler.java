@@ -46,13 +46,13 @@ public class CommandHandler {
 				return this.setMainLobby(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setbounds")) {
 				return this.setBounds(pli, sender, args, uber_permission, cmd, action, plugin, p);
-			} else if (action.equalsIgnoreCase("savearena")) {
+			} else if (action.equalsIgnoreCase("savearena") || action.equalsIgnoreCase("save")) {
 				return this.saveArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setmaxplayers")) {
 				return this.setMaxPlayers(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setminplayers")) {
 				return this.setMinPlayers(pli, sender, args, uber_permission, cmd, action, plugin, p);
-			} else if (action.equalsIgnoreCase("setarenavip")) {
+			} else if (action.equalsIgnoreCase("setarenavip") || action.equalsIgnoreCase("setvip")) {
 				return this.setArenaVIP(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("join")) {
 				return this.joinArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
