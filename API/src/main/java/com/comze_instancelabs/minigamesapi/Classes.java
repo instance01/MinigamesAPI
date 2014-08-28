@@ -58,9 +58,9 @@ public class Classes {
 
 	public void getClass(String player) {
 		AClass c = MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player);
-		//System.out.println("test");
-		//System.out.println("A " + c);
-		//System.out.println("B " + c.getName());
+		// System.out.println("test");
+		// System.out.println("A " + c);
+		// System.out.println("B " + c.getName());
 		Player p = Bukkit.getServer().getPlayer(player);
 		p.getInventory().clear();
 		p.getInventory().setHelmet(null);
@@ -74,7 +74,9 @@ public class Classes {
 
 	/**
 	 * Sets the current class of a player
-	 * @param classname the INTERNAL classname
+	 * 
+	 * @param classname
+	 *            the INTERNAL classname
 	 * @param player
 	 */
 	public void setClass(String internalname, String player) {
@@ -85,7 +87,7 @@ public class Classes {
 		if (kitRequiresMoney(internalname)) {
 			kitTakeMoney(Bukkit.getPlayer(player), internalname.toLowerCase());
 		}
-		//System.out.println(internalname + " " + getClassByInternalname(internalname).getName());
+		// System.out.println(internalname + " " + getClassByInternalname(internalname).getName());
 		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(internalname));
 		Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', internalname)));
 	}
@@ -99,7 +101,7 @@ public class Classes {
 		}
 		return "default";
 	}
-	
+
 	public AClass getClassByInternalname(String internalname) {
 		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		for (AClass ac : pli.getAClasses().values()) {
@@ -175,16 +177,21 @@ public class Classes {
 			plugin.getLogger().warning("Economy is turned OFF. Turn it ON in the config.");
 			return false;
 		}
-		if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount")) {
-			EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount"));
-			if (!r.transactionSuccess()) {
-				p.sendMessage(String.format("An error occured: %s", r.errorMessage));
+		if (MinigamesAPI.economy) {
+			if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount")) {
+				EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount"));
+				if (!r.transactionSuccess()) {
+					p.sendMessage(String.format("An error occured: %s", r.errorMessage));
+				}
+				return true;
+			} else {
+				p.sendMessage("§4You don't have enough money!");
+				return false;
 			}
-			return true;
 		} else {
-			p.sendMessage("§4You don't have enough money!");
 			return false;
 		}
+
 	}
 
 	public boolean kitPlayerHasPermission(String kit, Player p) {

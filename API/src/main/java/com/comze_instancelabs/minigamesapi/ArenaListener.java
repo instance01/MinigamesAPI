@@ -237,10 +237,12 @@ public class ArenaListener implements Listener {
 				return;
 			}
 
-			if (pli.global_players.containsKey(p.getName()) && pli.global_players.containsKey(attacker.getName())) {
-				Arena a = (Arena) pli.global_players.get(p.getName());
-				if (a.getArenaState() == ArenaState.INGAME) {
-					a.lastdamager.put(p.getName(), attacker.getName());
+			if (p != null && attacker != null) {
+				if (pli.global_players.containsKey(p.getName()) && pli.global_players.containsKey(attacker.getName())) {
+					Arena a = (Arena) pli.global_players.get(p.getName());
+					if (a.getArenaState() == ArenaState.INGAME) {
+						a.lastdamager.put(p.getName(), attacker.getName());
+					}
 				}
 			}
 		}
@@ -252,9 +254,11 @@ public class ArenaListener implements Listener {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null) {
-					if (c.containsLocWithoutY(event.getEntity().getLocation())) {
-						for (Block b : event.blockList()) {
-							a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+					if (event.getEntity() != null) {
+						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
+							for (Block b : event.blockList()) {
+								a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+							}
 						}
 					}
 				}
@@ -435,7 +439,6 @@ public class ArenaListener implements Listener {
 			}
 		}
 
-		// netherstar to open kit gui; needs customizable item id
 		if (event.hasItem()) {
 			final Player p = event.getPlayer();
 			if (!pli.global_players.containsKey(p.getName())) {
@@ -445,8 +448,10 @@ public class ArenaListener implements Listener {
 				pli.getClassesHandler().openGUI(p.getName());
 				event.setCancelled(true);
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.exit_item")) {
-				pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
-				event.setCancelled(true);
+				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+					pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
+					event.setCancelled(true);
+				}
 			}
 		}
 	}

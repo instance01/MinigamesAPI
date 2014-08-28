@@ -40,6 +40,7 @@ public class Rewards {
 
 		if (!MinigamesAPI.economy) {
 			economyrewards = false;
+			kill_economyrewards = false;
 		}
 	}
 
@@ -65,7 +66,7 @@ public class Rewards {
 		if (Validator.isPlayerOnline(p_)) {
 			Player p = Bukkit.getPlayer(p_);
 
-			if (kill_economyrewards) {
+			if (kill_economyrewards && MinigamesAPI.economy) {
 				MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), kill_econ_reward);
 			}
 			if (kill_commandrewards) {
@@ -82,7 +83,7 @@ public class Rewards {
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 			Player p = Bukkit.getPlayer(p_);
 			if (!pli.global_lost.containsKey(p_)) {
-				if (economyrewards) {
+				if (economyrewards && MinigamesAPI.economy) {
 					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward);
 				}
 				if (itemrewards) {

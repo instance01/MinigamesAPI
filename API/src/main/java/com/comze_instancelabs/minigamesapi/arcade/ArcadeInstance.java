@@ -151,6 +151,13 @@ public class ArcadeInstance {
 
 	public void nextMinigame(long delay) {
 		in_a_game = false;
+		
+		/*if (currentarena != null) {
+			if (currentarena.getArenaState() == ArenaState.INGAME) {
+				currentarena.stop();
+			}
+		}*/
+
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
@@ -189,8 +196,8 @@ public class ArcadeInstance {
 						in_a_game = true;
 						currentarena = a;
 						for (String p_ : temp) {
-							a.joinPlayerLobby(p_, ai);
 							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
+							a.joinPlayerLobby(p_, ai);
 						}
 					} else {
 						nextMinigame(5L);

@@ -69,6 +69,8 @@ public class Arena {
 
 	Cuboid boundaries;
 
+	boolean temp_countdown = true;
+	
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -283,7 +285,7 @@ public class Arena {
 					}
 				}, 10L);
 				if (this.getAllPlayers().size() > this.min_players - 1) {
-					this.startLobby(true);
+					this.startLobby(temp_countdown);
 				}
 			}
 		}
@@ -296,7 +298,9 @@ public class Arena {
 	 * @param countdown
 	 */
 	public void joinPlayerLobby(String playername, boolean countdown) {
-		if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) {
+		temp_countdown = countdown;
+		joinPlayerLobby(playername);
+		/*if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) {
 			return;
 		}
 		if (this.getAllPlayers().size() > this.max_players - 1) {
@@ -329,7 +333,7 @@ public class Arena {
 					this.startLobby(countdown);
 				}
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -493,7 +497,7 @@ public class Arena {
 		startLobby(true);
 	}
 
-	public void startLobby(boolean countdown) {
+	public void startLobby(final boolean countdown) {
 		if (currentstate != ArenaState.JOIN) {
 			return;
 		}
@@ -517,7 +521,9 @@ public class Arena {
 					for (String p_ : a.getAllPlayers()) {
 						if (Validator.isPlayerOnline(p_)) {
 							Player p = Bukkit.getPlayer(p_);
-							p.sendMessage(pli.getMessagesConfig().teleporting_to_arena_in.replaceAll("<count>", Integer.toString(currentlobbycount)));
+							if(countdown){
+								p.sendMessage(pli.getMessagesConfig().teleporting_to_arena_in.replaceAll("<count>", Integer.toString(currentlobbycount)));
+							}
 						}
 					}
 				}
@@ -648,6 +654,8 @@ public class Arena {
 		started = false;
 		startedIngameCountdown = false;
 
+		temp_countdown = true;
+		
 		/*
 		 * try { pli.getStatsInstance().updateSkulls(); } catch (Exception e) {
 		 * 
@@ -679,8 +687,10 @@ public class Arena {
 		if (ai != null) {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				public void run() {
-					ai.nextMinigame();
-					ai = null;
+					if (ai != null) {
+						ai.nextMinigame();
+						ai = null;
+					}
 				}
 			}, 10L);
 		} else {
