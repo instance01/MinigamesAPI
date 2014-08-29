@@ -189,6 +189,17 @@ public class Arena {
 		return players.contains(playername);
 	}
 
+	/**
+	 * Please do not use this function to add players
+	 * 
+	 * @param playername
+	 * @return
+	 */
+	@Deprecated
+	public boolean addPlayer(String playername) {
+		return players.add(playername);
+	}
+
 	public ArenaState getArenaState() {
 		return this.currentstate;
 	}
@@ -224,7 +235,7 @@ public class Arena {
 				}
 			}
 		}
-		if (this.getAllPlayers().size() > this.max_players - 1) {
+		if (ai == null && this.getAllPlayers().size() > this.max_players - 1) {
 			// arena full
 			return;
 		}
@@ -284,7 +295,9 @@ public class Arena {
 						p.setGameMode(GameMode.SURVIVAL);
 					}
 				}, 10L);
-				if (this.getAllPlayers().size() > this.min_players - 1) {
+				if (ai == null && this.getAllPlayers().size() > this.min_players - 1) {
+					this.startLobby(temp_countdown);
+				} else if (ai != null) {
 					this.startLobby(temp_countdown);
 				}
 			}
@@ -408,7 +421,7 @@ public class Arena {
 		final Arena a = this;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
-				if(p != null){
+				if (p != null) {
 					Util.teleportPlayerFixed(p, a.mainlobby);
 					p.setFireTicks(0);
 					p.setFlying(false);
@@ -461,6 +474,22 @@ public class Arena {
 				Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
 			}
 		}
+	}
+
+	public void spectateArcade(String playername) {
+		this.addPlayer(playername);
+		Player p = Bukkit.getPlayer(playername);
+		if (p != null) {
+			this.pinv.put(playername, p.getInventory().getContents());
+			this.pinv_armor.put(playername, p.getInventory().getArmorContents());
+			this.pgamemode.put(playername, p.getGameMode());
+		}
+		pli.global_players.put(playername, currentarena);
+		pli.global_lost.put(playername, currentarena);
+		Util.teleportPlayerFixed(p, currentarena.getSpawns().get(0).clone().add(0D, 30D, 0D));
+		p.setAllowFlight(true);
+		p.setFlying(true);
+
 	}
 
 	int currentlobbycount = 10;
@@ -567,10 +596,12 @@ public class Arena {
 					Util.updateSign(plugin, a);
 					for (String p_ : a.getAllPlayers()) {
 						try {
-							if (!pli.getClassesHandler().hasClass(p_)) {
-								pli.getClassesHandler().setClass("default", p_);
+							if (!pli.global_lost.containsKey(p_)) {
+								if (!pli.getClassesHandler().hasClass(p_)) {
+									pli.getClassesHandler().setClass("default", p_);
+								}
+								pli.getClassesHandler().getClass(p_);
 							}
-							pli.getClassesHandler().getClass(p_);
 						} catch (Exception e) {
 							System.out.println("Failed to set class: " + e.getMessage());
 						}

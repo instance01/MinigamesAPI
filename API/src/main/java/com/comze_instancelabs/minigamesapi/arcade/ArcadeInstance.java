@@ -48,12 +48,10 @@ public class ArcadeInstance {
 						if (currentarena != null) {
 							Player p = Bukkit.getPlayer(playername);
 							if (p != null) {
-								pli.global_players.put(playername, currentarena);
-								pli.global_lost.put(playername, currentarena);
-								Util.teleportPlayerFixed(p, currentarena.getSpawns().get(0).clone().add(0D, 30D, 0D));
-								p.setAllowFlight(true);
-								p.setFlying(true);
-								pli.scoreboardManager.updateScoreboard(plugin, currentarena);
+								PluginInstance pli_ = minigames.get(currentindex);
+								System.out.println(pli_.getPlugin().getName() + " " + currentarena.getName() + " " + p.getName());
+								currentarena.spectateArcade(playername);
+								pli_.scoreboardManager.updateScoreboard(pli_.getPlugin(), currentarena);
 							}
 						}
 					}

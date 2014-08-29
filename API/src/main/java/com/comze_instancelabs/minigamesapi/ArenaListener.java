@@ -115,6 +115,9 @@ public class ArenaListener implements Listener {
 								if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
 									Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
 									p.setVelocity(direction);
+									if(p.isInsideVehicle()){
+										p.getVehicle().setVelocity(direction);
+									}
 									p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
 								}
 							}
@@ -220,6 +223,7 @@ public class ArenaListener implements Listener {
 			Player p = (Player) event.getEntity();
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK) && pli.global_lost.containsKey(p.getName())) {
 				// disable entity damage for spectators
+				System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 				event.setCancelled(true);
 			}
 		}
@@ -536,7 +540,9 @@ public class ArenaListener implements Listener {
 
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
-					pli.getArenas().get(0).joinPlayerLobby(p.getName());
+					if (p != null) {
+						pli.getArenas().get(0).joinPlayerLobby(p.getName());
+					}
 				}
 			}, 30L);
 		}
