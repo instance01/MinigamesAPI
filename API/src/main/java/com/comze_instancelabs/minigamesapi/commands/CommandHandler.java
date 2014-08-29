@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi.commands;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -95,9 +96,17 @@ public class CommandHandler {
 				pli.getArenasConfig().reloadConfig();
 				sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
 			} else {
-				sendHelp(cmd, sender);
+				boolean cont = false;
+				ArrayList<String> cmds = new ArrayList<String>();
 				for (String cmd_ : cmddesc.keySet()) {
 					if (cmd_.toLowerCase().contains(action.toLowerCase())) {
+						cmds.add(cmd_);
+						cont = true;
+					}
+				}
+				if (cont) {
+					sendHelp(cmd, sender);
+					for (String cmd_ : cmds) {
 						sender.sendMessage(ChatColor.RED + "Did you mean " + ChatColor.DARK_RED + cmd + " " + cmd_ + ChatColor.RED + "?");
 					}
 				}
