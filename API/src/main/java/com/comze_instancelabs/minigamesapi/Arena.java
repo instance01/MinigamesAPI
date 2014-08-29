@@ -601,6 +601,8 @@ public class Arena {
 									pli.getClassesHandler().setClass("default", p_);
 								}
 								pli.getClassesHandler().getClass(p_);
+								Bukkit.getPlayer(p_).setFlying(false);
+								Bukkit.getPlayer(p_).setAllowFlight(false);
 							}
 						} catch (Exception e) {
 							System.out.println("Failed to set class: " + e.getMessage());
