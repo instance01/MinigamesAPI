@@ -111,10 +111,12 @@ public class ArenaListener implements Listener {
 							return;
 						}
 						if (a.getArenaType() == ArenaType.REGENERATION) {
-							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
-								Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
-								p.setVelocity(direction);
-								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+							if (a.getBoundaries() != null) {
+								if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
+									Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
+									p.setVelocity(direction);
+									p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+								}
 							}
 						}
 					}
