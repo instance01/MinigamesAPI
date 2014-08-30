@@ -137,8 +137,17 @@ public class ArcadeInstance {
 
 	public void stopCurrentMinigame() {
 		if (currentindex < minigames.size()) {
-			if (minigames.get(currentindex).getArenas().size() > 0) {
-				minigames.get(currentindex).getArenas().get(0).stop();
+			PluginInstance mg = minigames.get(currentindex);
+			if (mg.getArenas().size() > 0) {
+				if (mg.getPlugin().getConfig().getBoolean("config.arcade.arena_to_prefer.enabled")) {
+					String arenaname = mg.getPlugin().getConfig().getString("config.arcade.arena_to_prefer.arena");
+					Arena a = mg.getArenaByName(arenaname);
+					if (a != null) {
+						a.stop();
+					}
+				} else {
+					minigames.get(currentindex).getArenas().get(0).stop();
+				}
 			}
 		}
 	}
@@ -149,19 +158,17 @@ public class ArcadeInstance {
 
 	public void nextMinigame(long delay) {
 		in_a_game = false;
-		
-		/*if (currentarena != null) {
-			if (currentarena.getArenaState() == ArenaState.INGAME) {
-				currentarena.stop();
-			}
-		}*/
+
+		/*
+		 * if (currentarena != null) { if (currentarena.getArenaState() == ArenaState.INGAME) { currentarena.stop(); } }
+		 */
 
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
 			System.out.println(arena.getName());
 			arena.stop();
-			//stopArcade();
+			// stopArcade();
 			return;
 		}
 		// System.out.println(delay + " " + currentindex);
