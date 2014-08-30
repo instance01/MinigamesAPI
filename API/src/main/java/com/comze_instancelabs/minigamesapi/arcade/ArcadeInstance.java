@@ -50,7 +50,12 @@ public class ArcadeInstance {
 							if (p != null) {
 								PluginInstance pli_ = minigames.get(currentindex);
 								System.out.println(pli_.getPlugin().getName() + " " + currentarena.getName() + " " + p.getName());
-								currentarena.spectateArcade(playername);
+								if(currentarena.getArenaState() != ArenaState.INGAME){
+									currentarena.joinPlayerLobby(playername, this, false, true);
+								} else {
+									currentarena.spectateArcade(playername);
+								}
+								
 								pli_.scoreboardManager.updateScoreboard(pli_.getPlugin(), currentarena);
 							}
 						}
@@ -204,7 +209,7 @@ public class ArcadeInstance {
 						currentarena = a;
 						for (String p_ : temp) {
 							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
-							a.joinPlayerLobby(p_, ai);
+							a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
 						}
 					} else {
 						nextMinigame(5L);

@@ -70,6 +70,7 @@ public class Arena {
 	Cuboid boundaries;
 
 	boolean temp_countdown = true;
+	boolean skip_join_lobby = false;
 
 	/**
 	 * Creates a normal singlespawn arena
@@ -295,10 +296,12 @@ public class Arena {
 						p.setGameMode(GameMode.SURVIVAL);
 					}
 				}, 10L);
-				if (ai == null && this.getAllPlayers().size() > this.min_players - 1) {
-					this.startLobby(temp_countdown);
-				} else if (ai != null) {
-					this.startLobby(temp_countdown);
+				if (!skip_join_lobby) {
+					if (ai == null && this.getAllPlayers().size() > this.min_players - 1) {
+						this.startLobby(temp_countdown);
+					} else if (ai != null) {
+						this.startLobby(temp_countdown);
+					}
 				}
 			}
 		}
@@ -313,18 +316,6 @@ public class Arena {
 	public void joinPlayerLobby(String playername, boolean countdown) {
 		temp_countdown = countdown;
 		joinPlayerLobby(playername);
-		// messed up through eclipse formatting
-		/*
-		 * if (this.getArenaState() != ArenaState.JOIN && this.getArenaState() != ArenaState.STARTING) { return; } if (this.getAllPlayers().size() >
-		 * this.max_players - 1) { return; } pli.global_players.put(playername, this); this.players.add(playername); if
-		 * (Validator.isPlayerValid(plugin, playername, this)) { final Player p = Bukkit.getPlayer(playername); Util.sendMessage(p,
-		 * pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName())); Util.updateSign(plugin, this); if
-		 * (shouldClearInventoryOnJoin) { pinv.put(playername, p.getInventory().getContents()); pinv_armor.put(playername,
-		 * p.getInventory().getArmorContents()); if (this.getArenaType() == ArenaType.JUMPNRUN) { Util.teleportPlayerFixed(p, this.spawns.get(0));
-		 * return; } else { Util.teleportPlayerFixed(p, this.waitinglobby); } Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable()
-		 * { public void run() { Util.clearInv(p); Util.giveLobbyItems(plugin, p); pgamemode.put(p.getName(), p.getGameMode());
-		 * p.setGameMode(GameMode.SURVIVAL); } }, 10L); if (this.getAllPlayers().size() > this.min_players - 1) { this.startLobby(countdown); } } }
-		 */
 	}
 
 	/**
@@ -335,9 +326,10 @@ public class Arena {
 	 * @param ai
 	 *            the ArcadeInstance
 	 */
-	public void joinPlayerLobby(String playername, ArcadeInstance ai) {
+	public void joinPlayerLobby(String playername, ArcadeInstance ai, boolean countdown, boolean skip_lobby) {
+		this.skip_join_lobby = skip_lobby;
 		this.ai = ai;
-		joinPlayerLobby(playername, false); // join playerlobby without lobby countdown
+		joinPlayerLobby(playername, countdown); // join playerlobby without lobby countdown
 	}
 
 	/**
@@ -415,6 +407,9 @@ public class Arena {
 		if (pli.global_lost.containsKey(playername)) {
 			pli.global_lost.remove(playername);
 		}
+		if (pli.global_arcade_spectator.containsKey(playername)) {
+			pli.global_arcade_spectator.remove(playername);
+		}
 
 		Util.updateSign(plugin, this);
 
@@ -478,19 +473,18 @@ public class Arena {
 	}
 
 	public void spectateArcade(String playername) {
-		this.addPlayer(playername);
+		// this.addPlayer(playername);
 		Player p = Bukkit.getPlayer(playername);
-		if (p != null) {
-			this.pinv.put(playername, p.getInventory().getContents());
-			this.pinv_armor.put(playername, p.getInventory().getArmorContents());
-			this.pgamemode.put(playername, p.getGameMode());
-		}
+		// if (p != null) {
+		// this.pinv.put(playername, p.getInventory().getContents());
+		// this.pinv_armor.put(playername, p.getInventory().getArmorContents());
+		// this.pgamemode.put(playername, p.getGameMode());
+		// }
 		pli.global_players.put(playername, currentarena);
-		pli.global_lost.put(playername, currentarena);
+		pli.global_arcade_spectator.put(playername, currentarena);
 		Util.teleportPlayerFixed(p, currentarena.getSpawns().get(0).clone().add(0D, 30D, 0D));
 		p.setAllowFlight(true);
 		p.setFlying(true);
-
 	}
 
 	int currentlobbycount = 10;

@@ -100,7 +100,7 @@ public class ArenaListener implements Listener {
 			final Player p = event.getPlayer();
 			if (pli.global_players.containsKey(p.getName())) {
 				final Arena a = pli.global_players.get(p.getName());
-				if (!pli.global_lost.containsKey(p.getName())) {
+				if (!pli.global_lost.containsKey(p.getName()) && !pli.global_arcade_spectator.containsKey(p.getName())) {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						if (p.getLocation().getBlockY() + loseY < a.getSpawns().get(0).getBlockY()) {
 							if (a.getArenaType() == ArenaType.JUMPNRUN) {

@@ -21,6 +21,7 @@ public class PluginInstance {
 
 	public HashMap<String, Arena> global_players = new HashMap<String, Arena>();
 	public HashMap<String, Arena> global_lost = new HashMap<String, Arena>();
+	public HashMap<String, Arena> global_arcade_spectator = new HashMap<String, Arena>();
 
 	private ArenaListener arenalistener = null;
 	private ArenasConfig arenasconfig = null;
