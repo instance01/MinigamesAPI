@@ -18,6 +18,8 @@ public class AchievementsConfig {
 		this.plugin = plugin;
 		this.getConfig().options().header("Used for saving achievements details.");
 
+		this.getConfig().addDefault("config.enabled", true);
+
 		this.getConfig().addDefault("config.achievements.first_blood.enabled", true);
 		this.getConfig().addDefault("config.achievements.first_blood.name", "First Blood!");
 		this.getConfig().addDefault("config.achievements.first_blood.reward.economy_reward", true);

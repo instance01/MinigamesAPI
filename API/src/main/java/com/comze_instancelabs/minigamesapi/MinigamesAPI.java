@@ -53,7 +53,6 @@ public class MinigamesAPI extends JavaPlugin {
 			}
 		}
 
-		// TODO setup Updater and Metrics
 		getConfig().options().header("Want bugfree versions? Set this to true:");
 		getConfig().addDefault("config.auto_updating", true);
 
@@ -104,7 +103,7 @@ public class MinigamesAPI extends JavaPlugin {
 		Guns.loadGuns(plugin_);
 		return instance;
 	}
-
+	
 	public static void registerArenaListenerLater(JavaPlugin plugin_, ArenaListener arenalistener) {
 		Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
 	}

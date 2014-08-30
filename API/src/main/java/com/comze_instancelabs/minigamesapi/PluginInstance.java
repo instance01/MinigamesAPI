@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.config.AchievementsConfig;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.config.GunsConfig;
@@ -27,6 +28,7 @@ public class PluginInstance {
 	private MessagesConfig messagesconfig = null;
 	private StatsConfig statsconfig = null;
 	private GunsConfig gunsconfig = null;
+	private AchievementsConfig achievementsconfig = null;
 	private JavaPlugin plugin = null;
 	private ArrayList<Arena> arenas = new ArrayList<Arena>();
 	private HashMap<String, AClass> pclass = new HashMap<String, AClass>();
@@ -49,6 +51,7 @@ public class PluginInstance {
 		this.classesconfig = classesconfig;
 		this.statsconfig = statsconfig;
 		this.gunsconfig = new GunsConfig(plugin, false);
+		this.achievementsconfig = new AchievementsConfig(plugin);
 		this.arenas = arenas;
 		this.plugin = plugin;
 		rew = new Rewards(plugin);
@@ -109,6 +112,10 @@ public class PluginInstance {
 
 	public GunsConfig getGunsConfig() {
 		return gunsconfig;
+	}
+	
+	public AchievementsConfig getAchievementsConfig() {
+		return achievementsconfig;
 	}
 
 	public Rewards getRewardsInstance() {
