@@ -26,7 +26,13 @@ public class MainSQL {
 		}
 
 		if (plugin.getConfig().getBoolean("mysql.enabled") && MySQL != null) {
-			this.createTables();
+			try {
+				this.createTables();
+			} catch (Exception e) {
+				System.out.println("Failed initializing MySQL. Disabling!");
+				plugin.getConfig().set("mysql.enabled", false);
+				plugin.saveConfig();
+			}
 		} else if (plugin.getConfig().getBoolean("mysql.enabled") && MySQL == null) {
 			System.out.println("Failed initializing MySQL. Disabling!");
 			plugin.getConfig().set("mysql.enabled", false);
@@ -62,7 +68,7 @@ public class MainSQL {
 		Connection c = MySQL.open();
 
 		int wincount = addwin ? 1 : 0;
-		
+
 		try {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 			if (!res3.isBeforeFirst()) {

@@ -159,7 +159,9 @@ public class ArcadeInstance {
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
-			stopArcade();
+			System.out.println(arena.getName());
+			arena.stop();
+			//stopArcade();
 			return;
 		}
 		// System.out.println(delay + " " + currentindex);
