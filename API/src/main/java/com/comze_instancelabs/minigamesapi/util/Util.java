@@ -515,6 +515,20 @@ public class Util {
 		p.updateInventory();
 	}
 
+	public static void sendMessage(Player p, String arenaname, String msgraw) {
+		String[] msgs = msgraw.replaceAll("<player>", p.getName()).replaceAll("<arena>", arenaname).split(";");
+		for (String msg : msgs) {
+			p.sendMessage(msgs);
+		}
+	}
+
+	public static void sendMessage(Player p, String msgraw) {
+		String[] msgs = msgraw.replaceAll("<player>", p.getName()).split(";");
+		for (String msg : msgs) {
+			p.sendMessage(msgs);
+		}
+	}
+
 	public static class ValueComparator implements Comparator<String> {
 		Map<String, Double> base;
 

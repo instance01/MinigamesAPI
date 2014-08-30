@@ -189,7 +189,7 @@ public class ArenaListener implements Listener {
 						for (String p_ : arena.getAllPlayers()) {
 							if (Validator.isPlayerOnline(p_)) {
 								Player p__ = Bukkit.getPlayer(p_);
-								p__.sendMessage(pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
+								Util.sendMessage(p__, pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
 							}
 						}
 					} catch (Exception e) {
@@ -422,7 +422,7 @@ public class ArenaListener implements Listener {
 					if (!arena.containsPlayer(p.getName())) {
 						arena.joinPlayerLobby(p.getName());
 					} else {
-						p.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getName()));
+						Util.sendMessage(p, pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getName()));
 					}
 				}
 			} else if (event.getClickedBlock().getType() == Material.CHEST) {
@@ -475,9 +475,9 @@ public class ArenaListener implements Listener {
 						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
 						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
 						pli.getArenasConfig().saveConfig();
-						p.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
+						Util.sendMessage(p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
 					} else {
-						p.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
+						Util.sendMessage(p, pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
 						event.getBlock().breakNaturally();
 					}
 
@@ -487,7 +487,7 @@ public class ArenaListener implements Listener {
 						a.setSignLocation(event.getBlock().getLocation());
 						Util.updateSign(plugin, a, event);
 					} else {
-						p.sendMessage(pli.getMessagesConfig().arena_not_initialized);
+						Util.sendMessage(p, pli.getMessagesConfig().arena_not_initialized);
 					}
 				}
 			}
@@ -516,7 +516,7 @@ public class ArenaListener implements Listener {
 						p.removePotionEffect(PotionEffectType.JUMP);
 					} catch (Exception e) {
 						e.printStackTrace();
-						p.sendMessage(ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");
+						Util.sendMessage(p, ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");
 					}
 					plugin.getConfig().set("temp.left_players." + p.getName(), null);
 					plugin.saveConfig();
@@ -589,7 +589,7 @@ public class ArenaListener implements Listener {
 				}
 			}
 			if (!cont) {
-				event.getPlayer().sendMessage(pli.getMessagesConfig().you_can_leave_with);
+				Util.sendMessage(event.getPlayer(), pli.getMessagesConfig().you_can_leave_with);
 				event.setCancelled(true);
 				return;
 			}

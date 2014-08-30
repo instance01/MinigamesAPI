@@ -96,7 +96,7 @@ public class Rewards {
 
 				pli.getStatsInstance().win(p_, 10);
 
-				p.sendMessage(pli.getMessagesConfig().you_won);
+				Util.sendMessage(p, pli.getMessagesConfig().you_won);
 				
 				try{
 					if(plugin.getConfig().getBoolean("config.broadcast_win")){
@@ -106,7 +106,7 @@ public class Rewards {
 					System.out.println("Could not find arena for broadcast.");
 				}
 			} else {
-				p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_lost);
+				Util.sendMessage(p, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_lost);
 				MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().lose(p_);
 			}
 		}
