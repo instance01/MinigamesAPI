@@ -775,7 +775,9 @@ public class Arena {
 			if (a.getArenaState() == ArenaState.JOIN && a != this) {
 				System.out.println(plugin.getName() + ": Next arena on map rotation: " + a.getName());
 				for (String p_ : players) {
-					a.joinPlayerLobby(p_, false);
+					if (!a.containsPlayer(p_)) {
+						a.joinPlayerLobby(p_, false);
+					}
 				}
 			}
 		}
