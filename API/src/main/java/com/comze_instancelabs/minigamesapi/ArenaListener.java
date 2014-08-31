@@ -115,7 +115,7 @@ public class ArenaListener implements Listener {
 								if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
 									Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
 									p.setVelocity(direction);
-									if(p.isInsideVehicle()){
+									if (p.isInsideVehicle()) {
 										p.getVehicle().setVelocity(direction);
 									}
 									p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
@@ -233,10 +233,12 @@ public class ArenaListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player p = (Player) event.getEntity();
-			Player attacker;
+			Player attacker = null;
 			if (event.getDamager() instanceof Projectile) {
 				Projectile projectile = (Projectile) event.getDamager();
-				attacker = (Player) projectile.getShooter();
+				if (projectile.getShooter() instanceof Player) {
+					attacker = (Player) projectile.getShooter();
+				}
 			} else if (event.getDamager() instanceof Player) {
 				attacker = (Player) event.getDamager();
 			} else {
