@@ -23,7 +23,7 @@ public class Classes {
 		this.plugin = plugin;
 	}
 
-	public void openGUI(String p) {
+	public void openGUI(final String p) {
 		final Classes cl = this;
 		IconMenu iconm;
 		int mincount = MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().keySet().size();
@@ -33,10 +33,12 @@ public class Classes {
 			iconm = new IconMenu("Classes", (9 * plugin.getConfig().getInt("config.classes_gui_rows") > mincount - 1) ? 9 * plugin.getConfig().getInt("config.classes_gui_rows") : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
 				@Override
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
-					String d = event.getName();
-					Player p = event.getPlayer();
-					if (MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().containsKey(d)) {
-						cl.setClass(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesHandler().getInternalNameByName(d), p.getName());
+					if (event.getPlayer().getName().equalsIgnoreCase(p)) {
+						String d = event.getName();
+						Player p = event.getPlayer();
+						if (MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().containsKey(d)) {
+							cl.setClass(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesHandler().getInternalNameByName(d), p.getName());
+						}
 					}
 					event.setWillClose(true);
 				}
