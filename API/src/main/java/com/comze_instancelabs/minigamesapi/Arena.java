@@ -72,6 +72,8 @@ public class Arena {
 	boolean temp_countdown = true;
 	boolean skip_join_lobby = false;
 
+	int currentspawn = 0;
+
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -263,7 +265,10 @@ public class Arena {
 				pinv.put(playername, p.getInventory().getContents());
 				pinv_armor.put(playername, p.getInventory().getArmorContents());
 				if (this.getArenaType() == ArenaType.JUMPNRUN) {
-					Util.teleportPlayerFixed(p, this.spawns.get(0));
+					Util.teleportPlayerFixed(p, this.spawns.get(currentspawn));
+					if (currentspawn < this.spawns.size() - 1) {
+						currentspawn++;
+					}
 					Util.clearInv(p);
 					pgamemode.put(p.getName(), p.getGameMode());
 					p.setGameMode(GameMode.SURVIVAL);
@@ -670,6 +675,8 @@ public class Arena {
 		startedIngameCountdown = false;
 
 		temp_countdown = true;
+		skip_join_lobby = false;
+		currentspawn = 0;
 
 		/*
 		 * try { pli.getStatsInstance().updateSkulls(); } catch (Exception e) {
