@@ -83,6 +83,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.classes_item", classes_item);
 		this.getConfig().addDefault("messages.server_broadcast_winner", server_broadcast_winner);
 		this.getConfig().addDefault("messages.exit_item", exit_item);
+		this.getConfig().addDefault("messages.successfully_bought_kit", successfully_bought_kit);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -121,6 +122,7 @@ public class MessagesConfig {
 		this.classes_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.classes_item"));
 		this.server_broadcast_winner = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.server_broadcast_winner"));
 		this.exit_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.exit_item"));
+		this.successfully_bought_kit = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_bought_kit"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -167,6 +169,7 @@ public class MessagesConfig {
 	public String classes_item = "&4Classes";
 	public String server_broadcast_winner = "&2<player> &awon the game on &2<arena>&a!";
 	public String exit_item = "&4Leave the game";
+	public String successfully_bought_kit = "&aSuccessfully bought &2<kit> &afor &2<money>&a.";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

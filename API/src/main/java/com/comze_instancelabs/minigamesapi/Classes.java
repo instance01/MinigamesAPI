@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
@@ -60,9 +61,6 @@ public class Classes {
 
 	public void getClass(String player) {
 		AClass c = MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player);
-		// System.out.println("test");
-		// System.out.println("A " + c);
-		// System.out.println("B " + c.getName());
 		Player p = Bukkit.getServer().getPlayer(player);
 		p.getInventory().clear();
 		p.getInventory().setHelmet(null);
@@ -180,16 +178,41 @@ public class Classes {
 			return false;
 		}
 		if (MinigamesAPI.economy) {
-			if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount")) {
-				EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount"));
-				if (!r.transactionSuccess()) {
-					p.sendMessage(String.format("An error occured: %s", r.errorMessage));
+			if (plugin.getConfig().getBoolean("config.buy_classes_forever")) {
+				ClassesConfig cl = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig();
+				if (!cl.getConfig().isSet("players.bought_kits." + p.getName() + "." + kit)) {
+					cl.getConfig().set("players.bought_kits." + p.getName() + "." + kit, true);
+					cl.saveConfig();
+					int money = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount");
+					if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= money) {
+						EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), money);
+						if (!r.transactionSuccess()) {
+							p.sendMessage(String.format("An error occured: %s", r.errorMessage));
+							return false;
+						}
+						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
+					} else {
+						p.sendMessage("§4You don't have enough money!");
+						return false;
+					}
+				} else {
+					return true;
 				}
-				return true;
 			} else {
-				p.sendMessage("§4You don't have enough money!");
-				return false;
+				int money = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount");
+				if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= money) {
+					EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), money);
+					if (!r.transactionSuccess()) {
+						p.sendMessage(String.format("An error occured: %s", r.errorMessage));
+						return false;
+					}
+					p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
+				} else {
+					p.sendMessage("§4You don't have enough money!");
+					return false;
+				}
 			}
+			return true;
 		} else {
 			return false;
 		}
