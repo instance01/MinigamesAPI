@@ -111,18 +111,18 @@ public class ArenaListener implements Listener {
 							}
 							return;
 						}
-						if (a.getArenaType() == ArenaType.REGENERATION) {
-							if (a.getBoundaries() != null) {
-								if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
-									Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
-									p.setVelocity(direction);
-									if (p.isInsideVehicle()) {
-										p.getVehicle().setVelocity(direction);
-									}
-									p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+						// if (a.getArenaType() == ArenaType.REGENERATION) {
+						if (a.getBoundaries() != null) {
+							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
+								Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
+								p.setVelocity(direction);
+								if (p.isInsideVehicle()) {
+									p.getVehicle().setVelocity(direction.multiply(2D));
 								}
+								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
 							}
 						}
+						// }
 					}
 				} else {
 					if (a.getArenaState() == ArenaState.INGAME) {

@@ -113,13 +113,15 @@ public class Arena {
 		this.min_players = min_players;
 		this.max_players = max_players;
 		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getName());
-		if (this.getArenaType() == ArenaType.REGENERATION) {
+		// if (this.getArenaType() == ArenaType.REGENERATION) {
+		if (Util.isComponentForArenaValid(plugin, this.getName(), "bounds.low") && Util.isComponentForArenaValid(plugin, this.getName(), "bounds.high")) {
 			try {
 				this.boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "bounds.low"), Util.getComponentForArena(plugin, this.getName(), "bounds.high"));
 			} catch (Exception e) {
 				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup.");
 			}
 		}
+		// }
 	}
 
 	// This is for loading existing arenas
