@@ -68,6 +68,8 @@ public class MinigamesAPI extends JavaPlugin {
 		if (getConfig().getBoolean("config.auto_updating")) {
 			Updater updater = new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
 		}
+		
+		SpectatorManager.setup();
 	}
 
 	public void onDisable() {

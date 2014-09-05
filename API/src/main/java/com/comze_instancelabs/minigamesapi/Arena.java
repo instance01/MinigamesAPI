@@ -387,6 +387,7 @@ public class Arena {
 		p.setHealth(20D);
 		p.setFireTicks(0);
 		p.removePotionEffect(PotionEffectType.JUMP);
+		SpectatorManager.setSpectate(p, false);
 
 		for (PotionEffect effect : p.getActivePotionEffects()) {
 			if (effect != null) {
@@ -455,6 +456,7 @@ public class Arena {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			this.onEliminated(playername);
 			Player p = Bukkit.getPlayer(playername);
+			SpectatorManager.setSpectate(p, true);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
 				this.leavePlayer(playername, false, true);
 			}
