@@ -583,7 +583,9 @@ public class ArenaListener implements Listener {
 			}
 		}
 		if (pli.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
-			// if (!event.getMessage().startsWith("/sw") && !event.getMessage().startsWith("/skywars")) {
+			if (!plugin.getConfig().getBoolean("config.disable_commands_in_arena")) {
+				return;
+			}
 			boolean cont = false;
 			for (String cmd : cmds) {
 				if (event.getMessage().toLowerCase().startsWith(cmd.toLowerCase())) {
@@ -595,7 +597,6 @@ public class ArenaListener implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-			// }
 		}
 	}
 

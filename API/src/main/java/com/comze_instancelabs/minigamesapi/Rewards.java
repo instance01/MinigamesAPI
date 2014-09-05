@@ -97,12 +97,12 @@ public class Rewards {
 				pli.getStatsInstance().win(p_, 10);
 
 				Util.sendMessage(p, pli.getMessagesConfig().you_won);
-				
-				try{
-					if(plugin.getConfig().getBoolean("config.broadcast_win")){
+
+				try {
+					if (plugin.getConfig().getBoolean("config.broadcast_win")) {
 						plugin.getServer().broadcastMessage(pli.getMessagesConfig().server_broadcast_winner.replaceAll("<player>", p_).replaceAll("<arena>", a.getName()));
 					}
-				}catch(Exception e){
+				} catch (Exception e) {
 					System.out.println("Could not find arena for broadcast.");
 				}
 			} else {

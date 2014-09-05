@@ -49,6 +49,7 @@ public class DefaultConfig {
 			config.addDefault("config.map_rotation", false);
 			config.addDefault("config.broadcast_win", true);
 			config.addDefault("config.buy_classes_forever", true);
+			config.addDefault("config.disable_commands_in_arena", true);
 
 			config.addDefault("mysql.enabled", false);
 			config.addDefault("mysql.host", "127.0.0.1");
