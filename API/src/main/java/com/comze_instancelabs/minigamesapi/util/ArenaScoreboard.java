@@ -12,6 +12,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.PluginInstance;
 
 public class ArenaScoreboard {
 
@@ -30,6 +31,8 @@ public class ArenaScoreboard {
 			return;
 		}
 
+		final PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+
 		Bukkit.getScheduler().runTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				for (String p__ : arena.getAllPlayers()) {
@@ -46,7 +49,7 @@ public class ArenaScoreboard {
 
 					aobjective.get(arena.getName()).setDisplaySlot(DisplaySlot.SIDEBAR);
 
-					aobjective.get(arena.getName()).setDisplayName("[" + arena.getName() + "]");
+					aobjective.get(arena.getName()).setDisplayName(pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getName()));
 
 					for (String p___ : arena.getAllPlayers()) {
 						if (!Validator.isPlayerOnline(p___)) {
