@@ -9,6 +9,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -38,8 +39,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -339,6 +340,10 @@ public class ArenaListener implements Listener {
 				return;
 			}
 			a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+			if (event.getBlock().getType() == Material.DOUBLE_PLANT) {
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, -1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+			}
 		}
 		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
 			Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());
@@ -379,6 +384,25 @@ public class ArenaListener implements Listener {
 									a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
 								}
 							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onStructureGrow(StructureGrowEvent event) {
+		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				if (c != null) {
+					Location start = event.getLocation();
+					a.getSmartReset().addChanged(start.getBlock(), false);
+					if (c.containsLocWithoutY(start)) {
+						for (BlockState bs : event.getBlocks()) {
+							Block b = bs.getBlock();
+							a.getSmartReset().addChanged(b.getLocation());
 						}
 					}
 				}
