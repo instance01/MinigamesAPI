@@ -11,6 +11,7 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
+import com.comze_instancelabs.minigamesapi.SpectatorManager;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
@@ -50,12 +51,12 @@ public class ArcadeInstance {
 							if (p != null) {
 								PluginInstance pli_ = minigames.get(currentindex);
 								System.out.println(pli_.getPlugin().getName() + " " + currentarena.getName() + " " + p.getName());
-								if(currentarena.getArenaState() != ArenaState.INGAME){
+								if (currentarena.getArenaState() != ArenaState.INGAME) {
 									currentarena.joinPlayerLobby(playername, this, false, true);
 								} else {
 									currentarena.spectateArcade(playername);
 								}
-								
+
 								pli_.scoreboardManager.updateScoreboard(pli_.getPlugin(), currentarena);
 							}
 						}
@@ -82,6 +83,11 @@ public class ArcadeInstance {
 				Player p = Bukkit.getPlayer(playername);
 				if (p != null) {
 					Util.teleportPlayerFixed(p, arena.getMainLobbyTemp());
+					SpectatorManager.setSpectate(p, false);
+					if (!p.isOp()) {
+						p.setFlying(false);
+						p.setAllowFlight(false);
+					}
 				}
 			}
 		}, 20L);
@@ -210,6 +216,7 @@ public class ArcadeInstance {
 						for (String p_ : temp) {
 							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
 							a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
+							SpectatorManager.setSpectate(Bukkit.getPlayer(p_), false);
 						}
 					} else {
 						nextMinigame(5L);

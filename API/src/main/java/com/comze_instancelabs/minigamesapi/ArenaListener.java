@@ -548,6 +548,7 @@ public class ArenaListener implements Listener {
 						p.updateInventory();
 						p.setWalkSpeed(0.2F);
 						p.removePotionEffect(PotionEffectType.JUMP);
+						SpectatorManager.setSpectate(p, false);
 					} catch (Exception e) {
 						e.printStackTrace();
 						Util.sendMessage(p, ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");

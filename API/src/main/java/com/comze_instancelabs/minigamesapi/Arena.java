@@ -492,6 +492,7 @@ public class Arena {
 		Util.teleportPlayerFixed(p, currentarena.getSpawns().get(0).clone().add(0D, 30D, 0D));
 		p.setAllowFlight(true);
 		p.setFlying(true);
+		SpectatorManager.setSpectate(p, true);
 	}
 
 	int currentlobbycount = 10;
