@@ -15,6 +15,7 @@ public class DefaultConfig {
 			config.addDefault("config.classes_selection_item", 399);
 			config.addDefault("config.exit_item", 152);
 			config.addDefault("config.spectator_after_fall_or_death", true);
+			config.addDefault("config.spectator_move_y_lock", true);
 			config.addDefault("config.default_max_players", 4);
 			config.addDefault("config.default_min_players", 2);
 			config.addDefault("config.lobby_countdown", 30);

@@ -46,6 +46,8 @@ public class PluginInstance {
 	int lobby_countdown = 30;
 	int ingame_countdown = 10;
 
+	boolean spectator_move_y_lock = true;
+
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
@@ -61,6 +63,7 @@ public class PluginInstance {
 		classes = new Classes(plugin);
 		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
 		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
+		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator_move_y_lock");
 	}
 
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig) {
@@ -114,7 +117,7 @@ public class PluginInstance {
 	public GunsConfig getGunsConfig() {
 		return gunsconfig;
 	}
-	
+
 	public AchievementsConfig getAchievementsConfig() {
 		return achievementsconfig;
 	}

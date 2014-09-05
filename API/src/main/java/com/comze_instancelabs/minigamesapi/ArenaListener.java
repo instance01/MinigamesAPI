@@ -126,7 +126,7 @@ public class ArenaListener implements Listener {
 					}
 				} else {
 					if (a.getArenaState() == ArenaState.INGAME) {
-						if (event.getPlayer().getLocation().getBlockY() < (a.getSpawns().get(0).getBlockY() + 30D) || event.getPlayer().getLocation().getBlockY() > (a.getSpawns().get(0).getBlockY() + 30D)) {
+						if (pli.spectator_move_y_lock && event.getPlayer().getLocation().getBlockY() < (a.getSpawns().get(0).getBlockY() + 30D) || event.getPlayer().getLocation().getBlockY() > (a.getSpawns().get(0).getBlockY() + 30D)) {
 							final float b = p.getLocation().getYaw();
 							final float c = p.getLocation().getPitch();
 							Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
