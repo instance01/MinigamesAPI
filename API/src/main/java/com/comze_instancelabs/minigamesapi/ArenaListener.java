@@ -56,6 +56,7 @@ public class ArenaListener implements Listener {
 	private String minigame = "minigame";
 
 	private ArrayList<String> cmds = new ArrayList<String>();
+	private String leave_cmd = "/leave";
 
 	public int loseY = 4;
 
@@ -70,6 +71,7 @@ public class ArenaListener implements Listener {
 		this.pli = pinstance;
 		this.setName(minigame);
 		this.cmds = cmds;
+		this.leave_cmd = plugin.getConfig().getString("leave_command");
 	}
 
 	@EventHandler
@@ -607,7 +609,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
-		if (event.getMessage().equalsIgnoreCase("/leave") || event.getMessage().equalsIgnoreCase("/l")) {
+		if (event.getMessage().equalsIgnoreCase(leave_cmd) || event.getMessage().equalsIgnoreCase("/l")) {
 			if (pli.global_players.containsKey(event.getPlayer().getName())) {
 				Arena arena = pli.global_players.get(event.getPlayer().getName());
 				arena.leavePlayer(event.getPlayer().getName(), false, false);

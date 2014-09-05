@@ -39,4 +39,8 @@ public class SpectatorManager {
 		}
 	}
 
+	public static void openSpectatorGUI(Player p) {
+		// TODO
+	}
+
 }
