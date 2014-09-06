@@ -26,6 +26,16 @@ public class PartyMessagesConfig {
 	public void init() {
 		this.getConfig().addDefault("messages.cannot_invite_yourself", cannot_invite_yourself);
 		this.getConfig().addDefault("messages.player_not_online", player_not_online);
+		this.getConfig().addDefault("messages.you_invited", you_invited);
+		this.getConfig().addDefault("messages.you_were_invited", you_were_invited);
+		this.getConfig().addDefault("messages.not_invited_to_any_party", not_invited_to_any_party);
+		this.getConfig().addDefault("messages.not_invited_to_players_party", not_invited_to_players_party);
+		this.getConfig().addDefault("messages.player_not_in_party", player_not_in_party);
+		this.getConfig().addDefault("messages.you_joined_party", you_joined_party);
+		this.getConfig().addDefault("messages.player_joined_party", player_joined_party);
+		this.getConfig().addDefault("messages.you_left_party", you_left_party);
+		this.getConfig().addDefault("messages.player_left_party", player_left_party);
+		this.getConfig().addDefault("messages.party_disbanded", party_disbanded);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -34,6 +44,16 @@ public class PartyMessagesConfig {
 		// load
 		this.cannot_invite_yourself = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.cannot_invite_yourself"));
 		this.player_not_online = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_not_online"));
+		this.you_invited = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_invited"));
+		this.you_were_invited = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_were_invited"));
+		this.not_invited_to_any_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.not_invited_to_any_party"));
+		this.not_invited_to_players_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.not_invited_to_players_party"));
+		this.player_not_in_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_not_in_party"));
+		this.you_joined_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_joined_party"));
+		this.player_joined_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_joined_party"));
+		this.you_left_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_left_party"));
+		this.player_left_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_left_party"));
+		this.party_disbanded = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.party_disbanded"));
 
 	}
 
@@ -70,11 +90,11 @@ public class PartyMessagesConfig {
 
 	public void reloadConfig() {
 		if (messagesFile == null) {
-			messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+			messagesFile = new File(plugin.getDataFolder(), "partymessages.yml");
 		}
 		messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
 
-		InputStream defConfigStream = plugin.getResource("messages.yml");
+		InputStream defConfigStream = plugin.getResource("partymessages.yml");
 		if (defConfigStream != null) {
 			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 			messagesConfig.setDefaults(defConfig);
