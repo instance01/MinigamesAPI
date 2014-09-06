@@ -26,8 +26,8 @@ public class Party {
 		if (!players.contains(p)) {
 			players.add(p);
 		}
-		Bukkit.getPlayer(p).sendMessage("You joined " + owner + "s party.");
-		tellAll(p + " joined the party.");
+		Bukkit.getPlayer(p).sendMessage(MinigamesAPI.getAPI().partymessages.you_joined_party.replaceAll("<player>", this.getOwner()));
+		tellAll(MinigamesAPI.getAPI().partymessages.player_joined_party.replaceAll("<player>", p));
 	}
 
 	// TODO remove player when he leaves server
@@ -37,9 +37,9 @@ public class Party {
 			players.remove(p);
 			Player p___ = Bukkit.getPlayer(p);
 			if (p___ != null) {
-				p___.sendMessage("You left " + owner + "s party.");
+				p___.sendMessage(MinigamesAPI.getAPI().partymessages.you_left_party.replaceAll("<player>", this.getOwner()));
 			}
-			tellAll(p + " left the party.");
+			tellAll(MinigamesAPI.getAPI().partymessages.player_left_party.replaceAll("<player>", p));
 			return true;
 		}
 		return false;
@@ -50,8 +50,9 @@ public class Party {
 	}
 
 	public void disband() {
-		tellAll("Your party was disbanded.");
+		tellAll(MinigamesAPI.getAPI().partymessages.party_disbanded);
 		if (MinigamesAPI.getAPI().global_party.containsKey(owner)) {
+			this.players.clear();
 			MinigamesAPI.getAPI().global_party.remove(owner);
 		}
 	}

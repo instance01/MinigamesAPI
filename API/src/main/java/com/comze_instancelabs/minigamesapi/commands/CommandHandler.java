@@ -563,7 +563,7 @@ public class CommandHandler {
 	public boolean partyInvite(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (args.length > 1) {
 			if (p.getName().equalsIgnoreCase(args[1])) {
-				// TODO send msg
+				p.sendMessage(MinigamesAPI.getAPI().partymessages.cannot_invite_yourself);
 				return true;
 			}
 			boolean isInParty = false;
@@ -574,7 +574,7 @@ public class CommandHandler {
 			}
 			if (!isInParty) {
 				if (!Validator.isPlayerOnline(args[1])) {
-					// TODO message that invited player is not online
+					p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
 					return true;
 				}
 				if (!MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
@@ -588,10 +588,8 @@ public class CommandHandler {
 						parties.add(party);
 					}
 					MinigamesAPI.getAPI().global_party_invites.put(args[1], parties);
-					// TODO send other player (args[1]) message that he is invited
-					// TODO send p message that he invited other player
-					p.sendMessage("You invited " + args[1] + ".");
-					Bukkit.getPlayer(args[1]).sendMessage("You were invited to " + p.getName() + "s party. Accept: /party accept " + p.getName());
+					p.sendMessage(MinigamesAPI.getAPI().partymessages.you_invited.replaceAll("<player>", args[1]));
+					Bukkit.getPlayer(args[1]).sendMessage(MinigamesAPI.getAPI().partymessages.you_were_invited.replaceAll("<player>", p.getName()));
 				}
 			}
 		} else {
@@ -603,11 +601,11 @@ public class CommandHandler {
 	public boolean partyAccept(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (args.length > 1) {
 			if (!Validator.isPlayerOnline(args[1])) {
-				// TODO message that other player is not online
+				p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
 				return true;
 			}
 			if (!MinigamesAPI.getAPI().global_party_invites.containsKey(p.getName())) {
-				// TODO message that he's not invited to a party
+				p.sendMessage(MinigamesAPI.getAPI().partymessages.not_invited_to_any_party);
 				return true;
 			}
 
@@ -639,7 +637,7 @@ public class CommandHandler {
 				party__.addPlayer(p.getName());
 				MinigamesAPI.getAPI().global_party_invites.remove(p.getName());
 			} else {
-				// TODO message him that he's not invited to the party of given owner (args[1])
+				p.sendMessage(MinigamesAPI.getAPI().partymessages.not_invited_to_players_party.replaceAll("<player>", args[1]));
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <player>");
@@ -650,7 +648,7 @@ public class CommandHandler {
 	public boolean partyKick(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (args.length > 1) {
 			if (!Validator.isPlayerOnline(args[1])) {
-				// TODO message that invited player is not online
+				p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
 				return true;
 			}
 			if (MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
@@ -658,7 +656,7 @@ public class CommandHandler {
 				if (party.containsPlayer(args[1])) {
 					party.removePlayer(args[1]);
 				} else {
-					// TODO send message
+					p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_in_party.replaceAll("<player>", args[1]));
 				}
 			}
 		} else {
