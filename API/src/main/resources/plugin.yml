@@ -1,6 +1,6 @@
 name: MinigamesLib
 main: com.comze_instancelabs.minigamesapi.MinigamesAPI
-version: 1.5.0
+version: 1.6.0
 author: InstanceLabs
 softdepend: [Vault]
 commands:
