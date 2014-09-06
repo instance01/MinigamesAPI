@@ -83,7 +83,7 @@ public class ArcadeInstance {
 				Player p = Bukkit.getPlayer(playername);
 				if (p != null) {
 					Util.teleportPlayerFixed(p, arena.getMainLobbyTemp());
-					SpectatorManager.setSpectate(p, false);
+					MinigamesAPI.getAPI().pinstances.get(plugin).getSpectatorManager().setSpectate(p, false);
 					if (!p.isOp()) {
 						p.setFlying(false);
 						p.setAllowFlight(false);
@@ -213,10 +213,11 @@ public class ArcadeInstance {
 					if (a != null) {
 						in_a_game = true;
 						currentarena = a;
+						PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 						for (String p_ : temp) {
 							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
 							a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
-							SpectatorManager.setSpectate(Bukkit.getPlayer(p_), false);
+							pli.getSpectatorManager().setSpectate(Bukkit.getPlayer(p_), false);
 						}
 					} else {
 						nextMinigame(5L);

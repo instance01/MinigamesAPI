@@ -71,7 +71,7 @@ public class ArenaListener implements Listener {
 		this.pli = pinstance;
 		this.setName(minigame);
 		this.cmds = cmds;
-		this.leave_cmd = plugin.getConfig().getString("leave_command");
+		this.leave_cmd = plugin.getConfig().getString("config.leave_command");
 	}
 
 	@EventHandler
@@ -494,6 +494,10 @@ public class ArenaListener implements Listener {
 					pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
 					event.setCancelled(true);
 				}
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.spectator_item")) {
+				if (pli.global_lost.containsKey(p.getName())) {
+					pli.getSpectatorManager().openSpectatorGUI(p, pli.global_players.get(p.getName()));
+				}
 			}
 		}
 	}
@@ -550,7 +554,7 @@ public class ArenaListener implements Listener {
 						p.updateInventory();
 						p.setWalkSpeed(0.2F);
 						p.removePotionEffect(PotionEffectType.JUMP);
-						SpectatorManager.setSpectate(p, false);
+						pli.getSpectatorManager().setSpectate(p, false);
 					} catch (Exception e) {
 						e.printStackTrace();
 						Util.sendMessage(p, ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");
@@ -628,7 +632,7 @@ public class ArenaListener implements Listener {
 				}
 			}
 			if (!cont) {
-				Util.sendMessage(event.getPlayer(), pli.getMessagesConfig().you_can_leave_with);
+				Util.sendMessage(event.getPlayer(), pli.getMessagesConfig().you_can_leave_with.replaceAll("<cmd>", leave_cmd));
 				event.setCancelled(true);
 				return;
 			}

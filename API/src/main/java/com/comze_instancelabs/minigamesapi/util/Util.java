@@ -31,6 +31,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.bukkit.util.io.BukkitObjectInputStream;
@@ -515,6 +516,17 @@ public class Util {
 		p.updateInventory();
 	}
 
+	public static void giveSpectatorItems(JavaPlugin plugin, Player p) {
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		ItemStack s_item = new ItemStack(plugin.getConfig().getInt("config.spectator_item"));
+		ItemMeta s_imeta = s_item.getItemMeta();
+		s_imeta.setDisplayName(pli.getMessagesConfig().spectator_item);
+		s_item.setItemMeta(s_imeta);
+
+		p.getInventory().addItem(s_item);
+		p.updateInventory();
+	}
+
 	public static void sendMessage(Player p, String arenaname, String msgraw) {
 		String[] msgs = msgraw.replaceAll("<player>", p.getName()).replaceAll("<arena>", arenaname).split(";");
 		for (String msg : msgs) {
@@ -527,6 +539,14 @@ public class Util {
 		for (String msg : msgs) {
 			p.sendMessage(msgs);
 		}
+	}
+
+	public static ItemStack getCustomHead(String name) {
+		ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		SkullMeta skullmeta = (SkullMeta) item.getItemMeta();
+		skullmeta.setOwner(name);
+		item.setItemMeta(skullmeta);
+		return item;
 	}
 
 	public static class ValueComparator implements Comparator<String> {

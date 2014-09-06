@@ -39,6 +39,7 @@ public class PluginInstance {
 	private MainSQL sql = null;
 	private Stats stats = null;
 	private Classes classes = null;
+	private SpectatorManager spectatormanager = null;
 
 	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
 	public ArenaSetup arenaSetup = new ArenaSetup();
@@ -61,6 +62,7 @@ public class PluginInstance {
 		stats = new Stats(plugin);
 		sql = new MainSQL(plugin, true);
 		classes = new Classes(plugin);
+		spectatormanager = new SpectatorManager(plugin);
 		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
 		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
 		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator_move_y_lock");
@@ -152,6 +154,14 @@ public class PluginInstance {
 
 	public void setClassesHandler(Classes c) {
 		this.classes = c;
+	}
+
+	public SpectatorManager getSpectatorManager() {
+		return this.spectatormanager;
+	}
+
+	public void setSpectatorManager(SpectatorManager s) {
+		this.spectatormanager = s;
 	}
 
 	public int getIngameCountdown() {

@@ -81,6 +81,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.no_perm_to_join_arena", no_perm_to_join_arena);
 		this.getConfig().addDefault("messages.set_kit", set_kit);
 		this.getConfig().addDefault("messages.classes_item", classes_item);
+		this.getConfig().addDefault("messages.spectator_item", spectator_item);
 		this.getConfig().addDefault("messages.server_broadcast_winner", server_broadcast_winner);
 		this.getConfig().addDefault("messages.exit_item", exit_item);
 		this.getConfig().addDefault("messages.successfully_bought_kit", successfully_bought_kit);
@@ -121,6 +122,7 @@ public class MessagesConfig {
 		this.no_perm_to_join_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.no_perm_to_join_arena"));
 		this.set_kit = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.set_kit"));
 		this.classes_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.classes_item"));
+		this.spectator_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.spectator_item"));
 		this.server_broadcast_winner = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.server_broadcast_winner"));
 		this.exit_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.exit_item"));
 		this.successfully_bought_kit = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_bought_kit"));
@@ -164,11 +166,12 @@ public class MessagesConfig {
 	public String arcade_next_minigame = "&6Next Arcade game: &4<minigame>&6!";
 	public String arena_disabled = "&cThe arena is disabled thus you can't join.";
 	public String all_guns = "&aYour current main guns: &2<guns>";
-	public String you_can_leave_with = "&cYou can leave with /leave or /l!";
+	public String you_can_leave_with = "&cYou can leave with <cmd> or /l!";
 	public String arcade_joined_waiting = "&6You joined Arcade! Waiting for <count> more players to start.";
 	public String no_perm_to_join_arena = "&cYou don't have permission (arenas.<arena>) to join this arena as it's vip!";
 	public String set_kit = "&aSuccessfully set &2<kit>&a!";
 	public String classes_item = "&4Classes";
+	public String spectator_item = "&4Players";
 	public String server_broadcast_winner = "&2<player> &awon the game on &2<arena>&a!";
 	public String exit_item = "&4Leave the game";
 	public String successfully_bought_kit = "&aSuccessfully bought &2<kit> &afor &2<money>&a.";

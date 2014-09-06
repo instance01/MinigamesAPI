@@ -389,7 +389,7 @@ public class Arena {
 		p.setHealth(20D);
 		p.setFireTicks(0);
 		p.removePotionEffect(PotionEffectType.JUMP);
-		SpectatorManager.setSpectate(p, false);
+		pli.getSpectatorManager().setSpectate(p, false);
 
 		for (PotionEffect effect : p.getActivePotionEffects()) {
 			if (effect != null) {
@@ -458,11 +458,12 @@ public class Arena {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			this.onEliminated(playername);
 			Player p = Bukkit.getPlayer(playername);
-			SpectatorManager.setSpectate(p, true);
+			pli.getSpectatorManager().setSpectate(p, true);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
 				this.leavePlayer(playername, false, true);
 			}
 			Util.clearInv(p);
+			Util.giveSpectatorItems(plugin, p);
 			pli.global_lost.put(playername, this);
 			p.setAllowFlight(true);
 			p.setFlying(true);
@@ -494,7 +495,7 @@ public class Arena {
 		Util.teleportPlayerFixed(p, currentarena.getSpawns().get(0).clone().add(0D, 30D, 0D));
 		p.setAllowFlight(true);
 		p.setFlying(true);
-		SpectatorManager.setSpectate(p, true);
+		pli.getSpectatorManager().setSpectate(p, true);
 	}
 
 	int currentlobbycount = 10;
