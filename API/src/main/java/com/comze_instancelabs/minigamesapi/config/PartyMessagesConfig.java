@@ -36,6 +36,7 @@ public class PartyMessagesConfig {
 		this.getConfig().addDefault("messages.you_left_party", you_left_party);
 		this.getConfig().addDefault("messages.player_left_party", player_left_party);
 		this.getConfig().addDefault("messages.party_disbanded", party_disbanded);
+		this.getConfig().addDefault("messages.party_too_big_to_join", party_too_big_to_join);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -54,6 +55,7 @@ public class PartyMessagesConfig {
 		this.you_left_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_left_party"));
 		this.player_left_party = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_left_party"));
 		this.party_disbanded = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.party_disbanded"));
+		this.party_too_big_to_join = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.party_too_big_to_join"));
 
 	}
 
@@ -69,6 +71,7 @@ public class PartyMessagesConfig {
 	public String you_left_party = "&7You left the party of &8<player>&7.";
 	public String player_left_party = "&4<player> &cleft the party.";
 	public String party_disbanded = "&cThe party was disbanded.";
+	public String party_too_big_to_join = "&cYour party is too big to join this arena.";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

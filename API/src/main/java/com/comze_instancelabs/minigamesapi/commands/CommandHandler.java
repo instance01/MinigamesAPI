@@ -572,25 +572,29 @@ public class CommandHandler {
 					isInParty = true;
 				}
 			}
+			System.out.println(isInParty);
 			if (!isInParty) {
 				if (!Validator.isPlayerOnline(args[1])) {
 					p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
 					return true;
 				}
+				Party party = null;
 				if (!MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
-					Party party = new Party(p.getName());
+					party = new Party(p.getName());
 					MinigamesAPI.getAPI().global_party.put(p.getName(), party);
-					ArrayList<Party> parties = new ArrayList<Party>();
-					if (MinigamesAPI.getAPI().global_party_invites.containsKey(p.getName())) {
-						parties.addAll(MinigamesAPI.getAPI().global_party_invites.get(p.getName()));
-					}
-					if (!parties.contains(party)) {
-						parties.add(party);
-					}
-					MinigamesAPI.getAPI().global_party_invites.put(args[1], parties);
-					p.sendMessage(MinigamesAPI.getAPI().partymessages.you_invited.replaceAll("<player>", args[1]));
-					Bukkit.getPlayer(args[1]).sendMessage(MinigamesAPI.getAPI().partymessages.you_were_invited.replaceAll("<player>", p.getName()));
+				} else {
+					party = MinigamesAPI.getAPI().global_party.get(p.getName());
 				}
+				ArrayList<Party> parties = new ArrayList<Party>();
+				if (MinigamesAPI.getAPI().global_party_invites.containsKey(p.getName())) {
+					parties.addAll(MinigamesAPI.getAPI().global_party_invites.get(p.getName()));
+				}
+				if (!parties.contains(party)) {
+					parties.add(party);
+				}
+				MinigamesAPI.getAPI().global_party_invites.put(args[1], parties);
+				p.sendMessage(MinigamesAPI.getAPI().partymessages.you_invited.replaceAll("<player>", args[1]));
+				Bukkit.getPlayer(args[1]).sendMessage(MinigamesAPI.getAPI().partymessages.you_were_invited.replaceAll("<player>", p.getName()));
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <player>");
@@ -677,9 +681,9 @@ public class CommandHandler {
 				party_ = MinigamesAPI.getAPI().global_party.get(p.getName());
 			}
 			if (party_ != null) {
-				String ret = party_.getOwner();
+				String ret = ChatColor.DARK_GREEN + party_.getOwner();
 				for (String p_ : party_.getPlayers()) {
-					ret += ", " + p_;
+					ret += ChatColor.GREEN + ", " + p_;
 				}
 				p.sendMessage(ret);
 			}

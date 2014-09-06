@@ -244,6 +244,31 @@ public class Arena {
 			// arena full
 			return;
 		}
+
+		if (MinigamesAPI.getAPI().global_party.containsKey(playername)) {
+			Party party = MinigamesAPI.getAPI().global_party.get(playername);
+			int playersize = party.getPlayers().size() + 1;
+			if (this.getAllPlayers().size() + playersize > this.max_players) {
+				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().partymessages.party_too_big_to_join);
+				return;
+			} else {
+				for (String p_ : party.getPlayers()) {
+					if (Validator.isPlayerOnline(p_)) {
+						boolean cont = true;
+						for (PluginInstance pli_ : MinigamesAPI.getAPI().pinstances.values()) {
+							// if (!pli_.getPlugin().getName().equalsIgnoreCase("MGArcade") && pli_.global_players.containsKey(p_)) {
+							if (pli_.global_players.containsKey(p_)) {
+								cont = false;
+							}
+						}
+						if (cont) {
+							this.joinPlayerLobby(p_);
+						}
+					}
+				}
+			}
+		}
+
 		if (this.getAllPlayers().size() == this.max_players - 1) {
 			if (currentlobbycount > 16 && this.getArenaState() == ArenaState.STARTING) {
 				currentlobbycount = 16;
@@ -251,6 +276,7 @@ public class Arena {
 		}
 		pli.global_players.put(playername, this);
 		this.players.add(playername);
+
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
 			Util.sendMessage(p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));

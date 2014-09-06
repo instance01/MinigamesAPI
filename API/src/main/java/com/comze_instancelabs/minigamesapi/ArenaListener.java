@@ -609,6 +609,19 @@ public class ArenaListener implements Listener {
 
 			arena.leavePlayer(event.getPlayer().getName(), true, false);
 		}
+		if (MinigamesAPI.getAPI().global_party.containsKey(event.getPlayer().getName())) {
+			MinigamesAPI.getAPI().global_party.get(event.getPlayer().getName()).disband();
+		}
+		Party party_ = null;
+		for (Party party : MinigamesAPI.getAPI().global_party.values()) {
+			if (party.containsPlayer(event.getPlayer().getName())) {
+				party_ = party;
+				break;
+			}
+		}
+		if (party_ != null) {
+			party_.removePlayer(event.getPlayer().getName());
+		}
 	}
 
 	@EventHandler

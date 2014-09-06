@@ -30,8 +30,6 @@ public class Party {
 		tellAll(MinigamesAPI.getAPI().partymessages.player_joined_party.replaceAll("<player>", p));
 	}
 
-	// TODO remove player when he leaves server
-
 	public boolean removePlayer(String p) {
 		if (players.contains(p)) {
 			players.remove(p);
