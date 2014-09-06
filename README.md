@@ -24,6 +24,7 @@ Features
 - MySQL/SQLite support
 - Guns API
 - Bungee support
+- Party (/party)
 - More stuff
 
 
@@ -46,7 +47,7 @@ Maven
 <dependency>
   <groupId>com.comze_instancelabs</groupId>
   <artifactId>MinigamesLib</artifactId>
-  <version>1.4.0</version>
+  <version>1.6.0</version>
 </dependency>
 
 
