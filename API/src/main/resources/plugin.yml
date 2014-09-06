@@ -7,3 +7,6 @@ commands:
    mapi:
       description: Main command
       usage: /mapi [action]
+   party:
+      description: Main Party command
+      usage: /party [action]

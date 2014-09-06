@@ -335,20 +335,22 @@ public class Util {
 		return;
 	}
 
+	@SuppressWarnings("unused")
 	public static Sign getSignFromArena(JavaPlugin plugin, String arena) {
 		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (!pli.getArenasConfig().getConfig().isSet("arenas." + arena + ".sign.world")) {
 			return null;
 		}
 		Location b_ = new Location(Bukkit.getServer().getWorld(pli.getArenasConfig().getConfig().getString("arenas." + arena + ".sign.world")), pli.getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.x"), pli.getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.y"), pli.getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.z"));
-		// System.out.println(b_);
-		BlockState bs = b_.getBlock().getState();
-		Sign s_ = null;
-		if (bs instanceof Sign) {
-			s_ = (Sign) bs;
-		} else {
+		if (b_ != null) {
+			BlockState bs = b_.getBlock().getState();
+			Sign s_ = null;
+			if (bs instanceof Sign) {
+				s_ = (Sign) bs;
+			}
+			return s_;
 		}
-		return s_;
+		return null;
 	}
 
 	public static Location getSignLocationFromArena(JavaPlugin plugin, String arena) {

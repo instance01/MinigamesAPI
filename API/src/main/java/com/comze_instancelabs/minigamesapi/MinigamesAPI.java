@@ -8,10 +8,11 @@ import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffectType;
 
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -31,6 +32,9 @@ public class MinigamesAPI extends JavaPlugin {
 	public static Economy econ = null;
 	public static boolean economy = true;
 	public static boolean arcade = false;
+
+	public HashMap<String, Party> global_party = new HashMap<String, Party>();
+	public HashMap<String, ArrayList<Party>> global_party_invites = new HashMap<String, ArrayList<Party>>();
 
 	public static HashMap<JavaPlugin, PluginInstance> pinstances = new HashMap<JavaPlugin, PluginInstance>();
 
@@ -103,7 +107,7 @@ public class MinigamesAPI extends JavaPlugin {
 		Guns.loadGuns(plugin_);
 		return instance;
 	}
-	
+
 	public static void registerArenaListenerLater(JavaPlugin plugin_, ArenaListener arenalistener) {
 		Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
 	}
@@ -181,6 +185,35 @@ public class MinigamesAPI extends JavaPlugin {
 		}
 		econ = rsp.getProvider();
 		return econ != null;
+	}
+
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (cmd.getName().equalsIgnoreCase("party")) {
+			CommandHandler cmdhandler = this.getCommandHandler();
+			if (!(sender instanceof Player)) {
+				sender.sendMessage("Please execute this command ingame.");
+				return true;
+			}
+			Player p = (Player) sender;
+			if (args.length > 0) {
+				String action = args[0];
+				if (action.equalsIgnoreCase("invite")) {
+					cmdhandler.partyInvite(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+				} else if (action.equalsIgnoreCase("accept")) {
+					cmdhandler.partyAccept(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+				} else if (action.equalsIgnoreCase("kick")) {
+					cmdhandler.partyKick(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+				} else if (action.equalsIgnoreCase("list")) {
+					cmdhandler.partyList(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+				} else {
+					// TODO show help
+				}
+			} else {
+				// TODO show help
+			}
+
+		}
+		return true;
 	}
 
 }

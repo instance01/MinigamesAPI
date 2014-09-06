@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.Party;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
@@ -555,7 +557,149 @@ public class CommandHandler {
 				sender.sendMessage(ChatColor.GREEN + "" + Integer.toString((int) entry.getValue().doubleValue()) + ChatColor.DARK_GREEN + " - " + ChatColor.GREEN + "" + entry.getKey());
 			}
 		}
+	}
 
+	// Party commands
+	public boolean partyInvite(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (args.length > 1) {
+			if (p.getName().equalsIgnoreCase(args[1])) {
+				// TODO send msg
+				return true;
+			}
+			boolean isInParty = false;
+			for (Party party : MinigamesAPI.getAPI().global_party.values()) {
+				if (party.containsPlayer(p.getName())) {
+					isInParty = true;
+				}
+			}
+			if (!isInParty) {
+				if (!Validator.isPlayerOnline(args[1])) {
+					// TODO message that invited player is not online
+					return true;
+				}
+				if (!MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
+					Party party = new Party(p.getName());
+					MinigamesAPI.getAPI().global_party.put(p.getName(), party);
+					ArrayList<Party> parties = new ArrayList<Party>();
+					if (MinigamesAPI.getAPI().global_party_invites.containsKey(p.getName())) {
+						parties.addAll(MinigamesAPI.getAPI().global_party_invites.get(p.getName()));
+					}
+					if (!parties.contains(party)) {
+						parties.add(party);
+					}
+					MinigamesAPI.getAPI().global_party_invites.put(args[1], parties);
+					// TODO send other player (args[1]) message that he is invited
+					// TODO send p message that he invited other player
+					p.sendMessage("You invited " + args[1] + ".");
+					Bukkit.getPlayer(args[1]).sendMessage("You were invited to " + p.getName() + "s party. Accept: /party accept " + p.getName());
+				}
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <player>");
+		}
+		return true;
+	}
+
+	public boolean partyAccept(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (args.length > 1) {
+			if (!Validator.isPlayerOnline(args[1])) {
+				// TODO message that other player is not online
+				return true;
+			}
+			if (!MinigamesAPI.getAPI().global_party_invites.containsKey(p.getName())) {
+				// TODO message that he's not invited to a party
+				return true;
+			}
+
+			boolean isInParty = false;
+			Party party_ = null;
+			for (Party party : MinigamesAPI.getAPI().global_party.values()) {
+				if (party.containsPlayer(p.getName())) {
+					isInParty = true;
+					party_ = party;
+				}
+			}
+			if (isInParty) {
+				if (party_ != null) {
+					party_.removePlayer(p.getName());
+				}
+			}
+			if (MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
+				MinigamesAPI.getAPI().global_party.get(p.getName()).disband();
+			}
+
+			Party party__ = null;
+			for (Party party : MinigamesAPI.getAPI().global_party_invites.get(p.getName())) {
+				if (party.getOwner().equalsIgnoreCase(args[1])) {
+					party__ = party;
+					break;
+				}
+			}
+			if (party__ != null) {
+				party__.addPlayer(p.getName());
+				MinigamesAPI.getAPI().global_party_invites.remove(p.getName());
+			} else {
+				// TODO message him that he's not invited to the party of given owner (args[1])
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <player>");
+		}
+		return true;
+	}
+
+	public boolean partyKick(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (args.length > 1) {
+			if (!Validator.isPlayerOnline(args[1])) {
+				// TODO message that invited player is not online
+				return true;
+			}
+			if (MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
+				Party party = MinigamesAPI.getAPI().global_party.get(p.getName());
+				if (party.containsPlayer(args[1])) {
+					party.removePlayer(args[1]);
+				} else {
+					// TODO send message
+				}
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <player>");
+		}
+		return true;
+	}
+
+	public boolean partyList(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (args.length > 0) {
+			Party party_ = null;
+			for (Party party : MinigamesAPI.getAPI().global_party.values()) {
+				if (party.containsPlayer(p.getName())) {
+					party_ = party;
+				}
+			}
+			if (MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
+				party_ = MinigamesAPI.getAPI().global_party.get(p.getName());
+			}
+			if (party_ != null) {
+				String ret = party_.getOwner();
+				for (String p_ : party_.getPlayers()) {
+					ret += ", " + p_;
+				}
+				p.sendMessage(ret);
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action);
+		}
+		return true;
+	}
+
+	public boolean partyDisband(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (args.length > 0) {
+			if (MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
+				MinigamesAPI.getAPI().global_party.get(p.getName()).disband();
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action);
+		}
+		return true;
 	}
 
 }
