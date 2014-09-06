@@ -208,11 +208,13 @@ public class MinigamesAPI extends JavaPlugin {
 					cmdhandler.partyList(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
 				} else if (action.equalsIgnoreCase("disband")) {
 					cmdhandler.partyDisband(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+				} else if (action.equalsIgnoreCase("leave")) {
+					cmdhandler.partyLeave(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
 				} else {
-					// TODO show help
+					cmdhandler.sendPartyHelp("/" + cmd.getName(), sender);
 				}
 			} else {
-				// TODO show help
+				cmdhandler.sendPartyHelp("/" + cmd.getName(), sender);
 			}
 
 		}

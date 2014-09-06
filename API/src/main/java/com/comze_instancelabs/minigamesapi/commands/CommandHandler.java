@@ -1,7 +1,6 @@
 package com.comze_instancelabs.minigamesapi.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -151,6 +150,30 @@ public class CommandHandler {
 				continue;
 			}
 			String v = cmddesc.get(k);
+			sender.sendMessage(ChatColor.DARK_AQUA + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
+		}
+	}
+
+	public static LinkedHashMap<String, String> cmdpartydesc;
+	static {
+		cmdpartydesc = new LinkedHashMap<String, String>();
+		cmdpartydesc.put("", "");
+		cmdpartydesc.put("invite <player>", "Invites a player to your party and creates one if you don't have one yet.");
+		cmdpartydesc.put("accept <player>", "Accepts an invitation to a party");
+		cmdpartydesc.put("disband", "Disbands the party");
+		cmdpartydesc.put("kick <player>", "Kicks a player from your party.");
+		cmdpartydesc.put("leave", "Leaves a party you're in.");
+		cmdpartydesc.put("list", "Lists all players and the owner of the party.");
+	}
+
+	public static void sendPartyHelp(String cmd, CommandSender sender) {
+		sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Help" + ChatColor.DARK_GRAY + " -------");
+		for (String k : cmdpartydesc.keySet()) {
+			if (k.length() < 3) {
+				sender.sendMessage("");
+				continue;
+			}
+			String v = cmdpartydesc.get(k);
 			sender.sendMessage(ChatColor.DARK_AQUA + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
 		}
 	}
@@ -572,7 +595,6 @@ public class CommandHandler {
 					isInParty = true;
 				}
 			}
-			System.out.println(isInParty);
 			if (!isInParty) {
 				if (!Validator.isPlayerOnline(args[1])) {
 					p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
@@ -697,6 +719,27 @@ public class CommandHandler {
 		if (args.length > 0) {
 			if (MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
 				MinigamesAPI.getAPI().global_party.get(p.getName()).disband();
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action);
+		}
+		return true;
+	}
+
+	public boolean partyLeave(CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (args.length > 0) {
+			if (MinigamesAPI.getAPI().global_party.containsKey(p.getName())) {
+				MinigamesAPI.getAPI().global_party.get(p.getName()).disband();
+				return true;
+			}
+			Party party_ = null;
+			for (Party party : MinigamesAPI.getAPI().global_party.values()) {
+				if (party.containsPlayer(p.getName())) {
+					party_ = party;
+				}
+			}
+			if (party_ != null) {
+				party_.removePlayer(p.getName());
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action);
