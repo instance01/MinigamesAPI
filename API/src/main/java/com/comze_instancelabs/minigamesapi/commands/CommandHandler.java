@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.Party;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
@@ -329,7 +330,17 @@ public class CommandHandler {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}
 		} else {
-			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
+			Arena a_ = null;
+			for (Arena a : pli.getArenas()) {
+				if (a.getArenaState() != ArenaState.INGAME) {
+					a_ = a;
+				}
+			}
+			if (a_ != null) {
+				a_.joinPlayerLobby(p.getName());
+			} else {
+				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
+			}
 		}
 		return true;
 	}
