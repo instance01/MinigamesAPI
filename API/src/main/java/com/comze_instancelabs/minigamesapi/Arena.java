@@ -238,7 +238,7 @@ public class Arena {
 		}
 		if (ai == null && this.isVIPArena()) {
 			if (Validator.isPlayerOnline(playername)) {
-				if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getName())) {
+				if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {
 					Util.sendMessage(Bukkit.getPlayer(playername), pli.getMessagesConfig().no_perm_to_join_arena.replaceAll("<arena>", this.getName()));
 					return;
 				}
@@ -246,7 +246,30 @@ public class Arena {
 		}
 		if (ai == null && this.getAllPlayers().size() > this.max_players - 1) {
 			// arena full
-			return;
+
+			// if player vip -> kick someone and continue
+			System.out.println(playername + " is vip: " + Bukkit.getPlayer(playername).hasPermission("arenas.*"));
+			if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {
+				return;
+			} else {
+				// player has vip
+				boolean noone_found = true;
+				ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
+				for (String p_ : temp) {
+					if (Validator.isPlayerOnline(p_)) {
+						if (!Bukkit.getPlayer(p_).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(p_).hasPermission("arenas.*")) {
+							this.leavePlayer(p_, false, true);
+							// TODO send player message that he got kicked because a vip joined
+							noone_found = false;
+						}
+					}
+				}
+				if (noone_found) {
+					// apparently everyone is vip, can't join
+					return;
+				}
+			}
+
 		}
 
 		if (MinigamesAPI.getAPI().global_party.containsKey(playername)) {
@@ -282,6 +305,7 @@ public class Arena {
 		this.players.add(playername);
 
 		if (Validator.isPlayerValid(plugin, playername, this)) {
+			System.out.println(playername + " #1"); // TODO remove
 			final Player p = Bukkit.getPlayer(playername);
 			Util.sendMessage(p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
 			for (String p_ : this.getAllPlayers()) {
