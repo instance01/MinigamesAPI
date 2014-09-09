@@ -259,7 +259,7 @@ public class Arena {
 					if (Validator.isPlayerOnline(p_)) {
 						if (!Bukkit.getPlayer(p_).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(p_).hasPermission("arenas.*")) {
 							this.leavePlayer(p_, false, true);
-							// TODO send player message that he got kicked because a vip joined
+							Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().you_got_kicked_because_vip_joined);
 							noone_found = false;
 						}
 					}
