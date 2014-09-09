@@ -11,6 +11,9 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.ItemStack;
 
+import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaState;
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.util.ArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.comze_instancelabs.minigamesapi.sql.Database;
+
 public class MySQL extends Database {
 	String user = "";
 	String database = "";

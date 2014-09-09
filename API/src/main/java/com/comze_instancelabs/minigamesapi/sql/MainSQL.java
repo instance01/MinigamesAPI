@@ -2,6 +2,9 @@ package com.comze_instancelabs.minigamesapi.sql;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.sql.MySQL;
+import com.comze_instancelabs.minigamesapi.sql.SQLite;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

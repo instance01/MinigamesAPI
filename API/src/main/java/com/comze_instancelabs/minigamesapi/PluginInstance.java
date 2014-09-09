@@ -6,6 +6,12 @@ import java.util.LinkedHashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaListener;
+import com.comze_instancelabs.minigamesapi.ArenaSetup;
+import com.comze_instancelabs.minigamesapi.Classes;
+import com.comze_instancelabs.minigamesapi.Rewards;
+import com.comze_instancelabs.minigamesapi.Stats;
 import com.comze_instancelabs.minigamesapi.config.AchievementsConfig;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
