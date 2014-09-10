@@ -66,16 +66,13 @@ public class SmartArenaBlock implements Serializable {
 			int pos = 0;
 			for (ItemStack i : ((Chest) b.getState()).getInventory().getContents()) {
 				if (i != null) {
-					System.out.println(i);
 					item_mats.add(i.getType());
 					item_data.add(i.getData().getData());
 					item_amounts.add(i.getAmount());
 					item_displaynames.add(i.getItemMeta().getDisplayName());
 					item_durability.add(i.getDurability());
 					if (i.getType() == Material.POTION) {
-						System.out.println(i.getData() + " " + i.getDurability());
 						Potion potion = Potion.fromDamage(i.getDurability() & 0x3F);
-						System.out.println("### " + potion.isSplash());
 						item_splash.add(potion.isSplash());
 					} else if (i.getType() == Material.ENCHANTED_BOOK) {
 						EnchantmentStorageMeta meta = (EnchantmentStorageMeta) i.getItemMeta();
@@ -158,7 +155,6 @@ public class SmartArenaBlock implements Serializable {
 			item.setItemMeta(im);
 			if (item.getType() == Material.POTION) {
 				Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
-				System.out.println("### " + item_splash.get(i));
 				potion.setSplash(item_splash.get(i));
 				// item = potion.toItemStack(item_amounts.get(i));
 			} else if (item.getType() == Material.ENCHANTED_BOOK) {
@@ -172,7 +168,6 @@ public class SmartArenaBlock implements Serializable {
 				neww.setItemMeta(meta);
 				item = neww;
 			}
-			System.out.println(item);
 			ret.add(item);
 		}
 		return ret;
