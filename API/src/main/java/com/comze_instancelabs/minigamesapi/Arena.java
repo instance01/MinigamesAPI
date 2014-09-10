@@ -603,6 +603,12 @@ public class Arena {
 						}
 					}
 				}
+				for (String p_ : a.getAllPlayers()) {
+					if (Validator.isPlayerOnline(p_)) {
+						Player p = Bukkit.getPlayer(p_);
+						p.setExp(1F * ((1F * currentlobbycount) / (1F * pli.lobby_countdown)));
+					}
+				}
 				if (currentlobbycount < 1) {
 					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 						public void run() {
@@ -648,6 +654,12 @@ public class Arena {
 							Player p = Bukkit.getPlayer(p_);
 							Util.sendMessage(p, pli.getMessagesConfig().starting_in.replaceAll("<count>", Integer.toString(currentingamecount)));
 						}
+					}
+				}
+				for (String p_ : a.getAllPlayers()) {
+					if (Validator.isPlayerOnline(p_)) {
+						Player p = Bukkit.getPlayer(p_);
+						p.setExp(1F * ((1F * currentingamecount) / (1F * pli.ingame_countdown)));
 					}
 				}
 				if (currentingamecount < 1) {
