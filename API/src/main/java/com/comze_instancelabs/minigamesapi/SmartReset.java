@@ -78,7 +78,14 @@ public class SmartReset {
 						failedblocks.add(ablock);
 					}
 				}
+
 				changed.clear();
+				a.setArenaState(ArenaState.JOIN);
+				Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
+					public void run() {
+						Util.updateSign(a.plugin, a);
+					}
+				});
 
 				System.out.println(failcount + " to redo.");
 
@@ -100,16 +107,9 @@ public class SmartReset {
 						}
 					}
 				}, 40L);
+				System.out.println("Done.");
 			}
 		});
-
-		a.setArenaState(ArenaState.JOIN);
-		Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
-			public void run() {
-				Util.updateSign(a.plugin, a);
-			}
-		});
-		System.out.println("Done.");
 
 	}
 }

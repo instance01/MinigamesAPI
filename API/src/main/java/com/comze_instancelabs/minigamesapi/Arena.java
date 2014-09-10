@@ -269,7 +269,6 @@ public class Arena {
 					return;
 				}
 			}
-
 		}
 
 		if (MinigamesAPI.getAPI().global_party.containsKey(playername)) {
@@ -328,6 +327,7 @@ public class Arena {
 					Util.clearInv(p);
 					pgamemode.put(p.getName(), p.getGameMode());
 					p.setGameMode(GameMode.SURVIVAL);
+					p.setHealth(20D);
 					return;
 				} else {
 					if (startedIngameCountdown) {
@@ -355,6 +355,7 @@ public class Arena {
 						Util.giveLobbyItems(plugin, p);
 						pgamemode.put(p.getName(), p.getGameMode());
 						p.setGameMode(GameMode.SURVIVAL);
+						p.setHealth(20D);
 					}
 				}, 10L);
 				if (!skip_join_lobby) {
