@@ -11,17 +11,15 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.ItemStack;
 
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.ArenaState;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.util.ArenaBlock;
+import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class SmartReset {
 
 	// will only reset broken/placed blocks
 
-	HashMap<Location, ArenaBlock> changed = new HashMap<Location, ArenaBlock>();
+	HashMap<Location, SmartArenaBlock> changed = new HashMap<Location, SmartArenaBlock>();
 	Arena a;
 
 	public SmartReset(Arena a) {
@@ -30,25 +28,25 @@ public class SmartReset {
 
 	public void addChanged(Block b, boolean c) {
 		if (!changed.containsKey(b.getLocation())) {
-			changed.put(b.getLocation(), new ArenaBlock(b, c));
+			changed.put(b.getLocation(), new SmartArenaBlock(b, c));
 		}
 	}
 
 	public void addChanged(Location l) {
 		if (!changed.containsKey(l)) {
-			changed.put(l, new ArenaBlock(l));
+			changed.put(l, new SmartArenaBlock(l));
 		}
 	}
 
 	public void reset() {
 		System.out.println(changed.size() + " to reset.");
 
-		final ArrayList<ArenaBlock> failedblocks = new ArrayList<ArenaBlock>();
+		final ArrayList<SmartArenaBlock> failedblocks = new ArrayList<SmartArenaBlock>();
 
 		Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
 			public void run() {
 				int failcount = 0;
-				for (final ArenaBlock ablock : changed.values()) {
+				for (final SmartArenaBlock ablock : changed.values()) {
 					try {
 						final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
 						if (b_.getType() == Material.FURNACE) {
@@ -68,7 +66,7 @@ public class SmartReset {
 							((Chest) b_.getState()).update();
 							for (ItemStack i : ablock.getNewInventory()) {
 								if (i != null) {
-									((Chest) b_.getState()).getBlockInventory().addItem(new ItemStack(i.getType(), i.getAmount(), i.getData().getData()));
+									((Chest) b_.getState()).getBlockInventory().addItem(i);
 								}
 							}
 							((Chest) b_.getState()).update();
@@ -92,7 +90,7 @@ public class SmartReset {
 				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), new Runnable() {
 					public void run() {
 						changed.clear();
-						for (ArenaBlock ablock : failedblocks) {
+						for (SmartArenaBlock ablock : failedblocks) {
 							Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
 							if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
 								b_.setType(ablock.getMaterial());
