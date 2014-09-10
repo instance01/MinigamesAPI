@@ -42,7 +42,6 @@ public class ArcadeInstance {
 			if (!started) {
 				startArcade();
 			} else {
-				// TODO test
 				if (currentindex < minigames.size()) {
 					if (in_a_game) {
 						if (currentarena != null) {

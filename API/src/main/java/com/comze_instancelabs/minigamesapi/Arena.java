@@ -304,7 +304,6 @@ public class Arena {
 		this.players.add(playername);
 
 		if (Validator.isPlayerValid(plugin, playername, this)) {
-			System.out.println(playername + " #1"); // TODO remove
 			final Player p = Bukkit.getPlayer(playername);
 			Util.sendMessage(p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
 			for (String p_ : this.getAllPlayers()) {

@@ -61,7 +61,6 @@ public class Util {
 	}
 
 	public static void teleportPlayerFixed(final Player p, Location l) {
-		// TODO might need Runnable fix?
 		if (p.isInsideVehicle()) {
 			Entity ent = p.getVehicle();
 			p.leaveVehicle();
@@ -70,10 +69,6 @@ public class Util {
 		p.teleport(l, TeleportCause.PLUGIN);
 		p.setFallDistance(-1F);
 		p.setVelocity(new Vector(0D, 0D, 0D));
-		/*
-		 * for (Player p_ : Bukkit.getOnlinePlayers()){ p_.getLocation().getChunk().load(true); p.getWorld().loadChunk(l.getChunk().getX(),
-		 * l.getChunk().getZ()); p.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ()); p_.showPlayer(p); p.showPlayer(p_); }
-		 */
 		l.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
 	}
 

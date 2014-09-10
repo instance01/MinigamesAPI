@@ -14,7 +14,7 @@ public class GunsConfig {
 	private File arenaFile = null;
 	private JavaPlugin plugin = null;
 	
-	//TODO add bullet option
+	// TODO add bullet option
 	
 	public GunsConfig(JavaPlugin plugin, boolean custom) {
 		this.plugin = plugin;
