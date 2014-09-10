@@ -84,7 +84,7 @@ public class Rewards {
 	public void giveWinReward(String p_, Arena a) {
 		if (Validator.isPlayerOnline(p_)) {
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
-			Player p = Bukkit.getPlayer(p_);
+			final Player p = Bukkit.getPlayer(p_);
 			if (!pli.global_lost.containsKey(p_)) {
 				if (economyrewards && MinigamesAPI.economy) {
 					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward);
@@ -100,6 +100,14 @@ public class Rewards {
 				pli.getStatsInstance().win(p_, 10);
 
 				Util.sendMessage(p, pli.getMessagesConfig().you_won);
+
+				if (plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners")) {
+					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+						public void run() {
+							Util.spawnFirework(p);
+						}
+					}, 20L);
+				}
 
 				try {
 					if (plugin.getConfig().getBoolean("config.broadcast_win")) {
