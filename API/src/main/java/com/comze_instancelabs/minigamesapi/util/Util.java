@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.World;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,9 +26,11 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -36,6 +39,8 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -547,6 +552,22 @@ public class Util {
 		skullmeta.setOwner(name);
 		item.setItemMeta(skullmeta);
 		return item;
+	}
+
+	public static void spawnPowerup(JavaPlugin plugin, Arena a, Location l, ItemStack item) {
+		World w = l.getWorld();
+		Chicken c = w.spawn(l, Chicken.class);
+		c.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 100000));
+		Item i = w.dropItem(l, item);
+		c.setPassenger(i);
+		if (plugin.getConfig().getBoolean("config.broadcast_powerup_spawning")) {
+			for (String p_ : a.getAllPlayers()) {
+				if (Validator.isPlayerOnline(p_)) {
+					Player p = Bukkit.getPlayer(p_);
+					p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().powerup_spawned);
+				}
+			}
+		}
 	}
 
 	static Random r = new Random();
