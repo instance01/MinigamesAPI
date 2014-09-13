@@ -25,13 +25,6 @@
 	</repositories>
 
 	<build>
-	<extensions>
-         <extension>
-           <groupId>org.apache.maven.wagon</groupId>
-           <artifactId>wagon-ftp</artifactId>
-           <version>2.6</version>
-         </extension>
-    </extensions>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
@@ -46,12 +39,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-<distributionManagement>
-    <repository>
-      <id>instancedev</id>
-      <url>ftp://93.188.160.22/bukkitdev/MinigamesAPI/maven</url>
-    </repository>
-</distributionManagement>
 
 </project>

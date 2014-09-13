@@ -50,13 +50,6 @@
 </properties>
 
 	<build>
-	<extensions>
-	     <extension>
-	       <groupId>org.apache.maven.wagon</groupId>
-	       <artifactId>wagon-ftp</artifactId>
-	       <version>2.6</version>
-	     </extension>
-    </extensions>
 		<plugins>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -93,24 +86,6 @@
 					</execution>
 				</executions>
 			</plugin>
-            <!--  <plugin>
-                <version>2.8.1</version>
-                <configuration>
-                    <links>
-                        <link>http://jd.bukkit.org/apidocs/</link>
-                    </links>
-                </configuration>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -163,11 +138,5 @@
             </plugin>
 		</plugins>
 	</build>
-	
-	<distributionManagement>
-    <repository>
-      <id>instancedev</id>
-      <url>ftp://93.188.160.22/bukkitdev/MinigamesAPI/maven</url>
-    </repository>
-</distributionManagement>
+
 </project>
