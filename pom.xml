@@ -50,7 +50,7 @@
 <distributionManagement>
     <repository>
       <id>instancedev</id>
-      <url>ftp://eu5.org/bukkitdev/MinigamesAPI/maven</url>
+      <url>ftp://93.188.160.22/bukkitdev/MinigamesAPI/maven</url>
     </repository>
 </distributionManagement>
 

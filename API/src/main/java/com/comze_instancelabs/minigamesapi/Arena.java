@@ -68,6 +68,7 @@ public class Arena {
 	boolean started = false;
 	boolean startedIngameCountdown = false;
 	private boolean showArenascoreboard = true;
+	private boolean alwaysPvP = false;
 
 	SmartReset sr = null;
 
@@ -144,6 +145,14 @@ public class Arena {
 
 	public boolean getShowScoreboard() {
 		return this.showArenascoreboard;
+	}
+
+	public boolean getAlwaysPvP() {
+		return this.alwaysPvP;
+	}
+
+	public void setAlwaysPvP(boolean t) {
+		this.alwaysPvP = t;
 	}
 
 	public Location getSignLocation() {
