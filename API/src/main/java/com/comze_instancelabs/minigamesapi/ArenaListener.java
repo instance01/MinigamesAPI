@@ -146,6 +146,17 @@ public class ArenaListener implements Listener {
 							}, 1);
 							return;
 						}
+
+						if (a.getBoundaries() != null) {
+							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
+								Vector direction = a.getSpawns().get(0).clone().add(0D, 30D, 0D).toVector().subtract(p.getLocation().toVector()).normalize();
+								p.setVelocity(direction);
+								if (p.isInsideVehicle()) {
+									p.getVehicle().setVelocity(direction.multiply(2D));
+								}
+								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+							}
+						}
 					}
 				}
 
