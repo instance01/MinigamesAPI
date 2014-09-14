@@ -77,6 +77,7 @@ public class Rewards {
 			}
 
 			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().addPoints(p_, reward);
+			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().addKill(p_);
 			MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateWinnerStats(p_, reward, false);
 		}
 	}

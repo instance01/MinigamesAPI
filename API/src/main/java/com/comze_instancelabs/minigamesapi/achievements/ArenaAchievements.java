@@ -12,9 +12,9 @@ public class ArenaAchievements {
 	JavaPlugin plugin;
 	PluginInstance pli;
 
-	public ArenaAchievements(JavaPlugin plugin) {
+	public ArenaAchievements(PluginInstance pli, JavaPlugin plugin) {
 		this.plugin = plugin;
-		pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		this.pli = pli;
 	}
 
 	public ArrayList<AAchievement> loadPlayerAchievements(String playername, boolean sql) {
@@ -22,10 +22,9 @@ public class ArenaAchievements {
 		if (sql) {
 			// TODO MySQL Support
 		} else {
-			// for each achievement in achievement-config
-			// check if player has it done, init new AAchievement and add it
 			for (String achievement : pli.getAchievementsConfig().getConfig().getConfigurationSection("config.achievements").getKeys(false)) {
-				// AAchievement ac = new AAchievement();
+				AAchievement ac = new AAchievement(achievement, playername, pli.getAchievementsConfig().getConfig().isSet("players." + playername + "." + achievement + ".done") ? pli.getAchievementsConfig().getConfig().getBoolean("players." + playername + "." + achievement + ".done") : false);
+				ret.add(ac);
 			}
 		}
 		return ret;
@@ -35,8 +34,9 @@ public class ArenaAchievements {
 		if (sql) {
 			// TODO
 		} else {
-			// save into achievement-config
-			// message player
+			pli.getAchievementsConfig().getConfig().set("players." + playername + "." + achievement + ".done", true);
+			pli.getAchievementsConfig().saveConfig();
+			// TODO message player
 		}
 	}
 

@@ -12,6 +12,7 @@ import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.Classes;
 import com.comze_instancelabs.minigamesapi.Rewards;
 import com.comze_instancelabs.minigamesapi.Stats;
+import com.comze_instancelabs.minigamesapi.achievements.ArenaAchievements;
 import com.comze_instancelabs.minigamesapi.config.AchievementsConfig;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
@@ -46,6 +47,7 @@ public class PluginInstance {
 	private Stats stats = null;
 	private Classes classes = null;
 	private SpectatorManager spectatormanager = null;
+	private ArenaAchievements achievements = null;
 
 	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
 	public ArenaSetup arenaSetup = new ArenaSetup();
@@ -69,6 +71,7 @@ public class PluginInstance {
 		sql = new MainSQL(plugin, true);
 		classes = new Classes(plugin);
 		spectatormanager = new SpectatorManager(plugin);
+		achievements = new ArenaAchievements(this, plugin);
 		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
 		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
 		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator_move_y_lock");
@@ -168,6 +171,10 @@ public class PluginInstance {
 
 	public void setSpectatorManager(SpectatorManager s) {
 		this.spectatormanager = s;
+	}
+
+	public ArenaAchievements getArenaAchievements() {
+		return this.achievements;
 	}
 
 	public int getIngameCountdown() {
