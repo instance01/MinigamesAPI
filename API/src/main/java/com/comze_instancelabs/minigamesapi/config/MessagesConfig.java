@@ -88,6 +88,11 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.scoreboard.title", scoreboard_title);
 		this.getConfig().addDefault("messages.you_got_kicked_because_vip_joined", you_got_kicked_because_vip_joined);
 		this.getConfig().addDefault("messages.powerup_spawned", powerup_spawned);
+		this.getConfig().addDefault("messages.custom_scoreboard.line0", "Players:<playercount>");
+		this.getConfig().addDefault("messages.custom_scoreboard.line1", "Spectators:<lostplayercount>");
+		this.getConfig().addDefault("messages.custom_scoreboard.line2", "Alive:<playeralivecount>");
+		this.getConfig().addDefault("messages.custom_scoreboard.line3", "Your Credits:<points>");
+		this.getConfig().addDefault("messages.custom_scoreboard.line4", "Your Wins:<wins>");
 
 		// save
 		this.getConfig().options().copyDefaults(true);

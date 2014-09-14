@@ -55,6 +55,7 @@ public class DefaultConfig {
 			config.addDefault("config.leave_command", "/leave");
 			config.addDefault("config.spawn_fireworks_for_winners", true);
 			config.addDefault("config.broadcast_powerup_spawning", false);
+			config.addDefault("config.use_custom_scoreboard", false);
 
 			config.addDefault("mysql.enabled", false);
 			config.addDefault("mysql.host", "127.0.0.1");
