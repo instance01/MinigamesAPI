@@ -150,20 +150,26 @@ public class ArcadeInstance {
 		temp.addAll(hs);
 		final ArcadeInstance ai = this;
 		if (stopOfGame && plugin.getConfig().getBoolean("config.arcade.infinite_mode.enabled")) {
-			for (String p_ : temp) {
-				Util.sendMessage(Bukkit.getPlayer(p_), MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
-			}
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				public void run() {
-					for (String p_ : temp) {
-						if (!players.contains(p_)) {
-							players.add(p_);
-						}
-					}
-					ai.startArcade();
+			if (temp.size() > 1) {
+				for (String p_ : temp) {
+					Util.sendMessage(Bukkit.getPlayer(p_), MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
 				}
-			}, Math.max(40L, 20L * plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round")));
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						for (String p_ : temp) {
+							if (!players.contains(p_)) {
+								players.add(p_);
+							}
+						}
+						ai.startArcade();
+					}
+				}, Math.max(40L, 20L * plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round")));
+			}
 		}
+	}
+
+	public void stopArcade() {
+		this.stopArcade(false);
 	}
 
 	public void stopCurrentMinigame() {

@@ -64,14 +64,12 @@ public class ArenaListener implements Listener {
 		this.plugin = plugin;
 		this.pli = pinstance;
 		this.setName(minigame);
+		this.leave_cmd = plugin.getConfig().getString("config.leave_command");
 	}
 
 	public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame, ArrayList<String> cmds) {
-		this.plugin = plugin;
-		this.pli = pinstance;
-		this.setName(minigame);
+		this(plugin, pinstance, minigame);
 		this.cmds = cmds;
-		this.leave_cmd = plugin.getConfig().getString("config.leave_command");
 	}
 
 	@EventHandler
