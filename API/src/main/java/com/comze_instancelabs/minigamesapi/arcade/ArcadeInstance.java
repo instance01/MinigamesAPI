@@ -2,6 +2,7 @@ package com.comze_instancelabs.minigamesapi.arcade;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -91,7 +92,7 @@ public class ArcadeInstance {
 		}, 20L);
 		clean();
 		if (players.size() < 2) {
-			stopArcade();
+			stopArcade(false);
 		}
 	}
 
@@ -132,7 +133,7 @@ public class ArcadeInstance {
 		}, 5L, 20).getTaskId();
 	}
 
-	public void stopArcade() {
+	public void stopArcade(boolean stopOfGame) {
 		final ArrayList<String> temp = new ArrayList<String>(players);
 		for (String p_ : temp) {
 			this.leaveArcade(p_);
@@ -143,19 +144,25 @@ public class ArcadeInstance {
 		currentarena = null;
 		this.currentindex = 0;
 
+		HashSet hs = new HashSet();
+		hs.addAll(temp);
+		temp.clear();
+		temp.addAll(hs);
 		final ArcadeInstance ai = this;
-		if (plugin.getConfig().getBoolean("config.arcade.infinite_mode.enabled")) {
+		if (stopOfGame && plugin.getConfig().getBoolean("config.arcade.infinite_mode.enabled")) {
 			for (String p_ : temp) {
 				Util.sendMessage(Bukkit.getPlayer(p_), MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
 			}
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 				public void run() {
 					for (String p_ : temp) {
-						players.add(p_);
+						if (!players.contains(p_)) {
+							players.add(p_);
+						}
 					}
 					ai.startArcade();
 				}
-			}, Math.max(20L, 20L * plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round")));
+			}, Math.max(40L, 20L * plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round")));
 		}
 	}
 
