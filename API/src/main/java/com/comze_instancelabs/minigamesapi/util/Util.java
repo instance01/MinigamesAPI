@@ -512,7 +512,7 @@ public class Util {
 		classes_item.setItemMeta(cimeta);
 
 		ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.exit_item"));
-		ItemMeta exitimeta = classes_item.getItemMeta();
+		ItemMeta exitimeta = exit_item.getItemMeta();
 		exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
 		exit_item.setItemMeta(exitimeta);
 
@@ -527,8 +527,14 @@ public class Util {
 		ItemMeta s_imeta = s_item.getItemMeta();
 		s_imeta.setDisplayName(pli.getMessagesConfig().spectator_item);
 		s_item.setItemMeta(s_imeta);
+		
+		ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.exit_item"));
+		ItemMeta exitimeta = exit_item.getItemMeta();
+		exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
+		exit_item.setItemMeta(exitimeta);
 
 		p.getInventory().addItem(s_item);
+		p.getInventory().setItem(8, exit_item);
 		p.updateInventory();
 	}
 

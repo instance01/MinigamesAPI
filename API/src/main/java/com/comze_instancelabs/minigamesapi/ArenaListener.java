@@ -512,10 +512,16 @@ public class ArenaListener implements Listener {
 				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
 					pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
 					event.setCancelled(true);
+				} else {
+					if (pli.global_lost.containsKey(p.getName())) {
+						pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
+						event.setCancelled(true);
+					}
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.spectator_item")) {
 				if (pli.global_lost.containsKey(p.getName())) {
 					pli.getSpectatorManager().openSpectatorGUI(p, pli.global_players.get(p.getName()));
+					event.setCancelled(true);
 				}
 			}
 		}
