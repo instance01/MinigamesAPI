@@ -133,7 +133,7 @@ public class ArcadeInstance {
 	}
 
 	public void stopArcade() {
-		ArrayList<String> temp = new ArrayList<String>(players);
+		final ArrayList<String> temp = new ArrayList<String>(players);
 		for (String p_ : temp) {
 			this.leaveArcade(p_);
 		}
@@ -142,6 +142,21 @@ public class ArcadeInstance {
 		in_a_game = false;
 		currentarena = null;
 		this.currentindex = 0;
+
+		final ArcadeInstance ai = this;
+		if (plugin.getConfig().getBoolean("config.arcade.infinite_mode.enabled")) {
+			for (String p_ : temp) {
+				Util.sendMessage(Bukkit.getPlayer(p_), MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
+			}
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					for (String p_ : temp) {
+						players.add(p_);
+					}
+					ai.startArcade();
+				}
+			}, Math.max(20L, 20L * plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round")));
+		}
 	}
 
 	public void stopCurrentMinigame() {

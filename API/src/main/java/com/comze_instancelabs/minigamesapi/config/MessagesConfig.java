@@ -76,6 +76,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.guns.all_guns", all_guns);
 		this.getConfig().addDefault("messages.arcade_next_minigame", arcade_next_minigame);
 		this.getConfig().addDefault("messages.arcade_joined_waiting", arcade_joined_waiting);
+		this.getConfig().addDefault("messages.arcade_new_round", arcade_new_round);
 		this.getConfig().addDefault("messages.arena_disabled", arena_disabled);
 		this.getConfig().addDefault("messages.you_can_leave_with", you_can_leave_with);
 		this.getConfig().addDefault("messages.no_perm_to_join_arena", no_perm_to_join_arena);
@@ -123,6 +124,7 @@ public class MessagesConfig {
 		this.you_got_a_kill = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_kill"));
 		this.arena_not_initialized = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_not_initialized"));
 		this.arcade_next_minigame = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_next_minigame"));
+		this.arcade_new_round = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_new_round"));
 		this.arena_disabled = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_disabled"));
 		this.you_can_leave_with = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_can_leave_with"));
 		this.arcade_joined_waiting = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_joined_waiting"));
@@ -177,6 +179,7 @@ public class MessagesConfig {
 	public String all_guns = "&aYour current main guns: &2<guns>";
 	public String you_can_leave_with = "&cYou can leave with <cmd> or /l!";
 	public String arcade_joined_waiting = "&6You joined Arcade! Waiting for <count> more players to start.";
+	public String arcade_new_round = "&6Next Arcade round in <count>!";
 	public String no_perm_to_join_arena = "&cYou don't have permission (arenas.<arena>) to join this arena as it's vip!";
 	public String set_kit = "&aSuccessfully set &2<kit>&a!";
 	public String classes_item = "&4Classes";

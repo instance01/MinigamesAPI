@@ -41,6 +41,8 @@ public class DefaultConfig {
 			config.addDefault("config.arcade.arena_to_prefer.arena", "arena1");
 			config.addDefault("config.arcade.lobby_countdown", 20);
 			config.addDefault("config.arcade.show_each_lobby_countdown", false);
+			config.addDefault("config.arcade.infinite_mode.enabled", false);
+			config.addDefault("config.arcade.infinite_mode.seconds_to_new_round", 10);
 			config.addDefault("config.bungee.game_on_join", false);
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.tp", false);
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.server", "lobby");
