@@ -163,4 +163,15 @@ public class ArenaScoreboard {
 	public void setCurrentScoreMap(HashMap<String, Integer> newcurrentscore) {
 		this.currentscore = newcurrentscore;
 	}
+
+	public void clearScoreboard(String arenaname) {
+		if (ascore.containsKey(arenaname)) {
+			ascore.remove(arenaname);
+		}
+		if (aobjective.containsKey(arenaname)) {
+			aobjective.remove(arenaname);
+		}
+
+		// ascore.put(arenaname, Bukkit.getScoreboardManager().getNewScoreboard());
+	}
 }
