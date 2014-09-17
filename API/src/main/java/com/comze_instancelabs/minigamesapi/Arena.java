@@ -443,6 +443,34 @@ public class Arena {
 				}
 			}
 			plugin.saveConfig();
+
+			try {
+				Player p = Bukkit.getPlayer(playername);
+				if (p != null) {
+					Util.teleportPlayerFixed(p, this.mainlobby);
+					p.setFireTicks(0);
+					p.setFlying(false);
+					if (!p.isOp()) {
+						p.setAllowFlight(false);
+					}
+					if (pgamemode.containsKey(p.getName())) {
+						p.setGameMode(pgamemode.get(p.getName()));
+					}
+					p.getInventory().setContents(pinv.get(playername));
+					p.getInventory().setArmorContents(pinv_armor.get(playername));
+					p.updateInventory();
+
+					p.setWalkSpeed(0.2F);
+					p.setFoodLevel(20);
+					p.setHealth(20D);
+					p.removePotionEffect(PotionEffectType.JUMP);
+					pli.getSpectatorManager().setSpectate(p, false);
+
+				}
+			} catch (Exception e) {
+				System.out.println("Failed to log player out of arena. " + e.getMessage());
+			}
+
 			return;
 		}
 		final Player p = Bukkit.getPlayer(playername);

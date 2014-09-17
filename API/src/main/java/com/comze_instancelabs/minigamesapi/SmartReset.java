@@ -110,4 +110,40 @@ public class SmartReset {
 		});
 
 	}
+
+	public void resetRaw() {
+		for (final SmartArenaBlock ablock : changed.values()) {
+			try {
+				final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+				if (b_.getType() == Material.FURNACE) {
+					((Furnace) b_.getState()).getInventory().clear();
+					((Furnace) b_.getState()).update();
+				}
+				if (b_.getType() == Material.CHEST) {
+					((Chest) b_.getState()).getBlockInventory().clear();
+					((Chest) b_.getState()).update();
+				}
+				if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+					b_.setType(ablock.getMaterial());
+					b_.setData(ablock.getData());
+				}
+				if (b_.getType() == Material.CHEST) {
+					((Chest) b_.getState()).getBlockInventory().clear();
+					((Chest) b_.getState()).update();
+					for (ItemStack i : ablock.getNewInventory()) {
+						if (i != null) {
+							((Chest) b_.getState()).getBlockInventory().addItem(i);
+						}
+					}
+					((Chest) b_.getState()).update();
+				}
+			} catch (IllegalStateException e) {
+
+			}
+		}
+
+		changed.clear();
+		a.setArenaState(ArenaState.JOIN);
+		Util.updateSign(a.plugin, a);
+	}
 }

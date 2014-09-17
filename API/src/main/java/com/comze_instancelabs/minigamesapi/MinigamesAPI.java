@@ -88,6 +88,11 @@ public class MinigamesAPI extends JavaPlugin {
 				for (String p_ : temp) {
 					a.leavePlayer(p_, true);
 				}
+				try {
+					a.getSmartReset().resetRaw();
+				} catch (Exception e) {
+					System.out.println("Failed resetting arena at onDisable. " + e.getMessage());
+				}
 			}
 		}
 	}
