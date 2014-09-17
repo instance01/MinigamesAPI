@@ -96,6 +96,10 @@ public class CommandHandler {
 				plugin.reloadConfig();
 				pli.getMessagesConfig().reloadConfig();
 				pli.getArenasConfig().reloadConfig();
+				pli.getClassesConfig().reloadConfig();
+				pli.getAchievementsConfig().reloadConfig();
+				pli.getStatsConfig().reloadConfig();
+				pli.getMessagesConfig().init();
 				sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
 			} else {
 				boolean cont = false;
