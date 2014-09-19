@@ -756,7 +756,22 @@ public class Arena {
 		this.setArenaState(ArenaState.RESTARTING);
 
 		final ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
-		for (String p_ : temp) {
+		for (final String p_ : temp) {
+			try {
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						if (Validator.isPlayerOnline(p_)) {
+							for (Entity e : Bukkit.getPlayer(p_).getNearbyEntities(50, 50, 50)) {
+								if (e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER) {
+									e.remove();
+								}
+							}
+						}
+					}
+				}, 10L);
+			} catch (Exception e) {
+				System.out.println("Failed clearing entities.");
+			}
 			leavePlayer(p_, false, true);
 		}
 
