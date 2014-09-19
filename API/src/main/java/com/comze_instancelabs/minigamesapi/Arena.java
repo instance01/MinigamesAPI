@@ -242,13 +242,13 @@ public class Arena {
 			return;
 		}
 		if (!pli.arenaSetup.getArenaEnabled(plugin, this.getName())) {
-			Util.sendMessage(Bukkit.getPlayer(playername), pli.getMessagesConfig().arena_disabled);
+			Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().arena_disabled);
 			return;
 		}
 		if (ai == null && this.isVIPArena()) {
 			if (Validator.isPlayerOnline(playername)) {
 				if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {
-					Util.sendMessage(Bukkit.getPlayer(playername), pli.getMessagesConfig().no_perm_to_join_arena.replaceAll("<arena>", this.getName()));
+					Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().no_perm_to_join_arena.replaceAll("<arena>", this.getName()));
 					return;
 				}
 			}
@@ -314,13 +314,13 @@ public class Arena {
 
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
-			Util.sendMessage(p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
+			Util.sendMessage(plugin, p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
 			for (String p_ : this.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_) && !p_.equalsIgnoreCase(p.getName())) {
 					Player p__ = Bukkit.getPlayer(p_);
 					int count = this.getAllPlayers().size();
 					int maxcount = this.getMaxPlayers();
-					Util.sendMessage(p__, pli.getMessagesConfig().broadcast_player_joined.replaceAll("<player>", p.getName()).replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)));
+					Util.sendMessage(plugin, p__, pli.getMessagesConfig().broadcast_player_joined.replaceAll("<player>", p.getName()).replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)));
 				}
 			}
 			Util.updateSign(plugin, this);
@@ -635,7 +635,7 @@ public class Arena {
 						if (Validator.isPlayerOnline(p_)) {
 							Player p = Bukkit.getPlayer(p_);
 							if (countdown) {
-								Util.sendMessage(p, pli.getMessagesConfig().teleporting_to_arena_in.replaceAll("<count>", Integer.toString(currentlobbycount)));
+								Util.sendMessage(plugin, p, pli.getMessagesConfig().teleporting_to_arena_in.replaceAll("<count>", Integer.toString(currentlobbycount)));
 							}
 						}
 					}
@@ -689,7 +689,7 @@ public class Arena {
 					for (String p_ : a.getAllPlayers()) {
 						if (Validator.isPlayerOnline(p_)) {
 							Player p = Bukkit.getPlayer(p_);
-							Util.sendMessage(p, pli.getMessagesConfig().starting_in.replaceAll("<count>", Integer.toString(currentingamecount)));
+							Util.sendMessage(plugin, p, pli.getMessagesConfig().starting_in.replaceAll("<count>", Integer.toString(currentingamecount)));
 						}
 					}
 				}
@@ -868,7 +868,7 @@ public class Arena {
 			Player killer = Bukkit.getPlayer(lastdamager.get(playername));
 			if (killer != null) {
 				pli.getRewardsInstance().giveKillReward(killer.getName(), 2);
-				Util.sendMessage(killer, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
+				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
 			}
 			lastdamager.remove(playername);
 		}

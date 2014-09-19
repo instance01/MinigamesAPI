@@ -100,7 +100,7 @@ public class Rewards {
 
 				pli.getStatsInstance().win(p_, 10);
 
-				Util.sendMessage(p, pli.getMessagesConfig().you_won);
+				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);
 
 				if (plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners")) {
 					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -118,7 +118,7 @@ public class Rewards {
 					System.out.println("Could not find arena for broadcast.");
 				}
 			} else {
-				Util.sendMessage(p, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_lost);
+				Util.sendMessage(plugin, p, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_lost);
 				MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().lose(p_);
 			}
 		}

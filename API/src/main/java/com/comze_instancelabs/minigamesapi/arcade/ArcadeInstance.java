@@ -152,7 +152,7 @@ public class ArcadeInstance {
 		if (stopOfGame && plugin.getConfig().getBoolean("config.arcade.infinite_mode.enabled")) {
 			if (temp.size() > 1) {
 				for (String p_ : temp) {
-					Util.sendMessage(Bukkit.getPlayer(p_), MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
+					Util.sendMessage(plugin, Bukkit.getPlayer(p_), MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
 				}
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
