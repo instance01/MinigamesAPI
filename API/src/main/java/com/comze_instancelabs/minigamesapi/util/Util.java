@@ -110,8 +110,7 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component + count;
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
-			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig()
-					.getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
@@ -120,8 +119,7 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component;
 			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
-			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig()
-					.getDouble(base + ".location.pitch"));
+			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
 	}
@@ -382,24 +380,11 @@ public class Util {
 		Sign s = getSignFromArena(plugin, arena.getName());
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();
-		// System.out.println(s.getLine(0) + " " + s.getLocation());
 		if (s != null) {
-			s.setLine(
-					0,
-					MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-							.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-			s.setLine(
-					1,
-					MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-							.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-			s.setLine(
-					2,
-					MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-							.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-			s.setLine(
-					3,
-					MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-							.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(0, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(1, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(2, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(3, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 			s.update();
 		}
 	}
@@ -407,22 +392,10 @@ public class Util {
 	public static void updateSign(JavaPlugin plugin, Arena arena, SignChangeEvent event) {
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();
-		event.setLine(
-				0,
-				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-						.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-		event.setLine(
-				1,
-				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-						.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-		event.setLine(
-				2,
-				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-						.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-		event.setLine(
-				3,
-				MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid))
-						.replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(0, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(1, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(2, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(3, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 	}
 
 	public static ArrayList<Arena> loadArenas(JavaPlugin plugin, ArenasConfig cf) {
@@ -459,6 +432,21 @@ public class Util {
 			String[] a = rawitems.split(";");
 
 			for (String b : a) {
+				// crackshot support
+				if (b.startsWith("crackshot:")) {
+					String[] guntype = b.split(":");
+					if (guntype.length > 1) {
+						if (guntype[1].length() > 1) {
+							ItemStack gun = new ItemStack(Material.WOOD_HOE);
+							ItemMeta gunmeta = gun.getItemMeta();
+							gunmeta.setDisplayName(b);
+							gun.setItemMeta(gunmeta);
+							ret.add(gun);
+						}
+					}
+					continue;
+				}
+
 				int nameindex = b.indexOf("=");
 				String[] c = b.split("\\*");
 				String itemid = c[0];

@@ -1,22 +1,25 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comze_instancelabs.minigamesapi.Classes;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
-import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
+import com.shampaggon.crackshot.CSUtility;
 
 public class Classes {
 
@@ -71,8 +74,31 @@ public class Classes {
 		p.getInventory().setLeggings(null);
 		p.getInventory().setBoots(null);
 		p.updateInventory();
-		p.getInventory().setContents(c.getItems());
+		ArrayList<ItemStack> items = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
+		ArrayList<ItemStack> temp = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
+		ArrayList<String> tempguns = new ArrayList<String>();
+
+		// crackshot support
+		for (ItemStack item : temp) {
+			if (item != null) {
+				if (item.getItemMeta().hasDisplayName()) {
+					if (item.getItemMeta().getDisplayName().startsWith("crackshot:")) {
+						items.remove(item);
+						tempguns.add(item.getItemMeta().getDisplayName().split(":")[1]);
+					}
+				}
+			}
+		}
+
+		p.getInventory().setContents((ItemStack[]) items.toArray(new ItemStack[items.size()]));
 		p.updateInventory();
+
+		if (MinigamesAPI.getAPI().crackshot) {
+			for (String t : tempguns) {
+				CSUtility cs = new CSUtility();
+				cs.giveWeapon(p, t, 1);
+			}
+		}
 	}
 
 	/**

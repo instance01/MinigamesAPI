@@ -39,6 +39,7 @@ public class MinigamesAPI extends JavaPlugin {
 	public static Economy econ = null;
 	public static boolean economy = true;
 	public static boolean arcade = false;
+	public boolean crackshot = false;
 
 	public HashMap<String, Party> global_party = new HashMap<String, Party>();
 	public HashMap<String, ArrayList<Party>> global_party_invites = new HashMap<String, ArrayList<Party>>();
@@ -78,6 +79,10 @@ public class MinigamesAPI extends JavaPlugin {
 
 		if (getConfig().getBoolean("config.auto_updating")) {
 			Updater updater = new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
+		}
+
+		if (getServer().getPluginManager().getPlugin("CrackShot") != null) {
+			crackshot = true;
 		}
 	}
 
