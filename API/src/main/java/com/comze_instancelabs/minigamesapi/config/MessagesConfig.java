@@ -3,6 +3,7 @@ package com.comze_instancelabs.minigamesapi.config;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -20,6 +21,10 @@ public class MessagesConfig {
 
 	public MessagesConfig(JavaPlugin plugin) {
 		this.plugin = plugin;
+		Arrays.fill(squares_mid, (char) 0x25A0);
+		Arrays.fill(squares_full, (char) 0x2588);
+		Arrays.fill(squares_medium, (char) 0x2592);
+		Arrays.fill(squares_light, (char) 0x2591);
 		for (int i = 0; i < 10; i++) {
 			squares += Character.toString((char) 0x25A0);
 		}
@@ -27,6 +32,11 @@ public class MessagesConfig {
 	}
 
 	public static String squares = Character.toString((char) 0x25A0);
+
+	public static char[] squares_mid = new char[10];
+	public static char[] squares_full = new char[10];
+	public static char[] squares_medium = new char[10];
+	public static char[] squares_light = new char[10];
 
 	public void init() {
 		// all signs
