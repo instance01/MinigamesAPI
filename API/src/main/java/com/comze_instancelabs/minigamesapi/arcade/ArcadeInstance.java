@@ -134,6 +134,11 @@ public class ArcadeInstance {
 	}
 
 	public void stopArcade(boolean stopOfGame) {
+		try {
+			Bukkit.getScheduler().cancelTask(currenttaskid);
+		} catch (Exception e) {
+
+		}
 		final ArrayList<String> temp = new ArrayList<String>(players);
 		for (String p_ : temp) {
 			this.leaveArcade(p_);
