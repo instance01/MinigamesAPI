@@ -2,6 +2,7 @@ package com.comze_instancelabs.minigamesapi.achievements;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
@@ -36,7 +37,7 @@ public class ArenaAchievements {
 		} else {
 			pli.getAchievementsConfig().getConfig().set("players." + playername + "." + achievement + ".done", true);
 			pli.getAchievementsConfig().saveConfig();
-			// TODO message player
+			Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", achievement));
 		}
 	}
 
