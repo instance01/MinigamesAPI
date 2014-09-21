@@ -76,7 +76,7 @@ public class ArenaListener implements Listener {
 	public void onPlayerDrop(PlayerDropItemEvent event) {
 		if (pli.global_players.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
-			if (a.getArenaState() == ArenaState.STARTING) {
+			if (a.getArenaState() != ArenaState.INGAME) {
 				event.setCancelled(true);
 			}
 		}
@@ -355,7 +355,7 @@ public class ArenaListener implements Listener {
 		Player p = event.getPlayer();
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
-			if (a.getArenaState() != ArenaState.INGAME) {
+			if (a.getArenaState() != ArenaState.INGAME || pli.global_lost.containsKey(p.getName())) {
 				event.setCancelled(true);
 				return;
 			}
