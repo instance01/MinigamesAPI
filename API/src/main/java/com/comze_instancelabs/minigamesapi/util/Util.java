@@ -519,14 +519,18 @@ public class Util {
 	public static void giveLobbyItems(JavaPlugin plugin, Player p) {
 		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
-		ItemMeta cimeta = classes_item.getItemMeta();
-		cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
-		classes_item.setItemMeta(cimeta);
+		if (classes_item.getType() != Material.AIR) {
+			ItemMeta cimeta = classes_item.getItemMeta();
+			cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
+			classes_item.setItemMeta(cimeta);
+		}
 
 		ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.exit_item"));
-		ItemMeta exitimeta = exit_item.getItemMeta();
-		exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
-		exit_item.setItemMeta(exitimeta);
+		if (exit_item.getType() != Material.AIR) {
+			ItemMeta exitimeta = exit_item.getItemMeta();
+			exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
+			exit_item.setItemMeta(exitimeta);
+		}
 
 		p.getInventory().addItem(classes_item);
 		p.getInventory().setItem(8, exit_item);

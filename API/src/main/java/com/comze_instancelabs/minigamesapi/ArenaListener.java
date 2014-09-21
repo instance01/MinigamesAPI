@@ -40,6 +40,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
@@ -676,6 +677,51 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
+
+	// TP Fix start
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onPlayerTeleport(PlayerTeleportEvent event) {
+		final Player player = event.getPlayer();
+		final int visibleDistance = Bukkit.getServer().getViewDistance() * 16;
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			@Override
+			public void run() {
+				final List<Player> nearby = getPlayersWithin(player, visibleDistance);
+				updateEntities(nearby, false);
+				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+					@Override
+					public void run() {
+						updateEntities(nearby, true);
+					}
+				}, 1);
+			}
+		}, 5L);
+	}
+
+	private void updateEntities(List<Player> players, boolean visible) {
+		for (Player observer : players) {
+			for (Player player : players) {
+				if (observer.getEntityId() != player.getEntityId()) {
+					if (visible)
+						observer.showPlayer(player);
+					else
+						observer.hidePlayer(player);
+				}
+			}
+		}
+	}
+
+	private List<Player> getPlayersWithin(Player player, int distance) {
+		List<Player> res = new ArrayList<Player>();
+		int d2 = distance * distance;
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			if (p.getWorld() == player.getWorld() && p.getLocation().distanceSquared(player.getLocation()) <= d2) {
+				res.add(p);
+			}
+		}
+		return res;
+	}
+	// TP Fix end
 
 	public String getName() {
 		return minigame;
