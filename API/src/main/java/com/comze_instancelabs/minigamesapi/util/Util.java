@@ -72,7 +72,7 @@ public class Util {
 			ent.eject();
 		}
 		p.teleport(l, TeleportCause.PLUGIN);
-		p.setFallDistance(-1F);
+		p.setFallDistance(-0.5F);
 		p.setVelocity(new Vector(0D, 0D, 0D));
 		l.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
 	}

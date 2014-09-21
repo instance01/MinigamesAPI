@@ -574,13 +574,7 @@ public class Arena {
 	}
 
 	public void spectateArcade(String playername) {
-		// this.addPlayer(playername);
 		Player p = Bukkit.getPlayer(playername);
-		// if (p != null) {
-		// this.pinv.put(playername, p.getInventory().getContents());
-		// this.pinv_armor.put(playername, p.getInventory().getArmorContents());
-		// this.pgamemode.put(playername, p.getGameMode());
-		// }
 		pli.global_players.put(playername, currentarena);
 		pli.global_arcade_spectator.put(playername, currentarena);
 		Util.teleportPlayerFixed(p, currentarena.getSpawns().get(0).clone().add(0D, 30D, 0D));
@@ -742,11 +736,26 @@ public class Arena {
 		System.out.println(this.getName() + " started.");
 	}
 
+	boolean temp_delay_stopped = false;
+
 	/**
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
 	public void stop() {
 		final Arena a = this;
+		if (!temp_delay_stopped) {
+			if (plugin.getConfig().getBoolean("config.delay.enabled")) {
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						temp_delay_stopped = true;
+						a.stop();
+					}
+				}, plugin.getConfig().getInt("config.delay.amount_seconds") * 20L);
+				return;
+			}
+		}
+		temp_delay_stopped = false;
+
 		try {
 			Bukkit.getScheduler().cancelTask(currenttaskid);
 		} catch (Exception e) {

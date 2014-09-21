@@ -192,10 +192,23 @@ public class ArenaListener implements Listener {
 			arena.onEliminated(p.getName());
 
 			pli.global_lost.put(p.getName(), pli.global_players.get(p.getName()));
+
+			int count = 0;
+			for (String p_ : pli.global_players.keySet()) {
+				if (Validator.isPlayerOnline(p_)) {
+					if (pli.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
+						if (!pli.global_lost.containsKey(p_)) {
+							count++;
+						}
+					}
+				}
+			}
+			final int count_ = count;
+
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					try {
-						if (pli.global_players.containsKey(p.getName())) {
+						if (pli.global_players.containsKey(p.getName()) && count_ > 1) {
 							pli.global_players.get(p.getName()).spectate(p.getName());
 						}
 						for (String p_ : arena.getAllPlayers()) {
@@ -210,20 +223,8 @@ public class ArenaListener implements Listener {
 				}
 			}, 5);
 
-			int count = 0;
-
-			for (String p_ : pli.global_players.keySet()) {
-				if (Validator.isPlayerOnline(p_)) {
-					if (pli.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
-						if (!pli.global_lost.containsKey(p_)) {
-							count++;
-						}
-					}
-				}
-			}
-
 			if (count < 2) {
-				// last man standing!
+				// last man standing
 				arena.stop();
 			}
 		}
