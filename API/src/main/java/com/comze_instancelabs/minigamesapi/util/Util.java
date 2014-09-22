@@ -72,9 +72,10 @@ public class Util {
 			ent.eject();
 		}
 		p.teleport(l, TeleportCause.PLUGIN);
-		p.setFallDistance(-0.5F);
+		p.setFallDistance(-1F);
 		p.setVelocity(new Vector(0D, 0D, 0D));
 		l.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
+		p.setHealth(20D);
 	}
 
 	public static void teleportAllPlayers(ArrayList<String> players, final Location l) {
