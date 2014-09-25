@@ -751,6 +751,8 @@ public class Arena {
 						a.stop();
 					}
 				}, plugin.getConfig().getInt("config.delay.amount_seconds") * 20L);
+				this.setArenaState(ArenaState.RESTARTING);
+				Util.updateSign(plugin, this);
 				return;
 			}
 		}

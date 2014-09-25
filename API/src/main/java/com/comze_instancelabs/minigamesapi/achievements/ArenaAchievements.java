@@ -31,7 +31,7 @@ public class ArenaAchievements {
 		return ret;
 	}
 
-	public void setAchievementDone2(String playername, String achievement, boolean sql) {
+	public void setAchievementDone(String playername, String achievement, boolean sql) {
 		if (sql) {
 			// TODO
 		} else {
