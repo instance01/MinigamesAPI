@@ -31,13 +31,15 @@ public class ArenaAchievements {
 		return ret;
 	}
 
-	public void setAchievementDone(String playername, String achievement, boolean sql) {
+	public void setAchievementDone2(String playername, String achievement, boolean sql) {
 		if (sql) {
 			// TODO
 		} else {
-			pli.getAchievementsConfig().getConfig().set("players." + playername + "." + achievement + ".done", true);
-			pli.getAchievementsConfig().saveConfig();
-			Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", achievement));
+			if (!pli.getAchievementsConfig().getConfig().isSet("players." + playername + "." + achievement + ".done")) {
+				pli.getAchievementsConfig().getConfig().set("players." + playername + "." + achievement + ".done", true);
+				pli.getAchievementsConfig().saveConfig();
+				Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", achievement));
+			}
 		}
 	}
 
