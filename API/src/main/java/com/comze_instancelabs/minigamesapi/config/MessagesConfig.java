@@ -99,11 +99,13 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.scoreboard.title", scoreboard_title);
 		this.getConfig().addDefault("messages.you_got_kicked_because_vip_joined", you_got_kicked_because_vip_joined);
 		this.getConfig().addDefault("messages.powerup_spawned", powerup_spawned);
-		this.getConfig().addDefault("messages.custom_scoreboard.line0", "Players:<playercount>");
-		this.getConfig().addDefault("messages.custom_scoreboard.line1", "Spectators:<lostplayercount>");
-		this.getConfig().addDefault("messages.custom_scoreboard.line2", "Alive:<playeralivecount>");
-		this.getConfig().addDefault("messages.custom_scoreboard.line3", "Your Credits:<points>");
-		this.getConfig().addDefault("messages.custom_scoreboard.line4", "Your Wins:<wins>");
+		if (!this.getConfig().isSet("config.generated")) {
+			this.getConfig().addDefault("messages.custom_scoreboard.line0", "Players:<playercount>");
+			this.getConfig().addDefault("messages.custom_scoreboard.line1", "Spectators:<lostplayercount>");
+			this.getConfig().addDefault("messages.custom_scoreboard.line2", "Alive:<playeralivecount>");
+			this.getConfig().addDefault("messages.custom_scoreboard.line3", "Your Credits:<points>");
+			this.getConfig().addDefault("messages.custom_scoreboard.line4", "Your Wins:<wins>");
+		}
 		this.getConfig().addDefault("messages.you_got_the_achievement", you_got_the_achievement);
 
 		// save
@@ -157,6 +159,8 @@ public class MessagesConfig {
 		this.successfully_set_main_gun = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.successfully_set_main_gun"));
 		this.all_guns = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.all_guns"));
 
+		this.getConfig().set("config.generated", true);
+		this.saveConfig();
 	}
 
 	public String no_perm = "&cYou don't have permission.";

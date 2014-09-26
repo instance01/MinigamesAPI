@@ -753,6 +753,11 @@ public class Arena {
 				}, plugin.getConfig().getInt("config.delay.amount_seconds") * 20L);
 				this.setArenaState(ArenaState.RESTARTING);
 				Util.updateSign(plugin, this);
+				if (plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners")) {
+					if (this.getAllPlayers().size() > 0) {
+						Util.spawnFirework(Bukkit.getPlayer(this.getAllPlayers().get(0)));
+					}
+				}
 				return;
 			}
 		}
