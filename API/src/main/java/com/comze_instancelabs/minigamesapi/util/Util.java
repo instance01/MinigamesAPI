@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -16,10 +17,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.World;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -94,17 +95,20 @@ public class Util {
 		}
 	}
 
-	public static void teleportAllPlayers(ArrayList<String> players, ArrayList<Location> locs) {
+	public static HashMap<String, Location> teleportAllPlayers(ArrayList<String> players, ArrayList<Location> locs) {
+		HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
 		int currentid = 0;
 		int locslength = locs.size();
 		for (String p_ : players) {
 			Player p = Bukkit.getPlayer(p_);
 			Util.teleportPlayerFixed(p, locs.get(currentid));
+			pspawnloc.put(p_, locs.get(currentid));
 			currentid++;
 			if (currentid > locslength - 1) {
 				currentid = 0;
 			}
 		}
+		return pspawnloc;
 	}
 
 	public static Location getComponentForArena(JavaPlugin plugin, String arenaname, String component, String count) {

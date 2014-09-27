@@ -39,6 +39,7 @@ public class Arena {
 	HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
 	HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
 	private HashMap<String, GameMode> pgamemode = new HashMap<String, GameMode>();
+	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
 
 	/**
 	 * Used when players leave with command, they shouldn't get rewards!
@@ -664,14 +665,14 @@ public class Arena {
 		} catch (Exception e) {
 		}
 		currentingamecount = pli.ingame_countdown;
+		if (tp) {
+			pspawnloc = Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+		}
 		for (String p_ : currentarena.getArena().getAllPlayers()) {
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.0F);
 			p.setFoodLevel(5);
 			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
-		}
-		if (tp) {
-			Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		}
 		final Arena a = this;
 		pli.scoreboardManager.updateScoreboard(plugin, a);
@@ -967,6 +968,10 @@ public class Arena {
 
 	public ArcadeInstance getArcadeInstance() {
 		return ai;
+	}
+
+	public HashMap<String, Location> getPSpawnLocs() {
+		return pspawnloc;
 	}
 
 }
