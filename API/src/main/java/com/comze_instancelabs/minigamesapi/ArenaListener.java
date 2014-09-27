@@ -241,6 +241,8 @@ public class ArenaListener implements Listener {
 					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
 						System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 						event.setCancelled(true);
+					} else {
+						Effects.playBloodEffect(p);
 					}
 				}
 				if (pli.global_lost.containsKey(p.getName())) {
@@ -710,6 +712,7 @@ public class ArenaListener implements Listener {
 		}
 		return res;
 	}
+
 	// TP Fix end
 
 	public String getName() {

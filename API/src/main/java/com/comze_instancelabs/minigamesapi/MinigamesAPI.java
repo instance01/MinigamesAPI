@@ -8,18 +8,13 @@ import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.ArenaListener;
-import com.comze_instancelabs.minigamesapi.ArenaSetup;
-import com.comze_instancelabs.minigamesapi.Classes;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
-import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
@@ -30,6 +25,7 @@ import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.guns.Guns;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.Metrics;
+import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Updater;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
@@ -48,11 +44,14 @@ public class MinigamesAPI extends JavaPlugin {
 
 	public PartyMessagesConfig partymessages;
 
+	public String version = "";
+
 	public void onEnable() {
 		instance = this;
 
 		String version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + version + ".");
+		this.version = version;
 
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
@@ -231,6 +230,19 @@ public class MinigamesAPI extends JavaPlugin {
 				}
 			} else {
 				cmdhandler.sendPartyHelp("/" + cmd.getName(), sender);
+			}
+		} else {
+			if (sender instanceof Player && args.length > 0) {
+				Player p = (Player) sender;
+				ParticleEffectNew eff = ParticleEffectNew.valueOf(args[0]);
+				eff.setId(152);
+
+				for (float i = 0; i < 10; i++) {
+					eff.animateReflected(p, p.getLocation().clone().add(i / 5F, i / 5F, i / 5F), 1F, 2);
+				}
+
+				p.getWorld().playEffect(p.getLocation(), Effect.STEP_SOUND, 152);
+				p.getWorld().playEffect(p.getLocation().add(0D, 1D, 0D), Effect.STEP_SOUND, 152);
 			}
 
 		}
