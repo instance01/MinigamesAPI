@@ -54,8 +54,12 @@ public class MainSQL {
 
 		try {
 			c.createStatement().execute("CREATE DATABASE IF NOT EXISTS `" + plugin.getConfig().getString("mysql.database") + "`");
-			c.createStatement().execute("CREATE TABLE IF NOT EXISTS " + plugin.getName() + " (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, player VARCHAR(100), points INT, wins INT, loses INT)");
-			// }
+			c.createStatement().execute("CREATE TABLE IF NOT EXISTS " + plugin.getName() + " (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, player VARCHAR(100), points INT, wins INT, loses INT, kills INT)");
+			ResultSet res = c.createStatement().executeQuery("SHOW COLUMNS FROM `" + plugin.getName() + "` LIKE 'kills'");
+			if (!res.isBeforeFirst()) {
+				// old table format without kills column -> add kills column
+				c.createStatement().execute("ALTER TABLE " + plugin.getName() + " ADD kills INT");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +80,7 @@ public class MainSQL {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 			if (!res3.isBeforeFirst()) {
 				// there's no such user
-				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '" + Integer.toString(wincount) + "', '0')");
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '" + Integer.toString(wincount) + "', '0', '0')");
 				return;
 			}
 			res3.next();
@@ -103,13 +107,39 @@ public class MainSQL {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 			if (!res3.isBeforeFirst()) {
 				// there's no such user
-				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '1')");
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '1', '0')");
 				return;
 			}
 			res3.next();
 			int loses = res3.getInt("loses") + 1;
 
 			c.createStatement().executeUpdate("UPDATE " + plugin.getName() + " SET loses='" + Integer.toString(loses) + "' WHERE player='" + p_ + "'");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateKillerStats(String p_) {
+		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
+			return;
+		}
+		if (!mysql) {
+			// TODO SQLite
+		}
+		Connection c = MySQL.open();
+
+		try {
+			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
+			if (!res3.isBeforeFirst()) {
+				// there's no such user
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '0', '1')");
+				return;
+			}
+			res3.next();
+			int kills = res3.getInt("kills");
+
+			c.createStatement().executeUpdate("UPDATE " + plugin.getName() + " SET kills='" + Integer.toString(kills) + "' WHERE player='" + p_ + "'");
 
 		} catch (SQLException e) {
 			e.printStackTrace();

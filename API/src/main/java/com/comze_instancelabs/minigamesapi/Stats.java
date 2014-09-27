@@ -111,6 +111,7 @@ public class Stats {
 		} else if (temp == 100) {
 			MinigamesAPI.getAPI().pinstances.get(plugin).getArenaAchievements().setAchievementDone(playername, "hundred_kills", false);
 		}
+		MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateKillerStats(playername);
 	}
 
 	public void addPoints(String playername, int count) {
