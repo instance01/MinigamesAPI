@@ -104,7 +104,7 @@ public class ArenaBlock implements Serializable {
 			ItemMeta im = item.getItemMeta();
 			im.setDisplayName(item_displaynames.get(i));
 			item.setItemMeta(im);
-			if (item.getType() == Material.POTION) {
+			if (item.getType() == Material.POTION && item.getDurability() > 0) {
 				Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
 				potion.setSplash(item_splash.get(i));
 				item = potion.toItemStack(item_amounts.get(i));

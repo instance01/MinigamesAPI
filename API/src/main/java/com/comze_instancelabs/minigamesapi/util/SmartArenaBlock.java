@@ -71,7 +71,7 @@ public class SmartArenaBlock implements Serializable {
 					item_amounts.add(i.getAmount());
 					item_displaynames.add(i.getItemMeta().getDisplayName());
 					item_durability.add(i.getDurability());
-					if (i.getType() == Material.POTION) {
+					if (i.getType() == Material.POTION && i.getDurability() > 0) {
 						Potion potion = Potion.fromDamage(i.getDurability() & 0x3F);
 						item_splash.add(potion.isSplash());
 					} else if (i.getType() == Material.ENCHANTED_BOOK) {
@@ -153,7 +153,7 @@ public class SmartArenaBlock implements Serializable {
 			}
 
 			item.setItemMeta(im);
-			if (item.getType() == Material.POTION) {
+			if (item.getType() == Material.POTION && item.getDurability() > 0) {
 				Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
 				potion.setSplash(item_splash.get(i));
 				// item = potion.toItemStack(item_amounts.get(i));
