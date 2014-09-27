@@ -60,6 +60,7 @@ public class DefaultConfig {
 			config.addDefault("config.use_custom_scoreboard", false);
 			config.addDefault("config.delay.enabled", false);
 			config.addDefault("config.delay.amount_seconds", 5);
+			config.addDefault("config.send_game_started_msg", false);
 
 			config.addDefault("mysql.enabled", false);
 			config.addDefault("mysql.host", "127.0.0.1");

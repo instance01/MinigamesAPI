@@ -303,17 +303,6 @@ public class ArenaListener implements Listener {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getToBlock().getLocation())) {
-						/*
-						 * BlockFace face = event.getFace(); int x = event.getBlock().getX(); int y = event.getBlock().getY(); int z =
-						 * event.getBlock().getZ(); Block b = event.getBlock().getWorld().getBlockAt(x + face.getModX(), y + face.getModY(), z +
-						 * face.getModZ()); a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
-						 * a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
-						 * a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
-						 */
-						// a.getSmartReset().addChanged(event.getBlock().getLocation());
-						// a.getSmartReset().addChanged(event.getToBlock().getLocation());
-
-						// a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 						a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
 					}
 				}

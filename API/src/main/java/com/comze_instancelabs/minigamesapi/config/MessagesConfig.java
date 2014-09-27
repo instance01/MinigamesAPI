@@ -107,6 +107,7 @@ public class MessagesConfig {
 			this.getConfig().addDefault("messages.custom_scoreboard.line4", "Your Wins:<wins>");
 		}
 		this.getConfig().addDefault("messages.you_got_the_achievement", you_got_the_achievement);
+		this.getConfig().addDefault("messages.game_started", game_started);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -152,6 +153,7 @@ public class MessagesConfig {
 		this.you_got_kicked_because_vip_joined = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_kicked_because_vip_joined"));
 		this.powerup_spawned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.powerup_spawned"));
 		this.you_got_the_achievement = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_the_achievement"));
+		this.game_started = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.game_started"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -207,6 +209,7 @@ public class MessagesConfig {
 	public String you_got_kicked_because_vip_joined = "&cYou got kicked out of the game because a vip joined!";
 	public String powerup_spawned = "&2A Powerup spawned!";
 	public String you_got_the_achievement = "&3You got the achievement &b<achievement>&3!";
+	public String game_started = "&2The game has started!";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

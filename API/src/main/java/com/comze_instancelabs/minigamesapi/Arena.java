@@ -697,6 +697,7 @@ public class Arena {
 					currentarena.getArena().setArenaState(ArenaState.INGAME);
 					startedIngameCountdown = false;
 					Util.updateSign(plugin, a);
+					boolean send_game_started_msg = plugin.getConfig().getBoolean("config.send_game_started_msg");
 					for (String p_ : a.getAllPlayers()) {
 						try {
 							if (!pli.global_lost.containsKey(p_)) {
@@ -714,6 +715,9 @@ public class Arena {
 						p.setWalkSpeed(0.2F);
 						p.setFoodLevel(20);
 						p.removePotionEffect(PotionEffectType.JUMP);
+						if (send_game_started_msg) {
+							p.sendMessage(pli.getMessagesConfig().game_started);
+						}
 					}
 					if (plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running")) {
 						Bukkit.setWhitelist(true);
