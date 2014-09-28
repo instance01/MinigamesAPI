@@ -395,6 +395,11 @@ public class Util {
 			s.setLine(3, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 			s.update();
 		}
+		try {
+			BungeeUtil.sendSignUpdateRequest(plugin, plugin.getName(), arena);
+		} catch (Exception e) {
+			// TODO
+		}
 	}
 
 	public static void updateSign(JavaPlugin plugin, Arena arena, SignChangeEvent event) {
