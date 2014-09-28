@@ -396,7 +396,9 @@ public class Util {
 			s.update();
 		}
 		try {
-			BungeeUtil.sendSignUpdateRequest(plugin, plugin.getName(), arena);
+			if (plugin.isEnabled()) {
+				BungeeUtil.sendSignUpdateRequest(plugin, plugin.getName(), arena);
+			}
 		} catch (Exception e) {
 			// TODO
 		}
