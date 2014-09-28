@@ -25,6 +25,7 @@ Features
 - Guns API
 - Bungee support
 - Party (/party)
+- Achievements
 - More stuff
 
 
