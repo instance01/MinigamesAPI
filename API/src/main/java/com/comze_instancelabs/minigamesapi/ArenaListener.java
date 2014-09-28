@@ -515,6 +515,11 @@ public class ArenaListener implements Listener {
 					pli.getSpectatorManager().openSpectatorGUI(p, pli.global_players.get(p.getName()));
 					event.setCancelled(true);
 				}
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.achievement_item")) {
+				if (pli.isAchievementGuiEnabled()) {
+					pli.getArenaAchievements().openGUI(p.getName(), false);
+					event.setCancelled(true);
+				}
 			}
 		}
 	}

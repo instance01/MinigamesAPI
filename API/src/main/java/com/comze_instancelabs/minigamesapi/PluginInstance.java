@@ -48,6 +48,7 @@ public class PluginInstance {
 	private Classes classes = null;
 	private SpectatorManager spectatormanager = null;
 	private ArenaAchievements achievements = null;
+	private boolean achievement_gui_enabled = false;
 
 	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
 	public ArenaSetup arenaSetup = new ArenaSetup();
@@ -230,6 +231,14 @@ public class PluginInstance {
 
 	public void addLoadedArenas(ArrayList<Arena> arenas) {
 		this.arenas = arenas;
+	}
+
+	public boolean isAchievementGuiEnabled() {
+		return achievement_gui_enabled;
+	}
+
+	public void setAchievementGuiEnabled(boolean achievement_gui_enabled) {
+		this.achievement_gui_enabled = achievement_gui_enabled;
 	}
 
 }
