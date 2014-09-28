@@ -540,7 +540,17 @@ public class Util {
 			exit_item.setItemMeta(exitimeta);
 		}
 
+		ItemStack achievement_item = new ItemStack(plugin.getConfig().getInt("config.achievement_item"));
+		if (achievement_item.getType() != Material.AIR) {
+			ItemMeta achievement_itemmeta = exit_item.getItemMeta();
+			achievement_itemmeta.setDisplayName(pli.getMessagesConfig().achievement_item);
+			achievement_item.setItemMeta(achievement_itemmeta);
+		}
+
 		p.getInventory().addItem(classes_item);
+		if (pli.isAchievementGuiEnabled()) {
+			p.getInventory().addItem(achievement_item);
+		}
 		p.getInventory().setItem(8, exit_item);
 		p.updateInventory();
 	}

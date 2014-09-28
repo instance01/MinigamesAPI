@@ -44,7 +44,7 @@ public class ArenaAchievements {
 			if (aa.isDone()) {
 				icon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
 			}
-			iconm.setOption(c, icon, aa.getAchievementName(), "Done: " + aa.isDone());
+			iconm.setOption(c, icon, aa.name, "Done: " + aa.isDone());
 			c++;
 		}
 
