@@ -20,7 +20,7 @@ public class AAchievement {
 		this.done = t;
 	}
 
-	public String getAchievementName() {
-		return playername;
+	public String getAchievementNameRaw() {
+		return name;
 	}
 }

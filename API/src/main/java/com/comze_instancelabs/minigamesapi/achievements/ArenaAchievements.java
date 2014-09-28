@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,7 +45,7 @@ public class ArenaAchievements {
 			if (aa.isDone()) {
 				icon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
 			}
-			iconm.setOption(c, icon, aa.name, "Done: " + aa.isDone());
+			iconm.setOption(c, icon, ChatColor.translateAlternateColorCodes('&', pli.getAchievementsConfig().getConfig().getString("config.achievements." + aa.getAchievementNameRaw() + ".name")), "Done: " + aa.isDone());
 			c++;
 		}
 
@@ -72,7 +73,7 @@ public class ArenaAchievements {
 			if (!pli.getAchievementsConfig().getConfig().isSet("players." + playername + "." + achievement + ".done")) {
 				pli.getAchievementsConfig().getConfig().set("players." + playername + "." + achievement + ".done", true);
 				pli.getAchievementsConfig().saveConfig();
-				Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", achievement));
+				Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", ChatColor.translateAlternateColorCodes('&', pli.getAchievementsConfig().getConfig().getString("config.achievements." + achievement + ".name"))));
 			}
 		}
 	}
