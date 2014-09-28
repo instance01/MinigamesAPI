@@ -79,6 +79,8 @@ public class CommandHandler {
 				return this.setShowScoreboard(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("reset")) {
 				return this.resetArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("setauthor")) {
+				return this.setAuthor(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb")) {
 				return this.getLeaderboards(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
@@ -145,6 +147,8 @@ public class CommandHandler {
 		cmddesc.put("stop <arena>", "Forces the arena to stop.");
 		cmddesc.put("list", "Lists all arenas.");
 		cmddesc.put("reload", "Reloads the config.");
+		cmddesc.put("reset <arena>", "Forces the arena to reset.");
+		cmddesc.put("setauthor <arena> <author>", "Will always display the author of the map at join.");
 	}
 
 	public static void sendHelp(String cmd, CommandSender sender) {
@@ -508,7 +512,6 @@ public class CommandHandler {
 		return true;
 	}
 
-	// TODO add to help
 	public boolean resetArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".reset")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
@@ -528,6 +531,23 @@ public class CommandHandler {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
+		}
+		return true;
+	}
+
+	public boolean setAuthor(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 2) {
+			String author = args[2];
+			if (Validator.isArenaValid(plugin, args[1])) {
+				pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".author", author);
+				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "author"));
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <author>");
 		}
 		return true;
 	}

@@ -108,6 +108,7 @@ public class MessagesConfig {
 		}
 		this.getConfig().addDefault("messages.you_got_the_achievement", you_got_the_achievement);
 		this.getConfig().addDefault("messages.game_started", game_started);
+		this.getConfig().addDefault("messages.author_of_the_map", author_of_the_map);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -154,6 +155,7 @@ public class MessagesConfig {
 		this.powerup_spawned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.powerup_spawned"));
 		this.you_got_the_achievement = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_the_achievement"));
 		this.game_started = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.game_started"));
+		this.author_of_the_map = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.author_of_the_map"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -210,6 +212,7 @@ public class MessagesConfig {
 	public String powerup_spawned = "&2A Powerup spawned!";
 	public String you_got_the_achievement = "&3You got the achievement &b<achievement>&3!";
 	public String game_started = "&2The game has started!";
+	public String author_of_the_map = "&3You are playing on the map &b<arena> &3by &b<author>&3!";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {
