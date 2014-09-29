@@ -144,7 +144,7 @@ public class SmartArenaBlock implements Serializable {
 			ItemMeta im = item.getItemMeta();
 			im.setDisplayName(item_displaynames.get(i));
 
-			if (item_enchid.get(i) != null) {
+			if (item_enchid.size() > i && item_enchid.get(i) != null) {
 				int c = 0;
 				for (Integer ench : item_enchid.get(i)) {
 					im.addEnchant(Enchantment.getById(ench), item_enchid_lv.get(i).get(c), true);
@@ -155,15 +155,22 @@ public class SmartArenaBlock implements Serializable {
 			item.setItemMeta(im);
 			if (item.getType() == Material.POTION && item.getDurability() > 0) {
 				Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
-				potion.setSplash(item_splash.get(i));
-				// item = potion.toItemStack(item_amounts.get(i));
+				if (item_splash.size() > i) {
+					potion.setSplash(item_splash.get(i));
+				}
 			} else if (item.getType() == Material.ENCHANTED_BOOK) {
 				ItemStack neww = new ItemStack(Material.ENCHANTED_BOOK);
 				EnchantmentStorageMeta meta = (EnchantmentStorageMeta) neww.getItemMeta();
 				int c_ = 0;
-				for (Integer ench : enchbook_id.get(i)) {
-					meta.addStoredEnchant(Enchantment.getById(ench), enchbook_id_lv.get(i).get(c_), true);
-					c_++;
+				if (enchbook_id.size() > i) {
+					for (Integer ench : enchbook_id.get(i)) {
+						try {
+							meta.addStoredEnchant(Enchantment.getById(ench), enchbook_id_lv.get(i).get(c_), true);
+						} catch (Exception e) {
+							System.out.println("Failed applying enchantment to enchantment book at reset.");
+						}
+						c_++;
+					}
 				}
 				neww.setItemMeta(meta);
 				item = neww;
