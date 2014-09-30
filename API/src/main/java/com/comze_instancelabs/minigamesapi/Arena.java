@@ -556,6 +556,7 @@ public class Arena {
 			Player p = Bukkit.getPlayer(playername);
 			pli.getSpectatorManager().setSpectate(p, true);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
+				pli.global_lost.put(playername, this);
 				this.leavePlayer(playername, false, false);
 				return;
 			}
