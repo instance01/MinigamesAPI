@@ -565,16 +565,30 @@ public class Arena {
 			p.setAllowFlight(true);
 			p.setFlying(true);
 			pli.scoreboardManager.updateScoreboard(plugin, this);
-			if (this.getPlayerAlive() < 2) {
-				final Arena a = this;
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-					public void run() {
-						a.stop();
-					}
-				}, 20L);
+			if (!plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
+				if (this.getPlayerAlive() < 1) {
+					final Arena a = this;
+					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+						public void run() {
+							a.stop();
+						}
+					}, 20L);
+				} else {
+					Location temp = this.spawns.get(0);
+					Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+				}
 			} else {
-				Location temp = this.spawns.get(0);
-				Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+				if (this.getPlayerAlive() < 2) {
+					final Arena a = this;
+					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+						public void run() {
+							a.stop();
+						}
+					}, 20L);
+				} else {
+					Location temp = this.spawns.get(0);
+					Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+				}
 			}
 		}
 	}
