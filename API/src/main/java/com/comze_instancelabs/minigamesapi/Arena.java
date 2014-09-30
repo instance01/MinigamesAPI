@@ -451,6 +451,7 @@ public class Arena {
 			try {
 				Player p = Bukkit.getPlayer(playername);
 				if (p != null) {
+					p.removePotionEffect(PotionEffectType.JUMP);
 					Util.teleportPlayerFixed(p, this.mainlobby);
 					p.setFireTicks(0);
 					p.setFlying(false);
@@ -556,6 +557,7 @@ public class Arena {
 			pli.getSpectatorManager().setSpectate(p, true);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
 				this.leavePlayer(playername, false, true);
+				return;
 			}
 			Util.clearInv(p);
 			Util.giveSpectatorItems(plugin, p);

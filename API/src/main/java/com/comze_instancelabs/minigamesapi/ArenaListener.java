@@ -271,6 +271,10 @@ public class ArenaListener implements Listener {
 
 			if (p != null && attacker != null) {
 				if (pli.global_players.containsKey(p.getName()) && pli.global_players.containsKey(attacker.getName())) {
+					if(pli.global_lost.containsKey(attacker.getName())){
+						event.setCancelled(true);
+						return;
+					}
 					Arena a = (Arena) pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
 						a.lastdamager.put(p.getName(), attacker.getName());
