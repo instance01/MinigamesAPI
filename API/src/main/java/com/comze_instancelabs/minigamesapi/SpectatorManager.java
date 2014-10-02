@@ -79,13 +79,16 @@ public class SpectatorManager {
 			}, plugin);
 		}
 
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		int c = 0;
 		for (String p__ : a.getAllPlayers()) {
 			Player p_ = Bukkit.getPlayer(p__);
 			if (p_ != null) {
-				if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p__)) {
-					iconm.setOption(c, Util.getCustomHead(p__), p__, "");
-					c++;
+				if (pli.global_players.containsKey(p__) && !pli.global_lost.containsKey(p__)) {
+					if (a.getName().equalsIgnoreCase(pli.global_players.get(p__).getName())) {
+						iconm.setOption(c, Util.getCustomHead(p__), p__, "");
+						c++;
+					}
 				}
 			}
 		}
@@ -93,6 +96,5 @@ public class SpectatorManager {
 		iconm.open(p);
 		lasticonm.put(p.getName(), iconm);
 	}
-	
 
 }
