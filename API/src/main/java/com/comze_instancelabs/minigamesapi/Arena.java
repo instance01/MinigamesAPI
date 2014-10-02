@@ -631,6 +631,7 @@ public class Arena {
 			return;
 		}
 		this.setArenaState(ArenaState.STARTING);
+		Util.updateSign(plugin, this);
 		currentlobbycount = pli.lobby_countdown;
 		final Arena a = this;
 
