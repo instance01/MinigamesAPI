@@ -64,6 +64,7 @@ public class DefaultConfig {
 			config.addDefault("config.send_game_started_msg", false);
 			config.addDefault("config.auto_add_default_kit", true);
 			config.addDefault("config.last_man_standing_wins", true);
+			config.addDefault("config.effects", true);
 
 			config.addDefault("mysql.enabled", false);
 			config.addDefault("mysql.host", "127.0.0.1");

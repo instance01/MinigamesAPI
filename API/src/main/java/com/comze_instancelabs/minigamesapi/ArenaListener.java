@@ -254,7 +254,9 @@ public class ArenaListener implements Listener {
 						// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 						event.setCancelled(true);
 					} else {
-						Effects.playBloodEffect(p);
+						if (plugin.getConfig().getBoolean("config.effects")) {
+							Effects.playBloodEffect(p);
+						}
 					}
 				}
 				if (pli.global_lost.containsKey(p.getName())) {
