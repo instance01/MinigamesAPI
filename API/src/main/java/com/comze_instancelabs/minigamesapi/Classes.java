@@ -223,7 +223,7 @@ public class Classes {
 						}
 						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
 					} else {
-						p.sendMessage("§4You don't have enough money!");
+						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_enough_money);
 						return false;
 					}
 				} else {
