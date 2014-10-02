@@ -271,6 +271,7 @@ public class Arena {
 							this.leavePlayer(p_, false, true);
 							Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().you_got_kicked_because_vip_joined);
 							noone_found = false;
+							break;
 						}
 					}
 				}
