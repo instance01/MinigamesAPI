@@ -113,12 +113,14 @@ public class Classes {
 			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
 			return;
 		}
+		boolean continue_ = true;
 		if (kitRequiresMoney(internalname)) {
-			kitTakeMoney(Bukkit.getPlayer(player), internalname.toLowerCase());
+			continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname.toLowerCase());
 		}
-		// System.out.println(internalname + " " + getClassByInternalname(internalname).getName());
-		MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(internalname));
-		Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', internalname)));
+		if (continue_) {
+			MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(internalname));
+			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', internalname)));
+		}
 	}
 
 	public String getInternalNameByName(String name) {

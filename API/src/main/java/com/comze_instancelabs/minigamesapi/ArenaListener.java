@@ -86,7 +86,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		// spectators shall not pickup items
+		// spectators shall not pick up items
 		if (pli.global_lost.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_lost.get(event.getPlayer().getName());
 			if (a.getArenaState() != ArenaState.INGAME) {
@@ -251,14 +251,14 @@ public class ArenaListener implements Listener {
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
-						System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
+						// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 						event.setCancelled(true);
 					} else {
 						Effects.playBloodEffect(p);
 					}
 				}
 				if (pli.global_lost.containsKey(p.getName())) {
-					System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
+					// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 					event.setCancelled(true);
 				}
 			}
