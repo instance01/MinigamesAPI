@@ -39,6 +39,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -77,6 +78,17 @@ public class ArenaListener implements Listener {
 	public void onPlayerDrop(PlayerDropItemEvent event) {
 		if (pli.global_players.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
+			if (a.getArenaState() != ArenaState.INGAME) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+		// spectators shall not pickup items
+		if (pli.global_lost.containsKey(event.getPlayer().getName())) {
+			Arena a = pli.global_lost.get(event.getPlayer().getName());
 			if (a.getArenaState() != ArenaState.INGAME) {
 				event.setCancelled(true);
 			}
@@ -271,7 +283,7 @@ public class ArenaListener implements Listener {
 
 			if (p != null && attacker != null) {
 				if (pli.global_players.containsKey(p.getName()) && pli.global_players.containsKey(attacker.getName())) {
-					if(pli.global_lost.containsKey(attacker.getName())){
+					if (pli.global_lost.containsKey(attacker.getName())) {
 						event.setCancelled(true);
 						return;
 					}
