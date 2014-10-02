@@ -119,7 +119,7 @@ public class Classes {
 		}
 		if (continue_) {
 			MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(internalname));
-			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', internalname)));
+			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(internalname).getName())));
 		}
 	}
 
