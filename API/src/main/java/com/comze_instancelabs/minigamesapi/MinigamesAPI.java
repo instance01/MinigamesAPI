@@ -1,5 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -28,8 +31,10 @@ import com.comze_instancelabs.minigamesapi.util.Metrics;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Updater;
 import com.comze_instancelabs.minigamesapi.util.Util;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 
-public class MinigamesAPI extends JavaPlugin {
+public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 
 	static MinigamesAPI instance = null;
 	public static Economy econ = null;
@@ -54,6 +59,7 @@ public class MinigamesAPI extends JavaPlugin {
 		this.version = version;
 
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
 
 		if (economy) {
 			if (!setupEconomy()) {
@@ -247,6 +253,49 @@ public class MinigamesAPI extends JavaPlugin {
 
 		}
 		return true;
+	}
+
+	@Override
+	public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+		if (!channel.equals("BungeeCord")) {
+			return;
+		}
+		ByteArrayDataInput in = ByteStreams.newDataInput(message);
+		String subchannel = in.readUTF();
+		System.out.println(subchannel);
+		if (subchannel.equals("MinigamesLibBack")) {
+			short len = in.readShort();
+			byte[] msgbytes = new byte[len];
+			in.readFully(msgbytes);
+
+			DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
+			try {
+				final String playerData = msgin.readUTF();
+				final String plugin_ = playerData.split(":")[0];
+				final String arena = playerData.split(":")[1];
+				final String playername = playerData.split(":")[2];
+				System.out.println(plugin_ + " -> " + arena);
+				JavaPlugin plugin = null;
+				for (JavaPlugin pl : this.pinstances.keySet()) {
+					if (pl.getName().contains(plugin_)) {
+						plugin = pl;
+						break;
+					}
+				}
+				if (plugin != null) {
+					final Arena a = pinstances.get(plugin).getArenaByName(arena);
+					if (a.getArenaState() != ArenaState.INGAME && a.getArenaState() != ArenaState.RESTARTING && !a.containsPlayer(playername)) {
+						Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+							public void run() {
+								a.joinPlayerLobby(playername);
+							}
+						}, 20L);
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

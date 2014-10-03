@@ -30,7 +30,7 @@ public class BungeeUtil {
 		ByteArrayDataOutput out = ByteStreams.newDataOutput();
 		try {
 			out.writeUTF("Forward");
-			out.writeUTF("lobby");
+			out.writeUTF("ALL");
 			out.writeUTF("MinigamesLib");
 
 			ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
