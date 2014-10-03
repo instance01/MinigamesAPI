@@ -115,7 +115,7 @@ public class Classes {
 		}
 		boolean continue_ = true;
 		if (kitRequiresMoney(internalname)) {
-			continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname.toLowerCase());
+			continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname);
 		}
 		if (continue_) {
 			MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(internalname));
@@ -230,7 +230,8 @@ public class Classes {
 					return true;
 				}
 			} else {
-				int money = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount");
+				ClassesConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig();
+				int money = config.getConfig().getInt("config.kits." + kit + ".money_amount");
 				if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= money) {
 					EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), money);
 					if (!r.transactionSuccess()) {
