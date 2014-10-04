@@ -38,6 +38,7 @@ public class ArcadeInstance {
 		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (!players.contains(playername)) {
 			players.add(playername);
+			arena.addPlayer(playername);
 		}
 		if (players.size() >= plugin.getConfig().getInt("config.arcade.min_players")) {
 			if (!started) {
@@ -71,6 +72,9 @@ public class ArcadeInstance {
 	public void leaveArcade(final String playername) {
 		if (players.contains(playername)) {
 			players.remove(playername);
+		}
+		if (arena.containsPlayer(playername)) {
+			arena.removePlayer(playername);
 		}
 		if (minigames.get(currentindex).getArenas().size() > 0) {
 			if (minigames.get(currentindex).getArenas().get(0).containsPlayer(playername)) {
@@ -246,7 +250,8 @@ public class ArcadeInstance {
 						currentarena = a;
 						PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 						for (String p_ : temp) {
-							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", mg.getArenaListener().getName()));
+							String minigame = mg.getArenaListener().getName();
+							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", Character.toUpperCase(minigame.charAt(0)) + minigame.substring(1)));
 							a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
 							pli.getSpectatorManager().setSpectate(Bukkit.getPlayer(p_), false);
 						}

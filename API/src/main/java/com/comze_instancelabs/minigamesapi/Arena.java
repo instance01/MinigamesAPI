@@ -219,6 +219,17 @@ public class Arena {
 		return players.add(playername);
 	}
 
+	/**
+	 * Please do not use this function to remove players
+	 * 
+	 * @param playername
+	 * @return
+	 */
+	@Deprecated
+	public boolean removePlayer(String playername) {
+		return players.remove(playername);
+	}
+
 	public ArenaState getArenaState() {
 		return this.currentstate;
 	}
