@@ -16,6 +16,7 @@ import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.Party;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
+import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
@@ -81,6 +82,8 @@ public class CommandHandler {
 				return this.resetArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setauthor")) {
 				return this.setAuthor(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("kit")) {
+				return this.setKit(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb")) {
 				return this.getLeaderboards(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
@@ -548,6 +551,38 @@ public class CommandHandler {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <author>");
+		}
+		return true;
+	}
+
+	public boolean setKit(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (args.length > 1) {
+			if (pli.global_players.containsKey(p.getName())) {
+				String kit = args[1];
+				AClass ac = pli.getClassesHandler().getClassByInternalname(kit);
+				if (ac != null) {
+					if (pli.getAClasses().containsKey(ac.getName())) {
+						if (ac.isEnabled()) {
+							pli.getClassesHandler().setClass(kit, p.getName());
+							return true;
+						}
+					}
+				}
+
+				String all = "";
+				for (AClass k : pli.getAClasses().values()) {
+					all += k.getInternalName() + ", ";
+				}
+				if (all.length() < 2) {
+					all = "No kits found!  ";
+				}
+				all = all.substring(0, all.length() - 2);
+				sender.sendMessage(pli.getMessagesConfig().possible_kits + all);
+			} else {
+				sender.sendMessage(pli.getMessagesConfig().not_in_arena);
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <kit>");
 		}
 		return true;
 	}

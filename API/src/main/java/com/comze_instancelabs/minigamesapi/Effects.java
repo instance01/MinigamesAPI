@@ -11,7 +11,7 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 public class Effects {
 
 	public static void playBloodEffect(Player p) {
-		p.getWorld().playEffect(p.getLocation().add(0.5D, 1D, 0.5D), Effect.STEP_SOUND, 152);
+		p.getWorld().playEffect(p.getLocation().add(0D, 1D, 0D), Effect.STEP_SOUND, 152);
 	}
 
 	public static void playEffect(Arena a, Location l, String effectname) {
