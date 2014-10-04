@@ -451,6 +451,15 @@ public class Arena {
 
 			try {
 				Player p = Bukkit.getPlayer(playername);
+				if (pli.global_players.containsKey(playername)) {
+					pli.global_players.remove(playername);
+				}
+				if (pli.global_lost.containsKey(playername)) {
+					pli.global_lost.remove(playername);
+				}
+				if (pli.global_arcade_spectator.containsKey(playername)) {
+					pli.global_arcade_spectator.remove(playername);
+				}
 				if (p != null) {
 					p.removePotionEffect(PotionEffectType.JUMP);
 					Util.teleportPlayerFixed(p, this.mainlobby);

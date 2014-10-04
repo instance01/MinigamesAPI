@@ -587,6 +587,9 @@ public class Util {
 	}
 
 	public static void sendMessage(JavaPlugin plugin, Player p, String msgraw) {
+		if (msgraw.equalsIgnoreCase("")) {
+			return;
+		}
 		String[] msgs = msgraw.replaceAll("<player>", p.getName()).replaceAll("<game>", plugin.getName()).split(";");
 		for (String msg : msgs) {
 			p.sendMessage(msgs);
