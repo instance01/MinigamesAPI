@@ -57,7 +57,7 @@ public class ArenaScoreboard {
 					if (custom) {
 						try {
 							for (String configline : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.custom_scoreboard.").getKeys(false)) {
-								String line = pli.getMessagesConfig().getConfig().getString("messages.custom_scoreboard." + configline);
+								String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_scoreboard." + configline));
 								String[] line_arr = line.split(":");
 								String line_ = line_arr[0];
 								String score_identifier = line_arr[1];
