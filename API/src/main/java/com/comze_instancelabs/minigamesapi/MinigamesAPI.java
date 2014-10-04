@@ -238,6 +238,31 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				cmdhandler.sendPartyHelp("/" + cmd.getName(), sender);
 			}
 		} else {
+			if (args.length > 1) {
+				if (args[0].equalsIgnoreCase("info")) {
+					String p = args[1];
+					sender.sendMessage("Debug info about " + p);
+					sender.sendMessage("~ global_players: ");
+					for (PluginInstance pli : pinstances.values()) {
+						if (pli.global_players.containsKey(p)) {
+							sender.sendMessage(pli.getPlugin().getName() + ", ");
+						}
+					}
+					sender.sendMessage("~ global_lost: ");
+					for (PluginInstance pli : pinstances.values()) {
+						if (pli.global_lost.containsKey(p)) {
+							sender.sendMessage(pli.getPlugin().getName() + ", ");
+						}
+					}
+					sender.sendMessage("~ SpectatorManager: ");
+					for (PluginInstance pli : pinstances.values()) {
+						if (pli.getSpectatorManager().isSpectating(Bukkit.getPlayer(p))) {
+							sender.sendMessage(pli.getPlugin().getName() + ", ");
+						}
+					}
+					return true;
+				}
+			}
 			if (sender instanceof Player && args.length > 0) {
 				Player p = (Player) sender;
 				ParticleEffectNew eff = ParticleEffectNew.valueOf(args[0]);
@@ -250,7 +275,6 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				p.getWorld().playEffect(p.getLocation(), Effect.STEP_SOUND, 152);
 				p.getWorld().playEffect(p.getLocation().add(0D, 1D, 0D), Effect.STEP_SOUND, 152);
 			}
-
 		}
 		return true;
 	}
