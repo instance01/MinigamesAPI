@@ -540,16 +540,20 @@ public class Util {
 			classes_item.setItemMeta(cimeta);
 		}
 
-		ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.exit_item"));
-		if (exit_item.getType() != Material.AIR) {
-			ItemMeta exitimeta = exit_item.getItemMeta();
-			exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
-			exit_item.setItemMeta(exitimeta);
+		if (!plugin.getConfig().getBoolean("config.bungee.game_on_join")) {
+			ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.exit_item"));
+			if (exit_item.getType() != Material.AIR) {
+				ItemMeta exitimeta = exit_item.getItemMeta();
+				exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
+				exit_item.setItemMeta(exitimeta);
+			}
+			p.getInventory().setItem(8, exit_item);
+			p.updateInventory();
 		}
 
 		ItemStack achievement_item = new ItemStack(plugin.getConfig().getInt("config.achievement_item"));
 		if (achievement_item.getType() != Material.AIR) {
-			ItemMeta achievement_itemmeta = exit_item.getItemMeta();
+			ItemMeta achievement_itemmeta = achievement_item.getItemMeta();
 			achievement_itemmeta.setDisplayName(pli.getMessagesConfig().achievement_item);
 			achievement_item.setItemMeta(achievement_itemmeta);
 		}
@@ -558,7 +562,6 @@ public class Util {
 		if (pli.isAchievementGuiEnabled()) {
 			p.getInventory().addItem(achievement_item);
 		}
-		p.getInventory().setItem(8, exit_item);
 		p.updateInventory();
 	}
 
