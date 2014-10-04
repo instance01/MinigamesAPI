@@ -78,7 +78,7 @@ public class ArenaListener implements Listener {
 	public void onPlayerDrop(PlayerDropItemEvent event) {
 		if (pli.global_players.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
-			if (a.getArenaState() != ArenaState.INGAME) {
+			if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
 				event.setCancelled(true);
 			}
 		}
@@ -89,7 +89,7 @@ public class ArenaListener implements Listener {
 		// spectators shall not pick up items
 		if (pli.global_lost.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_lost.get(event.getPlayer().getName());
-			if (a.getArenaState() != ArenaState.INGAME) {
+			if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
 				event.setCancelled(true);
 			}
 		}
@@ -101,7 +101,7 @@ public class ArenaListener implements Listener {
 			Player p = (Player) event.getWhoClicked();
 			if (pli.global_players.containsKey(p.getName())) {
 				Arena a = pli.global_players.get(p.getName());
-				if (a.getArenaState() == ArenaState.STARTING) {
+				if (a.getArenaState() == ArenaState.STARTING && a.getArcadeInstance() != null) {
 					event.setCancelled(true);
 				}
 			}
@@ -250,7 +250,7 @@ public class ArenaListener implements Listener {
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
-					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
+					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null && !a.getAlwaysPvP()) {
 						// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 						event.setCancelled(true);
 					} else {
@@ -266,7 +266,7 @@ public class ArenaListener implements Listener {
 			} else if (event.getCause().equals(DamageCause.FALL)) {
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
-					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null ) {
+					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
 						event.setCancelled(true);
 					}
 				}
