@@ -1016,4 +1016,8 @@ public class Arena {
 		return pspawnloc;
 	}
 
+	public JavaPlugin getPlugin() {
+		return plugin;
+	}
+
 }

@@ -357,7 +357,7 @@ public class CommandHandler {
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
 			if (a.getArcadeInstance() != null) {
-				a.getArcadeInstance().leaveArcade(p.getName());
+				a.getArcadeInstance().leaveArcade(p.getName(), true);
 			}
 			a.leavePlayer(p.getName(), false, false);
 		} else {

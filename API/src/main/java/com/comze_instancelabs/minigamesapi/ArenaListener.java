@@ -78,8 +78,10 @@ public class ArenaListener implements Listener {
 	public void onPlayerDrop(PlayerDropItemEvent event) {
 		if (pli.global_players.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
-			if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
-				event.setCancelled(true);
+			if (a != null) {
+				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
+					event.setCancelled(true);
+				}
 			}
 		}
 	}
@@ -87,10 +89,12 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 		// spectators shall not pick up items
-		if (pli.global_lost.containsKey(event.getPlayer().getName())) {
+		if (pli.global_lost.containsKey(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
 			Arena a = pli.global_lost.get(event.getPlayer().getName());
-			if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
-				event.setCancelled(true);
+			if (a != null) {
+				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
+					event.setCancelled(true);
+				}
 			}
 		}
 	}
@@ -101,8 +105,10 @@ public class ArenaListener implements Listener {
 			Player p = (Player) event.getWhoClicked();
 			if (pli.global_players.containsKey(p.getName())) {
 				Arena a = pli.global_players.get(p.getName());
-				if (a.getArenaState() == ArenaState.STARTING && a.getArcadeInstance() != null) {
-					event.setCancelled(true);
+				if (a != null) {
+					if (a.getArenaState() == ArenaState.STARTING && a.getArcadeInstance() != null) {
+						event.setCancelled(true);
+					}
 				}
 			}
 		}
@@ -259,7 +265,7 @@ public class ArenaListener implements Listener {
 						}
 					}
 				}
-				if (pli.global_lost.containsKey(p.getName())) {
+				if (pli.global_lost.containsKey(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
 					// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 					event.setCancelled(true);
 				}
@@ -292,7 +298,7 @@ public class ArenaListener implements Listener {
 
 			if (p != null && attacker != null) {
 				if (pli.global_players.containsKey(p.getName()) && pli.global_players.containsKey(attacker.getName())) {
-					if (pli.global_lost.containsKey(attacker.getName())) {
+					if (pli.global_lost.containsKey(attacker.getName()) || pli.getSpectatorManager().isSpectating(p)) {
 						event.setCancelled(true);
 						return;
 					}
@@ -376,6 +382,10 @@ public class ArenaListener implements Listener {
 				event.setCancelled(true);
 				return;
 			}
+			if (pli.getSpectatorManager().isSpectating(p)) {
+				event.setCancelled(true);
+				return;
+			}
 			a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 			if (event.getBlock().getType() == Material.DOUBLE_PLANT) {
 				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, -1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
@@ -452,7 +462,7 @@ public class ArenaListener implements Listener {
 		Player p = event.getPlayer();
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
-			if (a.getArenaState() != ArenaState.INGAME) {
+			if (a.getArenaState() != ArenaState.INGAME || pli.global_lost.containsKey(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
 				event.setCancelled(true);
 				return;
 			}

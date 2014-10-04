@@ -52,7 +52,7 @@ public class ArcadeInstance {
 							if (p != null) {
 								PluginInstance pli_ = minigames.get(currentindex);
 								System.out.println(pli_.getPlugin().getName() + " " + currentarena.getName() + " " + p.getName());
-								if (currentarena.getArenaState() != ArenaState.INGAME) {
+								if (currentarena.getArenaState() != ArenaState.INGAME && currentarena.getArenaState() != ArenaState.RESTARTING) {
 									currentarena.joinPlayerLobby(playername, this, false, true);
 								} else {
 									msg = false;
@@ -76,6 +76,11 @@ public class ArcadeInstance {
 	}
 
 	public void leaveArcade(final String playername) {
+		this.leaveArcade(playername, true);
+	}
+
+	public void leaveArcade(final String playername, boolean endOfGame) {
+		final PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (players.contains(playername)) {
 			players.remove(playername);
 		}
@@ -92,7 +97,7 @@ public class ArcadeInstance {
 				Player p = Bukkit.getPlayer(playername);
 				if (p != null) {
 					Util.teleportPlayerFixed(p, arena.getMainLobbyTemp());
-					MinigamesAPI.getAPI().pinstances.get(plugin).getSpectatorManager().setSpectate(p, false);
+					pli.getSpectatorManager().setSpectate(p, false);
 					if (!p.isOp()) {
 						p.setFlying(false);
 						p.setAllowFlight(false);
@@ -101,8 +106,30 @@ public class ArcadeInstance {
 			}
 		}, 20L);
 		clean();
-		if (players.size() < 2) {
-			stopArcade(false);
+
+		// This shouldn't be necessary anymore except for arcade spectators
+		if (pli.global_players.containsKey(playername)) {
+			pli.global_players.remove(playername);
+		}
+		if (pli.global_lost.containsKey(playername)) {
+			pli.global_lost.remove(playername);
+		}
+		if (currentarena != null) {
+			PluginInstance pli_ = MinigamesAPI.getAPI().pinstances.get(currentarena.getPlugin());
+			if (pli_ != null) {
+				if (pli_.global_players.containsKey(playername)) {
+					pli_.global_players.remove(playername);
+				}
+				if (pli_.global_lost.containsKey(playername)) {
+					pli_.global_lost.remove(playername);
+				}
+			}
+		}
+
+		if (endOfGame) {
+			if (players.size() < 2) {
+				stopArcade(false);
+			}
 		}
 	}
 
@@ -151,7 +178,7 @@ public class ArcadeInstance {
 		}
 		final ArrayList<String> temp = new ArrayList<String>(players);
 		for (String p_ : temp) {
-			this.leaveArcade(p_);
+			this.leaveArcade(p_, false);
 		}
 		players.clear();
 		started = false;
@@ -257,8 +284,10 @@ public class ArcadeInstance {
 						PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 						for (String p_ : temp) {
 							String minigame = mg.getArenaListener().getName();
-							Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", Character.toUpperCase(minigame.charAt(0)) + minigame.substring(1)));
-							a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
+							if (!a.containsPlayer(p_)) {
+								Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", Character.toUpperCase(minigame.charAt(0)) + minigame.substring(1)));
+								a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
+							}
 							pli.getSpectatorManager().setSpectate(Bukkit.getPlayer(p_), false);
 						}
 					} else {

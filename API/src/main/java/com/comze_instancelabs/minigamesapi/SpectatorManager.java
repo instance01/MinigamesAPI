@@ -48,6 +48,11 @@ public class SpectatorManager {
 		}
 	}
 
+	@Deprecated
+	public boolean isSpectating(Player p) {
+		return Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p);
+	}
+
 	private void clear() {
 		Team t = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators");
 		ArrayList<OfflinePlayer> offp_set = new ArrayList<OfflinePlayer>(t.getPlayers());
