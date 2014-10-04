@@ -86,6 +86,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.guns.all_guns", all_guns);
 		this.getConfig().addDefault("messages.arcade_next_minigame", arcade_next_minigame);
 		this.getConfig().addDefault("messages.arcade_joined_waiting", arcade_joined_waiting);
+		this.getConfig().addDefault("messages.arcade_joined_spectator", arcade_joined_spectator);
 		this.getConfig().addDefault("messages.arcade_new_round", arcade_new_round);
 		this.getConfig().addDefault("messages.arena_disabled", arena_disabled);
 		this.getConfig().addDefault("messages.you_can_leave_with", you_can_leave_with);
@@ -145,6 +146,7 @@ public class MessagesConfig {
 		this.arena_disabled = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_disabled"));
 		this.you_can_leave_with = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_can_leave_with"));
 		this.arcade_joined_waiting = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_joined_waiting"));
+		this.arcade_joined_spectator = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_joined_spectator"));
 		this.no_perm_to_join_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.no_perm_to_join_arena"));
 		this.set_kit = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.set_kit"));
 		this.classes_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.classes_item"));
@@ -202,6 +204,7 @@ public class MessagesConfig {
 	public String arena_disabled = "&cThe arena is disabled thus you can't join.";
 	public String all_guns = "&aYour current main guns: &2<guns>";
 	public String you_can_leave_with = "&cYou can leave with <cmd> or /l!";
+	public String arcade_joined_spectator = "&6You joined Arcade as a spectator! You'll be able to play in the next minigame.";
 	public String arcade_joined_waiting = "&6You joined Arcade! Waiting for <count> more players to start.";
 	public String arcade_new_round = "&6Next Arcade round in <count>!";
 	public String no_perm_to_join_arena = "&cYou don't have permission (arenas.<arena>) to join this arena as it's vip!";

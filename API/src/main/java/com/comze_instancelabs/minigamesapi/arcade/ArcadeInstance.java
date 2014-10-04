@@ -41,6 +41,7 @@ public class ArcadeInstance {
 			arena.addPlayer(playername);
 		}
 		if (players.size() >= plugin.getConfig().getInt("config.arcade.min_players")) {
+			boolean msg = true;
 			if (!started) {
 				startArcade();
 			} else {
@@ -54,6 +55,7 @@ public class ArcadeInstance {
 								if (currentarena.getArenaState() != ArenaState.INGAME) {
 									currentarena.joinPlayerLobby(playername, this, false, true);
 								} else {
+									msg = false;
 									currentarena.spectateArcade(playername);
 								}
 
@@ -63,7 +65,11 @@ public class ArcadeInstance {
 					}
 				}
 			}
-			Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
+			if (msg) {
+				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
+			} else {
+				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_spectator);
+			}
 		} else {
 			Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.min_players") - players.size())));
 		}
