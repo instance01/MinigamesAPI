@@ -695,6 +695,9 @@ public class ArenaListener implements Listener {
 			if (!plugin.getConfig().getBoolean("config.disable_commands_in_arena")) {
 				return;
 			}
+			if (plugin.getConfig().getString("config.command_whitelist").toLowerCase().contains(event.getMessage().toLowerCase())) {
+				return;
+			}
 			boolean cont = false;
 			for (String cmd : cmds) {
 				if (event.getMessage().toLowerCase().startsWith(cmd.toLowerCase())) {

@@ -55,6 +55,7 @@ public class DefaultConfig {
 			config.addDefault("config.broadcast_win", true);
 			config.addDefault("config.buy_classes_forever", true);
 			config.addDefault("config.disable_commands_in_arena", true);
+			config.addDefault("config.command_whitelist", "/msg,/pm,/help");
 			config.addDefault("config.leave_command", "/leave");
 			config.addDefault("config.spawn_fireworks_for_winners", true);
 			config.addDefault("config.broadcast_powerup_spawning", false);
