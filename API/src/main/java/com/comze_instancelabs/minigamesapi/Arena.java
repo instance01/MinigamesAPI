@@ -439,7 +439,25 @@ public class Arena {
 
 		if (!endofGame) {
 			if (this.getAllPlayers().size() < 2) {
-				this.stop();
+				if (this.getArenaState() != ArenaState.JOIN) {
+					if (this.getArenaState() == ArenaState.STARTING && !startedIngameCountdown) {
+						// cancel starting
+						this.setArenaState(ArenaState.JOIN);
+						Util.updateSign(plugin, this);
+						try {
+							Bukkit.getScheduler().cancelTask(currenttaskid);
+						} catch (Exception e) {
+							;
+						}
+						for (String p_ : this.getAllPlayers()) {
+							if (Validator.isPlayerOnline(p_)) {
+								Util.sendMessage(plugin, Bukkit.getPlayer(p_), pli.getMessagesConfig().cancelled_starting);
+							}
+						}
+						return;
+					}
+					this.stop();
+				}
 			}
 		}
 	}
@@ -718,9 +736,9 @@ public class Arena {
 		}
 		final Arena a = this;
 		pli.scoreboardManager.updateScoreboard(plugin, a);
+		startedIngameCountdown = true;
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				startedIngameCountdown = true;
 				currentingamecount--;
 				if (currentingamecount == 60 || currentingamecount == 30 || currentingamecount == 15 || currentingamecount == 10 || currentingamecount < 6) {
 					for (String p_ : a.getAllPlayers()) {
