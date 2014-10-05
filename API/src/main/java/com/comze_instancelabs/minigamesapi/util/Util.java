@@ -114,7 +114,7 @@ public class Util {
 	public static Location getComponentForArena(JavaPlugin plugin, String arenaname, String component, String count) {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component + count;
-			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
@@ -123,7 +123,16 @@ public class Util {
 	public static Location getComponentForArena(JavaPlugin plugin, String arenaname, String component) {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component;
-			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
+		}
+		return null;
+	}
+
+	public static Location getComponentForArenaRaw(JavaPlugin plugin, String arenaname, String component) {
+		String base = "arenas." + arenaname + "." + component;
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+		if (pli.getArenasConfig().getConfig().isSet(base)) {
 			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
 		}
 		return null;
@@ -132,7 +141,7 @@ public class Util {
 	public static boolean isComponentForArenaValid(JavaPlugin plugin, String arenaname, String component) {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component;
-			if (MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().isSet(base)) {
+			if (MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().isSet(base)) {
 				return true;
 			}
 		}
@@ -141,7 +150,7 @@ public class Util {
 
 	public static void saveComponentForArena(JavaPlugin plugin, String arenaname, String component, Location comploc) {
 		String base = "arenas." + arenaname + "." + component;
-		ArenasConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig();
+		ArenasConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig();
 		config.getConfig().set(base + ".world", comploc.getWorld().getName());
 		config.getConfig().set(base + ".location.x", comploc.getX());
 		config.getConfig().set(base + ".location.y", comploc.getY());
@@ -153,7 +162,7 @@ public class Util {
 
 	public static void saveMainLobby(JavaPlugin plugin, Location comploc) {
 		String base = "mainlobby";
-		ArenasConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig();
+		ArenasConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig();
 		config.getConfig().set(base + ".world", comploc.getWorld().getName());
 		config.getConfig().set(base + ".location.x", comploc.getX());
 		config.getConfig().set(base + ".location.y", comploc.getY());
@@ -164,7 +173,7 @@ public class Util {
 	}
 
 	public static Location getMainLobby(JavaPlugin plugin) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
 		if (!config.isSet("mainlobby")) {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "You forgot to set the mainlobby!");
 		}
@@ -172,7 +181,7 @@ public class Util {
 	}
 
 	public static ArrayList<Location> getAllSpawns(JavaPlugin plugin, String arena) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
 		ArrayList<Location> ret = new ArrayList<Location>();
 		if (!config.isSet("arenas." + arena + ".spawns")) {
 			return ret;
@@ -342,7 +351,7 @@ public class Util {
 	}
 
 	public static Sign getSignFromArena(JavaPlugin plugin, String arena) {
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		if (!pli.getArenasConfig().getConfig().isSet("arenas." + arena + ".sign.world")) {
 			return null;
 		}
@@ -372,7 +381,7 @@ public class Util {
 	}
 
 	public static Arena getArenaBySignLocation(JavaPlugin plugin, Location sign) {
-		for (Arena arena : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+		for (Arena arena : MinigamesAPI.getAPI().getPluginInstance(plugin).getArenas()) {
 			if (sign != null && arena.getArena().getSignLocation() != null) {
 				if (sign.getWorld().getName().equalsIgnoreCase(arena.getSignLocation().getWorld().getName())) {
 					if (sign.distance(arena.getArena().getSignLocation()) < 1) {
@@ -388,11 +397,12 @@ public class Util {
 		Sign s = getSignFromArena(plugin, arena.getName());
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		if (s != null) {
-			s.setLine(0, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-			s.setLine(1, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-			s.setLine(2, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-			s.setLine(3, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(0, pli.getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(1, pli.getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(2, pli.getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+			s.setLine(3, pli.getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 			s.update();
 		}
 		try {
@@ -400,17 +410,29 @@ public class Util {
 				BungeeUtil.sendSignUpdateRequest(plugin, plugin.getName(), arena);
 			}
 		} catch (Exception e) {
-			// TODO
+			System.out.println("Failed sending bungee sign update: " + e.getMessage());
 		}
 	}
 
 	public static void updateSign(JavaPlugin plugin, Arena arena, SignChangeEvent event) {
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();
-		event.setLine(0, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-		event.setLine(1, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-		event.setLine(2, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-		event.setLine(3, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().getConfig().getString("signs." + arena.getArenaState().toString().toLowerCase() + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+		String arenastate = arena.getArenaState().toString().toLowerCase();
+		event.setLine(0, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(1, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(2, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(3, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+	}
+
+	// used for random sign
+	public static void updateSign(JavaPlugin plugin, SignChangeEvent event) {
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+		String arenastate = "random";
+		event.setLine(0, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".0").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(1, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".1").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(2, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".2").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+		event.setLine(3, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".3").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 	}
 
 	public static ArrayList<Arena> loadArenas(JavaPlugin plugin, ArenasConfig cf) {
@@ -429,7 +451,7 @@ public class Util {
 
 	public static Arena initArena(JavaPlugin plugin, String arena) {
 		Arena a = new Arena(plugin, arena);
-		ArenaSetup s = MinigamesAPI.getAPI().pinstances.get(plugin).arenaSetup;
+		ArenaSetup s = MinigamesAPI.getAPI().getPluginInstance(plugin).arenaSetup;
 		a.init(getSignLocationFromArena(plugin, arena), getAllSpawns(plugin, arena), getMainLobby(plugin), getComponentForArena(plugin, arena, "lobby"), s.getPlayerCount(plugin, arena, true), s.getPlayerCount(plugin, arena, false), s.getArenaVIP(plugin, arena));
 		return a;
 	}
@@ -532,7 +554,7 @@ public class Util {
 	}
 
 	public static void giveLobbyItems(JavaPlugin plugin, Player p) {
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
 		if (classes_item.getType() != Material.AIR) {
 			ItemMeta cimeta = classes_item.getItemMeta();
@@ -566,7 +588,7 @@ public class Util {
 	}
 
 	public static void giveSpectatorItems(JavaPlugin plugin, Player p) {
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		ItemStack s_item = new ItemStack(plugin.getConfig().getInt("config.spectator_item"));
 		ItemMeta s_imeta = s_item.getItemMeta();
 		s_imeta.setDisplayName(pli.getMessagesConfig().spectator_item);
@@ -617,7 +639,7 @@ public class Util {
 			for (String p_ : a.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_)) {
 					Player p = Bukkit.getPlayer(p_);
-					p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().powerup_spawned);
+					p.sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().powerup_spawned);
 				}
 			}
 		}

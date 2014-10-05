@@ -50,11 +50,17 @@ public class MessagesConfig {
 			this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", color + "[]");
 		}
 
-		// Arcade sign
+		// Arcade sign (I think that one is unused)
 		this.getConfig().addDefault("signs.arcade.0", "[]");
 		this.getConfig().addDefault("signs.arcade.1", "&cArcade");
 		this.getConfig().addDefault("signs.arcade.2", "<count>/<maxcount>");
 		this.getConfig().addDefault("signs.arcade.3", "[]");
+
+		// Random
+		this.getConfig().addDefault("signs.random.0", "&a[]");
+		this.getConfig().addDefault("signs.random.1", "&2Random");
+		this.getConfig().addDefault("signs.random.2", "");
+		this.getConfig().addDefault("signs.random.3", "&a[]");
 
 		this.getConfig().addDefault("messages.no_perm", no_perm);
 		this.getConfig().addDefault("messages.successfully_reloaded", successfully_reloaded);

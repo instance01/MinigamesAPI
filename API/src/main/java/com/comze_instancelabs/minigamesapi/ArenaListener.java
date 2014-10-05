@@ -497,6 +497,24 @@ public class ArenaListener implements Listener {
 					} else {
 						Util.sendMessage(plugin, p, pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getName()));
 					}
+				} else {
+					// try getting random sign
+					Location l = Util.getComponentForArenaRaw(plugin, "random", "sign");
+					if (l != null) {
+						if (l.getWorld() != null) {
+							if (l.distance(s.getLocation()) < 1) {
+								// TODO test
+								for (Arena a : pli.getArenas()) {
+									if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
+										if (!a.containsPlayer(event.getPlayer().getName())) {
+											a.joinPlayerLobby(event.getPlayer().getName());
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			} else if (event.getClickedBlock().getType() == Material.CHEST) {
 				Player p = event.getPlayer();
@@ -566,25 +584,34 @@ public class ArenaListener implements Listener {
 			if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
 				if (!event.getLine(1).equalsIgnoreCase("")) {
 					String arena = event.getLine(1);
-					if (Validator.isArenaValid(plugin, arena)) {
+					if (arena.equalsIgnoreCase("random")) {
 						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
-						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
-						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
-						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.x", event.getBlock().getLocation().getBlockX());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.y", event.getBlock().getLocation().getBlockY());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
 						pli.getArenasConfig().saveConfig();
-						Util.sendMessage(plugin, p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
+						Util.sendMessage(plugin, p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena (random) sign"));
+						Util.updateSign(plugin, event);
 					} else {
-						Util.sendMessage(plugin, p, pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
-						event.getBlock().breakNaturally();
-					}
+						if (Validator.isArenaValid(plugin, arena)) {
+							pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
+							pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
+							pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
+							pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
+							pli.getArenasConfig().saveConfig();
+							Util.sendMessage(plugin, p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
+						} else {
+							Util.sendMessage(plugin, p, pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
+							event.getBlock().breakNaturally();
+						}
 
-					Arena a = pli.getArenaByName(arena);
-					// Sign s = (Sign) event.getBlock().getState();
-					if (a != null) {
-						a.setSignLocation(event.getBlock().getLocation());
-						Util.updateSign(plugin, a, event);
-					} else {
-						Util.sendMessage(plugin, p, pli.getMessagesConfig().arena_not_initialized);
+						Arena a = pli.getArenaByName(arena);
+						if (a != null) {
+							a.setSignLocation(event.getBlock().getLocation());
+							Util.updateSign(plugin, a, event);
+						} else {
+							Util.sendMessage(plugin, p, pli.getMessagesConfig().arena_not_initialized);
+						}
 					}
 				}
 			}

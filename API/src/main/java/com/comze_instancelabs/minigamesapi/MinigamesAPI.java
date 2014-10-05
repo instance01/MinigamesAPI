@@ -39,7 +39,6 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	static MinigamesAPI instance = null;
 	public static Economy econ = null;
 	public static boolean economy = true;
-	public static boolean arcade = false;
 	public boolean crackshot = false;
 
 	public HashMap<String, Party> global_party = new HashMap<String, Party>();
@@ -311,7 +310,9 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 					if (a.getArenaState() != ArenaState.INGAME && a.getArenaState() != ArenaState.RESTARTING && !a.containsPlayer(playername)) {
 						Bukkit.getScheduler().runTaskLater(this, new Runnable() {
 							public void run() {
-								a.joinPlayerLobby(playername);
+								if (!a.containsPlayer(playername)) {
+									a.joinPlayerLobby(playername);
+								}
 							}
 						}, 20L);
 					}
@@ -320,6 +321,10 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public PluginInstance getPluginInstance(JavaPlugin plugin) {
+		return pinstances.get(plugin);
 	}
 
 }
