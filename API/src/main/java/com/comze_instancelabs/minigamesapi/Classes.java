@@ -41,10 +41,15 @@ public class Classes {
 				@Override
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
 					if (event.getPlayer().getName().equalsIgnoreCase(p)) {
-						String d = event.getName();
-						Player p = event.getPlayer();
-						if (MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().containsKey(d)) {
-							cl.setClass(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesHandler().getInternalNameByName(d), p.getName());
+						PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+						if (pli.global_players.containsKey(p)) {
+							if (pli.getArenas().contains(pli.global_players.get(p))) {
+								String d = event.getName();
+								Player p = event.getPlayer();
+								if (pli.getAClasses().containsKey(d)) {
+									cl.setClass(pli.getClassesHandler().getInternalNameByName(d), p.getName());
+								}
+							}
 						}
 					}
 					event.setWillClose(true);
@@ -239,7 +244,7 @@ public class Classes {
 					}
 					p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
 				} else {
-					p.sendMessage("§4You don't have enough money!");
+					p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_enough_money);
 					return false;
 				}
 			}
