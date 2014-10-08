@@ -130,7 +130,6 @@ public class ArenaListener implements Listener {
 							}
 							return;
 						}
-						// if (a.getArenaType() == ArenaType.REGENERATION) {
 						if (a.getBoundaries() != null) {
 							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
 								Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
@@ -141,7 +140,6 @@ public class ArenaListener implements Listener {
 								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
 							}
 						}
-						// }
 					} else if (a.getArenaState() == ArenaState.STARTING || a.getArenaState() == ArenaState.JOIN) {
 						if (!a.startedIngameCountdown) {
 							if (p.getLocation().getBlockY() < 0) {

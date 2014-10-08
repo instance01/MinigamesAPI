@@ -58,10 +58,18 @@ public class Classes {
 		}
 
 		int c = 0;
-		for (String ac : MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().keySet()) {
-			AClass ac_ = MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().get(ac);
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		for (String ac : pli.getAClasses().keySet()) {
+			AClass ac_ = pli.getAClasses().get(ac);
 			if (ac_.isEnabled()) {
-				iconm.setOption(c, ac_.getIcon(), ac_.getName(), MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("config.kits." + ac_.getInternalName() + ".lore").split(";"));
+				int slot = c;
+				if (pli.getClassesConfig().getConfig().isSet("config.kits." + ac_.getInternalName() + ".slot")) {
+					slot = pli.getClassesConfig().getConfig().getInt("config.kits." + ac_.getInternalName() + ".slot");
+					if (slot < 0 || slot > iconm.getSize() - 1) {
+						slot = c;
+					}
+				}
+				iconm.setOption(slot, ac_.getIcon(), ac_.getName(), pli.getClassesConfig().getConfig().getString("config.kits." + ac_.getInternalName() + ".lore").split(";"));
 				c++;
 			}
 		}
