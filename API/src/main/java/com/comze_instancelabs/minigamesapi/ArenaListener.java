@@ -142,6 +142,16 @@ public class ArenaListener implements Listener {
 							}
 						}
 						// }
+					} else if (a.getArenaState() == ArenaState.STARTING || a.getArenaState() == ArenaState.JOIN) {
+						if (!a.startedIngameCountdown) {
+							if (p.getLocation().getBlockY() < 0) {
+								try {
+									Util.teleportPlayerFixed(p, a.getWaitingLobbyTemp());
+								} catch (Exception e) {
+									System.out.println("Waiting lobby for arena " + a.getName() + " missing, please fix by setting it. " + e.getMessage());
+								}
+							}
+						}
 					}
 				} else {
 					if (a.getArenaState() == ArenaState.INGAME) {
