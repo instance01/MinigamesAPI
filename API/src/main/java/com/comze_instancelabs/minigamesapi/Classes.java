@@ -69,7 +69,7 @@ public class Classes {
 						slot = c;
 					}
 				}
-				iconm.setOption(slot, ac_.getIcon(), ac_.getName(), pli.getClassesConfig().getConfig().getString("config.kits." + ac_.getInternalName() + ".lore").split(";"));
+				iconm.setOption(slot, ac_.getIcon().clone(), ac_.getName(), pli.getClassesConfig().getConfig().getString("config.kits." + ac_.getInternalName() + ".lore").split(";"));
 				c++;
 			}
 		}
@@ -104,26 +104,28 @@ public class Classes {
 		}
 
 		for (ItemStack item : items) {
-			if (item.getTypeId() == 298 || item.getTypeId() == 302 || item.getTypeId() == 306 || item.getTypeId() == 310 || item.getTypeId() == 314) {
-				p.getInventory().setHelmet(item);
-				continue;
+			if (item != null) {
+				if (item.getTypeId() == 298 || item.getTypeId() == 302 || item.getTypeId() == 306 || item.getTypeId() == 310 || item.getTypeId() == 314) {
+					p.getInventory().setHelmet(item);
+					continue;
+				}
+				if (item.getTypeId() == 299 || item.getTypeId() == 303 || item.getTypeId() == 307 || item.getTypeId() == 311 || item.getTypeId() == 315) {
+					p.getInventory().setChestplate(item);
+					continue;
+				}
+				if (item.getTypeId() == 300 || item.getTypeId() == 304 || item.getTypeId() == 308 || item.getTypeId() == 312 || item.getTypeId() == 316) {
+					p.getInventory().setLeggings(item);
+					continue;
+				}
+				if (item.getTypeId() == 301 || item.getTypeId() == 305 || item.getTypeId() == 309 || item.getTypeId() == 313 || item.getTypeId() == 317) {
+					p.getInventory().setBoots(item);
+					continue;
+				}
+				p.getInventory().addItem(item);
 			}
-			if (item.getTypeId() == 299 || item.getTypeId() == 303 || item.getTypeId() == 307 || item.getTypeId() == 311 || item.getTypeId() == 315) {
-				p.getInventory().setChestplate(item);
-				continue;
-			}
-			if (item.getTypeId() == 300 || item.getTypeId() == 304 || item.getTypeId() == 308 || item.getTypeId() == 312 || item.getTypeId() == 316) {
-				p.getInventory().setLeggings(item);
-				continue;
-			}
-			if (item.getTypeId() == 301 || item.getTypeId() == 305 || item.getTypeId() == 309 || item.getTypeId() == 313 || item.getTypeId() == 317) {
-				p.getInventory().setBoots(item);
-				continue;
-			}
-			p.getInventory().addItem(item);
 		}
-		p.updateInventory();
 		// p.getInventory().setContents((ItemStack[]) items.toArray(new ItemStack[items.size()]));
+		p.updateInventory();
 
 		if (MinigamesAPI.getAPI().crackshot) {
 			for (String t : tempguns) {
