@@ -127,6 +127,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.not_enough_money", not_enough_money);
 		this.getConfig().addDefault("messages.possible_kits", possible_kits);
 		this.getConfig().addDefault("messages.cancelled_starting", cancelled_starting);
+		this.getConfig().addDefault("messages.minigame_description", minigame_description);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -182,6 +183,7 @@ public class MessagesConfig {
 		this.not_enough_money = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.not_enough_money"));
 		this.possible_kits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.possible_kits"));
 		this.cancelled_starting = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.cancelled_starting"));
+		this.minigame_description = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.minigame_description"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -247,6 +249,7 @@ public class MessagesConfig {
 	public String not_enough_money = "&cYou don't have enough money.";
 	public String possible_kits = "&aPossible kits: &2";
 	public String cancelled_starting = "&cThe starting countdown was cancelled because there's only one player left in the arena.";
+	public String minigame_description = "";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

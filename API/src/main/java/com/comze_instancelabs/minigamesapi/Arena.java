@@ -327,6 +327,7 @@ public class Arena {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
 			Util.sendMessage(plugin, p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
+			Util.sendMessage(plugin, p, pli.getMessagesConfig().minigame_description);
 			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getName() + ".author")) {
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().author_of_the_map.replaceAll("<arena>", this.getName()).replaceAll("<author>", pli.getArenasConfig().getConfig().getString("arenas." + this.getName() + ".author")));
 			}
