@@ -56,29 +56,31 @@ public class ArenaScoreboard {
 
 					if (custom) {
 						try {
-							for (String configline : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.custom_scoreboard.").getKeys(false)) {
-								String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_scoreboard." + configline));
-								String[] line_arr = line.split(":");
-								String line_ = line_arr[0];
-								String score_identifier = line_arr[1];
-								int score = 0;
-								if (score_identifier.equalsIgnoreCase("<playercount>")) {
-									score = arena.getAllPlayers().size();
-								} else if (score_identifier.equalsIgnoreCase("<lostplayercount>")) {
-									score = arena.getAllPlayers().size() - arena.getPlayerAlive();
-								} else if (score_identifier.equalsIgnoreCase("<playeralivecount>")) {
-									score = arena.getPlayerAlive();
-								} else if (score_identifier.equalsIgnoreCase("<points>")) {
-									score = pli.getStatsInstance().getPoints(p__);
-								} else if (score_identifier.equalsIgnoreCase("<wins>")) {
-									score = pli.getStatsInstance().getWins(p__);
-								}
-								if (line_.length() < 15) {
-									ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
-									aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
-								} else {
-									ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))));
-									aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
+							if (pli.getMessagesConfig().getConfig().isSet("messages.custom_scoreboard.")) {
+								for (String configline : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.custom_scoreboard.").getKeys(false)) {
+									String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_scoreboard." + configline));
+									String[] line_arr = line.split(":");
+									String line_ = line_arr[0];
+									String score_identifier = line_arr[1];
+									int score = 0;
+									if (score_identifier.equalsIgnoreCase("<playercount>")) {
+										score = arena.getAllPlayers().size();
+									} else if (score_identifier.equalsIgnoreCase("<lostplayercount>")) {
+										score = arena.getAllPlayers().size() - arena.getPlayerAlive();
+									} else if (score_identifier.equalsIgnoreCase("<playeralivecount>")) {
+										score = arena.getPlayerAlive();
+									} else if (score_identifier.equalsIgnoreCase("<points>")) {
+										score = pli.getStatsInstance().getPoints(p__);
+									} else if (score_identifier.equalsIgnoreCase("<wins>")) {
+										score = pli.getStatsInstance().getWins(p__);
+									}
+									if (line_.length() < 15) {
+										ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
+										aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
+									} else {
+										ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))));
+										aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
+									}
 								}
 							}
 							p.setScoreboard(ascore.get(arena.getName()));

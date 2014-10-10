@@ -6,12 +6,6 @@ import java.util.LinkedHashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.ArenaListener;
-import com.comze_instancelabs.minigamesapi.ArenaSetup;
-import com.comze_instancelabs.minigamesapi.Classes;
-import com.comze_instancelabs.minigamesapi.Rewards;
-import com.comze_instancelabs.minigamesapi.Stats;
 import com.comze_instancelabs.minigamesapi.achievements.ArenaAchievements;
 import com.comze_instancelabs.minigamesapi.config.AchievementsConfig;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -22,6 +16,7 @@ import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.guns.Gun;
 import com.comze_instancelabs.minigamesapi.sql.MainSQL;
 import com.comze_instancelabs.minigamesapi.util.AClass;
+import com.comze_instancelabs.minigamesapi.util.ArenaLobbyScoreboard;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 
 public class PluginInstance {
@@ -51,6 +46,7 @@ public class PluginInstance {
 	private boolean achievement_gui_enabled = false;
 
 	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
+	public ArenaLobbyScoreboard scoreboardLobbyManager = new ArenaLobbyScoreboard();
 	public ArenaSetup arenaSetup = new ArenaSetup();
 
 	int lobby_countdown = 30;

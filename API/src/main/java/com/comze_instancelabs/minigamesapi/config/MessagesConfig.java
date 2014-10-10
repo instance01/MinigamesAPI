@@ -106,14 +106,19 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.exit_item", exit_item);
 		this.getConfig().addDefault("messages.successfully_bought_kit", successfully_bought_kit);
 		this.getConfig().addDefault("messages.scoreboard.title", scoreboard_title);
+		this.getConfig().addDefault("messages.scoreboard.lobby_title", scoreboard_lobby_title);
 		this.getConfig().addDefault("messages.you_got_kicked_because_vip_joined", you_got_kicked_because_vip_joined);
 		this.getConfig().addDefault("messages.powerup_spawned", powerup_spawned);
-		if (!this.getConfig().isSet("config.generated")) {
+		if (!this.getConfig().isSet("config.generatedv1.8.2")) {
 			this.getConfig().addDefault("messages.custom_scoreboard.line0", "Players:<playercount>");
 			this.getConfig().addDefault("messages.custom_scoreboard.line1", "Spectators:<lostplayercount>");
 			this.getConfig().addDefault("messages.custom_scoreboard.line2", "Alive:<playeralivecount>");
 			this.getConfig().addDefault("messages.custom_scoreboard.line3", "Your Credits:<points>");
 			this.getConfig().addDefault("messages.custom_scoreboard.line4", "Your Wins:<wins>");
+			this.getConfig().addDefault("messages.custom_lobby_scoreboard.line0", "Players:<playercount>");
+			this.getConfig().addDefault("messages.custom_lobby_scoreboard.line1", "Max Players:<maxplayercount>");
+			this.getConfig().addDefault("messages.custom_lobby_scoreboard.line2", "Your Credits:<points>");
+			this.getConfig().addDefault("messages.custom_lobby_scoreboard.line3", "Your Wins:<wins>");
 		}
 		this.getConfig().addDefault("messages.you_got_the_achievement", you_got_the_achievement);
 		this.getConfig().addDefault("messages.game_started", game_started);
@@ -166,6 +171,7 @@ public class MessagesConfig {
 		this.exit_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.exit_item"));
 		this.successfully_bought_kit = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_bought_kit"));
 		this.scoreboard_title = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.scoreboard.title"));
+		this.scoreboard_lobby_title = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.scoreboard.lobby_title"));
 		this.you_got_kicked_because_vip_joined = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_kicked_because_vip_joined"));
 		this.powerup_spawned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.powerup_spawned"));
 		this.you_got_the_achievement = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_the_achievement"));
@@ -181,7 +187,7 @@ public class MessagesConfig {
 		this.successfully_set_main_gun = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.successfully_set_main_gun"));
 		this.all_guns = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.all_guns"));
 
-		this.getConfig().set("config.generated", true);
+		this.getConfig().set("config.generatedv1.8.2", true);
 		this.saveConfig();
 	}
 
@@ -229,6 +235,7 @@ public class MessagesConfig {
 	public String exit_item = "&4Leave the game";
 	public String successfully_bought_kit = "&aSuccessfully bought &2<kit> &afor &2<money>&a.";
 	public String scoreboard_title = "&4[<arena>]";
+	public String scoreboard_lobby_title = "&4[<arena>]";
 	public String you_got_kicked_because_vip_joined = "&cYou got kicked out of the game because a vip joined!";
 	public String powerup_spawned = "&2A Powerup spawned!";
 	public String you_got_the_achievement = "&3You got the achievement &b<achievement>&3!";

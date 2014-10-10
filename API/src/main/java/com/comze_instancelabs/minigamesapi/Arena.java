@@ -64,7 +64,6 @@ public class Arena {
 	private ArenaState currentstate = ArenaState.JOIN;
 	String name = "mainarena";
 
-	private boolean shouldClearInventoryOnJoin = true;
 	private Arena currentarena;
 	boolean started = false;
 	boolean startedIngameCountdown = false;
@@ -340,54 +339,55 @@ public class Arena {
 				}
 			}
 			Util.updateSign(plugin, this);
-			if (shouldClearInventoryOnJoin) {
-				pinv.put(playername, p.getInventory().getContents());
-				pinv_armor.put(playername, p.getInventory().getArmorContents());
-				if (this.getArenaType() == ArenaType.JUMPNRUN) {
-					Util.teleportPlayerFixed(p, this.spawns.get(currentspawn));
-					if (currentspawn < this.spawns.size() - 1) {
-						currentspawn++;
-					}
+
+			pinv.put(playername, p.getInventory().getContents());
+			pinv_armor.put(playername, p.getInventory().getArmorContents());
+			if (this.getArenaType() == ArenaType.JUMPNRUN) {
+				Util.teleportPlayerFixed(p, this.spawns.get(currentspawn));
+				if (currentspawn < this.spawns.size() - 1) {
+					currentspawn++;
+				}
+				Util.clearInv(p);
+				pgamemode.put(p.getName(), p.getGameMode());
+				p.setGameMode(GameMode.SURVIVAL);
+				p.setHealth(20D);
+				return;
+			} else {
+				if (startedIngameCountdown) {
+					pli.scoreboardLobbyManager.removeScoreboard(this.getName(), p);
+					p.setWalkSpeed(0.0F);
+					p.setFoodLevel(5);
+					p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
+					Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+						public void run() {
+							Util.clearInv(p);
+							Util.giveLobbyItems(plugin, p);
+							pgamemode.put(p.getName(), p.getGameMode());
+							p.setGameMode(GameMode.SURVIVAL);
+						}
+					}, 10L);
+					pli.scoreboardManager.updateScoreboard(plugin, this);
+					return;
+				} else {
+					pli.scoreboardLobbyManager.updateScoreboard(plugin, this);
+					Util.teleportPlayerFixed(p, this.waitinglobby);
+				}
+			}
+			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+				public void run() {
 					Util.clearInv(p);
+					Util.giveLobbyItems(plugin, p);
 					pgamemode.put(p.getName(), p.getGameMode());
 					p.setGameMode(GameMode.SURVIVAL);
 					p.setHealth(20D);
-					return;
-				} else {
-					if (startedIngameCountdown) {
-						p.setWalkSpeed(0.0F);
-						p.setFoodLevel(5);
-						p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
-						Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
-						Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
-							public void run() {
-								Util.clearInv(p);
-								Util.giveLobbyItems(plugin, p);
-								pgamemode.put(p.getName(), p.getGameMode());
-								p.setGameMode(GameMode.SURVIVAL);
-							}
-						}, 10L);
-						pli.scoreboardManager.updateScoreboard(plugin, this);
-						return;
-					} else {
-						Util.teleportPlayerFixed(p, this.waitinglobby);
-					}
 				}
-				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
-					public void run() {
-						Util.clearInv(p);
-						Util.giveLobbyItems(plugin, p);
-						pgamemode.put(p.getName(), p.getGameMode());
-						p.setGameMode(GameMode.SURVIVAL);
-						p.setHealth(20D);
-					}
-				}, 10L);
-				if (!skip_join_lobby) {
-					if (ai == null && this.getAllPlayers().size() > this.min_players - 1) {
-						this.startLobby(temp_countdown);
-					} else if (ai != null) {
-						this.startLobby(temp_countdown);
-					}
+			}, 10L);
+			if (!skip_join_lobby) {
+				if (ai == null && this.getAllPlayers().size() > this.min_players - 1) {
+					this.startLobby(temp_countdown);
+				} else if (ai != null) {
+					this.startLobby(temp_countdown);
 				}
 			}
 		}
@@ -733,6 +733,7 @@ public class Arena {
 			p.setWalkSpeed(0.0F);
 			p.setFoodLevel(5);
 			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
+			pli.scoreboardLobbyManager.removeScoreboard(this.getName(), p);
 		}
 		final Arena a = this;
 		pli.scoreboardManager.updateScoreboard(plugin, a);
