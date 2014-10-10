@@ -554,6 +554,11 @@ public class ArenaListener implements Listener {
 			}
 		}
 
+		if (pli.global_lost.containsKey(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
+			// System.out.println(pli.getPlugin().getName() + " disallowed an interaction.");
+			event.setCancelled(true);
+		}
+
 		if (event.hasItem()) {
 			final Player p = event.getPlayer();
 			if (!pli.global_players.containsKey(p.getName())) {
