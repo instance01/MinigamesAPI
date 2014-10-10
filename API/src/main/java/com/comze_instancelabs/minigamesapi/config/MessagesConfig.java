@@ -84,6 +84,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.you_won", you_won);
 		this.getConfig().addDefault("messages.you_lost", you_lost);
 		this.getConfig().addDefault("messages.you_got_a_kill", you_got_a_kill);
+		this.getConfig().addDefault("messages.player_was_killed_by", player_was_killed_by);
 		this.getConfig().addDefault("messages.arena_not_initialized", arena_not_initialized);
 		this.getConfig().addDefault("messages.guns.attributelevel_increased", attributelevel_increased);
 		this.getConfig().addDefault("messages.guns.not_enough_credits", not_enough_credits);
@@ -148,6 +149,7 @@ public class MessagesConfig {
 		this.you_won = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_won"));
 		this.you_lost = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_lost"));
 		this.you_got_a_kill = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_kill"));
+		this.player_was_killed_by = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.player_was_killed_by"));
 		this.arena_not_initialized = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arena_not_initialized"));
 		this.arcade_next_minigame = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_next_minigame"));
 		this.arcade_new_round = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.arcade_new_round"));
@@ -206,6 +208,7 @@ public class MessagesConfig {
 	public String you_won = "&aYou &2won &athe game!";
 	public String you_lost = "&cYou &4lost &cthe game.";
 	public String you_got_a_kill = "&aYou killed &2<player>!";
+	public String player_was_killed_by = "&4<player> &cwas killed by &4<killer>&c!";
 	public String attributelevel_increased = "&aThe <attribute> level was increased successfully!";
 	public String not_enough_credits = "&cThe max level of 3 was reached or you don't have enough credits. Needed: <credits>";
 	public String too_many_main_guns = "&cYou already have 2 main guns, remove one first.";

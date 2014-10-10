@@ -207,6 +207,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		if (pli.global_players.containsKey(event.getEntity().getName())) {
+			event.setDeathMessage(null);
 			event.getEntity().setHealth(20D);
 			final Player p = event.getEntity();
 

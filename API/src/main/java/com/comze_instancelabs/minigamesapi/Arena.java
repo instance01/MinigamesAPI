@@ -969,6 +969,13 @@ public class Arena {
 			if (killer != null) {
 				pli.getRewardsInstance().giveKillReward(killer.getName(), 2);
 				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
+				for (String p_ : this.getAllPlayers()) {
+					if (!p_.equalsIgnoreCase(killer.getName())) {
+						if (Validator.isPlayerOnline(p_)) {
+							Bukkit.getPlayer(p_).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().player_was_killed_by.replaceAll("<player>", playername).replaceAll("<killer>", killer.getName()));
+						}
+					}
+				}
 			}
 			lastdamager.remove(playername);
 		}
