@@ -742,6 +742,10 @@ public class Arena {
 		final Arena a = this;
 		pli.scoreboardManager.updateScoreboard(plugin, a);
 		startedIngameCountdown = true;
+		if (!plugin.getConfig().getBoolean("ingame_countdown_enabled")) {
+			startRaw(a);
+			return;
+		}
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentingamecount--;
@@ -760,47 +764,51 @@ public class Arena {
 					}
 				}
 				if (currentingamecount < 1) {
-					currentarena.getArena().setArenaState(ArenaState.INGAME);
-					startedIngameCountdown = false;
-					Util.updateSign(plugin, a);
-					boolean send_game_started_msg = plugin.getConfig().getBoolean("config.send_game_started_msg");
-					for (String p_ : a.getAllPlayers()) {
-						try {
-							if (!pli.global_lost.containsKey(p_)) {
-								if (plugin.getConfig().getBoolean("config.auto_add_default_kit")) {
-									if (!pli.getClassesHandler().hasClass(p_)) {
-										pli.getClassesHandler().setClass("default", p_);
-									}
-									pli.getClassesHandler().getClass(p_);
-								} else {
-									Util.clearInv(Bukkit.getPlayer(p_));
-								}
-								Bukkit.getPlayer(p_).setFlying(false);
-								Bukkit.getPlayer(p_).setAllowFlight(false);
-							}
-						} catch (Exception e) {
-							System.out.println("Failed to set class: " + e.getMessage());
-						}
-						Player p = Bukkit.getPlayer(p_);
-						p.setWalkSpeed(0.2F);
-						p.setFoodLevel(20);
-						p.removePotionEffect(PotionEffectType.JUMP);
-						if (send_game_started_msg) {
-							p.sendMessage(pli.getMessagesConfig().game_started);
-						}
-					}
-					if (plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running")) {
-						Bukkit.setWhitelist(true);
-					}
-					started = true;
-					started();
-					try {
-						Bukkit.getScheduler().cancelTask(currenttaskid);
-					} catch (Exception e) {
-					}
+					startRaw(a);
 				}
 			}
 		}, 5L, 20).getTaskId();
+	}
+
+	public void startRaw(Arena a) {
+		currentarena.getArena().setArenaState(ArenaState.INGAME);
+		startedIngameCountdown = false;
+		Util.updateSign(plugin, a);
+		boolean send_game_started_msg = plugin.getConfig().getBoolean("config.send_game_started_msg");
+		for (String p_ : a.getAllPlayers()) {
+			try {
+				if (!pli.global_lost.containsKey(p_)) {
+					if (plugin.getConfig().getBoolean("config.auto_add_default_kit")) {
+						if (!pli.getClassesHandler().hasClass(p_)) {
+							pli.getClassesHandler().setClass("default", p_);
+						}
+						pli.getClassesHandler().getClass(p_);
+					} else {
+						Util.clearInv(Bukkit.getPlayer(p_));
+					}
+					Bukkit.getPlayer(p_).setFlying(false);
+					Bukkit.getPlayer(p_).setAllowFlight(false);
+				}
+			} catch (Exception e) {
+				System.out.println("Failed to set class: " + e.getMessage());
+			}
+			Player p = Bukkit.getPlayer(p_);
+			p.setWalkSpeed(0.2F);
+			p.setFoodLevel(20);
+			p.removePotionEffect(PotionEffectType.JUMP);
+			if (send_game_started_msg) {
+				p.sendMessage(pli.getMessagesConfig().game_started);
+			}
+		}
+		if (plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running")) {
+			Bukkit.setWhitelist(true);
+		}
+		started = true;
+		started();
+		try {
+			Bukkit.getScheduler().cancelTask(currenttaskid);
+		} catch (Exception e) {
+		}
 	}
 
 	/**
