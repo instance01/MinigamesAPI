@@ -59,7 +59,10 @@ public class ArenaLobbyScoreboard {
 								String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_lobby_scoreboard." + configline));
 								String[] line_arr = line.split(":");
 								String line_ = line_arr[0];
-								String score_identifier = line_arr[1];
+								String score_identifier = line_arr[line_arr.length - 1];
+								if (line_arr.length > 2) {
+									line_ += ":" + line_arr[1];
+								}
 								int score = 0;
 								if (score_identifier.equalsIgnoreCase("<playercount>")) {
 									score = arena.getAllPlayers().size();

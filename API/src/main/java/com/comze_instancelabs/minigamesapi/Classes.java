@@ -143,8 +143,9 @@ public class Classes {
 	 * @param player
 	 */
 	public void setClass(String internalname, String player) {
+		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (!kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
-			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().no_perm);
+			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().no_perm);
 			return;
 		}
 		boolean continue_ = true;
@@ -152,8 +153,13 @@ public class Classes {
 			continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname);
 		}
 		if (continue_) {
-			MinigamesAPI.getAPI().pinstances.get(plugin).setPClass(player, this.getClassByInternalname(internalname));
-			Bukkit.getPlayer(player).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(internalname).getName())));
+			pli.setPClass(player, this.getClassByInternalname(internalname));
+			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(internalname).getName())));
+			try {
+				pli.scoreboardLobbyManager.updateScoreboard(plugin, pli.global_players.get(player));
+			} catch (Exception e) {
+				System.out.println("Failed updating scoreboard with new kit");
+			}
 		}
 	}
 
@@ -179,6 +185,13 @@ public class Classes {
 
 	public boolean hasClass(String player) {
 		return MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().containsKey(player);
+	}
+
+	public String getSelectedClass(String player) {
+		if (hasClass(player)) {
+			return MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player).getInternalName();
+		}
+		return "default";
 	}
 
 	public void loadClasses() {

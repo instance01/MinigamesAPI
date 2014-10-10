@@ -109,7 +109,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.scoreboard.lobby_title", scoreboard_lobby_title);
 		this.getConfig().addDefault("messages.you_got_kicked_because_vip_joined", you_got_kicked_because_vip_joined);
 		this.getConfig().addDefault("messages.powerup_spawned", powerup_spawned);
-		if (!this.getConfig().isSet("config.generatedv1.8.2")) {
+		if (!this.getConfig().isSet("config.generatedv182")) {
 			this.getConfig().addDefault("messages.custom_scoreboard.line0", "Players:<playercount>");
 			this.getConfig().addDefault("messages.custom_scoreboard.line1", "Spectators:<lostplayercount>");
 			this.getConfig().addDefault("messages.custom_scoreboard.line2", "Alive:<playeralivecount>");
@@ -187,7 +187,7 @@ public class MessagesConfig {
 		this.successfully_set_main_gun = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.successfully_set_main_gun"));
 		this.all_guns = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.all_guns"));
 
-		this.getConfig().set("config.generatedv1.8.2", true);
+		this.getConfig().set("config.generatedv182", true);
 		this.saveConfig();
 	}
 
