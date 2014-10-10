@@ -82,6 +82,8 @@ public class CommandHandler {
 				return this.resetArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setauthor")) {
 				return this.setAuthor(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("setdescription")) {
+				return this.setDescription(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("kit")) {
 				return this.setKit(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb")) {
@@ -551,6 +553,23 @@ public class CommandHandler {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <author>");
+		}
+		return true;
+	}
+
+	public boolean setDescription(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 2) {
+			String desc = args[2];
+			if (Validator.isArenaValid(plugin, args[1])) {
+				pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".description", desc);
+				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "description"));
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <description>");
 		}
 		return true;
 	}

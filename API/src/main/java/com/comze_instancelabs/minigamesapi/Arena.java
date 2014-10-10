@@ -330,6 +330,9 @@ public class Arena {
 			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getName() + ".author")) {
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().author_of_the_map.replaceAll("<arena>", this.getName()).replaceAll("<author>", pli.getArenasConfig().getConfig().getString("arenas." + this.getName() + ".author")));
 			}
+			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getName() + ".description")) {
+				Util.sendMessage(plugin, p, pli.getMessagesConfig().description_of_the_map.replaceAll("<arena>", this.getName()).replaceAll("<description>", pli.getArenasConfig().getConfig().getString("arenas." + this.getName() + ".description")));
+			}
 			for (String p_ : this.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_) && !p_.equalsIgnoreCase(p.getName())) {
 					Player p__ = Bukkit.getPlayer(p_);
