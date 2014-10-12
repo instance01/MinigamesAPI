@@ -582,7 +582,7 @@ public class CommandHandler {
 				if (ac != null) {
 					if (pli.getAClasses().containsKey(ac.getName())) {
 						if (ac.isEnabled()) {
-							pli.getClassesHandler().setClass(kit, p.getName());
+							pli.getClassesHandler().setClass(kit, p.getName(), true);
 							return true;
 						}
 					}

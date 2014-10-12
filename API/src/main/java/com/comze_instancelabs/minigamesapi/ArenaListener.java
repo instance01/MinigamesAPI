@@ -265,13 +265,12 @@ public class ArenaListener implements Listener {
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
-					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null && !a.getAlwaysPvP()) {
+					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
 						// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 						event.setCancelled(true);
-					} else {
-						if (plugin.getConfig().getBoolean("config.effects")) {
-							Effects.playBloodEffect(p);
-						}
+					}
+					if (plugin.getConfig().getBoolean("config.effects") && (a.getArenaState() == ArenaState.INGAME || a.getAlwaysPvP())) {
+						Effects.playBloodEffect(p);
 					}
 				}
 				if (pli.global_lost.containsKey(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {

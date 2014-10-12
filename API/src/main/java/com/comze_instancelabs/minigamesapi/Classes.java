@@ -47,7 +47,7 @@ public class Classes {
 								String d = event.getName();
 								Player p = event.getPlayer();
 								if (pli.getAClasses().containsKey(d)) {
-									cl.setClass(pli.getClassesHandler().getInternalNameByName(d), p.getName());
+									cl.setClass(pli.getClassesHandler().getInternalNameByName(d), p.getName(), true);
 								}
 							}
 						}
@@ -142,15 +142,17 @@ public class Classes {
 	 *            the INTERNAL classname
 	 * @param player
 	 */
-	public void setClass(String internalname, String player) {
+	public void setClass(String internalname, String player, boolean money) {
 		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (!kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
 			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().no_perm);
 			return;
 		}
 		boolean continue_ = true;
-		if (kitRequiresMoney(internalname)) {
-			continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname);
+		if (money) {
+			if (kitRequiresMoney(internalname)) {
+				continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname);
+			}
 		}
 		if (continue_) {
 			pli.setPClass(player, this.getClassByInternalname(internalname));

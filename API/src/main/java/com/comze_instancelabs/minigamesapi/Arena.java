@@ -784,11 +784,12 @@ public class Arena {
 				if (!pli.global_lost.containsKey(p_)) {
 					if (plugin.getConfig().getBoolean("config.auto_add_default_kit")) {
 						if (!pli.getClassesHandler().hasClass(p_)) {
-							pli.getClassesHandler().setClass("default", p_);
+							pli.getClassesHandler().setClass("default", p_, false);
 						}
 						pli.getClassesHandler().getClass(p_);
 					} else {
 						Util.clearInv(Bukkit.getPlayer(p_));
+						pli.getClassesHandler().getClass(p_);
 					}
 					Bukkit.getPlayer(p_).setFlying(false);
 					Bukkit.getPlayer(p_).setAllowFlight(false);
