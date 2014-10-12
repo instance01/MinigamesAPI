@@ -740,9 +740,13 @@ public class Arena {
 			pli.scoreboardLobbyManager.removeScoreboard(this.getName(), p);
 		}
 		final Arena a = this;
-		pli.scoreboardManager.updateScoreboard(plugin, a);
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				pli.scoreboardManager.updateScoreboard(plugin, a);
+			}
+		}, 20L);
 		startedIngameCountdown = true;
-		if (!plugin.getConfig().getBoolean("ingame_countdown_enabled")) {
+		if (!plugin.getConfig().getBoolean("config.ingame_countdown_enabled")) {
 			startRaw(a);
 			return;
 		}
