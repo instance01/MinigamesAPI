@@ -258,8 +258,6 @@ public class Classes {
 			if (plugin.getConfig().getBoolean("config.buy_classes_forever")) {
 				ClassesConfig cl = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig();
 				if (!cl.getConfig().isSet("players.bought_kits." + p.getName() + "." + kit)) {
-					cl.getConfig().set("players.bought_kits." + p.getName() + "." + kit, true);
-					cl.saveConfig();
 					int money = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount");
 					if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= money) {
 						EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), money);
@@ -267,6 +265,8 @@ public class Classes {
 							p.sendMessage(String.format("An error occured: %s", r.errorMessage));
 							return false;
 						}
+						cl.getConfig().set("players.bought_kits." + p.getName() + "." + kit, true);
+						cl.saveConfig();
 						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
 					} else {
 						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_enough_money);
