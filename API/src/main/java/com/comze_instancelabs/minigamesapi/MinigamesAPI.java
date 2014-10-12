@@ -244,19 +244,25 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 					sender.sendMessage("~ global_players: ");
 					for (PluginInstance pli : pinstances.values()) {
 						if (pli.global_players.containsKey(p)) {
-							sender.sendMessage(pli.getPlugin().getName() + ", ");
+							sender.sendMessage(" " + pli.getPlugin().getName());
 						}
 					}
 					sender.sendMessage("~ global_lost: ");
 					for (PluginInstance pli : pinstances.values()) {
 						if (pli.global_lost.containsKey(p)) {
-							sender.sendMessage(pli.getPlugin().getName() + ", ");
+							sender.sendMessage(" " + pli.getPlugin().getName());
 						}
 					}
 					sender.sendMessage("~ SpectatorManager: ");
 					for (PluginInstance pli : pinstances.values()) {
 						if (pli.getSpectatorManager().isSpectating(Bukkit.getPlayer(p))) {
-							sender.sendMessage(pli.getPlugin().getName() + ", ");
+							sender.sendMessage(" " + pli.getPlugin().getName());
+						}
+					}
+					sender.sendMessage("~ Arenas: ");
+					for (PluginInstance pli : pinstances.values()) {
+						if (pli.global_players.containsKey(p)) {
+							sender.sendMessage(" " + pli.global_players.get(p).getName() + " - " + pli.global_players.get(p).getArenaState());
 						}
 					}
 					return true;
