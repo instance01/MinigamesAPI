@@ -60,7 +60,7 @@ public class Guns {
 	}
 
 	public void openGUI(String p) {
-		final int credits = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().getPoints(p);
+		final int credits = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().getPoints(p);
 		IconMenu iconm;
 		if (lastmainiconm.containsKey(p)) {
 			iconm = lastmainiconm.get(p);
@@ -70,12 +70,12 @@ public class Guns {
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
 					String d = event.getName();
 					Player p = event.getPlayer();
-					if (MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().containsKey(d)) {
+					if (MinigamesAPI.getAPI().getPluginInstance(plugin).getAllGuns().containsKey(d)) {
 						openGunMainEditGUI(p.getName(), d);
 					} else {
 						String raw = event.getItem().getItemMeta().getLore().get(0);
 						String gun = raw.substring(0, raw.indexOf(" "));
-						Gun g = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().get(gun);
+						Gun g = MinigamesAPI.getAPI().getPluginInstance(plugin).getAllGuns().get(gun);
 						if (g != null) {
 							int[] pattributes = getPlayerGunAttributeLevels(plugin, p.getName(), g);
 							HashMap<Gun, int[]> t;
@@ -120,7 +120,7 @@ public class Guns {
 								}
 							}
 							if (!done) {
-								p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_enough_credits.replaceAll("<credits>", Double.toString(cost)));
+								p.sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().not_enough_credits.replaceAll("<credits>", Double.toString(cost)));
 							}
 						}
 					}
@@ -131,10 +131,10 @@ public class Guns {
 		}
 
 		int c = 0;
-		for (String ac : MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().keySet()) {
-			Gun ac_ = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().get(ac);
+		for (String ac : MinigamesAPI.getAPI().getPluginInstance(plugin).getAllGuns().keySet()) {
+			Gun ac_ = MinigamesAPI.getAPI().getPluginInstance(plugin).getAllGuns().get(ac);
 			int[] pattributes = getPlayerGunAttributeLevels(plugin, p, ac_);
-			iconm.setOption(c, ac_.icon.get(0), ac, MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig().getString("config.guns." + ac + ".lore"));
+			iconm.setOption(c, ac_.icon.get(0), ac, MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig().getString("config.guns." + ac + ".lore"));
 			iconm.setOption(c + 2, new ItemStack(Material.SUGAR), "Speed Lv " + ChatColor.DARK_RED + pattributes[0], ac + " Speed Upgrade");
 			iconm.setOption(c + 3, new ItemStack(Material.DIAMOND), "Durability Lv " + ChatColor.DARK_RED + pattributes[1], ac + " Durability Upgrade");
 			iconm.setOption(c + 4, new ItemStack(Material.EGG), "Shoot Lv " + ChatColor.DARK_RED + pattributes[2], ac + " Shoot amount Upgrade");
@@ -147,7 +147,7 @@ public class Guns {
 
 	public int[] getPlayerGunAttributeLevels(JavaPlugin plugin, String p, Gun g) {
 		int[] ret = new int[4];
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + "." + g.name + ".";
 		ret[0] = config.isSet(path + "speed") ? config.getInt(path + "speed") : 0;
 		ret[1] = config.isSet(path + "durability") ? config.getInt(path + "durability") : 0;
@@ -166,27 +166,27 @@ public class Guns {
 	}
 
 	public void setPlayerGunLevel(JavaPlugin plugin, String p, String g, String attribute, int level, double cost) {
-		int credits = MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().getPoints(p);
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		int credits = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().getPoints(p);
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + "." + g + ".";
 		config.set(path + attribute, level);
-		MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().saveConfig();
-		MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().setPoints(p, (int) (credits - cost));
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().saveConfig();
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().setPoints(p, (int) (credits - cost));
 	}
 
 	public void setPlayerGunMain(JavaPlugin plugin, String p, String g, boolean val) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + "." + g + ".main";
 		if (getPlayerAllMainGunsCount(plugin, p) > 1 && val) {
-			Bukkit.getPlayer(p).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().too_many_main_guns);
+			Bukkit.getPlayer(p).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().too_many_main_guns);
 			return;
 		}
 		config.set(path, val);
-		MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().saveConfig();
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().saveConfig();
 	}
 
 	public int getPlayerAllMainGunsCount(JavaPlugin plugin, String p) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig();
 		String path = "players." + p + ".";
 		int ret = 0;
 		if (config.isSet(path)) {
@@ -212,7 +212,7 @@ public class Guns {
 			guns = "--";
 		}
 		guns = guns.substring(0, guns.length() - 2);
-		p_.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().all_guns.replaceAll("<guns>", guns));
+		p_.sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().all_guns.replaceAll("<guns>", guns));
 		
 		if (lastmainediticonm.containsKey(p)) {
 			iconm = lastmainediticonm.get(p);
@@ -252,7 +252,7 @@ public class Guns {
 					Player p = event.getPlayer();
 					if (d.startsWith("Buy")) {
 						setPlayerGunLevel(plugin, p.getName(), g, attribute, level, cost);
-						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().attributelevel_increased.replaceAll("<attribute>", attribute));
+						p.sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().attributelevel_increased.replaceAll("<attribute>", attribute));
 					}
 					openGUI(p.getName());
 					event.setWillClose(false);
@@ -268,18 +268,18 @@ public class Guns {
 	}
 
 	public static void loadGuns(JavaPlugin plugin) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig();
 		if (config.isSet("config.guns")) {
 			for (String gun : config.getConfigurationSection("config.guns.").getKeys(false)) {
 				String path = "config.guns." + gun + ".";
 				Gun n = new Gun(plugin, gun, config.getDouble(path + "speed"), config.getInt(path + "durability"), config.getInt(path + "shoot_amount"), config.getDouble(path + "knockback_multiplier"), Egg.class, Util.parseItems(config.getString(path + "items")), Util.parseItems(config.getString(path + "icon")));
-				MinigamesAPI.getAPI().pinstances.get(plugin).addGun(gun, n);
+				MinigamesAPI.getAPI().getPluginInstance(plugin).addGun(gun, n);
 			}
 		}
 	}
 
 	public ArrayList<String> getAllMainGuns(Player p) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig();
 		ArrayList<String> ret = new ArrayList<String>();
 		if(config.isSet("players." + p.getName())){
 			for (String gun : config.getConfigurationSection("players." + p.getName() + ".").getKeys(false)) {
@@ -295,7 +295,7 @@ public class Guns {
 	}
 
 	public void giveMainGuns(Player p) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getGunsConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getGunsConfig().getConfig();
 		if (config.isSet("players." + p.getName() + ".")) {
 			int count = 0;
 			for (String gun : config.getConfigurationSection("players." + p.getName() + ".").getKeys(false)) {
@@ -303,7 +303,7 @@ public class Guns {
 				if (config.isSet(path)) {
 					if (config.getBoolean(path)) {
 						// main gun
-						Gun g = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns().get(gun);
+						Gun g = MinigamesAPI.getAPI().getPluginInstance(plugin).getAllGuns().get(gun);
 						if (g != null) {
 							p.updateInventory();
 							for (ItemStack i : g.items) {
@@ -322,7 +322,7 @@ public class Guns {
 			}
 			if (count < 1) {
 				// player doesn't have any main, give random gun
-				HashMap<String, Gun> guns = MinigamesAPI.getAPI().pinstances.get(plugin).getAllGuns();
+				HashMap<String, Gun> guns = MinigamesAPI.getAPI().getPluginInstance(plugin).getAllGuns();
 				List<String> t = new ArrayList<String>(guns.keySet());
 				String gun = t.get((new Random()).nextInt(t.size()));
 				Gun g = guns.get(gun);

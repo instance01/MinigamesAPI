@@ -24,24 +24,30 @@ import com.shampaggon.crackshot.CSUtility;
 public class Classes {
 
 	JavaPlugin plugin;
+	PluginInstance pli;
 	public HashMap<String, IconMenu> lasticonm = new HashMap<String, IconMenu>();
 
 	public Classes(JavaPlugin plugin) {
 		this.plugin = plugin;
+		this.pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+	}
+	
+	public Classes(PluginInstance pli, JavaPlugin plugin) {
+		this.plugin = plugin;
+		this.pli = pli;
 	}
 
 	public void openGUI(final String p) {
 		final Classes cl = this;
 		IconMenu iconm;
-		int mincount = MinigamesAPI.getAPI().pinstances.get(plugin).getAClasses().keySet().size();
+		int mincount = pli.getAClasses().keySet().size();
 		if (lasticonm.containsKey(p)) {
 			iconm = lasticonm.get(p);
 		} else {
-			iconm = new IconMenu(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().classes_item, (9 * plugin.getConfig().getInt("config.classes_gui_rows") > mincount - 1) ? 9 * plugin.getConfig().getInt("config.classes_gui_rows") : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
+			iconm = new IconMenu(pli.getMessagesConfig().classes_item, (9 * plugin.getConfig().getInt("config.classes_gui_rows") > mincount - 1) ? 9 * plugin.getConfig().getInt("config.classes_gui_rows") : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
 				@Override
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
 					if (event.getPlayer().getName().equalsIgnoreCase(p)) {
-						PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 						if (pli.global_players.containsKey(p)) {
 							if (pli.getArenas().contains(pli.global_players.get(p))) {
 								String d = event.getName();
@@ -58,7 +64,6 @@ public class Classes {
 		}
 
 		int c = 0;
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		for (String ac : pli.getAClasses().keySet()) {
 			AClass ac_ = pli.getAClasses().get(ac);
 			if (ac_.isEnabled()) {
@@ -79,7 +84,7 @@ public class Classes {
 	}
 
 	public void getClass(String player) {
-		AClass c = MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player);
+		AClass c = pli.getPClasses().get(player);
 		Player p = Bukkit.getServer().getPlayer(player);
 		p.getInventory().clear();
 		p.getInventory().setHelmet(null);
@@ -143,7 +148,6 @@ public class Classes {
 	 * @param player
 	 */
 	public void setClass(String internalname, String player, boolean money) {
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		if (!kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
 			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().no_perm);
 			return;
@@ -157,16 +161,10 @@ public class Classes {
 		if (continue_) {
 			pli.setPClass(player, this.getClassByInternalname(internalname));
 			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(internalname).getName())));
-			try {
-				pli.scoreboardLobbyManager.updateScoreboard(plugin, pli.global_players.get(player));
-			} catch (Exception e) {
-				System.out.println("Failed updating scoreboard with new kit");
-			}
 		}
 	}
 
 	public String getInternalNameByName(String name) {
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		for (AClass ac : pli.getAClasses().values()) {
 			if (ac.getName().equalsIgnoreCase(name)) {
 				return ac.getInternalName();
@@ -176,7 +174,6 @@ public class Classes {
 	}
 
 	public AClass getClassByInternalname(String internalname) {
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
 		for (AClass ac : pli.getAClasses().values()) {
 			if (ac.getInternalName().equalsIgnoreCase(internalname)) {
 				return ac;
@@ -186,12 +183,12 @@ public class Classes {
 	}
 
 	public boolean hasClass(String player) {
-		return MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().containsKey(player);
+		return pli.getPClasses().containsKey(player);
 	}
 
 	public String getSelectedClass(String player) {
 		if (hasClass(player)) {
-			return MinigamesAPI.getAPI().pinstances.get(plugin).getPClasses().get(player).getInternalName();
+			return pli.getPClasses().get(player).getInternalName();
 		}
 		return "default";
 	}
@@ -199,7 +196,7 @@ public class Classes {
 	public void loadClasses() {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
-				FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig();
+				FileConfiguration config = pli.getClassesConfig().getConfig();
 				if (config.isSet("config.kits")) {
 					for (String aclass : config.getConfigurationSection("config.kits.").getKeys(false)) {
 						AClass n;
@@ -208,7 +205,7 @@ public class Classes {
 						} else {
 							n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")));
 						}
-						MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(config.getString("config.kits." + aclass + ".name"), n);
+						pli.addAClass(config.getString("config.kits." + aclass + ".name"), n);
 						if (!config.isSet("config.kits." + aclass + ".items") || !config.isSet("config.kits." + aclass + ".lore")) {
 							plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
 						}
@@ -227,7 +224,7 @@ public class Classes {
 	public static void loadClasses(final JavaPlugin plugin) {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
-				FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig();
+				FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getClassesConfig().getConfig();
 				if (config.isSet("config.kits")) {
 					for (String aclass : config.getConfigurationSection("config.kits.").getKeys(false)) {
 						AClass n;
@@ -236,8 +233,8 @@ public class Classes {
 						} else {
 							n = new AClass(plugin, config.getString("config.kits." + aclass + ".name"), aclass, config.isSet("config.kits." + aclass + ".enabled") ? config.getBoolean("config.kits." + aclass + ".enabled") : true, Util.parseItems(config.getString("config.kits." + aclass + ".items")));
 						}
-						// MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(aclass, n);
-						MinigamesAPI.getAPI().pinstances.get(plugin).addAClass(config.getString("config.kits." + aclass + ".name"), n);
+						// pli.addAClass(aclass, n);
+						MinigamesAPI.getAPI().getPluginInstance(plugin).addAClass(config.getString("config.kits." + aclass + ".name"), n);
 						if (!config.isSet("config.kits." + aclass + ".items") || !config.isSet("config.kits." + aclass + ".lore")) {
 							plugin.getLogger().warning("One of the classes found in the config file is invalid: " + aclass + ". Missing itemid or lore!");
 						}
@@ -248,7 +245,7 @@ public class Classes {
 	}
 
 	public boolean kitRequiresMoney(String kit) {
-		return MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getBoolean("config.kits." + kit + ".requires_money");
+		return pli.getClassesConfig().getConfig().getBoolean("config.kits." + kit + ".requires_money");
 	}
 
 	public boolean kitTakeMoney(Player p, String kit) {
@@ -258,9 +255,9 @@ public class Classes {
 		}
 		if (MinigamesAPI.economy) {
 			if (plugin.getConfig().getBoolean("config.buy_classes_forever")) {
-				ClassesConfig cl = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig();
+				ClassesConfig cl = pli.getClassesConfig();
 				if (!cl.getConfig().isSet("players.bought_kits." + p.getName() + "." + kit)) {
-					int money = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount");
+					int money = pli.getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount");
 					if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= money) {
 						EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), money);
 						if (!r.transactionSuccess()) {
@@ -269,16 +266,16 @@ public class Classes {
 						}
 						cl.getConfig().set("players.bought_kits." + p.getName() + "." + kit, true);
 						cl.saveConfig();
-						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
+						p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
 					} else {
-						p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_enough_money);
+						p.sendMessage(pli.getMessagesConfig().not_enough_money);
 						return false;
 					}
 				} else {
 					return true;
 				}
 			} else {
-				ClassesConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig();
+				ClassesConfig config = pli.getClassesConfig();
 				int money = config.getConfig().getInt("config.kits." + kit + ".money_amount");
 				if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= money) {
 					EconomyResponse r = MinigamesAPI.getAPI().econ.withdrawPlayer(p.getName(), money);
@@ -286,9 +283,9 @@ public class Classes {
 						p.sendMessage(String.format("An error occured: %s", r.errorMessage));
 						return false;
 					}
-					p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
+					p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
 				} else {
-					p.sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().not_enough_money);
+					p.sendMessage(pli.getMessagesConfig().not_enough_money);
 					return false;
 				}
 			}
@@ -300,10 +297,10 @@ public class Classes {
 	}
 
 	public boolean kitPlayerHasPermission(String kit, Player p) {
-		if (!MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getBoolean("config.kits." + kit + ".requires_permission")) {
+		if (!pli.getClassesConfig().getConfig().getBoolean("config.kits." + kit + ".requires_permission")) {
 			return true;
 		} else {
-			if (p.hasPermission(MinigamesAPI.getAPI().pinstances.get(plugin).getClassesConfig().getConfig().getString("config.kits." + kit + ".permission_node"))) {
+			if (p.hasPermission(pli.getClassesConfig().getConfig().getString("config.kits." + kit + ".permission_node"))) {
 				return true;
 			} else {
 				return false;

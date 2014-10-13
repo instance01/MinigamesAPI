@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -11,7 +12,6 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import com.comze_instancelabs.minigamesapi.util.Validator;
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
@@ -24,8 +24,27 @@ public class ArenaScoreboard {
 	HashMap<String, Objective> aobjective = new HashMap<String, Objective>();
 	HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
 
+	int initialized = 0; // 0 = false; 1 = true;
+	boolean custom = false;
+
+	PluginInstance pli;
+
+	ArrayList<String> loaded_custom_strings = new ArrayList<String>();
+
 	public ArenaScoreboard() {
 
+	}
+
+	public ArenaScoreboard(PluginInstance pli, JavaPlugin plugin) {
+		custom = plugin.getConfig().getBoolean("config.use_custom_scoreboard");
+		initialized = 1;
+		this.pli = pli;
+		if (pli.getMessagesConfig().getConfig().isSet("messages.custom_scoreboard.")) {
+			for (String configline : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.custom_scoreboard.").getKeys(false)) {
+				String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_scoreboard." + configline));
+				loaded_custom_strings.add(line);
+			}
+		}
 	}
 
 	public void updateScoreboard(final JavaPlugin plugin, final Arena arena) {
@@ -33,8 +52,13 @@ public class ArenaScoreboard {
 			return;
 		}
 
-		final boolean custom = plugin.getConfig().getBoolean("config.use_custom_scoreboard");
-		final PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		if (initialized != 1) {
+			custom = plugin.getConfig().getBoolean("config.use_custom_scoreboard");
+		}
+
+		if (pli == null) {
+			pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+		}
 
 		Bukkit.getScheduler().runTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
@@ -56,33 +80,31 @@ public class ArenaScoreboard {
 
 					if (custom) {
 						try {
-							if (pli.getMessagesConfig().getConfig().isSet("messages.custom_scoreboard.")) {
-								for (String configline : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.custom_scoreboard.").getKeys(false)) {
-									String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_scoreboard." + configline));
-									String[] line_arr = line.split(":");
-									String line_ = line_arr[0];
-									String score_identifier = line_arr[1];
-									int score = 0;
-									if (score_identifier.equalsIgnoreCase("<playercount>")) {
-										score = arena.getAllPlayers().size();
-									} else if (score_identifier.equalsIgnoreCase("<lostplayercount>")) {
-										score = arena.getAllPlayers().size() - arena.getPlayerAlive();
-									} else if (score_identifier.equalsIgnoreCase("<playeralivecount>")) {
-										score = arena.getPlayerAlive();
-									} else if (score_identifier.equalsIgnoreCase("<points>")) {
-										score = pli.getStatsInstance().getPoints(p__);
-									} else if (score_identifier.equalsIgnoreCase("<wins>")) {
-										score = pli.getStatsInstance().getWins(p__);
-									}
-									if (line_.length() < 15) {
-										ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
-										aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
-									} else {
-										ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))));
-										aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
-									}
+							for (String line : loaded_custom_strings) {
+								String[] line_arr = line.split(":");
+								String line_ = line_arr[0];
+								String score_identifier = line_arr[1];
+								int score = 0;
+								if (score_identifier.equalsIgnoreCase("<playercount>")) {
+									score = arena.getAllPlayers().size();
+								} else if (score_identifier.equalsIgnoreCase("<lostplayercount>")) {
+									score = arena.getAllPlayers().size() - arena.getPlayerAlive();
+								} else if (score_identifier.equalsIgnoreCase("<playeralivecount>")) {
+									score = arena.getPlayerAlive();
+								} else if (score_identifier.equalsIgnoreCase("<points>")) {
+									score = pli.getStatsInstance().getPoints(p__);
+								} else if (score_identifier.equalsIgnoreCase("<wins>")) {
+									score = pli.getStatsInstance().getWins(p__);
+								}
+								if (line_.length() < 15) {
+									ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
+									aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
+								} else {
+									ascore.get(arena.getName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))));
+									aobjective.get(arena.getName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
 								}
 							}
+
 							p.setScoreboard(ascore.get(arena.getName()));
 						} catch (Exception e) {
 							System.out.println("Failed to set custom scoreboard: ");
@@ -96,7 +118,7 @@ public class ArenaScoreboard {
 							continue;
 						}
 						Player p_ = Bukkit.getPlayer(p___);
-						if (!MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p___)) {
+						if (!pli.global_lost.containsKey(p___)) {
 							int score = 0;
 							if (currentscore.containsKey(p___)) {
 								int oldscore = currentscore.get(p___);
@@ -116,7 +138,7 @@ public class ArenaScoreboard {
 								}
 							} catch (Exception e) {
 							}
-						} else if (MinigamesAPI.getAPI().pinstances.get(plugin).global_lost.containsKey(p___)) {
+						} else if (pli.global_lost.containsKey(p___)) {
 							if (currentscore.containsKey(p___)) {
 								int score = currentscore.get(p___);
 								try {

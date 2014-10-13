@@ -40,7 +40,7 @@ public class CommandHandler {
 				return true;
 			}
 			Player p = (Player) sender;
-			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 			String action = args[0];
 			if (action.equalsIgnoreCase("setspawn")) {
 				return this.setSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);

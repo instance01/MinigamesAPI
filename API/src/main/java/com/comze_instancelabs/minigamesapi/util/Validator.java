@@ -41,10 +41,10 @@ public class Validator {
 		if(!isPlayerOnline(player)){
 			return false;
 		}
-		if(!MinigamesAPI.getAPI().pinstances.get(plugin).global_players.containsKey(player)){
+		if(!MinigamesAPI.getAPI().getPluginInstance(plugin).global_players.containsKey(player)){
 			return false;
 		}
-		if(!MinigamesAPI.getAPI().pinstances.get(plugin).global_players.get(player).getName().equalsIgnoreCase(arena)){
+		if(!MinigamesAPI.getAPI().getPluginInstance(plugin).global_players.get(player).getName().equalsIgnoreCase(arena)){
 			return false;
 		}
 		return true;
@@ -65,7 +65,7 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean isArenaValid(JavaPlugin plugin, String arena){
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
 		if(!config.isSet("arenas." + arena + ".lobby") || !config.isSet("arenas." + arena + ".spawns.spawn0")){
 			return false;
 		}

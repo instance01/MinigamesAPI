@@ -45,7 +45,7 @@ public class PluginInstance {
 	private ArenaAchievements achievements = null;
 	private boolean achievement_gui_enabled = false;
 
-	public ArenaScoreboard scoreboardManager = new ArenaScoreboard();
+	public ArenaScoreboard scoreboardManager;
 	public ArenaLobbyScoreboard scoreboardLobbyManager = new ArenaLobbyScoreboard();
 	public ArenaSetup arenaSetup = new ArenaSetup();
 
@@ -66,9 +66,10 @@ public class PluginInstance {
 		rew = new Rewards(plugin);
 		stats = new Stats(plugin);
 		sql = new MainSQL(plugin, true);
-		classes = new Classes(plugin);
+		classes = new Classes(this, plugin);
 		spectatormanager = new SpectatorManager(plugin);
 		achievements = new ArenaAchievements(this, plugin);
+		scoreboardManager = new ArenaScoreboard(this, plugin);
 		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
 		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
 		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator_move_y_lock");

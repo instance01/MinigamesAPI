@@ -92,7 +92,7 @@ public class Arena {
 		this.plugin = plugin;
 		this.name = name;
 		sr = new SmartReset(this);
-		this.pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		this.pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 	}
 
 	/**
@@ -601,6 +601,7 @@ public class Arena {
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
 				pli.global_lost.put(playername, this);
 				this.leavePlayer(playername, false, false);
+				pli.scoreboardManager.updateScoreboard(plugin, this);
 				return;
 			}
 			Util.clearInv(p);
@@ -774,7 +775,7 @@ public class Arena {
 		}, 5L, 20).getTaskId();
 	}
 
-	public void startRaw(Arena a) {
+	public void startRaw(final Arena a) {
 		currentarena.getArena().setArenaState(ArenaState.INGAME);
 		startedIngameCountdown = false;
 		Util.updateSign(plugin, a);
@@ -906,6 +907,7 @@ public class Arena {
 		currentspawn = 0;
 
 		pli.scoreboardManager.clearScoreboard(this.getName());
+		pli.scoreboardLobbyManager.clearScoreboard(this.getName());
 
 		/*
 		 * try { pli.getStatsInstance().updateSkulls(); } catch (Exception e) {
@@ -986,11 +988,11 @@ public class Arena {
 			Player killer = Bukkit.getPlayer(lastdamager.get(playername));
 			if (killer != null) {
 				pli.getRewardsInstance().giveKillReward(killer.getName(), 2);
-				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
+				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
 				for (String p_ : this.getAllPlayers()) {
 					if (!p_.equalsIgnoreCase(killer.getName())) {
 						if (Validator.isPlayerOnline(p_)) {
-							Bukkit.getPlayer(p_).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().player_was_killed_by.replaceAll("<player>", playername).replaceAll("<killer>", killer.getName()));
+							Bukkit.getPlayer(p_).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().player_was_killed_by.replaceAll("<player>", playername).replaceAll("<killer>", killer.getName()));
 						}
 					}
 				}

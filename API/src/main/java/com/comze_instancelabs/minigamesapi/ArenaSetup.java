@@ -69,7 +69,7 @@ public class ArenaSetup {
 	 *            Index of the spawn
 	 */
 	public boolean removeSpawn(JavaPlugin plugin, String arenaname, int count) {
-		ArenasConfig config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig();
+		ArenasConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig();
 		String path = "arenas." + arenaname + ".spawns.spawn" + Integer.toString(count);
 		boolean ret = false;
 		if (config.getConfig().isSet(path)) {
@@ -129,7 +129,7 @@ public class ArenaSetup {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Arena " + arenaname + " appears to be invalid.");
 			return null;
 		}
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		if (pli.getArenaByName(arenaname) != null) {
 			pli.removeArenaByName(arenaname);
 		}
@@ -169,51 +169,51 @@ public class ArenaSetup {
 			component = "min_players";
 		}
 		String base = "arenas." + arena + "." + component;
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set(base, count);
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().set(base, count);
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().saveConfig();
 	}
 
 	public int getPlayerCount(JavaPlugin plugin, String arena, boolean max) {
 		if (!max) {
-			if (!MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().isSet("arenas." + arena + ".min_players")) {
+			if (!MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().isSet("arenas." + arena + ".min_players")) {
 				setPlayerCount(plugin, arena, plugin.getConfig().getInt("config.default_min_players"), max);
 				return plugin.getConfig().getInt("config.default_min_players");
 			}
-			return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".min_players");
+			return MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".min_players");
 		}
-		if (!MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().isSet("arenas." + arena + ".max_players")) {
+		if (!MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().isSet("arenas." + arena + ".max_players")) {
 			setPlayerCount(plugin, arena, plugin.getConfig().getInt("config.default_max_players"), max);
 			return plugin.getConfig().getInt("config.default_max_players");
 		}
-		return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".max_players");
+		return MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().getInt("arenas." + arena + ".max_players");
 	}
 
 	public void setArenaVIP(JavaPlugin plugin, String arena, boolean vip) {
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".is_vip", vip);
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".is_vip", vip);
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().saveConfig();
 	}
 
 	public boolean getArenaVIP(JavaPlugin plugin, String arena) {
-		return MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().getBoolean("arenas." + arena + ".is_vip");
+		return MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().getBoolean("arenas." + arena + ".is_vip");
 	}
 
 	public void setArenaEnabled(JavaPlugin plugin, String arena, boolean enabled) {
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".enabled", enabled);
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".enabled", enabled);
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().saveConfig();
 	}
 
 	public boolean getArenaEnabled(JavaPlugin plugin, String arena) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
 		return config.isSet("arenas." + arena + ".enabled") ? config.getBoolean("arenas." + arena + ".enabled") : true;
 	}
 
 	public void setShowScoreboard(JavaPlugin plugin, String arena, boolean enabled) {
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".showscoreboard", enabled);
-		MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().saveConfig();
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().set("arenas." + arena + ".showscoreboard", enabled);
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().saveConfig();
 	}
 
 	public boolean getShowScoreboard(JavaPlugin plugin, String arena) {
-		FileConfiguration config = MinigamesAPI.getAPI().pinstances.get(plugin).getArenasConfig().getConfig();
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
 		return config.isSet("arenas." + arena + ".showscoreboard") ? config.getBoolean("arenas." + arena + ".showscoreboard") : true;
 	}
 }

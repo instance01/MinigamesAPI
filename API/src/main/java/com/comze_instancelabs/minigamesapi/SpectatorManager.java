@@ -67,7 +67,7 @@ public class SpectatorManager {
 		if (lasticonm.containsKey(p.getName())) {
 			iconm = lasticonm.get(p.getName());
 		} else {
-			iconm = new IconMenu(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().spectator_item, (9 > mincount - 1) ? 9 : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
+			iconm = new IconMenu(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().spectator_item, (9 > mincount - 1) ? 9 : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
 				@Override
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
 					if (event.getPlayer().getName().equalsIgnoreCase(p.getName())) {
@@ -84,7 +84,7 @@ public class SpectatorManager {
 			}, plugin);
 		}
 
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		int c = 0;
 		for (String p__ : a.getAllPlayers()) {
 			Player p_ = Bukkit.getPlayer(p__);

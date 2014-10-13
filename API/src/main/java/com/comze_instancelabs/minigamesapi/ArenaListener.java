@@ -321,7 +321,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onExplode(EntityExplodeEvent event) {
-		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null) {
@@ -339,7 +339,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onBlockFromTo(BlockFromToEvent event) {
-		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
@@ -353,7 +353,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onBlockFade(BlockFadeEvent event) {
-		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
@@ -368,7 +368,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 		if (event.getEntity() instanceof Enderman) {
-			for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+			for (Arena a : pli.getArenas()) {
 				if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 					Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 					if (c != null) {
@@ -411,7 +411,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onBlockBurn(BlockBurnEvent event) {
-		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null) {
@@ -425,7 +425,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null) {
@@ -448,7 +448,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onStructureGrow(StructureGrowEvent event) {
-		for (Arena a : MinigamesAPI.getAPI().pinstances.get(plugin).getArenas()) {
+		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
 				if (c != null) {

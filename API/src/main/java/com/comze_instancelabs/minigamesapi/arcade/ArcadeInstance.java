@@ -35,7 +35,7 @@ public class ArcadeInstance {
 
 	// TODO max 16 players!
 	public void joinArcade(String playername) {
-		PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		if (!players.contains(playername)) {
 			players.add(playername);
 			arena.addPlayer(playername);
@@ -66,12 +66,12 @@ public class ArcadeInstance {
 				}
 			}
 			if (msg) {
-				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
+				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
 			} else {
-				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_spectator);
+				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_spectator);
 			}
 		} else {
-			Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.min_players") - players.size())));
+			Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.min_players") - players.size())));
 		}
 	}
 
@@ -80,7 +80,7 @@ public class ArcadeInstance {
 	}
 
 	public void leaveArcade(final String playername, boolean endOfGame) {
-		final PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		if (players.contains(playername)) {
 			players.remove(playername);
 		}
@@ -145,7 +145,7 @@ public class ArcadeInstance {
 
 		currentlobbycount = plugin.getConfig().getInt("config.arcade.lobby_countdown") + 1;
 		final ArcadeInstance ai = this;
-		final PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+		final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
@@ -194,7 +194,7 @@ public class ArcadeInstance {
 		if (stopOfGame && plugin.getConfig().getBoolean("config.arcade.infinite_mode.enabled")) {
 			if (temp.size() > 1) {
 				for (String p_ : temp) {
-					Util.sendMessage(plugin, Bukkit.getPlayer(p_), MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
+					Util.sendMessage(plugin, Bukkit.getPlayer(p_), MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
 				}
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
@@ -245,7 +245,7 @@ public class ArcadeInstance {
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
-			System.out.println(arena.getName());
+			// System.out.println(arena.getName());
 			arena.stop();
 			// stopArcade();
 			return;
@@ -281,7 +281,7 @@ public class ArcadeInstance {
 					if (a != null) {
 						in_a_game = true;
 						currentarena = a;
-						PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+						PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 						for (String p_ : temp) {
 							String minigame = mg.getArenaListener().getName();
 							if (!a.containsPlayer(p_)) {

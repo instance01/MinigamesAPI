@@ -31,7 +31,7 @@ public class ArenaAchievements {
 		if (lasticonm.containsKey(p)) {
 			iconm = lasticonm.get(p);
 		} else {
-			iconm = new IconMenu(MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().achievement_item, (9 > mincount - 1) ? 9 * 1 : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
+			iconm = new IconMenu(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().achievement_item, (9 > mincount - 1) ? 9 * 1 : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
 				@Override
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
 					event.setWillClose(true);

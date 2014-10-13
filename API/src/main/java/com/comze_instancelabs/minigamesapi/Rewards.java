@@ -61,7 +61,7 @@ public class Rewards {
 				MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward);
 			}
 
-			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().win(p_, 10);
+			MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().win(p_, 10);
 		}
 	}
 
@@ -76,15 +76,15 @@ public class Rewards {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), kill_command.replaceAll("<player>", p_));
 			}
 
-			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().addPoints(p_, reward);
-			MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().addKill(p_);
-			MinigamesAPI.getAPI().pinstances.get(plugin).getSQLInstance().updateWinnerStats(p_, reward, false);
+			MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().addPoints(p_, reward);
+			MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().addKill(p_);
+			MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateWinnerStats(p_, reward, false);
 		}
 	}
 
 	public void giveWinReward(String p_, Arena a) {
 		if (Validator.isPlayerOnline(p_)) {
-			PluginInstance pli = MinigamesAPI.getAPI().pinstances.get(plugin);
+			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 			final Player p = Bukkit.getPlayer(p_);
 			if (!pli.global_lost.containsKey(p_)) {
 				if (economyrewards && MinigamesAPI.economy) {
@@ -118,8 +118,8 @@ public class Rewards {
 					System.out.println("Could not find arena for broadcast.");
 				}
 			} else {
-				Util.sendMessage(plugin, p, MinigamesAPI.getAPI().pinstances.get(plugin).getMessagesConfig().you_lost);
-				MinigamesAPI.getAPI().pinstances.get(plugin).getStatsInstance().lose(p_);
+				Util.sendMessage(plugin, p, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_lost);
+				MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().lose(p_);
 			}
 		}
 	}
