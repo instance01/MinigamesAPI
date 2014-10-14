@@ -120,6 +120,26 @@ public class ArenaSetup {
 	}
 
 	/**
+	 * Sets low and high boundaries for later blocks resetting for a sub component
+	 * 
+	 * @param plugin
+	 * @param arenaname
+	 * @param l
+	 *            Location to save
+	 * @param low
+	 *            True if it's the low boundary, false if it's the high boundary
+	 * @param extra_component
+	 *            Sub component string
+	 */
+	public void setBoundaries(JavaPlugin plugin, String arenaname, Location l, boolean low, String extra_component) {
+		if (low) {
+			Util.saveComponentForArena(plugin, arenaname, extra_component + ".bounds.low", l);
+		} else {
+			Util.saveComponentForArena(plugin, arenaname, extra_component + ".bounds.high", l);
+		}
+	}
+
+	/**
 	 * Saves a given arena if it was set up properly.
 	 * 
 	 * @return Arena or null if setup failed

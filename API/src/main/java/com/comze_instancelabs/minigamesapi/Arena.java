@@ -73,6 +73,8 @@ public class Arena {
 	SmartReset sr = null;
 
 	Cuboid boundaries;
+	Cuboid lobby_boundaries;
+	Cuboid spec_boundaries;
 
 	boolean temp_countdown = true;
 	boolean skip_join_lobby = false;
@@ -126,6 +128,22 @@ public class Arena {
 				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup.");
 			}
 		}
+
+		if (Util.isComponentForArenaValid(plugin, this.getName(), "lobbybounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getName(), "lobbybounds.bounds.high")) {
+			try {
+				this.lobby_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "lobbybounds.bounds.low"), Util.getComponentForArena(plugin, this.getName(), "lobbybounds.bounds.high"));
+			} catch (Exception e) {
+				;
+			}
+		}
+
+		if (Util.isComponentForArenaValid(plugin, this.getName(), "specbounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getName(), "specbounds.bounds.high")) {
+			try {
+				this.spec_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "specbounds.bounds.low"), Util.getComponentForArena(plugin, this.getName(), "specbounds.bounds.high"));
+			} catch (Exception e) {
+				;
+			}
+		}
 		// }
 	}
 
@@ -169,6 +187,14 @@ public class Arena {
 
 	public Cuboid getBoundaries() {
 		return this.boundaries;
+	}
+
+	public Cuboid getLobbyBoundaries() {
+		return this.lobby_boundaries;
+	}
+
+	public Cuboid getSpecBoundaries() {
+		return this.spec_boundaries;
 	}
 
 	public String getName() {
