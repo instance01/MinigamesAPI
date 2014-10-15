@@ -611,6 +611,10 @@ public class ArenaListener implements Listener {
 					pli.getArenaAchievements().openGUI(p.getName(), false);
 					event.setCancelled(true);
 				}
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.extra_lobby_item.item0.item")) {
+				if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
+				}
 			}
 		}
 	}

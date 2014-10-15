@@ -69,6 +69,11 @@ public class DefaultConfig {
 			config.addDefault("config.last_man_standing_wins", true);
 			config.addDefault("config.effects", true);
 
+			config.addDefault("config.extra_lobby_item.item0.enabled", false);
+			config.addDefault("config.extra_lobby_item.item0.item", 9);
+			config.addDefault("config.extra_lobby_item.item0.name", "Custom Item");
+			config.addDefault("config.extra_lobby_item.item0.command", "say This is a custom extra lobby item.");
+
 			config.addDefault("mysql.enabled", false);
 			config.addDefault("mysql.host", "127.0.0.1");
 			config.addDefault("mysql.user", "root");

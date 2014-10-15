@@ -585,6 +585,18 @@ public class Util {
 			p.getInventory().addItem(achievement_item);
 		}
 		p.updateInventory();
+
+		// custom lobby item
+		if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
+			ItemStack custom_item0 = new ItemStack(plugin.getConfig().getInt("config.extra_lobby_item.item0.item"));
+			if (custom_item0.getType() != Material.AIR) {
+				ItemMeta custom_item0meta = custom_item0.getItemMeta();
+				custom_item0meta.setDisplayName(plugin.getConfig().getString("config.extra_lobby_item.item0.name"));
+				custom_item0.setItemMeta(custom_item0meta);
+			}
+			p.getInventory().addItem(custom_item0);
+			p.updateInventory();
+		}
 	}
 
 	public static void giveSpectatorItems(JavaPlugin plugin, Player p) {
