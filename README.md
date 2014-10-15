@@ -16,14 +16,14 @@ Features
 - Different minigame types
 - VIP Arenas
 - Economy, command and item rewards
-- Overall Customization/Attributes like player counts, countdowns, spawns, etc.
+- Overall Customization/Attributes like player counts, countdowns, spawns, boundaries etc.
 - Signs and corresponding Arena states
-- Map regeneration mechanisms
-- Kits/Classes and Classesmenu
+- Fast map regeneration mechanism
+- Kits/Classes and Classes Gui
 - Arcade system
 - MySQL/SQLite support
-- Guns API
-- Bungee support
+- Guns API (unfinished and only in use in Warlock Tactical right now)
+- Bungee support including signs
 - Party (/party)
 - Achievements
 - More stuff
@@ -48,7 +48,7 @@ Maven
 <dependency>
   <groupId>com.comze_instancelabs</groupId>
   <artifactId>MinigamesLib</artifactId>
-  <version>1.6.0</version>
+  <version>1.8.1</version>
 </dependency>
 
 
