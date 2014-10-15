@@ -841,6 +841,13 @@ public class Arena {
 			Bukkit.getScheduler().cancelTask(currenttaskid);
 		} catch (Exception e) {
 		}
+
+		// Maximum game time:
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				a.stop();
+			}
+		}, 20L * 60L * (long) plugin.getConfig().getDouble("config.default_max_game_time_in_minutes"));
 	}
 
 	/**

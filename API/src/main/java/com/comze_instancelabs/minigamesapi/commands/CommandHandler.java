@@ -157,6 +157,8 @@ public class CommandHandler {
 		cmddesc.put("list", "Lists all arenas.");
 		cmddesc.put("reload", "Reloads the config.");
 		cmddesc.put("reset <arena>", "Forces the arena to reset.");
+		cmddesc.put("setlobbybounds <arena> <low/high>", "Optional: Set lobby boundaries.");
+		cmddesc.put("setspecbounds <arena> <low/high>", "Optional: Set extra spectator boundaries.");
 		cmddesc.put("setauthor <arena> <author>", "Will always display the author of the map at join.");
 	}
 

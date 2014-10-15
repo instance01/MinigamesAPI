@@ -20,6 +20,7 @@ public class DefaultConfig {
 			config.addDefault("config.spectator_move_y_lock", true);
 			config.addDefault("config.default_max_players", 4);
 			config.addDefault("config.default_min_players", 2);
+			config.addDefault("config.default_max_game_time_in_minutes", 30);
 			config.addDefault("config.lobby_countdown", 30);
 			config.addDefault("config.ingame_countdown", 10);
 			config.addDefault("config.ingame_countdown_enabled", true);
