@@ -647,7 +647,7 @@ public class Util {
 		c.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 100000));
 		Item i = w.dropItem(l, item);
 		c.setPassenger(i);
-		if (plugin.getConfig().getBoolean("config.broadcast_powerup_spawning")) {
+		if (plugin.getConfig().getBoolean("config.powerup_spawning.broadcast")) {
 			for (String p_ : a.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_)) {
 					Player p = Bukkit.getPlayer(p_);
@@ -655,12 +655,19 @@ public class Util {
 				}
 			}
 		}
+		if (plugin.getConfig().getBoolean("config.powerup_spawning.spawn_firework")) {
+			spawnFirework(l);
+		}
 	}
 
 	static Random r = new Random();
 
 	public static void spawnFirework(Player p) {
-		Firework fw = (Firework) p.getWorld().spawnEntity(p.getLocation(), EntityType.FIREWORK);
+		spawnFirework(p.getLocation());
+	}
+
+	public static void spawnFirework(Location l) {
+		Firework fw = (Firework) l.getWorld().spawnEntity(l, EntityType.FIREWORK);
 		FireworkMeta fwm = fw.getFireworkMeta();
 		FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(Color.AQUA).withFade(Color.ORANGE).with(Type.STAR).trail(r.nextBoolean()).build();
 		fwm.addEffect(effect);

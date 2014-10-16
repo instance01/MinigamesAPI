@@ -60,7 +60,8 @@ public class DefaultConfig {
 			config.addDefault("config.command_whitelist", "/msg,/pm,/help");
 			config.addDefault("config.leave_command", "/leave");
 			config.addDefault("config.spawn_fireworks_for_winners", true);
-			config.addDefault("config.broadcast_powerup_spawning", false);
+			config.addDefault("config.powerup_spawning.broadcast", false);
+			config.addDefault("config.powerup_spawning.spawn_firework", false);
 			config.addDefault("config.use_custom_scoreboard", false);
 			config.addDefault("config.delay.enabled", false);
 			config.addDefault("config.delay.amount_seconds", 5);
