@@ -53,9 +53,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	public void onEnable() {
 		instance = this;
 
-		String version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
+		this.version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + version + ".");
-		this.version = version;
 
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
@@ -126,6 +125,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 		}
 		Classes.loadClasses(plugin_);
 		Guns.loadGuns(plugin_);
+		pinstances.get(plugin_).getShopHandler().loadShopItems();
 		return instance;
 	}
 
@@ -152,17 +152,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	// after this setup, get the PluginInstance, load the arenas by yourself
 	// and add the loaded arenas w/ custom arena class into the PluginInstance
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_, String minigame, Class<?> arenaclass) {
-		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
-		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
-		ClassesConfig classesconfig = new ClassesConfig(plugin_, false);
-		StatsConfig statsconfig = new StatsConfig(plugin_, false);
-		DefaultConfig.init(plugin_, false);
-		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig, new ArrayList<Arena>()));
-		ArenaListener al = new ArenaListener(plugin_, pinstances.get(plugin_), minigame);
-		pinstances.get(plugin_).setArenaListener(al);
-		Bukkit.getPluginManager().registerEvents(al, plugin_);
-		Classes.loadClasses(plugin_);
-		Guns.loadGuns(plugin_);
+		setupRaw(plugin_, minigame);
 		return instance;
 	}
 
@@ -173,19 +163,26 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	 * @return
 	 */
 	public static MinigamesAPI setupAPI(JavaPlugin plugin_, String minigame) {
+		PluginInstance pli = setupRaw(plugin_, minigame);
+		pli.addLoadedArenas(Util.loadArenas(plugin_, pli.getArenasConfig()));
+		return instance;
+	}
+
+	public static PluginInstance setupRaw(JavaPlugin plugin_, String minigame) {
 		ArenasConfig arenasconfig = new ArenasConfig(plugin_);
 		MessagesConfig messagesconfig = new MessagesConfig(plugin_);
 		ClassesConfig classesconfig = new ClassesConfig(plugin_, false);
 		StatsConfig statsconfig = new StatsConfig(plugin_, false);
 		DefaultConfig.init(plugin_, false);
-		pinstances.put(plugin_, new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig));
-		pinstances.get(plugin_).addLoadedArenas(Util.loadArenas(plugin_, arenasconfig));
+		PluginInstance pli = new PluginInstance(plugin_, arenasconfig, messagesconfig, classesconfig, statsconfig);
+		pinstances.put(plugin_, pli);
 		ArenaListener al = new ArenaListener(plugin_, pinstances.get(plugin_), minigame);
 		pinstances.get(plugin_).setArenaListener(al);
 		Bukkit.getPluginManager().registerEvents(al, plugin_);
 		Classes.loadClasses(plugin_);
+		pli.getShopHandler().loadShopItems();
 		Guns.loadGuns(plugin_);
-		return instance;
+		return pli;
 	}
 
 	public static MinigamesAPI getAPI() {
