@@ -3,6 +3,7 @@ package com.comze_instancelabs.minigamesapi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -622,7 +623,25 @@ public class Arena {
 	public void spectate(String playername) {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			this.onEliminated(playername);
-			Player p = Bukkit.getPlayer(playername);
+			final Player p = Bukkit.getPlayer(playername);
+			try {
+				if (plugin.getConfig().getBoolean("config.effects")) {
+					final Arena a = this;
+					Effects.playFakeBed(a, p);
+					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+						public void run() {
+							// TODO some way to remove that fake player? -> test out
+							try {
+								Effects.playFakeBed(a, p, 0, 1, 0);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}, 20L * 5);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			pli.getSpectatorManager().setSpectate(p, true);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
 				pli.global_lost.put(playername, this);
