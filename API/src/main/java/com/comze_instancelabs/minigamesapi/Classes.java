@@ -31,7 +31,7 @@ public class Classes {
 		this.plugin = plugin;
 		this.pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 	}
-	
+
 	public Classes(PluginInstance pli, JavaPlugin plugin) {
 		this.plugin = plugin;
 		this.pli = pli;
