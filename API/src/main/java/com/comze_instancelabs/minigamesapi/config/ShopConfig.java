@@ -18,25 +18,25 @@ public class ShopConfig {
 		this.plugin = plugin;
 		if (!custom) {
 			this.getConfig().options().header("Used for saving shop items. Default shop items:");
-			this.getConfig().addDefault("config.shop_item.coin_boost2.name", "Coin boost * 2");
-			this.getConfig().addDefault("config.shop_item.coin_boost2.enabled", true);
-			this.getConfig().addDefault("config.shop_item.coin_boost2.items", "388*1");
-			this.getConfig().addDefault("config.shop_item.coin_boost2.icon", "388*1");
-			this.getConfig().addDefault("config.shop_item.coin_boost2.lore", "Will give you a double boost when winning.");
-			this.getConfig().addDefault("config.shop_item.coin_boost2.requires_money", false);
-			this.getConfig().addDefault("config.shop_item.coin_boost2.requires_permission", false);
-			this.getConfig().addDefault("config.shop_item.coin_boost2.money_amount", 1000);
-			this.getConfig().addDefault("config.shop_item.coin_boost2.permission_node", "minigames.shop_item.coin_boost2");
+			this.getConfig().addDefault("config.shop_items.coin_boost2.name", "Coin boost * 2");
+			this.getConfig().addDefault("config.shop_items.coin_boost2.enabled", true);
+			this.getConfig().addDefault("config.shop_items.coin_boost2.items", "388*1");
+			this.getConfig().addDefault("config.shop_items.coin_boost2.icon", "388*1");
+			this.getConfig().addDefault("config.shop_items.coin_boost2.lore", "Will give you a double boost when winning.");
+			this.getConfig().addDefault("config.shop_items.coin_boost2.requires_money", false);
+			this.getConfig().addDefault("config.shop_items.coin_boost2.requires_permission", false);
+			this.getConfig().addDefault("config.shop_items.coin_boost2.money_amount", 1000);
+			this.getConfig().addDefault("config.shop_items.coin_boost2.permission_node", "minigames.shop_item.coin_boost2");
 			
-			this.getConfig().addDefault("config.shop_item.coin_boost3.name", "Coin boost * 3");
-			this.getConfig().addDefault("config.shop_item.coin_boost3.enabled", true);
-			this.getConfig().addDefault("config.shop_item.coin_boost3.items", "388*1");
-			this.getConfig().addDefault("config.shop_item.coin_boost3.icon", "388*1");
-			this.getConfig().addDefault("config.shop_item.coin_boost3.lore", "Will give you a triple boost when winning.");
-			this.getConfig().addDefault("config.shop_item.coin_boost3.requires_money", false);
-			this.getConfig().addDefault("config.shop_item.coin_boost3.requires_permission", false);
-			this.getConfig().addDefault("config.shop_item.coin_boost3.money_amount", 2000);
-			this.getConfig().addDefault("config.shop_item.coin_boost3.permission_node", "minigames.shop_item.coin_boost3");
+			this.getConfig().addDefault("config.shop_items.coin_boost3.name", "Coin boost * 3");
+			this.getConfig().addDefault("config.shop_items.coin_boost3.enabled", true);
+			this.getConfig().addDefault("config.shop_items.coin_boost3.items", "388*2");
+			this.getConfig().addDefault("config.shop_items.coin_boost3.icon", "388*2");
+			this.getConfig().addDefault("config.shop_items.coin_boost3.lore", "Will give you a triple boost when winning.");
+			this.getConfig().addDefault("config.shop_items.coin_boost3.requires_money", false);
+			this.getConfig().addDefault("config.shop_items.coin_boost3.requires_permission", false);
+			this.getConfig().addDefault("config.shop_items.coin_boost3.money_amount", 2000);
+			this.getConfig().addDefault("config.shop_items.coin_boost3.permission_node", "minigames.shop_item.coin_boost3");
 		}
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();

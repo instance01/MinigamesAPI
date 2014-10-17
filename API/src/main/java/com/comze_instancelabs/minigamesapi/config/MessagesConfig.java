@@ -101,6 +101,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.set_kit", set_kit);
 		this.getConfig().addDefault("messages.classes_item", classes_item);
 		this.getConfig().addDefault("messages.achievement_item", achievement_item);
+		this.getConfig().addDefault("messages.shop_item", shop_item);
 		this.getConfig().addDefault("messages.spectator_item", spectator_item);
 		this.getConfig().addDefault("messages.server_broadcast_winner", server_broadcast_winner);
 		this.getConfig().addDefault("messages.exit_item", exit_item);
@@ -168,6 +169,7 @@ public class MessagesConfig {
 		this.set_kit = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.set_kit"));
 		this.classes_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.classes_item"));
 		this.achievement_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.achievement_item"));
+		this.shop_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.shop_item"));
 		this.spectator_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.spectator_item"));
 		this.server_broadcast_winner = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.server_broadcast_winner"));
 		this.exit_item = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.exit_item"));
@@ -234,6 +236,7 @@ public class MessagesConfig {
 	public String set_kit = "&aSuccessfully set &2<kit>&a!";
 	public String classes_item = "&4Classes";
 	public String achievement_item = "&4Achievements";
+	public String shop_item = "&4Shop";
 	public String spectator_item = "&4Players";
 	public String server_broadcast_winner = "&2<player> &awon the game on &2<arena>&a!";
 	public String exit_item = "&4Leave the game";

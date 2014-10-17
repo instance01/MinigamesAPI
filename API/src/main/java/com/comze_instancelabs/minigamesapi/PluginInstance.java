@@ -43,6 +43,7 @@ public class PluginInstance {
 	private MainSQL sql = null;
 	private Stats stats = null;
 	private Classes classes = null;
+	private Shop shop = null;
 	private SpectatorManager spectatormanager = null;
 	private ArenaAchievements achievements = null;
 	private boolean achievement_gui_enabled = false;
@@ -70,6 +71,7 @@ public class PluginInstance {
 		stats = new Stats(plugin);
 		sql = new MainSQL(plugin, true);
 		classes = new Classes(this, plugin);
+		shop = new Shop(this, plugin);
 		spectatormanager = new SpectatorManager(plugin);
 		achievements = new ArenaAchievements(this, plugin);
 		scoreboardManager = new ArenaScoreboard(this, plugin);
@@ -169,6 +171,10 @@ public class PluginInstance {
 
 	public void setClassesHandler(Classes c) {
 		this.classes = c;
+	}
+
+	public Shop getShopHandler() {
+		return this.shop;
 	}
 
 	public SpectatorManager getSpectatorManager() {

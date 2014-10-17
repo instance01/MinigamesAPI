@@ -536,7 +536,6 @@ public class ArenaListener implements Listener {
 					if (l != null) {
 						if (l.getWorld() != null) {
 							if (l.distance(s.getLocation()) < 1) {
-								// TODO test
 								for (Arena a : pli.getArenas()) {
 									if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
 										if (!a.containsPlayer(event.getPlayer().getName())) {
@@ -611,6 +610,9 @@ public class ArenaListener implements Listener {
 					pli.getArenaAchievements().openGUI(p.getName(), false);
 					event.setCancelled(true);
 				}
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.shop_selection_item")) {
+				pli.getShopHandler().openGUI(p.getName());
+				event.setCancelled(true);
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.extra_lobby_item.item0.item")) {
 				if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));

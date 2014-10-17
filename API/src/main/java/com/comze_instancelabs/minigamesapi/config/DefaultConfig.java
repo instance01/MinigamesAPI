@@ -20,6 +20,7 @@ public class DefaultConfig {
 			config.addDefault("config.exit_item", 152);
 			config.addDefault("config.achievement_item", 160);
 			config.addDefault("config.spectator_item", 345);
+			config.addDefault("config.shop_selection_item", 388);
 			config.addDefault("config.spectator_after_fall_or_death", true);
 			config.addDefault("config.spectator_move_y_lock", true);
 			config.addDefault("config.default_max_players", 4);
@@ -57,6 +58,7 @@ public class DefaultConfig {
 			config.addDefault("config.execute_cmds_on_stop", false);
 			config.addDefault("config.cmds", "say SERVER STOPPING;stop");
 			config.addDefault("config.classes_gui_rows", 3);
+			config.addDefault("config.shop_gui_rows", 3);
 			config.addDefault("config.map_rotation", false);
 			config.addDefault("config.broadcast_win", true);
 			config.addDefault("config.buy_classes_forever", true);

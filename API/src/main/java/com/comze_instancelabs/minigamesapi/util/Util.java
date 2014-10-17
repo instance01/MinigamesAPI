@@ -461,7 +461,6 @@ public class Util {
 	}
 
 	// example items: 351:6#ALL_DAMAGE:2#KNOCKBACK:2*1=NAME:LORE;267*1;3*64;3*64
-	@SuppressWarnings("unused")
 	public static ArrayList<ItemStack> parseItems(String rawitems) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
@@ -505,6 +504,10 @@ public class Util {
 				if (nameindex > -1) {
 					itemamount = c[1].substring(0, c[1].indexOf("="));
 				}
+				if (Integer.parseInt(itemid) < 1) {
+					System.out.println("Invalid item id: " + itemid);
+					continue;
+				}
 				ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount), (short) Integer.parseInt(itemdata));
 				ItemMeta m = nitem.getItemMeta();
 				for (String enchant : enchantments) {
@@ -537,7 +540,7 @@ public class Util {
 				nitem.setItemMeta(m);
 				ret.add(nitem);
 			}
-			if (ret == null) {
+			if (ret == null || ret.size() < 1) {
 				MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
 			}
 		} catch (Exception e) {
@@ -549,7 +552,6 @@ public class Util {
 			rose.setItemMeta(im);
 			ret.add(rose);
 		}
-
 		return ret;
 	}
 
@@ -580,10 +582,18 @@ public class Util {
 			achievement_item.setItemMeta(achievement_itemmeta);
 		}
 
+		ItemStack shop_item = new ItemStack(plugin.getConfig().getInt("config.shop_selection_item"));
+		if (shop_item.getType() != Material.AIR) {
+			ItemMeta shop_itemmeta = achievement_item.getItemMeta();
+			shop_itemmeta.setDisplayName(pli.getMessagesConfig().shop_item);
+			shop_item.setItemMeta(shop_itemmeta);
+		}
+
 		p.getInventory().addItem(classes_item);
 		if (pli.isAchievementGuiEnabled()) {
 			p.getInventory().addItem(achievement_item);
 		}
+		p.getInventory().addItem(shop_item);
 		p.updateInventory();
 
 		// custom lobby item
