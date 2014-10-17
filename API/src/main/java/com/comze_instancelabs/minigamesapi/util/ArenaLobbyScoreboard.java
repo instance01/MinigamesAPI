@@ -32,17 +32,13 @@ public class ArenaLobbyScoreboard {
 
 	ArrayList<String> loaded_custom_strings = new ArrayList<String>();
 
-	public ArenaLobbyScoreboard() {
-
-	}
-
 	public ArenaLobbyScoreboard(PluginInstance pli, JavaPlugin plugin) {
 		custom = plugin.getConfig().getBoolean("config.use_custom_scoreboard");
 		initialized = 1;
 		this.pli = pli;
-		if (pli.getMessagesConfig().getConfig().isSet("messages.custom_scoreboard.")) {
-			for (String configline : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.custom_scoreboard.").getKeys(false)) {
-				String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_scoreboard." + configline));
+		if (pli.getMessagesConfig().getConfig().isSet("messages.custom_lobby_scoreboard.")) {
+			for (String configline : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.custom_lobby_scoreboard.").getKeys(false)) {
+				String line = ChatColor.translateAlternateColorCodes('&', pli.getMessagesConfig().getConfig().getString("messages.custom_lobby_scoreboard." + configline));
 				loaded_custom_strings.add(line);
 			}
 		}
@@ -52,7 +48,7 @@ public class ArenaLobbyScoreboard {
 		if (!arena.getShowScoreboard()) {
 			return;
 		}
-		
+
 		if (pli == null) {
 			pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		}

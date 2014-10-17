@@ -48,7 +48,7 @@ public class PluginInstance {
 	private boolean achievement_gui_enabled = false;
 
 	public ArenaScoreboard scoreboardManager;
-	public ArenaLobbyScoreboard scoreboardLobbyManager = new ArenaLobbyScoreboard();
+	public ArenaLobbyScoreboard scoreboardLobbyManager;
 	public ArenaSetup arenaSetup = new ArenaSetup();
 
 	int lobby_countdown = 30;
@@ -73,6 +73,7 @@ public class PluginInstance {
 		spectatormanager = new SpectatorManager(plugin);
 		achievements = new ArenaAchievements(this, plugin);
 		scoreboardManager = new ArenaScoreboard(this, plugin);
+		scoreboardLobbyManager = new ArenaLobbyScoreboard(this, plugin);
 		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
 		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
 		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator_move_y_lock");
