@@ -48,6 +48,20 @@ public class AchievementsConfig {
 		this.getConfig().addDefault("config.achievements.first_win.reward.command_reward", false);
 		this.getConfig().addDefault("config.achievements.first_win.reward.cmd", "tell <player> Good job!");
 
+		this.getConfig().addDefault("config.achievements.ten_wins.enabled", true);
+		this.getConfig().addDefault("config.achievements.ten_wins.name", "Ten wins!");
+		this.getConfig().addDefault("config.achievements.ten_wins.reward.economy_reward", true);
+		this.getConfig().addDefault("config.achievements.ten_wins.reward.econ_reward_amount", 30);
+		this.getConfig().addDefault("config.achievements.ten_wins.reward.command_reward", false);
+		this.getConfig().addDefault("config.achievements.ten_wins.reward.cmd", "tell <player> Good job!");
+
+		this.getConfig().addDefault("config.achievements.achievement_guy.enabled", true);
+		this.getConfig().addDefault("config.achievements.achievement_guy.name", "All achievement guy!");
+		this.getConfig().addDefault("config.achievements.achievement_guy.reward.economy_reward", true);
+		this.getConfig().addDefault("config.achievements.achievement_guy.reward.econ_reward_amount", 30);
+		this.getConfig().addDefault("config.achievements.achievement_guy.reward.command_reward", false);
+		this.getConfig().addDefault("config.achievements.achievement_guy.reward.cmd", "tell <player> Good job!");
+
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 	}

@@ -74,6 +74,15 @@ public class ArenaAchievements {
 				pli.getAchievementsConfig().getConfig().set("players." + playername + "." + achievement + ".done", true);
 				pli.getAchievementsConfig().saveConfig();
 				Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", ChatColor.translateAlternateColorCodes('&', pli.getAchievementsConfig().getConfig().getString("config.achievements." + achievement + ".name"))));
+				ArrayList<AAchievement> alist = loadPlayerAchievements(playername, sql);
+				for (AAchievement aac : alist) {
+					if (!aac.isDone() && !aac.getAchievementNameRaw().equalsIgnoreCase("achievement_guy")) {
+						// if an achievement is not done, return
+						return;
+					}
+				}
+				// else set the final achievement_guy achievement to done!
+				setAchievementDone(playername, "achievement_guy", sql);
 			}
 		}
 	}

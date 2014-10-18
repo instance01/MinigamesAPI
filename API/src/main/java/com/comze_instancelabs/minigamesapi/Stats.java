@@ -77,7 +77,12 @@ public class Stats {
 		if (config.getConfig().isSet("players." + uuid + ".wins")) {
 			temp = config.getConfig().getInt("players." + uuid + ".wins");
 		}
-		config.getConfig().set("players." + uuid + ".wins", temp + 1);
+		temp++;
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "first_win", false);
+		if (temp >= 10) {
+			MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "ten_wins", false);
+		}
+		config.getConfig().set("players." + uuid + ".wins", temp);
 		config.getConfig().set("players." + uuid + ".playername", playername);
 		config.saveConfig();
 	}
@@ -106,9 +111,9 @@ public class Stats {
 		config.getConfig().set("players." + uuid + ".playername", playername);
 		config.saveConfig();
 		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "first_blood", false);
-		if (temp == 10) {
+		if (temp >= 10 && temp < 100) {
 			MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "ten_kills", false);
-		} else if (temp == 100) {
+		} else if (temp >= 100) {
 			MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "hundred_kills", false);
 		}
 		MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateKillerStats(playername);
