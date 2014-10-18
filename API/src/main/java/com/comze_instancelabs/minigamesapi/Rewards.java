@@ -83,12 +83,23 @@ public class Rewards {
 	}
 
 	public void giveWinReward(String p_, Arena a) {
+		giveWinReward(p_, a, 1);
+	}
+
+	public void giveWinReward(String p_, Arena a, int global_multiplier) {
 		if (Validator.isPlayerOnline(p_)) {
 			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 			final Player p = Bukkit.getPlayer(p_);
 			if (!pli.global_lost.containsKey(p_)) {
 				if (economyrewards && MinigamesAPI.economy) {
-					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward);
+					int multiplier = global_multiplier;
+					if (pli.getShopHandler().hasItemBought(p_, "coin_boost2_solo")) {
+						multiplier = 2;
+					}
+					if (pli.getShopHandler().hasItemBought(p_, "coin_boost3_solo")) {
+						multiplier = 3;
+					}
+					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward * multiplier);
 				}
 				if (itemrewards) {
 					p.getInventory().addItem(items);

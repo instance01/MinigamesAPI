@@ -82,6 +82,8 @@ public class Arena {
 
 	int currentspawn = 0;
 
+	int global_coin_multiplier = 1;
+
 	/**
 	 * Creates a normal singlespawn arena
 	 * 
@@ -571,7 +573,7 @@ public class Arena {
 
 		if (started) {
 			if (!pnoreward.contains(playername)) {
-				pli.getRewardsInstance().giveWinReward(playername, this);
+				pli.getRewardsInstance().giveWinReward(playername, this, global_coin_multiplier);
 			} else {
 				pnoreward.remove(playername);
 			}
@@ -818,6 +820,17 @@ public class Arena {
 				}
 			}
 		}, 5L, 20).getTaskId();
+
+		for (final String p_ : this.getAllPlayers()) {
+			if (pli.getShopHandler().hasItemBought(p_, "coin_boost2")) {
+				global_coin_multiplier = 2;
+				break;
+			}
+			if (pli.getShopHandler().hasItemBought(p_, "coin_boost3")) {
+				global_coin_multiplier = 3;
+				break;
+			}
+		}
 	}
 
 	public void startRaw(final Arena a) {
