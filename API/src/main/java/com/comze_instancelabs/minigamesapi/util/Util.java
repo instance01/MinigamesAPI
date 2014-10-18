@@ -595,7 +595,9 @@ public class Util {
 		if (pli.isAchievementGuiEnabled()) {
 			p.getInventory().addItem(achievement_item);
 		}
-		p.getInventory().addItem(shop_item);
+		if (plugin.getConfig().getBoolean("config.shop_enabled")) {
+			p.getInventory().addItem(shop_item);
+		}
 		p.updateInventory();
 
 		// custom lobby item

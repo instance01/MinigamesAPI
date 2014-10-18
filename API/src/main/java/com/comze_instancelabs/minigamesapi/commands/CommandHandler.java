@@ -660,6 +660,9 @@ public class CommandHandler {
 	}
 
 	public boolean openShop(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!plugin.getConfig().getBoolean("config.shop_enabled")) {
+			return true;
+		}
 		if (pli.global_players.containsKey(p.getName())) {
 			pli.getShopHandler().openGUI(p.getName());
 		} else {

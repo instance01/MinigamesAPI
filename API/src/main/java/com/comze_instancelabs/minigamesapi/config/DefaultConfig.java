@@ -14,7 +14,8 @@ public class DefaultConfig {
 		config.options().header("The default config. Check http://dev.bukkit.org/bukkit-plugins/instances-minigamesapi/#w-tutorials \n"
 				+ "or https://github.com/instance01/MinigamesAPI/wiki/Default-Config-and-Item-Markup \n"
 				+ "for more information if you don't understand a config entry. \n"
-				+ "You can find classes (kits) in classes.yml, all saved arenas in arenas.yml, all messages in messages.yml.");
+				+ "You can find classes (kits) in classes.yml, all saved arenas in arenas.yml, all messages in messages.yml. \n"
+				+ "You can edit/disable achievements in achievements.yml.");
 		if (!custom) {
 			config.addDefault("config.classes_selection_item", 399);
 			config.addDefault("config.exit_item", 152);
@@ -30,6 +31,7 @@ public class DefaultConfig {
 			config.addDefault("config.ingame_countdown", 10);
 			config.addDefault("config.ingame_countdown_enabled", true);
 			config.addDefault("config.classes_enabled", true);
+			config.addDefault("config.shop_enabled", true);
 
 			config.addDefault("config.rewards.economy", true);
 			config.addDefault("config.rewards.economy_reward", 10);
