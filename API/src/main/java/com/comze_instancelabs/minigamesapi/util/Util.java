@@ -584,7 +584,7 @@ public class Util {
 
 		ItemStack shop_item = new ItemStack(plugin.getConfig().getInt("config.shop_selection_item"));
 		if (shop_item.getType() != Material.AIR) {
-			ItemMeta shop_itemmeta = achievement_item.getItemMeta();
+			ItemMeta shop_itemmeta = shop_item.getItemMeta();
 			shop_itemmeta.setDisplayName(pli.getMessagesConfig().shop_item);
 			shop_item.setItemMeta(shop_itemmeta);
 		}

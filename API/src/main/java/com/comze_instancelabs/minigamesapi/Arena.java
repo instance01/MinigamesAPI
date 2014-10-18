@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.ArenaType;
@@ -83,6 +85,8 @@ public class Arena {
 	int currentspawn = 0;
 
 	int global_coin_multiplier = 1;
+
+	BukkitTask spectator_task;
 
 	/**
 	 * Creates a normal singlespawn arena
@@ -626,24 +630,30 @@ public class Arena {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			this.onEliminated(playername);
 			final Player p = Bukkit.getPlayer(playername);
-			try {
-				if (plugin.getConfig().getBoolean("config.effects")) {
-					final Arena a = this;
-					Effects.playFakeBed(a, p);
+
+			pli.global_lost.put(playername, this);
+			final Location deathLocation = p.getLocation();
+			if (plugin.getConfig().getBoolean("config.effects")) {
+				final Arena a = this;
+				try {
+					Effects.playFakeBed(a, p, deathLocation.getBlockX(), deathLocation.getBlockY(), deathLocation.getBlockZ());
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						
+					}
+				}, 10L);
 			}
+
 			pli.getSpectatorManager().setSpectate(p, true);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
-				pli.global_lost.put(playername, this);
 				this.leavePlayer(playername, false, false);
 				pli.scoreboardManager.updateScoreboard(plugin, this);
 				return;
 			}
 			Util.clearInv(p);
-			Util.giveSpectatorItems(plugin, p);
-			pli.global_lost.put(playername, this);
 			p.setAllowFlight(true);
 			p.setFlying(true);
 			pli.scoreboardManager.updateScoreboard(plugin, this);
@@ -672,6 +682,12 @@ public class Arena {
 					Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
 				}
 			}
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					Util.clearInv(p);
+					Util.giveSpectatorItems(plugin, p);
+				}
+			}, 1L);
 		}
 	}
 
@@ -857,6 +873,38 @@ public class Arena {
 		if (plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running")) {
 			Bukkit.setWhitelist(true);
 		}
+		spectator_task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
+			public void run() {
+				// check if any spectator is near a player
+				try {
+					for (String p_ : a.getAllPlayers()) {
+						if (!pli.global_lost.containsKey(p_)) {
+							continue;
+						}
+						Player p = Bukkit.getPlayer(p_);
+						if (p != null) {
+							for (String p__ : a.getAllPlayers()) {
+								if (p_ != p__) {
+									Player p2 = Bukkit.getPlayer(p__);
+									if ((p.getLocation().getBlockX() - p2.getLocation().getBlockX() < 5) && p.getLocation().getBlockZ() - p2.getLocation().getBlockZ() < 5 && p.getLocation().getBlockY() - p2.getLocation().getBlockY() < 5) {
+										Vector direction = p2.getLocation().add(0D, -0.5D, 0D).toVector().subtract(p.getLocation().toVector()).normalize().multiply(-1.5D);
+										p.setVelocity(direction);
+										if (p.isInsideVehicle()) {
+											p.getVehicle().setVelocity(direction.multiply(2D));
+										}
+										break;
+									}
+								}
+							}
+						}
+					}
+				} catch (Exception e) {
+					if (spectator_task != null) {
+						spectator_task.cancel();
+					}
+				}
+			}
+		}, 20L, 20L);
 		started = true;
 		started();
 		try {
@@ -886,6 +934,9 @@ public class Arena {
 	 */
 	public void stop() {
 		final Arena a = this;
+		if (spectator_task != null) {
+			spectator_task.cancel();
+		}
 		if (!temp_delay_stopped) {
 			if (plugin.getConfig().getBoolean("config.delay.enabled")) {
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {

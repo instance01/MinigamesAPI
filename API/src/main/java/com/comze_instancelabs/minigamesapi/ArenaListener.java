@@ -93,7 +93,7 @@ public class ArenaListener implements Listener {
 		if (pli.global_lost.containsKey(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
 			Arena a = pli.global_lost.get(event.getPlayer().getName());
 			if (a != null) {
-				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
+				if (a.getArenaState() == ArenaState.INGAME && a.getArcadeInstance() == null) {
 					event.setCancelled(true);
 				}
 			}
@@ -273,9 +273,11 @@ public class ArenaListener implements Listener {
 				}
 			}, 5);
 
-			if (count < 2) {
-				// last man standing
-				arena.stop();
+			if (plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
+				if (count < 2) {
+					// last man standing
+					arena.stop();
+				}
 			}
 		}
 	}

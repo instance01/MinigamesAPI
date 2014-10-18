@@ -76,7 +76,7 @@ public class SpectatorManager {
 
 						Player p_ = Bukkit.getPlayer(d);
 						if (p_ != null && p != null) {
-							Util.teleportPlayerFixed(p, p_.getLocation());
+							Util.teleportPlayerFixed(p, p_.getLocation().add(0D, 0.5D, 0D));
 						}
 					}
 					event.setWillClose(true);
