@@ -630,16 +630,6 @@ public class Arena {
 				if (plugin.getConfig().getBoolean("config.effects")) {
 					final Arena a = this;
 					Effects.playFakeBed(a, p);
-					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-						public void run() {
-							// TODO some way to remove that fake player? -> test out
-							try {
-								Effects.playFakeBed(a, p, 0, 1, 0);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					}, 20L * 5);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

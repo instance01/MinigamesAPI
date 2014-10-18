@@ -33,11 +33,11 @@ public class Effects {
 		playFakeBed(a, p, p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
 	}
 
-	public static void playFakeBed(Arena a, Player p, int x, int y, int z) throws Exception {
-		Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
-		Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+	public static void playFakeBed(final Arena a, Player p, int x, int y, int z) throws Exception {
+		final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
+		final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
 		playerConnection.setAccessible(true);
-		Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
+		final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
 
 		Constructor packetPlayOutNamedEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutNamedEntitySpawn").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHuman"));
 		Constructor packetPlayOutBedConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutBed").getConstructor();
@@ -45,7 +45,7 @@ public class Effects {
 		Object packet = packetPlayOutNamedEntityConstr.newInstance(getHandle.invoke(p));
 		setValue(packet, "a", -p.getEntityId());
 
-		Object packet_ = packetPlayOutBedConstr.newInstance();
+		final Object packet_ = packetPlayOutBedConstr.newInstance();
 		setValue(packet_, "a", -p.getEntityId());
 		setValue(packet_, "b", x);
 		setValue(packet_, "c", y);
@@ -56,6 +56,21 @@ public class Effects {
 			sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet);
 			sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
 		}
+		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+			public void run() {
+				try {
+					setValue(packet_, "b", 0);
+					setValue(packet_, "c", 0);
+					setValue(packet_, "d", 0);
+					for (String p_ : a.getAllPlayers()) {
+						Player p__ = Bukkit.getPlayer(p_);
+						sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}, 20L * 5);
 	}
 
 	private static void setValue(Object instance, String fieldName, Object value) throws Exception {
