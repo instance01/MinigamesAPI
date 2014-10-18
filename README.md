@@ -26,6 +26,7 @@ Features
 - Bungee support including signs
 - Party (/party)
 - Achievements
+- Included effects like blood or dead bodies lying around
 - More stuff
 
 
