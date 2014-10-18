@@ -90,6 +90,8 @@ public class CommandHandler {
 				return this.setDescription(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("kit")) {
 				return this.setKit(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("shop")) {
+				return this.openShop(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb")) {
 				return this.getLeaderboards(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
@@ -650,6 +652,15 @@ public class CommandHandler {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <kit>");
+		}
+		return true;
+	}
+
+	public boolean openShop(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (pli.global_players.containsKey(p.getName())) {
+			pli.getShopHandler().openGUI(p.getName());
+		} else {
+			sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 		}
 		return true;
 	}
