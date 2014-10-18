@@ -632,19 +632,13 @@ public class Arena {
 			final Player p = Bukkit.getPlayer(playername);
 
 			pli.global_lost.put(playername, this);
-			final Location deathLocation = p.getLocation();
 			if (plugin.getConfig().getBoolean("config.effects")) {
 				final Arena a = this;
 				try {
-					Effects.playFakeBed(a, p, deathLocation.getBlockX(), deathLocation.getBlockY(), deathLocation.getBlockZ());
+					Effects.playFakeBed(a, p);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-					public void run() {
-						
-					}
-				}, 10L);
 			}
 
 			pli.getSpectatorManager().setSpectate(p, true);
