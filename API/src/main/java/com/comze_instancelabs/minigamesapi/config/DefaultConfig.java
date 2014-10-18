@@ -29,6 +29,7 @@ public class DefaultConfig {
 			config.addDefault("config.lobby_countdown", 30);
 			config.addDefault("config.ingame_countdown", 10);
 			config.addDefault("config.ingame_countdown_enabled", true);
+			config.addDefault("config.classes_enabled", true);
 
 			config.addDefault("config.rewards.economy", true);
 			config.addDefault("config.rewards.economy_reward", 10);

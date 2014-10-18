@@ -626,6 +626,9 @@ public class CommandHandler {
 
 	public boolean setKit(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (args.length > 1) {
+			if (!plugin.getConfig().getBoolean("config.classes_enabled")) {
+				return true;
+			}
 			if (pli.global_players.containsKey(p.getName())) {
 				String kit = args[1];
 				AClass ac = pli.getClassesHandler().getClassByInternalname(kit);

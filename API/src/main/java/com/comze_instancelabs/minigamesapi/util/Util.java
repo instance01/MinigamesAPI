@@ -589,7 +589,9 @@ public class Util {
 			shop_item.setItemMeta(shop_itemmeta);
 		}
 
-		p.getInventory().addItem(classes_item);
+		if (plugin.getConfig().getBoolean("config.classes_enabled")) {
+			p.getInventory().addItem(classes_item);
+		}
 		if (pli.isAchievementGuiEnabled()) {
 			p.getInventory().addItem(achievement_item);
 		}
