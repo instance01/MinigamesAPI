@@ -80,7 +80,7 @@ public class ArenaListener implements Listener {
 		if (pli.global_players.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
 			if (a != null) {
-				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
+				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null) {
 					event.setCancelled(true);
 				}
 			}
