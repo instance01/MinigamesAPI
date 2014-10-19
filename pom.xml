@@ -10,7 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<instancedev.global.server>instancedev</instancedev.global.server>
 	</properties>
-	<description>Rich Minigames API and future base of all of my Minigames.</description>
+	<description>Rich Minigames API and base of all of my new minigames.</description>
 
 	<modules>
 		<module>API</module>
