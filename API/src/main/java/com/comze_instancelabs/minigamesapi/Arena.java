@@ -3,7 +3,6 @@ package com.comze_instancelabs.minigamesapi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,11 +18,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import com.comze_instancelabs.minigamesapi.ArenaState;
-import com.comze_instancelabs.minigamesapi.ArenaType;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
-import com.comze_instancelabs.minigamesapi.PluginInstance;
-import com.comze_instancelabs.minigamesapi.SmartReset;
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
 import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
@@ -841,6 +835,7 @@ public class Arena {
 		for (String p_ : a.getAllPlayers()) {
 			try {
 				if (!pli.global_lost.containsKey(p_)) {
+					Player p = Bukkit.getPlayer(p_);
 					if (plugin.getConfig().getBoolean("config.auto_add_default_kit")) {
 						if (!pli.getClassesHandler().hasClass(p_)) {
 							pli.getClassesHandler().setClass("default", p_, false);
@@ -850,11 +845,14 @@ public class Arena {
 						Util.clearInv(Bukkit.getPlayer(p_));
 						pli.getClassesHandler().getClass(p_);
 					}
-					Bukkit.getPlayer(p_).setFlying(false);
-					Bukkit.getPlayer(p_).setAllowFlight(false);
+					if (plugin.getConfig().getBoolean("config.shop_enabled")) {
+						pli.getShopHandler().giveShopItems(p);
+					}
+					p.setFlying(false);
+					p.setAllowFlight(false);
 				}
 			} catch (Exception e) {
-				System.out.println("Failed to set class: " + e.getMessage());
+				System.out.println("Failed to set class: " + e.getMessage() + " at [1] " + e.getStackTrace()[1].getLineNumber() + " [0] " + e.getStackTrace()[0].getLineNumber());
 			}
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.2F);

@@ -141,6 +141,10 @@ public class PluginInstance {
 		return shopconfig;
 	}
 
+	public void setShopConfig(ShopConfig shopconfig) {
+		this.shopconfig = shopconfig;
+	}
+
 	public Rewards getRewardsInstance() {
 		return rew;
 	}

@@ -7,6 +7,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.config.ShopConfig;
@@ -142,7 +143,14 @@ public class Shop {
 	}
 
 	public void giveShopItems(Player p) {
-
+		for (ShopItem ac : shopitems.values()) {
+			if (ac.usesItems(pli)) {
+				for (ItemStack i : ac.getItems()) {
+					p.getInventory().addItem(i);
+				}
+				p.updateInventory();
+			}
+		}
 	}
 
 }
