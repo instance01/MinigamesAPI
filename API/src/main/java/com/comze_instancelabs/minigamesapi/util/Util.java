@@ -592,7 +592,7 @@ public class Util {
 		if (plugin.getConfig().getBoolean("config.classes_enabled")) {
 			p.getInventory().addItem(classes_item);
 		}
-		if (pli.isAchievementGuiEnabled()) {
+		if (pli.isAchievementGuiEnabled() && pli.getAchievementsConfig().getConfig().getBoolean("config.enabled")) {
 			p.getInventory().addItem(achievement_item);
 		}
 		if (plugin.getConfig().getBoolean("config.shop_enabled")) {
