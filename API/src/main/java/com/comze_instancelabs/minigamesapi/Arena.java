@@ -612,6 +612,16 @@ public class Arena {
 				}
 			}
 		}, 5L);
+
+		if (plugin.getConfig().getBoolean("config.bungee.teleport_all_to_server_on_stop.tp")) {
+			final String server = plugin.getConfig().getString("config.bungee.teleport_all_to_server_on_stop.server");
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					BungeeUtil.connectToServer(MinigamesAPI.getAPI(), p.getName(), server);
+				}
+			}, 30L);
+			return;
+		}
 	}
 
 	/**
