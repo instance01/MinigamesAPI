@@ -275,6 +275,11 @@ public class Classes {
 					return true;
 				}
 			} else {
+				if (hasClass(p.getName())) {
+					if (getSelectedClass(p.getName()).equalsIgnoreCase(kit)) {
+						return false;
+					}
+				}
 				ClassesConfig config = pli.getClassesConfig();
 				int money = config.getConfig().getInt("config.kits." + kit + ".money_amount");
 				if (MinigamesAPI.getAPI().econ.getBalance(p.getName()) >= money) {
