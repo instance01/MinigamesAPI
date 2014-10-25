@@ -386,10 +386,10 @@ public class Arena {
 			} else {
 				if (startedIngameCountdown) {
 					pli.scoreboardLobbyManager.removeScoreboard(this.getName(), p);
-					p.setWalkSpeed(0.0F);
+					Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 					p.setFoodLevel(5);
 					p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
-					Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+					p.setWalkSpeed(0.0F);
 					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 						public void run() {
 							Util.clearInv(p);

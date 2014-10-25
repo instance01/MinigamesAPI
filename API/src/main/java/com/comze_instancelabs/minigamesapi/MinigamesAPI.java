@@ -68,6 +68,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 
 		getConfig().options().header("Want bugfree versions? Set this to true:");
 		getConfig().addDefault("config.auto_updating", true);
+		getConfig().addDefault("config.party_command_enabled", true);
 
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
@@ -207,6 +208,9 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("party")) {
+			if (!getConfig().getBoolean("config.party_command_enabled")) {
+				return true;
+			}
 			CommandHandler cmdhandler = this.getCommandHandler();
 			if (!(sender instanceof Player)) {
 				sender.sendMessage("Please execute this command ingame.");

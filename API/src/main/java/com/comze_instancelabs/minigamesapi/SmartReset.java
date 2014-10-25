@@ -81,6 +81,7 @@ public class SmartReset {
 				a.setArenaState(ArenaState.JOIN);
 				Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
 					public void run() {
+						a.setArenaState(ArenaState.JOIN);
 						Util.updateSign(a.plugin, a);
 					}
 				});
