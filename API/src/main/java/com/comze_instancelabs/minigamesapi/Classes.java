@@ -266,7 +266,7 @@ public class Classes {
 						}
 						cl.getConfig().set("players.bought_kits." + p.getName() + "." + kit, true);
 						cl.saveConfig();
-						p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", getInternalNameByName(kit)).replaceAll("<money>", Integer.toString(money)));
+						p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(kit).getName())).replaceAll("<money>", Integer.toString(money)));
 					} else {
 						p.sendMessage(pli.getMessagesConfig().not_enough_money);
 						return false;
@@ -288,7 +288,7 @@ public class Classes {
 						p.sendMessage(String.format("An error occured: %s", r.errorMessage));
 						return false;
 					}
-					p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", kit).replaceAll("<money>", Integer.toString(money)));
+					p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(kit).getName())).replaceAll("<money>", Integer.toString(money)));
 				} else {
 					p.sendMessage(pli.getMessagesConfig().not_enough_money);
 					return false;
