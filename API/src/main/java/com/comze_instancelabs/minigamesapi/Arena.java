@@ -124,9 +124,15 @@ public class Arena {
 		// if (this.getArenaType() == ArenaType.REGENERATION) {
 		if (Util.isComponentForArenaValid(plugin, this.getName(), "bounds.low") && Util.isComponentForArenaValid(plugin, this.getName(), "bounds.high")) {
 			try {
-				this.boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "bounds.low"), Util.getComponentForArena(plugin, this.getName(), "bounds.high"));
+				Location low_boundary = Util.getComponentForArena(plugin, this.getName(), "bounds.low");
+				Location high_boundary = Util.getComponentForArena(plugin, this.getName(), "bounds.high");
+				if (low_boundary != null && high_boundary != null) {
+					this.boundaries = new Cuboid(low_boundary, high_boundary);
+				} else {
+					plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "The boundaries of an arena appear to be invalid (missing world?), please fix! Arena: " + this.getName());
+				}
 			} catch (Exception e) {
-				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup.");
+				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup. " + e.getMessage());
 			}
 		}
 

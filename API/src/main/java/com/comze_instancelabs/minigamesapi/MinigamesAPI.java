@@ -25,6 +25,7 @@ import com.comze_instancelabs.minigamesapi.config.DefaultConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.config.PartyMessagesConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
+import com.comze_instancelabs.minigamesapi.config.StatsGlobalConfig;
 import com.comze_instancelabs.minigamesapi.guns.Guns;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.Metrics;
@@ -47,6 +48,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	public static HashMap<JavaPlugin, PluginInstance> pinstances = new HashMap<JavaPlugin, PluginInstance>();
 
 	public PartyMessagesConfig partymessages;
+	public StatsGlobalConfig statsglobal;
 
 	public String version = "";
 
@@ -74,6 +76,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 		this.saveConfig();
 
 		partymessages = new PartyMessagesConfig(this);
+		statsglobal = new StatsGlobalConfig(this, false);
 
 		try {
 			Metrics metrics = new Metrics(this);

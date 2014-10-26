@@ -126,6 +126,11 @@ public class Stats {
 		if (config.getConfig().isSet("players." + uuid + ".points")) {
 			temp = config.getConfig().getInt("players." + uuid + ".points");
 		}
+		int temp_ = 0;
+		if (MinigamesAPI.getAPI().statsglobal.getConfig().isSet("players." + uuid + ".points")) {
+			temp_ = MinigamesAPI.getAPI().statsglobal.getConfig().getInt("players." + uuid + ".points");
+		}
+		MinigamesAPI.getAPI().statsglobal.getConfig().set("players." + uuid + ".points", temp_ + count);
 		config.getConfig().set("players." + uuid + ".points", temp + count);
 		config.saveConfig();
 	}
@@ -134,7 +139,8 @@ public class Stats {
 		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.isSet("players." + uuid + ".points")) {
-			return config.getInt("players." + uuid + ".points");
+			int points = config.getInt("players." + uuid + ".points");
+			return points;
 		}
 		return 0;
 	}

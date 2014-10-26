@@ -249,6 +249,48 @@ public class Classes {
 	}
 
 	public boolean kitTakeMoney(Player p, String kit) {
+		// Credits
+		if(plugin.getConfig().getBoolean("config.use_credits_instead_of_money_for_kits")){
+			String uuid = p.getUniqueId().toString();
+			if(!MinigamesAPI.getAPI().statsglobal.getConfig().isSet("players." + uuid + ".points")){
+				return false;
+			}
+			int points = MinigamesAPI.getAPI().statsglobal.getConfig().getInt("players." + uuid + ".points");
+			if (plugin.getConfig().getBoolean("config.buy_classes_forever")) {
+				ClassesConfig cl = pli.getClassesConfig();
+				if (!cl.getConfig().isSet("players.bought_kits." + p.getName() + "." + kit)) {
+					int money = pli.getClassesConfig().getConfig().getInt("config.kits." + kit + ".money_amount");
+					if (points >= money) {
+						MinigamesAPI.getAPI().statsglobal.getConfig().set("players." + uuid + ".points", points - money);
+						cl.getConfig().set("players.bought_kits." + p.getName() + "." + kit, true);
+						cl.saveConfig();
+						p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(kit).getName())).replaceAll("<money>", Integer.toString(money)));
+					} else {
+						p.sendMessage(pli.getMessagesConfig().not_enough_money);
+						return false;
+					}
+				} else {
+					return true;
+				}
+			} else {
+				if (hasClass(p.getName())) {
+					if (getSelectedClass(p.getName()).equalsIgnoreCase(kit)) {
+						return false;
+					}
+				}
+				ClassesConfig config = pli.getClassesConfig();
+				int money = config.getConfig().getInt("config.kits." + kit + ".money_amount");
+				if (points >= money) {
+					MinigamesAPI.getAPI().statsglobal.getConfig().set("players." + uuid + ".points", points - money);
+					p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(kit).getName())).replaceAll("<money>", Integer.toString(money)));
+				} else {
+					p.sendMessage(pli.getMessagesConfig().not_enough_money);
+					return false;
+				}
+			}
+		}
+		
+		// Money (economy)
 		if (!MinigamesAPI.getAPI().economy) {
 			plugin.getLogger().warning("Economy is turned OFF. Turn it ON in the config.");
 			return false;
