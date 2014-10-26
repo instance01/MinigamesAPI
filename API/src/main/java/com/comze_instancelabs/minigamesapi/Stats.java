@@ -129,8 +129,11 @@ public class Stats {
 		int temp_ = 0;
 		if (MinigamesAPI.getAPI().statsglobal.getConfig().isSet("players." + uuid + ".points")) {
 			temp_ = MinigamesAPI.getAPI().statsglobal.getConfig().getInt("players." + uuid + ".points");
+		} else {
+			temp_ = temp;
 		}
 		MinigamesAPI.getAPI().statsglobal.getConfig().set("players." + uuid + ".points", temp_ + count);
+		MinigamesAPI.getAPI().statsglobal.saveConfig();
 		config.getConfig().set("players." + uuid + ".points", temp + count);
 		config.saveConfig();
 	}
