@@ -664,8 +664,16 @@ public class Arena {
 						}
 					}, 20L);
 				} else {
-					Location temp = this.spawns.get(0);
-					Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+					final Location temp = this.spawns.get(0);
+					try {
+						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+							public void run() {
+								Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+							}
+						}, 2L);
+					} catch (Exception e) {
+						Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+					}
 				}
 			} else {
 				if (this.getPlayerAlive() < 2) {
@@ -676,8 +684,16 @@ public class Arena {
 						}
 					}, 20L);
 				} else {
-					Location temp = this.spawns.get(0);
-					Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+					final Location temp = this.spawns.get(0);
+					try {
+						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+							public void run() {
+								Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+							}
+						}, 2L);
+					} catch (Exception e) {
+						Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+					}
 				}
 			}
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -685,7 +701,7 @@ public class Arena {
 					Util.clearInv(p);
 					Util.giveSpectatorItems(plugin, p);
 				}
-			}, 1L);
+			}, 3L);
 		}
 	}
 

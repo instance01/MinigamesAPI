@@ -239,7 +239,7 @@ public class ArenaListener implements Listener {
 				return;
 			}
 
-			arena.onEliminated(p.getName());
+			arena.spectate(p.getName());
 
 			pli.global_lost.put(p.getName(), pli.global_players.get(p.getName()));
 
