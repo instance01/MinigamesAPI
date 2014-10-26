@@ -389,7 +389,11 @@ public class Arena {
 					Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 					p.setFoodLevel(5);
 					p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
-					p.setWalkSpeed(0.0F);
+					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+						public void run() {
+							p.setWalkSpeed(0.0F);
+						}
+					}, 1L);
 					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 						public void run() {
 							Util.clearInv(p);
