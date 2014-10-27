@@ -129,6 +129,8 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.possible_kits", possible_kits);
 		this.getConfig().addDefault("messages.cancelled_starting", cancelled_starting);
 		this.getConfig().addDefault("messages.minigame_description", minigame_description);
+		this.getConfig().addDefault("messages.successfully_bought_shopitem", successfully_bought_shopitem);
+		this.getConfig().addDefault("messages.already_bought_shopitem", already_bought_shopitem);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -186,6 +188,8 @@ public class MessagesConfig {
 		this.possible_kits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.possible_kits"));
 		this.cancelled_starting = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.cancelled_starting"));
 		this.minigame_description = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.minigame_description"));
+		this.successfully_bought_shopitem = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_bought_shopitem"));
+		this.already_bought_shopitem = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.already_bought_shopitem"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -253,6 +257,8 @@ public class MessagesConfig {
 	public String possible_kits = "&aPossible kits: &2";
 	public String cancelled_starting = "&cThe starting countdown was cancelled because there's only one player left in the arena.";
 	public String minigame_description = "";
+	public String successfully_bought_shopitem = "&aSuccessfully bought &2<shopitem> &afor &2<money>&a.";
+	public String already_bought_shopitem = "&aYou already had &2<shopitem>&a.";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

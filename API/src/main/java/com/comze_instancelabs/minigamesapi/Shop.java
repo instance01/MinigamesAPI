@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -23,7 +24,7 @@ public class Shop {
 	JavaPlugin plugin;
 	PluginInstance pli;
 	public HashMap<String, IconMenu> lasticonm = new HashMap<String, IconMenu>();
-	public HashMap<String, ShopItem> shopitems = new HashMap<String, ShopItem>();
+	public LinkedHashMap<String, ShopItem> shopitems = new LinkedHashMap<String, ShopItem>();
 
 	public Shop(PluginInstance pli, JavaPlugin plugin) {
 		this.plugin = plugin;
@@ -127,12 +128,13 @@ public class Shop {
 					}
 					shopConfig.getConfig().set("players.bought." + p.getName() + "." + item, true);
 					shopConfig.saveConfig();
-					p.sendMessage(pli.getMessagesConfig().successfully_bought_kit.replaceAll("<kit>", item).replaceAll("<money>", Integer.toString(money)));
+					p.sendMessage(pli.getMessagesConfig().successfully_bought_shopitem.replaceAll("<shopitem>",  shopitems.get(item).getName()).replaceAll("<money>", Integer.toString(money)));
 				} else {
 					p.sendMessage(pli.getMessagesConfig().not_enough_money);
 					return false;
 				}
 			} else {
+				p.sendMessage(pli.getMessagesConfig().already_bought_shopitem.replaceAll("<shopitem>",  shopitems.get(item).getName()));
 				return true;
 			}
 			return true;
