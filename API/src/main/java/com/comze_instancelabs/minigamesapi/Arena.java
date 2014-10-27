@@ -31,6 +31,7 @@ public class Arena {
 	JavaPlugin plugin;
 	PluginInstance pli;
 	private ArcadeInstance ai;
+	private boolean isArcadeMain = false;
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
 	HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
@@ -1189,6 +1190,14 @@ public class Arena {
 
 	public ArcadeInstance getArcadeInstance() {
 		return ai;
+	}
+
+	public boolean isArcadeMain() {
+		return isArcadeMain;
+	}
+
+	public void setArcadeMain(boolean t) {
+		isArcadeMain = t;
 	}
 
 	public HashMap<String, Location> getPSpawnLocs() {
