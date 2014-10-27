@@ -3,6 +3,7 @@ package com.comze_instancelabs.minigamesapi;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -56,15 +57,18 @@ public class Effects {
 			sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet);
 			sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
 		}
+		final ArrayList<String> tempp = new ArrayList<String>(a.getAllPlayers());
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				try {
 					setValue(packet_, "b", 0);
 					setValue(packet_, "c", 0);
 					setValue(packet_, "d", 0);
-					for (String p_ : a.getAllPlayers()) {
-						Player p__ = Bukkit.getPlayer(p_);
-						sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+					for (String p_ : tempp) {
+						if (Validator.isPlayerOnline(p_)) {
+							Player p__ = Bukkit.getPlayer(p_);
+							sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+						}
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
