@@ -10,9 +10,10 @@ import org.bukkit.World;
 
 /**
  * Modified by:
+ * 
  * @author instancelabs
  * 
- * Original version by:
+ *         Original version by:
  * @author Pandemoneus - https://github.com/Pandemoneus
  */
 public final class Cuboid {
@@ -22,27 +23,36 @@ public final class Cuboid {
 	/**
 	 * Constructs a new cuboid.
 	 * 
-	 * @param startLoc the first point
-	 * @param endLoc the second point
+	 * @param startLoc
+	 *            the first point
+	 * @param endLoc
+	 *            the second point
 	 */
 	public Cuboid(Location startLoc, Location endLoc) {
 
-		final int lowx = Math.min(startLoc.getBlockX(), endLoc.getBlockX());
-		final int lowy = Math.min(startLoc.getBlockY(), endLoc.getBlockY());
-		final int lowz = Math.min(startLoc.getBlockZ(), endLoc.getBlockZ());
+		if (startLoc != null && endLoc != null) {
+			final int lowx = Math.min(startLoc.getBlockX(), endLoc.getBlockX());
+			final int lowy = Math.min(startLoc.getBlockY(), endLoc.getBlockY());
+			final int lowz = Math.min(startLoc.getBlockZ(), endLoc.getBlockZ());
 
-		final int highx = Math.max(startLoc.getBlockX(), endLoc.getBlockX());
-		final int highy = Math.max(startLoc.getBlockY(), endLoc.getBlockY());
-		final int highz = Math.max(startLoc.getBlockZ(), endLoc.getBlockZ());
+			final int highx = Math.max(startLoc.getBlockX(), endLoc.getBlockX());
+			final int highy = Math.max(startLoc.getBlockY(), endLoc.getBlockY());
+			final int highz = Math.max(startLoc.getBlockZ(), endLoc.getBlockZ());
 
-		highPoints = new Location(startLoc.getWorld(), highx, highy, highz);
-		lowPoints = new Location(startLoc.getWorld(), lowx, lowy, lowz);
+			highPoints = new Location(startLoc.getWorld(), highx, highy, highz);
+			lowPoints = new Location(startLoc.getWorld(), lowx, lowy, lowz);
+		} else {
+			highPoints = null;
+			lowPoints = null;
+		}
+
 	}
 
 	/**
 	 * Determines whether the passed area is within this area.
 	 * 
-	 * @param area the area to check
+	 * @param area
+	 *            the area to check
 	 * @return true if the area is within this area, otherwise false
 	 */
 	public boolean isAreaWithinArea(Cuboid area) {
@@ -52,7 +62,8 @@ public final class Cuboid {
 	/**
 	 * Determines whether the this cuboid contains the passed location.
 	 * 
-	 * @param loc the location to check
+	 * @param loc
+	 *            the location to check
 	 * @return true if the location is within this cuboid, otherwise false
 	 */
 	public boolean containsLoc(Location loc) {
@@ -60,23 +71,18 @@ public final class Cuboid {
 			return false;
 		}
 
-		return lowPoints.getBlockX() <= loc.getBlockX()
-				&& highPoints.getBlockX() >= loc.getBlockX()
-				&& lowPoints.getBlockZ() <= loc.getBlockZ()
-				&& highPoints.getBlockZ() >= loc.getBlockZ()
-				&& lowPoints.getBlockY() <= loc.getBlockY()
-				&& highPoints.getBlockY() >= loc.getBlockY();
+		return lowPoints.getBlockX() <= loc.getBlockX() && highPoints.getBlockX() >= loc.getBlockX() && lowPoints.getBlockZ() <= loc.getBlockZ() && highPoints.getBlockZ() >= loc.getBlockZ() && lowPoints.getBlockY() <= loc.getBlockY() && highPoints.getBlockY() >= loc.getBlockY();
 	}
-	
+
 	public boolean containsLocWithoutY(Location loc) {
+		if (highPoints == null || lowPoints == null) {
+			return false;
+		}
 		if (loc == null || !loc.getWorld().equals(highPoints.getWorld())) {
 			return false;
 		}
 
-		return lowPoints.getBlockX() <= loc.getBlockX()
-				&& highPoints.getBlockX() >= loc.getBlockX()
-				&& lowPoints.getBlockZ() <= loc.getBlockZ()
-				&& highPoints.getBlockZ() >= loc.getBlockZ();
+		return lowPoints.getBlockX() <= loc.getBlockX() && highPoints.getBlockX() >= loc.getBlockX() && lowPoints.getBlockZ() <= loc.getBlockZ() && highPoints.getBlockZ() >= loc.getBlockZ();
 	}
 
 	/**
@@ -204,8 +210,7 @@ public final class Cuboid {
 	 * @return the cuboid
 	 * @throws IllegalArgumentException
 	 */
-	public static Cuboid load(Map<String, Object> root)
-			throws IllegalArgumentException {
+	public static Cuboid load(Map<String, Object> root) throws IllegalArgumentException {
 		if (root == null) {
 			throw new IllegalArgumentException("Invalid root map!");
 		}

@@ -115,7 +115,7 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component + count;
 			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-			if (Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")) == null) {
+			if (!pli.getArenasConfig().getConfig().isSet(base + ".world") || Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")) == null) {
 				return null;
 			}
 			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
@@ -127,7 +127,7 @@ public class Util {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			String base = "arenas." + arenaname + "." + component;
 			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-			if (Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")) == null) {
+			if (!pli.getArenasConfig().getConfig().isSet(base + ".world") || Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")) == null) {
 				return null;
 			}
 			return new Location(Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")), pli.getArenasConfig().getConfig().getDouble(base + ".location.x"), pli.getArenasConfig().getConfig().getDouble(base + ".location.y"), pli.getArenasConfig().getConfig().getDouble(base + ".location.z"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.yaw"), (float) pli.getArenasConfig().getConfig().getDouble(base + ".location.pitch"));
