@@ -73,18 +73,35 @@ public class ArenaAchievements {
 			if (!pli.getAchievementsConfig().getConfig().isSet("players." + playername + "." + achievement + ".done")) {
 				pli.getAchievementsConfig().getConfig().set("players." + playername + "." + achievement + ".done", true);
 				pli.getAchievementsConfig().saveConfig();
-				Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", ChatColor.translateAlternateColorCodes('&', pli.getAchievementsConfig().getConfig().getString("config.achievements." + achievement + ".name"))));
 				ArrayList<AAchievement> alist = loadPlayerAchievements(playername, sql);
+				boolean allDone = true;
+				AAchievement a;
 				for (AAchievement aac : alist) {
+					if (aac.getAchievementNameRaw().equalsIgnoreCase(achievement)) {
+						a = aac;
+					}
 					if (!aac.isDone() && !aac.getAchievementNameRaw().equalsIgnoreCase("achievement_guy")) {
-						// if an achievement is not done, return
-						return;
+						allDone = false;
 					}
 				}
-				// else set the final achievement_guy achievement to done!
-				setAchievementDone(playername, "achievement_guy", sql);
+				String base = "config.achievements." + achievement;
+				pli.getRewardsInstance().giveAchievementReward(playername, pli.getAchievementsConfig().getConfig().getBoolean(base + ".reward.economy_reward"), pli.getAchievementsConfig().getConfig().getBoolean(base + ".reward.command_reward"), pli.getAchievementsConfig().getConfig().getInt(base + ".reward.econ_reward_amount"), pli.getAchievementsConfig().getConfig().getString(base + ".reward.cmd"));
+				Bukkit.getPlayer(playername).sendMessage(pli.getMessagesConfig().you_got_the_achievement.replaceAll("<achievement>", ChatColor.translateAlternateColorCodes('&', pli.getAchievementsConfig().getConfig().getString("config.achievements." + achievement + ".name"))));
+
+				if (allDone) {
+					setAchievementDone(playername, "achievement_guy", sql);
+				}
 			}
 		}
+	}
+
+	public void addDefaultAchievement(String internalname, String name, int default_money_reward) {
+		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".enabled", true);
+		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".name", name);
+		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".reward.economy_reward", true);
+		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".reward.econ_reward_amount", default_money_reward);
+		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".reward.command_reward", false);
+		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".reward.cmd", "tell <player> Good job!");
 	}
 
 	public boolean isEnabled() {

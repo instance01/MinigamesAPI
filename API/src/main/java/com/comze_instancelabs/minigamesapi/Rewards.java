@@ -82,6 +82,19 @@ public class Rewards {
 		}
 	}
 
+	public void giveAchievementReward(String p_, boolean econ, boolean command, int money_reward, String cmd) {
+		if (Validator.isPlayerOnline(p_)) {
+			Player p = Bukkit.getPlayer(p_);
+
+			if (econ && MinigamesAPI.economy) {
+				MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), money_reward);
+			}
+			if (command) {
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("<player>", p_));
+			}
+		}
+	}
+
 	public void giveWinReward(String p_, Arena a) {
 		giveWinReward(p_, a, 1);
 	}
