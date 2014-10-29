@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -278,7 +279,7 @@ public class Util {
 				try {
 					b = ois.readObject();
 				} catch (EOFException e) {
-					MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena.getName() + ".");
+					MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena.getName() + " with old reset method.");
 
 					arena.setArenaState(ArenaState.JOIN);
 					Bukkit.getScheduler().runTask(plugin, new Runnable() {
@@ -286,7 +287,8 @@ public class Util {
 							Util.updateSign(plugin, arena);
 						}
 					});
-
+				} catch (ClosedChannelException e) {
+					System.out.println("Something is wrong with your arena file and the reset might not be successful. Also, you're using an outdated reset method.");
 				}
 
 				if (b != null) {

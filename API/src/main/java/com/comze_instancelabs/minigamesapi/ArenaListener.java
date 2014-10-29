@@ -80,7 +80,6 @@ public class ArenaListener implements Listener {
 		if (pli.global_players.containsKey(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
 			if (a != null) {
-				//TODO when using arcade, arcade will always block drops off
 				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.isArcadeMain()) {
 					event.setCancelled(true);
 				}
