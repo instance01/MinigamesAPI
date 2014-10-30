@@ -221,7 +221,9 @@ public class ArenaListener implements Listener {
 		if (event.getEntity() instanceof Player) {
 			Player p = (Player) event.getEntity();
 			if (pli.global_players.containsKey(p.getName())) {
-				event.setCancelled(true);
+				if (!pli.global_players.get(p.getName()).isArcadeMain()) {
+					event.setCancelled(true);
+				}
 			}
 		}
 	}

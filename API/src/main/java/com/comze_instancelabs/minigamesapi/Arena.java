@@ -82,8 +82,6 @@ public class Arena {
 	int global_coin_multiplier = 1;
 
 	BukkitTask spectator_task;
-	
-	boolean temp_resetting = false;
 
 	/**
 	 * Creates a normal singlespawn arena
