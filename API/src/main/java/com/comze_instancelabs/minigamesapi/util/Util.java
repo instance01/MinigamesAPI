@@ -652,7 +652,7 @@ public class Util {
 		}
 		String[] msgs = msgraw.replaceAll("<player>", p.getName()).replaceAll("<game>", plugin.getName()).split(";");
 		for (String msg : msgs) {
-			p.sendMessage(msgs);
+			p.sendMessage(msg);
 		}
 	}
 
