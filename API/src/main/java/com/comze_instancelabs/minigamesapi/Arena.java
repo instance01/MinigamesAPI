@@ -1041,8 +1041,12 @@ public class Arena {
 		skip_join_lobby = false;
 		currentspawn = 0;
 
-		pli.scoreboardManager.clearScoreboard(this.getName());
-		pli.scoreboardLobbyManager.clearScoreboard(this.getName());
+		try {
+			pli.scoreboardManager.clearScoreboard(this.getName());
+			pli.scoreboardLobbyManager.clearScoreboard(this.getName());
+		} catch (Exception e) {
+			//
+		}
 
 		/*
 		 * try { pli.getStatsInstance().updateSkulls(); } catch (Exception e) {

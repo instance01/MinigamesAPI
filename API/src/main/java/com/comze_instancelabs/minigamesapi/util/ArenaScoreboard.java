@@ -165,19 +165,7 @@ public class ArenaScoreboard {
 		try {
 			ScoreboardManager manager = Bukkit.getScoreboardManager();
 			Scoreboard sc = manager.getNewScoreboard();
-			try {
-				if (p.getName().length() < 15) {
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§c" + p.getName()));
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§a" + p.getName()));
-				} else {
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§c" + p.getName().substring(0, p.getName().length() - 3)));
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§a" + p.getName().substring(0, p.getName().length() - 3)));
-				}
 
-			} catch (Exception e) {
-			}
-
-			sc.clearSlot(DisplaySlot.SIDEBAR);
 			p.setScoreboard(sc);
 		} catch (Exception e) {
 			e.printStackTrace();

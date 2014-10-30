@@ -37,14 +37,17 @@ public class SpectatorManager {
 	}
 
 	public void setSpectate(Player p, boolean spectate) {
-		if (spectate) {
-			p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 9999999, 5), true);
-			Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").addPlayer(p);
-		} else {
-			p.removePotionEffect(PotionEffectType.INVISIBILITY);
-			if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p)) {
-				Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").removePlayer(p);
+		try {
+			if (spectate) {
+				p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 9999999, 5), true);
+				Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").addPlayer(p);
+			} else {
+				p.removePotionEffect(PotionEffectType.INVISIBILITY);
+				if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p)) {
+					Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").removePlayer(p);
+				}
 			}
+		} catch (Exception e) {
 		}
 	}
 

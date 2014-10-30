@@ -72,6 +72,9 @@ public class ArenaLobbyScoreboard {
 					aobjective.get(arena.getName()).setDisplayName(pli.getMessagesConfig().scoreboard_lobby_title.replaceAll("<arena>", arena.getName()));
 
 					try {
+						if (loaded_custom_strings.size() < 1) {
+							return;
+						}
 						for (String line : loaded_custom_strings) {
 							String[] line_arr = line.split(":");
 							String line_ = line_arr[0];
@@ -111,19 +114,7 @@ public class ArenaLobbyScoreboard {
 		try {
 			ScoreboardManager manager = Bukkit.getScoreboardManager();
 			Scoreboard sc = manager.getNewScoreboard();
-			try {
-				if (p.getName().length() < 15) {
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§c" + p.getName()));
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§a" + p.getName()));
-				} else {
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§c" + p.getName().substring(0, p.getName().length() - 3)));
-					ascore.get(arena).resetScores(Bukkit.getOfflinePlayer("§a" + p.getName().substring(0, p.getName().length() - 3)));
-				}
 
-			} catch (Exception e) {
-			}
-
-			sc.clearSlot(DisplaySlot.SIDEBAR);
 			p.setScoreboard(sc);
 		} catch (Exception e) {
 			e.printStackTrace();
