@@ -105,7 +105,9 @@ public class ArenaScoreboard {
 								}
 							}
 
-							p.setScoreboard(ascore.get(arena.getName()));
+							if (ascore.get(arena.getName()) != null) {
+								p.setScoreboard(ascore.get(arena.getName()));
+							}
 						} catch (Exception e) {
 							System.out.println("Failed to set custom scoreboard: ");
 							e.printStackTrace();
@@ -155,7 +157,9 @@ public class ArenaScoreboard {
 						}
 					}
 
-					p.setScoreboard(ascore.get(arena.getName()));
+					if (ascore.get(arena.getName()) != null) {
+						p.setScoreboard(ascore.get(arena.getName()));
+					}
 				}
 			}
 		});

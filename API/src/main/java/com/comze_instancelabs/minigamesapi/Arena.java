@@ -170,7 +170,8 @@ public class Arena {
 	}
 
 	public boolean getShowScoreboard() {
-		return this.showArenascoreboard;
+		return false; // TODO REMOVE, this is a temporary fix
+		//return this.showArenascoreboard;
 	}
 
 	public boolean getAlwaysPvP() {

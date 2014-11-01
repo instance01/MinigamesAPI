@@ -245,7 +245,7 @@ public class MessagesConfig {
 	public String server_broadcast_winner = "&2<player> &awon the game on &2<arena>&a!";
 	public String exit_item = "&4Leave the game";
 	public String successfully_bought_kit = "&aSuccessfully bought &2<kit> &afor &2<money>&a.";
-	public String scoreboard_title = "&4[<arena>]";
+	public String scoreboard_title = "&4<arena>";
 	public String scoreboard_lobby_title = "&4[<arena>]";
 	public String you_got_kicked_because_vip_joined = "&cYou got kicked out of the game because a vip joined!";
 	public String powerup_spawned = "&2A Powerup spawned!";
