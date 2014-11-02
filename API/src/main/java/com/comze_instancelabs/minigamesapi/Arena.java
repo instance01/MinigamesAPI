@@ -170,8 +170,7 @@ public class Arena {
 	}
 
 	public boolean getShowScoreboard() {
-		return false; // TODO REMOVE, this is a temporary fix
-		//return this.showArenascoreboard;
+		return this.showArenascoreboard;
 	}
 
 	public boolean getAlwaysPvP() {
@@ -604,7 +603,11 @@ public class Arena {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
 				if (p != null) {
-					Util.teleportPlayerFixed(p, a.mainlobby);
+					if (a.mainlobby != null) {
+						Util.teleportPlayerFixed(p, a.mainlobby);
+					} else if (a.waitinglobby != null) {
+						Util.teleportPlayerFixed(p, a.waitinglobby);
+					}
 					p.setFireTicks(0);
 					p.setFlying(false);
 					if (!p.isOp()) {

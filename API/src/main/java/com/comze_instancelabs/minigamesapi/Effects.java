@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
@@ -34,7 +35,7 @@ public class Effects {
 		playFakeBed(a, p, p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
 	}
 
-	public static void playFakeBed(final Arena a, Player p, int x, int y, int z) throws Exception {
+	public static void playFakeBed(final Arena a, final Player p, int x, int y, int z) throws Exception {
 		final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
 		final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
 		playerConnection.setAccessible(true);
@@ -58,6 +59,7 @@ public class Effects {
 			sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
 		}
 		final ArrayList<String> tempp = new ArrayList<String>(a.getAllPlayers());
+		final World currentworld = p.getWorld();
 		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				try {
@@ -67,7 +69,9 @@ public class Effects {
 					for (String p_ : tempp) {
 						if (Validator.isPlayerOnline(p_)) {
 							Player p__ = Bukkit.getPlayer(p_);
-							sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+							if (p__.getWorld() == currentworld) {
+								sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+							}
 						}
 					}
 				} catch (Exception e) {
