@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -82,6 +83,8 @@ public class Arena {
 	int global_coin_multiplier = 1;
 
 	BukkitTask spectator_task;
+
+	ArrayList<ItemStack> global_drops = new ArrayList<ItemStack>();
 
 	/**
 	 * Creates a normal singlespawn arena
@@ -1016,6 +1019,16 @@ public class Arena {
 				System.out.println("Failed clearing entities.");
 			}
 			leavePlayer(p_, false, true);
+		}
+
+		try {
+			for (ItemStack item : global_drops) {
+				if (item != null) {
+					item.setType(Material.AIR);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Failed clearing items: " + e.getMessage());
 		}
 
 		if (a.getArenaType() == ArenaType.REGENERATION) {

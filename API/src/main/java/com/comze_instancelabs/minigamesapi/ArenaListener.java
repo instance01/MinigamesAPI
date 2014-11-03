@@ -44,6 +44,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -240,6 +241,8 @@ public class ArenaListener implements Listener {
 				Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
 				return;
 			}
+
+			arena.global_drops.addAll(event.getDrops());
 
 			arena.spectate(p.getName());
 

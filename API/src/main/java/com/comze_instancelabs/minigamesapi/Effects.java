@@ -78,7 +78,7 @@ public class Effects {
 					e.printStackTrace();
 				}
 			}
-		}, 20L * 5);
+		}, 20L * 4);
 	}
 
 	private static void setValue(Object instance, String fieldName, Object value) throws Exception {
