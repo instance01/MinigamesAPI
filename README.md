@@ -26,6 +26,7 @@ Features
 - Bungee support including signs
 - Party (/party)
 - Achievements
+- Additional shops with Gui
 - Included effects like blood or dead bodies lying around
 - More stuff
 
@@ -49,7 +50,7 @@ Maven
 <dependency>
   <groupId>com.comze_instancelabs</groupId>
   <artifactId>MinigamesLib</artifactId>
-  <version>1.8.1</version>
+  <version>1.9.0</version>
 </dependency>
 
 
