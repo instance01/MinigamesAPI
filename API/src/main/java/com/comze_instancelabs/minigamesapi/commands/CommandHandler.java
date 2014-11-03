@@ -112,6 +112,7 @@ public class CommandHandler {
 				pli.getClassesConfig().reloadConfig();
 				pli.getAchievementsConfig().reloadConfig();
 				pli.getStatsConfig().reloadConfig();
+				pli.getShopConfig().reloadConfig();
 				pli.getMessagesConfig().init();
 				sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
 			} else {
@@ -381,14 +382,19 @@ public class CommandHandler {
 
 	public boolean joinArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (args.length > 1) {
+			String playername = p.getName();
+			if (args.length > 2) {
+				if (Validator.isPlayerOnline(args[2])) {
+					playername = args[2];
+				}
+			}
 			Arena temp = pli.getArenaByName(args[1]);
 			if (temp != null) {
-				if (!temp.containsPlayer(p.getName())) {
-					temp.joinPlayerLobby(p.getName());
+				if (!temp.containsPlayer(playername)) {
+					temp.joinPlayerLobby(playername);
 				} else {
-					p.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getName()));
+					sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getName()));
 				}
-				// sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "joined"));
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}
@@ -410,11 +416,17 @@ public class CommandHandler {
 
 	public boolean leaveArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (pli.global_players.containsKey(p.getName())) {
-			Arena a = pli.global_players.get(p.getName());
-			if (a.getArcadeInstance() != null) {
-				a.getArcadeInstance().leaveArcade(p.getName(), true);
+			String playername = p.getName();
+			if (args.length > 1) {
+				if (Validator.isPlayerOnline(args[1])) {
+					playername = args[1];
+				}
 			}
-			a.leavePlayer(p.getName(), false, false);
+			Arena a = pli.global_players.get(playername);
+			if (a.getArcadeInstance() != null) {
+				a.getArcadeInstance().leaveArcade(playername, true);
+			}
+			a.leavePlayer(playername, false, false);
 		} else {
 			sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 		}
