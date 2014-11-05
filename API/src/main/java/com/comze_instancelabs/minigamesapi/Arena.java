@@ -62,6 +62,7 @@ public class Arena {
 	private ArenaType type = ArenaType.DEFAULT;
 	private ArenaState currentstate = ArenaState.JOIN;
 	String name = "mainarena";
+	String displayname = "mainarena";
 
 	private Arena currentarena;
 	boolean started = false;
@@ -124,38 +125,47 @@ public class Arena {
 		this.viparena = viparena;
 		this.min_players = min_players;
 		this.max_players = max_players;
-		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getName());
+		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getInternalName());
 		// if (this.getArenaType() == ArenaType.REGENERATION) {
-		if (Util.isComponentForArenaValid(plugin, this.getName(), "bounds.low") && Util.isComponentForArenaValid(plugin, this.getName(), "bounds.high")) {
+		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "bounds.low") && Util.isComponentForArenaValid(plugin, this.getInternalName(), "bounds.high")) {
 			try {
-				Location low_boundary = Util.getComponentForArena(plugin, this.getName(), "bounds.low");
-				Location high_boundary = Util.getComponentForArena(plugin, this.getName(), "bounds.high");
+				Location low_boundary = Util.getComponentForArena(plugin, this.getInternalName(), "bounds.low");
+				Location high_boundary = Util.getComponentForArena(plugin, this.getInternalName(), "bounds.high");
 				if (low_boundary != null && high_boundary != null) {
 					this.boundaries = new Cuboid(low_boundary, high_boundary);
 				} else {
-					plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "The boundaries of an arena appear to be invalid (missing world?), please fix! Arena: " + this.getName());
+					plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "The boundaries of an arena appear to be invalid (missing world?), please fix! Arena: " + this.getInternalName());
 				}
 			} catch (Exception e) {
 				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup. " + e.getMessage());
 			}
 		}
 
-		if (Util.isComponentForArenaValid(plugin, this.getName(), "lobbybounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getName(), "lobbybounds.bounds.high")) {
+		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "lobbybounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getInternalName(), "lobbybounds.bounds.high")) {
 			try {
-				this.lobby_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "lobbybounds.bounds.low"), Util.getComponentForArena(plugin, this.getName(), "lobbybounds.bounds.high"));
+				this.lobby_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getInternalName(), "lobbybounds.bounds.low"), Util.getComponentForArena(plugin, this.getInternalName(), "lobbybounds.bounds.high"));
 			} catch (Exception e) {
 				;
 			}
 		}
 
-		if (Util.isComponentForArenaValid(plugin, this.getName(), "specbounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getName(), "specbounds.bounds.high")) {
+		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "specbounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getInternalName(), "specbounds.bounds.high")) {
 			try {
-				this.spec_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getName(), "specbounds.bounds.low"), Util.getComponentForArena(plugin, this.getName(), "specbounds.bounds.high"));
+				this.spec_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getInternalName(), "specbounds.bounds.low"), Util.getComponentForArena(plugin, this.getInternalName(), "specbounds.bounds.high"));
 			} catch (Exception e) {
 				;
 			}
 		}
 		// }
+
+		String path = "arenas." + name + ".displayname";
+		if (pli.getArenasConfig().getConfig().isSet(path)) {
+			this.displayname = ChatColor.translateAlternateColorCodes('&', pli.getArenasConfig().getConfig().getString("arenas." + name + ".displayname"));
+		} else {
+			pli.getArenasConfig().getConfig().set(path, name);
+			pli.getArenasConfig().saveConfig();
+			this.displayname = name;
+		}
 	}
 
 	// This is for loading existing arenas
@@ -208,6 +218,20 @@ public class Arena {
 		return this.spec_boundaries;
 	}
 
+	public String getInternalName() {
+		return name;
+	}
+
+	public String getDisplayName() {
+		return displayname;
+	}
+
+	/**
+	 * Please use getInternalName()
+	 * 
+	 * @return Internal name of arena
+	 */
+	@Deprecated
 	public String getName() {
 		return name;
 	}
@@ -289,14 +313,14 @@ public class Arena {
 			// arena ingame or restarting
 			return;
 		}
-		if (!pli.arenaSetup.getArenaEnabled(plugin, this.getName())) {
+		if (!pli.arenaSetup.getArenaEnabled(plugin, this.getInternalName())) {
 			Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().arena_disabled);
 			return;
 		}
 		if (ai == null && this.isVIPArena()) {
 			if (Validator.isPlayerOnline(playername)) {
-				if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {
-					Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().no_perm_to_join_arena.replaceAll("<arena>", this.getName()));
+				if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getInternalName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {
+					Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().no_perm_to_join_arena.replaceAll("<arena>", this.getInternalName()));
 					return;
 				}
 			}
@@ -306,7 +330,7 @@ public class Arena {
 
 			// if player vip -> kick someone and continue
 			System.out.println(playername + " is vip: " + Bukkit.getPlayer(playername).hasPermission("arenas.*"));
-			if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {
+			if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getInternalName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {
 				return;
 			} else {
 				// player has vip
@@ -314,7 +338,7 @@ public class Arena {
 				ArrayList<String> temp = new ArrayList<String>(this.getAllPlayers());
 				for (String p_ : temp) {
 					if (Validator.isPlayerOnline(p_)) {
-						if (!Bukkit.getPlayer(p_).hasPermission("arenas." + this.getName()) && !Bukkit.getPlayer(p_).hasPermission("arenas.*")) {
+						if (!Bukkit.getPlayer(p_).hasPermission("arenas." + this.getInternalName()) && !Bukkit.getPlayer(p_).hasPermission("arenas.*")) {
 							this.leavePlayer(p_, false, true);
 							Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().you_got_kicked_because_vip_joined);
 							noone_found = false;
@@ -363,13 +387,13 @@ public class Arena {
 
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
-			Util.sendMessage(plugin, p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getName()));
+			Util.sendMessage(plugin, p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getDisplayName()));
 			Util.sendMessage(plugin, p, pli.getMessagesConfig().minigame_description);
-			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getName() + ".author")) {
-				Util.sendMessage(plugin, p, pli.getMessagesConfig().author_of_the_map.replaceAll("<arena>", this.getName()).replaceAll("<author>", pli.getArenasConfig().getConfig().getString("arenas." + this.getName() + ".author")));
+			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getInternalName() + ".author")) {
+				Util.sendMessage(plugin, p, pli.getMessagesConfig().author_of_the_map.replaceAll("<arena>", this.getDisplayName()).replaceAll("<author>", pli.getArenasConfig().getConfig().getString("arenas." + this.getInternalName() + ".author")));
 			}
-			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getName() + ".description")) {
-				Util.sendMessage(plugin, p, pli.getMessagesConfig().description_of_the_map.replaceAll("<arena>", this.getName()).replaceAll("<description>", pli.getArenasConfig().getConfig().getString("arenas." + this.getName() + ".description")));
+			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getInternalName() + ".description")) {
+				Util.sendMessage(plugin, p, pli.getMessagesConfig().description_of_the_map.replaceAll("<arena>", this.getDisplayName()).replaceAll("<description>", pli.getArenasConfig().getConfig().getString("arenas." + this.getInternalName() + ".description")));
 			}
 			for (String p_ : this.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_) && !p_.equalsIgnoreCase(p.getName())) {
@@ -395,7 +419,7 @@ public class Arena {
 				return;
 			} else {
 				if (startedIngameCountdown) {
-					pli.scoreboardLobbyManager.removeScoreboard(this.getName(), p);
+					pli.scoreboardLobbyManager.removeScoreboard(this.getInternalName(), p);
 					Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 					p.setFoodLevel(5);
 					p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
@@ -601,7 +625,7 @@ public class Arena {
 
 		Util.updateSign(plugin, this);
 
-		final String arenaname = this.getName();
+		final String arenaname = this.getInternalName();
 		final Arena a = this;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
@@ -823,7 +847,7 @@ public class Arena {
 			p.setWalkSpeed(0.0F);
 			p.setFoodLevel(5);
 			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
-			pli.scoreboardLobbyManager.removeScoreboard(this.getName(), p);
+			pli.scoreboardLobbyManager.removeScoreboard(this.getInternalName(), p);
 		}
 		final Arena a = this;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -960,7 +984,7 @@ public class Arena {
 	 * Gets executed after an arena started (after lobby countdown)
 	 */
 	public void started() {
-		System.out.println(this.getName() + " started.");
+		System.out.println(this.getInternalName() + " started.");
 	}
 
 	boolean temp_delay_stopped = false;
@@ -1059,8 +1083,8 @@ public class Arena {
 		currentspawn = 0;
 
 		try {
-			pli.scoreboardManager.clearScoreboard(this.getName());
-			pli.scoreboardLobbyManager.clearScoreboard(this.getName());
+			pli.scoreboardManager.clearScoreboard(this.getInternalName());
+			pli.scoreboardLobbyManager.clearScoreboard(this.getInternalName());
 		} catch (Exception e) {
 			//
 		}
@@ -1167,7 +1191,7 @@ public class Arena {
 		Collections.shuffle(arenas);
 		for (Arena a : arenas) {
 			if (a.getArenaState() == ArenaState.JOIN && a != this) {
-				System.out.println(plugin.getName() + ": Next arena on map rotation: " + a.getName());
+				System.out.println(plugin.getName() + ": Next arena on map rotation: " + a.getInternalName());
 				for (String p_ : players) {
 					if (!a.containsPlayer(p_)) {
 						a.joinPlayerLobby(p_, false);

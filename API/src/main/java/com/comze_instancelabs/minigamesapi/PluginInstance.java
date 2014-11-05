@@ -216,7 +216,7 @@ public class PluginInstance {
 
 	public Arena getArenaByName(String arenaname) {
 		for (Arena a : getArenas()) {
-			if (a.getName().equalsIgnoreCase(arenaname)) {
+			if (a.getInternalName().equalsIgnoreCase(arenaname)) {
 				return a;
 			}
 		}
@@ -226,7 +226,7 @@ public class PluginInstance {
 	public Arena removeArenaByName(String arenaname) {
 		Arena torem = null;
 		for (Arena a : getArenas()) {
-			if (a.getName().equalsIgnoreCase(arenaname)) {
+			if (a.getInternalName().equalsIgnoreCase(arenaname)) {
 				torem = a;
 			}
 		}

@@ -176,6 +176,12 @@ public class ArenaSetup {
 			e.printStackTrace();
 		}
 
+		String path = "arenas." + arenaname + ".displayname";
+		if (!pli.getArenasConfig().getConfig().isSet(path)) {
+			pli.getArenasConfig().getConfig().set(path, arenaname);
+			pli.getArenasConfig().saveConfig();
+		}
+
 		return a;
 	}
 

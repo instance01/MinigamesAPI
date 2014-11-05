@@ -148,7 +148,7 @@ public class ArenaListener implements Listener {
 								try {
 									Util.teleportPlayerFixed(p, a.getWaitingLobbyTemp());
 								} catch (Exception e) {
-									System.out.println("Waiting lobby for arena " + a.getName() + " missing, please fix by setting it. " + e.getMessage());
+									System.out.println("Waiting lobby for arena " + a.getInternalName() + " missing, please fix by setting it. " + e.getMessage());
 								}
 							}
 							if (a.getLobbyBoundaries() != null) {
@@ -251,7 +251,7 @@ public class ArenaListener implements Listener {
 			int count = 0;
 			for (String p_ : pli.global_players.keySet()) {
 				if (Validator.isPlayerOnline(p_)) {
-					if (pli.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
+					if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {
 						if (!pli.global_lost.containsKey(p_)) {
 							count++;
 						}
@@ -352,7 +352,7 @@ public class ArenaListener implements Listener {
 	public void onExplode(EntityExplodeEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null) {
 					if (event.getEntity() != null) {
 						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
@@ -370,7 +370,7 @@ public class ArenaListener implements Listener {
 	public void onBlockFromTo(BlockFromToEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getToBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
@@ -384,7 +384,7 @@ public class ArenaListener implements Listener {
 	public void onBlockFade(BlockFadeEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
@@ -398,7 +398,7 @@ public class ArenaListener implements Listener {
 	public void onLeavesDecay(LeavesDecayEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
@@ -413,7 +413,7 @@ public class ArenaListener implements Listener {
 		if (event.getEntity() instanceof Enderman) {
 			for (Arena a : pli.getArenas()) {
 				if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-					Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+					Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 					if (c != null) {
 						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
 							a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
@@ -457,7 +457,7 @@ public class ArenaListener implements Listener {
 		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
 			Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());
 			if (arena != null) {
-				pli.getArenasConfig().getConfig().set("arenas." + arena.getName() + ".sign", null);
+				pli.getArenasConfig().getConfig().set("arenas." + arena.getInternalName() + ".sign", null);
 				pli.getArenasConfig().saveConfig();
 			}
 		}
@@ -467,7 +467,7 @@ public class ArenaListener implements Listener {
 	public void onBlockBurn(BlockBurnEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
@@ -481,7 +481,7 @@ public class ArenaListener implements Listener {
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null) {
 					Block start = event.getBlockClicked();
 					if (c.containsLocWithoutY(start.getLocation())) {
@@ -504,7 +504,7 @@ public class ArenaListener implements Listener {
 	public void onStructureGrow(StructureGrowEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getName(), "bounds.low"), Util.getComponentForArena(plugin, a.getName(), "bounds.high"));
+				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null) {
 					Location start = event.getLocation();
 					a.getSmartReset().addChanged(start.getBlock(), false);
@@ -557,7 +557,7 @@ public class ArenaListener implements Listener {
 					if (!arena.containsPlayer(p.getName())) {
 						arena.joinPlayerLobby(p.getName());
 					} else {
-						Util.sendMessage(plugin, p, pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getName()));
+						Util.sendMessage(plugin, p, pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getInternalName()));
 					}
 				} else {
 					// try getting random sign
@@ -750,10 +750,10 @@ public class ArenaListener implements Listener {
 	public void onPlayerLeave(PlayerQuitEvent event) {
 		if (pli.global_players.containsKey(event.getPlayer().getName())) {
 			Arena arena = pli.global_players.get(event.getPlayer().getName());
-			MinigamesAPI.getAPI().getLogger().info(arena.getName());
+			MinigamesAPI.getAPI().getLogger().info(arena.getInternalName());
 			int count = 0;
 			for (String p_ : pli.global_players.keySet()) {
-				if (pli.global_players.get(p_).getName().equalsIgnoreCase(arena.getName())) {
+				if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {
 					count++;
 				}
 			}

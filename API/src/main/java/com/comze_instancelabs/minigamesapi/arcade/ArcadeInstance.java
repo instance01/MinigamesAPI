@@ -51,7 +51,7 @@ public class ArcadeInstance {
 							Player p = Bukkit.getPlayer(playername);
 							if (p != null) {
 								PluginInstance pli_ = minigames.get(currentindex);
-								System.out.println(pli_.getPlugin().getName() + " " + currentarena.getName() + " " + p.getName());
+								System.out.println(pli_.getPlugin().getName() + " " + currentarena.getInternalName() + " " + p.getName());
 								if (currentarena.getArenaState() != ArenaState.INGAME && currentarena.getArenaState() != ArenaState.RESTARTING) {
 									currentarena.joinPlayerLobby(playername, this, false, true);
 								} else {

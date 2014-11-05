@@ -29,7 +29,7 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean isPlayerValid(JavaPlugin plugin, String player, Arena arena){
-		return isPlayerValid(plugin, player, arena.getName());
+		return isPlayerValid(plugin, player, arena.getInternalName());
 	}
 	
 	/***
@@ -44,7 +44,7 @@ public class Validator {
 		if(!MinigamesAPI.getAPI().getPluginInstance(plugin).global_players.containsKey(player)){
 			return false;
 		}
-		if(!MinigamesAPI.getAPI().getPluginInstance(plugin).global_players.get(player).getName().equalsIgnoreCase(arena)){
+		if(!MinigamesAPI.getAPI().getPluginInstance(plugin).global_players.get(player).getInternalName().equalsIgnoreCase(arena)){
 			return false;
 		}
 		return true;
@@ -56,7 +56,7 @@ public class Validator {
 	 * @return
 	 */
 	public static boolean isArenaValid(JavaPlugin plugin, Arena arena){
-		return isArenaValid(plugin, arena.getName());
+		return isArenaValid(plugin, arena.getInternalName());
 	}
 
 	/***

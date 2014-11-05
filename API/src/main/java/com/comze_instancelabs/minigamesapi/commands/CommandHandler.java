@@ -100,9 +100,9 @@ public class CommandHandler {
 				sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Arenas" + ChatColor.DARK_GRAY + " -------");
 				for (Arena a : pli.getArenas()) {
 					if (args.length > 1) {
-						sender.sendMessage(ChatColor.GREEN + a.getName() + "[" + a.getClass().getSimpleName().toString() + "]");
+						sender.sendMessage(ChatColor.GREEN + a.getInternalName() + "[" + a.getClass().getSimpleName().toString() + "]");
 					} else {
-						sender.sendMessage(ChatColor.GREEN + a.getName());
+						sender.sendMessage(ChatColor.GREEN + a.getInternalName());
 					}
 				}
 			} else if (action.equalsIgnoreCase("reload")) {
@@ -393,7 +393,7 @@ public class CommandHandler {
 				if (!temp.containsPlayer(playername)) {
 					temp.joinPlayerLobby(playername);
 				} else {
-					sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getName()));
+					sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
 				}
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));

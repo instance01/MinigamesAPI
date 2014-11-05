@@ -266,7 +266,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 					sender.sendMessage("~ Arenas: ");
 					for (PluginInstance pli : pinstances.values()) {
 						if (pli.global_players.containsKey(p)) {
-							sender.sendMessage(" " + pli.global_players.get(p).getName() + " - " + pli.global_players.get(p).getArenaState());
+							sender.sendMessage(" " + pli.global_players.get(p).getInternalName() + " - " + pli.global_players.get(p).getArenaState());
 						}
 					}
 					return true;
