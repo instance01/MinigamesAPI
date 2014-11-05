@@ -64,9 +64,11 @@ public class SmartReset {
 						if (b_.getType() == Material.CHEST) {
 							((Chest) b_.getState()).getBlockInventory().clear();
 							((Chest) b_.getState()).update();
-							for (ItemStack i : ablock.getNewInventory()) {
-								if (i != null) {
-									((Chest) b_.getState()).getBlockInventory().addItem(i);
+							HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
+							for (Integer i : chestinv.keySet()) {
+								ItemStack item = chestinv.get(i);
+								if (item != null) {
+									((Chest) b_.getState()).getBlockInventory().setItem(i, item);
 								}
 							}
 							((Chest) b_.getState()).update();
@@ -131,9 +133,11 @@ public class SmartReset {
 				if (b_.getType() == Material.CHEST) {
 					((Chest) b_.getState()).getBlockInventory().clear();
 					((Chest) b_.getState()).update();
-					for (ItemStack i : ablock.getNewInventory()) {
-						if (i != null) {
-							((Chest) b_.getState()).getBlockInventory().addItem(i);
+					HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
+					for (Integer i : chestinv.keySet()) {
+						ItemStack item = chestinv.get(i);
+						if (item != null) {
+							((Chest) b_.getState()).getBlockInventory().setItem(i, item);
 						}
 					}
 					((Chest) b_.getState()).update();

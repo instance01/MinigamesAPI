@@ -33,8 +33,6 @@ public class SmartArenaBlock implements Serializable {
 	private HashMap<Integer, ArrayList<Integer>> enchbook_id;
 	private HashMap<Integer, ArrayList<Integer>> enchbook_id_lv;
 	private ArrayList<Short> item_durability;
-
-	// unused
 	private ArrayList<Integer> item_pos;
 
 	// optional stuff
@@ -136,8 +134,8 @@ public class SmartArenaBlock implements Serializable {
 		return inv;
 	}
 
-	public ArrayList<ItemStack> getNewInventory() {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+	public HashMap<Integer, ItemStack> getNewInventory() {
+		HashMap<Integer, ItemStack> ret = new HashMap<Integer, ItemStack>();
 		for (int i = 0; i < item_mats.size(); i++) {
 			ItemStack item = new ItemStack(item_mats.get(i), item_amounts.get(i), item_data.get(i));
 			item.setDurability(item_durability.get(i));
@@ -175,7 +173,11 @@ public class SmartArenaBlock implements Serializable {
 				neww.setItemMeta(meta);
 				item = neww;
 			}
-			ret.add(item);
+			int pos = i;
+			if (i < item_pos.size()) {
+				pos = item_pos.get(i);
+			}
+			ret.put(pos, item);
 		}
 		return ret;
 	}

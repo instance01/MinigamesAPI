@@ -549,8 +549,7 @@ public class ArenaListener implements Listener {
 				}
 				final Sign s = (Sign) event.getClickedBlock().getState();
 				// people will most likely do strange formats, so let's just try
-				// to get signs by location rather than locally by reading the
-				// sign
+				// to get signs by location rather than locally by reading the sign
 				Arena arena = Util.getArenaBySignLocation(plugin, event.getClickedBlock().getLocation());
 				if (arena != null) {
 					Player p = event.getPlayer();
