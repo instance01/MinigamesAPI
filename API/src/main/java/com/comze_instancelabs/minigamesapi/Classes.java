@@ -6,14 +6,14 @@ import java.util.HashMap;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.util.AClass;
@@ -95,6 +95,9 @@ public class Classes {
 		ArrayList<ItemStack> items = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
 		ArrayList<ItemStack> temp = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
 		ArrayList<String> tempguns = new ArrayList<String>();
+		ArrayList<PotionEffectType> temppotions = new ArrayList<PotionEffectType>();
+		ArrayList<Integer> temppotions_lv = new ArrayList<Integer>();
+		ArrayList<Integer> temppotions_duration = new ArrayList<Integer>();
 
 		// crackshot support
 		for (ItemStack item : temp) {
@@ -103,6 +106,19 @@ public class Classes {
 					if (item.getItemMeta().getDisplayName().startsWith("crackshot:")) {
 						items.remove(item);
 						tempguns.add(item.getItemMeta().getDisplayName().split(":")[1]);
+					} else if (item.getItemMeta().getDisplayName().startsWith("potioneffect:")) {
+						items.remove(item);
+						System.out.println(item.getItemMeta().getDisplayName());
+						String potioneffect = item.getItemMeta().getDisplayName().split(":")[1];
+						String data = item.getItemMeta().getDisplayName().split(":")[2];
+						System.out.println(data);
+						Integer time = Integer.parseInt(data.substring(0, data.indexOf("#")));
+						Integer lv = Integer.parseInt(data.split("#")[1]);
+						if (PotionEffectType.getByName(potioneffect) != null) {
+							temppotions.add(PotionEffectType.getByName(potioneffect));
+							temppotions_lv.add(lv);
+							temppotions_duration.add(time);
+						}
 					}
 				}
 			}
@@ -137,6 +153,12 @@ public class Classes {
 				CSUtility cs = new CSUtility();
 				cs.giveWeapon(p, t, 1);
 			}
+		}
+
+		int index = 0;
+		for (PotionEffectType t : temppotions) {
+			p.addPotionEffect(new PotionEffect(t, temppotions_duration.get(index), temppotions_lv.get(index)));
+			index++;
 		}
 	}
 
@@ -250,10 +272,10 @@ public class Classes {
 
 	public boolean kitTakeMoney(Player p, String kit) {
 		// Credits
-		if(plugin.getConfig().getBoolean("config.use_credits_instead_of_money_for_kits")){
+		if (plugin.getConfig().getBoolean("config.use_credits_instead_of_money_for_kits")) {
 			String uuid = p.getUniqueId().toString();
 			int points = 0;
-			if(!MinigamesAPI.getAPI().statsglobal.getConfig().isSet("players." + uuid + ".points")){
+			if (!MinigamesAPI.getAPI().statsglobal.getConfig().isSet("players." + uuid + ".points")) {
 				points = pli.getStatsInstance().getPoints(p.getName());
 				MinigamesAPI.getAPI().statsglobal.getConfig().set("players." + uuid + ".points", points);
 				MinigamesAPI.getAPI().statsglobal.saveConfig();
@@ -296,7 +318,7 @@ public class Classes {
 			}
 			return true;
 		}
-		
+
 		// Money (economy)
 		if (!MinigamesAPI.getAPI().economy) {
 			plugin.getLogger().warning("Economy is turned OFF. Turn it ON in the config.");

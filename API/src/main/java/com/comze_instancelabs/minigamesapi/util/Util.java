@@ -493,6 +493,29 @@ public class Util {
 					continue;
 				}
 
+				// Potioneffects support
+				if (b.startsWith("potioneffect:")) {
+					String[] potioneffecttype = b.split(":");
+					if (potioneffecttype.length > 1) {
+						if (potioneffecttype[1].length() > 1) {
+							if (!potioneffecttype[1].contains(":")) {
+								// duration
+								b += ":99999";
+							}
+							if (!potioneffecttype[1].contains("#")) {
+								// level
+								b += "#1";
+							}
+							ItemStack gun = new ItemStack(Material.WOOD_HOE);
+							ItemMeta gunmeta = gun.getItemMeta();
+							gunmeta.setDisplayName(b);
+							gun.setItemMeta(gunmeta);
+							ret.add(gun);
+						}
+					}
+					continue;
+				}
+
 				int nameindex = b.indexOf("=");
 				String[] c = b.split("\\*");
 				String itemid = c[0];
