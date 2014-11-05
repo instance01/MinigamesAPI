@@ -19,6 +19,8 @@ import com.comze_instancelabs.minigamesapi.sql.MainSQL;
 import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.ArenaLobbyScoreboard;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class PluginInstance {
 
@@ -254,6 +256,26 @@ public class PluginInstance {
 
 	public void setAchievementGuiEnabled(boolean achievement_gui_enabled) {
 		this.achievement_gui_enabled = achievement_gui_enabled;
+	}
+
+	public void reloadAllArenas() {
+		for (Arena a : this.getArenas()) {
+			if (a != null) {
+				String arenaname = a.getInternalName();
+				ArenaSetup s = MinigamesAPI.getAPI().getPluginInstance(plugin).arenaSetup;
+				a.init(Util.getSignLocationFromArena(plugin, arenaname), Util.getAllSpawns(plugin, arenaname), Util.getMainLobby(plugin), Util.getComponentForArena(plugin, arenaname, "lobby"), s.getPlayerCount(plugin, arenaname, true), s.getPlayerCount(plugin, arenaname, false), s.getArenaVIP(plugin, arenaname));
+			}
+		}
+	}
+
+	public void reloadArena(String arenaname) {
+		if (Validator.isArenaValid(plugin, arenaname)) {
+			Arena a = this.getArenaByName(arenaname);
+			if (a != null) {
+				ArenaSetup s = MinigamesAPI.getAPI().getPluginInstance(plugin).arenaSetup;
+				a.init(Util.getSignLocationFromArena(plugin, arenaname), Util.getAllSpawns(plugin, arenaname), Util.getMainLobby(plugin), Util.getComponentForArena(plugin, arenaname, "lobby"), s.getPlayerCount(plugin, arenaname, true), s.getPlayerCount(plugin, arenaname, false), s.getArenaVIP(plugin, arenaname));
+			}
+		}
 	}
 
 }

@@ -88,6 +88,8 @@ public class CommandHandler {
 				return this.setAuthor(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setdescription")) {
 				return this.setDescription(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("setdisplayname")) {
+				return this.setArenaDisplayName(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("kit")) {
 				return this.setKit(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("shop")) {
@@ -114,6 +116,7 @@ public class CommandHandler {
 				pli.getStatsConfig().reloadConfig();
 				pli.getShopConfig().reloadConfig();
 				pli.getMessagesConfig().init();
+				pli.reloadAllArenas();
 				sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
 			} else {
 				boolean cont = false;
@@ -163,6 +166,8 @@ public class CommandHandler {
 		cmddesc.put("setlobbybounds <arena> <low/high>", "Optional: Set lobby boundaries.");
 		cmddesc.put("setspecbounds <arena> <low/high>", "Optional: Set extra spectator boundaries.");
 		cmddesc.put("setauthor <arena> <author>", "Will always display the author of the map at join.");
+		cmddesc.put("setdescription <arena> <description>", "Will always display a description of the map at join.");
+		cmddesc.put("setdisplayname <arena> <displayname>", "Allows changing displayname of an arena (whitespaces and colors).");
 	}
 
 	public static void sendHelp(String cmd, CommandSender sender) {
@@ -611,6 +616,7 @@ public class CommandHandler {
 			String author = args[2];
 			if (Validator.isArenaValid(plugin, args[1])) {
 				pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".author", author);
+				pli.getArenasConfig().saveConfig();
 				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "author"));
 			}
 		} else {
@@ -628,10 +634,30 @@ public class CommandHandler {
 			String desc = args[2];
 			if (Validator.isArenaValid(plugin, args[1])) {
 				pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".description", desc);
+				pli.getArenasConfig().saveConfig();
 				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "description"));
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <description>");
+		}
+		return true;
+	}
+
+	public boolean setArenaDisplayName(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 2) {
+			String displayname = args[2];
+			if (Validator.isArenaValid(plugin, args[1])) {
+				pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".displayname", displayname);
+				pli.getArenasConfig().saveConfig();
+				pli.reloadArena(args[1]);
+				sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "displayname"));
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <displayname>");
 		}
 		return true;
 	}
