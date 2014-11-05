@@ -111,7 +111,6 @@ public class Classes {
 						System.out.println(item.getItemMeta().getDisplayName());
 						String potioneffect = item.getItemMeta().getDisplayName().split(":")[1];
 						String data = item.getItemMeta().getDisplayName().split(":")[2];
-						System.out.println(data);
 						Integer time = Integer.parseInt(data.substring(0, data.indexOf("#")));
 						Integer lv = Integer.parseInt(data.split("#")[1]);
 						if (PotionEffectType.getByName(potioneffect) != null) {
