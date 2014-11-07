@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -79,7 +80,7 @@ public class SpectatorManager {
 
 						Player p_ = Bukkit.getPlayer(d);
 						if (p_ != null && p != null) {
-							Util.teleportPlayerFixed(p, p_.getLocation().add(0D, 2.5D, 0D));
+							Util.teleportPlayerFixed(p, new Location(p.getWorld(), p_.getLocation().getX(), p.getLocation().getY(), p_.getLocation().getZ()));
 						}
 					}
 					event.setWillClose(true);
@@ -104,5 +105,4 @@ public class SpectatorManager {
 		iconm.open(p);
 		lasticonm.put(p.getName(), iconm);
 	}
-
 }

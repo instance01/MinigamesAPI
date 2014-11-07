@@ -970,7 +970,7 @@ public class Arena {
 							for (String p__ : a.getAllPlayers()) {
 								if (p_ != p__) {
 									Player p2 = Bukkit.getPlayer(p__);
-									if ((p.getLocation().getBlockX() - p2.getLocation().getBlockX() < 5) && p.getLocation().getBlockZ() - p2.getLocation().getBlockZ() < 5 && p.getLocation().getBlockY() - p2.getLocation().getBlockY() < 5) {
+									if ((p.getLocation().getBlockX() - p2.getLocation().getBlockX() < 4) && p.getLocation().getBlockZ() - p2.getLocation().getBlockZ() < 4 && p.getLocation().getBlockY() - p2.getLocation().getBlockY() < 4) {
 										Vector direction = p2.getLocation().add(0D, -0.5D, 0D).toVector().subtract(p.getLocation().toVector()).normalize().multiply(-1.25D);
 										p.setVelocity(direction);
 										if (p.isInsideVehicle()) {
