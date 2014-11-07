@@ -136,7 +136,10 @@ public class Rewards {
 
 				try {
 					if (plugin.getConfig().getBoolean("config.broadcast_win")) {
-						plugin.getServer().broadcastMessage(pli.getMessagesConfig().server_broadcast_winner.replaceAll("<player>", p_).replaceAll("<arena>", a.getInternalName()));
+						String msgs[] = pli.getMessagesConfig().server_broadcast_winner.replaceAll("<player>", p_).replaceAll("<arena>", a.getInternalName()).split(";");
+						for (String msg : msgs) {
+							Bukkit.getServer().broadcastMessage(msg);
+						}
 					}
 				} catch (Exception e) {
 					System.out.println("Could not find arena for broadcast.");
