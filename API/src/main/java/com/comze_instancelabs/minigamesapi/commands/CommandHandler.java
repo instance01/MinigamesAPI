@@ -682,7 +682,9 @@ public class CommandHandler {
 
 				String all = "";
 				for (AClass k : pli.getAClasses().values()) {
-					all += k.getInternalName() + ", ";
+					if (k.isEnabled()) {
+						all += k.getInternalName() + ", ";
+					}
 				}
 				if (all.length() < 2) {
 					all = "No kits found!  ";
@@ -713,7 +715,6 @@ public class CommandHandler {
 			}
 			if (pli.global_players.containsKey(p.getName())) {
 				String shop_item = args[1];
-				System.out.println(shop_item);
 				if (!pli.getShopHandler().buyByInternalName(p, shop_item)) {
 					String all = "";
 					for (String ac : pli.getShopHandler().shopitems.keySet()) {
