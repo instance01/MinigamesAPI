@@ -477,15 +477,15 @@ public class Util {
 		try {
 			String[] a = rawitems.split(";");
 
-			for (String b : a) {
+			for (String rawitem : a) {
 				// crackshot support
-				if (b.startsWith("crackshot:")) {
-					String[] guntype = b.split(":");
+				if (rawitem.startsWith("crackshot:")) {
+					String[] guntype = rawitem.split(":");
 					if (guntype.length > 1) {
 						if (guntype[1].length() > 1) {
 							ItemStack gun = new ItemStack(Material.WOOD_HOE);
 							ItemMeta gunmeta = gun.getItemMeta();
-							gunmeta.setDisplayName(b);
+							gunmeta.setDisplayName(rawitem);
 							gun.setItemMeta(gunmeta);
 							ret.add(gun);
 						}
@@ -494,21 +494,21 @@ public class Util {
 				}
 
 				// Potioneffects support
-				if (b.startsWith("potioneffect:")) {
-					String[] potioneffecttype = b.split(":");
+				if (rawitem.startsWith("potioneffect:")) {
+					String[] potioneffecttype = rawitem.split(":");
 					if (potioneffecttype.length > 1) {
 						if (potioneffecttype[1].length() > 1) {
 							if (!potioneffecttype[1].contains(":")) {
 								// duration
-								b += ":99999";
+								rawitem += ":99999";
 							}
 							if (!potioneffecttype[1].contains("#")) {
 								// level
-								b += "#1";
+								rawitem += "#1";
 							}
 							ItemStack gun = new ItemStack(Material.WOOD_HOE);
 							ItemMeta gunmeta = gun.getItemMeta();
-							gunmeta.setDisplayName(b);
+							gunmeta.setDisplayName(rawitem);
 							gun.setItemMeta(gunmeta);
 							ret.add(gun);
 						}
@@ -516,8 +516,9 @@ public class Util {
 					continue;
 				}
 
-				int nameindex = b.indexOf("=");
-				String[] c = b.split("\\*");
+				int nameindex = rawitem.indexOf("=");
+				String[] c = rawitem.split("\\*");
+				int optional_armor_color_index = -1;
 				String itemid = c[0];
 				String itemdata = "0";
 				String[] enchantments_ = itemid.split("#");
@@ -533,7 +534,11 @@ public class Util {
 					itemid = d[0];
 					itemdata = d[1];
 				}
-				String itemamount = c[1];
+				String itemamount = "1";
+				if (c.length > 0) {
+					itemamount = c[1];
+					optional_armor_color_index = c[1].indexOf("#");
+				}
 				if (nameindex > -1) {
 					itemamount = c[1].substring(0, c[1].indexOf("="));
 				}
@@ -557,7 +562,7 @@ public class Util {
 				}
 
 				if (nameindex > -1) {
-					String namelore = b.substring(nameindex + 1);
+					String namelore = rawitem.substring(nameindex + 1);
 					String name = "";
 					String lore = "";
 					int i = namelore.indexOf(":");
@@ -567,9 +572,15 @@ public class Util {
 					} else {
 						name = namelore;
 					}
-					m.setDisplayName(name);
+					m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 					m.setLore(Arrays.asList(lore));
 				}
+
+				// RGB Color support for Armor
+				if (optional_armor_color_index > -1) {
+					m.setDisplayName(c[1].substring(optional_armor_color_index));
+				}
+
 				nitem.setItemMeta(m);
 				ret.add(nitem);
 			}
