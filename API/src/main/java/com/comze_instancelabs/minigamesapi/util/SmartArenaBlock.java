@@ -2,8 +2,8 @@ package com.comze_instancelabs.minigamesapi.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -35,19 +36,27 @@ public class SmartArenaBlock implements Serializable {
 	private ArrayList<Short> item_durability;
 	private ArrayList<Integer> item_pos;
 
+	// Sign lines
+	private ArrayList<String> sign_lines = new ArrayList<String>();
+
 	// optional stuff
 	private ArrayList<Boolean> item_splash;
 
 	private ItemStack[] inv;
 
-	public SmartArenaBlock(Block b, boolean c) {
+	public SmartArenaBlock(Block b, boolean c, boolean s) {
 		m = b.getType();
 		x = b.getX();
 		y = b.getY();
 		z = b.getZ();
 		data = b.getData();
 		world = b.getWorld().getName();
-		if (c) {
+		if (s) {
+			Sign sign = (Sign) b.getState();
+			if (sign != null) {
+				sign_lines.addAll(Arrays.asList(sign.getLines()));
+			}
+		} else if (c) {
 			inv = ((Chest) b.getState()).getInventory().getContents();
 			item_mats = new ArrayList<Material>();
 			item_data = new ArrayList<Byte>();
@@ -180,6 +189,10 @@ public class SmartArenaBlock implements Serializable {
 			ret.put(pos, item);
 		}
 		return ret;
+	}
+
+	public ArrayList<String> getSignLines() {
+		return this.sign_lines;
 	}
 
 }

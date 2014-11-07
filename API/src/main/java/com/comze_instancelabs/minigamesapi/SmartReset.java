@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -9,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
+import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 
 import com.comze_instancelabs.minigamesapi.util.ArenaBlock;
@@ -28,7 +30,7 @@ public class SmartReset {
 
 	public void addChanged(Block b, boolean c) {
 		if (!changed.containsKey(b.getLocation())) {
-			changed.put(b.getLocation(), new SmartArenaBlock(b, c));
+			changed.put(b.getLocation(), new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST));
 		}
 	}
 
@@ -72,6 +74,21 @@ public class SmartReset {
 								}
 							}
 							((Chest) b_.getState()).update();
+						}
+						if (b_.getType() == Material.WALL_SIGN || b_.getType() == Material.SIGN_POST) {
+							Sign sign = (Sign) b_.getState();
+							if (sign != null) {
+								int i = 0;
+								for (String line : ablock.getSignLines()) {
+									System.out.println(line);
+									sign.setLine(i, line);
+									i++;
+									if (i > 3) {
+										break;
+									}
+								}
+								sign.update();
+							}
 						}
 					} catch (IllegalStateException e) {
 						failcount += 1;
