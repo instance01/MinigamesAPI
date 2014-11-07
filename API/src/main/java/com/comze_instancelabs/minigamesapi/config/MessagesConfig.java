@@ -132,6 +132,9 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.minigame_description", minigame_description);
 		this.getConfig().addDefault("messages.successfully_bought_shopitem", successfully_bought_shopitem);
 		this.getConfig().addDefault("messages.already_bought_shopitem", already_bought_shopitem);
+		this.getConfig().addDefault("messages.you_received_rewards", you_received_rewards);
+		this.getConfig().addDefault("messages.you_received_rewards_2", you_received_rewards_2);
+		this.getConfig().addDefault("messages.you_received_rewards_3", you_received_rewards_3);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -192,6 +195,9 @@ public class MessagesConfig {
 		this.minigame_description = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.minigame_description"));
 		this.successfully_bought_shopitem = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_bought_shopitem"));
 		this.already_bought_shopitem = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.already_bought_shopitem"));
+		this.you_received_rewards = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards"));
+		this.you_received_rewards_2 = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards_2"));
+		this.you_received_rewards_3 = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards_3"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -262,6 +268,9 @@ public class MessagesConfig {
 	public String minigame_description = "";
 	public String successfully_bought_shopitem = "&aSuccessfully bought &2<shopitem> &afor &2<money>&a.";
 	public String already_bought_shopitem = "&aYou already had &2<shopitem>&a.";
+	public String you_received_rewards = "&aYou received a reward of &2<economyreward>";
+	public String you_received_rewards_2 = " &aand ";
+	public String you_received_rewards_3 = "&2<itemreward>&a!";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

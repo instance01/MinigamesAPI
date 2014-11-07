@@ -104,6 +104,7 @@ public class Rewards {
 			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 			final Player p = Bukkit.getPlayer(p_);
 			if (!pli.global_lost.containsKey(p_)) {
+				String received_rewards_msg = pli.getMessagesConfig().you_received_rewards;
 				if (economyrewards && MinigamesAPI.economy) {
 					int multiplier = global_multiplier;
 					if (pli.getShopHandler().hasItemBought(p_, "coin_boost2_solo")) {
@@ -113,10 +114,27 @@ public class Rewards {
 						multiplier = 3;
 					}
 					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward * multiplier);
+					received_rewards_msg = received_rewards_msg.replaceAll("<economyreward>", Integer.toString(econ_reward * multiplier) + " " + MinigamesAPI.econ.currencyNamePlural());
+					received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", "");
+				} else {
+					received_rewards_msg = received_rewards_msg.replaceAll("<economyreward>", "");
 				}
 				if (itemrewards) {
 					p.getInventory().addItem(items);
 					p.updateInventory();
+					String items_str = "";
+					for (ItemStack i : items) {
+						items_str += Integer.toString(i.getAmount()) + " " + Character.toUpperCase(i.getType().toString().charAt(0)) + i.getType().toString().toLowerCase().substring(1) + ", ";
+					}
+					if (items_str.length() > 2) {
+						items_str.substring(0, items_str.length() - 2);
+					}
+					if (economyrewards && MinigamesAPI.economy) {
+						received_rewards_msg += pli.getMessagesConfig().you_received_rewards_2;
+						received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", items_str);
+					} else {
+						received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", items_str);
+					}
 				}
 				if (commandrewards) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("<player>", p_));
@@ -125,6 +143,7 @@ public class Rewards {
 				pli.getStatsInstance().win(p_, 10);
 
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);
+				Util.sendMessage(plugin, p, received_rewards_msg);
 
 				if (plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners")) {
 					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
