@@ -135,6 +135,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.you_received_rewards", you_received_rewards);
 		this.getConfig().addDefault("messages.you_received_rewards_2", you_received_rewards_2);
 		this.getConfig().addDefault("messages.you_received_rewards_3", you_received_rewards_3);
+		this.getConfig().addDefault("messages.already_in_arena", already_in_arena);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -198,6 +199,7 @@ public class MessagesConfig {
 		this.you_received_rewards = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards"));
 		this.you_received_rewards_2 = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards_2"));
 		this.you_received_rewards_3 = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards_3"));
+		this.already_in_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.already_in_arena"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -271,6 +273,7 @@ public class MessagesConfig {
 	public String you_received_rewards = "&aYou received a reward of &2<economyreward>";
 	public String you_received_rewards_2 = " &aand ";
 	public String you_received_rewards_3 = "&2<itemreward>&a!";
+	public String already_in_arena = "&cYou are already in an arena.";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

@@ -319,6 +319,10 @@ public class Arena {
 			Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().arena_disabled);
 			return;
 		}
+		if (pli.global_players.containsKey(playername)) {
+			Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().already_in_arena);
+			return;
+		}
 		if (ai == null && this.isVIPArena()) {
 			if (Validator.isPlayerOnline(playername)) {
 				if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getInternalName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*")) {

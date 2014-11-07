@@ -538,7 +538,7 @@ public class Util {
 				if (c.length > 1) {
 					itemamount = c[1];
 					optional_armor_color_index = c[1].indexOf("#");
-					if(optional_armor_color_index > 0){
+					if (optional_armor_color_index > 0) {
 						itemamount = c[1].substring(0, optional_armor_color_index);
 					}
 				}
