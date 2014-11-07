@@ -115,7 +115,6 @@ public class Rewards {
 					}
 					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), econ_reward * multiplier);
 					received_rewards_msg = received_rewards_msg.replaceAll("<economyreward>", Integer.toString(econ_reward * multiplier) + " " + MinigamesAPI.econ.currencyNamePlural());
-					received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", "");
 				} else {
 					received_rewards_msg = received_rewards_msg.replaceAll("<economyreward>", "");
 				}
@@ -127,7 +126,7 @@ public class Rewards {
 						items_str += Integer.toString(i.getAmount()) + " " + Character.toUpperCase(i.getType().toString().charAt(0)) + i.getType().toString().toLowerCase().substring(1) + ", ";
 					}
 					if (items_str.length() > 2) {
-						items_str.substring(0, items_str.length() - 2);
+						items_str = items_str.substring(0, items_str.length() - 2);
 					}
 					if (economyrewards && MinigamesAPI.economy) {
 						received_rewards_msg += pli.getMessagesConfig().you_received_rewards_2;
@@ -135,6 +134,8 @@ public class Rewards {
 					} else {
 						received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", items_str);
 					}
+				}else{
+					received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", "");
 				}
 				if (commandrewards) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("<player>", p_));

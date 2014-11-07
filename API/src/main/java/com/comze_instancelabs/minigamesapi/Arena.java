@@ -616,14 +616,6 @@ public class Arena {
 			}
 		}
 
-		if (started) {
-			if (!pnoreward.contains(playername)) {
-				pli.getRewardsInstance().giveWinReward(playername, this, global_coin_multiplier);
-			} else {
-				pnoreward.remove(playername);
-			}
-		}
-
 		pli.global_players.remove(playername);
 		if (pli.global_lost.containsKey(playername)) {
 			pli.global_lost.remove(playername);
@@ -636,6 +628,7 @@ public class Arena {
 
 		final String arenaname = this.getInternalName();
 		final Arena a = this;
+		final boolean started_ = started;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
 				if (p != null) {
@@ -659,6 +652,15 @@ public class Arena {
 					p.getInventory().setContents(pinv.get(playername));
 					p.getInventory().setArmorContents(pinv_armor.get(playername));
 					p.updateInventory();
+
+					if (started_) {
+						if (!pnoreward.contains(playername)) {
+							pli.getRewardsInstance().giveWinReward(playername, a, global_coin_multiplier);
+						} else {
+							pnoreward.remove(playername);
+						}
+					}
+
 					try {
 						pli.scoreboardManager.removeScoreboard(arenaname, p);
 					} catch (Exception e) {
