@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -796,6 +797,14 @@ public class Arena {
 			}, 10L);
 		}
 
+		Sound lobbycountdown_sound_ = null;
+		try {
+			lobbycountdown_sound_ = Sound.valueOf(plugin.getConfig().getString("config.sounds.lobby_countdown"));
+		} catch (Exception e) {
+			;
+		}
+		final Sound lobbycountdown_sound = lobbycountdown_sound_;
+
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentlobbycount--;
@@ -805,6 +814,9 @@ public class Arena {
 							Player p = Bukkit.getPlayer(p_);
 							if (countdown) {
 								Util.sendMessage(plugin, p, pli.getMessagesConfig().teleporting_to_arena_in.replaceAll("<count>", Integer.toString(currentlobbycount)));
+								if (lobbycountdown_sound != null) {
+									p.playSound(p.getLocation(), lobbycountdown_sound, 1F, 0F);
+								}
 							}
 						}
 					}
@@ -860,6 +872,15 @@ public class Arena {
 			startRaw(a);
 			return;
 		}
+
+		Sound ingamecountdown_sound_ = null;
+		try {
+			ingamecountdown_sound_ = Sound.valueOf(plugin.getConfig().getString("config.sounds.ingame_countdown"));
+		} catch (Exception e) {
+			;
+		}
+		final Sound ingamecountdown_sound = ingamecountdown_sound_;
+
 		currenttaskid = Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
 				currentingamecount--;
@@ -868,6 +889,9 @@ public class Arena {
 						if (Validator.isPlayerOnline(p_)) {
 							Player p = Bukkit.getPlayer(p_);
 							Util.sendMessage(plugin, p, pli.getMessagesConfig().starting_in.replaceAll("<count>", Integer.toString(currentingamecount)));
+							if (ingamecountdown_sound != null) {
+								p.playSound(p.getLocation(), ingamecountdown_sound, 1F, 0F);
+							}
 						}
 					}
 				}

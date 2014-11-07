@@ -80,7 +80,6 @@ public class SmartReset {
 							if (sign != null) {
 								int i = 0;
 								for (String line : ablock.getSignLines()) {
-									System.out.println(line);
 									sign.setLine(i, line);
 									i++;
 									if (i > 3) {

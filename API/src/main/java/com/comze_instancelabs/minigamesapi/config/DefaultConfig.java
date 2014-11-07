@@ -75,6 +75,8 @@ public class DefaultConfig {
 			config.addDefault("config.auto_add_default_kit", true);
 			config.addDefault("config.last_man_standing_wins", true);
 			config.addDefault("config.effects", true);
+			config.addDefault("config.sounds.lobby_countdown", "none");
+			config.addDefault("config.sounds.ingame_countdown", "SUCCESSFUL_HIT");
 
 			config.addDefault("config.extra_lobby_item.item0.enabled", false);
 			config.addDefault("config.extra_lobby_item.item0.item", 9);
