@@ -1277,4 +1277,12 @@ public class Arena {
 		return plugin;
 	}
 
+	public int getCurrentIngameCountdownTime() {
+		return this.currentingamecount;
+	}
+
+	public int getCurrentLobbyCountdownTime() {
+		return this.currentlobbycount;
+	}
+
 }
