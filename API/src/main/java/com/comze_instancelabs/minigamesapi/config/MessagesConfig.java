@@ -127,6 +127,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.description_of_the_map", description_of_the_map);
 		this.getConfig().addDefault("messages.not_enough_money", not_enough_money);
 		this.getConfig().addDefault("messages.possible_kits", possible_kits);
+		this.getConfig().addDefault("messages.possible_shopitems", possible_shopitems);
 		this.getConfig().addDefault("messages.cancelled_starting", cancelled_starting);
 		this.getConfig().addDefault("messages.minigame_description", minigame_description);
 		this.getConfig().addDefault("messages.successfully_bought_shopitem", successfully_bought_shopitem);
@@ -186,6 +187,7 @@ public class MessagesConfig {
 		this.description_of_the_map = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.description_of_the_map"));
 		this.not_enough_money = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.not_enough_money"));
 		this.possible_kits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.possible_kits"));
+		this.possible_shopitems = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.possible_shopitems"));
 		this.cancelled_starting = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.cancelled_starting"));
 		this.minigame_description = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.minigame_description"));
 		this.successfully_bought_shopitem = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.successfully_bought_shopitem"));
@@ -255,6 +257,7 @@ public class MessagesConfig {
 	public String description_of_the_map = "<description>";
 	public String not_enough_money = "&cYou don't have enough money.";
 	public String possible_kits = "&aPossible kits: &2";
+	public String possible_shopitems = "&aPossible shop items: &2";
 	public String cancelled_starting = "&cThe starting countdown was cancelled because there's only one player left in the arena.";
 	public String minigame_description = "";
 	public String successfully_bought_shopitem = "&aSuccessfully bought &2<shopitem> &afor &2<money>&a.";

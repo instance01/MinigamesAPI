@@ -45,8 +45,6 @@ public class Shop {
 							if (pli.getArenas().contains(pli.global_players.get(p))) {
 								String d = event.getName();
 								Player p = event.getPlayer();
-								// TODO:
-								// buy selected extra item and save into config
 								buy(p, d);
 							}
 						}
@@ -90,14 +88,37 @@ public class Shop {
 		}, 20L);
 	}
 
-	public void buy(Player p, String item) {
+	/***
+	 * Buy a shop item
+	 * 
+	 * @param p
+	 *            Player who buys it
+	 * @param item_displayname
+	 *            Displayname of the item
+	 * @return
+	 */
+	public boolean buy(Player p, String item_displayname) {
 		for (String ac : shopitems.keySet()) {
 			ShopItem ac_ = shopitems.get(ac);
-			if (ac_.getName().equalsIgnoreCase(item)) {
+			if (ac_.getName().equalsIgnoreCase(item_displayname)) {
 				takeMoney(p, ac_.getInternalName());
 				// true -> player has item already or just bought it successfully
+				return true;
 			}
 		}
+		return false;
+	}
+
+	public boolean buyByInternalName(Player p, String item_name) {
+		for (String ac : shopitems.keySet()) {
+			ShopItem ac_ = shopitems.get(ac);
+			if (ac_.getInternalName().equalsIgnoreCase(item_name)) {
+				takeMoney(p, ac_.getInternalName());
+				// true -> player has item already or just bought it successfully
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean hasItemBought(String p, String item) {
@@ -128,13 +149,13 @@ public class Shop {
 					}
 					shopConfig.getConfig().set("players.bought." + p.getName() + "." + item, true);
 					shopConfig.saveConfig();
-					p.sendMessage(pli.getMessagesConfig().successfully_bought_shopitem.replaceAll("<shopitem>",  shopitems.get(item).getName()).replaceAll("<money>", Integer.toString(money)));
+					p.sendMessage(pli.getMessagesConfig().successfully_bought_shopitem.replaceAll("<shopitem>", shopitems.get(item).getName()).replaceAll("<money>", Integer.toString(money)));
 				} else {
 					p.sendMessage(pli.getMessagesConfig().not_enough_money);
 					return false;
 				}
 			} else {
-				p.sendMessage(pli.getMessagesConfig().already_bought_shopitem.replaceAll("<shopitem>",  shopitems.get(item).getName()));
+				p.sendMessage(pli.getMessagesConfig().already_bought_shopitem.replaceAll("<shopitem>", shopitems.get(item).getName()));
 				return true;
 			}
 			return true;

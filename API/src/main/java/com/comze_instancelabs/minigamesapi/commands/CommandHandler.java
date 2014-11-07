@@ -17,6 +17,7 @@ import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.Party;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.util.AClass;
+import com.comze_instancelabs.minigamesapi.util.ShopItem;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
@@ -706,13 +707,36 @@ public class CommandHandler {
 	}
 
 	public boolean openShop(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
-		if (!plugin.getConfig().getBoolean("config.shop_enabled")) {
-			return true;
-		}
-		if (pli.global_players.containsKey(p.getName())) {
-			pli.getShopHandler().openGUI(p.getName());
+		if (args.length > 1) {
+			if (!plugin.getConfig().getBoolean("config.shop_enabled")) {
+				return true;
+			}
+			if (pli.global_players.containsKey(p.getName())) {
+				String shop_item = args[1];
+				System.out.println(shop_item);
+				if (!pli.getShopHandler().buyByInternalName(p, shop_item)) {
+					String all = "";
+					for (String ac : pli.getShopHandler().shopitems.keySet()) {
+						all += ac + ", ";
+					}
+					if (all.length() < 2) {
+						all = "No shop items found!  ";
+					}
+					all = all.substring(0, all.length() - 2);
+					sender.sendMessage(pli.getMessagesConfig().possible_shopitems + all);
+				}
+			} else {
+				sender.sendMessage(pli.getMessagesConfig().not_in_arena);
+			}
 		} else {
-			sender.sendMessage(pli.getMessagesConfig().not_in_arena);
+			if (!plugin.getConfig().getBoolean("config.shop_enabled")) {
+				return true;
+			}
+			if (pli.global_players.containsKey(p.getName())) {
+				pli.getShopHandler().openGUI(p.getName());
+			} else {
+				sender.sendMessage(pli.getMessagesConfig().not_in_arena);
+			}
 		}
 		return true;
 	}
