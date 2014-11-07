@@ -535,9 +535,12 @@ public class Util {
 					itemdata = d[1];
 				}
 				String itemamount = "1";
-				if (c.length > 0) {
+				if (c.length > 1) {
 					itemamount = c[1];
 					optional_armor_color_index = c[1].indexOf("#");
+					if(optional_armor_color_index > 0){
+						itemamount = c[1].substring(0, optional_armor_color_index);
+					}
 				}
 				if (nameindex > -1) {
 					itemamount = c[1].substring(0, c[1].indexOf("="));
@@ -732,6 +735,10 @@ public class Util {
 		int rp = r.nextInt(2) + 1;
 		fwm.setPower(rp);
 		fw.setFireworkMeta(fwm);
+	}
+
+	public static Color hexToRgb(String colorStr) {
+		return Color.fromRGB(Integer.valueOf(colorStr.substring(1, 3), 16), Integer.valueOf(colorStr.substring(3, 5), 16), Integer.valueOf(colorStr.substring(5, 7), 16));
 	}
 
 	public static class ValueComparator implements Comparator<String> {

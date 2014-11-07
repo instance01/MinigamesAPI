@@ -8,9 +8,11 @@ import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -125,19 +127,55 @@ public class Classes {
 
 		for (ItemStack item : items) {
 			if (item != null) {
+				Color c_ = null;
+				if (item.hasItemMeta()) {
+					if (item.getItemMeta().hasDisplayName()) {
+						if (item.getItemMeta().getDisplayName().startsWith("#") && item.getItemMeta().getDisplayName().length() == 7) {
+							c_ = Util.hexToRgb(item.getItemMeta().getDisplayName());
+						}
+					}
+				}
 				if (item.getTypeId() == 298 || item.getTypeId() == 302 || item.getTypeId() == 306 || item.getTypeId() == 310 || item.getTypeId() == 314) {
+					if (item.getTypeId() == 298) {
+						LeatherArmorMeta lam = (LeatherArmorMeta) item.getItemMeta();
+						if (c_ != null) {
+							lam.setColor(c_);
+						}
+						item.setItemMeta(lam);
+					}
 					p.getInventory().setHelmet(item);
 					continue;
 				}
 				if (item.getTypeId() == 299 || item.getTypeId() == 303 || item.getTypeId() == 307 || item.getTypeId() == 311 || item.getTypeId() == 315) {
+					if (item.getTypeId() == 299) {
+						LeatherArmorMeta lam = (LeatherArmorMeta) item.getItemMeta();
+						if (c_ != null) {
+							lam.setColor(c_);
+						}
+						item.setItemMeta(lam);
+					}
 					p.getInventory().setChestplate(item);
 					continue;
 				}
 				if (item.getTypeId() == 300 || item.getTypeId() == 304 || item.getTypeId() == 308 || item.getTypeId() == 312 || item.getTypeId() == 316) {
+					if (item.getTypeId() == 300) {
+						LeatherArmorMeta lam = (LeatherArmorMeta) item.getItemMeta();
+						if (c_ != null) {
+							lam.setColor(c_);
+						}
+						item.setItemMeta(lam);
+					}
 					p.getInventory().setLeggings(item);
 					continue;
 				}
 				if (item.getTypeId() == 301 || item.getTypeId() == 305 || item.getTypeId() == 309 || item.getTypeId() == 313 || item.getTypeId() == 317) {
+					if (item.getTypeId() == 301) {
+						LeatherArmorMeta lam = (LeatherArmorMeta) item.getItemMeta();
+						if (c_ != null) {
+							lam.setColor(c_);
+						}
+						item.setItemMeta(lam);
+					}
 					p.getInventory().setBoots(item);
 					continue;
 				}
