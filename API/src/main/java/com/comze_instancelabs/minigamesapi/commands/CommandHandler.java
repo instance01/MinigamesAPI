@@ -693,6 +693,14 @@ public class CommandHandler {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <kit>");
+			if (!plugin.getConfig().getBoolean("config.classes_enabled")) {
+				return true;
+			}
+			if (pli.global_players.containsKey(p.getName())) {
+				pli.getClassesHandler().openGUI(p.getName());
+			} else {
+				sender.sendMessage(pli.getMessagesConfig().not_in_arena);
+			}
 		}
 		return true;
 	}
