@@ -39,6 +39,7 @@ public class Arena {
 	HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
 	HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
 	private HashMap<String, GameMode> pgamemode = new HashMap<String, GameMode>();
+	private HashMap<String, Integer> pxplvl = new HashMap<String, Integer>();
 	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
 
 	/**
@@ -415,6 +416,7 @@ public class Arena {
 				}
 				Util.clearInv(p);
 				pgamemode.put(p.getName(), p.getGameMode());
+				pxplvl.put(p.getName(), p.getExpToLevel());
 				p.setGameMode(GameMode.SURVIVAL);
 				p.setHealth(20D);
 				return;
@@ -434,6 +436,7 @@ public class Arena {
 							Util.clearInv(p);
 							Util.giveLobbyItems(plugin, p);
 							pgamemode.put(p.getName(), p.getGameMode());
+							pxplvl.put(p.getName(), p.getLevel());
 							p.setGameMode(GameMode.SURVIVAL);
 						}
 					}, 10L);
@@ -449,6 +452,7 @@ public class Arena {
 					Util.clearInv(p);
 					Util.giveLobbyItems(plugin, p);
 					pgamemode.put(p.getName(), p.getGameMode());
+					pxplvl.put(p.getName(), p.getLevel());
 					p.setGameMode(GameMode.SURVIVAL);
 					p.setHealth(20D);
 				}
@@ -570,6 +574,10 @@ public class Arena {
 					if (pgamemode.containsKey(p.getName())) {
 						p.setGameMode(pgamemode.get(p.getName()));
 					}
+					if (pxplvl.containsKey(p.getName())) {
+						p.setLevel(0);
+						p.setLevel(pxplvl.get(p.getName()));
+					}
 					p.getInventory().setContents(pinv.get(playername));
 					p.getInventory().setArmorContents(pinv_armor.get(playername));
 					p.updateInventory();
@@ -643,6 +651,10 @@ public class Arena {
 					}
 					if (pgamemode.containsKey(p.getName())) {
 						p.setGameMode(pgamemode.get(p.getName()));
+					}
+					if (pxplvl.containsKey(p.getName())) {
+						p.setLevel(0);
+						p.setLevel(pxplvl.get(p.getName()));
 					}
 					p.getInventory().setContents(pinv.get(playername));
 					p.getInventory().setArmorContents(pinv_armor.get(playername));
