@@ -24,6 +24,8 @@ import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
 import com.comze_instancelabs.minigamesapi.events.ArenaStartEvent;
 import com.comze_instancelabs.minigamesapi.events.ArenaStartedEvent;
 import com.comze_instancelabs.minigamesapi.events.ArenaStopEvent;
+import com.comze_instancelabs.minigamesapi.events.PlayerJoinLobbyEvent;
+import com.comze_instancelabs.minigamesapi.events.PlayerLeaveArenaEvent;
 import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
@@ -397,6 +399,7 @@ public class Arena {
 
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
+			Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinLobbyEvent(p, plugin, this));
 			Util.sendMessage(plugin, p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getDisplayName()));
 			Util.sendMessage(plugin, p, pli.getMessagesConfig().minigame_description);
 			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getInternalName() + ".author")) {
@@ -611,6 +614,8 @@ public class Arena {
 		p.setFireTicks(0);
 		p.removePotionEffect(PotionEffectType.JUMP);
 		pli.getSpectatorManager().setSpectate(p, false);
+
+		Bukkit.getServer().getPluginManager().callEvent(new PlayerLeaveArenaEvent(p, plugin, this));
 
 		for (PotionEffect effect : p.getActivePotionEffects()) {
 			if (effect != null) {
@@ -886,10 +891,9 @@ public class Arena {
 			p.setFoodLevel(5);
 			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
 			pli.scoreboardLobbyManager.removeScoreboard(this.getInternalName(), p);
-			if(clearinv){
+			if (clearinv) {
 				Util.clearInv(p);
 			}
-			
 		}
 		final Arena a = this;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
