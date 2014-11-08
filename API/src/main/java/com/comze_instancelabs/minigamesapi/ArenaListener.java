@@ -36,6 +36,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -828,6 +829,24 @@ public class ArenaListener implements Listener {
 		}
 		if (party_ != null) {
 			party_.removePlayer(event.getPlayer().getName());
+		}
+	}
+
+	@EventHandler
+	public void onChat(AsyncPlayerChatEvent event) {
+		Player p = event.getPlayer();
+		if (plugin.getConfig().getBoolean("config.chat_per_arena_only")) {
+			if (pli.global_players.containsKey(p.getName())) {
+				String msg = String.format(event.getFormat(), p.getName(), event.getMessage());
+				for (Player receiver : event.getRecipients()) {
+					if (pli.global_players.containsKey(receiver.getName())) {
+						if (pli.global_players.get(receiver.getName()) == pli.global_players.get(p.getName())) {
+							receiver.sendMessage(msg);
+						}
+					}
+				}
+				event.setCancelled(true);
+			}
 		}
 	}
 
