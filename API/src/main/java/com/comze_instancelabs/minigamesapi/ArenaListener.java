@@ -243,7 +243,7 @@ public class ArenaListener implements Listener {
 			final Player p = event.getEntity();
 
 			final Arena arena = pli.global_players.get(p.getName());
-			if (arena.getArenaState() == ArenaState.JOIN) {
+			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.startedIngameCountdown)) {
 				Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
 				return;
 			}
