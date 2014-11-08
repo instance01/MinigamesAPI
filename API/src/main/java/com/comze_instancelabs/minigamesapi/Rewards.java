@@ -160,6 +160,11 @@ public class Rewards {
 						for (String msg : msgs) {
 							Bukkit.getServer().broadcastMessage(msg);
 						}
+					} else {
+						String msgs[] = pli.getMessagesConfig().server_broadcast_winner.replaceAll("<player>", p_).replaceAll("<arena>", a.getInternalName()).split(";");
+						for (String msg : msgs) {
+							p.sendMessage(msg);
+						}
 					}
 				} catch (Exception e) {
 					System.out.println("Could not find arena for broadcast.");
