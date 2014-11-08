@@ -637,7 +637,7 @@ public class Arena {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
 				if (p != null) {
-					if (ai == null || a.isArcadeMain()) { // TODO test
+					if (ai == null || a.isArcadeMain()) {
 						if (a.mainlobby != null) {
 							Util.teleportPlayerFixed(p, a.mainlobby);
 						} else if (a.waitinglobby != null) {
@@ -667,7 +667,7 @@ public class Arena {
 							pnoreward.remove(playername);
 						}
 					}
-					
+
 					if (pli.global_lost.containsKey(playername)) {
 						pli.global_lost.remove(playername);
 					}

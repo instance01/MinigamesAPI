@@ -52,9 +52,15 @@ public class Stats {
 	 * @param playername
 	 */
 	public void update(String playername) {
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		if (plugin.getConfig().getBoolean("mysql.enabled")) {
-			setWins(playername, MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().getWins(playername));
-			setPoints(playername, MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().getPoints(playername));
+			String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
+			if (pli.getStatsConfig().getConfig().isSet("players." + uuid + ".wins")) {
+				setWins(playername, pli.getSQLInstance().getWins(playername));
+			}
+			if (pli.getStatsConfig().getConfig().isSet("players." + uuid + ".points")) {
+				setPoints(playername, pli.getSQLInstance().getPoints(playername));
+			}
 		}
 	}
 
