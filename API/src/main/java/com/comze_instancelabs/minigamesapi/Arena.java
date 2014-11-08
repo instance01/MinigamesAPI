@@ -625,9 +625,6 @@ public class Arena {
 		}
 
 		pli.global_players.remove(playername);
-		if (pli.global_lost.containsKey(playername)) {
-			pli.global_lost.remove(playername);
-		}
 		if (pli.global_arcade_spectator.containsKey(playername)) {
 			pli.global_arcade_spectator.remove(playername);
 		}
@@ -669,6 +666,10 @@ public class Arena {
 						} else {
 							pnoreward.remove(playername);
 						}
+					}
+					
+					if (pli.global_lost.containsKey(playername)) {
+						pli.global_lost.remove(playername);
 					}
 
 					try {

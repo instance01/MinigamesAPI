@@ -130,6 +130,11 @@ public class ArenaListener implements Listener {
 								Util.teleportPlayerFixed(p, a.getSpawns().get(0));
 							} else {
 								a.spectate(p.getName());
+								for (String p_ : a.getAllPlayers()) {
+									if (Validator.isPlayerOnline(p_)) {
+										Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().player_died.replaceAll("<player>", p.getName()));
+									}
+								}
 							}
 							return;
 						}
