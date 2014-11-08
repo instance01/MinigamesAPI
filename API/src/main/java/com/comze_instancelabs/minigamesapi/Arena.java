@@ -636,7 +636,7 @@ public class Arena {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
 				if (p != null) {
-					if (ai == null) {
+					if (ai == null || a.isArcadeMain()) { // TODO test
 						if (a.mainlobby != null) {
 							Util.teleportPlayerFixed(p, a.mainlobby);
 						} else if (a.waitinglobby != null) {

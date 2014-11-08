@@ -87,7 +87,7 @@ public class Classes {
 
 	public void getClass(String player) {
 		AClass c = pli.getPClasses().get(player);
-		Player p = Bukkit.getServer().getPlayer(player);
+		final Player p = Bukkit.getServer().getPlayer(player);
 		p.getInventory().clear();
 		p.getInventory().setHelmet(null);
 		p.getInventory().setChestplate(null);
@@ -97,9 +97,9 @@ public class Classes {
 		ArrayList<ItemStack> items = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
 		ArrayList<ItemStack> temp = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
 		ArrayList<String> tempguns = new ArrayList<String>();
-		ArrayList<PotionEffectType> temppotions = new ArrayList<PotionEffectType>();
-		ArrayList<Integer> temppotions_lv = new ArrayList<Integer>();
-		ArrayList<Integer> temppotions_duration = new ArrayList<Integer>();
+		final ArrayList<PotionEffectType> temppotions = new ArrayList<PotionEffectType>();
+		final ArrayList<Integer> temppotions_lv = new ArrayList<Integer>();
+		final ArrayList<Integer> temppotions_duration = new ArrayList<Integer>();
 
 		// crackshot support
 		for (ItemStack item : temp) {
@@ -110,7 +110,7 @@ public class Classes {
 						tempguns.add(item.getItemMeta().getDisplayName().split(":")[1]);
 					} else if (item.getItemMeta().getDisplayName().startsWith("potioneffect:")) {
 						items.remove(item);
-						System.out.println(item.getItemMeta().getDisplayName());
+						// System.out.println(item.getItemMeta().getDisplayName());
 						String potioneffect = item.getItemMeta().getDisplayName().split(":")[1];
 						String data = item.getItemMeta().getDisplayName().split(":")[2];
 						Integer time = Integer.parseInt(data.substring(0, data.indexOf("#")));
@@ -192,11 +192,18 @@ public class Classes {
 			}
 		}
 
-		int index = 0;
-		for (PotionEffectType t : temppotions) {
-			p.addPotionEffect(new PotionEffect(t, temppotions_duration.get(index), temppotions_lv.get(index)));
-			index++;
-		}
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				if (p != null) {
+					int index = 0;
+					for (PotionEffectType t : temppotions) {
+						p.addPotionEffect(new PotionEffect(t, temppotions_duration.get(index), temppotions_lv.get(index)));
+						index++;
+					}
+				}
+			}
+		}, 10L);
+
 	}
 
 	/**

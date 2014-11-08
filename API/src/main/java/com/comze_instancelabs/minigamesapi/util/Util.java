@@ -497,12 +497,16 @@ public class Util {
 				if (rawitem.startsWith("potioneffect:")) {
 					String[] potioneffecttype = rawitem.split(":");
 					if (potioneffecttype.length > 1) {
-						if (potioneffecttype[1].length() > 1) {
-							if (!potioneffecttype[1].contains(":")) {
+						String str = potioneffecttype[1];
+						if (potioneffecttype.length > 2) {
+							str += ":" + potioneffecttype[2];
+						}
+						if (str.length() > 1) {
+							if (!str.contains(":")) {
 								// duration
 								rawitem += ":99999";
 							}
-							if (!potioneffecttype[1].contains("#")) {
+							if (!str.contains("#")) {
 								// level
 								rawitem += "#1";
 							}
