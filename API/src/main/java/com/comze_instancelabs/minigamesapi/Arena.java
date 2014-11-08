@@ -995,8 +995,8 @@ public class Arena {
 							for (String p__ : a.getAllPlayers()) {
 								if (p_ != p__) {
 									Player p2 = Bukkit.getPlayer(p__);
-									if ((p.getLocation().getBlockX() - p2.getLocation().getBlockX() < 4) && p.getLocation().getBlockZ() - p2.getLocation().getBlockZ() < 4 && p.getLocation().getBlockY() - p2.getLocation().getBlockY() < 4) {
-										Vector direction = p2.getLocation().add(0D, -0.5D, 0D).toVector().subtract(p.getLocation().toVector()).normalize().multiply(-1.25D);
+									if ((Math.abs(p.getLocation().getBlockX() - p2.getLocation().getBlockX()) < 4) && (Math.abs(p.getLocation().getBlockZ() - p2.getLocation().getBlockZ()) < 4) && (Math.abs(p.getLocation().getBlockY() - p2.getLocation().getBlockY()) < 4)) {
+										Vector direction = p2.getLocation().add(0D, -0.5D, 0D).toVector().subtract(p.getLocation().toVector()).normalize().multiply(-1.15D);
 										p.setVelocity(direction);
 										if (p.isInsideVehicle()) {
 											p.getVehicle().setVelocity(direction.multiply(2D));
@@ -1013,7 +1013,7 @@ public class Arena {
 					}
 				}
 			}
-		}, 20L, 20L);
+		}, 10L, 10L);
 		started = true;
 		Bukkit.getServer().getPluginManager().callEvent(new ArenaStartedEvent(plugin, this));
 		started();
