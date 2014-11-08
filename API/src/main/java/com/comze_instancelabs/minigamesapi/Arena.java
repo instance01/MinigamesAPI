@@ -89,6 +89,7 @@ public class Arena {
 	int global_coin_multiplier = 1;
 
 	BukkitTask spectator_task;
+	BukkitTask maximum_game_time;
 
 	ArrayList<ItemStack> global_drops = new ArrayList<ItemStack>();
 
@@ -1022,11 +1023,20 @@ public class Arena {
 		}
 
 		// Maximum game time:
-		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+		maximum_game_time = Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
-				a.stop();
+				for (String p_ : a.getAllPlayers()) {
+					if (Validator.isPlayerValid(plugin, p_, a)) {
+						Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().stop_cause_maximum_game_time);
+					}
+				}
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						a.stop();
+					}
+				}, 5 * 20L);
 			}
-		}, 20L * 60L * (long) plugin.getConfig().getDouble("config.default_max_game_time_in_minutes"));
+		}, 20L * 60L * (long) plugin.getConfig().getDouble("config.default_max_game_time_in_minutes") - 5 * 20L);
 	}
 
 	/**
@@ -1046,6 +1056,9 @@ public class Arena {
 		final Arena a = this;
 		if (spectator_task != null) {
 			spectator_task.cancel();
+		}
+		if (maximum_game_time != null) {
+			maximum_game_time.cancel();
 		}
 		if (!temp_delay_stopped) {
 			if (plugin.getConfig().getBoolean("config.delay.enabled")) {

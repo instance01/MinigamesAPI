@@ -136,6 +136,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.you_received_rewards_2", you_received_rewards_2);
 		this.getConfig().addDefault("messages.you_received_rewards_3", you_received_rewards_3);
 		this.getConfig().addDefault("messages.already_in_arena", already_in_arena);
+		this.getConfig().addDefault("messages.stop_cause_maximum_game_time", stop_cause_maximum_game_time);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -200,6 +201,7 @@ public class MessagesConfig {
 		this.you_received_rewards_2 = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards_2"));
 		this.you_received_rewards_3 = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards_3"));
 		this.already_in_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.already_in_arena"));
+		this.stop_cause_maximum_game_time = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.stop_cause_maximum_game_time"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -274,6 +276,7 @@ public class MessagesConfig {
 	public String you_received_rewards_2 = " &aand ";
 	public String you_received_rewards_3 = "&2<itemreward>&a!";
 	public String already_in_arena = "&cYou are already in an arena.";
+	public String stop_cause_maximum_game_time = "&cThe game is stopping in 5 seconds because the maximum game time was reached.";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {
