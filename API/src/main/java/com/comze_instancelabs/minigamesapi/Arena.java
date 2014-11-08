@@ -636,10 +636,12 @@ public class Arena {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
 				if (p != null) {
-					if (a.mainlobby != null) {
-						Util.teleportPlayerFixed(p, a.mainlobby);
-					} else if (a.waitinglobby != null) {
-						Util.teleportPlayerFixed(p, a.waitinglobby);
+					if (ai == null) {
+						if (a.mainlobby != null) {
+							Util.teleportPlayerFixed(p, a.mainlobby);
+						} else if (a.waitinglobby != null) {
+							Util.teleportPlayerFixed(p, a.waitinglobby);
+						}
 					}
 					p.setFireTicks(0);
 					p.setFlying(false);
