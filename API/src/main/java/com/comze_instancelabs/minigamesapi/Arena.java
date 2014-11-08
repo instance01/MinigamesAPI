@@ -879,12 +879,17 @@ public class Arena {
 		if (tp) {
 			pspawnloc = Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		}
+		boolean clearinv = plugin.getConfig().getBoolean("config.clearinv_while_ingamecountdown");
 		for (String p_ : currentarena.getArena().getAllPlayers()) {
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.0F);
 			p.setFoodLevel(5);
 			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 9999999, -7)); // -5
 			pli.scoreboardLobbyManager.removeScoreboard(this.getInternalName(), p);
+			if(clearinv){
+				Util.clearInv(p);
+			}
+			
 		}
 		final Arena a = this;
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
