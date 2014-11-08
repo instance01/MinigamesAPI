@@ -21,6 +21,9 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
+import com.comze_instancelabs.minigamesapi.events.ArenaStartEvent;
+import com.comze_instancelabs.minigamesapi.events.ArenaStartedEvent;
+import com.comze_instancelabs.minigamesapi.events.ArenaStopEvent;
 import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
@@ -943,6 +946,7 @@ public class Arena {
 		currentarena.getArena().setArenaState(ArenaState.INGAME);
 		startedIngameCountdown = false;
 		Util.updateSign(plugin, a);
+		Bukkit.getServer().getPluginManager().callEvent(new ArenaStartEvent(plugin, this));
 		boolean send_game_started_msg = plugin.getConfig().getBoolean("config.send_game_started_msg");
 		for (String p_ : a.getAllPlayers()) {
 			try {
@@ -1010,6 +1014,7 @@ public class Arena {
 			}
 		}, 20L, 20L);
 		started = true;
+		Bukkit.getServer().getPluginManager().callEvent(new ArenaStartedEvent(plugin, this));
 		started();
 		try {
 			Bukkit.getScheduler().cancelTask(currenttaskid);
@@ -1037,6 +1042,7 @@ public class Arena {
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
 	public void stop() {
+		Bukkit.getServer().getPluginManager().callEvent(new ArenaStopEvent(plugin, this));
 		final Arena a = this;
 		if (spectator_task != null) {
 			spectator_task.cancel();
