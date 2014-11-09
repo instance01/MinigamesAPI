@@ -298,6 +298,12 @@ public class ArenaListener implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player p = (Player) event.getEntity();
+			if (pli.global_players.containsKey(p.getName()) && pli.global_lost.containsKey(p.getName())) {
+				Arena a = pli.global_players.get(p.getName());
+				if (a.getArenaState() == ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
+					event.setCancelled(true);
+				}
+			}
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
