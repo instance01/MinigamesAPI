@@ -365,7 +365,9 @@ public class ArenaListener implements Listener {
 	public void onExplode(EntityExplodeEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+				// a.getInternalName(), "bounds.high"));
+				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (event.getEntity() != null) {
 						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
@@ -383,10 +385,16 @@ public class ArenaListener implements Listener {
 	public void onBlockFromTo(BlockFromToEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
-				if (c != null && a.getArenaState() == ArenaState.INGAME) {
-					if (c.containsLocWithoutY(event.getToBlock().getLocation())) {
-						a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
+				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+				// a.getInternalName(), "bounds.high"));
+				Cuboid c = a.getBoundaries();
+				if (c != null) {
+					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+						if (a.getArenaState() == ArenaState.INGAME) {
+							a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
+						} else if (a.getArenaState() == ArenaState.RESTARTING) {
+							event.setCancelled(true);
+						}
 					}
 				}
 			}
@@ -397,7 +405,9 @@ public class ArenaListener implements Listener {
 	public void onBlockFade(BlockFadeEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+				// a.getInternalName(), "bounds.high"));
+				Cuboid c = a.getBoundaries();
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
@@ -425,7 +435,9 @@ public class ArenaListener implements Listener {
 	public void onBlockPhysics(BlockPhysicsEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+				// a.getInternalName(), "bounds.high"));
+				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						if (c.containsLocWithoutY(event.getBlock().getLocation())) {
@@ -447,10 +459,13 @@ public class ArenaListener implements Listener {
 		// disallow fire spread while the arena restarts
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+				// a.getInternalName(), "bounds.high"));
+				Cuboid c = a.getBoundaries();
 				if (c != null) {
-					if (event.getNewState().getType() == Material.FIRE && a.getArenaState() == ArenaState.INGAME) {
-						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+					if (a.getArenaState() == ArenaState.INGAME) {
+						a.getSmartReset().addChanged(event.getBlock().getLocation());
+						// a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 					} else if (a.getArenaState() == ArenaState.RESTARTING) {
 						event.setCancelled(true);
 					}
@@ -464,7 +479,9 @@ public class ArenaListener implements Listener {
 		if (event.getEntity() instanceof Enderman) {
 			for (Arena a : pli.getArenas()) {
 				if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-					Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+					// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+					// a.getInternalName(), "bounds.high"));
+					Cuboid c = a.getBoundaries();
 					if (c != null) {
 						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
 							a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
@@ -539,23 +556,20 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
-				if (c != null) {
-					Block start = event.getBlockClicked();
-					if (c.containsLocWithoutY(start.getLocation())) {
-						// System.out.println("t");
-						for (int x = -2; x < 2; x++) {
-							for (int y = -2; y < 2; y++) {
-								for (int z = -2; z < 2; z++) {
-									Block b = start.getLocation().clone().add(x, y, z).getBlock();
-									a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
-								}
-							}
-						}
+		if (pli.global_players.containsKey(event.getPlayer().getName())) {
+			Arena a = pli.global_players.get(event.getPlayer().getName());
+			Block start = event.getBlockClicked();
+			if (!a.getBoundaries().containsLocWithoutY(start.getLocation())) {
+				event.setCancelled(true);
+				return;
+			}
+			for (int x = -2; x < 2; x++) {
+				for (int y = -2; y < 2; y++) {
+					for (int z = -2; z < 2; z++) {
+						Block b = start.getLocation().clone().add(x, y, z).getBlock();
+						a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
 					}
 				}
 			}
@@ -581,9 +595,15 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player p = event.getPlayer();
+		/*
+		 * if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER || event.getBlock().getType()
+		 * == Material.STATIONARY_LAVA || event.getBlock().getType() == Material.LAVA) { if (pli.global_players.containsKey(p.getName())) { Arena a =
+		 * pli.global_players.get(p.getName()); if (a.getArenaState() == ArenaState.INGAME) {
+		 * a.getSmartReset().addChanged(event.getBlock().getLocation()); } } }
+		 */
 		if (pli.global_players.containsKey(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
 			if (a.getArenaState() != ArenaState.INGAME || pli.global_lost.containsKey(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
@@ -597,14 +617,6 @@ public class ArenaListener implements Listener {
 				if (event.getItemInHand().hasItemMeta()) {
 					pli.getStatsInstance().saveSkull(event.getBlock().getLocation(), Integer.parseInt(event.getItemInHand().getItemMeta().getDisplayName()));
 					pli.getStatsInstance().skullsetup.remove(p.getName());
-				}
-			}
-		}
-		if (event.getPlayer().getItemInHand().getType() == Material.WATER_BUCKET || event.getPlayer().getItemInHand().getType() == Material.WATER || event.getPlayer().getItemInHand().getType() == Material.LAVA_BUCKET || event.getPlayer().getItemInHand().getType() == Material.LAVA) {
-			if (pli.global_players.containsKey(p.getName())) {
-				Arena a = pli.global_players.get(p.getName());
-				if (a.getArenaState() == ArenaState.INGAME) {
-					a.getSmartReset().addChanged(event.getBlock().getLocation().add(0D, 1D, 0D));
 				}
 			}
 		}
