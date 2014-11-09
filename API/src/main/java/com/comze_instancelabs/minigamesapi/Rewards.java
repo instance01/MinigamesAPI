@@ -134,7 +134,7 @@ public class Rewards {
 					} else {
 						received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", items_str);
 					}
-				}else{
+				} else {
 					received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", "");
 				}
 				if (commandrewards) {
@@ -142,17 +142,6 @@ public class Rewards {
 				}
 
 				pli.getStatsInstance().win(p_, 10);
-
-				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);
-				Util.sendMessage(plugin, p, received_rewards_msg);
-
-				if (plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners")) {
-					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-						public void run() {
-							Util.spawnFirework(p);
-						}
-					}, 20L);
-				}
 
 				try {
 					if (plugin.getConfig().getBoolean("config.broadcast_win")) {
@@ -168,6 +157,17 @@ public class Rewards {
 					}
 				} catch (Exception e) {
 					System.out.println("Could not find arena for broadcast.");
+				}
+
+				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);
+				Util.sendMessage(plugin, p, received_rewards_msg);
+
+				if (plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners")) {
+					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+						public void run() {
+							Util.spawnFirework(p);
+						}
+					}, 20L);
 				}
 			} else {
 				Util.sendMessage(plugin, p, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_lost);

@@ -503,6 +503,12 @@ public class ArenaListener implements Listener {
 				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
 				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
 			}
+			if (event.getBlock().getType() == Material.BED_BLOCK) {
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(1D, 0D, 1D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(1D, 0D, -1D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(-1D, 0D, 1D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(-1D, 0D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+			}
 		}
 		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
 			Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());

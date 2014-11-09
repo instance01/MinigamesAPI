@@ -227,7 +227,6 @@ public class Util {
 				for (int k = 0; k <= length; k++) {
 					Block change = c.getWorld().getBlockAt(start.getBlockX() + i, start.getBlockY() + j, start.getBlockZ() + k);
 
-					// if(change.getType() != Material.AIR){
 					ArenaBlock bl = change.getType() == Material.CHEST ? new ArenaBlock(change, true) : new ArenaBlock(change, false);
 
 					try {
@@ -235,8 +234,6 @@ public class Util {
 					} catch (IOException e) {
 						System.out.println(e.getMessage());
 					}
-					// }
-
 				}
 			}
 		}
