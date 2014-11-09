@@ -110,7 +110,7 @@ public class ArenaListener implements Listener {
 			if (pli.global_players.containsKey(p.getName())) {
 				Arena a = pli.global_players.get(p.getName());
 				if (a != null) {
-					if (a.getArenaState() == ArenaState.STARTING && a.getArcadeInstance() == null) {
+					if (a.getArenaState() == ArenaState.STARTING && a.getArcadeInstance() == null && !a.isArcadeMain()) {
 						event.setCancelled(true);
 					}
 				}
@@ -673,6 +673,19 @@ public class ArenaListener implements Listener {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						a.getSmartReset().addChanged(event.getClickedBlock(), false);
 						// TODO maybe add radius of blocks around this tnt manually
+					}
+				}
+			} else if (event.getPlayer().getItemInHand().getType() == Material.WATER_BUCKET || event.getPlayer().getItemInHand().getType() == Material.WATER || event.getPlayer().getItemInHand().getType() == Material.LAVA_BUCKET || event.getPlayer().getItemInHand().getType() == Material.LAVA) {
+				Player p = event.getPlayer();
+				if (pli.global_players.containsKey(p.getName())) {
+					Arena a = pli.global_players.get(p.getName());
+					if (!a.getBoundaries().containsLocWithoutY(event.getClickedBlock().getLocation())) {
+						event.setCancelled(true);
+						return;
+					}
+					if (a.getArenaState() == ArenaState.INGAME) {
+						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
+						// a.getSmartReset().addChanged(event.getClickedBlock().getLocation().add(0D, 1D, 0D));
 					}
 				}
 			}
