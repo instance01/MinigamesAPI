@@ -36,49 +36,56 @@ public class Effects {
 	}
 
 	public static void playFakeBed(final Arena a, final Player p, int x, int y, int z) throws Exception {
-		final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
-		final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
-		playerConnection.setAccessible(true);
-		final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
+		try {
+			final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
+			final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+			playerConnection.setAccessible(true);
+			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
 
-		Constructor packetPlayOutNamedEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutNamedEntitySpawn").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHuman"));
-		Constructor packetPlayOutBedConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutBed").getConstructor();
+			Constructor packetPlayOutNamedEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutNamedEntitySpawn").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHuman"));
+			Constructor packetPlayOutBedConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutBed").getConstructor();
 
-		Object packet = packetPlayOutNamedEntityConstr.newInstance(getHandle.invoke(p));
-		setValue(packet, "a", -p.getEntityId());
+			final int id = -p.getEntityId() - 1000;
 
-		final Object packet_ = packetPlayOutBedConstr.newInstance();
-		setValue(packet_, "a", -p.getEntityId());
-		setValue(packet_, "b", x);
-		setValue(packet_, "c", y);
-		setValue(packet_, "d", z);
+			Object packet = packetPlayOutNamedEntityConstr.newInstance(getHandle.invoke(p));
+			setValue(packet, "a", id);
 
-		for (String p_ : a.getAllPlayers()) {
-			Player p__ = Bukkit.getPlayer(p_);
-			sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet);
-			sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
-		}
-		final ArrayList<String> tempp = new ArrayList<String>(a.getAllPlayers());
-		final World currentworld = p.getWorld();
-		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
-			public void run() {
-				try {
-					setValue(packet_, "b", 0);
-					setValue(packet_, "c", 0);
-					setValue(packet_, "d", 0);
-					for (String p_ : tempp) {
-						if (Validator.isPlayerOnline(p_)) {
-							Player p__ = Bukkit.getPlayer(p_);
-							if (p__.getWorld() == currentworld) {
-								sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+			final Object packet_ = packetPlayOutBedConstr.newInstance();
+			setValue(packet_, "a", id);
+			setValue(packet_, "b", x);
+			setValue(packet_, "c", y);
+			setValue(packet_, "d", z);
+
+			for (String p_ : a.getAllPlayers()) {
+				Player p__ = Bukkit.getPlayer(p_);
+				sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet);
+				sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+			}
+			final ArrayList<String> tempp = new ArrayList<String>(a.getAllPlayers());
+			final World currentworld = p.getWorld();
+			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+				public void run() {
+					try {
+						setValue(packet_, "a", id);
+						setValue(packet_, "b", 0);
+						setValue(packet_, "c", 0);
+						setValue(packet_, "d", 0);
+						for (String p_ : tempp) {
+							if (Validator.isPlayerOnline(p_)) {
+								Player p__ = Bukkit.getPlayer(p_);
+								if (p__.getWorld() == currentworld) {
+									sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+								}
 							}
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
-			}
-		}, 20L * 4);
+			}, 20L * 4);
+		} catch (Exception e) {
+			System.out.println("Failed playing fakebed effect: " + e.getMessage());
+		}
 	}
 
 	private static void setValue(Object instance, String fieldName, Object value) throws Exception {
