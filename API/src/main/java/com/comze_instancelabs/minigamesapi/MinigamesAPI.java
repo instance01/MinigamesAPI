@@ -28,6 +28,7 @@ import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsGlobalConfig;
 import com.comze_instancelabs.minigamesapi.guns.Guns;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
+import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Metrics;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Updater;
@@ -325,6 +326,29 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 								}
 							}
 						}, 20L);
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (subchannel.equals("MinigamesLibRequest")) { // Lobby requests sign data
+			short len = in.readShort();
+			byte[] msgbytes = new byte[len];
+			in.readFully(msgbytes);
+
+			DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
+			try {
+				final String requestData = msgin.readUTF();
+				final String plugin_ = requestData.split(":")[0];
+				final String arena = requestData.split(":")[1];
+				System.out.println(plugin_ + " -> " + arena);
+				for (JavaPlugin pl : this.pinstances.keySet()) {
+					if (pl.getName().contains(plugin_)) {
+						Arena a = pinstances.get(pl).getArenaByName(arena);
+						if (a != null) {
+							BungeeUtil.sendSignUpdateRequest(pl, pl.getName(), a);
+						}
+						break;
 					}
 				}
 			} catch (IOException e) {

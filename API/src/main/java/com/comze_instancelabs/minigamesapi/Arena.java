@@ -607,6 +607,10 @@ public class Arena {
 			return;
 		}
 		final Player p = Bukkit.getPlayer(playername);
+		if (p.isDead()) {
+			System.out.println("[SEVERE] " + p.getName() + " unexpectedly appeared dead! Health: " + p.getHealth() + " - This is a BUG, please report!");
+			// return;
+		}
 		Util.clearInv(p);
 		p.setWalkSpeed(0.2F);
 		p.setFoodLevel(20);

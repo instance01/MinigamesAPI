@@ -238,7 +238,7 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		if (pli.global_players.containsKey(event.getEntity().getName())) {
 			event.setDeathMessage(null);
