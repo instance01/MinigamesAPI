@@ -131,9 +131,11 @@ public class ArenaListener implements Listener {
 								Util.teleportPlayerFixed(p, a.getSpawns().get(0));
 							} else {
 								a.spectate(p.getName());
-								for (String p_ : a.getAllPlayers()) {
-									if (Validator.isPlayerOnline(p_)) {
-										Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().player_died.replaceAll("<player>", p.getName()));
+								if (!a.isArcadeMain()) {
+									for (String p_ : a.getAllPlayers()) {
+										if (Validator.isPlayerOnline(p_)) {
+											Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().player_died.replaceAll("<player>", p.getName()));
+										}
 									}
 								}
 							}
@@ -701,9 +703,14 @@ public class ArenaListener implements Listener {
 			if (!pli.global_players.containsKey(p.getName())) {
 				return;
 			}
+			if (pli.global_players.get(p.getName()).isArcadeMain()) {
+				return;
+			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
-				pli.getClassesHandler().openGUI(p.getName());
-				event.setCancelled(true);
+				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+					pli.getClassesHandler().openGUI(p.getName());
+					event.setCancelled(true);
+				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.exit_item")) {
 				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
 					pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
@@ -721,12 +728,16 @@ public class ArenaListener implements Listener {
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.achievement_item")) {
 				if (pli.isAchievementGuiEnabled()) {
-					pli.getArenaAchievements().openGUI(p.getName(), false);
-					event.setCancelled(true);
+					if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+						pli.getArenaAchievements().openGUI(p.getName(), false);
+						event.setCancelled(true);
+					}
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.shop_selection_item")) {
-				pli.getShopHandler().openGUI(p.getName());
-				event.setCancelled(true);
+				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+					pli.getShopHandler().openGUI(p.getName());
+					event.setCancelled(true);
+				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.extra_lobby_item.item0.item")) {
 				if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
 					if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
