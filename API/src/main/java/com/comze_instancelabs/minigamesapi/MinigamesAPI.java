@@ -318,14 +318,18 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				}
 				if (plugin != null) {
 					final Arena a = pinstances.get(plugin).getArenaByName(arena);
-					if (a.getArenaState() != ArenaState.INGAME && a.getArenaState() != ArenaState.RESTARTING && !a.containsPlayer(playername)) {
-						Bukkit.getScheduler().runTaskLater(this, new Runnable() {
-							public void run() {
-								if (!a.containsPlayer(playername)) {
-									a.joinPlayerLobby(playername);
+					if (a != null) {
+						if (a.getArenaState() != ArenaState.INGAME && a.getArenaState() != ArenaState.RESTARTING && !a.containsPlayer(playername)) {
+							Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+								public void run() {
+									if (!a.containsPlayer(playername)) {
+										a.joinPlayerLobby(playername);
+									}
 								}
-							}
-						}, 20L);
+							}, 20L);
+						}
+					} else {
+						System.out.println("Arena " + arena + " couldn't be found, please fix your setup.");
 					}
 				}
 			} catch (IOException e) {
@@ -347,6 +351,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 						Arena a = pinstances.get(pl).getArenaByName(arena);
 						if (a != null) {
 							BungeeUtil.sendSignUpdateRequest(pl, pl.getName(), a);
+						} else {
+							System.out.println("Arena " + arena + " couldn't be found, please fix your setup.");
 						}
 						break;
 					}
