@@ -31,10 +31,6 @@ public class ArenaScoreboard {
 
 	ArrayList<String> loaded_custom_strings = new ArrayList<String>();
 
-	public ArenaScoreboard() {
-
-	}
-
 	public ArenaScoreboard(PluginInstance pli, JavaPlugin plugin) {
 		custom = plugin.getConfig().getBoolean("config.use_custom_scoreboard");
 		initialized = 1;
@@ -72,11 +68,9 @@ public class ArenaScoreboard {
 					}
 					if (!aobjective.containsKey(arena.getInternalName())) {
 						aobjective.put(arena.getInternalName(), ascore.get(arena.getInternalName()).registerNewObjective(arena.getInternalName(), "dummy"));
+						aobjective.get(arena.getInternalName()).setDisplaySlot(DisplaySlot.SIDEBAR);
+						aobjective.get(arena.getInternalName()).setDisplayName(pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getInternalName()));
 					}
-
-					aobjective.get(arena.getInternalName()).setDisplaySlot(DisplaySlot.SIDEBAR);
-
-					aobjective.get(arena.getInternalName()).setDisplayName(pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getInternalName()));
 
 					if (custom) {
 						try {

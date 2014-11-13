@@ -117,7 +117,11 @@ public class CommandHandler {
 				pli.getStatsConfig().reloadConfig();
 				pli.getShopConfig().reloadConfig();
 				pli.getMessagesConfig().init();
-				pli.reloadAllArenas();
+				try {
+					pli.reloadAllArenas();
+				} catch (Exception e) {
+					System.out.println("Looks like one arena is invalid, but most arenas should be reloaded just fine. " + e.getMessage());
+				}
 				sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
 			} else {
 				boolean cont = false;

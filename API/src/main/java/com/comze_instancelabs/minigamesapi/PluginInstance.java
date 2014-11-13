@@ -262,7 +262,7 @@ public class PluginInstance {
 		for (Arena a : this.getArenas()) {
 			if (a != null) {
 				String arenaname = a.getInternalName();
-				ArenaSetup s = MinigamesAPI.getAPI().getPluginInstance(plugin).arenaSetup;
+				ArenaSetup s = this.arenaSetup;
 				a.init(Util.getSignLocationFromArena(plugin, arenaname), Util.getAllSpawns(plugin, arenaname), Util.getMainLobby(plugin), Util.getComponentForArena(plugin, arenaname, "lobby"), s.getPlayerCount(plugin, arenaname, true), s.getPlayerCount(plugin, arenaname, false), s.getArenaVIP(plugin, arenaname));
 			}
 		}
@@ -272,9 +272,25 @@ public class PluginInstance {
 		if (Validator.isArenaValid(plugin, arenaname)) {
 			Arena a = this.getArenaByName(arenaname);
 			if (a != null) {
-				ArenaSetup s = MinigamesAPI.getAPI().getPluginInstance(plugin).arenaSetup;
+				ArenaSetup s = this.arenaSetup;
 				a.init(Util.getSignLocationFromArena(plugin, arenaname), Util.getAllSpawns(plugin, arenaname), Util.getMainLobby(plugin), Util.getComponentForArena(plugin, arenaname, "lobby"), s.getPlayerCount(plugin, arenaname, true), s.getPlayerCount(plugin, arenaname, false), s.getArenaVIP(plugin, arenaname));
 			}
+		}
+	}
+
+	public boolean containsGlobalPlayer(String playername) {
+		return this.global_players.containsKey(playername);
+	}
+
+	public boolean containsGlobalLost(String playername) {
+		return this.global_lost.containsKey(playername);
+	}
+
+	public Arena getArenaByGlobalPlayer(String playername) {
+		if (containsGlobalPlayer(playername)) {
+			return this.global_players.get(playername);
+		} else {
+			return null;
 		}
 	}
 

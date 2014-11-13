@@ -292,16 +292,10 @@ public class Util {
 				if (b != null) {
 					ArenaBlock ablock = (ArenaBlock) b;
 					try {
-						/*
-						 * if (!ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).getType().toString().equalsIgnoreCase(ablock.
-						 * getMaterial().toString())) {
-						 * ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation()).setType(ablock.getMaterial()); }
-						 */
 						Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
 						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
 							b_.setType(ablock.getMaterial());
 							b_.setData(ablock.getData());
-							// .setTypeIdAndData(ablock.getMaterial().getId(), ablock.getData(), false);
 						}
 						if (b_.getType() == Material.CHEST) {
 							((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
@@ -330,24 +324,16 @@ public class Util {
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				// restore spigot blocks!
 				for (ArenaBlock ablock : failedblocks) {
-					// Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x,
-					// ablock.y, ablock.z)).setType(Material.WOOL);
 					Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
 					if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
 						b_.setType(ablock.getMaterial());
 						b_.setData(ablock.getData());
-						// .setTypeIdAndData(ablock.getMaterial().getId(), ablock.getData(), false);
 					}
 					if (b_.getType() == Material.CHEST) {
 						((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
 						((Chest) b_.getState()).update();
 					}
-					// Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x,
-					// ablock.y, ablock.z)).getTypeId();
-					// Bukkit.getServer().getWorld(ablock.world).getBlockAt(new Location(Bukkit.getServer().getWorld(ablock.world), ablock.x,
-					// ablock.y, ablock.z)).setType(ablock.getMaterial());
 				}
 			}
 		}, 40L);

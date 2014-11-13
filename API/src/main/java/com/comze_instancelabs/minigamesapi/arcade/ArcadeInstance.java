@@ -40,6 +40,10 @@ public class ArcadeInstance {
 			players.add(playername);
 			arena.addPlayer(playername);
 		}
+		Player p = Bukkit.getPlayer(playername);
+		if (p == null) {
+			return;
+		}
 		if (players.size() >= plugin.getConfig().getInt("config.arcade.min_players")) {
 			boolean msg = true;
 			if (!started) {
@@ -48,7 +52,6 @@ public class ArcadeInstance {
 				if (currentindex < minigames.size()) {
 					if (in_a_game) {
 						if (currentarena != null) {
-							Player p = Bukkit.getPlayer(playername);
 							if (p != null) {
 								PluginInstance pli_ = minigames.get(currentindex);
 								System.out.println(pli_.getPlugin().getName() + " " + currentarena.getInternalName() + " " + p.getName());
@@ -66,12 +69,12 @@ public class ArcadeInstance {
 				}
 			}
 			if (msg) {
-				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
+				p.sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", "0"));
 			} else {
-				Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_spectator);
+				p.sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_spectator);
 			}
 		} else {
-			Bukkit.getPlayer(playername).sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.min_players") - players.size())));
+			p.sendMessage(MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>", Integer.toString(plugin.getConfig().getInt("config.arcade.min_players") - players.size())));
 		}
 	}
 
@@ -108,19 +111,19 @@ public class ArcadeInstance {
 		clean();
 
 		// This shouldn't be necessary anymore except for arcade spectators
-		if (pli.global_players.containsKey(playername)) {
+		if (pli.containsGlobalPlayer(playername)) {
 			pli.global_players.remove(playername);
 		}
-		if (pli.global_lost.containsKey(playername)) {
+		if (pli.containsGlobalLost(playername)) {
 			pli.global_lost.remove(playername);
 		}
 		if (currentarena != null) {
 			PluginInstance pli_ = MinigamesAPI.getAPI().pinstances.get(currentarena.getPlugin());
 			if (pli_ != null) {
-				if (pli_.global_players.containsKey(playername)) {
+				if (pli_.containsGlobalPlayer(playername)) {
 					pli_.global_players.remove(playername);
 				}
-				if (pli_.global_lost.containsKey(playername)) {
+				if (pli_.containsGlobalLost(playername)) {
 					pli_.global_lost.remove(playername);
 				}
 			}
@@ -238,14 +241,9 @@ public class ArcadeInstance {
 	public void nextMinigame(long delay) {
 		in_a_game = false;
 
-		/*
-		 * if (currentarena != null) { if (currentarena.getArenaState() == ArenaState.INGAME) { currentarena.stop(); } }
-		 */
-
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
-			// System.out.println(arena.getName());
 			arena.stop();
 			// stopArcade();
 			return;

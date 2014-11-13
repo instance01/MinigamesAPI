@@ -177,6 +177,7 @@ public class Arena {
 	}
 
 	// This is for loading existing arenas
+	@Deprecated
 	public Arena initArena(Location signloc, ArrayList<Location> spawn, Location mainlobby, Location waitinglobby, int max_players, int min_players, boolean viparena) {
 		this.init(signloc, spawn, mainlobby, waitinglobby, max_players, min_players, viparena);
 		return this;
@@ -235,9 +236,9 @@ public class Arena {
 	}
 
 	/**
-	 * Please use getInternalName()
+	 * Please use getInternalName() for the internal name and getDisplayName() for the optional displayname
 	 * 
-	 * @return Internal name of arena
+	 * @return Internal name of arena (same as getInternalName())
 	 */
 	@Deprecated
 	public String getName() {
@@ -325,7 +326,7 @@ public class Arena {
 			Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().arena_disabled);
 			return;
 		}
-		if (pli.global_players.containsKey(playername)) {
+		if (pli.containsGlobalPlayer(playername)) {
 			Util.sendMessage(plugin, Bukkit.getPlayer(playername), pli.getMessagesConfig().already_in_arena);
 			return;
 		}
@@ -377,7 +378,7 @@ public class Arena {
 						boolean cont = true;
 						for (PluginInstance pli_ : MinigamesAPI.getAPI().pinstances.values()) {
 							// if (!pli_.getPlugin().getName().equalsIgnoreCase("MGArcade") && pli_.global_players.containsKey(p_)) {
-							if (pli_.global_players.containsKey(p_)) {
+							if (pli_.containsGlobalPlayer(p_)) {
 								cont = false;
 							}
 						}
@@ -552,7 +553,9 @@ public class Arena {
 			return;
 		}
 		this.players.remove(playername);
-		pli.global_players.remove(playername);
+		if (pli.containsGlobalPlayer(playername)) {
+			pli.global_players.remove(playername);
+		}
 		if (fullLeave) {
 			plugin.getConfig().set("temp.left_players." + playername + ".name", playername);
 			plugin.getConfig().set("temp.left_players." + playername + ".plugin", plugin.getName());
@@ -565,9 +568,6 @@ public class Arena {
 
 			try {
 				Player p = Bukkit.getPlayer(playername);
-				if (pli.global_players.containsKey(playername)) {
-					pli.global_players.remove(playername);
-				}
 				if (pli.global_lost.containsKey(playername)) {
 					pli.global_lost.remove(playername);
 				}
@@ -601,9 +601,8 @@ public class Arena {
 
 				}
 			} catch (Exception e) {
-				System.out.println("Failed to log player out of arena. " + e.getMessage());
+				System.out.println("Failed to log out player out of arena. " + e.getMessage());
 			}
-
 			return;
 		}
 		final Player p = Bukkit.getPlayer(playername);
@@ -714,7 +713,7 @@ public class Arena {
 
 			pli.global_lost.put(playername, this);
 			if (plugin.getConfig().getBoolean("config.effects")) {
-				final Arena a = this;
+				Arena a = this;
 				try {
 					Effects.playFakeBed(a, p);
 				} catch (Exception e) {
@@ -1224,14 +1223,7 @@ public class Arena {
 	 * Rebuilds an arena from file (only for arenas of REGENERATION type)
 	 */
 	public void reset() {
-		/*
-		 * Runnable r = new Runnable() { public void run() { Util.loadArenaFromFileSYNC(plugin, currentarena); } }; new Thread(r).start();
-		 */
 		sr.reset();
-		/*
-		 * Bukkit.getScheduler().runTask(plugin, new Runnable() { public void run() { // Util.loadArenaFromFileSYNC(plugin, currentarena); sr.reset();
-		 * } });
-		 */
 	}
 
 	/***

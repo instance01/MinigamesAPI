@@ -88,12 +88,7 @@ public class Classes {
 	public void getClass(String player) {
 		AClass c = pli.getPClasses().get(player);
 		final Player p = Bukkit.getServer().getPlayer(player);
-		p.getInventory().clear();
-		p.getInventory().setHelmet(null);
-		p.getInventory().setChestplate(null);
-		p.getInventory().setLeggings(null);
-		p.getInventory().setBoots(null);
-		p.updateInventory();
+		Util.clearInv(p);
 		ArrayList<ItemStack> items = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
 		ArrayList<ItemStack> temp = new ArrayList<ItemStack>(Arrays.asList(c.getItems()));
 		ArrayList<String> tempguns = new ArrayList<String>();
@@ -110,7 +105,6 @@ public class Classes {
 						tempguns.add(item.getItemMeta().getDisplayName().split(":")[1]);
 					} else if (item.getItemMeta().getDisplayName().startsWith("potioneffect:")) {
 						items.remove(item);
-						// System.out.println(item.getItemMeta().getDisplayName());
 						String potioneffect = item.getItemMeta().getDisplayName().split(":")[1];
 						String data = item.getItemMeta().getDisplayName().split(":")[2];
 						Integer time = Integer.parseInt(data.substring(0, data.indexOf("#")));

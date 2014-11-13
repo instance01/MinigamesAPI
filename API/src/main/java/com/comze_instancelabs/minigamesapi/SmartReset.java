@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.comze_instancelabs.minigamesapi.util.ArenaBlock;

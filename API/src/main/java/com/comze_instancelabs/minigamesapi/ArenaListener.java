@@ -80,7 +80,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDrop(PlayerDropItemEvent event) {
-		if (pli.global_players.containsKey(event.getPlayer().getName())) {
+		if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
 			if (a != null) {
 				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.isArcadeMain()) {
@@ -93,7 +93,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 		// spectators shall not pick up items
-		if (pli.global_lost.containsKey(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
+		if (pli.containsGlobalLost(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
 			Arena a = pli.global_lost.get(event.getPlayer().getName());
 			if (a != null) {
 				if (a.getArenaState() == ArenaState.INGAME && a.getArcadeInstance() == null) {
@@ -107,7 +107,7 @@ public class ArenaListener implements Listener {
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (event.getWhoClicked() instanceof Player) {
 			Player p = (Player) event.getWhoClicked();
-			if (pli.global_players.containsKey(p.getName())) {
+			if (pli.containsGlobalPlayer(p.getName())) {
 				Arena a = pli.global_players.get(p.getName());
 				if (a != null) {
 					if (a.getArenaState() == ArenaState.STARTING && a.getArcadeInstance() == null && !a.isArcadeMain()) {
@@ -122,22 +122,19 @@ public class ArenaListener implements Listener {
 	public void onMove(PlayerMoveEvent event) {
 		try {
 			final Player p = event.getPlayer();
-			if (pli.global_players.containsKey(p.getName())) {
+			if (pli.containsGlobalPlayer(p.getName())) {
 				final Arena a = pli.global_players.get(p.getName());
-				if (!pli.global_lost.containsKey(p.getName()) && !pli.global_arcade_spectator.containsKey(p.getName())) {
+				if (!pli.containsGlobalLost(p.getName()) && !pli.global_arcade_spectator.containsKey(p.getName())) {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						if (p.getLocation().getBlockY() + loseY < a.getSpawns().get(0).getBlockY()) {
 							if (a.getArenaType() == ArenaType.JUMPNRUN) {
 								Util.teleportPlayerFixed(p, a.getSpawns().get(0));
 							} else {
 								a.spectate(p.getName());
-								if (!a.isArcadeMain()) {
-									for (String p_ : a.getAllPlayers()) {
-										if (Validator.isPlayerOnline(p_)) {
-											Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().player_died.replaceAll("<player>", p.getName()));
-										}
-									}
-								}
+								/*
+								 * if (!a.isArcadeMain()) { for (String p_ : a.getAllPlayers()) { if (Validator.isPlayerOnline(p_)) {
+								 * Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().player_died.replaceAll("<player>", p.getName())); } } }
+								 */
 							}
 							return;
 						}
@@ -230,7 +227,7 @@ public class ArenaListener implements Listener {
 	public void onHunger(FoodLevelChangeEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player p = (Player) event.getEntity();
-			if (pli.global_players.containsKey(p.getName())) {
+			if (pli.containsGlobalPlayer(p.getName())) {
 				if (!pli.global_players.get(p.getName()).isArcadeMain()) {
 					event.setCancelled(true);
 				}
@@ -238,9 +235,9 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerDeath(PlayerDeathEvent event) {
-		if (pli.global_players.containsKey(event.getEntity().getName())) {
+		if (pli.containsGlobalPlayer(event.getEntity().getName())) {
 			event.setDeathMessage(null);
 			event.getEntity().setHealth(20D);
 			final Player p = event.getEntity();
@@ -255,13 +252,13 @@ public class ArenaListener implements Listener {
 
 			arena.spectate(p.getName());
 
-			pli.global_lost.put(p.getName(), pli.global_players.get(p.getName()));
+			pli.global_lost.put(p.getName(), arena);
 
 			int count = 0;
 			for (String p_ : pli.global_players.keySet()) {
 				if (Validator.isPlayerOnline(p_)) {
 					if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {
-						if (!pli.global_lost.containsKey(p_)) {
+						if (!pli.containsGlobalLost(p_)) {
 							count++;
 						}
 					}
@@ -272,8 +269,8 @@ public class ArenaListener implements Listener {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					try {
-						if (pli.global_players.containsKey(p.getName()) && count_ > 1) {
-							pli.global_players.get(p.getName()).spectate(p.getName());
+						if (pli.containsGlobalPlayer(p.getName()) && count_ > 1) {
+							arena.spectate(p.getName());
 						}
 						for (String p_ : arena.getAllPlayers()) {
 							if (Validator.isPlayerOnline(p_)) {
@@ -300,14 +297,14 @@ public class ArenaListener implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player p = (Player) event.getEntity();
-			if (pli.global_players.containsKey(p.getName()) && pli.global_lost.containsKey(p.getName())) {
+			if (pli.containsGlobalPlayer(p.getName()) && pli.containsGlobalLost(p.getName())) {
 				Arena a = pli.global_players.get(p.getName());
 				if (a.getArenaState() == ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
 					event.setCancelled(true);
 				}
 			}
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
-				if (pli.global_players.containsKey(p.getName())) {
+				if (pli.containsGlobalPlayer(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
 						// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
@@ -317,12 +314,12 @@ public class ArenaListener implements Listener {
 						Effects.playBloodEffect(p);
 					}
 				}
-				if (pli.global_lost.containsKey(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
+				if (pli.containsGlobalLost(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
 					// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 					event.setCancelled(true);
 				}
 			} else if (event.getCause().equals(DamageCause.FALL)) {
-				if (pli.global_players.containsKey(p.getName())) {
+				if (pli.containsGlobalPlayer(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
 						event.setCancelled(true);
@@ -349,8 +346,8 @@ public class ArenaListener implements Listener {
 			}
 
 			if (p != null && attacker != null) {
-				if (pli.global_players.containsKey(p.getName()) && pli.global_players.containsKey(attacker.getName())) {
-					if (pli.global_lost.containsKey(attacker.getName()) || pli.getSpectatorManager().isSpectating(p)) {
+				if (pli.containsGlobalPlayer(p.getName()) && pli.containsGlobalPlayer(attacker.getName())) {
+					if (pli.containsGlobalLost(attacker.getName()) || pli.getSpectatorManager().isSpectating(p)) {
 						event.setCancelled(true);
 						return;
 					}
@@ -497,9 +494,9 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player p = event.getPlayer();
-		if (pli.global_players.containsKey(p.getName())) {
+		if (pli.containsGlobalPlayer(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
-			if (a.getArenaState() != ArenaState.INGAME || pli.global_lost.containsKey(p.getName())) {
+			if (a.getArenaState() != ArenaState.INGAME || pli.containsGlobalLost(p.getName())) {
 				event.setCancelled(true);
 				return;
 			}
@@ -560,7 +557,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
-		if (pli.global_players.containsKey(event.getPlayer().getName())) {
+		if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
 			Arena a = pli.global_players.get(event.getPlayer().getName());
 			Block start = event.getBlockClicked();
 			if (!a.getBoundaries().containsLocWithoutY(start.getLocation())) {
@@ -602,13 +599,13 @@ public class ArenaListener implements Listener {
 		Player p = event.getPlayer();
 		/*
 		 * if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER || event.getBlock().getType()
-		 * == Material.STATIONARY_LAVA || event.getBlock().getType() == Material.LAVA) { if (pli.global_players.containsKey(p.getName())) { Arena a =
+		 * == Material.STATIONARY_LAVA || event.getBlock().getType() == Material.LAVA) { if (pli.containsGlobalPlayer(p.getName())) { Arena a =
 		 * pli.global_players.get(p.getName()); if (a.getArenaState() == ArenaState.INGAME) {
 		 * a.getSmartReset().addChanged(event.getBlock().getLocation()); } } }
 		 */
-		if (pli.global_players.containsKey(p.getName())) {
+		if (pli.containsGlobalPlayer(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
-			if (a.getArenaState() != ArenaState.INGAME || pli.global_lost.containsKey(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
+			if (a.getArenaState() != ArenaState.INGAME || pli.containsGlobalLost(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
 				event.setCancelled(true);
 				return;
 			}
@@ -662,7 +659,7 @@ public class ArenaListener implements Listener {
 				}
 			} else if (event.getClickedBlock().getType() == Material.CHEST) {
 				Player p = event.getPlayer();
-				if (pli.global_players.containsKey(p.getName())) {
+				if (pli.containsGlobalPlayer(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
 						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
@@ -670,7 +667,7 @@ public class ArenaListener implements Listener {
 				}
 			} else if (event.getClickedBlock().getType() == Material.TNT) {
 				Player p = event.getPlayer();
-				if (pli.global_players.containsKey(p.getName())) {
+				if (pli.containsGlobalPlayer(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
 						a.getSmartReset().addChanged(event.getClickedBlock(), false);
@@ -679,7 +676,7 @@ public class ArenaListener implements Listener {
 				}
 			} else if (event.getPlayer().getItemInHand().getType() == Material.WATER_BUCKET || event.getPlayer().getItemInHand().getType() == Material.WATER || event.getPlayer().getItemInHand().getType() == Material.LAVA_BUCKET || event.getPlayer().getItemInHand().getType() == Material.LAVA) {
 				Player p = event.getPlayer();
-				if (pli.global_players.containsKey(p.getName())) {
+				if (pli.containsGlobalPlayer(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (!a.getBoundaries().containsLocWithoutY(event.getClickedBlock().getLocation())) {
 						event.setCancelled(true);
@@ -693,54 +690,55 @@ public class ArenaListener implements Listener {
 			}
 		}
 
-		if (pli.global_lost.containsKey(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
+		if (pli.containsGlobalLost(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
 			// System.out.println(pli.getPlugin().getName() + " disallowed an interaction.");
 			event.setCancelled(true);
 		}
 
 		if (event.hasItem()) {
 			final Player p = event.getPlayer();
-			if (!pli.global_players.containsKey(p.getName())) {
+			if (!pli.containsGlobalPlayer(p.getName())) {
 				return;
 			}
-			if (pli.global_players.get(p.getName()).isArcadeMain()) {
+			Arena a = pli.global_players.get(p.getName());
+			if (a.isArcadeMain()) {
 				return;
 			}
 			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
-				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+				if (a.getArenaState() != ArenaState.INGAME) {
 					pli.getClassesHandler().openGUI(p.getName());
 					event.setCancelled(true);
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.exit_item")) {
-				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
-					pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
+				if (a.getArenaState() != ArenaState.INGAME) {
+					a.leavePlayer(p.getName(), false, false);
 					event.setCancelled(true);
 				} else {
-					if (pli.global_lost.containsKey(p.getName())) {
-						pli.global_players.get(p.getName()).leavePlayer(p.getName(), false, false);
+					if (pli.containsGlobalLost(p.getName())) {
+						a.leavePlayer(p.getName(), false, false);
 						event.setCancelled(true);
 					}
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.spectator_item")) {
-				if (pli.global_lost.containsKey(p.getName())) {
-					pli.getSpectatorManager().openSpectatorGUI(p, pli.global_players.get(p.getName()));
+				if (pli.containsGlobalLost(p.getName())) {
+					pli.getSpectatorManager().openSpectatorGUI(p, a);
 					event.setCancelled(true);
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.achievement_item")) {
 				if (pli.isAchievementGuiEnabled()) {
-					if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+					if (a.getArenaState() != ArenaState.INGAME) {
 						pli.getArenaAchievements().openGUI(p.getName(), false);
 						event.setCancelled(true);
 					}
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.shop_selection_item")) {
-				if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+				if (a.getArenaState() != ArenaState.INGAME) {
 					pli.getShopHandler().openGUI(p.getName());
 					event.setCancelled(true);
 				}
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.extra_lobby_item.item0.item")) {
 				if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
-					if (pli.global_players.get(p.getName()).getArenaState() != ArenaState.INGAME) {
+					if (a.getArenaState() != ArenaState.INGAME) {
 						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
 					}
 				}
@@ -846,7 +844,7 @@ public class ArenaListener implements Listener {
 
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
-		if (pli.global_players.containsKey(event.getPlayer().getName())) {
+		if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
 			Arena arena = pli.global_players.get(event.getPlayer().getName());
 			MinigamesAPI.getAPI().getLogger().info(arena.getInternalName());
 			int count = 0;
@@ -857,7 +855,7 @@ public class ArenaListener implements Listener {
 			}
 
 			try {
-				Util.updateSign(plugin, pli.global_players.get(event.getPlayer().getName()));
+				Util.updateSign(plugin, arena);
 			} catch (Exception e) {
 				MinigamesAPI.getAPI().getLogger().warning("You forgot to set a sign for arena " + arena + "! This might lead to errors.");
 			}
@@ -883,10 +881,10 @@ public class ArenaListener implements Listener {
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player p = event.getPlayer();
 		if (plugin.getConfig().getBoolean("config.chat_per_arena_only")) {
-			if (pli.global_players.containsKey(p.getName())) {
+			if (pli.containsGlobalPlayer(p.getName())) {
 				String msg = String.format(event.getFormat(), p.getName(), event.getMessage());
 				for (Player receiver : event.getRecipients()) {
-					if (pli.global_players.containsKey(receiver.getName())) {
+					if (pli.containsGlobalPlayer(receiver.getName())) {
 						if (pli.global_players.get(receiver.getName()) == pli.global_players.get(p.getName())) {
 							receiver.sendMessage(msg);
 						}
@@ -900,14 +898,14 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
 		if (event.getMessage().equalsIgnoreCase(leave_cmd) || event.getMessage().equalsIgnoreCase("/l")) {
-			if (pli.global_players.containsKey(event.getPlayer().getName())) {
+			if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
 				Arena arena = pli.global_players.get(event.getPlayer().getName());
 				arena.leavePlayer(event.getPlayer().getName(), false, false);
 				event.setCancelled(true);
 				return;
 			}
 		}
-		if (pli.global_players.containsKey(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
+		if (pli.containsGlobalPlayer(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
 			if (!plugin.getConfig().getBoolean("config.disable_commands_in_arena")) {
 				return;
 			}
@@ -932,20 +930,22 @@ public class ArenaListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		final Player player = event.getPlayer();
-		final int visibleDistance = Bukkit.getServer().getViewDistance() * 16;
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			@Override
-			public void run() {
-				final List<Player> nearby = getPlayersWithin(player, visibleDistance);
-				updateEntities(nearby, false);
-				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					@Override
-					public void run() {
-						updateEntities(nearby, true);
-					}
-				}, 1);
-			}
-		}, 5L);
+		if (pli.containsGlobalPlayer(player.getName())) {
+			final int visibleDistance = Bukkit.getServer().getViewDistance() * 16;
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				@Override
+				public void run() {
+					final List<Player> nearby = getPlayersWithin(player, visibleDistance);
+					updateEntities(nearby, false);
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+						@Override
+						public void run() {
+							updateEntities(nearby, true);
+						}
+					}, 1);
+				}
+			}, 5L);
+		}
 	}
 
 	private void updateEntities(List<Player> players, boolean visible) {
