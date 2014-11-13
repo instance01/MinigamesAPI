@@ -31,6 +31,10 @@ public class ArenaScoreboard {
 
 	ArrayList<String> loaded_custom_strings = new ArrayList<String>();
 
+	public ArenaScoreboard() {
+		//
+	}
+
 	public ArenaScoreboard(PluginInstance pli, JavaPlugin plugin) {
 		custom = plugin.getConfig().getBoolean("config.use_custom_scoreboard");
 		initialized = 1;

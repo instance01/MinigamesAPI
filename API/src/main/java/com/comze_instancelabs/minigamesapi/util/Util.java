@@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -538,16 +539,17 @@ public class Util {
 				}
 				ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount), (short) Integer.parseInt(itemdata));
 				ItemMeta m = nitem.getItemMeta();
-				for (String enchant : enchantments) {
-
-					String[] e = enchant.split(":");
-					String ench = e[0];
-					String lv = "1";
-					if (e.length > 1) {
-						lv = e[1];
-					}
-					if (Enchantment.getByName(ench) != null) {
-						m.addEnchant(Enchantment.getByName(ench), Integer.parseInt(lv), true);
+				if (nitem.getType() != Material.ENCHANTED_BOOK) {
+					for (String enchant : enchantments) {
+						String[] e = enchant.split(":");
+						String ench = e[0];
+						String lv = "1";
+						if (e.length > 1) {
+							lv = e[1];
+						}
+						if (Enchantment.getByName(ench) != null) {
+							m.addEnchant(Enchantment.getByName(ench), Integer.parseInt(lv), true);
+						}
 					}
 				}
 
@@ -572,6 +574,25 @@ public class Util {
 				}
 
 				nitem.setItemMeta(m);
+				if (nitem.getType() == Material.ENCHANTED_BOOK) {
+					try {
+						EnchantmentStorageMeta meta = (EnchantmentStorageMeta) nitem.getItemMeta();
+						for (String enchant : enchantments) {
+							String[] e = enchant.split(":");
+							String ench = e[0];
+							String lv = "1";
+							if (e.length > 1) {
+								lv = e[1];
+							}
+							if (Enchantment.getByName(ench) != null) {
+								meta.addStoredEnchant(Enchantment.getByName(ench), Integer.parseInt(lv), true);
+							}
+						}
+						nitem.setItemMeta(meta);
+					} catch (Exception e) {
+						System.out.println("Failed parsing enchanted book. " + e.getMessage());
+					}
+				}
 				ret.add(nitem);
 			}
 			if (ret == null || ret.size() < 1) {
