@@ -10,3 +10,7 @@ commands:
    party:
       description: Main Party command
       usage: /party [action]
+   start:
+      description: Start shortcut
+      usage: /start [action]
+      aliases: [startmg, startminigame]

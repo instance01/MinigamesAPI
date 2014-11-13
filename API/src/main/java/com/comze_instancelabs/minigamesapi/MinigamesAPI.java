@@ -211,6 +211,25 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if (cmd.getName().equalsIgnoreCase("start")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage("Please execute this command ingame.");
+				return true;
+			}
+			Player p = (Player) sender;
+			for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
+				if (pli.containsGlobalPlayer(p.getName())) {
+					Arena a = pli.global_players.get(p.getName());
+					System.out.println(a.getName());
+					if (a.getArenaState() == ArenaState.JOIN || (a.getArenaState() == ArenaState.STARTING && !a.getIngameCountdownStarted())) {
+						a.start(true);
+						sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", a.getDisplayName()).replaceAll("<action>", "started"));
+						break;
+					}
+				}
+			}
+			return true;
+		}
 		if (cmd.getName().equalsIgnoreCase("party")) {
 			if (!getConfig().getBoolean("config.party_command_enabled")) {
 				return true;

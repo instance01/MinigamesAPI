@@ -1330,4 +1330,8 @@ public class Arena {
 		return this.currentlobbycount;
 	}
 
+	public boolean getIngameCountdownStarted() {
+		return this.startedIngameCountdown;
+	}
+
 }
