@@ -879,6 +879,7 @@ public class Arena {
 					if (Validator.isPlayerOnline(p_)) {
 						Player p = Bukkit.getPlayer(p_);
 						p.setExp(1F * ((1F * currentlobbycount) / (1F * pli.lobby_countdown)));
+						p.setLevel(currentlobbycount);
 					}
 				}
 				if (currentlobbycount < 1) {
@@ -957,6 +958,7 @@ public class Arena {
 					if (Validator.isPlayerOnline(p_)) {
 						Player p = Bukkit.getPlayer(p_);
 						p.setExp(1F * ((1F * currentingamecount) / (1F * pli.ingame_countdown)));
+						p.setLevel(currentingamecount);
 					}
 				}
 				if (currentingamecount < 1) {
