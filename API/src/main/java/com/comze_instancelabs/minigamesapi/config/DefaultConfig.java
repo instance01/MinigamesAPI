@@ -29,6 +29,7 @@ public class DefaultConfig {
 			config.addDefault("config.classes_enabled", true);
 			config.addDefault("config.shop_enabled", true);
 			config.addDefault("config.use_credits_instead_of_money_for_kits", false);
+			config.addDefault("config.skip_lobby", false);
 
 			config.addDefault("config.rewards.economy", true);
 			config.addDefault("config.rewards.economy_reward", 10);

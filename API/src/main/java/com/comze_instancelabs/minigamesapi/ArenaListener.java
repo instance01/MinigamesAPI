@@ -157,7 +157,7 @@ public class ArenaListener implements Listener {
 									System.out.println("Waiting lobby for arena " + a.getInternalName() + " missing, please fix by setting it. " + e.getMessage());
 								}
 							}
-							if (a.getLobbyBoundaries() != null) {
+							if (a.getLobbyBoundaries() != null && !a.skip_join_lobby) {
 								if (!a.getLobbyBoundaries().containsLocWithoutY(p.getLocation())) {
 									Vector direction = a.getWaitingLobbyTemp().toVector().subtract(p.getLocation().toVector()).normalize();
 									p.setVelocity(direction);

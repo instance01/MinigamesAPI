@@ -424,6 +424,10 @@ public class Arena {
 			}
 			Util.updateSign(plugin, this);
 
+			if(ai == null && !this.isArcadeMain()){
+				this.skip_join_lobby = plugin.getConfig().getBoolean("config.skip_lobby");
+			}
+			
 			pinv.put(playername, p.getInventory().getContents());
 			pinv_armor.put(playername, p.getInventory().getArmorContents());
 			if (this.getArenaType() == ArenaType.JUMPNRUN) {
@@ -461,7 +465,11 @@ public class Arena {
 					return;
 				} else {
 					pli.scoreboardLobbyManager.updateScoreboard(plugin, this);
-					Util.teleportPlayerFixed(p, this.waitinglobby);
+					if (!skip_join_lobby) {
+						Util.teleportPlayerFixed(p, this.waitinglobby);
+					} else {
+						Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
+					}
 				}
 			}
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
@@ -479,6 +487,10 @@ public class Arena {
 					this.startLobby(temp_countdown);
 				} else if (ai != null) {
 					this.startLobby(temp_countdown);
+				}
+			} else {
+				if (ai == null && !this.isArcadeMain() && this.getAllPlayers().size() > this.min_players - 1) {
+					this.startLobby(false);
 				}
 			}
 		}
