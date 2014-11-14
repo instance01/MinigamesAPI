@@ -216,6 +216,10 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				sender.sendMessage("Please execute this command ingame.");
 				return true;
 			}
+			if(!sender.hasPermission("minigamesapi.start")){
+				// TODO no_perm message
+				return true;
+			}
 			Player p = (Player) sender;
 			for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
 				if (pli.containsGlobalPlayer(p.getName())) {

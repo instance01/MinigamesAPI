@@ -1174,6 +1174,7 @@ public class Arena {
 		if (plugin.getConfig().getBoolean("config.execute_cmds_on_stop")) {
 			String[] cmds = plugin.getConfig().getString("config.cmds").split(";");
 			for (String cmd : cmds) {
+				
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 			}
 		}
