@@ -23,7 +23,6 @@ public class ArenaLobbyScoreboard {
 	// Objective objective;
 	HashMap<String, Scoreboard> ascore = new HashMap<String, Scoreboard>();
 	HashMap<String, Objective> aobjective = new HashMap<String, Objective>();
-	HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
 
 	int initialized = 0; // 0 = false; 1 = true;
 	boolean custom = false;
@@ -118,10 +117,6 @@ public class ArenaLobbyScoreboard {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void setCurrentScoreMap(HashMap<String, Integer> newcurrentscore) {
-		this.currentscore = newcurrentscore;
 	}
 
 	public void clearScoreboard(String arenaname) {

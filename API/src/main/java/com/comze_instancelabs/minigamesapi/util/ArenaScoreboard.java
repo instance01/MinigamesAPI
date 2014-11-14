@@ -22,7 +22,6 @@ public class ArenaScoreboard {
 	// Objective objective;
 	HashMap<String, Scoreboard> ascore = new HashMap<String, Scoreboard>();
 	HashMap<String, Objective> aobjective = new HashMap<String, Objective>();
-	HashMap<String, Integer> currentscore = new HashMap<String, Integer>();
 
 	int initialized = 0; // 0 = false; 1 = true;
 	boolean custom = false;
@@ -121,54 +120,40 @@ public class ArenaScoreboard {
 							System.out.println("Failed to set custom scoreboard: ");
 							e.printStackTrace();
 						}
-						continue;
-					}
-
-					for (String p___ : arena.getAllPlayers()) {
-						if (!Validator.isPlayerOnline(p___)) {
-							continue;
-						}
-						Player p_ = Bukkit.getPlayer(p___);
-						if (!pli.global_lost.containsKey(p___)) {
-							int score = 0;
-							if (currentscore.containsKey(p___)) {
-								int oldscore = currentscore.get(p___);
-								if (score > oldscore) {
-									currentscore.put(p___, score);
-								} else {
-									score = oldscore;
-								}
-							} else {
-								currentscore.put(p___, score);
+					} else {
+						for (String p___ : arena.getAllPlayers()) {
+							if (!Validator.isPlayerOnline(p___)) {
+								continue;
 							}
-							try {
-								if (p_.getName().length() < 15) {
-									aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName())).setScore(score);
-								} else {
-									aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName().substring(0, p_.getName().length() - 3))).setScore(score);
+							Player p_ = Bukkit.getPlayer(p___);
+							if (!pli.global_lost.containsKey(p___)) {
+								try {
+									if (p_.getName().length() < 15) {
+										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName())).setScore(0);
+									} else {
+										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName().substring(0, p_.getName().length() - 3))).setScore(0);
+									}
+								} catch (Exception e) {
 								}
-							} catch (Exception e) {
-							}
-						} else if (pli.global_lost.containsKey(p___)) {
-							if (currentscore.containsKey(p___)) {
-								int score = currentscore.get(p___);
+							} else if (pli.global_lost.containsKey(p___)) {
 								try {
 									if (p_.getName().length() < 15) {
 										ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName()));
-										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.RED + p_.getName())).setScore(score);
+										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.RED + p_.getName())).setScore(0);
 									} else {
 										ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName().substring(0, p_.getName().length() - 3)));
-										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.RED + p_.getName().substring(0, p_.getName().length() - 3))).setScore(score);
+										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.RED + p_.getName().substring(0, p_.getName().length() - 3))).setScore(0);
 									}
 								} catch (Exception e) {
 								}
 							}
 						}
+
+						if (ascore.get(arena.getInternalName()) != null) {
+							p.setScoreboard(ascore.get(arena.getInternalName()));
+						}
 					}
 
-					if (ascore.get(arena.getInternalName()) != null) {
-						p.setScoreboard(ascore.get(arena.getInternalName()));
-					}
 				}
 			}
 		});
@@ -183,10 +168,6 @@ public class ArenaScoreboard {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void setCurrentScoreMap(HashMap<String, Integer> newcurrentscore) {
-		this.currentscore = newcurrentscore;
 	}
 
 	public void clearScoreboard(String arenaname) {
