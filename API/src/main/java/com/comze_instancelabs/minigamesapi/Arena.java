@@ -56,6 +56,7 @@ public class Arena {
 
 	private Location mainlobby;
 	private Location waitinglobby;
+	private Location specspawn;
 	private Location signloc;
 
 	private int max_players;
@@ -165,6 +166,10 @@ public class Arena {
 			}
 		}
 		// }
+
+		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "specspawn")) {
+			this.specspawn = Util.getComponentForArena(plugin, this.getInternalName(), "specspawn");
+		}
 
 		String path = "arenas." + name + ".displayname";
 		if (pli.getArenasConfig().getConfig().isSet(path)) {
@@ -744,11 +749,19 @@ public class Arena {
 					try {
 						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 							public void run() {
-								Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+								if (specspawn != null) {
+									Util.teleportPlayerFixed(p, specspawn);
+								} else {
+									Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+								}
 							}
 						}, 2L);
 					} catch (Exception e) {
-						Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+						if (specspawn != null) {
+							Util.teleportPlayerFixed(p, specspawn);
+						} else {
+							Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+						}
 					}
 				}
 			} else {
@@ -764,11 +777,19 @@ public class Arena {
 					try {
 						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 							public void run() {
-								Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+								if (specspawn != null) {
+									Util.teleportPlayerFixed(p, specspawn);
+								} else {
+									Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+								}
 							}
 						}, 2L);
 					} catch (Exception e) {
-						Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+						if (specspawn != null) {
+							Util.teleportPlayerFixed(p, specspawn);
+						} else {
+							Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+						}
 					}
 				}
 			}
@@ -1174,7 +1195,7 @@ public class Arena {
 		if (plugin.getConfig().getBoolean("config.execute_cmds_on_stop")) {
 			String[] cmds = plugin.getConfig().getString("config.cmds").split(";");
 			for (String cmd : cmds) {
-				
+
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 			}
 		}

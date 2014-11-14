@@ -45,6 +45,8 @@ public class CommandHandler {
 			String action = args[0];
 			if (action.equalsIgnoreCase("setspawn")) {
 				return this.setSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("setspecspawn")) {
+				return this.setSpecSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setlobby")) {
 				return this.setLobby(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("setmainlobby")) {
@@ -221,6 +223,20 @@ public class CommandHandler {
 		if (args.length > 1) {
 			pli.arenaSetup.setSpawn(plugin, args[1], p.getLocation());
 			sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "spawn"));
+		} else {
+			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
+		}
+		return true;
+	}
+
+	public boolean setSpecSpawn(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 1) {
+			Util.saveComponentForArena(plugin, args[1], "specspawn", p.getLocation());
+			sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "spectator spawn"));
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
 		}
