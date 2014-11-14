@@ -67,13 +67,24 @@ public class ArenaScoreboard {
 						return;
 					}
 					Player p = Bukkit.getPlayer(p__);
-					if (!ascore.containsKey(arena.getInternalName())) {
-						ascore.put(arena.getInternalName(), Bukkit.getScoreboardManager().getNewScoreboard());
-					}
-					if (!aobjective.containsKey(arena.getInternalName())) {
-						aobjective.put(arena.getInternalName(), ascore.get(arena.getInternalName()).registerNewObjective(arena.getInternalName(), "dummy"));
-						aobjective.get(arena.getInternalName()).setDisplaySlot(DisplaySlot.SIDEBAR);
-						aobjective.get(arena.getInternalName()).setDisplayName(pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getInternalName()));
+					if (!custom) {
+						if (!ascore.containsKey(arena.getInternalName())) {
+							ascore.put(arena.getInternalName(), Bukkit.getScoreboardManager().getNewScoreboard());
+						}
+						if (!aobjective.containsKey(arena.getInternalName())) {
+							aobjective.put(arena.getInternalName(), ascore.get(arena.getInternalName()).registerNewObjective(arena.getInternalName(), "dummy"));
+							aobjective.get(arena.getInternalName()).setDisplaySlot(DisplaySlot.SIDEBAR);
+							aobjective.get(arena.getInternalName()).setDisplayName(pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getInternalName()));
+						}
+					} else {
+						if (!ascore.containsKey(p__)) {
+							ascore.put(p__, Bukkit.getScoreboardManager().getNewScoreboard());
+						}
+						if (!aobjective.containsKey(p__)) {
+							aobjective.put(p__, ascore.get(p__).registerNewObjective(p__, "dummy"));
+							aobjective.get(p__).setDisplaySlot(DisplaySlot.SIDEBAR);
+							aobjective.get(p__).setDisplayName(pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getInternalName()));
+						}
 					}
 
 					if (custom) {
@@ -95,16 +106,16 @@ public class ArenaScoreboard {
 									score = pli.getStatsInstance().getWins(p__);
 								}
 								if (line_.length() < 15) {
-									ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
-									aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
+									ascore.get(p__).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
+									aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
 								} else {
-									ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))));
-									aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
+									ascore.get(p__).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))));
+									aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
 								}
 							}
 
-							if (ascore.get(arena.getInternalName()) != null) {
-								p.setScoreboard(ascore.get(arena.getInternalName()));
+							if (ascore.get(p__) != null) {
+								p.setScoreboard(ascore.get(p__));
 							}
 						} catch (Exception e) {
 							System.out.println("Failed to set custom scoreboard: ");
