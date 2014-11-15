@@ -424,10 +424,10 @@ public class Arena {
 			}
 			Util.updateSign(plugin, this);
 
-			if(ai == null && !this.isArcadeMain()){
+			if (ai == null && !this.isArcadeMain()) {
 				this.skip_join_lobby = plugin.getConfig().getBoolean("config.skip_lobby");
 			}
-			
+
 			pinv.put(playername, p.getInventory().getContents());
 			pinv_armor.put(playername, p.getInventory().getArmorContents());
 			if (this.getArenaType() == ArenaType.JUMPNRUN) {
@@ -565,8 +565,22 @@ public class Arena {
 		}
 	}
 
-	public void leavePlayerRaw(final String playername, boolean fullLeave) {
+	public void leavePlayerRaw(final String playername, final boolean fullLeave) {
 		if (!this.containsPlayer(playername)) {
+			return;
+		}
+		final Player p = Bukkit.getPlayer(playername);
+		if (p == null) {
+			return;
+		}
+		if (p.isDead()) {
+			System.out.println(p.getName() + " unexpectedly appeared dead! Sending respawn packet.");
+			Effects.playRespawn(p, plugin);
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					leavePlayerRaw(playername, fullLeave);
+				}
+			}, 5L);
 			return;
 		}
 		this.players.remove(playername);
@@ -584,7 +598,6 @@ public class Arena {
 			plugin.saveConfig();
 
 			try {
-				Player p = Bukkit.getPlayer(playername);
 				if (pli.global_lost.containsKey(playername)) {
 					pli.global_lost.remove(playername);
 				}
@@ -621,11 +634,6 @@ public class Arena {
 				System.out.println("Failed to log out player out of arena. " + e.getMessage());
 			}
 			return;
-		}
-		final Player p = Bukkit.getPlayer(playername);
-		if (p.isDead()) {
-			System.out.println("[SEVERE] " + p.getName() + " unexpectedly appeared dead! Health: " + p.getHealth() + " - This is a BUG, please report!");
-			// return;
 		}
 		Util.clearInv(p);
 		p.setWalkSpeed(0.2F);
@@ -729,14 +737,6 @@ public class Arena {
 			final Player p = Bukkit.getPlayer(playername);
 
 			pli.global_lost.put(playername, this);
-			if (plugin.getConfig().getBoolean("config.effects")) {
-				Arena a = this;
-				try {
-					Effects.playFakeBed(a, p);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 
 			pli.getSpectatorManager().setSpectate(p, true);
 			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
@@ -757,6 +757,13 @@ public class Arena {
 						}
 					}, 20L);
 				} else {
+					if (plugin.getConfig().getBoolean("config.effects")) {
+						try {
+							Effects.playFakeBed(this, p);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 					final Location temp = this.spawns.get(0);
 					try {
 						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -785,6 +792,13 @@ public class Arena {
 						}
 					}, 20L);
 				} else {
+					if (plugin.getConfig().getBoolean("config.effects")) {
+						try {
+							Effects.playFakeBed(this, p);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 					final Location temp = this.spawns.get(0);
 					try {
 						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
