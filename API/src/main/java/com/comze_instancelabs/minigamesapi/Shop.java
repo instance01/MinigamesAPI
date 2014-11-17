@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -52,21 +53,26 @@ public class Shop {
 					event.setWillClose(true);
 				}
 			}, plugin);
-		}
 
-		int c = 0;
-		for (String ac : shopitems.keySet()) {
-			ShopItem ac_ = shopitems.get(ac);
-			if (ac_.isEnabled()) {
-				int slot = c;
-				if (pli.getShopConfig().getConfig().isSet("config.shop_items." + ac_.getInternalName() + ".slot")) {
-					slot = pli.getShopConfig().getConfig().getInt("config.shop_items." + ac_.getInternalName() + ".slot");
-					if (slot < 0 || slot > iconm.getSize() - 1) {
-						slot = c;
+			ShopConfig shopConfig = pli.getShopConfig();
+			int c = 0;
+			for (String ac : shopitems.keySet()) {
+				ShopItem ac_ = shopitems.get(ac);
+				if (ac_.isEnabled()) {
+					int slot = c;
+					if (pli.getShopConfig().getConfig().isSet("config.shop_items." + ac_.getInternalName() + ".slot")) {
+						slot = pli.getShopConfig().getConfig().getInt("config.shop_items." + ac_.getInternalName() + ".slot");
+						if (slot < 0 || slot > iconm.getSize() - 1) {
+							slot = c;
+						}
 					}
+					String color = ChatColor.GREEN + "";
+					if (shopConfig.getConfig().isSet("players.bought." + p + "." + ac_.getInternalName())) {
+						color = ChatColor.RED + "";
+					}
+					iconm.setOption(slot, ac_.getIcon().clone(), color + ac_.getName(), pli.getShopConfig().getConfig().getString("config.shop_items." + ac_.getInternalName() + ".lore").split(";"));
+					c++;
 				}
-				iconm.setOption(slot, ac_.getIcon().clone(), ac_.getName(), pli.getShopConfig().getConfig().getString("config.shop_items." + ac_.getInternalName() + ".lore").split(";"));
-				c++;
 			}
 		}
 
