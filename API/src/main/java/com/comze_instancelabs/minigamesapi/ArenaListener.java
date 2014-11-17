@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -53,6 +54,7 @@ import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Util.CompassPlayer;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaListener implements Listener {
@@ -740,6 +742,19 @@ public class ArenaListener implements Listener {
 				if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
 					if (a.getArenaState() != ArenaState.INGAME) {
 						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
+					}
+				}
+			}
+			if (event.getItem().getType() == Material.COMPASS) {
+				if (a.getArenaState() == ArenaState.INGAME) {
+					if (plugin.getConfig().getBoolean("config.compass_tracking_enabled")) {
+						CompassPlayer temp = Util.getNearestPlayer(p, a);
+						if (temp.getPlayer() != null) {
+							p.sendMessage(pli.getMessagesConfig().compass_player_found.replaceAll("<player>", temp.getPlayer().getName()).replaceAll("<distance>", Integer.toString((int) Math.round(temp.getDistance()))));
+							p.setCompassTarget(temp.getPlayer().getLocation());
+						} else {
+							p.sendMessage(pli.getMessagesConfig().compass_no_player_found);
+						}
 					}
 				}
 			}

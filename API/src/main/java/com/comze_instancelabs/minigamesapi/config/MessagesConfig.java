@@ -137,6 +137,8 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.you_received_rewards_3", you_received_rewards_3);
 		this.getConfig().addDefault("messages.already_in_arena", already_in_arena);
 		this.getConfig().addDefault("messages.stop_cause_maximum_game_time", stop_cause_maximum_game_time);
+		this.getConfig().addDefault("messages.compass.no_player_found", compass_no_player_found);
+		this.getConfig().addDefault("messages.compass.found_player", compass_player_found);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -202,6 +204,8 @@ public class MessagesConfig {
 		this.you_received_rewards_3 = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_received_rewards_3"));
 		this.already_in_arena = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.already_in_arena"));
 		this.stop_cause_maximum_game_time = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.stop_cause_maximum_game_time"));
+		this.compass_no_player_found = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.compass.no_player_found"));
+		this.compass_player_found = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.compass.found_player"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -277,6 +281,8 @@ public class MessagesConfig {
 	public String you_received_rewards_3 = "&2<itemreward>&a!";
 	public String already_in_arena = "&cYou are already in an arena.";
 	public String stop_cause_maximum_game_time = "&cThe game is stopping in 5 seconds because the maximum game time was reached.";
+	public String compass_no_player_found = "&cNo near players found!";
+	public String compass_player_found = "&aThe compass is tracking &3<player> &anow. Distance: <distance>";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

@@ -81,6 +81,7 @@ public class DefaultConfig {
 			config.addDefault("config.clearinv_while_ingamecountdown", false);
 			config.addDefault("config.chat_per_arena_only", false);
 			config.addDefault("config.chat_show_score_in_arena", false);
+			config.addDefault("config.compass_tracking_enabled", true);
 
 			config.addDefault("config.extra_lobby_item.item0.enabled", false);
 			config.addDefault("config.extra_lobby_item.item0.item", 9);

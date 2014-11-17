@@ -764,4 +764,39 @@ public class Util {
 			}
 		}
 	}
+
+	public static class CompassPlayer {
+		Player p = null;
+		Double d = null;
+
+		public CompassPlayer(Player p, Double d) {
+			this.p = p;
+			this.d = d;
+		}
+
+		public Player getPlayer() {
+			return p;
+		}
+
+		public Double getDistance() {
+			return d;
+		}
+	}
+
+	public static CompassPlayer getNearestPlayer(Player p, Arena a) {
+		CompassPlayer ret = null;
+		double distance = 10000;
+		for (String p_ : a.getAllPlayers()) {
+			if (!p_.equalsIgnoreCase(p.getName()) && !MinigamesAPI.getAPI().getPluginInstance(a.getPlugin()).containsGlobalLost(p_)) {
+				if (Validator.isPlayerOnline(p_)) {
+					double newdist = Bukkit.getPlayer(p_).getLocation().distance(p.getLocation());
+					if (newdist < distance) {
+						distance = newdist;
+						ret = new CompassPlayer(Bukkit.getPlayer(p_), distance);
+					}
+				}
+			}
+		}
+		return ret;
+	}
 }
