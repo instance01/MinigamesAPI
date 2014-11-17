@@ -92,19 +92,44 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 		if (getServer().getPluginManager().getPlugin("CrackShot") != null) {
 			crackshot = true;
 		}
+
+		Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+			public void run() {
+				int i = 0;
+				for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
+					for (Arena a : pli.getArenas()) {
+						if (a != null) {
+							if (a.isSuccessfullyInit()) {
+								Util.updateSign(pli.getPlugin(), a);
+							} else {
+								System.out.println(a.getName() + " not initialized at onEnable.");
+							}
+						}
+						i++;
+					}
+				}
+				System.out.println("Found " + i + " arenas.");
+			}
+		}, 50L);
 	}
 
 	public void onDisable() {
 		for (PluginInstance pli : this.pinstances.values()) {
 			for (Arena a : pli.getArenas()) {
-				ArrayList<String> temp = new ArrayList<String>(a.getAllPlayers());
-				for (String p_ : temp) {
-					a.leavePlayer(p_, true);
-				}
-				try {
-					a.getSmartReset().resetRaw();
-				} catch (Exception e) {
-					System.out.println("Failed resetting arena at onDisable. " + e.getMessage());
+				if (a != null) {
+					if (a.isSuccessfullyInit()) {
+						ArrayList<String> temp = new ArrayList<String>(a.getAllPlayers());
+						for (String p_ : temp) {
+							a.leavePlayer(p_, true);
+						}
+						try {
+							a.getSmartReset().resetRaw();
+						} catch (Exception e) {
+							System.out.println("Failed resetting arena at onDisable. " + e.getMessage());
+						}
+					} else {
+						System.out.println(a.getName() + " not initialized thus not reset at onDisable.");
+					}
 				}
 			}
 		}
@@ -216,7 +241,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				sender.sendMessage("Please execute this command ingame.");
 				return true;
 			}
-			if(!sender.hasPermission("minigamesapi.start")){
+			if (!sender.hasPermission("minigamesapi.start")) {
 				// TODO no_perm message
 				return true;
 			}

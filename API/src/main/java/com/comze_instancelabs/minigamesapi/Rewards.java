@@ -29,6 +29,15 @@ public class Rewards {
 
 	public Rewards(JavaPlugin plugin) {
 		this.plugin = plugin;
+		reloadVariables();
+
+		if (!MinigamesAPI.economy) {
+			economyrewards = false;
+			kill_economyrewards = false;
+		}
+	}
+	
+	public void reloadVariables(){
 		economyrewards = plugin.getConfig().getBoolean("config.rewards.economy");
 		itemrewards = plugin.getConfig().getBoolean("config.rewards.item_reward");
 		commandrewards = plugin.getConfig().getBoolean("config.rewards.command_reward");
@@ -40,11 +49,6 @@ public class Rewards {
 		items = Util.parseItems(plugin.getConfig().getString("config.rewards.item_reward_ids")).toArray(new ItemStack[0]);
 		kill_econ_reward = plugin.getConfig().getInt("config.rewards.economy_reward_for_kills");
 		kill_command = plugin.getConfig().getString("config.rewards.command_for_kills");
-
-		if (!MinigamesAPI.economy) {
-			economyrewards = false;
-			kill_economyrewards = false;
-		}
 	}
 
 	public void giveRewardsToWinners(Arena arena) {

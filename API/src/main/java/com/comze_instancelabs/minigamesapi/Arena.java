@@ -39,6 +39,7 @@ public class Arena {
 	PluginInstance pli;
 	private ArcadeInstance ai;
 	private boolean isArcadeMain = false;
+	private boolean isSuccessfullyInitialized = false;
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
 	HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
@@ -135,7 +136,7 @@ public class Arena {
 		this.min_players = min_players;
 		this.max_players = max_players;
 		this.showArenascoreboard = pli.arenaSetup.getShowScoreboard(plugin, this.getInternalName());
-		// if (this.getArenaType() == ArenaType.REGENERATION) {
+		isSuccessfullyInitialized = true;
 		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "bounds.low") && Util.isComponentForArenaValid(plugin, this.getInternalName(), "bounds.high")) {
 			try {
 				Location low_boundary = Util.getComponentForArena(plugin, this.getInternalName(), "bounds.low");
@@ -147,25 +148,23 @@ public class Arena {
 				}
 			} catch (Exception e) {
 				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup. " + e.getMessage());
+				isSuccessfullyInitialized = false;
 			}
 		}
-
 		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "lobbybounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getInternalName(), "lobbybounds.bounds.high")) {
 			try {
 				this.lobby_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getInternalName(), "lobbybounds.bounds.low"), Util.getComponentForArena(plugin, this.getInternalName(), "lobbybounds.bounds.high"));
 			} catch (Exception e) {
-				;
+				isSuccessfullyInitialized = false;
 			}
 		}
-
 		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "specbounds.bounds.low") && Util.isComponentForArenaValid(plugin, this.getInternalName(), "specbounds.bounds.high")) {
 			try {
 				this.spec_boundaries = new Cuboid(Util.getComponentForArena(plugin, this.getInternalName(), "specbounds.bounds.low"), Util.getComponentForArena(plugin, this.getInternalName(), "specbounds.bounds.high"));
 			} catch (Exception e) {
-				;
+				isSuccessfullyInitialized = false;
 			}
 		}
-		// }
 
 		if (Util.isComponentForArenaValid(plugin, this.getInternalName(), "specspawn")) {
 			this.specspawn = Util.getComponentForArena(plugin, this.getInternalName(), "specspawn");
@@ -179,6 +178,7 @@ public class Arena {
 			pli.getArenasConfig().saveConfig();
 			this.displayname = name;
 		}
+
 	}
 
 	// This is for loading existing arenas
@@ -1382,6 +1382,10 @@ public class Arena {
 
 	public boolean getIngameCountdownStarted() {
 		return this.startedIngameCountdown;
+	}
+
+	public boolean isSuccessfullyInit() {
+		return isSuccessfullyInitialized;
 	}
 
 }

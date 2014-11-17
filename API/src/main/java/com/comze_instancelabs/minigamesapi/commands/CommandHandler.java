@@ -121,6 +121,8 @@ public class CommandHandler {
 				pli.getStatsConfig().reloadConfig();
 				pli.getShopConfig().reloadConfig();
 				pli.getMessagesConfig().init();
+				pli.reloadVariables();
+				pli.getRewardsInstance().reloadVariables();
 				try {
 					pli.reloadAllArenas();
 				} catch (Exception e) {
