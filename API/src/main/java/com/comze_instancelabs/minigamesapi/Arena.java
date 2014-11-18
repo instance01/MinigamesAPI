@@ -455,12 +455,16 @@ public class Arena {
 					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 						public void run() {
 							Util.clearInv(p);
+						}
+					}, 10L);
+					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+						public void run() {
 							Util.giveLobbyItems(plugin, p);
 							pgamemode.put(p.getName(), p.getGameMode());
 							pxplvl.put(p.getName(), p.getLevel());
 							p.setGameMode(GameMode.SURVIVAL);
 						}
-					}, 10L);
+					}, 15L);
 					pli.scoreboardManager.updateScoreboard(plugin, this);
 					return;
 				} else {
@@ -475,13 +479,17 @@ public class Arena {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					Util.clearInv(p);
+				}
+			}, 10L);
+			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+				public void run() {
 					Util.giveLobbyItems(plugin, p);
 					pgamemode.put(p.getName(), p.getGameMode());
 					pxplvl.put(p.getName(), p.getLevel());
 					p.setGameMode(GameMode.SURVIVAL);
 					p.setHealth(20D);
 				}
-			}, 10L);
+			}, 15L);
 			if (!skip_join_lobby) {
 				if (ai == null && this.getAllPlayers().size() > this.min_players - 1) {
 					this.startLobby(temp_countdown);

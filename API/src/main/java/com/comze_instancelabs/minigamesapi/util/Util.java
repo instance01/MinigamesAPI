@@ -49,6 +49,7 @@ import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaLogger;
 import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
@@ -59,6 +60,7 @@ import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 public class Util {
 
 	public static void clearInv(Player p) {
+		ArenaLogger.debug("Clearing inventory of " + p.getName());
 		p.getInventory().clear();
 		p.updateInventory();
 		p.getInventory().setHelmet(null);
@@ -69,6 +71,7 @@ public class Util {
 	}
 
 	public static void teleportPlayerFixed(final Player p, Location l) {
+		ArenaLogger.debug("Teleporting " + p.getName());
 		if (p.isInsideVehicle()) {
 			Entity ent = p.getVehicle();
 			p.leaveVehicle();
@@ -387,6 +390,7 @@ public class Util {
 	}
 
 	public static void updateSign(JavaPlugin plugin, Arena arena) {
+		ArenaLogger.debug("Updating sign for arena " + arena.getInternalName() + " in " + plugin.getName());
 		Sign s = getSignFromArena(plugin, arena.getInternalName());
 		int count = arena.getAllPlayers().size();
 		int maxcount = arena.getMaxPlayers();
@@ -611,6 +615,7 @@ public class Util {
 	}
 
 	public static void giveLobbyItems(JavaPlugin plugin, Player p) {
+		ArenaLogger.debug("Giving lobby items to " + p.getName());
 		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
 		if (classes_item.getType() != Material.AIR) {

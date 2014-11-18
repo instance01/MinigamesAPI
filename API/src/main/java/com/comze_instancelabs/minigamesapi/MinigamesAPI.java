@@ -42,6 +42,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	public static Economy econ = null;
 	public static boolean economy = true;
 	public boolean crackshot = false;
+	public static boolean debug = false;
 
 	public HashMap<String, Party> global_party = new HashMap<String, Party>();
 	public HashMap<String, ArrayList<Party>> global_party_invites = new HashMap<String, ArrayList<Party>>();
@@ -72,12 +73,15 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 		getConfig().options().header("Want bugfree versions? Set this to true:");
 		getConfig().addDefault("config.auto_updating", true);
 		getConfig().addDefault("config.party_command_enabled", true);
+		getConfig().addDefault("config.debug", false);
 
 		getConfig().options().copyDefaults(true);
 		this.saveConfig();
 
 		partymessages = new PartyMessagesConfig(this);
 		statsglobal = new StatsGlobalConfig(this, false);
+
+		this.debug = getConfig().getBoolean("config.debug");
 
 		try {
 			Metrics metrics = new Metrics(this);
@@ -321,8 +325,25 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 					return true;
 				}
 			}
+			if (args[0].equalsIgnoreCase("debug")) {
+				debug = !debug;
+				this.getConfig().set("config.debug", debug);
+				this.saveConfig();
+				sender.sendMessage(ChatColor.GOLD + "Debug mode is now: " + debug);
+				return true;
+			}
 			if (sender instanceof Player && args.length > 0) {
 				Player p = (Player) sender;
+				boolean cont = false;
+				for (ParticleEffectNew f : ParticleEffectNew.values()){
+					if(f.name().equalsIgnoreCase(args[0])){
+						cont = true;
+					}
+				}
+				if(!cont){
+					sender.sendMessage(ChatColor.RED + "Couldn't find particle effect.");
+					return true;
+				}
 				ParticleEffectNew eff = ParticleEffectNew.valueOf(args[0]);
 				eff.setId(152);
 
