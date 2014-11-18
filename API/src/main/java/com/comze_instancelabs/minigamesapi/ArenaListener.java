@@ -1,7 +1,6 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -36,6 +35,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -360,6 +360,17 @@ public class ArenaListener implements Listener {
 				}
 			}
 		}
+	}
+
+	@EventHandler
+	public void onPaintingBreak(HangingBreakByEntityEvent event) {
+		if (event.getRemover() instanceof Player) {
+			String p_ = ((Player) event.getRemover()).getName();
+			if (pli.containsGlobalPlayer(p_)) {
+				event.setCancelled(true);
+			}
+		}
+
 	}
 
 	@EventHandler

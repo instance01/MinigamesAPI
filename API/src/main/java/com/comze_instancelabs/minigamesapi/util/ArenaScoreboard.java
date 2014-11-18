@@ -18,8 +18,6 @@ import com.comze_instancelabs.minigamesapi.PluginInstance;
 
 public class ArenaScoreboard {
 
-	// Scoreboard board;
-	// Objective objective;
 	HashMap<String, Scoreboard> ascore = new HashMap<String, Scoreboard>();
 	HashMap<String, Objective> aobjective = new HashMap<String, Objective>();
 

@@ -1,7 +1,6 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -11,10 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.comze_instancelabs.minigamesapi.util.ArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
@@ -23,6 +20,7 @@ public class SmartReset {
 	// will only reset broken/placed blocks
 
 	HashMap<Location, SmartArenaBlock> changed = new HashMap<Location, SmartArenaBlock>();
+
 	Arena a;
 
 	public SmartReset(Arena a) {
