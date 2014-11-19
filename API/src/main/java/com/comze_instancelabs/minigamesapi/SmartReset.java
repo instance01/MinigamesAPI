@@ -12,6 +12,7 @@ import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
 
+import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
@@ -28,6 +29,12 @@ public class SmartReset {
 	}
 
 	public void addChanged(Block b, boolean c) {
+		if (!changed.containsKey(b.getLocation())) {
+			changed.put(b.getLocation(), new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST));
+		}
+	}
+
+	public void addChanged(Block b, boolean c, ChangeCause cause) {
 		if (!changed.containsKey(b.getLocation())) {
 			changed.put(b.getLocation(), new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST));
 		}

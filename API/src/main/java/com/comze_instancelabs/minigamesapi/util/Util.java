@@ -603,6 +603,9 @@ public class Util {
 				MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
 			}
 		} catch (Exception e) {
+			if(MinigamesAPI.debug){
+				e.printStackTrace();
+			}
 			ret.add(new ItemStack(Material.STAINED_GLASS_PANE));
 			System.out.println("Failed to load class items: " + e.getMessage() + " at [1] " + e.getStackTrace()[1].getLineNumber() + " [0] " + e.getStackTrace()[0].getLineNumber());
 			ItemStack rose = new ItemStack(Material.RED_ROSE);

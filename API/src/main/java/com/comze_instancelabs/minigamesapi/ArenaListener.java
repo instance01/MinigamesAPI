@@ -52,6 +52,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Util.CompassPlayer;
@@ -403,7 +404,7 @@ public class ArenaListener implements Listener {
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						if (a.getArenaState() == ArenaState.INGAME) {
-							a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST));
+							a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST), ChangeCause.FROM_TO);
 						} else if (a.getArenaState() == ArenaState.RESTARTING) {
 							event.setCancelled(true);
 						}
@@ -422,7 +423,7 @@ public class ArenaListener implements Listener {
 				Cuboid c = a.getBoundaries();
 				if (c != null && a.getArenaState() == ArenaState.INGAME) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
-						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.FADE);
 					}
 				}
 			}
@@ -453,10 +454,10 @@ public class ArenaListener implements Listener {
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						if (c.containsLocWithoutY(event.getBlock().getLocation())) {
-							if (event.getChangedType() == Material.CARPET) {
+							if (event.getChangedType() == Material.CARPET || event.getChangedType() == Material.BED_BLOCK) {
 								return;
 							}
-							a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+							a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.PHYSICS);
 						}
 					} else if (a.getArenaState() == ArenaState.RESTARTING) {
 						event.setCancelled(true);
@@ -496,7 +497,7 @@ public class ArenaListener implements Listener {
 					Cuboid c = a.getBoundaries();
 					if (c != null) {
 						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
-							a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+							a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.ENTITY_CHANGE);
 						}
 					}
 				}
@@ -504,7 +505,7 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player p = event.getPlayer();
 		if (pli.containsGlobalPlayer(p.getName())) {
@@ -517,32 +518,32 @@ public class ArenaListener implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-			a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+			a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.BREAK);
 			if (event.getBlock().getType() == Material.DOUBLE_PLANT) {
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, -1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, -1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, -1D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
 			}
 			if (event.getBlock().getType() == Material.SNOW || event.getBlock().getType() == Material.SNOW_BLOCK) {
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
 			}
 			if (event.getBlock().getType() == Material.CARPET) {
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
 			}
 			if (event.getBlock().getType() == Material.CACTUS) {
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +4D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +4D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +4D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
 			}
 			if (event.getBlock().getType() == Material.BED_BLOCK) {
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(1D, 0D, 1D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(1D, 0D, -1D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(-1D, 0D, 1D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
-				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(-1D, 0D, -1D).getBlock(), event.getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(1D, 0D, 0D).getBlock(), event.getBlock().getLocation().clone().add(1D, 0D, 1D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(-1D, 0D, 0D).getBlock(), event.getBlock().getLocation().clone().add(1D, 0D, -1D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, 0D, 1D).getBlock(), event.getBlock().getLocation().clone().add(-1D, 0D, 1D).getBlock().getType().equals(Material.CHEST));
+				a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, 0D, -1D).getBlock(), event.getBlock().getLocation().clone().add(-1D, 0D, -1D).getBlock().getType().equals(Material.CHEST));
 			}
 		}
 		if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
@@ -561,7 +562,7 @@ public class ArenaListener implements Listener {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
-						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.BURN);
 					}
 				}
 			}

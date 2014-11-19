@@ -97,7 +97,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 			crackshot = true;
 		}
 
-		Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
 			public void run() {
 				int i = 0;
 				for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
