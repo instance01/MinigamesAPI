@@ -881,13 +881,16 @@ public class ArenaListener implements Listener {
 				}
 			}
 
+			arena.leavePlayer(event.getPlayer().getName(), true, false);
+
 			try {
 				Util.updateSign(plugin, arena);
 			} catch (Exception e) {
-				MinigamesAPI.getAPI().getLogger().warning("You forgot to set a sign for arena " + arena + "! This might lead to errors.");
+				MinigamesAPI.getAPI().getLogger().warning("Error occurred while refreshing sign. " + e.getMessage());
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
 			}
-
-			arena.leavePlayer(event.getPlayer().getName(), true, false);
 		}
 		if (MinigamesAPI.getAPI().global_party.containsKey(event.getPlayer().getName())) {
 			MinigamesAPI.getAPI().global_party.get(event.getPlayer().getName()).disband();

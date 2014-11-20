@@ -139,6 +139,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.stop_cause_maximum_game_time", stop_cause_maximum_game_time);
 		this.getConfig().addDefault("messages.compass.no_player_found", compass_no_player_found);
 		this.getConfig().addDefault("messages.compass.found_player", compass_player_found);
+		this.getConfig().addDefault("messages.you_got_a_participation_reward", you_got_a_participation_reward);
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -206,6 +207,7 @@ public class MessagesConfig {
 		this.stop_cause_maximum_game_time = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.stop_cause_maximum_game_time"));
 		this.compass_no_player_found = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.compass.no_player_found"));
 		this.compass_player_found = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.compass.found_player"));
+		this.you_got_a_participation_reward = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_participation_reward"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -283,6 +285,7 @@ public class MessagesConfig {
 	public String stop_cause_maximum_game_time = "&cThe game is stopping in 5 seconds because the maximum game time was reached.";
 	public String compass_no_player_found = "&cNo near players found!";
 	public String compass_player_found = "&aThe compass is tracking &3<player> &anow. Distance: <distance>";
+	public String you_got_a_participation_reward = "&aYou received &2<economyreward> &afor participating!";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {

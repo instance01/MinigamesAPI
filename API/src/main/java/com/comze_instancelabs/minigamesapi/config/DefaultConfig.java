@@ -37,11 +37,14 @@ public class DefaultConfig {
 			config.addDefault("config.rewards.item_reward_ids", "264*1;11*1");
 			config.addDefault("config.rewards.command_reward", false);
 			config.addDefault("config.rewards.command", "pex user <player> add SKILLZ.*");
-
 			config.addDefault("config.rewards.economy_for_kills", true);
 			config.addDefault("config.rewards.economy_reward_for_kills", 5);
 			config.addDefault("config.rewards.command_reward_for_kills", false);
 			config.addDefault("config.rewards.command_for_kills", "pex user <player> add SKILLZ.*");
+			config.addDefault("config.rewards.economy_for_participation", false);
+			config.addDefault("config.rewards.economy_reward_for_participation", 5);
+			config.addDefault("config.rewards.command_reward_for_participation", false);
+			config.addDefault("config.rewards.command_for_participation", "pex user <player> add SKILLZ.*");
 
 			config.addDefault("config.arcade.enabled", true);
 			config.addDefault("config.arcade.min_players", 1);

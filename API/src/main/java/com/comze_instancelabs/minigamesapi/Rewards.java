@@ -20,11 +20,15 @@ public class Rewards {
 	private boolean commandrewards;
 	private boolean kill_economyrewards;
 	private boolean kill_commandrewards;
+	private boolean participation_economyrewards;
+	private boolean participation_commandrewards;
 
 	private int econ_reward = 0;
 	private int kill_econ_reward = 0;
+	private int participation_econ_reward = 0;
 	private String command = "";
 	private String kill_command = "";
+	private String participation_command = "";
 	private ItemStack[] items = null;
 
 	public Rewards(JavaPlugin plugin) {
@@ -34,29 +38,41 @@ public class Rewards {
 		if (!MinigamesAPI.economy) {
 			economyrewards = false;
 			kill_economyrewards = false;
+			participation_economyrewards = false;
 		}
 	}
-	
-	public void reloadVariables(){
+
+	public void reloadVariables() {
 		economyrewards = plugin.getConfig().getBoolean("config.rewards.economy");
 		itemrewards = plugin.getConfig().getBoolean("config.rewards.item_reward");
 		commandrewards = plugin.getConfig().getBoolean("config.rewards.command_reward");
 		kill_economyrewards = plugin.getConfig().getBoolean("config.rewards.economy_for_kills");
 		kill_commandrewards = plugin.getConfig().getBoolean("config.rewards.command_reward_for_kills");
+		participation_economyrewards = plugin.getConfig().getBoolean("config.rewards.economy_for_participation");
+		participation_commandrewards = plugin.getConfig().getBoolean("config.rewards.command_reward_for_participation");
 
 		econ_reward = plugin.getConfig().getInt("config.rewards.economy_reward");
 		command = plugin.getConfig().getString("config.rewards.command");
 		items = Util.parseItems(plugin.getConfig().getString("config.rewards.item_reward_ids")).toArray(new ItemStack[0]);
 		kill_econ_reward = plugin.getConfig().getInt("config.rewards.economy_reward_for_kills");
 		kill_command = plugin.getConfig().getString("config.rewards.command_for_kills");
+		participation_econ_reward = plugin.getConfig().getInt("config.rewards.economy_reward_for_participation");
+		participation_command = plugin.getConfig().getString("config.rewards.command_for_participation");
 	}
 
+	/**
+	 * Give all win rewards to players who won the game
+	 * 
+	 * @param arena
+	 *            Arena
+	 */
 	public void giveRewardsToWinners(Arena arena) {
 		for (String p_ : arena.getAllPlayers()) {
 			giveWinReward(p_, arena);
 		}
 	}
 
+	@Deprecated
 	public void giveReward(String p_) {
 		if (Validator.isPlayerOnline(p_)) {
 			Player p = Bukkit.getPlayer(p_);
@@ -69,6 +85,14 @@ public class Rewards {
 		}
 	}
 
+	/**
+	 * Give a player a kill reward
+	 * 
+	 * @param p_
+	 *            Playername
+	 * @param reward
+	 *            Amount of statistics points the player gets
+	 */
 	public void giveKillReward(String p_, int reward) {
 		if (Validator.isPlayerOnline(p_)) {
 			Player p = Bukkit.getPlayer(p_);
@@ -86,6 +110,20 @@ public class Rewards {
 		}
 	}
 
+	/**
+	 * Gives a player an achievement reward
+	 * 
+	 * @param p_
+	 *            Playername
+	 * @param econ
+	 *            Whether economy rewards are enabled
+	 * @param command
+	 *            Whether command rewards are enabled
+	 * @param money_reward
+	 *            Amount of money to reward if economy rewards are enabled
+	 * @param cmd
+	 *            Command to execute if command rewards are enabled
+	 */
 	public void giveAchievementReward(String p_, boolean econ, boolean command, int money_reward, String cmd) {
 		if (Validator.isPlayerOnline(p_)) {
 			Player p = Bukkit.getPlayer(p_);
@@ -103,6 +141,16 @@ public class Rewards {
 		giveWinReward(p_, a, 1);
 	}
 
+	/**
+	 * Gives all rewards to a player who won and sends reward messages/win broadcasts
+	 * 
+	 * @param p_
+	 *            Playername
+	 * @param a
+	 *            Arena
+	 * @param global_multiplier
+	 *            Money reward multiplier (default: 1)
+	 */
 	public void giveWinReward(String p_, Arena a, int global_multiplier) {
 		if (Validator.isPlayerOnline(p_)) {
 			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
@@ -155,8 +203,12 @@ public class Rewards {
 						}
 					} else {
 						String msgs[] = pli.getMessagesConfig().server_broadcast_winner.replaceAll("<player>", p_).replaceAll("<arena>", a.getInternalName()).split(";");
-						for (String msg : msgs) {
-							p.sendMessage(msg);
+						for (String playername : a.getAllPlayers()) {
+							if (Validator.isPlayerOnline(playername)) {
+								for (String msg : msgs) {
+									Bukkit.getPlayer(playername).sendMessage(msg);
+								}
+							}
 						}
 					}
 				} catch (Exception e) {
@@ -165,6 +217,15 @@ public class Rewards {
 
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);
 				Util.sendMessage(plugin, p, received_rewards_msg);
+
+				// Participation Rewards
+				if (participation_economyrewards) {
+					MinigamesAPI.getAPI().econ.depositPlayer(p.getName(), participation_econ_reward);
+					Util.sendMessage(plugin, p, pli.getMessagesConfig().you_got_a_participation_reward.replaceAll("<economyreward>", Integer.toString(participation_econ_reward) + " " + MinigamesAPI.econ.currencyNamePlural()));
+				}
+				if (participation_commandrewards) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("<player>", p_));
+				}
 
 				if (plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners")) {
 					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
