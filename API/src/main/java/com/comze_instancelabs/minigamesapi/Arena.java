@@ -67,6 +67,7 @@ public class Arena {
 	private String permission_node;
 
 	private ArrayList<String> players = new ArrayList<String>();
+	private ArrayList<String> temp_players = new ArrayList<String>();
 
 	private ArenaType type = ArenaType.DEFAULT;
 	private ArenaState currentstate = ArenaState.JOIN;
@@ -703,7 +704,7 @@ public class Arena {
 
 					if (started_) {
 						if (!pnoreward.contains(playername)) {
-							pli.getRewardsInstance().giveWinReward(playername, a, global_coin_multiplier);
+							pli.getRewardsInstance().giveWinReward(playername, a, temp_players, global_coin_multiplier);
 						} else {
 							pnoreward.remove(playername);
 						}
@@ -1130,6 +1131,7 @@ public class Arena {
 		if (maximum_game_time != null) {
 			maximum_game_time.cancel();
 		}
+		temp_players = new ArrayList<String>(players);
 		if (!temp_delay_stopped) {
 			if (plugin.getConfig().getBoolean("config.delay.enabled")) {
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {

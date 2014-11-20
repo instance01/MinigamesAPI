@@ -1,5 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.util.ArrayList;
+
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
@@ -141,6 +143,10 @@ public class Rewards {
 		giveWinReward(p_, a, 1);
 	}
 
+	public void giveWinReward(String p_, Arena a, int global_multiplier) {
+		giveWinReward(p_, a, a.getAllPlayers(), global_multiplier);
+	}
+
 	/**
 	 * Gives all rewards to a player who won and sends reward messages/win broadcasts
 	 * 
@@ -148,10 +154,12 @@ public class Rewards {
 	 *            Playername
 	 * @param a
 	 *            Arena
+	 * @param players
+	 *            Optional array of players to send win broadcast to
 	 * @param global_multiplier
 	 *            Money reward multiplier (default: 1)
 	 */
-	public void giveWinReward(String p_, Arena a, int global_multiplier) {
+	public void giveWinReward(String p_, Arena a, ArrayList<String> players, int global_multiplier) {
 		if (Validator.isPlayerOnline(p_)) {
 			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 			final Player p = Bukkit.getPlayer(p_);
@@ -203,11 +211,9 @@ public class Rewards {
 						}
 					} else {
 						String msgs[] = pli.getMessagesConfig().server_broadcast_winner.replaceAll("<player>", p_).replaceAll("<arena>", a.getInternalName()).split(";");
-						for (String playername : a.getAllPlayers()) {
+						for (String playername : players) {
 							if (Validator.isPlayerOnline(playername)) {
-								for (String msg : msgs) {
-									Bukkit.getPlayer(playername).sendMessage(msg);
-								}
+								Bukkit.getPlayer(playername).sendMessage(msgs);
 							}
 						}
 					}
