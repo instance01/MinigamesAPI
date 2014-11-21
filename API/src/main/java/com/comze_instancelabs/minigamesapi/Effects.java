@@ -117,4 +117,22 @@ public class Effects {
 			}
 		}, 1L);
 	}
+
+	// TODO Unused right now
+	public void playAura(Player p, int cr) {
+		int cradius_s = cr * cr;
+		Location start = p.getLocation();
+		int x = start.getBlockX();
+		int y = start.getBlockY();
+		int z = start.getBlockZ();
+		for (int x_ = -cr; x_ <= cr; x_++) {
+			for (int z_ = -cr; z_ <= cr; z_++) {
+				int t = (x_ * x_) + (z_ * z_);
+				if (t >= cradius_s && t <= (cradius_s + 90)) {
+					p.playEffect(new Location(start.getWorld(), x - x_, y, z - z_), Effect.POTION_BREAK, 5);
+				}
+			}
+		}
+	}
+
 }

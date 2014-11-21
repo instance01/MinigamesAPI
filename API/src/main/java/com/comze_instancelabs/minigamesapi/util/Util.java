@@ -3,9 +3,12 @@ package com.comze_instancelabs.minigamesapi.util;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -603,7 +606,7 @@ public class Util {
 				MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
 			}
 		} catch (Exception e) {
-			if(MinigamesAPI.debug){
+			if (MinigamesAPI.debug) {
 				e.printStackTrace();
 			}
 			ret.add(new ItemStack(Material.STAINED_GLASS_PANE));
@@ -806,5 +809,63 @@ public class Util {
 			}
 		}
 		return ret;
+	}
+
+	static boolean windows = false;
+
+	public static void restartServer() {
+		String system = System.getProperty("os.name");
+		String startDir = System.getProperty("user.dir");
+		String fileName = "start.sh";
+		String jarFile = "craftbukkit.jar";
+		if (system.contains("Windows")) {
+			fileName = "start.bat";
+			windows = true;
+		}
+		if (Bukkit.getVersion().contains("Spigot")) {
+			jarFile = "spigot.jar";
+		}
+		System.out.println(Bukkit.getVersion());
+		System.out.println(system);
+		System.out.println(startDir);
+		final File f = new File(startDir + "\\" + fileName);
+		if (!f.exists()) {
+			PrintWriter writer;
+			try {
+
+				writer = new PrintWriter(f, "UTF-8");
+				if (windows) {
+					writer.println("@ECHO OFF");
+				} else {
+					writer.println("#!/bin/bash");
+				}
+				writer.println("java -Xms1024M -Xmx1024M -jar " + jarFile);
+				if (windows) {
+					writer.println("PAUSE");
+				}
+				writer.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				try {
+					if (windows) {
+						Runtime.getRuntime().exec("CMD /C START \"" + f.getPath() + "\"");
+					} else {
+						Runtime.getRuntime().exec("sh " + f);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+			public void run() {
+				Bukkit.getServer().shutdown();
+			}
+		}, 20L);
 	}
 }

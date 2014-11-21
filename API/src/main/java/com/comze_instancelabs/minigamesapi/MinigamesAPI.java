@@ -294,53 +294,81 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				cmdhandler.sendPartyHelp("/" + cmd.getName(), sender);
 			}
 		} else {
-			if (args.length > 1) {
+			if (args.length > 0) {
 				if (args[0].equalsIgnoreCase("info")) {
-					String p = args[1];
-					sender.sendMessage("Debug info about " + p);
-					sender.sendMessage("~ global_players: ");
-					for (PluginInstance pli : pinstances.values()) {
-						if (pli.global_players.containsKey(p)) {
-							sender.sendMessage(" " + pli.getPlugin().getName());
+					if (args.length > 1) {
+						String p = args[1];
+						sender.sendMessage("Debug info about " + p);
+						sender.sendMessage("~ global_players: ");
+						for (PluginInstance pli : pinstances.values()) {
+							if (pli.global_players.containsKey(p)) {
+								sender.sendMessage(" " + pli.getPlugin().getName());
+							}
+						}
+						sender.sendMessage("~ global_lost: ");
+						for (PluginInstance pli : pinstances.values()) {
+							if (pli.global_lost.containsKey(p)) {
+								sender.sendMessage(" " + pli.getPlugin().getName());
+							}
+						}
+						sender.sendMessage("~ SpectatorManager: ");
+						for (PluginInstance pli : pinstances.values()) {
+							if (pli.getSpectatorManager().isSpectating(Bukkit.getPlayer(p))) {
+								sender.sendMessage(" " + pli.getPlugin().getName());
+							}
+						}
+						sender.sendMessage("~ Arenas: ");
+						for (PluginInstance pli : pinstances.values()) {
+							if (pli.global_players.containsKey(p)) {
+								sender.sendMessage(" " + pli.global_players.get(p).getInternalName() + " - " + pli.global_players.get(p).getArenaState());
+							}
 						}
 					}
-					sender.sendMessage("~ global_lost: ");
-					for (PluginInstance pli : pinstances.values()) {
-						if (pli.global_lost.containsKey(p)) {
-							sender.sendMessage(" " + pli.getPlugin().getName());
-						}
+				} else if (args[0].equalsIgnoreCase("debug")) {
+					debug = !debug;
+					this.getConfig().set("config.debug", debug);
+					this.saveConfig();
+					sender.sendMessage(ChatColor.GOLD + "Debug mode is now: " + debug);
+				} else if (args[0].equalsIgnoreCase("list")) {
+					int c = 0;
+					for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
+						c++;
+						sender.sendMessage("~ " + pli.getPlugin().getName() + ": " + pli.getArenas().size() + " Arenas");
 					}
-					sender.sendMessage("~ SpectatorManager: ");
-					for (PluginInstance pli : pinstances.values()) {
-						if (pli.getSpectatorManager().isSpectating(Bukkit.getPlayer(p))) {
-							sender.sendMessage(" " + pli.getPlugin().getName());
-						}
+					if (c < 1) {
+						sender.sendMessage("~ No installed minigames found! Download/Install some from the project page.");
 					}
-					sender.sendMessage("~ Arenas: ");
-					for (PluginInstance pli : pinstances.values()) {
-						if (pli.global_players.containsKey(p)) {
-							sender.sendMessage(" " + pli.global_players.get(p).getInternalName() + " - " + pli.global_players.get(p).getArenaState());
-						}
-					}
-					return true;
+				} else if (args[0].equalsIgnoreCase("restartserver")) {
+					Util.restartServer();
 				}
-			}
-			if (args[0].equalsIgnoreCase("debug")) {
-				debug = !debug;
-				this.getConfig().set("config.debug", debug);
-				this.saveConfig();
-				sender.sendMessage(ChatColor.GOLD + "Debug mode is now: " + debug);
 				return true;
+			}
+			if (args.length < 1) {
+				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MinigamesLib <3");
+				int c = 0;
+				for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
+					c++;
+					sender.sendMessage("~ " + ChatColor.GRAY + pli.getPlugin().getName() + ": " + ChatColor.WHITE + pli.getArenas().size() + " Arenas");
+				}
+				if (c < 1) {
+					sender.sendMessage("~ No installed minigames found! Download/Install some from the project page.");
+				}
+				sender.sendMessage(ChatColor.GOLD + "Subcommands: ");
+				sender.sendMessage("/mapi info <player>");
+				sender.sendMessage("/mapi debug");
+				sender.sendMessage("/mapi list");
+				sender.sendMessage("/mapi restartserver");
+				sender.sendMessage("/mapi <potioneffect>");
 			}
 			if (sender instanceof Player && args.length > 0) {
 				Player p = (Player) sender;
 				boolean cont = false;
-				for (ParticleEffectNew f : ParticleEffectNew.values()){
-					if(f.name().equalsIgnoreCase(args[0])){
+				for (ParticleEffectNew f : ParticleEffectNew.values()) {
+					if (f.name().equalsIgnoreCase(args[0])) {
 						cont = true;
 					}
 				}
-				if(!cont){
+				if (!cont) {
 					sender.sendMessage(ChatColor.RED + "Couldn't find particle effect.");
 					return true;
 				}
