@@ -129,6 +129,8 @@ public class ArcadeInstance {
 			}
 		}
 
+		Util.updateSign(plugin, arena);
+
 		if (endOfGame) {
 			if (players.size() < 2) {
 				stopArcade(false);
@@ -281,12 +283,14 @@ public class ArcadeInstance {
 						currentarena = a;
 						PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 						for (String p_ : temp) {
-							String minigame = mg.getArenaListener().getName();
-							if (!a.containsPlayer(p_)) {
-								Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", Character.toUpperCase(minigame.charAt(0)) + minigame.substring(1)));
-								a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
+							if (Validator.isPlayerOnline(p_)) {
+								String minigame = mg.getArenaListener().getName();
+								if (!a.containsPlayer(p_)) {
+									Bukkit.getPlayer(p_).sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", Character.toUpperCase(minigame.charAt(0)) + minigame.substring(1)));
+									a.joinPlayerLobby(p_, ai, plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
+								}
+								pli.getSpectatorManager().setSpectate(Bukkit.getPlayer(p_), false);
 							}
-							pli.getSpectatorManager().setSpectate(Bukkit.getPlayer(p_), false);
 						}
 					} else {
 						nextMinigame(5L);

@@ -658,12 +658,14 @@ public class ArenaListener implements Listener {
 					Location l = Util.getComponentForArenaRaw(plugin, "random", "sign");
 					if (l != null) {
 						if (l.getWorld() != null) {
-							if (l.distance(s.getLocation()) < 1) {
-								for (Arena a : pli.getArenas()) {
-									if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
-										if (!a.containsPlayer(event.getPlayer().getName())) {
-											a.joinPlayerLobby(event.getPlayer().getName());
-											break;
+							if (l.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
+								if (l.distance(s.getLocation()) < 1) {
+									for (Arena a : pli.getArenas()) {
+										if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
+											if (!a.containsPlayer(event.getPlayer().getName())) {
+												a.joinPlayerLobby(event.getPlayer().getName());
+												break;
+											}
 										}
 									}
 								}

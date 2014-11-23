@@ -42,17 +42,7 @@ public class Arena {
 	private boolean isSuccessfullyInitialized = false;
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
-	HashMap<String, ItemStack[]> pinv = new HashMap<String, ItemStack[]>();
-	HashMap<String, ItemStack[]> pinv_armor = new HashMap<String, ItemStack[]>();
-	private HashMap<String, GameMode> pgamemode = new HashMap<String, GameMode>();
-	private HashMap<String, Integer> pxplvl = new HashMap<String, Integer>();
 	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
-
-	/**
-	 * Used when players leave with command, they shouldn't get rewards!
-	 */
-	private ArrayList<String> pnoreward = new ArrayList<String>();
-
 	HashMap<String, String> lastdamager = new HashMap<String, String>();
 
 	private Location mainlobby;
@@ -62,7 +52,6 @@ public class Arena {
 
 	private int max_players;
 	private int min_players;
-
 	private boolean viparena;
 	private String permission_node;
 
@@ -406,6 +395,7 @@ public class Arena {
 
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			final Player p = Bukkit.getPlayer(playername);
+			final ArenaPlayer ap = ArenaPlayer.getPlayerInstance(playername);
 			Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinLobbyEvent(p, plugin, this));
 			Util.sendMessage(plugin, p, pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getDisplayName()));
 			Util.sendMessage(plugin, p, pli.getMessagesConfig().minigame_description);
@@ -429,16 +419,15 @@ public class Arena {
 				this.skip_join_lobby = plugin.getConfig().getBoolean("config.skip_lobby");
 			}
 
-			pinv.put(playername, p.getInventory().getContents());
-			pinv_armor.put(playername, p.getInventory().getArmorContents());
+			ap.setInventories(p.getInventory().getContents(), p.getInventory().getArmorContents());
 			if (this.getArenaType() == ArenaType.JUMPNRUN) {
 				Util.teleportPlayerFixed(p, this.spawns.get(currentspawn));
 				if (currentspawn < this.spawns.size() - 1) {
 					currentspawn++;
 				}
 				Util.clearInv(p);
-				pgamemode.put(p.getName(), p.getGameMode());
-				pxplvl.put(p.getName(), p.getExpToLevel());
+				ap.setOriginalGamemode(p.getGameMode());
+				ap.setOriginalXplvl(p.getExpToLevel());
 				p.setGameMode(GameMode.SURVIVAL);
 				p.setHealth(20D);
 				return;
@@ -461,8 +450,8 @@ public class Arena {
 					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 						public void run() {
 							Util.giveLobbyItems(plugin, p);
-							pgamemode.put(p.getName(), p.getGameMode());
-							pxplvl.put(p.getName(), p.getLevel());
+							ap.setOriginalGamemode(p.getGameMode());
+							ap.setOriginalXplvl(p.getExpToLevel());
 							p.setGameMode(GameMode.SURVIVAL);
 						}
 					}, 15L);
@@ -485,8 +474,8 @@ public class Arena {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					Util.giveLobbyItems(plugin, p);
-					pgamemode.put(p.getName(), p.getGameMode());
-					pxplvl.put(p.getName(), p.getLevel());
+					ap.setOriginalGamemode(p.getGameMode());
+					ap.setOriginalXplvl(p.getExpToLevel());
 					p.setGameMode(GameMode.SURVIVAL);
 					p.setHealth(20D);
 				}
@@ -544,7 +533,8 @@ public class Arena {
 
 	public void leavePlayer(final String playername, boolean fullLeave, boolean endofGame) {
 		if (!endofGame) {
-			pnoreward.add(playername);
+			ArenaPlayer ap = ArenaPlayer.getPlayerInstance(playername);
+			ap.setNoReward(true);
 		}
 
 		this.leavePlayer(playername, fullLeave);
@@ -579,6 +569,7 @@ public class Arena {
 			return;
 		}
 		final Player p = Bukkit.getPlayer(playername);
+		final ArenaPlayer ap = ArenaPlayer.getPlayerInstance(playername);
 		if (p == null) {
 			return;
 		}
@@ -589,7 +580,7 @@ public class Arena {
 				public void run() {
 					leavePlayerRaw(playername, fullLeave);
 				}
-			}, 5L);
+			}, 10L);
 			return;
 		}
 		this.players.remove(playername);
@@ -599,7 +590,7 @@ public class Arena {
 		if (fullLeave) {
 			plugin.getConfig().set("temp.left_players." + playername + ".name", playername);
 			plugin.getConfig().set("temp.left_players." + playername + ".plugin", plugin.getName());
-			for (ItemStack i : pinv.get(playername)) {
+			for (ItemStack i : ap.getInventory()) {
 				if (i != null) {
 					plugin.getConfig().set("temp.left_players." + playername + ".items." + Integer.toString((int) Math.round(Math.random() * 10000)) + i.getType().toString(), i);
 				}
@@ -621,15 +612,11 @@ public class Arena {
 					if (!p.isOp()) {
 						p.setAllowFlight(false);
 					}
-					if (pgamemode.containsKey(p.getName())) {
-						p.setGameMode(pgamemode.get(p.getName()));
-					}
-					if (pxplvl.containsKey(p.getName())) {
-						p.setLevel(0);
-						p.setLevel(pxplvl.get(p.getName()));
-					}
-					p.getInventory().setContents(pinv.get(playername));
-					p.getInventory().setArmorContents(pinv_armor.get(playername));
+					p.setGameMode(ap.getOriginalGamemode());
+					p.setLevel(0);
+					p.setLevel(ap.getOriginalXplvl());
+					p.getInventory().setContents(ap.getInventory());
+					p.getInventory().setArmorContents(ap.getArmorInventory());
 					p.updateInventory();
 
 					p.setWalkSpeed(0.2F);
@@ -691,22 +678,19 @@ public class Arena {
 					if (!p.isOp()) {
 						p.setAllowFlight(false);
 					}
-					if (pgamemode.containsKey(p.getName())) {
-						p.setGameMode(pgamemode.get(p.getName()));
-					}
-					if (pxplvl.containsKey(p.getName())) {
-						p.setLevel(0);
-						p.setLevel(pxplvl.get(p.getName()));
-					}
-					p.getInventory().setContents(pinv.get(playername));
-					p.getInventory().setArmorContents(pinv_armor.get(playername));
+					p.setGameMode(ap.getOriginalGamemode());
+					p.setLevel(0);
+					p.setLevel(ap.getOriginalXplvl());
+					p.getInventory().setContents(ap.getInventory());
+					p.getInventory().setArmorContents(ap.getArmorInventory());
+					p.updateInventory();
 					p.updateInventory();
 
 					if (started_) {
-						if (!pnoreward.contains(playername)) {
+						if (!ap.isNoReward()) {
 							pli.getRewardsInstance().giveWinReward(playername, a, temp_players, global_coin_multiplier);
 						} else {
-							pnoreward.remove(playername);
+							ap.setNoReward(false);
 						}
 					}
 
@@ -1111,7 +1095,7 @@ public class Arena {
 	}
 
 	/**
-	 * Gets executed after an arena started (after lobby countdown)
+	 * Gets executed after an arena started (after ingame countdown)
 	 */
 	public void started() {
 		System.out.println(this.getInternalName() + " started.");
@@ -1200,9 +1184,6 @@ public class Arena {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
 				players.clear();
-				pinv.clear();
-				pinv_armor.clear();
-				pnoreward.clear();
 				for (IconMenu im : pli.getClassesHandler().lasticonm.values()) {
 					im.destroy();
 				}
