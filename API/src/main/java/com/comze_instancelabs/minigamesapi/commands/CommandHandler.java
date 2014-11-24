@@ -692,35 +692,41 @@ public class CommandHandler {
 			if (!plugin.getConfig().getBoolean("config.classes_enabled")) {
 				return true;
 			}
-			if (pli.global_players.containsKey(p.getName())) {
-				Arena a = pli.global_players.get(p.getName());
-				if (a.getArenaState() != ArenaState.INGAME) {
-					String kit = args[1];
-					AClass ac = pli.getClassesHandler().getClassByInternalname(kit);
-					if (ac != null) {
-						if (pli.getAClasses().containsKey(ac.getName())) {
-							if (ac.isEnabled()) {
-								pli.getClassesHandler().setClass(kit, p.getName(), true);
-								return true;
-							}
-						}
+			if (!plugin.getConfig().getBoolean("config.allow_classes_selection_out_of_arenas")) {
+				if (pli.global_players.containsKey(p.getName())) {
+					Arena a = pli.global_players.get(p.getName());
+					if (a.getArenaState() == ArenaState.INGAME) {
+						return true;
 					}
-
-					String all = "";
-					for (AClass k : pli.getAClasses().values()) {
-						if (k.isEnabled()) {
-							all += k.getInternalName() + ", ";
-						}
-					}
-					if (all.length() < 2) {
-						all = "No kits found!  ";
-					}
-					all = all.substring(0, all.length() - 2);
-					sender.sendMessage(pli.getMessagesConfig().possible_kits + all);
+				} else {
+					sender.sendMessage(pli.getMessagesConfig().not_in_arena);
+					return true;
 				}
-			} else {
-				sender.sendMessage(pli.getMessagesConfig().not_in_arena);
 			}
+
+			String kit = args[1];
+			AClass ac = pli.getClassesHandler().getClassByInternalname(kit);
+			if (ac != null) {
+				if (pli.getAClasses().containsKey(ac.getName())) {
+					if (ac.isEnabled()) {
+						pli.getClassesHandler().setClass(kit, p.getName(), true);
+						return true;
+					}
+				}
+			}
+
+			String all = "";
+			for (AClass k : pli.getAClasses().values()) {
+				if (k.isEnabled()) {
+					all += k.getInternalName() + ", ";
+				}
+			}
+			if (all.length() < 2) {
+				all = "No kits found!  ";
+			}
+			all = all.substring(0, all.length() - 2);
+			sender.sendMessage(pli.getMessagesConfig().possible_kits + all);
+
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <kit>");
 			if (!plugin.getConfig().getBoolean("config.classes_enabled")) {
