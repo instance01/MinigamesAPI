@@ -755,7 +755,8 @@ public class ArenaListener implements Listener {
 			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.extra_lobby_item.item0.item")) {
 				if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
 					if (a.getArenaState() != ArenaState.INGAME) {
-						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
+						// Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
+						p.performCommand(plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
 					}
 				}
 			}
