@@ -1,5 +1,12 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,8 +18,12 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import com.comze_instancelabs.minigamesapi.util.ArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.ChangeCause;
+import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
@@ -139,31 +150,7 @@ public class SmartReset {
 	public void resetRaw() {
 		for (final SmartArenaBlock ablock : changed.values()) {
 			try {
-				final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
-				if (b_.getType() == Material.FURNACE) {
-					((Furnace) b_.getState()).getInventory().clear();
-					((Furnace) b_.getState()).update();
-				}
-				if (b_.getType() == Material.CHEST) {
-					((Chest) b_.getState()).getBlockInventory().clear();
-					((Chest) b_.getState()).update();
-				}
-				if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
-					b_.setType(ablock.getMaterial());
-					b_.setData(ablock.getData());
-				}
-				if (b_.getType() == Material.CHEST) {
-					((Chest) b_.getState()).getBlockInventory().clear();
-					((Chest) b_.getState()).update();
-					HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
-					for (Integer i : chestinv.keySet()) {
-						ItemStack item = chestinv.get(i);
-						if (item != null) {
-							((Chest) b_.getState()).getBlockInventory().setItem(i, item);
-						}
-					}
-					((Chest) b_.getState()).update();
-				}
+				resetSmartResetBlock(ablock);
 			} catch (IllegalStateException e) {
 
 			}
@@ -172,5 +159,111 @@ public class SmartReset {
 		changed.clear();
 		a.setArenaState(ArenaState.JOIN);
 		Util.updateSign(a.plugin, a);
+	}
+
+	public void resetSmartResetBlock(SmartArenaBlock ablock) {
+		final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+		if (b_.getType() == Material.FURNACE) {
+			((Furnace) b_.getState()).getInventory().clear();
+			((Furnace) b_.getState()).update();
+		}
+		if (b_.getType() == Material.CHEST) {
+			((Chest) b_.getState()).getBlockInventory().clear();
+			((Chest) b_.getState()).update();
+		}
+		if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+			b_.setType(ablock.getMaterial());
+			b_.setData(ablock.getData());
+		}
+		if (b_.getType() == Material.CHEST) {
+			((Chest) b_.getState()).getBlockInventory().clear();
+			((Chest) b_.getState()).update();
+			HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
+			for (Integer i : chestinv.keySet()) {
+				ItemStack item = chestinv.get(i);
+				if (item != null) {
+					((Chest) b_.getState()).getBlockInventory().setItem(i, item);
+				}
+			}
+			((Chest) b_.getState()).update();
+		}
+	}
+
+	public void saveSmartBlocksToFile() {
+		File f = new File(a.getPlugin().getDataFolder() + "/" + a.getInternalName() + "_smart");
+
+		FileOutputStream fos;
+		ObjectOutputStream oos = null;
+		try {
+			fos = new FileOutputStream(f);
+			oos = new BukkitObjectOutputStream(fos);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		for (SmartArenaBlock bl : changed.values()) {
+			try {
+				oos.writeObject(bl);
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+
+		try {
+			oos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		MinigamesAPI.getAPI().getLogger().info("Saved SmartBlocks of " + a.getInternalName());
+	}
+
+	public void loadSmartBlocksFromFile() {
+		File f = new File(a.getPlugin().getDataFolder() + "/" + a.getInternalName() + "_smart");
+		if (!f.exists()) {
+			return;
+		}
+		FileInputStream fis = null;
+		BukkitObjectInputStream ois = null;
+		try {
+			fis = new FileInputStream(f);
+			ois = new BukkitObjectInputStream(fis);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			while (true) {
+				Object b = null;
+				try {
+					b = ois.readObject();
+				} catch (EOFException e) {
+					MinigamesAPI.getAPI().getLogger().info("Finished restoring SmartReset blocks for " + a.getInternalName() + ".");
+				} catch (ClosedChannelException e) {
+					System.out.println("Something is wrong with your SmartReset file and the reset might not be successful.");
+				}
+
+				if (b != null) {
+					SmartArenaBlock ablock = (SmartArenaBlock) b;
+					this.resetSmartResetBlock(ablock);
+				} else {
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ois.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (f.exists()) {
+			f.delete();
+		}
 	}
 }

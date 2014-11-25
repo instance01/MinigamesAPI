@@ -30,6 +30,7 @@ import com.comze_instancelabs.minigamesapi.guns.Guns;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Metrics;
+import com.comze_instancelabs.minigamesapi.util.Metrics.Graph;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Updater;
 import com.comze_instancelabs.minigamesapi.util.Util;
@@ -53,6 +54,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	public StatsGlobalConfig statsglobal;
 
 	public String version = "";
+
+	Metrics metrics;
 
 	public void onEnable() {
 		instance = this;
@@ -83,11 +86,30 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 
 		this.debug = getConfig().getBoolean("config.debug");
 
-		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		} catch (IOException e) {
-		}
+		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+			public void run() {
+				try {
+					metrics = new Metrics(instance);
+
+					Graph components = metrics.createGraph("Minigames");
+					for (PluginInstance pli : pinstances.values()) {
+						components.addPlotter(new Metrics.Plotter(pli.getPlugin().getName()) {
+							@Override
+							public int getValue() {
+								return 1;
+							}
+						});
+						if (MinigamesAPI.debug) {
+							System.out.println("Loaded Graph for: " + pli.getPlugin().getName());
+						}
+					}
+
+					metrics.start();
+				} catch (IOException e) {
+					System.out.println("# " + e.getMessage());
+				}
+			}
+		}, 60L);
 
 		if (getConfig().getBoolean("config.auto_updating")) {
 			Updater updater = new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
@@ -99,14 +121,16 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 
 		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
 			public void run() {
+				// Reset all arena signs and check if any arena was interrupted
 				int i = 0;
 				for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
 					for (Arena a : pli.getArenas()) {
 						if (a != null) {
 							if (a.isSuccessfullyInit()) {
 								Util.updateSign(pli.getPlugin(), a);
+								a.getSmartReset().loadSmartBlocksFromFile();
 							} else {
-								System.out.println(a.getName() + " not initialized at onEnable.");
+								System.out.println(a.getInternalName() + " not initialized at onEnable.");
 							}
 						}
 						i++;
@@ -122,6 +146,9 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 			for (Arena a : pli.getArenas()) {
 				if (a != null) {
 					if (a.isSuccessfullyInit()) {
+						if (a.getArenaState() != ArenaState.JOIN) {
+							a.getSmartReset().saveSmartBlocksToFile();
+						}
 						ArrayList<String> temp = new ArrayList<String>(a.getAllPlayers());
 						for (String p_ : temp) {
 							a.leavePlayer(p_, true);
