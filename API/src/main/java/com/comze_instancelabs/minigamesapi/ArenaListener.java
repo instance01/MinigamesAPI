@@ -249,7 +249,9 @@ public class ArenaListener implements Listener {
 
 			final Arena arena = pli.global_players.get(p.getName());
 			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.startedIngameCountdown)) {
-				Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
+				if (arena.isArcadeMain()) {
+					Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
+				}
 				return;
 			}
 

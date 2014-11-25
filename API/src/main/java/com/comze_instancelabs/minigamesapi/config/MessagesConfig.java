@@ -148,7 +148,7 @@ public class MessagesConfig {
 			this.getConfig().addDefault("messages.stats.line4", "&7Alltime Deaths: &c<alltime_deaths>");
 			this.getConfig().addDefault("messages.stats.line5", "&7KDR: &e<kdr>");
 			this.getConfig().addDefault("messages.stats.line6", "&7Points: &e<points>");
-			this.getConfig().addDefault("messages.stats.line7", " ;&7------------------");
+			this.getConfig().addDefault("messages.stats.line7", " ;&7-----------------");
 		}
 
 		// save
