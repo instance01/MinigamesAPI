@@ -152,22 +152,24 @@ public class ArenaListener implements Listener {
 							}
 						}
 					} else if (a.getArenaState() == ArenaState.STARTING || a.getArenaState() == ArenaState.JOIN) {
-						if (!a.startedIngameCountdown) {
-							if (p.getLocation().getBlockY() < 0) {
-								try {
-									Util.teleportPlayerFixed(p, a.getWaitingLobbyTemp());
-								} catch (Exception e) {
-									System.out.println("Waiting lobby for arena " + a.getInternalName() + " missing, please fix by setting it. " + e.getMessage());
-								}
-							}
-							if (a.getLobbyBoundaries() != null && !a.skip_join_lobby) {
-								if (!a.getLobbyBoundaries().containsLocWithoutY(p.getLocation())) {
-									Vector direction = a.getWaitingLobbyTemp().toVector().subtract(p.getLocation().toVector()).normalize();
-									p.setVelocity(direction);
-									if (p.isInsideVehicle()) {
-										p.getVehicle().setVelocity(direction.multiply(2D));
+						if (!a.isArcadeMain()) {
+							if (!a.startedIngameCountdown) {
+								if (p.getLocation().getBlockY() < 0) {
+									try {
+										Util.teleportPlayerFixed(p, a.getWaitingLobbyTemp());
+									} catch (Exception e) {
+										System.out.println("Waiting lobby for arena " + a.getInternalName() + " missing, please fix by setting it. " + e.getMessage());
 									}
-									p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+								}
+								if (a.getLobbyBoundaries() != null && !a.skip_join_lobby) {
+									if (!a.getLobbyBoundaries().containsLocWithoutY(p.getLocation())) {
+										Vector direction = a.getWaitingLobbyTemp().toVector().subtract(p.getLocation().toVector()).normalize();
+										p.setVelocity(direction);
+										if (p.isInsideVehicle()) {
+											p.getVehicle().setVelocity(direction.multiply(2D));
+										}
+										p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+									}
 								}
 							}
 						}

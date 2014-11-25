@@ -750,31 +750,7 @@ public class Arena {
 						}
 					}, 20L);
 				} else {
-					if (plugin.getConfig().getBoolean("config.effects")) {
-						try {
-							Effects.playFakeBed(this, p);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					final Location temp = this.spawns.get(0);
-					try {
-						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-							public void run() {
-								if (specspawn != null) {
-									Util.teleportPlayerFixed(p, specspawn);
-								} else {
-									Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
-								}
-							}
-						}, 2L);
-					} catch (Exception e) {
-						if (specspawn != null) {
-							Util.teleportPlayerFixed(p, specspawn);
-						} else {
-							Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
-						}
-					}
+					spectateRaw(p);
 				}
 			} else {
 				if (this.getPlayerAlive() < 2) {
@@ -785,31 +761,7 @@ public class Arena {
 						}
 					}, 20L);
 				} else {
-					if (plugin.getConfig().getBoolean("config.effects")) {
-						try {
-							Effects.playFakeBed(this, p);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					final Location temp = this.spawns.get(0);
-					try {
-						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-							public void run() {
-								if (specspawn != null) {
-									Util.teleportPlayerFixed(p, specspawn);
-								} else {
-									Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
-								}
-							}
-						}, 2L);
-					} catch (Exception e) {
-						if (specspawn != null) {
-							Util.teleportPlayerFixed(p, specspawn);
-						} else {
-							Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
-						}
-					}
+					spectateRaw(p);
 				}
 			}
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -818,6 +770,34 @@ public class Arena {
 					Util.giveSpectatorItems(plugin, p);
 				}
 			}, 3L);
+		}
+	}
+
+	private void spectateRaw(final Player p) {
+		if (plugin.getConfig().getBoolean("config.effects")) {
+			try {
+				Effects.playFakeBed(this, p);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		final Location temp = this.spawns.get(0);
+		try {
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+				public void run() {
+					if (specspawn != null) {
+						Util.teleportPlayerFixed(p, specspawn);
+					} else {
+						Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+					}
+				}
+			}, 2L);
+		} catch (Exception e) {
+			if (specspawn != null) {
+				Util.teleportPlayerFixed(p, specspawn);
+			} else {
+				Util.teleportPlayerFixed(p, temp.clone().add(0D, 30D, 0D));
+			}
 		}
 	}
 
