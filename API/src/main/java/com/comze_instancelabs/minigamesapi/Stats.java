@@ -125,6 +125,20 @@ public class Stats {
 		MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateKillerStats(playername);
 	}
 
+	public void addDeath(String playername) {
+		StatsConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig();
+		int temp = 0;
+		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
+		if (config.getConfig().isSet("players." + uuid + ".deaths")) {
+			temp = config.getConfig().getInt("players." + uuid + ".deaths");
+		}
+		temp++;
+		config.getConfig().set("players." + uuid + ".deaths", temp);
+		config.getConfig().set("players." + uuid + ".playername", playername);
+		config.saveConfig();
+		MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateDeathStats(playername);
+	}
+
 	public void addPoints(String playername, int count) {
 		StatsConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig();
 		int temp = 0;
@@ -163,11 +177,29 @@ public class Stats {
 		return 0;
 	}
 
+	public int getLoses(String playername) {
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
+		if (config.isSet("players." + uuid + ".loses")) {
+			return config.getInt("players." + uuid + ".loses");
+		}
+		return 0;
+	}
+
 	public int getKills(String playername) {
 		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.isSet("players." + uuid + ".kills")) {
 			return config.getInt("players." + uuid + ".kills");
+		}
+		return 0;
+	}
+
+	public int getDeaths(String playername) {
+		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
+		if (config.isSet("players." + uuid + ".deaths")) {
+			return config.getInt("players." + uuid + ".deaths");
 		}
 		return 0;
 	}

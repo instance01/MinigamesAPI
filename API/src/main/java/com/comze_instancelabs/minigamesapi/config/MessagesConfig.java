@@ -140,6 +140,16 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.compass.no_player_found", compass_no_player_found);
 		this.getConfig().addDefault("messages.compass.found_player", compass_player_found);
 		this.getConfig().addDefault("messages.you_got_a_participation_reward", you_got_a_participation_reward);
+		if (!this.getConfig().isSet("config.generatedv1102")) {
+			this.getConfig().addDefault("messages.stats.line0", "&7----- &a&lStats &7-----; ");
+			this.getConfig().addDefault("messages.stats.line1", "&7Wins: &a<wins>");
+			this.getConfig().addDefault("messages.stats.line2", "&7Loses: &c<loses>");
+			this.getConfig().addDefault("messages.stats.line3", "&7Alltime Kills: &a<alltime_kills>");
+			this.getConfig().addDefault("messages.stats.line4", "&7Alltime Deaths: &c<alltime_deaths>");
+			this.getConfig().addDefault("messages.stats.line5", "&7KDR: &e<kdr>");
+			this.getConfig().addDefault("messages.stats.line6", "&7Points: &e<points>");
+			this.getConfig().addDefault("messages.stats.line7", " ;&7------------------");
+		}
 
 		// save
 		this.getConfig().options().copyDefaults(true);
@@ -216,6 +226,7 @@ public class MessagesConfig {
 		this.all_guns = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.all_guns"));
 
 		this.getConfig().set("config.generatedv182", true);
+		this.getConfig().set("config.generatedv1102", true);
 		this.saveConfig();
 	}
 

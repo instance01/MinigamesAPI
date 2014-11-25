@@ -776,10 +776,11 @@ public class CommandHandler {
 	}
 
 	public boolean getStats(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
-		sender.sendMessage(ChatColor.DARK_GREEN + "--- Stats ---");
-		sender.sendMessage(ChatColor.DARK_AQUA + "Wins - " + pli.getStatsInstance().getWins(p.getName()));
-		sender.sendMessage(ChatColor.DARK_AQUA + "Kills - " + pli.getStatsInstance().getKills(p.getName()));
-		sender.sendMessage(ChatColor.DARK_AQUA + "Points - " + pli.getStatsInstance().getPoints(p.getName()));
+		Util.sendStatsMessage(pli, p);
+		// sender.sendMessage(ChatColor.DARK_GREEN + "--- Stats ---");
+		// sender.sendMessage(ChatColor.DARK_AQUA + "Wins - " + pli.getStatsInstance().getWins(p.getName()));
+		// sender.sendMessage(ChatColor.DARK_AQUA + "Kills - " + pli.getStatsInstance().getKills(p.getName()));
+		// sender.sendMessage(ChatColor.DARK_AQUA + "Points - " + pli.getStatsInstance().getPoints(p.getName()));
 		return true;
 	}
 

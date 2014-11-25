@@ -694,6 +694,10 @@ public class Arena {
 						}
 					}
 
+					if (plugin.getConfig().getBoolean("config.send_stats_on_stop")) {
+						Util.sendStatsMessage(pli, p);
+					}
+
 					if (pli.global_lost.containsKey(playername)) {
 						pli.global_lost.remove(playername);
 					}
@@ -1257,6 +1261,7 @@ public class Arena {
 		if (lastdamager.containsKey(playername)) {
 			Player killer = Bukkit.getPlayer(lastdamager.get(playername));
 			if (killer != null) {
+				pli.getStatsInstance().addDeath(playername);
 				pli.getRewardsInstance().giveKillReward(killer.getName(), 2);
 				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
 				for (String p_ : this.getAllPlayers()) {

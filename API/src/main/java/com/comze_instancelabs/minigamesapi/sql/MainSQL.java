@@ -60,6 +60,11 @@ public class MainSQL {
 				// old table format without kills column -> add kills column
 				c.createStatement().execute("ALTER TABLE " + plugin.getName() + " ADD kills INT");
 			}
+			ResultSet res2 = c.createStatement().executeQuery("SHOW COLUMNS FROM `" + plugin.getName() + "` LIKE 'deaths'");
+			if (!res2.isBeforeFirst()) {
+				// old table format without deaths column -> add deaths column
+				c.createStatement().execute("ALTER TABLE " + plugin.getName() + " ADD deaths INT");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -80,7 +85,7 @@ public class MainSQL {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 			if (!res3.isBeforeFirst()) {
 				// there's no such user
-				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '" + Integer.toString(wincount) + "', '0', '0')");
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '" + Integer.toString(reward) + "', '" + Integer.toString(wincount) + "', '0', '0', '0')");
 				return;
 			}
 			res3.next();
@@ -107,7 +112,7 @@ public class MainSQL {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 			if (!res3.isBeforeFirst()) {
 				// there's no such user
-				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '1', '0')");
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '1', '0', '0')");
 				return;
 			}
 			res3.next();
@@ -133,11 +138,11 @@ public class MainSQL {
 			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
 			if (!res3.isBeforeFirst()) {
 				// there's no such user
-				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '0', '1')");
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '0', '1', '0')");
 				return;
 			}
 			res3.next();
-			int kills = res3.getInt("kills");
+			int kills = res3.getInt("kills") + 1;
 
 			c.createStatement().executeUpdate("UPDATE " + plugin.getName() + " SET kills='" + Integer.toString(kills) + "' WHERE player='" + p_ + "'");
 
@@ -146,6 +151,32 @@ public class MainSQL {
 		}
 	}
 
+	public void updateDeathStats(String p_) {
+		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
+			return;
+		}
+		if (!mysql) {
+			// TODO SQLite
+		}
+		Connection c = MySQL.open();
+
+		try {
+			ResultSet res3 = c.createStatement().executeQuery("SELECT * FROM " + plugin.getName() + " WHERE player='" + p_ + "'");
+			if (!res3.isBeforeFirst()) {
+				// there's no such user
+				c.createStatement().executeUpdate("INSERT INTO " + plugin.getName() + " VALUES('0', '" + p_ + "', '0', '0', '0', '0', '1')");
+				return;
+			}
+			res3.next();
+			int deaths = res3.getInt("deaths") + 1;
+
+			c.createStatement().executeUpdate("UPDATE " + plugin.getName() + " SET deaths='" + Integer.toString(deaths) + "' WHERE player='" + p_ + "'");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public int getPoints(String p_) {
 		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
 			return -1;

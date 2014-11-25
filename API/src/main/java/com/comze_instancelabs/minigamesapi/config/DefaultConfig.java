@@ -86,6 +86,7 @@ public class DefaultConfig {
 			config.addDefault("config.chat_show_score_in_arena", false);
 			config.addDefault("config.compass_tracking_enabled", true);
 			config.addDefault("config.allow_classes_selection_out_of_arenas", false);
+			config.addDefault("config.send_stats_on_stop", true);
 
 			config.addDefault("config.extra_lobby_item.item0.enabled", false);
 			config.addDefault("config.extra_lobby_item.item0.item", 9);

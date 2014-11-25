@@ -868,4 +868,21 @@ public class Util {
 			}
 		}, 20L);
 	}
+
+	public static void sendStatsMessage(PluginInstance pli, Player p) {
+		if (pli.getMessagesConfig().getConfig().isSet("messages.stats")) {
+			int kills_ = pli.getStatsInstance().getKills(p.getName());
+			int deaths_ = pli.getStatsInstance().getDeaths(p.getName());
+			String wins = Integer.toString(pli.getStatsInstance().getWins(p.getName()));
+			String loses = Integer.toString(pli.getStatsInstance().getLoses(p.getName()));
+			String kills = Integer.toString(kills_);
+			String deaths = Integer.toString(deaths_);
+			String points = Integer.toString(pli.getStatsInstance().getPoints(p.getName()));
+			String kdr = Integer.toString(Math.max(kills_, 1) / Math.max(deaths_, 1));
+			for (String key : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.stats").getKeys(false)) {
+				String msg = pli.getMessagesConfig().getConfig().getString("messages.stats." + key).replaceAll("<wins>", wins).replaceAll("<loses>", loses).replaceAll("<alltime_kills>", kills).replaceAll("<alltime_deaths>", deaths).replaceAll("<points>", points).replaceAll("<kdr>", kdr);
+				Util.sendMessage(pli.getPlugin(), p, ChatColor.translateAlternateColorCodes('&', msg));
+			}
+		}
+	}
 }
