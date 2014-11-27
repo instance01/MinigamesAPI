@@ -1,4 +1,4 @@
-MinigamesAPI [![Build Status](https://drone.io/github.com/instance01/MinigamesAPI/status.png)](https://drone.io/github.com/instance01/MinigamesAPI/latest)
+MinigamesAPI [![Build Status](https://drone.io/github.com/instance01/MinigamesAPI/status.png?1)](https://drone.io/github.com/instance01/MinigamesAPI/latest)
 ============
 
 Rich MinigamesAPI supporting different types of Minigames.
@@ -50,7 +50,7 @@ Maven
 <dependency>
   <groupId>com.comze_instancelabs</groupId>
   <artifactId>MinigamesLib</artifactId>
-  <version>1.9.0</version>
+  <version>1.11.0</version>
 </dependency>
 
 
