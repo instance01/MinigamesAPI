@@ -427,7 +427,7 @@ public class Arena {
 				}
 				Util.clearInv(p);
 				ap.setOriginalGamemode(p.getGameMode());
-				ap.setOriginalXplvl(p.getExpToLevel());
+				ap.setOriginalXplvl(p.getLevel());
 				p.setGameMode(GameMode.SURVIVAL);
 				p.setHealth(20D);
 				return;
@@ -451,7 +451,7 @@ public class Arena {
 						public void run() {
 							Util.giveLobbyItems(plugin, p);
 							ap.setOriginalGamemode(p.getGameMode());
-							ap.setOriginalXplvl(p.getExpToLevel());
+							ap.setOriginalXplvl(p.getLevel());
 							p.setGameMode(GameMode.SURVIVAL);
 						}
 					}, 15L);
@@ -475,7 +475,7 @@ public class Arena {
 				public void run() {
 					Util.giveLobbyItems(plugin, p);
 					ap.setOriginalGamemode(p.getGameMode());
-					ap.setOriginalXplvl(p.getExpToLevel());
+					ap.setOriginalXplvl(p.getLevel());
 					p.setGameMode(GameMode.SURVIVAL);
 					p.setHealth(20D);
 				}
