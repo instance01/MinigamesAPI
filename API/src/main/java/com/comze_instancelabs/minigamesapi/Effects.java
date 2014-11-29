@@ -135,7 +135,20 @@ public class Effects {
 		}
 	}
 
-	public static void playTitle(Player player, String title) {
+	/**
+	 * Plays a title/subtitle
+	 * 
+	 * @param player
+	 *            Player to play the title to
+	 * @param title
+	 *            The title string
+	 * @param enumindex
+	 *            The enum index, can be 0 for title, 1 for subtitle, 4 for reset
+	 */
+	public static void playTitle(Player player, String title, int enumindex) {
+		if (enumindex > 4) {
+			enumindex = 0;
+		}
 		try {
 			final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
 			final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
@@ -146,13 +159,12 @@ public class Effects {
 			Constructor packetPlayOutTitleConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutTitle").getConstructor();
 
 			final Object packet = packetPlayOutTitleConstr.newInstance();
-			setValue(packet, "a", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumTitleAction").getEnumConstants()[0]);
+			setValue(packet, "a", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumTitleAction").getEnumConstants()[enumindex]);
 			setValue(packet, "b", a.invoke(null, "{text:\"" + title + "\"}"));
 
 			sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packet);
-
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Failed sending title packet: " + e.getMessage());
 		}
 	}
 

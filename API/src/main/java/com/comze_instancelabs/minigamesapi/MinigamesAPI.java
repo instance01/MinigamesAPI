@@ -370,7 +370,13 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				} else if (args[0].equalsIgnoreCase("title")) {
 					if (args.length > 1) {
 						if (sender instanceof Player) {
-							Effects.playTitle((Player) sender, args[1]);
+							Effects.playTitle((Player) sender, args[1], 0);
+						}
+					}
+				} else if (args[0].equalsIgnoreCase("subtitle")) {
+					if (args.length > 1) {
+						if (sender instanceof Player) {
+							Effects.playTitle((Player) sender, args[1], 1);
 						}
 					}
 				}
