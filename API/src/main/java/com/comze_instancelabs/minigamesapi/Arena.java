@@ -447,11 +447,11 @@ public class Arena {
 							Util.clearInv(p);
 						}
 					}, 10L);
+					ap.setOriginalXplvl(p.getLevel());
 					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 						public void run() {
 							Util.giveLobbyItems(plugin, p);
 							ap.setOriginalGamemode(p.getGameMode());
-							ap.setOriginalXplvl(p.getLevel());
 							p.setGameMode(GameMode.SURVIVAL);
 						}
 					}, 15L);
@@ -471,11 +471,11 @@ public class Arena {
 					Util.clearInv(p);
 				}
 			}, 10L);
+			ap.setOriginalXplvl(p.getLevel());
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
 					Util.giveLobbyItems(plugin, p);
 					ap.setOriginalGamemode(p.getGameMode());
-					ap.setOriginalXplvl(p.getLevel());
 					p.setGameMode(GameMode.SURVIVAL);
 					p.setHealth(20D);
 				}
@@ -613,7 +613,6 @@ public class Arena {
 						p.setAllowFlight(false);
 					}
 					p.setGameMode(ap.getOriginalGamemode());
-					p.setLevel(0);
 					p.setLevel(ap.getOriginalXplvl());
 					p.getInventory().setContents(ap.getInventory());
 					p.getInventory().setArmorContents(ap.getArmorInventory());
@@ -679,7 +678,6 @@ public class Arena {
 						p.setAllowFlight(false);
 					}
 					p.setGameMode(ap.getOriginalGamemode());
-					p.setLevel(0);
 					p.setLevel(ap.getOriginalXplvl());
 					p.getInventory().setContents(ap.getInventory());
 					p.getInventory().setArmorContents(ap.getArmorInventory());
