@@ -135,4 +135,25 @@ public class Effects {
 		}
 	}
 
+	public static void playTitle(Player player, String title) {
+		try {
+			final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
+			final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+			playerConnection.setAccessible(true);
+			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
+			final Method a = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".ChatSerializer").getMethod("a", String.class);
+
+			Constructor packetPlayOutTitleConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutTitle").getConstructor();
+
+			final Object packet = packetPlayOutTitleConstr.newInstance();
+			setValue(packet, "a", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumTitleAction").getEnumConstants()[0]);
+			setValue(packet, "b", a.invoke(null, "{text:\"" + title + "\"}"));
+
+			sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packet);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

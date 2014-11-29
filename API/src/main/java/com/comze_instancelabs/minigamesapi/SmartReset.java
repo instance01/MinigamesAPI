@@ -14,10 +14,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.Openable;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
@@ -39,16 +42,22 @@ public class SmartReset {
 		this.a = a;
 	}
 
-	public void addChanged(Block b, boolean c) {
+	public SmartArenaBlock addChanged(Block b, boolean c) {
 		if (!changed.containsKey(b.getLocation())) {
-			changed.put(b.getLocation(), new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST));
+			SmartArenaBlock sablock = new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
+			changed.put(b.getLocation(), sablock);
+			return sablock;
 		}
+		return null;
 	}
 
-	public void addChanged(Block b, boolean c, ChangeCause cause) {
+	public SmartArenaBlock addChanged(Block b, boolean c, ChangeCause cause) {
 		if (!changed.containsKey(b.getLocation())) {
-			changed.put(b.getLocation(), new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST));
+			SmartArenaBlock sablock = new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
+			changed.put(b.getLocation(), sablock);
+			return sablock;
 		}
+		return null;
 	}
 
 	public void addChanged(Location l) {
@@ -76,7 +85,7 @@ public class SmartReset {
 							((Chest) b_.getState()).getBlockInventory().clear();
 							((Chest) b_.getState()).update();
 						}
-						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString()) || b_.getData() != ablock.getData()) {
 							b_.setType(ablock.getMaterial());
 							b_.setData(ablock.getData());
 						}

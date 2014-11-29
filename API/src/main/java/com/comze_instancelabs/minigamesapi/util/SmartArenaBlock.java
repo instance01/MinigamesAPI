@@ -139,6 +139,10 @@ public class SmartArenaBlock implements Serializable {
 		return data;
 	}
 
+	public void setData(byte data) {
+		this.data = data;
+	}
+
 	public ItemStack[] getInventory() {
 		return inv;
 	}

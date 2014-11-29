@@ -54,6 +54,7 @@ import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
+import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Util.CompassPlayer;
 import com.comze_instancelabs.minigamesapi.util.Validator;
