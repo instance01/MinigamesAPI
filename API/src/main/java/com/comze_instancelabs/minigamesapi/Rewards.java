@@ -223,6 +223,9 @@ public class Rewards {
 
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);
 				Util.sendMessage(plugin, p, received_rewards_msg);
+				if (plugin.getConfig().getBoolean("config.1_8_titles") && MinigamesAPI.getAPI().version.startsWith("v1_8")) {
+					Effects.playTitle(p, pli.getMessagesConfig().you_won, 0);
+				}
 
 				// Participation Rewards
 				if (participation_economyrewards) {
@@ -241,7 +244,10 @@ public class Rewards {
 					}, 20L);
 				}
 			} else {
-				Util.sendMessage(plugin, p, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_lost);
+				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_lost);
+				if (plugin.getConfig().getBoolean("config.1_8_titles") && MinigamesAPI.getAPI().version.startsWith("v1_8")) {
+					Effects.playTitle(p, pli.getMessagesConfig().you_lost, 0);
+				}
 				MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().lose(p_);
 			}
 		}

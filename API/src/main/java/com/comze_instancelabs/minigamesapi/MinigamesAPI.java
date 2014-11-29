@@ -396,6 +396,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				sender.sendMessage("/mapi info <player>");
 				sender.sendMessage("/mapi debug");
 				sender.sendMessage("/mapi list");
+				sender.sendMessage("/mapi title <title>");
+				sender.sendMessage("/mapi subtitle <subtitle>");
 				sender.sendMessage("/mapi restartserver");
 				sender.sendMessage("/mapi <potioneffect>");
 			}

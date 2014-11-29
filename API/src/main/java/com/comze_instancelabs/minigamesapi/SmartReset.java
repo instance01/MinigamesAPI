@@ -42,6 +42,15 @@ public class SmartReset {
 		this.a = a;
 	}
 
+	public SmartArenaBlock addChanged(Block b) {
+		if (!changed.containsKey(b.getLocation())) {
+			SmartArenaBlock sablock = new SmartArenaBlock(b, b.getType() == Material.CHEST, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
+			changed.put(b.getLocation(), sablock);
+			return sablock;
+		}
+		return null;
+	}
+
 	public SmartArenaBlock addChanged(Block b, boolean c) {
 		if (!changed.containsKey(b.getLocation())) {
 			SmartArenaBlock sablock = new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
