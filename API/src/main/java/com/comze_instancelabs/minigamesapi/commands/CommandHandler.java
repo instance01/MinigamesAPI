@@ -95,6 +95,8 @@ public class CommandHandler {
 				return this.setArenaDisplayName(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("kit")) {
 				return this.setKit(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("spectate")) {
+				return this.spectate(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("shop")) {
 				return this.openShop(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb")) {
@@ -683,6 +685,29 @@ public class CommandHandler {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena> <displayname>");
+		}
+		return true;
+	}
+	
+	public boolean spectate(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
+		if (args.length > 0) {
+			String playername = p.getName();
+			if (args.length > 2) {
+				if (Validator.isPlayerOnline(args[2])) {
+					playername = args[2];
+				}
+			}
+			Arena temp = pli.getArenaByName(args[1]);
+			if (temp != null) {
+				if (!temp.containsPlayer(playername)) {
+					pli.global_players.put(playername, temp);
+					temp.spectate(playername);
+				} else {
+					sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
+				}
+			} else {
+				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+			}
 		}
 		return true;
 	}
