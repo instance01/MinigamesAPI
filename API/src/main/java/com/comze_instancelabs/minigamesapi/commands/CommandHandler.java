@@ -12,7 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaPlayer;
 import com.comze_instancelabs.minigamesapi.ArenaState;
+import com.comze_instancelabs.minigamesapi.ArenaType;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.Party;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
@@ -688,7 +690,7 @@ public class CommandHandler {
 		}
 		return true;
 	}
-	
+
 	public boolean spectate(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (args.length > 0) {
 			String playername = p.getName();
@@ -699,11 +701,19 @@ public class CommandHandler {
 			}
 			Arena temp = pli.getArenaByName(args[1]);
 			if (temp != null) {
-				if (!temp.containsPlayer(playername)) {
-					pli.global_players.put(playername, temp);
-					temp.spectate(playername);
-				} else {
-					sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
+				if (temp.getArenaState() == ArenaState.INGAME) {
+					if (!temp.containsPlayer(playername)) {
+						temp.addPlayer(playername);
+						ArenaPlayer ap = ArenaPlayer.getPlayerInstance(playername);
+						ap.setNoReward(true);
+						ap.setInventories(p.getInventory().getContents(), p.getInventory().getArmorContents());
+						ap.setOriginalGamemode(p.getGameMode());
+						ap.setOriginalXplvl(p.getLevel());
+						pli.global_players.put(playername, temp);
+						temp.spectate(playername);
+					} else {
+						sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
+					}
 				}
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
