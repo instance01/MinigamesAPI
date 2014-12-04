@@ -18,6 +18,11 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class Effects {
 
+	/**
+	 * Shows the particles of a redstone block breaking
+	 * 
+	 * @param p
+	 */
 	public static void playBloodEffect(Player p) {
 		p.getWorld().playEffect(p.getLocation().add(0D, 1D, 0D), Effect.STEP_SOUND, 152);
 	}
@@ -98,6 +103,13 @@ public class Effects {
 		field.set(instance, value);
 	}
 
+	/**
+	 * Respawns a player using moveToWorld (which among others also sends a respawn packet)
+	 * 
+	 * @param p
+	 *            Player to send it to
+	 * @param plugin
+	 */
 	public static void playRespawn(final Player p, JavaPlugin plugin) {
 		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
@@ -166,6 +178,15 @@ public class Effects {
 		} catch (Exception e) {
 			System.out.println("Failed sending title packet: " + e.getMessage());
 		}
+	}
+
+	public static void playHologram() {
+		// PacketPlayOutSpawnEntity EntityWitherSkull
+		// PacketPlayOutSpawnEntityLiving EntityHorse
+		// -> Horse: setAge(-100000), setCustomName(text), setCustomNameVisible(true)
+		// PacketPlayOutAttachEntity(0, horse, skull)
+
+		// to destroy the hologram, send PacketPlayOutEntityDestroy with all entity ids (skull+horse)
 	}
 
 }
