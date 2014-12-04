@@ -1,11 +1,16 @@
 package com.comze_instancelabs.minigamesapi.config;
 
+import java.io.IOException;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DefaultConfig {
 
+	JavaPlugin plugin;
+
 	public DefaultConfig(JavaPlugin plugin, boolean custom) {
+		this.plugin = plugin;
 		DefaultConfig.init(plugin, custom);
 	}
 
@@ -88,6 +93,7 @@ public class DefaultConfig {
 			config.addDefault("config.compass_tracking_enabled", true);
 			config.addDefault("config.allow_classes_selection_out_of_arenas", false);
 			config.addDefault("config.send_stats_on_stop", true);
+			config.addDefault("config.use_xp_bar_level", true);
 
 			config.addDefault("config.extra_lobby_item.item0.enabled", false);
 			config.addDefault("config.extra_lobby_item.item0.item", 9);
@@ -102,6 +108,21 @@ public class DefaultConfig {
 		}
 		config.options().copyDefaults(true);
 		plugin.saveConfig();
+	}
+
+	public void convert() throws IOException {
+		FileConfiguration config = plugin.getConfig();
+		if (!config.isSet("config.version")) {
+			// TODO new config?
+			config.addDefault("config.selection_items.classes_selection_item", 399);
+			config.addDefault("config.selection_items.exit_item", 399);
+			config.addDefault("config.selection_items.achievement_item", 399);
+			config.addDefault("config.selection_items.spectator_item", 399);
+			config.addDefault("config.selection_items.shop_selection_item", 399);
+			config.addDefault("config.GUI.classes_gui_rows", 399);
+			config.addDefault("config.GUI.shop_gui_rows", 399);
+			config.addDefault("config.GUI.clearinv_while_ingamecountdown", 399);
+		}
 	}
 
 }
