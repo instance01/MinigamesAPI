@@ -721,15 +721,64 @@ public class Arena {
 	}
 
 	/**
-	 * Spectates the game
+	 * Spectate the game generally (not specifically after death)
 	 * 
 	 * @param playername
-	 *            the playername
+	 *            name of the player
+	 */
+	public void spectateGame(String playername) {
+		final Player p = Bukkit.getPlayer(playername);
+		if (p == null) {
+			return;
+		}
+		Util.clearInv(p);
+		p.setAllowFlight(true);
+		p.setFlying(true);
+		pli.scoreboardManager.updateScoreboard(plugin, this);
+		if (!plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
+			if (this.getPlayerAlive() < 1) {
+				final Arena a = this;
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						a.stop();
+					}
+				}, 20L);
+			} else {
+				spectateRaw(p);
+			}
+		} else {
+			if (this.getPlayerAlive() < 2) {
+				final Arena a = this;
+				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					public void run() {
+						a.stop();
+					}
+				}, 20L);
+			} else {
+				spectateRaw(p);
+			}
+		}
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+			public void run() {
+				Util.clearInv(p);
+				Util.giveSpectatorItems(plugin, p);
+			}
+		}, 3L);
+	}
+
+	/**
+	 * Spectate the game after death
+	 * 
+	 * @param playername
+	 *            name of the player
 	 */
 	public void spectate(String playername) {
 		if (Validator.isPlayerValid(plugin, playername, this)) {
 			this.onEliminated(playername);
 			final Player p = Bukkit.getPlayer(playername);
+			if (p == null) {
+				return;
+			}
 
 			pli.global_lost.put(playername, this);
 
@@ -739,39 +788,7 @@ public class Arena {
 				pli.scoreboardManager.updateScoreboard(plugin, this);
 				return;
 			}
-			Util.clearInv(p);
-			p.setAllowFlight(true);
-			p.setFlying(true);
-			pli.scoreboardManager.updateScoreboard(plugin, this);
-			if (!plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
-				if (this.getPlayerAlive() < 1) {
-					final Arena a = this;
-					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-						public void run() {
-							a.stop();
-						}
-					}, 20L);
-				} else {
-					spectateRaw(p);
-				}
-			} else {
-				if (this.getPlayerAlive() < 2) {
-					final Arena a = this;
-					Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-						public void run() {
-							a.stop();
-						}
-					}, 20L);
-				} else {
-					spectateRaw(p);
-				}
-			}
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				public void run() {
-					Util.clearInv(p);
-					Util.giveSpectatorItems(plugin, p);
-				}
-			}, 3L);
+			spectateGame(playername);
 		}
 	}
 

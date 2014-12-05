@@ -710,7 +710,7 @@ public class CommandHandler {
 						ap.setOriginalGamemode(p.getGameMode());
 						ap.setOriginalXplvl(p.getLevel());
 						pli.global_players.put(playername, temp);
-						temp.spectate(playername);
+						temp.spectateGame(playername);
 					} else {
 						sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
 					}
