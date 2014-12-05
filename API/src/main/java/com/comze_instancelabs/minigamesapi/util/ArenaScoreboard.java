@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -185,6 +186,16 @@ public class ArenaScoreboard {
 
 	public void clearScoreboard(String arenaname) {
 		if (ascore.containsKey(arenaname)) {
+			try {
+				Scoreboard sc = ascore.get(arenaname);
+				for (OfflinePlayer player : sc.getPlayers()) {
+					sc.resetScores(player);
+				}
+			} catch (Exception e) {
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
+			}
 			ascore.remove(arenaname);
 		}
 		if (aobjective.containsKey(arenaname)) {

@@ -185,8 +185,12 @@ public class Effects {
 
 	static HashMap<Integer, Integer> effectlocd = new HashMap<Integer, Integer>();
 	static HashMap<Integer, Integer> effectlocd_taskid = new HashMap<Integer, Integer>();
-
-	// TODO Use for damage indicators!
+	/**
+	 * Sends a hologram to a player
+	 * @param p Player to send the hologram to
+	 * @param l Location where the hologram will spawn (and slowly move down)
+	 * @param text Hologram text
+	 */
 	public static void playHologram(final Player p, final Location l, String text) {
 		try {
 			final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");

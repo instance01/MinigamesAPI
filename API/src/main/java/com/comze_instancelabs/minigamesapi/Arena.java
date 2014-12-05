@@ -43,7 +43,7 @@ public class Arena {
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
 	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
-	HashMap<String, String> lastdamager = new HashMap<String, String>();
+	public HashMap<String, String> lastdamager = new HashMap<String, String>();
 
 	private Location mainlobby;
 	private Location waitinglobby;

@@ -722,7 +722,6 @@ public class ArenaListener implements Listener {
 		}
 
 		if (pli.containsGlobalLost(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
-			// System.out.println(pli.getPlugin().getName() + " disallowed an interaction.");
 			event.setCancelled(true);
 		}
 
@@ -984,7 +983,7 @@ public class ArenaListener implements Listener {
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		final Player player = event.getPlayer();
 		if (pli.containsGlobalPlayer(player.getName())) {
-			final int visibleDistance = Bukkit.getServer().getViewDistance() * 16;
+			final int visibleDistance = 16;
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				@Override
 				public void run() {
