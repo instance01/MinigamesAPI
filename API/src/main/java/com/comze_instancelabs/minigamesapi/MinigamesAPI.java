@@ -350,6 +350,17 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 								sender.sendMessage(" " + pli.global_players.get(p).getInternalName() + " - " + pli.global_players.get(p).getArenaState());
 							}
 						}
+					} else {
+						for (PluginInstance pli : pinstances.values()) {
+							sender.sendMessage("~ All players for " + pli.getPlugin().getName() + ": ");
+							for (Arena a : pli.getArenas()) {
+								if (a != null) {
+									for (String p_ : a.getAllPlayers()) {
+										sender.sendMessage(ChatColor.GRAY + " " + pli.getPlugin().getName() + " " + a.getInternalName() + " " + p_);
+									}
+								}
+							}
+						}
 					}
 				} else if (args[0].equalsIgnoreCase("debug")) {
 					debug = !debug;
