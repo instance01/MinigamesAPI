@@ -793,7 +793,7 @@ public class Arena {
 	}
 
 	private void spectateRaw(final Player p) {
-		if (plugin.getConfig().getBoolean("config.effects")) {
+		if (pli.effects) {
 			try {
 				Effects.playFakeBed(this, p);
 			} catch (Exception e) {

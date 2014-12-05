@@ -318,7 +318,7 @@ public class ArenaListener implements Listener {
 						// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 						event.setCancelled(true);
 					}
-					if (plugin.getConfig().getBoolean("config.effects") && (a.getArenaState() == ArenaState.INGAME || a.getAlwaysPvP())) {
+					if (pli.effects && (a.getArenaState() == ArenaState.INGAME || a.getAlwaysPvP()) && !a.isArcadeMain()) {
 						Effects.playBloodEffect(p);
 					}
 				}
@@ -362,6 +362,16 @@ public class ArenaListener implements Listener {
 					Arena a = (Arena) pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
 						a.lastdamager.put(p.getName(), attacker.getName());
+						if (pli.effects) {
+							ChatColor c = ChatColor.YELLOW;
+							if (event.getDamage() >= 5D) {
+								c = ChatColor.GOLD;
+							}
+							if (event.getDamage() >= 9D) {
+								c = ChatColor.RED;
+							}
+							Effects.playHologram(attacker, p.getLocation(), c + Double.toString(event.getDamage()));
+						}
 					}
 				}
 			}

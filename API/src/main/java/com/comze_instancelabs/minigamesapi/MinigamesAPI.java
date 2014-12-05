@@ -393,7 +393,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				} else if (args[0].equalsIgnoreCase("hologram")) {
 					if (sender instanceof Player) {
 						Player p = (Player) sender;
-						p.sendMessage("Playing hologram");
+						p.sendMessage("Playing hologram.");
 						Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + " " + Double.toString(p.getHealth()));
 					}
 				}
