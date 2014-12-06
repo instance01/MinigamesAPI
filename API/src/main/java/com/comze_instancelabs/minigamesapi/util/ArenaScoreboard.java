@@ -103,6 +103,8 @@ public class ArenaScoreboard {
 									score = pli.getStatsInstance().getPoints(p__);
 								} else if (score_identifier.equalsIgnoreCase("<wins>")) {
 									score = pli.getStatsInstance().getWins(p__);
+								} else if (score_identifier.equalsIgnoreCase("<money>")) {
+									score = (int) MinigamesAPI.econ.getBalance(p__);
 								}
 								if (line_.length() < 15) {
 									ascore.get(p__).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
