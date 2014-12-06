@@ -540,11 +540,14 @@ public class Util {
 				if (nameindex > -1) {
 					itemamount = c[1].substring(0, c[1].indexOf("="));
 				}
-				if (Integer.parseInt(itemid) < 1) {
+				int itemid_int = isNumeric(itemid) ? Integer.parseInt(itemid) : 0;
+				if (itemid_int < 1) {
 					System.out.println("Invalid item id: " + itemid);
 					continue;
 				}
-				ItemStack nitem = new ItemStack(Integer.parseInt(itemid), Integer.parseInt(itemamount), (short) Integer.parseInt(itemdata));
+				int itemamount_int = isNumeric(itemamount) ? Integer.parseInt(itemamount) : 1;
+				int itemdata_int = isNumeric(itemdata) ? Integer.parseInt(itemdata) : 0;
+				ItemStack nitem = new ItemStack(itemid_int, itemamount_int, (short) itemdata_int);
 				ItemMeta m = nitem.getItemMeta();
 				if (nitem.getType() != Material.ENCHANTED_BOOK) {
 					for (String enchant : enchantments) {
