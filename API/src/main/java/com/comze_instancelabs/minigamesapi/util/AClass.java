@@ -1,9 +1,9 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import java.util.ArrayList;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
 
 public class AClass {
 
@@ -18,7 +18,7 @@ public class AClass {
 	public AClass(JavaPlugin plugin, String name, ArrayList<ItemStack> items) {
 		this(plugin, name, name, true, items, items.get(0));
 	}
-	
+
 	public AClass(JavaPlugin plugin, String name, String internalname, ArrayList<ItemStack> items) {
 		this(plugin, name, internalname, true, items, items.get(0));
 	}
@@ -53,7 +53,7 @@ public class AClass {
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public String getInternalName() {
 		return this.internalname;
 	}

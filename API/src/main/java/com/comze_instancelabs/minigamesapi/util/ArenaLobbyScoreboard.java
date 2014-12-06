@@ -12,7 +12,6 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-import com.comze_instancelabs.minigamesapi.util.Validator;
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;

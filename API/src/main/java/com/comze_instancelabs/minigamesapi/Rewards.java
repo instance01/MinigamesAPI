@@ -2,16 +2,13 @@ package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
 
-import com.comze_instancelabs.minigamesapi.Arena;
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
-import com.comze_instancelabs.minigamesapi.PluginInstance;
-import com.comze_instancelabs.minigamesapi.util.Util;
-import com.comze_instancelabs.minigamesapi.util.Validator;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class Rewards {
 

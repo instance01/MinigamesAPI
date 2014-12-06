@@ -1,7 +1,6 @@
 package com.comze_instancelabs.minigamesapi.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

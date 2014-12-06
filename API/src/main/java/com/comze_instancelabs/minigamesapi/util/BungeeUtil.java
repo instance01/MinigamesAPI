@@ -1,5 +1,9 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -7,10 +11,6 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class BungeeUtil {
 

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.comze_instancelabs.minigamesapi.MinigamesAPI;
-
 public class Party {
 
 	String owner;

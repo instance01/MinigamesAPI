@@ -2,10 +2,7 @@ package com.comze_instancelabs.minigamesapi.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,7 +12,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
 
