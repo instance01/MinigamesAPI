@@ -1027,6 +1027,9 @@ public class Arena {
 					p.setAllowFlight(false);
 				}
 			} catch (Exception e) {
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
 				System.out.println("Failed to set class: " + e.getMessage() + " at [1] " + e.getStackTrace()[1].getLineNumber() + " [0] " + e.getStackTrace()[0].getLineNumber());
 			}
 			Player p = Bukkit.getPlayer(p_);

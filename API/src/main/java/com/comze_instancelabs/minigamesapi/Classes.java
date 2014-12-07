@@ -9,6 +9,7 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -99,20 +100,22 @@ public class Classes {
 		// crackshot support
 		for (ItemStack item : temp) {
 			if (item != null) {
-				if (item.getItemMeta().hasDisplayName()) {
-					if (item.getItemMeta().getDisplayName().startsWith("crackshot:")) {
-						items.remove(item);
-						tempguns.add(item.getItemMeta().getDisplayName().split(":")[1]);
-					} else if (item.getItemMeta().getDisplayName().startsWith("potioneffect:")) {
-						items.remove(item);
-						String potioneffect = item.getItemMeta().getDisplayName().split(":")[1];
-						String data = item.getItemMeta().getDisplayName().split(":")[2];
-						Integer time = Integer.parseInt(data.substring(0, data.indexOf("#")));
-						Integer lv = Integer.parseInt(data.split("#")[1]);
-						if (PotionEffectType.getByName(potioneffect) != null) {
-							temppotions.add(PotionEffectType.getByName(potioneffect));
-							temppotions_lv.add(lv);
-							temppotions_duration.add(time);
+				if (item.hasItemMeta()) {
+					if (item.getItemMeta().hasDisplayName()) {
+						if (item.getItemMeta().getDisplayName().startsWith("crackshot:")) {
+							items.remove(item);
+							tempguns.add(item.getItemMeta().getDisplayName().split(":")[1]);
+						} else if (item.getItemMeta().getDisplayName().startsWith("potioneffect:")) {
+							items.remove(item);
+							String potioneffect = item.getItemMeta().getDisplayName().split(":")[1];
+							String data = item.getItemMeta().getDisplayName().split(":")[2];
+							Integer time = Integer.parseInt(data.substring(0, data.indexOf("#")));
+							Integer lv = Integer.parseInt(data.split("#")[1]);
+							if (PotionEffectType.getByName(potioneffect) != null) {
+								temppotions.add(PotionEffectType.getByName(potioneffect));
+								temppotions_lv.add(lv);
+								temppotions_duration.add(time);
+							}
 						}
 					}
 				}
@@ -173,7 +176,9 @@ public class Classes {
 					p.getInventory().setBoots(item);
 					continue;
 				}
-				p.getInventory().addItem(item);
+				if (item.getType() != Material.AIR) {
+					p.getInventory().addItem(item);
+				}
 			}
 		}
 		// p.getInventory().setContents((ItemStack[]) items.toArray(new ItemStack[items.size()]));
