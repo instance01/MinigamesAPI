@@ -36,6 +36,7 @@ public class DefaultConfig {
 			config.addDefault("config.use_credits_instead_of_money_for_kits", false);
 			config.addDefault("config.skip_lobby", false);
 			config.addDefault("config.reset_inventory_when_players_leave_server", true);
+			config.addDefault("config.color_background_wool_of_signs", false);
 
 			config.addDefault("config.rewards.economy", true);
 			config.addDefault("config.rewards.economy_reward", 10);

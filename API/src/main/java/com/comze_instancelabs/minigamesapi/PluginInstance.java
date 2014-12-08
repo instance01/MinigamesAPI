@@ -60,6 +60,7 @@ public class PluginInstance {
 	boolean spectator_move_y_lock = true;
 	boolean use_xp_bar_level = true;
 	boolean effects = true;
+	public boolean color_background_wool_of_signs;
 
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
@@ -93,6 +94,7 @@ public class PluginInstance {
 		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator_move_y_lock");
 		use_xp_bar_level = plugin.getConfig().getBoolean("config.use_xp_bar_level");
 		effects = plugin.getConfig().getBoolean("config.effects");
+		color_background_wool_of_signs = plugin.getConfig().getBoolean("config.color_background_wool_of_signs");
 	}
 
 	public JavaPlugin getPlugin() {

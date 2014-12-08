@@ -403,6 +403,18 @@ public class Util {
 			s.setLine(2, pli.getMessagesConfig().getConfig().getString("signs." + state + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 			s.setLine(3, pli.getMessagesConfig().getConfig().getString("signs." + state + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 			s.update();
+			if (pli.color_background_wool_of_signs) {
+				org.bukkit.material.Sign s_ = (org.bukkit.material.Sign) s.getBlock().getState().getData();
+				Block attachedBlock = s.getBlock().getRelative(s_.getAttachedFace());
+				byte data = (byte) 5;
+				if (arena.getArenaState() == ArenaState.INGAME) {
+					data = (byte) 14;
+				} else if (arena.getArenaState() == ArenaState.RESTARTING) {
+					data = (byte) 4;
+				}
+				attachedBlock.setData(data);
+			}
+
 		}
 		try {
 			if (plugin.isEnabled()) {
