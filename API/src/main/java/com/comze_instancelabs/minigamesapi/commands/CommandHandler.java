@@ -450,8 +450,10 @@ public class CommandHandler {
 		if (pli.global_players.containsKey(p.getName())) {
 			String playername = p.getName();
 			if (args.length > 1) {
-				if (Validator.isPlayerOnline(args[1])) {
-					playername = args[1];
+				if (sender.hasPermission(uber_permission + ".kickplayer")) {
+					if (Validator.isPlayerOnline(args[1])) {
+						playername = args[1];
+					}
 				}
 			}
 			Arena a = pli.global_players.get(playername);

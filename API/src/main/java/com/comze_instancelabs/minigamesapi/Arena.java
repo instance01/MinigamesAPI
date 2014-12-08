@@ -590,9 +590,11 @@ public class Arena {
 		if (fullLeave) {
 			plugin.getConfig().set("temp.left_players." + playername + ".name", playername);
 			plugin.getConfig().set("temp.left_players." + playername + ".plugin", plugin.getName());
-			for (ItemStack i : ap.getInventory()) {
-				if (i != null) {
-					plugin.getConfig().set("temp.left_players." + playername + ".items." + Integer.toString((int) Math.round(Math.random() * 10000)) + i.getType().toString(), i);
+			if (plugin.getConfig().getBoolean("config.reset_inventory_when_players_leave_server")) {
+				for (ItemStack i : ap.getInventory()) {
+					if (i != null) {
+						plugin.getConfig().set("temp.left_players." + playername + ".items." + Integer.toString((int) Math.round(Math.random() * 10000)) + i.getType().toString(), i);
+					}
 				}
 			}
 			plugin.saveConfig();
