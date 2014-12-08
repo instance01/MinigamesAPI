@@ -92,8 +92,9 @@ public class Rewards {
 	 * @param reward
 	 *            Amount of statistics points the player gets
 	 */
-	public void giveKillReward(String p_, int reward) {
+	public void giveKillReward(String p_) {
 		if (Validator.isPlayerOnline(p_)) {
+			PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 			Player p = Bukkit.getPlayer(p_);
 
 			if (kill_economyrewards && MinigamesAPI.economy) {
@@ -103,10 +104,15 @@ public class Rewards {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), kill_command.replaceAll("<player>", p_));
 			}
 
-			MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().addPoints(p_, reward);
-			MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().addKill(p_);
-			MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateWinnerStats(p_, reward, false);
+			pli.getStatsInstance().addPoints(p_, pli.getStatsInstance().stats_kill_points);
+			pli.getStatsInstance().addKill(p_);
+			pli.getSQLInstance().updateWinnerStats(p_, pli.getStatsInstance().stats_kill_points, false);
 		}
+	}
+
+	@Deprecated
+	public void giveKillReward(String p_, int reward) {
+		this.giveKillReward(p_);
 	}
 
 	/**
@@ -198,7 +204,7 @@ public class Rewards {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replaceAll("<player>", p_));
 				}
 
-				pli.getStatsInstance().win(p_, 10);
+				pli.getStatsInstance().win(p_, pli.getStatsInstance().stats_win_points);
 
 				try {
 					if (plugin.getConfig().getBoolean("config.broadcast_win")) {
@@ -215,7 +221,7 @@ public class Rewards {
 						}
 					}
 				} catch (Exception e) {
-					System.out.println("Could not find arena for broadcast.");
+					System.out.println("Could not find arena for broadcast. " + e.getMessage());
 				}
 
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);

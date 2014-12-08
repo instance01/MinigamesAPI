@@ -29,9 +29,13 @@ public class Stats {
 	private JavaPlugin plugin = null;
 
 	public ArrayList<String> skullsetup = new ArrayList<String>();
+	int stats_kill_points = 2;
+	int stats_win_points = 10;
 
 	public Stats(JavaPlugin plugin) {
 		this.plugin = plugin;
+		this.stats_kill_points = plugin.getConfig().getInt("config.stats.points_for_kill");
+		this.stats_win_points = plugin.getConfig().getInt("config.stats.points_for_win");
 	}
 
 	public void win(String playername, int count) {

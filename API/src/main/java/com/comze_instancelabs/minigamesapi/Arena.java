@@ -1286,7 +1286,7 @@ public class Arena {
 			Player killer = Bukkit.getPlayer(lastdamager.get(playername));
 			if (killer != null) {
 				pli.getStatsInstance().addDeath(playername);
-				pli.getRewardsInstance().giveKillReward(killer.getName(), 2);
+				pli.getRewardsInstance().giveKillReward(killer.getName());
 				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
 				for (String p_ : this.getAllPlayers()) {
 					if (!p_.equalsIgnoreCase(killer.getName())) {
