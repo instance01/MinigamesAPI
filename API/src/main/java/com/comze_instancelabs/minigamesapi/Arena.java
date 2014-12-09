@@ -659,6 +659,10 @@ public class Arena {
 			pli.global_arcade_spectator.remove(playername);
 		}
 
+		if (pli.getPClasses().containsKey(playername)) {
+			pli.getPClasses().remove(playername);
+		}
+
 		Util.updateSign(plugin, this);
 
 		final String arenaname = this.getInternalName();
