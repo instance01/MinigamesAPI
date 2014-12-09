@@ -34,6 +34,10 @@ public class Stats {
 
 	public Stats(JavaPlugin plugin) {
 		this.plugin = plugin;
+		reloadVariables();
+	}
+
+	public void reloadVariables() {
 		this.stats_kill_points = plugin.getConfig().getInt("config.stats.points_for_kill");
 		this.stats_win_points = plugin.getConfig().getInt("config.stats.points_for_win");
 	}

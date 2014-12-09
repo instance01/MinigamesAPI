@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.ItemStack;
@@ -85,45 +86,7 @@ public class SmartReset {
 				int failcount = 0;
 				for (final SmartArenaBlock ablock : changed.values()) {
 					try {
-						final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
-						if (b_.getType() == Material.FURNACE) {
-							((Furnace) b_.getState()).getInventory().clear();
-							((Furnace) b_.getState()).update();
-						}
-						if (b_.getType() == Material.CHEST) {
-							((Chest) b_.getState()).getBlockInventory().clear();
-							((Chest) b_.getState()).update();
-						}
-						if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString()) || b_.getData() != ablock.getData()) {
-							b_.setType(ablock.getMaterial());
-							b_.setData(ablock.getData());
-						}
-						if (b_.getType() == Material.CHEST) {
-							((Chest) b_.getState()).getBlockInventory().clear();
-							((Chest) b_.getState()).update();
-							HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
-							for (Integer i : chestinv.keySet()) {
-								ItemStack item = chestinv.get(i);
-								if (item != null) {
-									((Chest) b_.getState()).getBlockInventory().setItem(i, item);
-								}
-							}
-							((Chest) b_.getState()).update();
-						}
-						if (b_.getType() == Material.WALL_SIGN || b_.getType() == Material.SIGN_POST) {
-							Sign sign = (Sign) b_.getState();
-							if (sign != null) {
-								int i = 0;
-								for (String line : ablock.getSignLines()) {
-									sign.setLine(i, line);
-									i++;
-									if (i > 3) {
-										break;
-									}
-								}
-								sign.update();
-							}
-						}
+						resetSmartResetBlock(ablock);
 					} catch (IllegalStateException e) {
 						failcount += 1;
 						failedblocks.add(ablock);
@@ -189,11 +152,24 @@ public class SmartReset {
 			((Chest) b_.getState()).getBlockInventory().clear();
 			((Chest) b_.getState()).update();
 		}
-		if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+		if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString()) || b_.getData() != ablock.getData()) {
 			b_.setType(ablock.getMaterial());
 			b_.setData(ablock.getData());
 		}
 		if (b_.getType() == Material.CHEST) {
+			if(ablock.isDoubleChest()){
+				DoubleChest dc = ablock.getDoubleChest();
+				System.out.println(dc.getLocation());
+				HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
+				for (Integer i : chestinv.keySet()) {
+					ItemStack item = chestinv.get(i);
+					if (item != null) {
+						dc.getInventory().setItem(i, item);
+					}
+				}
+				((Chest) b_.getState()).update();
+				return;
+			}
 			((Chest) b_.getState()).getBlockInventory().clear();
 			((Chest) b_.getState()).update();
 			HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
@@ -204,6 +180,20 @@ public class SmartReset {
 				}
 			}
 			((Chest) b_.getState()).update();
+		}
+		if (b_.getType() == Material.WALL_SIGN || b_.getType() == Material.SIGN_POST) {
+			Sign sign = (Sign) b_.getState();
+			if (sign != null) {
+				int i = 0;
+				for (String line : ablock.getSignLines()) {
+					sign.setLine(i, line);
+					i++;
+					if (i > 3) {
+						break;
+					}
+				}
+				sign.update();
+			}
 		}
 	}
 

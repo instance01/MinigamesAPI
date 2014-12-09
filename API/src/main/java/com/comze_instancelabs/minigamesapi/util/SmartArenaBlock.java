@@ -10,7 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +46,9 @@ public class SmartArenaBlock implements Serializable {
 
 	private ItemStack[] inv;
 
+	boolean isDoubleChest = false;
+	DoubleChest doubleChest = null;
+
 	public SmartArenaBlock(Block b, boolean c, boolean s) {
 		m = b.getType();
 		x = b.getX();
@@ -57,7 +62,8 @@ public class SmartArenaBlock implements Serializable {
 				sign_lines.addAll(Arrays.asList(sign.getLines()));
 			}
 		} else if (c) {
-			inv = ((Chest) b.getState()).getInventory().getContents();
+			Chest chest = (Chest) b.getState();
+			inv = chest.getInventory().getContents();
 			item_mats = new ArrayList<Material>();
 			item_data = new ArrayList<Byte>();
 			item_amounts = new ArrayList<Integer>();
@@ -70,8 +76,14 @@ public class SmartArenaBlock implements Serializable {
 			enchbook_id_lv = new HashMap<Integer, ArrayList<Integer>>();
 			item_durability = new ArrayList<Short>();
 
+			System.out.println(chest.getInventory().getHolder() + " " + chest.getInventory().getHolder().toString());
+			if (chest.getInventory().getHolder() instanceof DoubleChest) {
+				isDoubleChest = true;
+				doubleChest = (DoubleChest) chest.getInventory().getHolder();
+			}
+
 			int pos = 0;
-			for (ItemStack i : ((Chest) b.getState()).getInventory().getContents()) {
+			for (ItemStack i : chest.getInventory().getContents()) {
 				if (i != null) {
 					item_mats.add(i.getType());
 					item_data.add(i.getData().getData());
@@ -197,6 +209,14 @@ public class SmartArenaBlock implements Serializable {
 
 	public ArrayList<String> getSignLines() {
 		return this.sign_lines;
+	}
+
+	public boolean isDoubleChest() {
+		return isDoubleChest;
+	}
+
+	public DoubleChest getDoubleChest() {
+		return doubleChest;
 	}
 
 }

@@ -125,6 +125,7 @@ public class CommandHandler {
 				pli.getMessagesConfig().init();
 				pli.reloadVariables();
 				pli.getRewardsInstance().reloadVariables();
+				pli.getStatsInstance().reloadVariables();
 				try {
 					pli.reloadAllArenas();
 				} catch (Exception e) {
@@ -744,7 +745,7 @@ public class CommandHandler {
 			if (ac != null) {
 				if (pli.getAClasses().containsKey(ac.getName())) {
 					if (ac.isEnabled()) {
-						pli.getClassesHandler().setClass(kit, p.getName(), true);
+						pli.getClassesHandler().setClass(kit, p.getName(), MinigamesAPI.economy);
 						return true;
 					}
 				}
