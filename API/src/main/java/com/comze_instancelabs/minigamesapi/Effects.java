@@ -217,6 +217,88 @@ public class Effects {
 	 *            Hologram text
 	 */
 	public static void playHologram(final Player p, final Location l, String text) {
+		if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
+			try {
+				final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
+				final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+				playerConnection.setAccessible(true);
+				final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
+
+				Class craftw = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".CraftWorld");
+				Class w = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".World");
+				Class entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity");
+				Method getWorldHandle = craftw.getDeclaredMethod("getHandle");
+				Object worldServer = getWorldHandle.invoke(craftw.cast(l.getWorld()));
+				final Constructor packetPlayOutSpawnEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntity").getConstructor(entity, int.class);
+				final Constructor packetPlayOutSpawnEntityLivingConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntityLiving").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityLiving"));
+				final Constructor packetPlayOutAttachEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutAttachEntity").getConstructor(int.class, entity, entity);
+				final Constructor packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityDestroy").getConstructor(int[].class);
+				final Constructor packetPlayOutEntityVelocity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityVelocity").getConstructor(int.class, double.class, double.class, double.class);
+
+				// EntityArmorStand
+				Constructor entityArmorStandConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityArmorStand").getConstructor(w);
+				final Object entityArmorStand = entityArmorStandConstr.newInstance(worldServer);
+				final Method setLoc2 = entityArmorStand.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
+				setLoc2.invoke(entityArmorStand, l.getX(), l.getY() - 1D, l.getZ(), 0F, 0F);
+				Method setCustomName = entityArmorStand.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setCustomName", String.class);
+				setCustomName.invoke(entityArmorStand, text);
+				Method setCustomNameVisible = entityArmorStand.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setCustomNameVisible", boolean.class);
+				setCustomNameVisible.invoke(entityArmorStand, true);
+				Method getArmorStandId = entityArmorStand.getClass().getSuperclass().getSuperclass().getDeclaredMethod("getId");
+				final int armorstandId = (Integer) (getArmorStandId.invoke(entityArmorStand));
+				Method setInvisble = entityArmorStand.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setInvisible", boolean.class);
+				setInvisble.invoke(entityArmorStand, true);
+
+				effectlocd.put(armorstandId, 12); // send move packet 12 times
+
+				// Send EntityArmorStand packet
+				Object horsePacket = packetPlayOutSpawnEntityLivingConstr.newInstance(entityArmorStand);
+				sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), horsePacket);
+
+				// Send velocity packets to move the entities slowly down
+				effectlocd_taskid.put(armorstandId, Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
+					public void run() {
+						try {
+							int i = effectlocd.get(armorstandId);
+							Object packet = packetPlayOutEntityVelocity.newInstance(armorstandId, 0D, -0.05D, 0D);
+							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet);
+							if (i < -1) {
+								int taskid = effectlocd_taskid.get(armorstandId);
+								effectlocd_taskid.remove(armorstandId);
+								effectlocd.remove(armorstandId);
+								Bukkit.getScheduler().cancelTask(taskid);
+								return;
+							}
+							effectlocd.put(armorstandId, effectlocd.get(armorstandId) - 1);
+						} catch (Exception e) {
+							if (MinigamesAPI.debug) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}, 2L, 2L).getTaskId());
+
+				// Remove both entities (and thus the hologram) after 2 seconds
+				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+					public void run() {
+						try {
+							Object destroyPacket = packetPlayOutEntityDestroyConstr.newInstance((Object) new int[] { armorstandId });
+							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), destroyPacket);
+						} catch (Exception e) {
+							if (MinigamesAPI.debug) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}, 20L * 2);
+
+			} catch (Exception e) {
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
+			}
+			return;
+		}
 		try {
 			// If player is on 1.8, we'll have to use armor stands, otherwise just use the old 1.7 technique
 			final boolean playerIs1_8 = getClientProtocolVersion(p) > 5;
