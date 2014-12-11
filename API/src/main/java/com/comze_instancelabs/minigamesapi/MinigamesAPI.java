@@ -396,6 +396,17 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 						p.sendMessage("Playing hologram.");
 						Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + " " + Double.toString(p.getHealth()));
 					}
+				} else if (args[0].equalsIgnoreCase("protocol")) {
+					if (sender instanceof Player) {
+						Player p = (Player) sender;
+						if (args.length > 1) {
+							p = Bukkit.getPlayer(args[1]);
+						}
+						if (p != null) {
+							int version = Effects.getClientProtocolVersion(p);
+							sender.sendMessage("Protocol version of " + p.getName() + ": " + version);
+						}
+					}
 				}
 				return true;
 			}

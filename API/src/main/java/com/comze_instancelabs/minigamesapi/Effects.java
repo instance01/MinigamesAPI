@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -18,6 +19,25 @@ import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class Effects {
+
+	public static int getClientProtocolVersion(Player p) {
+		int ret = 0;
+		try {
+			Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
+			Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+			playerConnection.setAccessible(true);
+			Object playerConInstance = playerConnection.get(getHandle.invoke(p));
+			Field networkManager = playerConInstance.getClass().getField("networkManager");
+			networkManager.setAccessible(true);
+			Object networkManagerInstance = networkManager.get(playerConInstance);
+			Method getVersion = networkManagerInstance.getClass().getMethod("getVersion");
+			Object version = getVersion.invoke(networkManagerInstance);
+			ret = (Integer) version;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
 
 	/**
 	 * Shows the particles of a redstone block breaking
@@ -198,6 +218,9 @@ public class Effects {
 	 */
 	public static void playHologram(final Player p, final Location l, String text) {
 		try {
+			// If player is on 1.8, we'll have to use armor stands, otherwise just use the old 1.7 technique
+			final boolean playerIs1_8 = getClientProtocolVersion(p) > 5;
+
 			final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
 			final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
 			playerConnection.setAccessible(true);
@@ -226,7 +249,7 @@ public class Effects {
 			Constructor entityHorseConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHorse").getConstructor(w);
 			final Object entityHorse = entityHorseConstr.newInstance(worldServer);
 			final Method setLoc2 = entityHorse.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
-			setLoc2.invoke(entityHorse, l.getX(), l.getY() + 33D, l.getZ(), 0F, 0F);
+			setLoc2.invoke(entityHorse, l.getX(), l.getY() + (playerIs1_8 ? -1D : 33D), l.getZ(), 0F, 0F);
 			Method setAge = entityHorse.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setAge", int.class);
 			setAge.invoke(entityHorse, -1000000);
 			Method setCustomName = entityHorse.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredMethod("setCustomName", String.class);
@@ -236,17 +259,48 @@ public class Effects {
 			Method getHorseId = entityHorse.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredMethod("getId");
 			final int horseId = (Integer) (getHorseId.invoke(entityHorse));
 
+			if (playerIs1_8) {
+				// Set horse (later armor stand) invisible
+				Method setInvisble = entityHorse.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredMethod("setInvisible", boolean.class);
+				setInvisble.invoke(entityHorse, true);
+			}
+
 			effectlocd.put(horseId, 12); // send move packet 12 times
 
 			// Send Witherskull+EntityHorse packet
 			Object horsePacket = packetPlayOutSpawnEntityLivingConstr.newInstance(entityHorse);
+			if (playerIs1_8) {
+				// Set entity id to 30 (armor stand):
+				setValue(horsePacket, "b", 30);
+				// Fix datawatcher values to prevent crashes (ofc armor stands expect other data than horses):
+				Field datawatcher = entityHorse.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("datawatcher");
+				datawatcher.setAccessible(true);
+				Object datawatcherInstance = datawatcher.get(entityHorse);
+				Field d = datawatcherInstance.getClass().getDeclaredField("d");
+				d.setAccessible(true);
+				Map dmap = (Map) d.get(datawatcherInstance);
+				dmap.remove(10);
+				// These are the Rotation ones
+				dmap.remove(11);
+				dmap.remove(12);
+				dmap.remove(13);
+				dmap.remove(14);
+				dmap.remove(15);
+				dmap.remove(16);
+				Method a = datawatcherInstance.getClass().getDeclaredMethod("a", int.class, Object.class);
+				a.invoke(datawatcherInstance, 10, (byte) 0);
+			}
 			sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), horsePacket);
-			Object witherPacket = packetPlayOutSpawnEntityConstr.newInstance(witherSkull, 64);
-			sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), witherPacket);
+			if (!playerIs1_8) {
+				Object witherPacket = packetPlayOutSpawnEntityConstr.newInstance(witherSkull, 64);
+				sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), witherPacket);
+			}
 
 			// Send attach packet
-			Object attachPacket = packetPlayOutAttachEntityConstr.newInstance(0, entityHorse, witherSkull);
-			sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), attachPacket);
+			if (!playerIs1_8) {
+				Object attachPacket = packetPlayOutAttachEntityConstr.newInstance(0, entityHorse, witherSkull);
+				sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), attachPacket);
+			}
 
 			// Send velocity packets to move the entities slowly down
 			effectlocd_taskid.put(horseId, Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
@@ -255,8 +309,10 @@ public class Effects {
 						int i = effectlocd.get(horseId);
 						Object packet = packetPlayOutEntityVelocity.newInstance(horseId, 0D, -0.05D, 0D);
 						sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet);
-						Object packet2 = packetPlayOutEntityVelocity.newInstance(witherSkullId, 0D, -0.05D, 0D);
-						sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet2);
+						if (!playerIs1_8) {
+							Object packet2 = packetPlayOutEntityVelocity.newInstance(witherSkullId, 0D, -0.05D, 0D);
+							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet2);
+						}
 						if (i < -1) {
 							int taskid = effectlocd_taskid.get(horseId);
 							effectlocd_taskid.remove(horseId);
