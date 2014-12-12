@@ -92,6 +92,9 @@ public class ArenaListener implements Listener {
 				if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.isArcadeMain()) {
 					event.setCancelled(true);
 				}
+				if (a.getArenaState() == ArenaState.INGAME && pli.containsGlobalLost(event.getPlayer().getName())) {
+					event.setCancelled(true);
+				}
 			}
 		}
 	}

@@ -120,7 +120,7 @@ public class Effects {
 		return null;
 	}
 
-	private static void setValue(Object instance, String fieldName, Object value) throws Exception {
+	public static void setValue(Object instance, String fieldName, Object value) throws Exception {
 		Field field = instance.getClass().getDeclaredField(fieldName);
 		field.setAccessible(true);
 		field.set(instance, value);
