@@ -309,10 +309,26 @@ public class Classes {
 		}, 20L);
 	}
 
+	/**
+	 * Returns whether the kit requires money to use it
+	 * 
+	 * @param kit
+	 *            Internal name of the kit
+	 * @return
+	 */
 	public boolean kitRequiresMoney(String kit) {
 		return pli.getClassesConfig().getConfig().getBoolean("config.kits." + kit + ".requires_money");
 	}
 
+	/**
+	 * Gives the player the kit if he has enough money to buy it
+	 * 
+	 * @param p
+	 *            Player to give the kit to
+	 * @param kit
+	 *            Internal name of the kit
+	 * @return
+	 */
 	public boolean kitTakeMoney(Player p, String kit) {
 		// Credits
 		if (plugin.getConfig().getBoolean("config.use_credits_instead_of_money_for_kits")) {
@@ -364,7 +380,7 @@ public class Classes {
 
 		// Money (economy)
 		if (!MinigamesAPI.getAPI().economy) {
-			plugin.getLogger().warning("Economy is turned OFF. Turn it ON in the config.");
+			plugin.getLogger().warning("Economy is turned OFF. You can turn it on in the config.");
 			return false;
 		}
 		if (MinigamesAPI.economy) {
@@ -392,6 +408,9 @@ public class Classes {
 				if (hasClass(p.getName())) {
 					if (getSelectedClass(p.getName()).equalsIgnoreCase(kit)) {
 						return false;
+					}
+					if (kitRequiresMoney(kit)) {
+						Util.sendMessage(plugin, p, pli.getMessagesConfig().kit_warning);
 					}
 				}
 				ClassesConfig config = pli.getClassesConfig();

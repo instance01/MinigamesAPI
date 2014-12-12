@@ -140,6 +140,7 @@ public class MessagesConfig {
 		this.getConfig().addDefault("messages.compass.no_player_found", compass_no_player_found);
 		this.getConfig().addDefault("messages.compass.found_player", compass_player_found);
 		this.getConfig().addDefault("messages.you_got_a_participation_reward", you_got_a_participation_reward);
+		this.getConfig().addDefault("messages.kit_warning", kit_warning);
 		if (!this.getConfig().isSet("config.generatedv1102")) {
 			this.getConfig().addDefault("messages.stats.line0", "&7----- &a&lStats &7-----; ");
 			this.getConfig().addDefault("messages.stats.line1", "&7Wins: &a<wins>");
@@ -218,6 +219,7 @@ public class MessagesConfig {
 		this.compass_no_player_found = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.compass.no_player_found"));
 		this.compass_player_found = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.compass.found_player"));
 		this.you_got_a_participation_reward = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.you_got_a_participation_reward"));
+		this.kit_warning = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.kit_warning"));
 
 		this.attributelevel_increased = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.attributelevel_increased"));
 		this.not_enough_credits = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.guns.not_enough_credits"));
@@ -297,6 +299,7 @@ public class MessagesConfig {
 	public String compass_no_player_found = "&cNo near players found!";
 	public String compass_player_found = "&aThe compass is tracking &3<player> &anow. Distance: <distance>";
 	public String you_got_a_participation_reward = "&aYou received &2<economyreward> &afor participating!";
+	public String kit_warning = "&7Be aware that you'll only get the &8last &7kit you bought even if you buy all of them.";
 
 	public FileConfiguration getConfig() {
 		if (messagesConfig == null) {
