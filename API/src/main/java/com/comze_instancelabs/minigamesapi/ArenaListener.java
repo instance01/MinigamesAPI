@@ -323,7 +323,7 @@ public class ArenaListener implements Listener {
 						// System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
 						event.setCancelled(true);
 					}
-					if (pli.effects && (a.getArenaState() == ArenaState.INGAME || a.getAlwaysPvP()) && !a.isArcadeMain()) {
+					if (pli.blood_effects && (a.getArenaState() == ArenaState.INGAME || a.getAlwaysPvP()) && !a.isArcadeMain()) {
 						Effects.playBloodEffect(p);
 					}
 				}
@@ -367,7 +367,7 @@ public class ArenaListener implements Listener {
 					Arena a = (Arena) pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
 						a.lastdamager.put(p.getName(), attacker.getName());
-						if (pli.effects) {
+						if (pli.damage_identifier_effects) {
 							ChatColor c = ChatColor.YELLOW;
 							if (event.getDamage() >= 5D) {
 								c = ChatColor.GOLD;
@@ -741,12 +741,12 @@ public class ArenaListener implements Listener {
 			if (a.isArcadeMain()) {
 				return;
 			}
-			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.classes_selection_item")) {
+			if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.classes_selection_item")) {
 				if (a.getArenaState() != ArenaState.INGAME) {
 					pli.getClassesHandler().openGUI(p.getName());
 					event.setCancelled(true);
 				}
-			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.exit_item")) {
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.exit_item")) {
 				if (a.getArenaState() != ArenaState.INGAME) {
 					a.leavePlayer(p.getName(), false, false);
 					event.setCancelled(true);
@@ -756,19 +756,19 @@ public class ArenaListener implements Listener {
 						event.setCancelled(true);
 					}
 				}
-			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.spectator_item")) {
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.spectator_item")) {
 				if (pli.containsGlobalLost(p.getName())) {
 					pli.getSpectatorManager().openSpectatorGUI(p, a);
 					event.setCancelled(true);
 				}
-			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.achievement_item")) {
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.achievement_item")) {
 				if (pli.isAchievementGuiEnabled()) {
 					if (a.getArenaState() != ArenaState.INGAME) {
 						pli.getArenaAchievements().openGUI(p.getName(), false);
 						event.setCancelled(true);
 					}
 				}
-			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.shop_selection_item")) {
+			} else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.shop_selection_item")) {
 				if (a.getArenaState() != ArenaState.INGAME) {
 					pli.getShopHandler().openGUI(p.getName());
 					event.setCancelled(true);

@@ -38,7 +38,7 @@ public class Shop {
 		if (lasticonm.containsKey(p)) {
 			iconm = lasticonm.get(p);
 		} else {
-			iconm = new IconMenu(pli.getMessagesConfig().shop_item, (9 * plugin.getConfig().getInt("config.shop_gui_rows") > mincount - 1) ? 9 * plugin.getConfig().getInt("config.shop_gui_rows") : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
+			iconm = new IconMenu(pli.getMessagesConfig().shop_item, (9 * plugin.getConfig().getInt("config.GUI.shop_gui_rows") > mincount - 1) ? 9 * plugin.getConfig().getInt("config.GUI.shop_gui_rows") : Math.round(mincount / 9) * 9 + 9, new IconMenu.OptionClickEventHandler() {
 				@Override
 				public void onOptionClick(IconMenu.OptionClickEvent event) {
 					if (event.getPlayer().getName().equalsIgnoreCase(p)) {

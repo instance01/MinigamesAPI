@@ -416,7 +416,7 @@ public class Arena {
 			Util.updateSign(plugin, this);
 
 			if (ai == null && !this.isArcadeMain()) {
-				this.skip_join_lobby = plugin.getConfig().getBoolean("config.skip_lobby");
+				this.skip_join_lobby = plugin.getConfig().getBoolean("config.countdowns.skip_lobby");
 			}
 
 			ap.setInventories(p.getInventory().getContents(), p.getInventory().getArmorContents());
@@ -789,7 +789,7 @@ public class Arena {
 			pli.global_lost.put(playername, this);
 
 			pli.getSpectatorManager().setSpectate(p, true);
-			if (!plugin.getConfig().getBoolean("config.spectator_after_fall_or_death")) {
+			if (!plugin.getConfig().getBoolean("config.spectator.spectator_after_fall_or_death")) {
 				this.leavePlayer(playername, false, false);
 				pli.scoreboardManager.updateScoreboard(plugin, this);
 				return;
@@ -799,7 +799,7 @@ public class Arena {
 	}
 
 	private void spectateRaw(final Player p) {
-		if (pli.effects) {
+		if (pli.dead_in_fake_bed_effects) {
 			try {
 				Effects.playFakeBed(this, p);
 			} catch (Exception e) {
@@ -935,7 +935,7 @@ public class Arena {
 		if (tp) {
 			pspawnloc = Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 		}
-		boolean clearinv = plugin.getConfig().getBoolean("config.clearinv_while_ingamecountdown");
+		boolean clearinv = plugin.getConfig().getBoolean("config.countdowns.clearinv_while_ingamecountdown");
 		for (String p_ : currentarena.getArena().getAllPlayers()) {
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.0F);
@@ -953,7 +953,7 @@ public class Arena {
 			}
 		}, 20L);
 		startedIngameCountdown = true;
-		if (!plugin.getConfig().getBoolean("config.ingame_countdown_enabled")) {
+		if (!plugin.getConfig().getBoolean("config.countdowns.ingame_countdown_enabled")) {
 			startRaw(a);
 			return;
 		}
@@ -1103,7 +1103,7 @@ public class Arena {
 					}
 				}, 5 * 20L);
 			}
-		}, 20L * 60L * (long) plugin.getConfig().getDouble("config.default_max_game_time_in_minutes") - 5 * 20L);
+		}, 20L * 60L * (long) plugin.getConfig().getDouble("config.defaults.default_max_game_time_in_minutes") - 5 * 20L);
 	}
 
 	/**

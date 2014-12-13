@@ -59,7 +59,9 @@ public class PluginInstance {
 
 	boolean spectator_move_y_lock = true;
 	boolean use_xp_bar_level = true;
-	boolean effects = true;
+	boolean blood_effects = true;
+	boolean dead_in_fake_bed_effects = true;
+	boolean damage_identifier_effects = true;
 	public boolean color_background_wool_of_signs;
 
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
@@ -89,11 +91,13 @@ public class PluginInstance {
 	}
 
 	public void reloadVariables() {
-		lobby_countdown = plugin.getConfig().getInt("config.lobby_countdown") + 1;
-		ingame_countdown = plugin.getConfig().getInt("config.ingame_countdown") + 1;
-		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator_move_y_lock");
+		lobby_countdown = plugin.getConfig().getInt("config.countdowns.lobby_countdown") + 1;
+		ingame_countdown = plugin.getConfig().getInt("config.countdowns.ingame_countdown") + 1;
+		spectator_move_y_lock = plugin.getConfig().getBoolean("config.spectator.spectator_move_y_lock");
 		use_xp_bar_level = plugin.getConfig().getBoolean("config.use_xp_bar_level");
-		effects = plugin.getConfig().getBoolean("config.effects");
+		blood_effects = plugin.getConfig().getBoolean("config.effects.blood");
+		damage_identifier_effects = plugin.getConfig().getBoolean("config.effects.damage_identifier_holograms");
+		dead_in_fake_bed_effects = plugin.getConfig().getBoolean("config.effects.dead_in_fake_bed");
 		color_background_wool_of_signs = plugin.getConfig().getBoolean("config.color_background_wool_of_signs");
 	}
 

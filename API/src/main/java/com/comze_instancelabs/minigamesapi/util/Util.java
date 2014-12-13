@@ -636,7 +636,7 @@ public class Util {
 	public static void giveLobbyItems(JavaPlugin plugin, Player p) {
 		ArenaLogger.debug("Giving lobby items to " + p.getName());
 		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-		ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.classes_selection_item"));
+		ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.classes_selection_item"));
 		if (classes_item.getType() != Material.AIR) {
 			ItemMeta cimeta = classes_item.getItemMeta();
 			cimeta.setDisplayName(pli.getMessagesConfig().classes_item);
@@ -644,7 +644,7 @@ public class Util {
 		}
 
 		if (!plugin.getConfig().getBoolean("config.bungee.game_on_join")) {
-			ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.exit_item"));
+			ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.exit_item"));
 			if (exit_item.getType() != Material.AIR) {
 				ItemMeta exitimeta = exit_item.getItemMeta();
 				exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
@@ -654,14 +654,14 @@ public class Util {
 			p.updateInventory();
 		}
 
-		ItemStack achievement_item = new ItemStack(plugin.getConfig().getInt("config.achievement_item"));
+		ItemStack achievement_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.achievement_item"));
 		if (achievement_item.getType() != Material.AIR) {
 			ItemMeta achievement_itemmeta = achievement_item.getItemMeta();
 			achievement_itemmeta.setDisplayName(pli.getMessagesConfig().achievement_item);
 			achievement_item.setItemMeta(achievement_itemmeta);
 		}
 
-		ItemStack shop_item = new ItemStack(plugin.getConfig().getInt("config.shop_selection_item"));
+		ItemStack shop_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.shop_selection_item"));
 		if (shop_item.getType() != Material.AIR) {
 			ItemMeta shop_itemmeta = shop_item.getItemMeta();
 			shop_itemmeta.setDisplayName(pli.getMessagesConfig().shop_item);
@@ -694,12 +694,12 @@ public class Util {
 
 	public static void giveSpectatorItems(JavaPlugin plugin, Player p) {
 		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-		ItemStack s_item = new ItemStack(plugin.getConfig().getInt("config.spectator_item"));
+		ItemStack s_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.spectator_item"));
 		ItemMeta s_imeta = s_item.getItemMeta();
 		s_imeta.setDisplayName(pli.getMessagesConfig().spectator_item);
 		s_item.setItemMeta(s_imeta);
 
-		ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.exit_item"));
+		ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.exit_item"));
 		ItemMeta exitimeta = exit_item.getItemMeta();
 		exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
 		exit_item.setItemMeta(exitimeta);
