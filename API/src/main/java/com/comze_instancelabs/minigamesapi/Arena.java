@@ -1229,8 +1229,10 @@ public class Arena {
 
 		if (plugin.getConfig().getBoolean("config.execute_cmds_on_stop")) {
 			String[] cmds = plugin.getConfig().getString("config.cmds").split(";");
-			for (String cmd : cmds) {
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+			if (cmds.length > 0) {
+				for (String cmd : cmds) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+				}
 			}
 		}
 
@@ -1244,6 +1246,15 @@ public class Arena {
 				}
 			}, 30L);
 			return;
+		}
+
+		if (plugin.getConfig().getBoolean("config.execute_cmds_on_stop")) {
+			String[] cmds = plugin.getConfig().getString("config.cmds_after").split(";");
+			if (cmds.length > 0) {
+				for (String cmd : cmds) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+				}
+			}
 		}
 
 		if (ai != null) {

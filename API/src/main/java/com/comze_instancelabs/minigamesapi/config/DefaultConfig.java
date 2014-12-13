@@ -70,7 +70,8 @@ public class DefaultConfig {
 			config.addDefault("config.bungee.teleport_all_to_server_on_stop.server", "lobby");
 			config.addDefault("config.bungee.whitelist_while_game_running", false);
 			config.addDefault("config.execute_cmds_on_stop", false);
-			config.addDefault("config.cmds", "say SERVER STOPPING;stop");
+			config.addDefault("config.cmds", "");
+			config.addDefault("config.cmds_after", "say SERVER STOPPING;stop");
 			config.addDefault("config.classes_gui_rows", 3);
 			config.addDefault("config.shop_gui_rows", 3);
 			config.addDefault("config.map_rotation", false);
