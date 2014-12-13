@@ -377,6 +377,8 @@ public class ArenaListener implements Listener {
 							}
 							Effects.playHologram(attacker, p.getLocation(), c + Double.toString(event.getDamage()));
 						}
+					} else if (a.getArenaState() == ArenaState.RESTARTING) {
+						event.setCancelled(true);
 					}
 				}
 			}
