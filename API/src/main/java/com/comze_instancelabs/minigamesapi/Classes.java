@@ -213,6 +213,11 @@ public class Classes {
 	 * @param player
 	 */
 	public void setClass(String internalname, String player, boolean money) {
+		for (String c : pli.getAClasses().keySet()) {
+			if (c.toLowerCase().equalsIgnoreCase(internalname.toLowerCase())) {
+				internalname = c;
+			}
+		}
 		if (!kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
 			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().no_perm);
 			return;
