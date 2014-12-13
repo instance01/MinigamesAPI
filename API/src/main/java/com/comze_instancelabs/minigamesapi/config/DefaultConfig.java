@@ -18,40 +18,27 @@ public class DefaultConfig {
 		FileConfiguration config = plugin.getConfig();
 		config.options().header("The default config. Check http://dev.bukkit.org/bukkit-plugins/instances-minigamesapi/#w-tutorials \n" + "or https://github.com/instance01/MinigamesAPI/wiki/Default-Config-and-Item-Markup \n" + "for more information if you don't understand a config entry. \n" + "You can find classes (kits) in classes.yml, all saved arenas in arenas.yml, all messages in messages.yml. \n" + "You can edit/disable achievements in achievements.yml.");
 		if (!custom) {
-			config.addDefault("config.selection_items.classes_selection_item", config.get("config.classes_selection_item"));
-			config.addDefault("config.selection_items.exit_item", config.get("config.exit_item"));
-			config.addDefault("config.selection_items.achievement_item", config.get("config.achievement_item"));
-			config.addDefault("config.selection_items.spectator_item", config.get("config.exit_item"));
-			config.addDefault("config.selection_items.shop_selection_item", config.get("config.shop_selection_item"));
-			config.addDefault("config.GUI.classes_gui_rows", config.get("config.classes_gui_rows"));
-			config.addDefault("config.GUI.shop_gui_rows", config.get("config.shop_gui_rows"));
-			config.addDefault("config.spectator.spectator_after_fall_or_death", config.get("config.spectator_after_fall_or_death"));
-			config.addDefault("config.spectator.spectator_move_y_lock", config.get("config.spectator_move_y_lock"));
-			config.addDefault("config.defaults.default_max_players", config.get("config.default_max_players"));
-			config.addDefault("config.defaults.default_min_players", config.get("config.default_min_players"));
-			config.addDefault("config.defaults.default_max_game_time_in_minutes", config.get("config.default_max_game_time_in_minutes"));
-			config.addDefault("config.countdowns.lobby_countdown", config.get("config.lobby_countdown"));
-			config.addDefault("config.countdowns.ingame_countdown", config.get("config.ingame_countdown"));
-			config.addDefault("config.countdowns.ingame_countdown_enabled", config.get("config.ingame_countdown_enabled"));
-			config.addDefault("config.countdowns.skip_lobby", config.get("config.skip_lobby"));
-			config.addDefault("config.countdowns.clearinv_while_ingamecountdown", config.get("config.clearinv_while_ingamecountdown"));
-			// config.addDefault("config.classes_selection_item", 399);
-			// config.addDefault("config.exit_item", 152);
-			// config.addDefault("config.achievement_item", 160);
-			// config.addDefault("config.spectator_item", 345);
-			// config.addDefault("config.shop_selection_item", 388);
-			// config.addDefault("config.spectator_after_fall_or_death", true);
-			// config.addDefault("config.spectator_move_y_lock", true);
-			// config.addDefault("config.default_max_players", 4);
-			// config.addDefault("config.default_min_players", 2);
-			// config.addDefault("config.default_max_game_time_in_minutes", 30);
-			// config.addDefault("config.lobby_countdown", 30);
-			// config.addDefault("config.ingame_countdown", 10);
-			// config.addDefault("config.ingame_countdown_enabled", true);
+			config.addDefault("config.selection_items.classes_selection_item", 399);
+			config.addDefault("config.selection_items.exit_item", 152);
+			config.addDefault("config.selection_items.achievement_item", 160);
+			config.addDefault("config.selection_items.spectator_item", 345);
+			config.addDefault("config.selection_items.shop_selection_item", 388);
+			config.addDefault("config.GUI.classes_gui_rows", 3);
+			config.addDefault("config.GUI.shop_gui_rows", 3);
+			config.addDefault("config.spectator.spectator_after_fall_or_death", true);
+			config.addDefault("config.spectator.spectator_move_y_lock", true);
+			config.addDefault("config.defaults.default_max_players", 4);
+			config.addDefault("config.defaults.default_min_players", 2);
+			config.addDefault("config.defaults.default_max_game_time_in_minutes", 30);
+			config.addDefault("config.countdowns.lobby_countdown", 30);
+			config.addDefault("config.countdowns.ingame_countdown", 10);
+			config.addDefault("config.countdowns.ingame_countdown_enabled", true);
+			config.addDefault("config.countdowns.skip_lobby", false);
+			config.addDefault("config.countdowns.clearinv_while_ingamecountdown", false);
+
 			config.addDefault("config.classes_enabled", true);
 			config.addDefault("config.shop_enabled", true);
 			config.addDefault("config.use_credits_instead_of_money_for_kits", false);
-			// config.addDefault("config.skip_lobby", false);
 			config.addDefault("config.reset_inventory_when_players_leave_server", true);
 			config.addDefault("config.color_background_wool_of_signs", false);
 
@@ -89,8 +76,6 @@ public class DefaultConfig {
 			config.addDefault("config.execute_cmds_on_stop", false);
 			config.addDefault("config.cmds", "");
 			config.addDefault("config.cmds_after", "say SERVER STOPPING;stop");
-			// config.addDefault("config.classes_gui_rows", 3);
-			// config.addDefault("config.shop_gui_rows", 3);
 			config.addDefault("config.map_rotation", false);
 			config.addDefault("config.broadcast_win", true);
 			config.addDefault("config.buy_classes_forever", true);
@@ -112,7 +97,6 @@ public class DefaultConfig {
 			config.addDefault("config.1_8_titles", true);
 			config.addDefault("config.sounds.lobby_countdown", "none");
 			config.addDefault("config.sounds.ingame_countdown", "SUCCESSFUL_HIT");
-			// config.addDefault("config.clearinv_while_ingamecountdown", false);
 			config.addDefault("config.chat_per_arena_only", false);
 			config.addDefault("config.chat_show_score_in_arena", false);
 			config.addDefault("config.compass_tracking_enabled", true);
@@ -145,6 +129,24 @@ public class DefaultConfig {
 		FileConfiguration config = plugin.getConfig();
 		if (!config.isSet("config.version")) {
 			// TODO new config
+			config.set("config.selection_items.classes_selection_item", config.get("config.classes_selection_item"));
+			config.set("config.selection_items.exit_item", config.get("config.exit_item"));
+			config.set("config.selection_items.achievement_item", config.get("config.achievement_item"));
+			config.set("config.selection_items.spectator_item", config.get("config.exit_item"));
+			config.set("config.selection_items.shop_selection_item", config.get("config.shop_selection_item"));
+			config.set("config.GUI.classes_gui_rows", config.get("config.classes_gui_rows"));
+			config.set("config.GUI.shop_gui_rows", config.get("config.shop_gui_rows"));
+			config.set("config.spectator.spectator_after_fall_or_death", config.get("config.spectator_after_fall_or_death"));
+			config.set("config.spectator.spectator_move_y_lock", config.get("config.spectator_move_y_lock"));
+			config.set("config.defaults.default_max_players", config.get("config.default_max_players"));
+			config.set("config.defaults.default_min_players", config.get("config.default_min_players"));
+			config.set("config.defaults.default_max_game_time_in_minutes", config.get("config.default_max_game_time_in_minutes"));
+			config.set("config.countdowns.lobby_countdown", config.get("config.lobby_countdown"));
+			config.set("config.countdowns.ingame_countdown", config.get("config.ingame_countdown"));
+			config.set("config.countdowns.ingame_countdown_enabled", config.get("config.ingame_countdown_enabled"));
+			config.set("config.countdowns.skip_lobby", config.get("config.skip_lobby"));
+			config.set("config.countdowns.clearinv_while_ingamecountdown", config.get("config.clearinv_while_ingamecountdown"));
+
 			config.set("config.classes_selection_item", null);
 			config.set("config.exit_item", null);
 			config.set("config.achievement_item", null);

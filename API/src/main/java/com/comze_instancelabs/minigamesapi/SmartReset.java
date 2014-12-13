@@ -154,7 +154,6 @@ public class SmartReset {
 		if (b_.getType() == Material.CHEST) {
 			if(ablock.isDoubleChest()){
 				DoubleChest dc = ablock.getDoubleChest();
-				System.out.println(dc.getLocation());
 				HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
 				for (Integer i : chestinv.keySet()) {
 					ItemStack item = chestinv.get(i);

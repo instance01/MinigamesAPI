@@ -451,7 +451,7 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
-
+	
 	@EventHandler
 	public void onLeavesDecay(LeavesDecayEvent event) {
 		for (Arena a : pli.getArenas()) {

@@ -76,7 +76,6 @@ public class SmartArenaBlock implements Serializable {
 			enchbook_id_lv = new HashMap<Integer, ArrayList<Integer>>();
 			item_durability = new ArrayList<Short>();
 
-			System.out.println(chest.getInventory().getHolder() + " " + chest.getInventory().getHolder().toString());
 			if (chest.getInventory().getHolder() instanceof DoubleChest) {
 				isDoubleChest = true;
 				doubleChest = (DoubleChest) chest.getInventory().getHolder();
