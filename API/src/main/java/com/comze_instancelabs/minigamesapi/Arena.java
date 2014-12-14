@@ -1312,6 +1312,8 @@ public class Arena {
 				}
 			}
 			lastdamager.remove(playername);
+		} else {
+			pli.getStatsInstance().addDeath(playername);
 		}
 	}
 
