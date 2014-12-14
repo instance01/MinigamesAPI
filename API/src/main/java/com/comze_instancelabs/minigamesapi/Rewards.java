@@ -106,7 +106,7 @@ public class Rewards {
 
 			pli.getStatsInstance().addPoints(p_, pli.getStatsInstance().stats_kill_points);
 			pli.getStatsInstance().addKill(p_);
-			pli.getSQLInstance().updateWinnerStats(p_, pli.getStatsInstance().stats_kill_points, false);
+			pli.getSQLInstance().updateWinnerStats(p, pli.getStatsInstance().stats_kill_points, false);
 		}
 	}
 

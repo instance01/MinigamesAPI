@@ -13,6 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,12 +48,26 @@ public class Stats {
 	public void win(String playername, int count) {
 		addWin(playername);
 		addPoints(playername, count);
-		pli.getSQLInstance().updateWinnerStats(playername, count, true);
+		Player p = Bukkit.getPlayer(playername);
+		if (p != null) {
+			pli.getSQLInstance().updateWinnerStats(p, count, true);
+		} else {
+			if (MinigamesAPI.debug) {
+				System.out.println("Failed updating SQL Stats as the player is not online anymore!");
+			}
+		}
 	}
 
 	public void lose(String playername) {
 		addLose(playername);
-		pli.getSQLInstance().updateLoserStats(playername);
+		Player p = Bukkit.getPlayer(playername);
+		if (p != null) {
+			pli.getSQLInstance().updateLoserStats(p);
+		} else {
+			if (MinigamesAPI.debug) {
+				System.out.println("Failed updating SQL Stats as the player is not online anymore!");
+			}
+		}
 	}
 
 	/**
@@ -62,12 +77,13 @@ public class Stats {
 	 */
 	public void update(String playername) {
 		if (plugin.getConfig().getBoolean("mysql.enabled")) {
-			String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
+			Player p = Bukkit.getPlayer(playername);
+			String uuid = p.getUniqueId().toString();
 			if (pli.getStatsConfig().getConfig().isSet("players." + uuid + ".wins")) {
-				setWins(playername, pli.getSQLInstance().getWins(playername));
+				setWins(playername, pli.getSQLInstance().getWins(p));
 			}
 			if (pli.getStatsConfig().getConfig().isSet("players." + uuid + ".points")) {
-				setPoints(playername, pli.getSQLInstance().getPoints(playername));
+				setPoints(playername, pli.getSQLInstance().getPoints(p));
 			}
 		}
 	}
@@ -130,7 +146,7 @@ public class Stats {
 		} else if (temp >= 100) {
 			pli.getArenaAchievements().setAchievementDone(playername, "hundred_kills", false);
 		}
-		pli.getSQLInstance().updateKillerStats(playername);
+		pli.getSQLInstance().updateKillerStats(Bukkit.getPlayer(playername));
 	}
 
 	public void addDeath(String playername) {
@@ -144,7 +160,7 @@ public class Stats {
 		config.getConfig().set("players." + uuid + ".deaths", temp);
 		config.getConfig().set("players." + uuid + ".playername", playername);
 		config.saveConfig();
-		pli.getSQLInstance().updateDeathStats(playername);
+		pli.getSQLInstance().updateDeathStats(Bukkit.getPlayer(playername));
 	}
 
 	public void addPoints(String playername, int count) {
