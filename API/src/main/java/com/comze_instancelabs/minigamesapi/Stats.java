@@ -27,14 +27,16 @@ public class Stats {
 	// but these points are just for top stats, nothing more
 
 	private JavaPlugin plugin = null;
+	PluginInstance pli = null;
 
 	public ArrayList<String> skullsetup = new ArrayList<String>();
 	int stats_kill_points = 2;
 	int stats_win_points = 10;
 
-	public Stats(JavaPlugin plugin) {
+	public Stats(PluginInstance pli, JavaPlugin plugin) {
 		this.plugin = plugin;
 		reloadVariables();
+		this.pli = pli;
 	}
 
 	public void reloadVariables() {
@@ -45,12 +47,12 @@ public class Stats {
 	public void win(String playername, int count) {
 		addWin(playername);
 		addPoints(playername, count);
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateWinnerStats(playername, count, true);
+		pli.getSQLInstance().updateWinnerStats(playername, count, true);
 	}
 
 	public void lose(String playername) {
 		addLose(playername);
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateLoserStats(playername);
+		pli.getSQLInstance().updateLoserStats(playername);
 	}
 
 	/**
@@ -59,7 +61,6 @@ public class Stats {
 	 * @param playername
 	 */
 	public void update(String playername) {
-		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		if (plugin.getConfig().getBoolean("mysql.enabled")) {
 			String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 			if (pli.getStatsConfig().getConfig().isSet("players." + uuid + ".wins")) {
@@ -73,27 +74,27 @@ public class Stats {
 
 	public void setWins(String playername, int count) {
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig().set("players." + uuid + ".wins", count);
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().saveConfig();
+		pli.getStatsConfig().getConfig().set("players." + uuid + ".wins", count);
+		pli.getStatsConfig().saveConfig();
 	}
 
 	public void setPoints(String playername, int count) {
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig().set("players." + uuid + ".points", count);
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().saveConfig();
+		pli.getStatsConfig().getConfig().set("players." + uuid + ".points", count);
+		pli.getStatsConfig().saveConfig();
 	}
 
 	public void addWin(String playername) {
-		StatsConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig();
+		StatsConfig config = pli.getStatsConfig();
 		int temp = 0;
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.getConfig().isSet("players." + uuid + ".wins")) {
 			temp = config.getConfig().getInt("players." + uuid + ".wins");
 		}
 		temp++;
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "first_win", false);
+		pli.getArenaAchievements().setAchievementDone(playername, "first_win", false);
 		if (temp >= 10) {
-			MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "ten_wins", false);
+			pli.getArenaAchievements().setAchievementDone(playername, "ten_wins", false);
 		}
 		config.getConfig().set("players." + uuid + ".wins", temp);
 		config.getConfig().set("players." + uuid + ".playername", playername);
@@ -101,7 +102,7 @@ public class Stats {
 	}
 
 	public void addLose(String playername) {
-		StatsConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig();
+		StatsConfig config = pli.getStatsConfig();
 		int temp = 0;
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.getConfig().isSet("players." + uuid + ".loses")) {
@@ -113,7 +114,7 @@ public class Stats {
 	}
 
 	public void addKill(String playername) {
-		StatsConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig();
+		StatsConfig config = pli.getStatsConfig();
 		int temp = 0;
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.getConfig().isSet("players." + uuid + ".kills")) {
@@ -123,17 +124,17 @@ public class Stats {
 		config.getConfig().set("players." + uuid + ".kills", temp);
 		config.getConfig().set("players." + uuid + ".playername", playername);
 		config.saveConfig();
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "first_blood", false);
+		pli.getArenaAchievements().setAchievementDone(playername, "first_blood", false);
 		if (temp >= 10 && temp < 100) {
-			MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "ten_kills", false);
+			pli.getArenaAchievements().setAchievementDone(playername, "ten_kills", false);
 		} else if (temp >= 100) {
-			MinigamesAPI.getAPI().getPluginInstance(plugin).getArenaAchievements().setAchievementDone(playername, "hundred_kills", false);
+			pli.getArenaAchievements().setAchievementDone(playername, "hundred_kills", false);
 		}
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateKillerStats(playername);
+		pli.getSQLInstance().updateKillerStats(playername);
 	}
 
 	public void addDeath(String playername) {
-		StatsConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig();
+		StatsConfig config = pli.getStatsConfig();
 		int temp = 0;
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.getConfig().isSet("players." + uuid + ".deaths")) {
@@ -143,11 +144,11 @@ public class Stats {
 		config.getConfig().set("players." + uuid + ".deaths", temp);
 		config.getConfig().set("players." + uuid + ".playername", playername);
 		config.saveConfig();
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getSQLInstance().updateDeathStats(playername);
+		pli.getSQLInstance().updateDeathStats(playername);
 	}
 
 	public void addPoints(String playername, int count) {
-		StatsConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig();
+		StatsConfig config = pli.getStatsConfig();
 		int temp = 0;
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.getConfig().isSet("players." + uuid + ".points")) {
@@ -166,7 +167,7 @@ public class Stats {
 	}
 
 	public int getPoints(String playername) {
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.isSet("players." + uuid + ".points")) {
 			int points = config.getInt("players." + uuid + ".points");
@@ -176,7 +177,7 @@ public class Stats {
 	}
 
 	public int getWins(String playername) {
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.isSet("players." + uuid + ".wins")) {
 			return config.getInt("players." + uuid + ".wins");
@@ -185,7 +186,7 @@ public class Stats {
 	}
 
 	public int getLoses(String playername) {
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.isSet("players." + uuid + ".loses")) {
 			return config.getInt("players." + uuid + ".loses");
@@ -194,7 +195,7 @@ public class Stats {
 	}
 
 	public int getKills(String playername) {
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.isSet("players." + uuid + ".kills")) {
 			return config.getInt("players." + uuid + ".kills");
@@ -203,7 +204,7 @@ public class Stats {
 	}
 
 	public int getDeaths(String playername) {
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		if (config.isSet("players." + uuid + ".deaths")) {
 			return config.getInt("players." + uuid + ".deaths");
@@ -217,7 +218,7 @@ public class Stats {
 		if (!wins) {
 			key = "points";
 		}
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		HashMap<String, Double> pwins = new HashMap<String, Double>();
 		if (config.isSet("players.")) {
 			for (String p : config.getConfigurationSection("players.").getKeys(false)) {
@@ -235,7 +236,7 @@ public class Stats {
 	}
 
 	public TreeMap<String, Double> getTop() {
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		HashMap<String, Double> pwins = new HashMap<String, Double>();
 		if (config.isSet("players.")) {
 			for (String p : config.getConfigurationSection("players.").getKeys(false)) {
@@ -258,7 +259,7 @@ public class Stats {
 	}
 
 	public void saveSkull(Location t, int count) {
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		String base = "skulls." + UUID.randomUUID().toString() + ".";
 		config.set(base + "world", t.getWorld().getName());
 		config.set(base + "x", t.getBlockX());
@@ -273,7 +274,7 @@ public class Stats {
 			config.set(base + "dir", "SELF");
 		}
 
-		MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().saveConfig();
+		pli.getStatsConfig().saveConfig();
 	}
 
 	/*
@@ -281,7 +282,7 @@ public class Stats {
 	 */
 	public void updateSkulls() {
 		TreeMap<String, Double> sorted_wins = getTop();
-		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsConfig().getConfig();
+		FileConfiguration config = pli.getStatsConfig().getConfig();
 		if (config.isSet("skulls.")) {
 			for (String skull : config.getConfigurationSection("skulls.").getKeys(false)) {
 				String base = "skulls." + skull;

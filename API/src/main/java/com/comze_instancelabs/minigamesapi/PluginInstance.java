@@ -75,7 +75,7 @@ public class PluginInstance {
 		this.arenas = arenas;
 		this.plugin = plugin;
 		rew = new Rewards(plugin);
-		stats = new Stats(plugin);
+		stats = new Stats(this, plugin);
 		sql = new MainSQL(plugin, true);
 		classes = new Classes(this, plugin);
 		shop = new Shop(this, plugin);
