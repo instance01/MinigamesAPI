@@ -23,18 +23,22 @@ public class Effects {
 	public static int getClientProtocolVersion(Player p) {
 		int ret = 0;
 		try {
-			Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
-			Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
-			playerConnection.setAccessible(true);
-			Object playerConInstance = playerConnection.get(getHandle.invoke(p));
-			Field networkManager = playerConInstance.getClass().getField("networkManager");
-			networkManager.setAccessible(true);
-			Object networkManagerInstance = networkManager.get(playerConInstance);
-			Method getVersion = networkManagerInstance.getClass().getMethod("getVersion");
-			Object version = getVersion.invoke(networkManagerInstance);
-			ret = (Integer) version;
+			if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
+				Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
+				Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+				playerConnection.setAccessible(true);
+				Object playerConInstance = playerConnection.get(getHandle.invoke(p));
+				Field networkManager = playerConInstance.getClass().getField("networkManager");
+				networkManager.setAccessible(true);
+				Object networkManagerInstance = networkManager.get(playerConInstance);
+				Method getVersion = networkManagerInstance.getClass().getMethod("getVersion");
+				Object version = getVersion.invoke(networkManagerInstance);
+				ret = (Integer) version;
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (MinigamesAPI.debug) {
+				e.printStackTrace();
+			}
 		}
 		return ret;
 	}
