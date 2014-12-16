@@ -728,6 +728,11 @@ public class CommandHandler {
 			if (!plugin.getConfig().getBoolean("config.classes_enabled")) {
 				return true;
 			}
+			if (args.length > 2) {
+				p = Bukkit.getPlayer(args[2]);
+				if (p == null)
+					return true;
+			}
 			if (!plugin.getConfig().getBoolean("config.allow_classes_selection_out_of_arenas")) {
 				if (pli.global_players.containsKey(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
