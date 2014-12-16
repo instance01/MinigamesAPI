@@ -72,7 +72,7 @@ public class SmartReset {
 	}
 
 	public void reset() {
-		System.out.println(changed.size() + " to reset.");
+		System.out.println(changed.size() + " to reset for arena " + a.getInternalName() + ".");
 
 		final ArrayList<SmartArenaBlock> failedblocks = new ArrayList<SmartArenaBlock>();
 
@@ -147,7 +147,7 @@ public class SmartReset {
 			((Chest) b_.getState()).getBlockInventory().clear();
 			((Chest) b_.getState()).update();
 		}
-		if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString()) || b_.getData() != ablock.getData()) {
+		if (!b_.getType().equals(ablock.getMaterial()) || b_.getData() != ablock.getData()) {
 			b_.setType(ablock.getMaterial());
 			b_.setData(ablock.getData());
 		}

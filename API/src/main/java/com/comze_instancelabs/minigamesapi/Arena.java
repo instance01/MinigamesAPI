@@ -44,6 +44,7 @@ public class Arena {
 	private ArrayList<Location> spawns = new ArrayList<Location>();
 	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
 	public HashMap<String, String> lastdamager = new HashMap<String, String>();
+	public HashMap<String, Integer> temp_kill_count = new HashMap<String, Integer>();
 
 	private Location mainlobby;
 	private Location waitinglobby;
@@ -1301,6 +1302,7 @@ public class Arena {
 			Player killer = Bukkit.getPlayer(lastdamager.get(playername));
 			if (killer != null) {
 				pli.getStatsInstance().addDeath(playername);
+				this.temp_kill_count.put(killer.getName(), this.temp_kill_count.containsKey(killer.getName()) ? this.temp_kill_count.get(killer.getName()) + 1 : 1);
 				pli.getRewardsInstance().giveKillReward(killer.getName());
 				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
 				for (String p_ : this.getAllPlayers()) {

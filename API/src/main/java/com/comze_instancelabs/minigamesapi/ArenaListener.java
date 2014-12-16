@@ -451,7 +451,7 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onLeavesDecay(LeavesDecayEvent event) {
 		for (Arena a : pli.getArenas()) {
@@ -842,6 +842,12 @@ public class ArenaListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
 		pli.getStatsInstance().update(p.getName());
+		if (pli.containsGlobalPlayer(p.getName())) {
+			pli.global_players.remove(p.getName());
+		}
+		if (pli.containsGlobalLost(p.getName())) {
+			pli.global_lost.remove(p.getName());
+		}
 		if (plugin.getConfig().isSet("temp.left_players." + p.getName())) {
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
@@ -897,7 +903,7 @@ public class ArenaListener implements Listener {
 	public void onPlayerLeave(PlayerQuitEvent event) {
 		if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
 			Arena arena = pli.global_players.get(event.getPlayer().getName());
-			MinigamesAPI.getAPI().getLogger().info(arena.getInternalName());
+			MinigamesAPI.getAPI().getLogger().info(event.getPlayer().getName() + " quit while in arena " + arena.getInternalName() + ".");
 			int count = 0;
 			for (String p_ : pli.global_players.keySet()) {
 				if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {

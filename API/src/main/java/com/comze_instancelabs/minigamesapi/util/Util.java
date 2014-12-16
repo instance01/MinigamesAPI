@@ -61,14 +61,16 @@ import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 public class Util {
 
 	public static void clearInv(Player p) {
-		ArenaLogger.debug("Clearing inventory of " + p.getName());
-		p.getInventory().clear();
-		p.updateInventory();
-		p.getInventory().setHelmet(null);
-		p.getInventory().setChestplate(null);
-		p.getInventory().setLeggings(null);
-		p.getInventory().setBoots(null);
-		p.updateInventory();
+		if (p != null) {
+			ArenaLogger.debug("Clearing inventory of " + p.getName());
+			p.getInventory().clear();
+			p.updateInventory();
+			p.getInventory().setHelmet(null);
+			p.getInventory().setChestplate(null);
+			p.getInventory().setLeggings(null);
+			p.getInventory().setBoots(null);
+			p.updateInventory();
+		}
 	}
 
 	public static void teleportPlayerFixed(final Player p, Location l) {

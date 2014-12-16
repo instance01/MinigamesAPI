@@ -146,7 +146,8 @@ public class Stats {
 		} else if (temp >= 100) {
 			pli.getArenaAchievements().setAchievementDone(playername, "hundred_kills", false);
 		}
-		pli.getSQLInstance().updateKillerStats(Bukkit.getPlayer(playername));
+		// Moved to Rewards.java:257
+		// pli.getSQLInstance().updateKillerStats(Bukkit.getPlayer(playername));
 	}
 
 	public void addDeath(String playername) {
