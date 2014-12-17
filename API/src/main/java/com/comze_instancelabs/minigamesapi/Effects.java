@@ -23,7 +23,7 @@ public class Effects {
 	public static int getClientProtocolVersion(Player p) {
 		int ret = 0;
 		try {
-			if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
+			if (!MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
 				Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
 				Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
 				playerConnection.setAccessible(true);

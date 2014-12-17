@@ -80,6 +80,7 @@ public class Util {
 			p.leaveVehicle();
 			ent.eject();
 		}
+		l.getBlock().getChunk().load();
 		p.teleport(l, TeleportCause.PLUGIN);
 		p.setFallDistance(-1F);
 		p.setVelocity(new Vector(0D, 0D, 0D));
