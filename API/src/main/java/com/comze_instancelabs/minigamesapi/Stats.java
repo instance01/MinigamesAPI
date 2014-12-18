@@ -88,6 +88,29 @@ public class Stats {
 		}
 	}
 
+	public void updateSQLKillsDeathsAfter(Player p, Arena a) {
+		if (!a.getPlugin().isEnabled()) {
+			System.out.println("Couldn't save Death/Kill SQL stats as the server stopped/restarted.");
+			return;
+		}
+		// Update sql server with kills stats at the end
+		if (a.temp_kill_count.containsKey(p.getName())) {
+			if (MinigamesAPI.debug) {
+				System.out.println(a.temp_kill_count.get(p.getName()));
+			}
+			pli.getSQLInstance().updateKillerStats(p, a.temp_kill_count.get(p.getName()));
+			a.temp_kill_count.remove(p.getName());
+		}
+		// death stats
+		if (a.temp_death_count.containsKey(p.getName())) {
+			if (MinigamesAPI.debug) {
+				System.out.println(a.temp_death_count.get(p.getName()));
+			}
+			pli.getSQLInstance().updateDeathStats(p, a.temp_death_count.get(p.getName()));
+			a.temp_death_count.remove(p.getName());
+		}
+	}
+
 	public void setWins(String playername, int count) {
 		String uuid = Bukkit.getPlayer(playername).getUniqueId().toString();
 		pli.getStatsConfig().getConfig().set("players." + uuid + ".wins", count);
@@ -161,7 +184,8 @@ public class Stats {
 		config.getConfig().set("players." + uuid + ".deaths", temp);
 		config.getConfig().set("players." + uuid + ".playername", playername);
 		config.saveConfig();
-		pli.getSQLInstance().updateDeathStats(Bukkit.getPlayer(playername));
+		// Moved to Rewards.java:265
+		// pli.getSQLInstance().updateDeathStats(Bukkit.getPlayer(playername));
 	}
 
 	public void addPoints(String playername, int count) {

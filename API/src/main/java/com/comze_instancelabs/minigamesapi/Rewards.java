@@ -253,12 +253,6 @@ public class Rewards {
 				}
 				MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().lose(p_);
 			}
-			// Update sql server with kills stats at the end:
-			if (a.temp_kill_count.containsKey(p.getName())) {
-				System.out.println(a.temp_kill_count.get(p.getName()));
-				pli.getSQLInstance().updateKillerStats(p, a.temp_kill_count.get(p.getName()));
-				a.temp_kill_count.remove(p.getName());
-			}
 		}
 	}
 

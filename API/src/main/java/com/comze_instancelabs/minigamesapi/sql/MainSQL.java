@@ -173,7 +173,7 @@ public class MainSQL {
 		}
 	}
 
-	public void updateDeathStats(Player p) {
+	public void updateDeathStats(Player p, int deaths_) {
 		if (!plugin.getConfig().getBoolean("mysql.enabled")) {
 			return;
 		}
@@ -194,7 +194,7 @@ public class MainSQL {
 				return;
 			}
 			res3.next();
-			int deaths = res3.getInt("deaths") + 1;
+			int deaths = res3.getInt("deaths") + deaths_;
 
 			c.createStatement().executeUpdate("UPDATE " + plugin.getName() + " SET deaths='" + Integer.toString(deaths) + "' WHERE uuid='" + uuid + "'");
 

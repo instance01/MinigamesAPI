@@ -45,6 +45,7 @@ public class Arena {
 	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
 	public HashMap<String, String> lastdamager = new HashMap<String, String>();
 	public HashMap<String, Integer> temp_kill_count = new HashMap<String, Integer>();
+	public HashMap<String, Integer> temp_death_count = new HashMap<String, Integer>();
 
 	private Location mainlobby;
 	private Location waitinglobby;
@@ -626,6 +627,7 @@ public class Arena {
 					p.setHealth(20D);
 					p.removePotionEffect(PotionEffectType.JUMP);
 					pli.getSpectatorManager().setSpectate(p, false);
+					pli.getStatsInstance().updateSQLKillsDeathsAfter(p, this);
 
 				}
 			} catch (Exception e) {
@@ -692,6 +694,7 @@ public class Arena {
 					p.updateInventory();
 
 					if (started_) {
+						pli.getStatsInstance().updateSQLKillsDeathsAfter(p, a);
 						if (!ap.isNoReward()) {
 							pli.getRewardsInstance().giveWinReward(playername, a, temp_players, global_coin_multiplier);
 						} else {
@@ -1303,6 +1306,7 @@ public class Arena {
 			if (killer != null) {
 				pli.getStatsInstance().addDeath(playername);
 				this.temp_kill_count.put(killer.getName(), this.temp_kill_count.containsKey(killer.getName()) ? this.temp_kill_count.get(killer.getName()) + 1 : 1);
+				this.temp_death_count.put(playername, this.temp_death_count.containsKey(playername) ? this.temp_death_count.get(playername) + 1 : 1);
 				pli.getRewardsInstance().giveKillReward(killer.getName());
 				Util.sendMessage(plugin, killer, MinigamesAPI.getAPI().getPluginInstance(plugin).getMessagesConfig().you_got_a_kill.replaceAll("<player>", playername));
 				for (String p_ : this.getAllPlayers()) {
