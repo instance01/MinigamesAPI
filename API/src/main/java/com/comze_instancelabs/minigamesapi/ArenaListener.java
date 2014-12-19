@@ -1017,7 +1017,7 @@ public class ArenaListener implements Listener {
 		for (Player observer : players) {
 			for (Player player : players) {
 				if (observer.getEntityId() != player.getEntityId()) {
-					if (visible)
+					if (visible && !pli.containsGlobalLost(player.getName()))
 						observer.showPlayer(player);
 					else
 						observer.hidePlayer(player);

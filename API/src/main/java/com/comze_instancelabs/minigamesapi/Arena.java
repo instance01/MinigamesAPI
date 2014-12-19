@@ -603,7 +603,10 @@ public class Arena {
 
 			try {
 				if (pli.global_lost.containsKey(playername)) {
+					pli.getSpectatorManager().showSpectator(p);
 					pli.global_lost.remove(playername);
+				} else {
+					pli.getSpectatorManager().showSpectators(p);
 				}
 				if (pli.global_arcade_spectator.containsKey(playername)) {
 					pli.global_arcade_spectator.remove(playername);
@@ -657,7 +660,7 @@ public class Arena {
 			}
 		}
 
-		pli.global_players.remove(playername);
+		// pli.global_players.remove(playername);
 		if (pli.global_arcade_spectator.containsKey(playername)) {
 			pli.global_arcade_spectator.remove(playername);
 		}
@@ -707,7 +710,10 @@ public class Arena {
 					}
 
 					if (pli.global_lost.containsKey(playername)) {
+						pli.getSpectatorManager().showSpectator(p);
 						pli.global_lost.remove(playername);
+					} else {
+						pli.getSpectatorManager().showSpectators(p);
 					}
 
 					try {
@@ -744,6 +750,7 @@ public class Arena {
 		Util.clearInv(p);
 		p.setAllowFlight(true);
 		p.setFlying(true);
+		pli.getSpectatorManager().hideSpectator(p, this.getAllPlayers());
 		pli.scoreboardManager.updateScoreboard(plugin, this);
 		if (!plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
 			if (this.getPlayerAlive() < 1) {
@@ -802,7 +809,7 @@ public class Arena {
 		}
 	}
 
-	private void spectateRaw(final Player p) {
+	public void spectateRaw(final Player p) {
 		if (pli.dead_in_fake_bed_effects) {
 			try {
 				Effects.playFakeBed(this, p);
@@ -1393,6 +1400,10 @@ public class Arena {
 
 	public JavaPlugin getPlugin() {
 		return plugin;
+	}
+
+	public PluginInstance getPluginInstance() {
+		return pli;
 	}
 
 	public int getCurrentIngameCountdownTime() {

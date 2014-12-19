@@ -80,10 +80,14 @@ public class Stats {
 			Player p = Bukkit.getPlayer(playername);
 			String uuid = p.getUniqueId().toString();
 			if (pli.getStatsConfig().getConfig().isSet("players." + uuid + ".wins")) {
-				setWins(playername, pli.getSQLInstance().getWins(p));
+				int wins = getWins(playername);
+				int sqlwins = pli.getSQLInstance().getWins(p);
+				setWins(playername, Math.max(wins, sqlwins));
 			}
 			if (pli.getStatsConfig().getConfig().isSet("players." + uuid + ".points")) {
-				setPoints(playername, pli.getSQLInstance().getPoints(p));
+				int points = getPoints(playername);
+				int sqlpoints = pli.getSQLInstance().getPoints(p);
+				setPoints(playername, Math.max(points, sqlpoints));
 			}
 		}
 	}

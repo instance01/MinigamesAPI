@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.bukkit.scoreboard.Team;
 
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class SpectatorManager {
 
@@ -100,5 +102,59 @@ public class SpectatorManager {
 
 		iconm.open(p);
 		lasticonm.put(p.getName(), iconm);
+	}
+
+	HashMap<String, ArrayList<String>> pspecs = new HashMap<String, ArrayList<String>>();
+	HashMap<String, ArrayList<String>> splayers = new HashMap<String, ArrayList<String>>();
+
+	public void hideSpectator(Player spec, ArrayList<String> players) {
+		for (String p_ : players) {
+			if (Validator.isPlayerOnline(p_)) {
+				Player p = Bukkit.getPlayer(p_);
+				p.hidePlayer(spec);
+				if (pspecs.containsKey(p_)) {
+					ArrayList<String> t = pspecs.get(p_);
+					t.add(spec.getName());
+					pspecs.put(p_, t);
+				} else {
+					pspecs.put(p_, new ArrayList<String>(Arrays.asList(spec.getName())));
+				}
+			}
+		}
+		splayers.put(spec.getName(), players);
+	}
+
+	public void showSpectator(Player spec) {
+		if(splayers.containsKey(spec.getName())){
+			for (String p_ : splayers.get(spec.getName())) {
+				if (Validator.isPlayerOnline(p_)) {
+					Player p = Bukkit.getPlayer(p_);
+					p.showPlayer(spec);
+					if (pspecs.containsKey(p_)) {
+						ArrayList<String> t = pspecs.get(p_);
+						t.remove(spec.getName());
+						pspecs.put(p_, t);
+					}
+				}
+			}
+			splayers.remove(spec.getName());
+		}
+	}
+
+	public void showSpectators(Player p) {
+		if(pspecs.containsKey(p.getName())){
+			for (String p_ : pspecs.get(p.getName())) {
+				if (Validator.isPlayerOnline(p_)) {
+					Player spec = Bukkit.getPlayer(p_);
+					p.showPlayer(spec);
+					if (splayers.containsKey(p_)) {
+						ArrayList<String> t = splayers.get(p_);
+						t.remove(spec.getName());
+						splayers.put(p_, t);
+					}
+				}
+			}
+			pspecs.remove(p.getName());
+		}
 	}
 }
