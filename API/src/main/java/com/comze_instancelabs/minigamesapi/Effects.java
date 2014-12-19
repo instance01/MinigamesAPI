@@ -220,7 +220,7 @@ public class Effects {
 	 * @param text
 	 *            Hologram text
 	 */
-	public static void playHologram(final Player p, final Location l, String text) {
+	public static void playHologram(final Player p, final Location l, String text, boolean moveDown, boolean removeAfterCooldown) {
 		if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
 			try {
 				final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
@@ -389,46 +389,49 @@ public class Effects {
 			}
 
 			// Send velocity packets to move the entities slowly down
-			effectlocd_taskid.put(horseId, Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
-				public void run() {
-					try {
-						int i = effectlocd.get(horseId);
-						Object packet = packetPlayOutEntityVelocity.newInstance(horseId, 0D, -0.05D, 0D);
-						sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet);
-						if (!playerIs1_8) {
-							Object packet2 = packetPlayOutEntityVelocity.newInstance(witherSkullId, 0D, -0.05D, 0D);
-							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet2);
-						}
-						if (i < -1) {
-							int taskid = effectlocd_taskid.get(horseId);
-							effectlocd_taskid.remove(horseId);
-							effectlocd.remove(horseId);
-							Bukkit.getScheduler().cancelTask(taskid);
-							return;
-						}
-						effectlocd.put(horseId, effectlocd.get(horseId) - 1);
-					} catch (Exception e) {
-						if (MinigamesAPI.debug) {
-							e.printStackTrace();
+			if (moveDown) {
+				effectlocd_taskid.put(horseId, Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
+					public void run() {
+						try {
+							int i = effectlocd.get(horseId);
+							Object packet = packetPlayOutEntityVelocity.newInstance(horseId, 0D, -0.05D, 0D);
+							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet);
+							if (!playerIs1_8) {
+								Object packet2 = packetPlayOutEntityVelocity.newInstance(witherSkullId, 0D, -0.05D, 0D);
+								sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet2);
+							}
+							if (i < -1) {
+								int taskid = effectlocd_taskid.get(horseId);
+								effectlocd_taskid.remove(horseId);
+								effectlocd.remove(horseId);
+								Bukkit.getScheduler().cancelTask(taskid);
+								return;
+							}
+							effectlocd.put(horseId, effectlocd.get(horseId) - 1);
+						} catch (Exception e) {
+							if (MinigamesAPI.debug) {
+								e.printStackTrace();
+							}
 						}
 					}
-				}
-			}, 2L, 2L).getTaskId());
+				}, 2L, 2L).getTaskId());
+			}
 
 			// Remove both entities (and thus the hologram) after 2 seconds
-			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
-				public void run() {
-					try {
-						Object destroyPacket = packetPlayOutEntityDestroyConstr.newInstance((Object) new int[] { witherSkullId, horseId });
-						sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), destroyPacket);
-					} catch (Exception e) {
-						if (MinigamesAPI.debug) {
-							e.printStackTrace();
+			if (removeAfterCooldown) {
+				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+					public void run() {
+						try {
+							Object destroyPacket = packetPlayOutEntityDestroyConstr.newInstance((Object) new int[] { witherSkullId, horseId });
+							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), destroyPacket);
+						} catch (Exception e) {
+							if (MinigamesAPI.debug) {
+								e.printStackTrace();
+							}
 						}
 					}
-				}
-			}, 20L * 2);
-
+				}, 20L * 2);
+			}
 		} catch (Exception e) {
 			if (MinigamesAPI.debug) {
 				e.printStackTrace();

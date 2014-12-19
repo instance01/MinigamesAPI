@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -342,6 +343,8 @@ public class ArenaListener implements Listener {
 		}
 	}
 
+	boolean isSupported = false;
+
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.getEntity() instanceof Player) {
@@ -375,7 +378,7 @@ public class ArenaListener implements Listener {
 							if (event.getDamage() >= 9D) {
 								c = ChatColor.RED;
 							}
-							Effects.playHologram(attacker, p.getLocation(), c + Double.toString(event.getDamage()));
+							Effects.playHologram(attacker, p.getLocation(), c + Double.toString(event.getDamage()), true, true);
 						}
 					} else if (a.getArenaState() == ArenaState.RESTARTING) {
 						event.setCancelled(true);

@@ -394,7 +394,21 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 					if (sender instanceof Player) {
 						Player p = (Player) sender;
 						p.sendMessage("Playing hologram.");
-						Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + " " + Double.toString(p.getHealth()));
+						Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + " " + Double.toString(p.getHealth()), true, true);
+					}
+				} else if (args[0].equalsIgnoreCase("statshologram")) {
+					if (sender instanceof Player) {
+						Player p = (Player) sender;
+						if (args.length > 1) {
+							PluginInstance pli = getPluginInstance((JavaPlugin) Bukkit.getPluginManager().getPlugin(args[1]));
+							p.sendMessage("Playing statistics hologram.");
+
+							Effects.playHologram(p, p.getLocation().add(0D, 1D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Wins: " + pli.getStatsInstance().getWins(p.getName()), false, false);
+							Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Points: " + pli.getStatsInstance().getPoints(p.getName()), false, false);
+							Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Kills: " + pli.getStatsInstance().getKills(p.getName()), false, false);
+							Effects.playHologram(p, p.getLocation().add(0D, -0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Deaths: " + pli.getStatsInstance().getDeaths(p.getName()), false, false);
+
+						}
 					}
 				} else if (args[0].equalsIgnoreCase("protocol")) {
 					if (sender instanceof Player) {
@@ -427,6 +441,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				sender.sendMessage("/mapi title <title>");
 				sender.sendMessage("/mapi subtitle <subtitle>");
 				sender.sendMessage("/mapi restartserver");
+				sender.sendMessage("/mapi hologram");
+				sender.sendMessage("/mapi protocol <player>");
 				sender.sendMessage("/mapi <potioneffect>");
 			}
 			if (sender instanceof Player && args.length > 0) {
