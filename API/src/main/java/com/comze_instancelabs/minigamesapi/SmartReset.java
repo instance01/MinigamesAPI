@@ -16,7 +16,9 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Dispenser;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.block.Dropper;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
@@ -149,6 +151,14 @@ public class SmartReset {
 			((Chest) b_.getState()).getBlockInventory().clear();
 			((Chest) b_.getState()).update();
 		}
+		if (b_.getType() == Material.DISPENSER) {
+			((Dispenser) b_.getState()).getInventory().clear();
+			((Dispenser) b_.getState()).update();
+		}
+		if (b_.getType() == Material.DROPPER) {
+			((Dropper) b_.getState()).getInventory().clear();
+			((Dropper) b_.getState()).update();
+		}
 		if (!b_.getType().equals(ablock.getMaterial()) || b_.getData() != ablock.getData()) {
 			b_.setType(ablock.getMaterial());
 			b_.setData(ablock.getData());
@@ -178,6 +188,35 @@ public class SmartReset {
 				}
 			}
 			((Chest) b_.getState()).update();
+		}
+		if (b_.getType() == Material.DISPENSER) {
+			Dispenser d = (Dispenser) b_.getState();
+			d.getInventory().clear();
+			HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
+			for (Integer i : chestinv.keySet()) {
+				ItemStack item = chestinv.get(i);
+				if (item != null) {
+					if (i < 9) {
+						d.getInventory().setItem(i, item);
+					}
+				}
+			}
+			d.getInventory().setContents(ablock.getInventory());
+			d.update();
+		}
+		if (b_.getType() == Material.DROPPER) {
+			Dropper d = (Dropper) b_.getState();
+			d.getInventory().clear();
+			HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
+			for (Integer i : chestinv.keySet()) {
+				ItemStack item = chestinv.get(i);
+				if (item != null) {
+					if (i < 9) {
+						d.getInventory().setItem(i, item);
+					}
+				}
+			}
+			d.update();
 		}
 		if (b_.getType() == Material.WALL_SIGN || b_.getType() == Material.SIGN_POST) {
 			Sign sign = (Sign) b_.getState();

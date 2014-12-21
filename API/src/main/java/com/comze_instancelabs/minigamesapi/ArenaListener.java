@@ -703,7 +703,7 @@ public class ArenaListener implements Listener {
 				if (pli.containsGlobalPlayer(p.getName())) {
 					Arena a = pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
-						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
+						a.getSmartReset().addChanged(event.getClickedBlock(), true);
 					}
 				}
 			} else if (event.getClickedBlock().getType() == Material.TNT) {
@@ -726,6 +726,14 @@ public class ArenaListener implements Listener {
 					if (a.getArenaState() == ArenaState.INGAME) {
 						a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
 						// a.getSmartReset().addChanged(event.getClickedBlock().getLocation().add(0D, 1D, 0D));
+					}
+				}
+			} else if (event.getClickedBlock().getType() == Material.DISPENSER || event.getClickedBlock().getType() == Material.DROPPER) {
+				Player p = event.getPlayer();
+				if (pli.containsGlobalPlayer(p.getName())) {
+					Arena a = pli.global_players.get(p.getName());
+					if (a.getArenaState() == ArenaState.INGAME) {
+						a.getSmartReset().addChanged(event.getClickedBlock(), false);
 					}
 				}
 			}
