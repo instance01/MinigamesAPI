@@ -10,15 +10,18 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
+
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class SmartArenaBlock implements Serializable {
 	private static final long serialVersionUID = -1894759842709524780L;
@@ -41,6 +44,10 @@ public class SmartArenaBlock implements Serializable {
 	// Sign lines
 	private ArrayList<String> sign_lines = new ArrayList<String>();
 
+	// Sign lines
+	private String skull_owner = "";
+	private BlockFace skull_rotation = BlockFace.SELF;
+
 	// optional stuff
 	private ArrayList<Boolean> item_splash;
 
@@ -56,6 +63,12 @@ public class SmartArenaBlock implements Serializable {
 		z = b.getZ();
 		data = b.getData();
 		world = b.getWorld().getName();
+		if (m.equals(Material.SKULL)) {
+			if (b.getState() instanceof Skull) {
+				skull_owner = ((Skull) b.getState()).getOwner();
+				skull_rotation = ((Skull) b.getState()).getRotation();
+			}
+		}
 		if (s) {
 			Sign sign = (Sign) b.getState();
 			if (sign != null) {
@@ -216,6 +229,14 @@ public class SmartArenaBlock implements Serializable {
 
 	public DoubleChest getDoubleChest() {
 		return doubleChest;
+	}
+
+	public String getSkullOwner() {
+		return skull_owner;
+	}
+	
+	public BlockFace getSkullORotation() {
+		return skull_rotation;
 	}
 
 }

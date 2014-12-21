@@ -13,11 +13,13 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -190,6 +192,18 @@ public class SmartReset {
 				}
 				sign.update();
 			}
+		}
+		if (b_.getType() == Material.SKULL) {
+			b_.setData((byte) 0x1);
+			b_.getState().setType(Material.SKULL);
+			if (b_.getState() instanceof Skull) {
+				Skull s = (Skull) b_.getState();
+				s.setSkullType(SkullType.PLAYER);
+				s.setOwner(ablock.getSkullOwner());
+				s.setRotation(ablock.getSkullORotation());
+				s.update();
+			}
+
 		}
 	}
 
