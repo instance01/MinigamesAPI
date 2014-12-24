@@ -13,21 +13,21 @@ public class ArenasConfig {
     private FileConfiguration arenaConfig = null;
     private File arenaFile = null;
     private JavaPlugin plugin = null;
-    
-    public ArenasConfig(JavaPlugin plugin){
-    	this.plugin = plugin;
-    	this.getConfig().options().header("Used for saving arena details.");
-    	this.getConfig().options().copyDefaults(true);
-    	this.saveConfig();
+
+    public ArenasConfig(JavaPlugin plugin) {
+        this.plugin = plugin;
+        this.getConfig().options().header("Used for saving arena details.");
+        this.getConfig().options().copyDefaults(true);
+        this.saveConfig();
     }
-    
+
     public FileConfiguration getConfig() {
         if (arenaConfig == null) {
             reloadConfig();
         }
         return arenaConfig;
     }
-    
+
     public void saveConfig() {
         if (arenaConfig == null || arenaFile == null) {
             return;
@@ -35,13 +35,13 @@ public class ArenasConfig {
         try {
             getConfig().save(arenaFile);
         } catch (IOException ex) {
-            
+
         }
     }
-    
+
     public void reloadConfig() {
         if (arenaFile == null) {
-        	arenaFile = new File(plugin.getDataFolder(), "arenas.yml");
+            arenaFile = new File(plugin.getDataFolder(), "arenas.yml");
         }
         arenaConfig = YamlConfiguration.loadConfiguration(arenaFile);
 
@@ -51,5 +51,5 @@ public class ArenasConfig {
             arenaConfig.setDefaults(defConfig);
         }
     }
-    
+
 }
