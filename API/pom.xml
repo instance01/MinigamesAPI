@@ -128,8 +128,7 @@
                                     <version>${version}</version>
                                     <type>jar</type>
                                     <overWrite>false</overWrite>
-                                    <outputDirectory>C:/Users/Rnetwork/Desktop/mc_new/mc servers/minecraft 1.5.2 bukkit
-                                        RAW/plugins/
+                                    <outputDirectory>/home/instance/Documents/mc_new/mc servers/minecraft 1.5.2 bukkit RAW/plugins/
                                     </outputDirectory>
                                     <destFileName>MinigamesLib-${version}.jar</destFileName>
                                 </artifactItem>
