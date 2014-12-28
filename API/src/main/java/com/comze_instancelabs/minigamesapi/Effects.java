@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -437,5 +438,50 @@ public class Effects {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static void sendGameModeChange(Player p, int gamemode) {
+		// NOT_SET(-1, ""), SURVIVAL(0, "survival"), CREATIVE(1, "creative"), ADVENTURE(2, "adventure"), SPECTATOR(3, "spectator");
+
+		if (!MinigamesAPI.getAPI().version.startsWith("v1_8") && gamemode == 3) {
+			return;
+		}
+
+		p.setGameMode(GameMode.getByValue(gamemode));
+
+		// Code below not really used
+
+		/* Method getPlayerHandle;
+		try {
+			getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
+			final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+			playerConnection.setAccessible(true);
+			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
+
+			final Constructor packetPlayOutGameStateChange = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutGameStateChange").getConstructor(int.class, float.class);
+			Object packet = packetPlayOutGameStateChange.newInstance(3, gamemode);
+
+			Object handleObj = getPlayerHandle.invoke(p);
+
+			Class entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity");
+			Field interactManager = handleObj.getClass().getDeclaredField("playerInteractManager");
+			interactManager.setAccessible(true);
+			Class enumGamemode = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumGamemode");
+			Method setGameMode = interactManager.getType().getDeclaredMethod("setGameMode", enumGamemode);
+			Method e = handleObj.getClass().getDeclaredMethod("e", entity);
+
+			e.invoke(handleObj, entity.cast(handleObj));
+			setGameMode.invoke(interactManager.get(handleObj), enumGamemode.getEnumConstants()[gamemode]);
+			sendPacket.invoke(playerConnection.get(handleObj), packet);
+
+			p.setFallDistance(0F);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+
+		// getHandle().e((Entity) getHandle()); // RENAME
+		// getHandle().playerInteractManager.setGameMode(EnumGamemode.getById(mode.getValue()));
+		// getHandle().fallDistance = 0;
+
 	}
 }

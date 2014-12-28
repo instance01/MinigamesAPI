@@ -817,6 +817,9 @@ public class Arena {
 				e.printStackTrace();
 			}
 		}
+
+		Effects.sendGameModeChange(p, 3);
+
 		final Location temp = this.spawns.get(0);
 		try {
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {

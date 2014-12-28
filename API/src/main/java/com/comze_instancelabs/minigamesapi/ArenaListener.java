@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -875,6 +876,7 @@ public class ArenaListener implements Listener {
 						p.updateInventory();
 						p.setWalkSpeed(0.2F);
 						p.removePotionEffect(PotionEffectType.JUMP);
+						p.setGameMode(GameMode.SURVIVAL);
 						pli.getSpectatorManager().setSpectate(p, false);
 					} catch (Exception e) {
 						e.printStackTrace();
