@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.comze_instancelabs</groupId>
+	<artifactId>MinigamesLib</artifactId>
+	<version>1.12.2</version>
+	<packaging>jar</packaging>
+	<name>MinigamesLib-API</name>
+	<description>Rich Minigames API</description>
+
+	<parent>
+		<groupId>com.comze_instancelabs</groupId>
+		<artifactId>MinigamesLib-parent</artifactId>
+		<version>parent</version>
+	</parent>
+
+	<repositories>
+	   <repository>
+            <id>private-crackshot-repo</id>
+            <url>http://www.instancedev.com/bukkitdev/MinigamesAPI/dependencies/Crackshot/maven/</url>
+        </repository>
+		<repository>
+			<id>vault-repo</id>
+			<url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<!-- <version>LATEST</version> -->
+			<version>1.7.2-R0.3</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>Vault</artifactId>
+			<version>1.3.01</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+            <groupId>com.shampaggon.crackshot</groupId>
+            <artifactId>Crackshot</artifactId>
+            <version>0.97.13</version>
+            <scope>provided</scope>
+        </dependency>
+	</dependencies>
+
+<properties>
+    <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+    <instancedev.global.server>instancedev</instancedev.global.server>
+</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<additionalProjectnatures>
+						<projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
+					</additionalProjectnatures>
+					<buildcommands>
+						<buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+						<buildcommand>org.eclipse.m2e.core.maven2Builder</buildcommand>
+					</buildcommands>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<version>2.1.2</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>com.comze_instancelabs:*</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.comze_instancelabs</groupId>
+                                    <artifactId>MinigamesLib</artifactId>
+                                    <version>${version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>C:/Users/Rnetwork/Desktop/mc_new/mc servers/minecraft 1.5.2 bukkit RAW/plugins/</outputDirectory>
+                                    <destFileName>MinigamesLib-${version}.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/wars</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build>
+
+</project>

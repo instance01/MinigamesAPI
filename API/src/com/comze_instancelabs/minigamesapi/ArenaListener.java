@@ -1,0 +1,1029 @@
+package com.comze_instancelabs.minigamesapi;
+
+import com.comze_instancelabs.minigamesapi.util.ChangeCause;
+import com.comze_instancelabs.minigamesapi.util.Cuboid;
+import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Util.CompassPlayer;
+import com.comze_instancelabs.minigamesapi.util.Validator;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.event.world.StructureGrowEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArenaListener implements Listener {
+
+    JavaPlugin plugin = null;
+    PluginInstance pli = null;
+    private String minigame = "minigame";
+
+    private ArrayList<String> cmds = new ArrayList<String>();
+    private String leave_cmd = "/leave";
+
+    public int loseY = 4;
+
+    public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame) {
+        this.plugin = plugin;
+        this.pli = pinstance;
+        this.setName(minigame);
+        this.leave_cmd = plugin.getConfig().getString("config.leave_command");
+    }
+
+    public ArenaListener(JavaPlugin plugin, PluginInstance pinstance, String minigame, ArrayList<String> cmds) {
+        this(plugin, pinstance, minigame);
+        this.cmds = cmds;
+    }
+
+    @EventHandler
+    public void onPlayerDrop(PlayerDropItemEvent event) {
+        if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
+            Arena a = pli.global_players.get(event.getPlayer().getName());
+            if (a != null) {
+                if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.isArcadeMain()) {
+                    event.setCancelled(true);
+                }
+                if (a.getArenaState() == ArenaState.INGAME && pli.containsGlobalLost(event.getPlayer().getName())) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+        // spectators shall not pick up items
+        if (pli.containsGlobalLost(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
+            Arena a = pli.global_lost.get(event.getPlayer().getName());
+            if (a != null) {
+                if (a.getArenaState() == ArenaState.INGAME && a.getArcadeInstance() == null) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getWhoClicked() instanceof Player) {
+            Player p = (Player) event.getWhoClicked();
+            if (pli.containsGlobalPlayer(p.getName())) {
+                Arena a = pli.global_players.get(p.getName());
+                if (a != null) {
+                    if (a.getArenaState() == ArenaState.STARTING && a.getArcadeInstance() == null && !a.isArcadeMain()) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onMove(PlayerMoveEvent event) {
+        try {
+            final Player p = event.getPlayer();
+            if (pli.containsGlobalPlayer(p.getName())) {
+                final Arena a = pli.global_players.get(p.getName());
+                if (!pli.containsGlobalLost(p.getName()) && !pli.global_arcade_spectator.containsKey(p.getName())) {
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        if (p.getLocation().getBlockY() + loseY < a.getSpawns().get(0).getBlockY()) {
+                            if (a.getArenaType() == ArenaType.JUMPNRUN) {
+                                Util.teleportPlayerFixed(p, a.getSpawns().get(0));
+                            } else {
+                                a.spectate(p.getName());
+                                /*
+								 * if (!a.isArcadeMain()) { for (String p_ : a.getAllPlayers()) { if (Validator.isPlayerOnline(p_)) {
+								 * Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().player_died.replaceAll("<player>", p.getName())); } } }
+								 */
+                            }
+                            return;
+                        }
+                        if (a.getBoundaries() != null) {
+                            if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
+                                Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
+                                p.setVelocity(direction);
+                                if (p.isInsideVehicle()) {
+                                    p.getVehicle().setVelocity(direction.multiply(2D));
+                                }
+                                p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+                            }
+                        }
+                    } else if (a.getArenaState() == ArenaState.STARTING || a.getArenaState() == ArenaState.JOIN) {
+                        if (!a.isArcadeMain()) {
+                            if (!a.startedIngameCountdown) {
+                                if (p.getLocation().getBlockY() < 0) {
+                                    try {
+                                        Util.teleportPlayerFixed(p, a.getWaitingLobbyTemp());
+                                    } catch (Exception e) {
+                                        System.out.println("Waiting lobby for arena " + a.getInternalName() + " missing, please fix by setting it. " + e.getMessage());
+                                    }
+                                }
+                                if (a.getLobbyBoundaries() != null && !a.skip_join_lobby) {
+                                    if (!a.getLobbyBoundaries().containsLocWithoutY(p.getLocation())) {
+                                        Vector direction = a.getWaitingLobbyTemp().toVector().subtract(p.getLocation().toVector()).normalize();
+                                        p.setVelocity(direction);
+                                        if (p.isInsideVehicle()) {
+                                            p.getVehicle().setVelocity(direction.multiply(2D));
+                                        }
+                                        p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        if (pli.spectator_move_y_lock && event.getPlayer().getLocation().getBlockY() < (a.getSpawns().get(0).getBlockY() + 30D) || event.getPlayer().getLocation().getBlockY() > (a.getSpawns().get(0).getBlockY() + 30D)) {
+                            final float b = p.getLocation().getYaw();
+                            final float c = p.getLocation().getPitch();
+                            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                                @Override
+                                public void run() {
+                                    p.setAllowFlight(true);
+                                    p.setFlying(true);
+                                    if (p.isInsideVehicle()) {
+                                        Entity ent = p.getVehicle();
+                                        p.leaveVehicle();
+                                        ent.eject();
+                                    }
+                                    p.teleport(new Location(p.getWorld(), p.getLocation().getBlockX(), (a.getSpawns().get(0).getBlockY() + 30D), p.getLocation().getBlockZ(), b, c));
+                                }
+                            }, 1);
+                            return;
+                        }
+
+                        if (a.getSpecBoundaries() != null) {
+                            if (!a.getSpecBoundaries().containsLocWithoutY(p.getLocation())) {
+                                Vector direction = a.getSpawns().get(0).clone().add(0D, 30D, 0D).toVector().subtract(p.getLocation().toVector()).normalize();
+                                p.setVelocity(direction);
+                                if (p.isInsideVehicle()) {
+                                    p.getVehicle().setVelocity(direction.multiply(2D));
+                                }
+                                p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+                            }
+                            return;
+                        }
+                        if (a.getBoundaries() != null) {
+                            if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
+                                Vector direction = a.getSpawns().get(0).clone().add(0D, 30D, 0D).toVector().subtract(p.getLocation().toVector()).normalize();
+                                p.setVelocity(direction);
+                                if (p.isInsideVehicle()) {
+                                    p.getVehicle().setVelocity(direction.multiply(2D));
+                                }
+                                p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+                            }
+                        }
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            for (StackTraceElement et : e.getStackTrace()) {
+                System.out.println(et);
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onHunger(FoodLevelChangeEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player p = (Player) event.getEntity();
+            if (pli.containsGlobalPlayer(p.getName())) {
+                if (!pli.global_players.get(p.getName()).isArcadeMain()) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (pli.containsGlobalPlayer(event.getEntity().getName())) {
+            event.setDeathMessage(null);
+            event.getEntity().setHealth(20D);
+            final Player p = event.getEntity();
+
+            final Arena arena = pli.global_players.get(p.getName());
+            if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.startedIngameCountdown)) {
+                if (arena.isArcadeMain()) {
+                    Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
+                }
+                return;
+            }
+
+            arena.global_drops.addAll(event.getDrops());
+
+            arena.spectate(p.getName());
+
+            pli.global_lost.put(p.getName(), arena);
+
+            int count = 0;
+            for (String p_ : pli.global_players.keySet()) {
+                if (Validator.isPlayerOnline(p_)) {
+                    if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {
+                        if (!pli.containsGlobalLost(p_)) {
+                            count++;
+                        }
+                    }
+                }
+            }
+            final int count_ = count;
+
+            Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+                public void run() {
+                    try {
+                        if (pli.containsGlobalPlayer(p.getName()) && count_ > 1) {
+                            arena.spectate(p.getName());
+                        }
+                        for (String p_ : arena.getAllPlayers()) {
+                            if (Validator.isPlayerOnline(p_)) {
+                                Player p__ = Bukkit.getPlayer(p_);
+                                Util.sendMessage(plugin, p__, pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 5);
+
+            if (plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
+                if (count < 2) {
+                    // last man standing
+                    arena.stop();
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player p = (Player) event.getEntity();
+            if (pli.containsGlobalPlayer(p.getName()) && pli.containsGlobalLost(p.getName())) {
+                Arena a = pli.global_players.get(p.getName());
+                if (a.getArenaState() == ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
+                    event.setCancelled(true);
+                }
+            }
+            if (event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
+                if (pli.containsGlobalPlayer(p.getName())) {
+                    Arena a = pli.global_players.get(p.getName());
+                    if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP()) {
+                        // System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
+                        event.setCancelled(true);
+                    }
+                    if (pli.blood_effects && (a.getArenaState() == ArenaState.INGAME || a.getAlwaysPvP()) && !a.isArcadeMain()) {
+                        Effects.playBloodEffect(p);
+                    }
+                }
+                if (pli.containsGlobalLost(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
+                    // System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
+                    event.setCancelled(true);
+                }
+            } else if (event.getCause().equals(DamageCause.FALL)) {
+                if (pli.containsGlobalPlayer(p.getName())) {
+                    Arena a = pli.global_players.get(p.getName());
+                    if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() != null) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    boolean isSupported = false;
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player p = (Player) event.getEntity();
+            Player attacker = null;
+            if (event.getDamager() instanceof Projectile) {
+                Projectile projectile = (Projectile) event.getDamager();
+                if (projectile.getShooter() instanceof Player) {
+                    attacker = (Player) projectile.getShooter();
+                }
+            } else if (event.getDamager() instanceof Player) {
+                attacker = (Player) event.getDamager();
+            } else {
+                return;
+            }
+
+            if (p != null && attacker != null) {
+                if (pli.containsGlobalPlayer(p.getName()) && pli.containsGlobalPlayer(attacker.getName())) {
+                    if (pli.containsGlobalLost(attacker.getName()) || pli.getSpectatorManager().isSpectating(p)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                    Arena a = (Arena) pli.global_players.get(p.getName());
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        a.lastdamager.put(p.getName(), attacker.getName());
+                        if (pli.damage_identifier_effects) {
+                            ChatColor c = ChatColor.YELLOW;
+                            if (event.getDamage() >= 5D) {
+                                c = ChatColor.GOLD;
+                            }
+                            if (event.getDamage() >= 9D) {
+                                c = ChatColor.RED;
+                            }
+                            Effects.playHologram(attacker, p.getLocation(), c + Double.toString(event.getDamage()), true, true);
+                        }
+                    } else if (a.getArenaState() == ArenaState.RESTARTING) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPaintingBreak(HangingBreakByEntityEvent event) {
+        if (event.getRemover() instanceof Player) {
+            String p_ = ((Player) event.getRemover()).getName();
+            if (pli.containsGlobalPlayer(p_)) {
+                event.setCancelled(true);
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onExplode(EntityExplodeEvent event) {
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                // Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+                // a.getInternalName(), "bounds.high"));
+                Cuboid c = a.getBoundaries();
+                if (c != null) {
+                    if (event.getEntity() != null) {
+                        if (c.containsLocWithoutY(event.getEntity().getLocation())) {
+                            for (Block b : event.blockList()) {
+                                a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockFromTo(BlockFromToEvent event) {
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                // Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+                // a.getInternalName(), "bounds.high"));
+                Cuboid c = a.getBoundaries();
+                if (c != null) {
+                    if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+                        if (a.getArenaState() == ArenaState.INGAME) {
+                            a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST), ChangeCause.FROM_TO);
+                        } else if (a.getArenaState() == ArenaState.RESTARTING) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockFade(BlockFadeEvent event) {
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                // Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+                // a.getInternalName(), "bounds.high"));
+                Cuboid c = a.getBoundaries();
+                if (c != null && a.getArenaState() == ArenaState.INGAME) {
+                    if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.FADE);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onLeavesDecay(LeavesDecayEvent event) {
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+                if (c != null && a.getArenaState() == ArenaState.INGAME) {
+                    if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockPhysics(BlockPhysicsEvent event) {
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                // Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+                // a.getInternalName(), "bounds.high"));
+                Cuboid c = a.getBoundaries();
+                if (c != null) {
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+                            if (event.getChangedType() == Material.CARPET || event.getChangedType() == Material.BED_BLOCK) {
+                                return;
+                            }
+                            a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.PHYSICS);
+                        }
+                    } else if (a.getArenaState() == ArenaState.RESTARTING) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockSpread(BlockSpreadEvent event) {
+        // disallow fire spread while the arena restarts
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                // Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+                // a.getInternalName(), "bounds.high"));
+                Cuboid c = a.getBoundaries();
+                if (c != null) {
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        a.getSmartReset().addChanged(event.getBlock().getLocation());
+                        // a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+                    } else if (a.getArenaState() == ArenaState.RESTARTING) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+        if (event.getEntity() instanceof Enderman) {
+            for (Arena a : pli.getArenas()) {
+                if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                    // Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
+                    // a.getInternalName(), "bounds.high"));
+                    Cuboid c = a.getBoundaries();
+                    if (c != null) {
+                        if (c.containsLocWithoutY(event.getEntity().getLocation())) {
+                            a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.ENTITY_CHANGE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player p = event.getPlayer();
+        if (pli.containsGlobalPlayer(p.getName())) {
+            Arena a = pli.global_players.get(p.getName());
+            if (a.getArenaState() != ArenaState.INGAME || pli.containsGlobalLost(p.getName())) {
+                event.setCancelled(true);
+                return;
+            }
+            if (pli.getSpectatorManager().isSpectating(p)) {
+                event.setCancelled(true);
+                return;
+            }
+            a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.BREAK);
+            if (event.getBlock().getType() == Material.DOUBLE_PLANT) {
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, -1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, -1D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
+            }
+            if (event.getBlock().getType() == Material.SNOW || event.getBlock().getType() == Material.SNOW_BLOCK) {
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
+            }
+            if (event.getBlock().getType() == Material.CARPET) {
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
+            }
+            if (event.getBlock().getType() == Material.CACTUS) {
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +4D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +4D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +3D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +2D, 0D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock(), event.getBlock().getLocation().clone().add(0D, +1D, 0D).getBlock().getType().equals(Material.CHEST));
+            }
+            if (event.getBlock().getType() == Material.BED_BLOCK) {
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(1D, 0D, 0D).getBlock(), event.getBlock().getLocation().clone().add(1D, 0D, 1D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(-1D, 0D, 0D).getBlock(), event.getBlock().getLocation().clone().add(1D, 0D, -1D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, 0D, 1D).getBlock(), event.getBlock().getLocation().clone().add(-1D, 0D, 1D).getBlock().getType().equals(Material.CHEST));
+                a.getSmartReset().addChanged(event.getBlock().getLocation().clone().add(0D, 0D, -1D).getBlock(), event.getBlock().getLocation().clone().add(-1D, 0D, -1D).getBlock().getType().equals(Material.CHEST));
+            }
+        }
+        if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN) {
+            Arena arena = Util.getArenaBySignLocation(plugin, event.getBlock().getLocation());
+            if (arena != null) {
+                pli.getArenasConfig().getConfig().set("arenas." + arena.getInternalName() + ".sign", null);
+                pli.getArenasConfig().saveConfig();
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockBurn(BlockBurnEvent event) {
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+                if (c != null) {
+                    if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.BURN);
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
+        if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
+            Arena a = pli.global_players.get(event.getPlayer().getName());
+            Block start = event.getBlockClicked();
+            if (!a.getBoundaries().containsLocWithoutY(start.getLocation())) {
+                event.setCancelled(true);
+                return;
+            }
+            for (int x = -2; x < 2; x++) {
+                for (int y = -2; y < 2; y++) {
+                    for (int z = -2; z < 2; z++) {
+                        Block b = start.getLocation().clone().add(x, y, z).getBlock();
+                        a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onStructureGrow(StructureGrowEvent event) {
+        for (Arena a : pli.getArenas()) {
+            if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+                Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
+                if (c != null) {
+                    Location start = event.getLocation();
+                    a.getSmartReset().addChanged(start.getBlock(), false);
+                    if (c.containsLocWithoutY(start)) {
+                        for (BlockState bs : event.getBlocks()) {
+                            Block b = bs.getBlock();
+                            a.getSmartReset().addChanged(b.getLocation());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player p = event.getPlayer();
+		/*
+		 * if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER || event.getBlock().getType()
+		 * == Material.STATIONARY_LAVA || event.getBlock().getType() == Material.LAVA) { if (pli.containsGlobalPlayer(p.getName())) { Arena a =
+		 * pli.global_players.get(p.getName()); if (a.getArenaState() == ArenaState.INGAME) {
+		 * a.getSmartReset().addChanged(event.getBlock().getLocation()); } } }
+		 */
+        if (pli.containsGlobalPlayer(p.getName())) {
+            Arena a = pli.global_players.get(p.getName());
+            if (a.getArenaState() != ArenaState.INGAME || pli.containsGlobalLost(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {
+                event.setCancelled(true);
+                return;
+            }
+            a.getSmartReset().addChanged(event.getBlock().getLocation());
+        }
+        if (pli.getStatsInstance().skullsetup.contains(p.getName())) {
+            if (event.getBlock().getType() == Material.SKULL_ITEM || event.getBlock().getType() == Material.SKULL) {
+                if (event.getItemInHand().hasItemMeta()) {
+                    pli.getStatsInstance().saveSkull(event.getBlock().getLocation(), Integer.parseInt(event.getItemInHand().getItemMeta().getDisplayName()));
+                    pli.getStatsInstance().skullsetup.remove(p.getName());
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSignUse(PlayerInteractEvent event) {
+        if (event.hasBlock()) {
+            if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN) {
+                if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+                    return;
+                }
+                final Sign s = (Sign) event.getClickedBlock().getState();
+                // people will most likely do strange formats, so let's just try
+                // to get signs by location rather than locally by reading the sign
+                Arena arena = Util.getArenaBySignLocation(plugin, event.getClickedBlock().getLocation());
+                if (arena != null) {
+                    Player p = event.getPlayer();
+                    if (!arena.containsPlayer(p.getName())) {
+                        arena.joinPlayerLobby(p.getName());
+                    } else {
+                        Util.sendMessage(plugin, p, pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getInternalName()));
+                    }
+                } else {
+                    // try getting random sign
+                    Location l = Util.getComponentForArenaRaw(plugin, "random", "sign");
+                    if (l != null) {
+                        if (l.getWorld() != null) {
+                            if (l.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
+                                if (l.distance(s.getLocation()) < 1) {
+                                    for (Arena a : pli.getArenas()) {
+                                        if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
+                                            if (!a.containsPlayer(event.getPlayer().getName())) {
+                                                a.joinPlayerLobby(event.getPlayer().getName());
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (event.getClickedBlock().getType() == Material.CHEST) {
+                Player p = event.getPlayer();
+                if (pli.containsGlobalPlayer(p.getName())) {
+                    Arena a = pli.global_players.get(p.getName());
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        a.getSmartReset().addChanged(event.getClickedBlock(), true);
+                    }
+                }
+            } else if (event.getClickedBlock().getType() == Material.TNT) {
+                Player p = event.getPlayer();
+                if (pli.containsGlobalPlayer(p.getName())) {
+                    Arena a = pli.global_players.get(p.getName());
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        a.getSmartReset().addChanged(event.getClickedBlock(), false);
+                        // TODO maybe add radius of blocks around this tnt manually
+                    }
+                }
+            } else if (event.getPlayer().getItemInHand().getType() == Material.WATER_BUCKET || event.getPlayer().getItemInHand().getType() == Material.WATER || event.getPlayer().getItemInHand().getType() == Material.LAVA_BUCKET || event.getPlayer().getItemInHand().getType() == Material.LAVA) {
+                Player p = event.getPlayer();
+                if (pli.containsGlobalPlayer(p.getName())) {
+                    Arena a = pli.global_players.get(p.getName());
+                    if (!a.getBoundaries().containsLocWithoutY(event.getClickedBlock().getLocation())) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        a.getSmartReset().addChanged(event.getClickedBlock(), event.getClickedBlock().getType().equals(Material.CHEST));
+                        // a.getSmartReset().addChanged(event.getClickedBlock().getLocation().add(0D, 1D, 0D));
+                    }
+                }
+            } else if (event.getClickedBlock().getType() == Material.DISPENSER || event.getClickedBlock().getType() == Material.DROPPER) {
+                Player p = event.getPlayer();
+                if (pli.containsGlobalPlayer(p.getName())) {
+                    Arena a = pli.global_players.get(p.getName());
+                    if (a.getArenaState() == ArenaState.INGAME) {
+                        a.getSmartReset().addChanged(event.getClickedBlock(), false);
+                    }
+                }
+            }
+        }
+
+        if (pli.containsGlobalLost(event.getPlayer().getName()) || pli.getSpectatorManager().isSpectating(event.getPlayer())) {
+            event.setCancelled(true);
+        }
+
+        if (event.hasItem()) {
+            final Player p = event.getPlayer();
+            if (!pli.containsGlobalPlayer(p.getName())) {
+                return;
+            }
+            Arena a = pli.global_players.get(p.getName());
+            if (a.isArcadeMain()) {
+                return;
+            }
+            if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.classes_selection_item")) {
+                if (a.getArenaState() != ArenaState.INGAME) {
+                    pli.getClassesHandler().openGUI(p.getName());
+                    event.setCancelled(true);
+                }
+            } else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.exit_item")) {
+                if (a.getArenaState() != ArenaState.INGAME) {
+                    a.leavePlayer(p.getName(), false, false);
+                    event.setCancelled(true);
+                } else {
+                    if (pli.containsGlobalLost(p.getName())) {
+                        a.leavePlayer(p.getName(), false, false);
+                        event.setCancelled(true);
+                    }
+                }
+            } else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.spectator_item")) {
+                if (pli.containsGlobalLost(p.getName())) {
+                    pli.getSpectatorManager().openSpectatorGUI(p, a);
+                    event.setCancelled(true);
+                }
+            } else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.achievement_item")) {
+                if (pli.isAchievementGuiEnabled()) {
+                    if (a.getArenaState() != ArenaState.INGAME) {
+                        pli.getArenaAchievements().openGUI(p.getName(), false);
+                        event.setCancelled(true);
+                    }
+                }
+            } else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.selection_items.shop_selection_item")) {
+                if (a.getArenaState() != ArenaState.INGAME) {
+                    pli.getShopHandler().openGUI(p.getName());
+                    event.setCancelled(true);
+                }
+            } else if (event.getItem().getTypeId() == plugin.getConfig().getInt("config.extra_lobby_item.item0.item")) {
+                if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled")) {
+                    if (a.getArenaState() != ArenaState.INGAME) {
+                        // Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
+                        p.performCommand(plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
+                    }
+                }
+            }
+            if (event.getItem().getType() == Material.COMPASS) {
+                if (a.getArenaState() == ArenaState.INGAME) {
+                    if (plugin.getConfig().getBoolean("config.compass_tracking_enabled")) {
+                        CompassPlayer temp = Util.getNearestPlayer(p, a);
+                        if (temp.getPlayer() != null) {
+                            p.sendMessage(pli.getMessagesConfig().compass_player_found.replaceAll("<player>", temp.getPlayer().getName()).replaceAll("<distance>", Integer.toString((int) Math.round(temp.getDistance()))));
+                            p.setCompassTarget(temp.getPlayer().getLocation());
+                        } else {
+                            p.sendMessage(pli.getMessagesConfig().compass_no_player_found);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSignChange(SignChangeEvent event) {
+        Player p = event.getPlayer();
+        if (event.getLine(0).toLowerCase().equalsIgnoreCase(getName())) {
+            if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp()) {
+                if (!event.getLine(1).equalsIgnoreCase("")) {
+                    String arena = event.getLine(1);
+                    if (arena.equalsIgnoreCase("random")) {
+                        pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
+                        pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.x", event.getBlock().getLocation().getBlockX());
+                        pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.y", event.getBlock().getLocation().getBlockY());
+                        pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
+                        pli.getArenasConfig().saveConfig();
+                        Util.sendMessage(plugin, p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena (random) sign"));
+                        Util.updateSign(plugin, event);
+                    } else {
+                        if (Validator.isArenaValid(plugin, arena)) {
+                            pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
+                            pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
+                            pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
+                            pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
+                            pli.getArenasConfig().saveConfig();
+                            Util.sendMessage(plugin, p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
+                        } else {
+                            Util.sendMessage(plugin, p, pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
+                            event.getBlock().breakNaturally();
+                        }
+
+                        Arena a = pli.getArenaByName(arena);
+                        if (a != null) {
+                            a.setSignLocation(event.getBlock().getLocation());
+                            Util.updateSign(plugin, a, event);
+                        } else {
+                            Util.sendMessage(plugin, p, pli.getMessagesConfig().arena_not_initialized);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        final Player p = event.getPlayer();
+        pli.getStatsInstance().update(p.getName());
+        if (pli.containsGlobalPlayer(p.getName())) {
+            pli.global_players.remove(p.getName());
+        }
+        if (pli.containsGlobalLost(p.getName())) {
+            pli.global_lost.remove(p.getName());
+        }
+        if (plugin.getConfig().isSet("temp.left_players." + p.getName())) {
+            Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+                public void run() {
+                    Util.teleportPlayerFixed(p, Util.getMainLobby(plugin));
+                    p.setFlying(false);
+                    try {
+                        p.getInventory().clear();
+                        p.updateInventory();
+                        if (plugin.getConfig().isSet("temp.left_players." + p.getName() + ".items")) {
+                            for (String key : plugin.getConfig().getConfigurationSection("temp.left_players." + p.getName() + ".items").getKeys(false)) {
+                                p.getInventory().addItem(plugin.getConfig().getItemStack("temp.left_players." + p.getName() + ".items." + key));
+                            }
+                        }
+                        p.updateInventory();
+                        p.setWalkSpeed(0.2F);
+                        p.removePotionEffect(PotionEffectType.JUMP);
+                        pli.getSpectatorManager().setSpectate(p, false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Util.sendMessage(plugin, p, ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");
+                    }
+                    plugin.getConfig().set("temp.left_players." + p.getName(), null);
+                    plugin.saveConfig();
+                }
+            }, 5);
+        }
+
+        if (plugin.getConfig().getBoolean("config.bungee.game_on_join")) {
+            int c = 0;
+            final List<String> arenas = new ArrayList<String>();
+            for (String arena : pli.getArenasConfig().getConfig().getKeys(false)) {
+                if (!arena.equalsIgnoreCase("mainlobby") && !arena.equalsIgnoreCase("strings") && !arena.equalsIgnoreCase("config")) {
+                    c++;
+                    arenas.add(arena);
+                }
+            }
+            if (c < 1) {
+                MinigamesAPI.getAPI().getLogger().severe("Couldn't find any arena even though game_on_join was turned on. Please setup an arena to fix this!");
+                return;
+            }
+
+            Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+                public void run() {
+                    if (p != null) {
+                        pli.getArenas().get(0).joinPlayerLobby(p.getName());
+                    }
+                }
+            }, 30L);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
+            Arena arena = pli.global_players.get(event.getPlayer().getName());
+            MinigamesAPI.getAPI().getLogger().info(event.getPlayer().getName() + " quit while in arena " + arena.getInternalName() + ".");
+            int count = 0;
+            for (String p_ : pli.global_players.keySet()) {
+                if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {
+                    count++;
+                }
+            }
+
+            arena.leavePlayer(event.getPlayer().getName(), true, false);
+
+            try {
+                Util.updateSign(plugin, arena);
+            } catch (Exception e) {
+                MinigamesAPI.getAPI().getLogger().warning("Error occurred while refreshing sign. " + e.getMessage());
+                if (MinigamesAPI.debug) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (MinigamesAPI.getAPI().global_party.containsKey(event.getPlayer().getName())) {
+            MinigamesAPI.getAPI().global_party.get(event.getPlayer().getName()).disband();
+        }
+        Party party_ = null;
+        for (Party party : MinigamesAPI.getAPI().global_party.values()) {
+            if (party.containsPlayer(event.getPlayer().getName())) {
+                party_ = party;
+                break;
+            }
+        }
+        if (party_ != null) {
+            party_.removePlayer(event.getPlayer().getName());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onChat(final AsyncPlayerChatEvent event) {
+        Player p = event.getPlayer();
+        if (plugin.getConfig().getBoolean("config.chat_per_arena_only")) {
+            if (pli.containsGlobalPlayer(p.getName())) {
+                String msg = String.format(event.getFormat(), p.getName(), event.getMessage());
+                for (Player receiver : event.getRecipients()) {
+                    if (pli.containsGlobalPlayer(receiver.getName())) {
+                        if (pli.global_players.get(receiver.getName()) == pli.global_players.get(p.getName())) {
+                            receiver.sendMessage(msg);
+                        }
+                    }
+                }
+                event.setCancelled(true);
+            }
+        }
+        if (plugin.getConfig().getBoolean("config.chat_show_score_in_arena")) {
+            if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
+                event.setFormat(ChatColor.GRAY + "[" + ChatColor.GREEN + pli.getStatsInstance().getPoints(event.getPlayer().getName()) + ChatColor.GRAY + "] " + event.getFormat());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
+        if (event.getMessage().equalsIgnoreCase(leave_cmd) || event.getMessage().equalsIgnoreCase("/l")) {
+            if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
+                Arena arena = pli.global_players.get(event.getPlayer().getName());
+                arena.leavePlayer(event.getPlayer().getName(), false, false);
+                event.setCancelled(true);
+                return;
+            }
+        }
+        if (pli.containsGlobalPlayer(event.getPlayer().getName()) && !event.getPlayer().isOp()) {
+            if (!plugin.getConfig().getBoolean("config.disable_commands_in_arena")) {
+                return;
+            }
+            if (plugin.getConfig().getString("config.command_whitelist").toLowerCase().contains(event.getMessage().toLowerCase())) {
+                return;
+            }
+            boolean cont = false;
+            for (String cmd : cmds) {
+                if (event.getMessage().toLowerCase().startsWith(cmd.toLowerCase())) {
+                    cont = true;
+                }
+            }
+            if (!cont) {
+                Util.sendMessage(plugin, event.getPlayer(), pli.getMessagesConfig().you_can_leave_with.replaceAll("<cmd>", leave_cmd));
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    // TP Fix start
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        final Player player = event.getPlayer();
+        if (pli.containsGlobalPlayer(player.getName())) {
+            final int visibleDistance = 16;
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    final List<Player> nearby = getPlayersWithin(player, visibleDistance);
+                    updateEntities(nearby, false);
+                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            updateEntities(nearby, true);
+                        }
+                    }, 1);
+                }
+            }, 5L);
+        }
+    }
+
+    private void updateEntities(List<Player> players, boolean visible) {
+        for (Player observer : players) {
+            for (Player player : players) {
+                if (observer.getEntityId() != player.getEntityId()) {
+                    if (visible && !pli.containsGlobalLost(player.getName()))
+                        observer.showPlayer(player);
+                    else
+                        observer.hidePlayer(player);
+                }
+            }
+        }
+    }
+
+    private List<Player> getPlayersWithin(Player player, int distance) {
+        List<Player> res = new ArrayList<Player>();
+        int d2 = distance * distance;
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (p.getWorld() == player.getWorld() && p.getLocation().distanceSquared(player.getLocation()) <= d2) {
+                res.add(p);
+            }
+        }
+        return res;
+    }
+
+    // TP Fix end
+
+    public String getName() {
+        return minigame;
+    }
+
+    public void setName(String minigame) {
+        this.minigame = minigame;
+    }
+
+}
