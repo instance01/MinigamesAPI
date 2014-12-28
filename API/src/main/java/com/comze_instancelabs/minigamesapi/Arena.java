@@ -1068,8 +1068,12 @@ public class Arena {
 		}
 		spectator_task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
 			public void run() {
-				// check if any spectator is near a player
+				// We don't need any pushing back if we use the 1.8 spectator mode
+				if (pli.spectator_mode_1_8) {
+					return;
+				}
 				try {
+					// check if any spectator is near a player
 					for (String p_ : a.getAllPlayers()) {
 						if (!pli.global_lost.containsKey(p_)) {
 							continue;

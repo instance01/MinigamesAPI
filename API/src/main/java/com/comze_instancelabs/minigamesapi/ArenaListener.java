@@ -52,6 +52,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
@@ -204,7 +205,7 @@ public class ArenaListener implements Listener {
 				}
 			}
 		} catch (Exception e) {
-			if(MinigamesAPI.debug){
+			if (MinigamesAPI.debug) {
 				e.printStackTrace();
 			}
 		}
@@ -965,6 +966,10 @@ public class ArenaListener implements Listener {
 	// TP Fix start
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
+		if (event.getCause().equals(TeleportCause.UNKNOWN) && pli.spectator_mode_1_8) {
+			// Don't hide/show players when 1.8 spectator mode is enabled
+			return;
+		}
 		final Player player = event.getPlayer();
 		if (pli.containsGlobalPlayer(player.getName())) {
 			final int visibleDistance = 16;
