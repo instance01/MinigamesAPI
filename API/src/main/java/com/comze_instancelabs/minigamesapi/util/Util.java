@@ -443,10 +443,9 @@ public class Util {
 		event.setLine(3, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 	}
 
-	// used for random sign
-	public static void updateSign(JavaPlugin plugin, SignChangeEvent event) {
+	// used for random and leave sign
+	public static void updateSign(JavaPlugin plugin, SignChangeEvent event, String arenastate) {
 		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-		String arenastate = "random";
 		event.setLine(0, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".0").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 		event.setLine(1, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".1").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
 		event.setLine(2, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".2").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));

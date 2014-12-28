@@ -56,7 +56,13 @@ public class MessagesConfig {
 		this.getConfig().addDefault("signs.arcade.2", "<count>/<maxcount>");
 		this.getConfig().addDefault("signs.arcade.3", "[]");
 
-		// Random
+		// Leave sign
+		this.getConfig().addDefault("signs.leave.0", "");
+		this.getConfig().addDefault("signs.leave.1", "&4Leave");
+		this.getConfig().addDefault("signs.leave.2", "");
+		this.getConfig().addDefault("signs.leave.3", "");
+
+		// Random arena sign
 		this.getConfig().addDefault("signs.random.0", "&a[]");
 		this.getConfig().addDefault("signs.random.1", "&2Random");
 		this.getConfig().addDefault("signs.random.2", "");

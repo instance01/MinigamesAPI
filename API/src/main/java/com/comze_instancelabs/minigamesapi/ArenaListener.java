@@ -463,9 +463,8 @@ public class ArenaListener implements Listener {
 			if (a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
-					// event.getOldCurrent();
 					if (a.getArenaState() == ArenaState.INGAME) {
-						event.getBlock().setData((byte) 0);
+						event.getBlock().setData((byte) 0); // Reset redstone before adding it to smartreset index
 						a.getSmartReset().addChanged(event.getBlock(), false);
 					}
 				}
@@ -660,7 +659,25 @@ public class ArenaListener implements Listener {
 										if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
 											if (!a.containsPlayer(event.getPlayer().getName())) {
 												a.joinPlayerLobby(event.getPlayer().getName());
-												break;
+												return;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					// try getting leave sign
+					if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
+						int count = 0;
+						if (pli.getArenasConfig().getConfig().isSet("arenas.leave")) {
+							for (String str : pli.getArenasConfig().getConfig().getConfigurationSection("arenas.leave.").getKeys(false)) {
+								Location loc = Util.getComponentForArenaRaw(plugin, "leave." + str, "sign");
+								if (loc != null) {
+									if (loc.getWorld() != null) {
+										if (loc.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
+											if (loc.distance(s.getLocation()) < 1) {
+												pli.global_players.get(event.getPlayer().getName()).leavePlayer(event.getPlayer().getName(), false, false);
 											}
 										}
 									}
@@ -793,7 +810,21 @@ public class ArenaListener implements Listener {
 						pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
 						pli.getArenasConfig().saveConfig();
 						Util.sendMessage(plugin, p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena (random) sign"));
-						Util.updateSign(plugin, event);
+						Util.updateSign(plugin, event, arena);
+					} else if (arena.equalsIgnoreCase("leave")) {
+						int count = 0;
+						if (pli.getArenasConfig().getConfig().isSet("arenas.leave")) {
+							for (String s : pli.getArenasConfig().getConfig().getConfigurationSection("arenas.leave.").getKeys(false)) {
+								count++;
+							}
+						}
+						pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.world", p.getWorld().getName());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.location.x", event.getBlock().getLocation().getBlockX());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.location.y", event.getBlock().getLocation().getBlockY());
+						pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
+						pli.getArenasConfig().saveConfig();
+						Util.sendMessage(plugin, p, pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena (leave) sign"));
+						Util.updateSign(plugin, event, arena);
 					} else {
 						if (Validator.isArenaValid(plugin, arena)) {
 							pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
