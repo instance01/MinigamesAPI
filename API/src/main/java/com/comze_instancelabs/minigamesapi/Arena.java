@@ -478,10 +478,13 @@ public class Arena {
 					Util.clearInv(p);
 				}
 			}, 10L);
+			final Arena a = this;
 			ap.setOriginalXplvl(p.getLevel());
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
-					Util.giveLobbyItems(plugin, p);
+					if (a.getArenaState() != ArenaState.INGAME) {
+						Util.giveLobbyItems(plugin, p);
+					}
 					ap.setOriginalGamemode(p.getGameMode());
 					p.setGameMode(GameMode.SURVIVAL);
 					p.setHealth(20D);
@@ -1220,7 +1223,6 @@ public class Arena {
 				for (IconMenu im : pli.getClassesHandler().lasticonm.values()) {
 					im.destroy();
 				}
-				pli.getClassesHandler().lasticonm.clear();
 			}
 		}, 10L);
 

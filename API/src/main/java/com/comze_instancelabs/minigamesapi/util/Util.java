@@ -74,7 +74,7 @@ public class Util {
 		}
 	}
 
-	public static void teleportPlayerFixed(final Player p, Location l) {
+	public static void teleportPlayerFixed(final Player p, final Location l) {
 		ArenaLogger.debug("Teleporting " + p.getName());
 		if (p.isInsideVehicle()) {
 			Entity ent = p.getVehicle();

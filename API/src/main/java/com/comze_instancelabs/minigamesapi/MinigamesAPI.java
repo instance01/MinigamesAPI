@@ -434,7 +434,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				return true;
 			}
 			if (args.length < 1) {
-				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MinigamesLib <3");
+				sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MinigamesLib <3 " + this.getDescription().getVersion());
 				int c = 0;
 				for (PluginInstance pli : MinigamesAPI.getAPI().pinstances.values()) {
 					c++;
