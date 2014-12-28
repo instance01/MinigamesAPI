@@ -463,6 +463,11 @@ public class Arena {
 					pli.scoreboardLobbyManager.updateScoreboard(plugin, this);
 					if (!skip_join_lobby) {
 						Util.teleportPlayerFixed(p, this.waitinglobby);
+						Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+							public void run() {
+								p.setHealth(20D);
+							}
+						}, 2L);
 					} else {
 						Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 					}
