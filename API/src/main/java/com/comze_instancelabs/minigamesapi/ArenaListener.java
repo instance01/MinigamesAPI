@@ -379,7 +379,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onExplode(EntityExplodeEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+			if (a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (event.getEntity() != null) {
@@ -397,7 +397,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onBlockFromTo(BlockFromToEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+			if (a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
@@ -415,7 +415,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onBlockFade(BlockFadeEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
+			if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
@@ -429,7 +429,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onLeavesDecay(LeavesDecayEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
+			if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
@@ -443,7 +443,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onBlockPhysics(BlockPhysicsEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+			if (a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
@@ -465,7 +465,7 @@ public class ArenaListener implements Listener {
 	public void onBlockSpread(BlockSpreadEvent event) {
 		// disallow fire spread while the arena restarts
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+			if (a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
@@ -483,7 +483,7 @@ public class ArenaListener implements Listener {
 	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 		if (event.getEntity() instanceof Enderman) {
 			for (Arena a : pli.getArenas()) {
-				if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+				if (a.getArenaType() == ArenaType.REGENERATION) {
 					Cuboid c = a.getBoundaries();
 					if (c != null) {
 						if (c.containsLocWithoutY(event.getEntity().getLocation())) {

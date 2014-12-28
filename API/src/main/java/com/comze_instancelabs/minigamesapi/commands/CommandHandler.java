@@ -347,7 +347,7 @@ public class CommandHandler {
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
 				sender.sendMessage(ChatColor.GRAY + "++ Debug Info ++");
-				sender.sendMessage(ChatColor.GRAY + "LOBBY:" + Util.isComponentForArenaValidRaw(plugin, args[1], "lobby") + ChatColor.RED +  ";" + ChatColor.GRAY + " SPAWN0:" + Util.isComponentForArenaValidRaw(plugin, args[1], "spawns.spawn0") + ChatColor.RED +  ";" + ChatColor.GRAY + " BOUNDARIES(possibly needed): ~low:" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.low") + ", high~" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.high"));
+				sender.sendMessage(ChatColor.GRAY + "LOBBY:" + Util.isComponentForArenaValidRaw(plugin, args[1], "lobby") + ChatColor.RED +  ";" + ChatColor.GRAY + " SPAWN0:" + Util.isComponentForArenaValidRaw(plugin, args[1], "spawns.spawn0") + ChatColor.RED +  ";" + ChatColor.GRAY + " BOUNDARIES(possibly needed): low:" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.low") + ", high:" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.high"));
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
