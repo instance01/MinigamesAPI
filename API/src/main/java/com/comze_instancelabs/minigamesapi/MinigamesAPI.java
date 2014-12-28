@@ -423,17 +423,6 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 							sender.sendMessage("Protocol version of " + p.getName() + ": " + version);
 						}
 					}
-				} else if (args[0].equalsIgnoreCase("protocol")) {
-					if (sender instanceof Player) {
-						Player p = (Player) sender;
-						if (args.length > 1) {
-							p = Bukkit.getPlayer(args[1]);
-						}
-						if (p != null) {
-							int version = Effects.getClientProtocolVersion(p);
-							sender.sendMessage("Protocol version of " + p.getName() + ": " + version);
-						}
-					}
 				} else if (args[0].equalsIgnoreCase("gamemodetest")) {
 					if (sender instanceof Player) {
 						Player p = (Player) sender;

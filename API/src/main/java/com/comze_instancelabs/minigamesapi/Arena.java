@@ -818,7 +818,9 @@ public class Arena {
 			}
 		}
 
-		Effects.sendGameModeChange(p, 3);
+		if (pli.spectator_mode_1_8) {
+			Effects.sendGameModeChange(p, 3);
+		}
 
 		final Location temp = this.spawns.get(0);
 		try {

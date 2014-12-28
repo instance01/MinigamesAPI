@@ -94,7 +94,8 @@ public class DefaultConfig {
 			config.addDefault("config.effects.blood", true);
 			config.addDefault("config.effects.damage_identifier_holograms", true);
 			config.addDefault("config.effects.dead_in_fake_bed", true);
-			config.addDefault("config.1_8_titles", true);
+			config.addDefault("config.effects.1_8_titles", true);
+			config.addDefault("config.effects.1_8_spectator_mode", false);
 			config.addDefault("config.sounds.lobby_countdown", "none");
 			config.addDefault("config.sounds.ingame_countdown", "SUCCESSFUL_HIT");
 			config.addDefault("config.chat_per_arena_only", false);

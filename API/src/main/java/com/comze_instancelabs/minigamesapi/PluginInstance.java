@@ -61,6 +61,7 @@ public class PluginInstance {
 	boolean use_xp_bar_level = true;
 	boolean blood_effects = true;
 	boolean dead_in_fake_bed_effects = true;
+	boolean spectator_mode_1_8 = true;
 	boolean damage_identifier_effects = true;
 	public boolean color_background_wool_of_signs;
 
@@ -99,6 +100,7 @@ public class PluginInstance {
 		damage_identifier_effects = plugin.getConfig().getBoolean("config.effects.damage_identifier_holograms");
 		dead_in_fake_bed_effects = plugin.getConfig().getBoolean("config.effects.dead_in_fake_bed");
 		color_background_wool_of_signs = plugin.getConfig().getBoolean("config.color_background_wool_of_signs");
+		spectator_mode_1_8 = plugin.getConfig().getBoolean("config.effects.1_8_spectator_mode");
 	}
 
 	public JavaPlugin getPlugin() {
