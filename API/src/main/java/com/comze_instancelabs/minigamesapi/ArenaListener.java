@@ -1,20 +1,15 @@
 package com.comze_instancelabs.minigamesapi;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -30,6 +25,7 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.block.SignChangeEvent;
@@ -56,7 +52,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
@@ -456,6 +451,22 @@ public class ArenaListener implements Listener {
 						}
 					} else if (a.getArenaState() == ArenaState.RESTARTING) {
 						event.setCancelled(true);
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onBlockRedstone(BlockRedstoneEvent event) {
+		for (Arena a : pli.getArenas()) {
+			if (a.getArenaType() == ArenaType.REGENERATION) {
+				Cuboid c = a.getBoundaries();
+				if (c != null) {
+					// event.getOldCurrent();
+					if (a.getArenaState() == ArenaState.INGAME) {
+						event.getBlock().setData((byte) 0);
+						a.getSmartReset().addChanged(event.getBlock(), false);
 					}
 				}
 			}
