@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.sql.Database;
 
 public class MySQL extends Database {
@@ -47,6 +48,12 @@ public class MySQL extends Database {
 	}
 
 	public void closeConnection(Connection c) {
+		try {
+			c.close();
+		} catch (SQLException e) {
+			if (MinigamesAPI.debug)
+				e.printStackTrace();
+		}
 		c = null;
 	}
 }
