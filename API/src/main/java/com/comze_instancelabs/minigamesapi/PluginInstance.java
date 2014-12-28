@@ -282,6 +282,9 @@ public class PluginInstance {
 				String arenaname = a.getInternalName();
 				ArenaSetup s = this.arenaSetup;
 				a.init(Util.getSignLocationFromArena(plugin, arenaname), Util.getAllSpawns(plugin, arenaname), Util.getMainLobby(plugin), Util.getComponentForArena(plugin, arenaname, "lobby"), s.getPlayerCount(plugin, arenaname, true), s.getPlayerCount(plugin, arenaname, false), s.getArenaVIP(plugin, arenaname));
+				if (a.isSuccessfullyInit()) {
+					Util.updateSign(plugin, a);
+				}
 			}
 		}
 	}
