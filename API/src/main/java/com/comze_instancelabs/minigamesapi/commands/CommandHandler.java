@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,6 +18,7 @@ import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.Party;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
+import com.comze_instancelabs.minigamesapi.config.HologramsConfig;
 import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
@@ -347,7 +349,7 @@ public class CommandHandler {
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
 				sender.sendMessage(ChatColor.GRAY + "++ Debug Info ++");
-				sender.sendMessage(ChatColor.GRAY + "LOBBY:" + Util.isComponentForArenaValidRaw(plugin, args[1], "lobby") + ChatColor.RED +  ";" + ChatColor.GRAY + " SPAWN0:" + Util.isComponentForArenaValidRaw(plugin, args[1], "spawns.spawn0") + ChatColor.RED +  ";" + ChatColor.GRAY + " BOUNDARIES(possibly needed): low:" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.low") + ", high:" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.high"));
+				sender.sendMessage(ChatColor.GRAY + "LOBBY:" + Util.isComponentForArenaValidRaw(plugin, args[1], "lobby") + ChatColor.RED + ";" + ChatColor.GRAY + " SPAWN0:" + Util.isComponentForArenaValidRaw(plugin, args[1], "spawns.spawn0") + ChatColor.RED + ";" + ChatColor.GRAY + " BOUNDARIES(possibly needed): low:" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.low") + ", high:" + Util.isComponentForArenaValidRaw(plugin, args[1], "bounds.high"));
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <arena>");
@@ -887,6 +889,66 @@ public class CommandHandler {
 				sender.sendMessage(ChatColor.GREEN + "" + Integer.toString((int) entry.getValue().doubleValue()) + ChatColor.DARK_GREEN + " - " + ChatColor.GREEN + "" + entry.getKey());
 			}
 		}
+	}
+
+	// Hologram commands // TODO finish
+	public boolean setHologram(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		String base = "holograms." + Integer.toString((int) Math.round(Math.random() * 10000));
+		Location l = p.getLocation();
+		HologramsConfig config = pli.getHologramsConfig();
+		config.getConfig().set(base + ".world", l.getWorld().getName());
+		config.getConfig().set(base + ".location.x", l.getX());
+		config.getConfig().set(base + ".location.y", l.getY());
+		config.getConfig().set(base + ".location.z", l.getZ());
+		config.getConfig().set(base + ".location.yaw", l.getYaw());
+		config.getConfig().set(base + ".location.pitch", l.getPitch());
+		config.saveConfig();
+		p.sendMessage(ChatColor.GREEN + "Successfully set hologram.");
+		return true;
+	}
+
+	public boolean listHolograms(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		HologramsConfig config = pli.getHologramsConfig();
+		if (config.getConfig().isSet("holograms.")) {
+			for (String str : config.getConfig().getConfigurationSection("holograms.").getKeys(false)) {
+				String base = "holograms." + str;
+				Location l = new Location(Bukkit.getWorld(config.getConfig().getString(base + ".world")), config.getConfig().getDouble(base + ".location.x"), config.getConfig().getDouble(base + ".location.y"), config.getConfig().getDouble(base + ".location.z"), (float) config.getConfig().getDouble(base + ".location.yaw"), (float) config.getConfig().getDouble(base + ".location.pitch"));
+				p.sendMessage(ChatColor.GRAY + " ~ " + l.toString());
+			}
+		}
+		return true;
+	}
+
+	public boolean removeHolograms(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".setup")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		Location ploc = p.getLocation();
+		HologramsConfig config = pli.getHologramsConfig();
+		if (config.getConfig().isSet("holograms.")) {
+			for (String str : config.getConfig().getConfigurationSection("holograms.").getKeys(false)) {
+				String base = "holograms." + str;
+				Location l = new Location(Bukkit.getWorld(config.getConfig().getString(base + ".world")), config.getConfig().getDouble(base + ".location.x"), config.getConfig().getDouble(base + ".location.y"), config.getConfig().getDouble(base + ".location.z"), (float) config.getConfig().getDouble(base + ".location.yaw"), (float) config.getConfig().getDouble(base + ".location.pitch"));
+				if (l.distance(ploc) <= 2) {
+					config.getConfig().set("holograms." + str, null);
+					config.saveConfig();
+					p.sendMessage(ChatColor.GREEN + "Successfully removed hologram from config. It won't be sent anymore from now on!");
+					return true;
+				}
+			}
+		}
+		// No holograms found
+		p.sendMessage(ChatColor.RED + "No near holograms found! Please stand in a maximum distance of 2 blocks to a hologram to remove it.");
+		return true;
 	}
 
 	// Party commands

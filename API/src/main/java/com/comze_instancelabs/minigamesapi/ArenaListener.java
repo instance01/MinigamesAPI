@@ -678,6 +678,7 @@ public class ArenaListener implements Listener {
 										if (loc.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
 											if (loc.distance(s.getLocation()) < 1) {
 												pli.global_players.get(event.getPlayer().getName()).leavePlayer(event.getPlayer().getName(), false, false);
+												return;
 											}
 										}
 									}

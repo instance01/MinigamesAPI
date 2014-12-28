@@ -19,7 +19,7 @@ public class GunsConfig {
 	public GunsConfig(JavaPlugin plugin, boolean custom) {
 		this.plugin = plugin;
 		if (!custom) {
-			this.getConfig().options().header("Used for saving classes. Default class:");
+			this.getConfig().options().header("Be aware that this config is barely used in any minigame. \nUsed for saving gun classes. Default:");
 			this.getConfig().addDefault("config.guns.pistol.name", "Pistol");
 			this.getConfig().addDefault("config.guns.pistol.items", "256#DAMAGE_ALL:1#KNOCKBACK*1");
 			this.getConfig().addDefault("config.guns.pistol.icon", "256#DAMAGE_ALL:1#KNOCKBACK*1");

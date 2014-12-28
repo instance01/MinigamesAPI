@@ -11,6 +11,7 @@ import com.comze_instancelabs.minigamesapi.config.AchievementsConfig;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.config.GunsConfig;
+import com.comze_instancelabs.minigamesapi.config.HologramsConfig;
 import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.config.ShopConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
@@ -36,6 +37,7 @@ public class PluginInstance {
 	private GunsConfig gunsconfig = null;
 	private AchievementsConfig achievementsconfig = null;
 	private ShopConfig shopconfig = null;
+	private HologramsConfig hologramsconfig = null;
 	private JavaPlugin plugin = null;
 	private ArrayList<Arena> arenas = new ArrayList<Arena>();
 	private HashMap<String, AClass> pclass = new HashMap<String, AClass>();
@@ -74,6 +76,7 @@ public class PluginInstance {
 		this.gunsconfig = new GunsConfig(plugin, false);
 		this.achievementsconfig = new AchievementsConfig(plugin);
 		this.shopconfig = new ShopConfig(plugin, false);
+		this.hologramsconfig = new HologramsConfig(plugin, false);
 		this.arenas = arenas;
 		this.plugin = plugin;
 		rew = new Rewards(plugin);
@@ -163,6 +166,10 @@ public class PluginInstance {
 
 	public void setShopConfig(ShopConfig shopconfig) {
 		this.shopconfig = shopconfig;
+	}
+
+	public HologramsConfig getHologramsConfig() {
+		return hologramsconfig;
 	}
 
 	public Rewards getRewardsInstance() {

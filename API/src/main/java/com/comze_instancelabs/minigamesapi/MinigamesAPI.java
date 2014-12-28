@@ -406,9 +406,9 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 							p.sendMessage("Playing statistics hologram.");
 
 							Effects.playHologram(p, p.getLocation().add(0D, 1D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Wins: " + pli.getStatsInstance().getWins(p.getName()), false, false);
-							Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Points: " + pli.getStatsInstance().getPoints(p.getName()), false, false);
-							Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Kills: " + pli.getStatsInstance().getKills(p.getName()), false, false);
-							Effects.playHologram(p, p.getLocation().add(0D, -0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Deaths: " + pli.getStatsInstance().getDeaths(p.getName()), false, false);
+							Effects.playHologram(p, p.getLocation().add(0D, 0.75D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Points: " + pli.getStatsInstance().getPoints(p.getName()), false, false);
+							Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Kills: " + pli.getStatsInstance().getKills(p.getName()), false, false);
+							Effects.playHologram(p, p.getLocation().add(0D, 0.25D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Deaths: " + pli.getStatsInstance().getDeaths(p.getName()), false, false);
 
 						}
 					}
@@ -453,6 +453,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 				sender.sendMessage("/mapi hologram");
 				sender.sendMessage("/mapi protocol <player>");
 				sender.sendMessage("/mapi <potioneffect>");
+				sender.sendMessage("/mapi setstatshologram");
 			}
 			if (sender instanceof Player && args.length > 0) {
 				Player p = (Player) sender;

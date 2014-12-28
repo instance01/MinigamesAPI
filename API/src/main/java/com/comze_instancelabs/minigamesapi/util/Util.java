@@ -54,6 +54,7 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaLogger;
 import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.ArenaState;
+import com.comze_instancelabs.minigamesapi.Effects;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -903,6 +904,14 @@ public class Util {
 				Util.sendMessage(pli.getPlugin(), p, ChatColor.translateAlternateColorCodes('&', msg));
 			}
 		}
+	}
+
+	public static void sendStatsHologram(PluginInstance pli, Player p) {
+		// TODO Allow changing all 4 lines
+		Effects.playHologram(p, p.getLocation().add(0D, 1D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Wins: " + pli.getStatsInstance().getWins(p.getName()), false, false);
+		Effects.playHologram(p, p.getLocation().add(0D, 0.75D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Points: " + pli.getStatsInstance().getPoints(p.getName()), false, false);
+		Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Kills: " + pli.getStatsInstance().getKills(p.getName()), false, false);
+		Effects.playHologram(p, p.getLocation().add(0D, 0.25D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Deaths: " + pli.getStatsInstance().getDeaths(p.getName()), false, false);
 	}
 
 	public static void pushBack(Location l, Player p) {
