@@ -142,21 +142,12 @@ public class ArenaListener implements Listener {
 								Util.teleportPlayerFixed(p, a.getSpawns().get(0));
 							} else {
 								a.spectate(p.getName());
-								/*
-								 * if (!a.isArcadeMain()) { for (String p_ : a.getAllPlayers()) { if (Validator.isPlayerOnline(p_)) {
-								 * Bukkit.getPlayer(p_).sendMessage(pli.getMessagesConfig().player_died.replaceAll("<player>", p.getName())); } } }
-								 */
 							}
 							return;
 						}
 						if (a.getBoundaries() != null) {
 							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
-								Vector direction = a.getSpawns().get(0).toVector().subtract(p.getLocation().toVector()).normalize();
-								p.setVelocity(direction);
-								if (p.isInsideVehicle()) {
-									p.getVehicle().setVelocity(direction.multiply(2D));
-								}
-								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+								Util.pushBack(a.getSpawns().get(0), p);
 							}
 						}
 					} else if (a.getArenaState() == ArenaState.STARTING || a.getArenaState() == ArenaState.JOIN) {
@@ -171,12 +162,7 @@ public class ArenaListener implements Listener {
 								}
 								if (a.getLobbyBoundaries() != null && !a.skip_join_lobby) {
 									if (!a.getLobbyBoundaries().containsLocWithoutY(p.getLocation())) {
-										Vector direction = a.getWaitingLobbyTemp().toVector().subtract(p.getLocation().toVector()).normalize();
-										p.setVelocity(direction);
-										if (p.isInsideVehicle()) {
-											p.getVehicle().setVelocity(direction.multiply(2D));
-										}
-										p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+										Util.pushBack(a.getWaitingLobbyTemp(), p);
 									}
 								}
 							}
@@ -205,32 +191,21 @@ public class ArenaListener implements Listener {
 
 						if (a.getSpecBoundaries() != null) {
 							if (!a.getSpecBoundaries().containsLocWithoutY(p.getLocation())) {
-								Vector direction = a.getSpawns().get(0).clone().add(0D, 30D, 0D).toVector().subtract(p.getLocation().toVector()).normalize();
-								p.setVelocity(direction);
-								if (p.isInsideVehicle()) {
-									p.getVehicle().setVelocity(direction.multiply(2D));
-								}
-								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+								Util.pushBack(a.getSpawns().get(0).clone().add(0D, 30D, 0D), p);
 							}
 							return;
 						}
 						if (a.getBoundaries() != null) {
 							if (!a.getBoundaries().containsLocWithoutY(p.getLocation())) {
-								Vector direction = a.getSpawns().get(0).clone().add(0D, 30D, 0D).toVector().subtract(p.getLocation().toVector()).normalize();
-								p.setVelocity(direction);
-								if (p.isInsideVehicle()) {
-									p.getVehicle().setVelocity(direction.multiply(2D));
-								}
-								p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+								Util.pushBack(a.getSpawns().get(0).clone().add(0D, 30D, 0D), p);
 							}
 						}
 					}
 				}
-
 			}
 		} catch (Exception e) {
-			for (StackTraceElement et : e.getStackTrace()) {
-				System.out.println(et);
+			if(MinigamesAPI.debug){
+				e.printStackTrace();
 			}
 		}
 
@@ -270,12 +245,19 @@ public class ArenaListener implements Listener {
 			pli.global_lost.put(p.getName(), arena);
 
 			int count = 0;
-			for (String p_ : pli.global_players.keySet()) {
+			// for (String p_ : pli.global_players.keySet()) {
+			// if (Validator.isPlayerOnline(p_)) {
+			// if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {
+			// if (!pli.containsGlobalLost(p_)) {
+			// count++;
+			// }
+			// }
+			// }
+			// }
+			for (String p_ : arena.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_)) {
-					if (pli.global_players.get(p_).getInternalName().equalsIgnoreCase(arena.getInternalName())) {
-						if (!pli.containsGlobalLost(p_)) {
-							count++;
-						}
+					if (!pli.containsGlobalLost(p_)) {
+						count++;
 					}
 				}
 			}
@@ -283,23 +265,19 @@ public class ArenaListener implements Listener {
 
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
-					try {
-						if (pli.containsGlobalPlayer(p.getName()) && count_ > 1) {
-							arena.spectate(p.getName());
+					if (pli.containsGlobalPlayer(p.getName()) && count_ > 1) {
+						arena.spectate(p.getName());
+					}
+					for (String p_ : arena.getAllPlayers()) {
+						if (Validator.isPlayerOnline(p_)) {
+							Player p__ = Bukkit.getPlayer(p_);
+							Util.sendMessage(plugin, p__, pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
 						}
-						for (String p_ : arena.getAllPlayers()) {
-							if (Validator.isPlayerOnline(p_)) {
-								Player p__ = Bukkit.getPlayer(p_);
-								Util.sendMessage(plugin, p__, pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
-							}
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
 			}, 5);
 
-			if (plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
+			if (pli.last_man_standing) {
 				if (count < 2) {
 					// last man standing
 					arena.stop();
@@ -343,8 +321,6 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
-
-	boolean isSupported = false;
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -404,8 +380,6 @@ public class ArenaListener implements Listener {
 	public void onExplode(EntityExplodeEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
-				// a.getInternalName(), "bounds.high"));
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (event.getEntity() != null) {
@@ -424,8 +398,6 @@ public class ArenaListener implements Listener {
 	public void onBlockFromTo(BlockFromToEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
-				// a.getInternalName(), "bounds.high"));
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
@@ -443,11 +415,9 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onBlockFade(BlockFadeEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
-				// a.getInternalName(), "bounds.high"));
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
 				Cuboid c = a.getBoundaries();
-				if (c != null && a.getArenaState() == ArenaState.INGAME) {
+				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.FADE);
 					}
@@ -459,9 +429,9 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onLeavesDecay(LeavesDecayEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
-				if (c != null && a.getArenaState() == ArenaState.INGAME) {
+			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
+				Cuboid c = a.getBoundaries();
+				if (c != null) {
 					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
 						a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
 					}
@@ -474,8 +444,6 @@ public class ArenaListener implements Listener {
 	public void onBlockPhysics(BlockPhysicsEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
-				// a.getInternalName(), "bounds.high"));
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
@@ -498,8 +466,6 @@ public class ArenaListener implements Listener {
 		// disallow fire spread while the arena restarts
 		for (Arena a : pli.getArenas()) {
 			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-				// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
-				// a.getInternalName(), "bounds.high"));
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
@@ -518,8 +484,6 @@ public class ArenaListener implements Listener {
 		if (event.getEntity() instanceof Enderman) {
 			for (Arena a : pli.getArenas()) {
 				if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
-					// Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin,
-					// a.getInternalName(), "bounds.high"));
 					Cuboid c = a.getBoundaries();
 					if (c != null) {
 						if (c.containsLocWithoutY(event.getEntity().getLocation())) {
@@ -637,12 +601,6 @@ public class ArenaListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player p = event.getPlayer();
-		/*
-		 * if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER || event.getBlock().getType()
-		 * == Material.STATIONARY_LAVA || event.getBlock().getType() == Material.LAVA) { if (pli.containsGlobalPlayer(p.getName())) { Arena a =
-		 * pli.global_players.get(p.getName()); if (a.getArenaState() == ArenaState.INGAME) {
-		 * a.getSmartReset().addChanged(event.getBlock().getLocation()); } } }
-		 */
 		if (pli.containsGlobalPlayer(p.getName())) {
 			Arena a = pli.global_players.get(p.getName());
 			if (a.getArenaState() != ArenaState.INGAME || pli.containsGlobalLost(p.getName()) || pli.getSpectatorManager().isSpectating(p)) {

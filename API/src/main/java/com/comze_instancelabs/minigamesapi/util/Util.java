@@ -18,6 +18,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
@@ -156,12 +157,14 @@ public class Util {
 
 	public static boolean isComponentForArenaValid(JavaPlugin plugin, String arenaname, String component) {
 		if (Validator.isArenaValid(plugin, arenaname)) {
-			String base = "arenas." + arenaname + "." + component;
-			if (MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().isSet(base)) {
-				return true;
-			}
+			return isComponentForArenaValidRaw(plugin, arenaname, component);
 		}
 		return false;
+	}
+
+	public static boolean isComponentForArenaValidRaw(JavaPlugin plugin, String arenaname, String component) {
+		String base = "arenas." + arenaname + "." + component;
+		return MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().isSet(base);
 	}
 
 	public static void saveComponentForArena(JavaPlugin plugin, String arenaname, String component, Location comploc) {
@@ -901,6 +904,15 @@ public class Util {
 				Util.sendMessage(pli.getPlugin(), p, ChatColor.translateAlternateColorCodes('&', msg));
 			}
 		}
+	}
+
+	public static void pushBack(Location l, Player p) {
+		Vector direction = l.toVector().subtract(p.getLocation().toVector()).normalize();
+		p.setVelocity(direction);
+		if (p.isInsideVehicle()) {
+			p.getVehicle().setVelocity(direction.multiply(2D));
+		}
+		p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
 	}
 
 }

@@ -139,7 +139,7 @@ public class Arena {
 					plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "The boundaries of an arena appear to be invalid (missing world?), please fix! Arena: " + this.getInternalName());
 				}
 			} catch (Exception e) {
-				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to major error flows later, please fix your setup. " + e.getMessage());
+				plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Failed to save arenas as you forgot to set boundaries or they could not be found. This will lead to errors later, please fix your setup. " + e.getMessage());
 				isSuccessfullyInitialized = false;
 			}
 		}
@@ -811,11 +811,7 @@ public class Arena {
 
 	public void spectateRaw(final Player p) {
 		if (pli.dead_in_fake_bed_effects) {
-			try {
-				Effects.playFakeBed(this, p);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Effects.playFakeBed(this, p);
 		}
 
 		if (pli.spectator_mode_1_8) {

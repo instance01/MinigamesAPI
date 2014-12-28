@@ -64,6 +64,7 @@ public class PluginInstance {
 	boolean spectator_mode_1_8 = true;
 	boolean damage_identifier_effects = true;
 	public boolean color_background_wool_of_signs;
+	boolean last_man_standing = true;
 
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
@@ -101,6 +102,7 @@ public class PluginInstance {
 		dead_in_fake_bed_effects = plugin.getConfig().getBoolean("config.effects.dead_in_fake_bed");
 		color_background_wool_of_signs = plugin.getConfig().getBoolean("config.color_background_wool_of_signs");
 		spectator_mode_1_8 = plugin.getConfig().getBoolean("config.effects.1_8_spectator_mode");
+		last_man_standing = plugin.getConfig().getBoolean("config.last_man_standing_wins");
 	}
 
 	public JavaPlugin getPlugin() {

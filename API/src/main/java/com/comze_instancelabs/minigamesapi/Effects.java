@@ -64,11 +64,11 @@ public class Effects {
 		}
 	}
 
-	public static BukkitTask playFakeBed(Arena a, Player p) throws Exception {
+	public static BukkitTask playFakeBed(Arena a, Player p) {
 		return playFakeBed(a, p, p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
 	}
 
-	public static BukkitTask playFakeBed(final Arena a, final Player p, int x, int y, int z) throws Exception {
+	public static BukkitTask playFakeBed(final Arena a, final Player p, int x, int y, int z) {
 		try {
 			final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
 			final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
@@ -451,33 +451,29 @@ public class Effects {
 
 		// Code below not really used
 
-		/* Method getPlayerHandle;
-		try {
-			getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
-			final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
-			playerConnection.setAccessible(true);
-			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
-
-			final Constructor packetPlayOutGameStateChange = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutGameStateChange").getConstructor(int.class, float.class);
-			Object packet = packetPlayOutGameStateChange.newInstance(3, gamemode);
-
-			Object handleObj = getPlayerHandle.invoke(p);
-
-			Class entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity");
-			Field interactManager = handleObj.getClass().getDeclaredField("playerInteractManager");
-			interactManager.setAccessible(true);
-			Class enumGamemode = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumGamemode");
-			Method setGameMode = interactManager.getType().getDeclaredMethod("setGameMode", enumGamemode);
-			Method e = handleObj.getClass().getDeclaredMethod("e", entity);
-
-			e.invoke(handleObj, entity.cast(handleObj));
-			setGameMode.invoke(interactManager.get(handleObj), enumGamemode.getEnumConstants()[gamemode]);
-			sendPacket.invoke(playerConnection.get(handleObj), packet);
-
-			p.setFallDistance(0F);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+		/*
+		 * Method getPlayerHandle; try { getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version +
+		 * ".entity.CraftPlayer").getMethod("getHandle"); final Field playerConnection = Class.forName("net.minecraft.server." +
+		 * MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection"); playerConnection.setAccessible(true); final Method
+		 * sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version +
+		 * ".Packet"));
+		 * 
+		 * final Constructor packetPlayOutGameStateChange = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version +
+		 * ".PacketPlayOutGameStateChange").getConstructor(int.class, float.class); Object packet = packetPlayOutGameStateChange.newInstance(3,
+		 * gamemode);
+		 * 
+		 * Object handleObj = getPlayerHandle.invoke(p);
+		 * 
+		 * Class entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity"); Field interactManager =
+		 * handleObj.getClass().getDeclaredField("playerInteractManager"); interactManager.setAccessible(true); Class enumGamemode =
+		 * Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumGamemode"); Method setGameMode =
+		 * interactManager.getType().getDeclaredMethod("setGameMode", enumGamemode); Method e = handleObj.getClass().getDeclaredMethod("e", entity);
+		 * 
+		 * e.invoke(handleObj, entity.cast(handleObj)); setGameMode.invoke(interactManager.get(handleObj), enumGamemode.getEnumConstants()[gamemode]);
+		 * sendPacket.invoke(playerConnection.get(handleObj), packet);
+		 * 
+		 * p.setFallDistance(0F); } catch (Exception e) { e.printStackTrace(); }
+		 */
 
 		// getHandle().e((Entity) getHandle()); // RENAME
 		// getHandle().playerInteractManager.setGameMode(EnumGamemode.getById(mode.getValue()));
