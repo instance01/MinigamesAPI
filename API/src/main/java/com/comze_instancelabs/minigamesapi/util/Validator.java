@@ -74,9 +74,7 @@ public class Validator {
 	public static boolean isArenaValid(JavaPlugin plugin, String arena) {
 		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
 		if (!config.isSet("arenas." + arena + ".lobby") || !config.isSet("arenas." + arena + ".spawns.spawn0")) {
-			if (MinigamesAPI.debug) {
-				ArenaLogger.debug(ChatColor.AQUA + arena + " is invalid! lobby:" + config.isSet("arenas." + arena + ".lobby") + " spawns.spawn0:" + config.isSet("arenas." + arena + ".spawns.spawn0"));
-			}
+			ArenaLogger.debug(ChatColor.AQUA + arena + " is invalid! lobby:" + config.isSet("arenas." + arena + ".lobby") + " spawns.spawn0:" + config.isSet("arenas." + arena + ".spawns.spawn0"));
 			return false;
 		}
 		return true;

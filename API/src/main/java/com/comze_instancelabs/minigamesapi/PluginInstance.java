@@ -1,6 +1,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -68,6 +69,8 @@ public class PluginInstance {
 	public boolean color_background_wool_of_signs;
 	boolean last_man_standing = true;
 
+	public HashMap<String, ArrayList<String>> cached_sign_states = new HashMap<String, ArrayList<String>>();
+
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
@@ -106,6 +109,12 @@ public class PluginInstance {
 		color_background_wool_of_signs = plugin.getConfig().getBoolean("config.color_background_wool_of_signs");
 		spectator_mode_1_8 = plugin.getConfig().getBoolean("config.effects.1_8_spectator_mode");
 		last_man_standing = plugin.getConfig().getBoolean("config.last_man_standing_wins");
+
+		// Cache sign configuration
+		for (String state : ArenaState.getAllStateNames()) {
+			this.cached_sign_states.put(state, new ArrayList<String>(Arrays.asList(this.messagesconfig.getConfig().getString("signs." + state.toLowerCase() + ".0"), this.messagesconfig.getConfig().getString("signs." + state.toLowerCase() + ".1"), this.messagesconfig.getConfig().getString("signs." + state.toLowerCase() + ".2"), this.messagesconfig.getConfig().getString("signs." + state.toLowerCase() + ".3"))));
+		}
+
 	}
 
 	public JavaPlugin getPlugin() {

@@ -88,9 +88,7 @@ public class Classes {
 
 	public void getClass(String player) {
 		if (!pli.getPClasses().containsKey(player)) {
-			if (MinigamesAPI.debug) {
-				ArenaLogger.debug(player + " didn't select any kit and the auto_add_default_kit option might be turned off, thus he won't get any starting items.");
-			}
+			ArenaLogger.debug(player + " didn't select any kit and the auto_add_default_kit option might be turned off, thus he won't get any starting items.");
 			return;
 		}
 		AClass c = pli.getPClasses().get(player);

@@ -760,7 +760,7 @@ public class Arena {
 		p.setFlying(true);
 		pli.getSpectatorManager().hideSpectator(p, this.getAllPlayers());
 		pli.scoreboardManager.updateScoreboard(plugin, this);
-		if (!plugin.getConfig().getBoolean("config.last_man_standing_wins")) {
+		if (!pli.last_man_standing) {
 			if (this.getPlayerAlive() < 1) {
 				final Arena a = this;
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
