@@ -396,7 +396,7 @@ public class ArenaListener implements Listener {
 			if (a.getArenaType() == ArenaType.REGENERATION) {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
-					if (c.containsLocWithoutY(event.getBlock().getLocation())) {
+					if (c.containsLocWithoutYD(event.getBlock().getLocation())) {
 						if (a.getArenaState() == ArenaState.INGAME) {
 							a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST), ChangeCause.FROM_TO);
 						} else if (a.getArenaState() == ArenaState.RESTARTING) {

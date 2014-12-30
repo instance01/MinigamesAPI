@@ -203,11 +203,10 @@ public class Util {
 	public static ArrayList<Location> getAllSpawns(JavaPlugin plugin, String arena) {
 		FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
 		ArrayList<Location> ret = new ArrayList<Location>();
-		if (!config.isSet("arenas." + arena + ".spawns")) {
-			return ret;
-		}
-		for (String spawn : config.getConfigurationSection("arenas." + arena + ".spawns.").getKeys(false)) {
-			ret.add(getComponentForArena(plugin, arena, "spawns." + spawn));
+		if (config.isSet("arenas." + arena + ".spawns")) {
+			for (String spawn : config.getConfigurationSection("arenas." + arena + ".spawns.").getKeys(false)) {
+				ret.add(getComponentForArena(plugin, arena, "spawns." + spawn));
+			}
 		}
 		return ret;
 	}
@@ -239,7 +238,7 @@ public class Util {
 				for (int k = 0; k <= length; k++) {
 					Block change = c.getWorld().getBlockAt(start.getBlockX() + i, start.getBlockY() + j, start.getBlockZ() + k);
 
-					ArenaBlock bl = change.getType() == Material.CHEST ? new ArenaBlock(change, true) : new ArenaBlock(change, false);
+					ArenaBlock bl = new ArenaBlock(change, change.getType().equals(Material.CHEST));
 
 					try {
 						oos.writeObject(bl);
