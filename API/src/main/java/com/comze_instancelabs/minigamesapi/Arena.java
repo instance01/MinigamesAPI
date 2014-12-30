@@ -1310,7 +1310,15 @@ public class Arena {
 	 * Rebuilds an arena from file (only for arenas of REGENERATION type)
 	 */
 	public void reset() {
-		sr.reset();
+		if (pli.old_reset) {
+			try {
+				Util.loadArenaFromFileSYNC(plugin, this);
+			} catch (Exception e) {
+				ArenaLogger.debug("Error resetting map using old method. " + e.getMessage());
+			}
+		} else {
+			sr.reset();
+		}
 	}
 
 	/***

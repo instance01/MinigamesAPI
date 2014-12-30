@@ -68,6 +68,7 @@ public class PluginInstance {
 	boolean damage_identifier_effects = true;
 	public boolean color_background_wool_of_signs;
 	boolean last_man_standing = true;
+	boolean old_reset = false;
 
 	public HashMap<String, ArrayList<String>> cached_sign_states = new HashMap<String, ArrayList<String>>();
 
@@ -109,6 +110,7 @@ public class PluginInstance {
 		color_background_wool_of_signs = plugin.getConfig().getBoolean("config.color_background_wool_of_signs");
 		spectator_mode_1_8 = plugin.getConfig().getBoolean("config.effects.1_8_spectator_mode");
 		last_man_standing = plugin.getConfig().getBoolean("config.last_man_standing_wins");
+		old_reset = plugin.getConfig().getBoolean("config.use_old_reset_method");
 
 		// Cache sign configuration
 		for (String state : ArenaState.getAllStateNames()) {
