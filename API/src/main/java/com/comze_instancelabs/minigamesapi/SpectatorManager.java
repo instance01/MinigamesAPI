@@ -86,6 +86,8 @@ public class SpectatorManager {
 			}, plugin);
 		}
 
+		iconm.clear();
+
 		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
 		int c = 0;
 		for (String p__ : a.getAllPlayers()) {
@@ -125,7 +127,7 @@ public class SpectatorManager {
 	}
 
 	public void showSpectator(Player spec) {
-		if(splayers.containsKey(spec.getName())){
+		if (splayers.containsKey(spec.getName())) {
 			for (String p_ : splayers.get(spec.getName())) {
 				if (Validator.isPlayerOnline(p_)) {
 					Player p = Bukkit.getPlayer(p_);
@@ -142,7 +144,7 @@ public class SpectatorManager {
 	}
 
 	public void showSpectators(Player p) {
-		if(pspecs.containsKey(p.getName())){
+		if (pspecs.containsKey(p.getName())) {
 			for (String p_ : pspecs.get(p.getName())) {
 				if (Validator.isPlayerOnline(p_)) {
 					Player spec = Bukkit.getPlayer(p_);

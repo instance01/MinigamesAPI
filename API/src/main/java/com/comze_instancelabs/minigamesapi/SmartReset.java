@@ -86,7 +86,7 @@ public class SmartReset {
 				for (final SmartArenaBlock ablock : changed.values()) {
 					try {
 						resetSmartResetBlock(ablock);
-					} catch (IllegalStateException e) {
+					} catch (Exception e) {
 						failcount += 1;
 						failedblocks.add(ablock);
 					}
@@ -131,8 +131,9 @@ public class SmartReset {
 		for (final SmartArenaBlock ablock : changed.values()) {
 			try {
 				resetSmartResetBlock(ablock);
-			} catch (IllegalStateException e) {
-
+			} catch (Exception e) {
+				a.setArenaState(ArenaState.JOIN);
+				Util.updateSign(a.plugin, a);
 			}
 		}
 
@@ -242,7 +243,6 @@ public class SmartReset {
 				s.setRotation(ablock.getSkullORotation());
 				s.update();
 			}
-
 		}
 	}
 

@@ -304,6 +304,14 @@ public class Util {
 					});
 				} catch (ClosedChannelException e) {
 					System.out.println("Something is wrong with your arena file and the reset might not be successful. Also, you're using an outdated reset method.");
+				} catch (Exception e) {
+					e.printStackTrace();
+					arena.setArenaState(ArenaState.JOIN);
+					Bukkit.getScheduler().runTask(plugin, new Runnable() {
+						public void run() {
+							Util.updateSign(plugin, arena);
+						}
+					});
 				}
 
 				if (b != null) {
@@ -327,9 +335,7 @@ public class Util {
 				}
 			}
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
