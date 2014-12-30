@@ -73,8 +73,6 @@ public class PluginInstance {
 
 	public HashMap<String, ArrayList<String>> cached_sign_states = new HashMap<String, ArrayList<String>>();
 
-	public BungeeSocket sock;
-	
 	public PluginInstance(JavaPlugin plugin, ArenasConfig arenasconfig, MessagesConfig messagesconfig, ClassesConfig classesconfig, StatsConfig statsconfig, ArrayList<Arena> arenas) {
 		this.arenasconfig = arenasconfig;
 		this.messagesconfig = messagesconfig;
@@ -95,7 +93,6 @@ public class PluginInstance {
 		achievements = new ArenaAchievements(this, plugin);
 		scoreboardManager = new ArenaScoreboard(this, plugin);
 		scoreboardLobbyManager = new ArenaLobbyScoreboard(this, plugin);
-		sock = new BungeeSocket(this);
 		reloadVariables();
 	}
 

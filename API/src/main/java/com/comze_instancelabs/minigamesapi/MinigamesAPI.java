@@ -18,6 +18,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import com.comze_instancelabs.minigamesapi.bungee.BungeeSocket;
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
@@ -435,7 +436,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 						Player p = (Player) sender;
 						if (p.isOp()) {
 							PluginInstance pli = this.pinstances.get(Bukkit.getPluginManager().getPlugin("MGSkyWars"));
-							pli.sock.sendSignUpdate(pli.getArenas().get(0));
+							BungeeSocket.sendSignUpdate(pli, pli.getArenas().get(0));
 						}
 					}
 				}
