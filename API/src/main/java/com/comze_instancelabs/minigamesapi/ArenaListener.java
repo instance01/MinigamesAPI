@@ -634,6 +634,9 @@ public class ArenaListener implements Listener {
 	public void onSignUse(PlayerInteractEvent event) {
 		if (event.hasBlock()) {
 			if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN) {
+				if (event.getClickedBlock().getType() == Material.FIRE) {
+					return;
+				}
 				if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 					return;
 				}
