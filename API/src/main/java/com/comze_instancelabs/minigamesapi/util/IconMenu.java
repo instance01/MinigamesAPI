@@ -38,6 +38,12 @@ public class IconMenu implements Listener {
 	}
 
 	public IconMenu setOption(int position, ItemStack icon, String name, String... info) {
+		if (position < 0)
+			position = 0;
+		if (optionNames == null)
+			this.optionNames = new String[size];
+		if (optionIcons == null)
+			this.optionIcons = new ItemStack[size];
 		optionNames[position] = name;
 		optionIcons[position] = setItemNameAndLore(icon, name, info);
 		return this;
