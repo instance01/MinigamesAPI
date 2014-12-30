@@ -430,6 +430,14 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 							Effects.sendGameModeChange(p, 3);
 						}
 					}
+				} else if (args[0].equalsIgnoreCase("bungeetest")) {
+					if (sender instanceof Player) {
+						Player p = (Player) sender;
+						if (p.isOp()) {
+							PluginInstance pli = this.pinstances.get(Bukkit.getPluginManager().getPlugin("MGSkyWars"));
+							pli.sock.sendSignUpdate(pli.getArenas().get(0));
+						}
+					}
 				}
 				return true;
 			}

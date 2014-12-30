@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
@@ -27,6 +28,8 @@ public class BungeeUtil {
 	}
 
 	public static void sendSignUpdateRequest(JavaPlugin plugin, String minigame, Arena arena) {
+		PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+		pli.sock.sendSignUpdate(arena);
 		ByteArrayDataOutput out = ByteStreams.newDataOutput();
 		try {
 			out.writeUTF("Forward");

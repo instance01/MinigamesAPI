@@ -1311,6 +1311,7 @@ public class Arena {
 	 */
 	public void reset() {
 		if (pli.old_reset) {
+			ArenaLogger.debug("Resetting using old method.");
 			try {
 				Util.loadArenaFromFileSYNC(plugin, this);
 			} catch (Exception e) {
