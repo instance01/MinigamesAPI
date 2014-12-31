@@ -128,6 +128,8 @@ public class CommandHandler {
 				pli.reloadVariables();
 				pli.getRewardsInstance().reloadVariables();
 				pli.getStatsInstance().reloadVariables();
+				pli.getAClasses().clear();
+				pli.getClassesHandler().loadClasses();
 				try {
 					pli.reloadAllArenas();
 				} catch (Exception e) {

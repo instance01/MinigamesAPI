@@ -76,6 +76,7 @@ public class Classes {
 							slot = c;
 						}
 					}
+					System.out.println(ac_.getIcon().getType());
 					iconm.setOption(slot, ac_.getIcon().clone(), ac_.getName(), pli.getClassesConfig().getConfig().getString("config.kits." + ac_.getInternalName() + ".lore").split(";"));
 					c++;
 				}
