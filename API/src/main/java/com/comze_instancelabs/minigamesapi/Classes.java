@@ -64,21 +64,21 @@ public class Classes {
 					event.setWillClose(true);
 				}
 			}, plugin);
-		}
-
-		int c = 0;
-		for (String ac : pli.getAClasses().keySet()) {
-			AClass ac_ = pli.getAClasses().get(ac);
-			if (ac_.isEnabled()) {
-				int slot = c;
-				if (pli.getClassesConfig().getConfig().isSet("config.kits." + ac_.getInternalName() + ".slot")) {
-					slot = pli.getClassesConfig().getConfig().getInt("config.kits." + ac_.getInternalName() + ".slot");
-					if (slot < 0 || slot > iconm.getSize() - 1) {
-						slot = c;
+			
+			int c = 0;
+			for (String ac : pli.getAClasses().keySet()) {
+				AClass ac_ = pli.getAClasses().get(ac);
+				if (ac_.isEnabled()) {
+					int slot = c;
+					if (pli.getClassesConfig().getConfig().isSet("config.kits." + ac_.getInternalName() + ".slot")) {
+						slot = pli.getClassesConfig().getConfig().getInt("config.kits." + ac_.getInternalName() + ".slot");
+						if (slot < 0 || slot > iconm.getSize() - 1) {
+							slot = c;
+						}
 					}
+					iconm.setOption(slot, ac_.getIcon().clone(), ac_.getName(), pli.getClassesConfig().getConfig().getString("config.kits." + ac_.getInternalName() + ".lore").split(";"));
+					c++;
 				}
-				iconm.setOption(slot, ac_.getIcon().clone(), ac_.getName(), pli.getClassesConfig().getConfig().getString("config.kits." + ac_.getInternalName() + ".lore").split(";"));
-				c++;
 			}
 		}
 

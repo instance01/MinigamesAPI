@@ -639,7 +639,11 @@ public class Arena {
 					p.removePotionEffect(PotionEffectType.JUMP);
 					pli.getSpectatorManager().setSpectate(p, false);
 					pli.getStatsInstance().updateSQLKillsDeathsAfter(p, this);
-
+				}
+				if (pli.getClassesHandler().lasticonm.containsKey(p.getName())) {
+					IconMenu iconm = pli.getClassesHandler().lasticonm.get(p.getName());
+					iconm.destroy();
+					pli.getClassesHandler().lasticonm.remove(p.getName());
 				}
 			} catch (Exception e) {
 				System.out.println("Failed to log out player out of arena. " + e.getMessage());
@@ -679,6 +683,12 @@ public class Arena {
 
 		Util.updateSign(plugin, this);
 
+		if (pli.getClassesHandler().lasticonm.containsKey(p.getName())) {
+			IconMenu iconm = pli.getClassesHandler().lasticonm.get(p.getName());
+			iconm.destroy();
+			pli.getClassesHandler().lasticonm.remove(p.getName());
+		}
+		
 		final String arenaname = this.getInternalName();
 		final Arena a = this;
 		final boolean started_ = started;

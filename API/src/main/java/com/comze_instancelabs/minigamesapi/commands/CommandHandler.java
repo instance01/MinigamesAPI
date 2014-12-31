@@ -505,6 +505,12 @@ public class CommandHandler {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
 			}
 		} else {
+			if (pli.containsGlobalPlayer(p.getName())) {
+				Arena a = pli.global_players.get(p.getName());
+				a.stop();
+				sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "stopped"));
+				return true;
+			}
 			sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
 		}
 		return true;
