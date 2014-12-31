@@ -106,7 +106,7 @@ public class Shop {
 	public boolean buy(Player p, String item_displayname) {
 		for (String ac : shopitems.keySet()) {
 			ShopItem ac_ = shopitems.get(ac);
-			if (ac_.getName().equalsIgnoreCase(item_displayname)) {
+			if (ac_.getName().equalsIgnoreCase(ChatColor.stripColor(item_displayname))) {
 				takeMoney(p, ac_.getInternalName());
 				// true -> player has item already or just bought it successfully
 				return true;
@@ -118,7 +118,7 @@ public class Shop {
 	public boolean buyByInternalName(Player p, String item_name) {
 		for (String ac : shopitems.keySet()) {
 			ShopItem ac_ = shopitems.get(ac);
-			if (ac_.getInternalName().equalsIgnoreCase(item_name)) {
+			if (ac_.getInternalName().equalsIgnoreCase(ChatColor.stripColor(item_name))) {
 				takeMoney(p, ac_.getInternalName());
 				// true -> player has item already or just bought it successfully
 				return true;
