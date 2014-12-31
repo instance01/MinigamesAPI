@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.achievements.ArenaAchievements;
-import com.comze_instancelabs.minigamesapi.bungee.BungeeSocket;
 import com.comze_instancelabs.minigamesapi.config.AchievementsConfig;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
@@ -19,6 +18,7 @@ import com.comze_instancelabs.minigamesapi.config.ShopConfig;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.guns.Gun;
 import com.comze_instancelabs.minigamesapi.sql.MainSQL;
+import com.comze_instancelabs.minigamesapi.statsholograms.Holograms;
 import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.ArenaLobbyScoreboard;
 import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
@@ -52,6 +52,7 @@ public class PluginInstance {
 	private Shop shop = null;
 	private SpectatorManager spectatormanager = null;
 	private ArenaAchievements achievements = null;
+	private Holograms holograms = null;
 	private boolean achievement_gui_enabled = false;
 
 	public ArenaScoreboard scoreboardManager;
@@ -91,6 +92,7 @@ public class PluginInstance {
 		shop = new Shop(this, plugin);
 		spectatormanager = new SpectatorManager(plugin);
 		achievements = new ArenaAchievements(this, plugin);
+		holograms = new Holograms(this);
 		scoreboardManager = new ArenaScoreboard(this, plugin);
 		scoreboardLobbyManager = new ArenaLobbyScoreboard(this, plugin);
 		reloadVariables();
@@ -230,6 +232,10 @@ public class PluginInstance {
 
 	public ArenaAchievements getArenaAchievements() {
 		return this.achievements;
+	}
+
+	public Holograms getHologramsHandler() {
+		return this.holograms;
 	}
 
 	public int getIngameCountdown() {

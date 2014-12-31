@@ -105,6 +105,12 @@ public class CommandHandler {
 				return this.getLeaderboards(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("stats")) {
 				return this.getStats(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("sethologram")) {
+				return this.setHologram(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("listholograms")) {
+				return this.listHolograms(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("removehologram")) {
+				return this.removeHologram(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("help")) {
 				sendHelp(cmd, sender);
 			} else if (action.equalsIgnoreCase("list")) {
@@ -570,11 +576,13 @@ public class CommandHandler {
 		return true;
 	}
 
+	// TODO Implement skulls
 	public boolean setSkull(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
 		}
+		sender.sendMessage(ChatColor.GRAY + "This feature is not implemented yet.");
 		if (args.length > 1) {
 			if (Util.isNumeric(args[1])) {
 				int count = Integer.parseInt(args[1]);
@@ -899,22 +907,14 @@ public class CommandHandler {
 		}
 	}
 
-	// Hologram commands // TODO finish
+	// Hologram commands
 	public boolean setHologram(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
 		}
-		String base = "holograms." + Integer.toString((int) Math.round(Math.random() * 10000));
 		Location l = p.getLocation();
-		HologramsConfig config = pli.getHologramsConfig();
-		config.getConfig().set(base + ".world", l.getWorld().getName());
-		config.getConfig().set(base + ".location.x", l.getX());
-		config.getConfig().set(base + ".location.y", l.getY());
-		config.getConfig().set(base + ".location.z", l.getZ());
-		config.getConfig().set(base + ".location.yaw", l.getYaw());
-		config.getConfig().set(base + ".location.pitch", l.getPitch());
-		config.saveConfig();
+		pli.getHologramsHandler().addHologram(l);
 		p.sendMessage(ChatColor.GREEN + "Successfully set hologram.");
 		return true;
 	}
@@ -925,34 +925,31 @@ public class CommandHandler {
 			return true;
 		}
 		HologramsConfig config = pli.getHologramsConfig();
+		int c = 0;
 		if (config.getConfig().isSet("holograms.")) {
 			for (String str : config.getConfig().getConfigurationSection("holograms.").getKeys(false)) {
 				String base = "holograms." + str;
 				Location l = new Location(Bukkit.getWorld(config.getConfig().getString(base + ".world")), config.getConfig().getDouble(base + ".location.x"), config.getConfig().getDouble(base + ".location.y"), config.getConfig().getDouble(base + ".location.z"), (float) config.getConfig().getDouble(base + ".location.yaw"), (float) config.getConfig().getDouble(base + ".location.pitch"));
-				p.sendMessage(ChatColor.GRAY + " ~ " + l.toString());
+				p.sendMessage(ChatColor.GRAY + " ~ " + "world:" + l.getWorld().getName() + ", x:" + l.getBlockX() + ", y:" + l.getBlockY() + ", z:" + l.getBlockZ());
+				c++;
 			}
+		}
+		if (c == 0) {
+			p.sendMessage(ChatColor.RED + "No holograms found!");
 		}
 		return true;
 	}
 
-	public boolean removeHolograms(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
+	public boolean removeHologram(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, final JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".setup")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
 			return true;
 		}
 		Location ploc = p.getLocation();
-		HologramsConfig config = pli.getHologramsConfig();
-		if (config.getConfig().isSet("holograms.")) {
-			for (String str : config.getConfig().getConfigurationSection("holograms.").getKeys(false)) {
-				String base = "holograms." + str;
-				Location l = new Location(Bukkit.getWorld(config.getConfig().getString(base + ".world")), config.getConfig().getDouble(base + ".location.x"), config.getConfig().getDouble(base + ".location.y"), config.getConfig().getDouble(base + ".location.z"), (float) config.getConfig().getDouble(base + ".location.yaw"), (float) config.getConfig().getDouble(base + ".location.pitch"));
-				if (l.distance(ploc) <= 2) {
-					config.getConfig().set("holograms." + str, null);
-					config.saveConfig();
-					p.sendMessage(ChatColor.GREEN + "Successfully removed hologram from config. It won't be sent anymore from now on!");
-					return true;
-				}
-			}
+		boolean foundHologram = pli.getHologramsHandler().removeHologram(ploc);
+		if (foundHologram) {
+			p.sendMessage(ChatColor.GREEN + "Successfully removed hologram from config. It won't be sent anymore from now on!");
+			return true;
 		}
 		// No holograms found
 		p.sendMessage(ChatColor.RED + "No near holograms found! Please stand in a maximum distance of 2 blocks to a hologram to remove it.");

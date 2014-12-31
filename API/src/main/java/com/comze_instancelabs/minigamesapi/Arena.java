@@ -407,6 +407,7 @@ public class Arena {
 			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getInternalName() + ".description")) {
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().description_of_the_map.replaceAll("<arena>", this.getDisplayName()).replaceAll("<description>", pli.getArenasConfig().getConfig().getString("arenas." + this.getInternalName() + ".description")));
 			}
+			pli.getHologramsHandler().sendAllHolograms(p);
 			for (String p_ : this.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_) && !p_.equalsIgnoreCase(p.getName())) {
 					Player p__ = Bukkit.getPlayer(p_);
@@ -688,7 +689,7 @@ public class Arena {
 			iconm.destroy();
 			pli.getClassesHandler().lasticonm.remove(p.getName());
 		}
-		
+
 		final String arenaname = this.getInternalName();
 		final Arena a = this;
 		final boolean started_ = started;

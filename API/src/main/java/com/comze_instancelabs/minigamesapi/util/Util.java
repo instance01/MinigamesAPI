@@ -938,14 +938,6 @@ public class Util {
 		}
 	}
 
-	public static void sendStatsHologram(PluginInstance pli, Player p) {
-		// TODO Allow changing all 4 lines
-		Effects.playHologram(p, p.getLocation().add(0D, 1D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Wins: " + pli.getStatsInstance().getWins(p.getName()), false, false);
-		Effects.playHologram(p, p.getLocation().add(0D, 0.75D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Points: " + pli.getStatsInstance().getPoints(p.getName()), false, false);
-		Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Kills: " + pli.getStatsInstance().getKills(p.getName()), false, false);
-		Effects.playHologram(p, p.getLocation().add(0D, 0.25D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Deaths: " + pli.getStatsInstance().getDeaths(p.getName()), false, false);
-	}
-
 	public static void pushBack(Location l, Player p) {
 		Vector direction = l.toVector().subtract(p.getLocation().toVector()).normalize();
 		p.setVelocity(direction);

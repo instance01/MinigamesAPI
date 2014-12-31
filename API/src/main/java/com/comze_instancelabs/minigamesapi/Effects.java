@@ -220,9 +220,14 @@ public class Effects {
 	 *            Location where the hologram will spawn (and slowly move down)
 	 * @param text
 	 *            Hologram text
+	 * @param moveDown
+	 *            Whether to play a moving down animation
+	 * @param removeAfterCooldown
+	 *            Whether to remove the hologram after a few seconds or not
+	 * @return
 	 */
-	public static int[] playHologram(final Player p, final Location l, String text, boolean moveDown, boolean removeAfterCooldown) {
-		int[] ret = new int[]{};
+	public static ArrayList<Integer> playHologram(final Player p, final Location l, String text, boolean moveDown, boolean removeAfterCooldown) {
+		ArrayList<Integer> ret = new ArrayList<Integer>();
 		if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
 			try {
 				final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
@@ -262,44 +267,48 @@ public class Effects {
 				sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), horsePacket);
 
 				// Send velocity packets to move the entities slowly down
-				effectlocd_taskid.put(armorstandId, Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
-					public void run() {
-						try {
-							int i = effectlocd.get(armorstandId);
-							Object packet = packetPlayOutEntityVelocity.newInstance(armorstandId, 0D, -0.05D, 0D);
-							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet);
-							if (i < -1) {
-								int taskid = effectlocd_taskid.get(armorstandId);
-								effectlocd_taskid.remove(armorstandId);
-								effectlocd.remove(armorstandId);
-								Bukkit.getScheduler().cancelTask(taskid);
-								return;
-							}
-							effectlocd.put(armorstandId, effectlocd.get(armorstandId) - 1);
-						} catch (Exception e) {
-							if (MinigamesAPI.debug) {
-								e.printStackTrace();
+				if (moveDown) {
+					effectlocd_taskid.put(armorstandId, Bukkit.getScheduler().runTaskTimer(MinigamesAPI.getAPI(), new Runnable() {
+						public void run() {
+							try {
+								int i = effectlocd.get(armorstandId);
+								Object packet = packetPlayOutEntityVelocity.newInstance(armorstandId, 0D, -0.05D, 0D);
+								sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), packet);
+								if (i < -1) {
+									int taskid = effectlocd_taskid.get(armorstandId);
+									effectlocd_taskid.remove(armorstandId);
+									effectlocd.remove(armorstandId);
+									Bukkit.getScheduler().cancelTask(taskid);
+									return;
+								}
+								effectlocd.put(armorstandId, effectlocd.get(armorstandId) - 1);
+							} catch (Exception e) {
+								if (MinigamesAPI.debug) {
+									e.printStackTrace();
+								}
 							}
 						}
-					}
-				}, 2L, 2L).getTaskId());
+					}, 2L, 2L).getTaskId());
+				}
 
 				// Remove both entities (and thus the hologram) after 2 seconds
-				Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
-					public void run() {
-						try {
-							Object destroyPacket = packetPlayOutEntityDestroyConstr.newInstance((Object) new int[] { armorstandId });
-							sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), destroyPacket);
-						} catch (Exception e) {
-							if (MinigamesAPI.debug) {
-								e.printStackTrace();
+				if (removeAfterCooldown) {
+					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
+						public void run() {
+							try {
+								Object destroyPacket = packetPlayOutEntityDestroyConstr.newInstance((Object) new int[] { armorstandId });
+								sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), destroyPacket);
+							} catch (Exception e) {
+								if (MinigamesAPI.debug) {
+									e.printStackTrace();
+								}
 							}
 						}
-					}
-				}, 20L * 2);
+					}, 20L * 2);
+				}
 
-				ret[0] = armorstandId;
-				
+				ret.add(armorstandId);
+
 			} catch (Exception e) {
 				if (MinigamesAPI.debug) {
 					e.printStackTrace();
@@ -436,10 +445,10 @@ public class Effects {
 					}
 				}, 20L * 2);
 			}
-			
-			ret[0] = witherSkullId;
-			ret[1] = horseId;
-			
+
+			ret.add(witherSkullId);
+			ret.add(horseId);
+
 		} catch (Exception e) {
 			if (MinigamesAPI.debug) {
 				e.printStackTrace();
