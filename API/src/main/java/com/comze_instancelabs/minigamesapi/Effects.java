@@ -221,7 +221,8 @@ public class Effects {
 	 * @param text
 	 *            Hologram text
 	 */
-	public static void playHologram(final Player p, final Location l, String text, boolean moveDown, boolean removeAfterCooldown) {
+	public static int[] playHologram(final Player p, final Location l, String text, boolean moveDown, boolean removeAfterCooldown) {
+		int[] ret = new int[]{};
 		if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
 			try {
 				final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
@@ -297,12 +298,14 @@ public class Effects {
 					}
 				}, 20L * 2);
 
+				ret[0] = armorstandId;
+				
 			} catch (Exception e) {
 				if (MinigamesAPI.debug) {
 					e.printStackTrace();
 				}
 			}
-			return;
+			return ret;
 		}
 		try {
 			// If player is on 1.8, we'll have to use armor stands, otherwise just use the old 1.7 technique
@@ -433,11 +436,16 @@ public class Effects {
 					}
 				}, 20L * 2);
 			}
+			
+			ret[0] = witherSkullId;
+			ret[1] = horseId;
+			
 		} catch (Exception e) {
 			if (MinigamesAPI.debug) {
 				e.printStackTrace();
 			}
 		}
+		return ret;
 	}
 
 	public static void sendGameModeChange(Player p, int gamemode) {
@@ -448,36 +456,6 @@ public class Effects {
 		}
 
 		p.setGameMode(GameMode.getByValue(gamemode));
-
-		// Code below not really used
-
-		/*
-		 * Method getPlayerHandle; try { getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version +
-		 * ".entity.CraftPlayer").getMethod("getHandle"); final Field playerConnection = Class.forName("net.minecraft.server." +
-		 * MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection"); playerConnection.setAccessible(true); final Method
-		 * sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version +
-		 * ".Packet"));
-		 * 
-		 * final Constructor packetPlayOutGameStateChange = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version +
-		 * ".PacketPlayOutGameStateChange").getConstructor(int.class, float.class); Object packet = packetPlayOutGameStateChange.newInstance(3,
-		 * gamemode);
-		 * 
-		 * Object handleObj = getPlayerHandle.invoke(p);
-		 * 
-		 * Class entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity"); Field interactManager =
-		 * handleObj.getClass().getDeclaredField("playerInteractManager"); interactManager.setAccessible(true); Class enumGamemode =
-		 * Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumGamemode"); Method setGameMode =
-		 * interactManager.getType().getDeclaredMethod("setGameMode", enumGamemode); Method e = handleObj.getClass().getDeclaredMethod("e", entity);
-		 * 
-		 * e.invoke(handleObj, entity.cast(handleObj)); setGameMode.invoke(interactManager.get(handleObj), enumGamemode.getEnumConstants()[gamemode]);
-		 * sendPacket.invoke(playerConnection.get(handleObj), packet);
-		 * 
-		 * p.setFallDistance(0F); } catch (Exception e) { e.printStackTrace(); }
-		 */
-
-		// getHandle().e((Entity) getHandle()); // RENAME
-		// getHandle().playerInteractManager.setGameMode(EnumGamemode.getById(mode.getValue()));
-		// getHandle().fallDistance = 0;
 
 	}
 }

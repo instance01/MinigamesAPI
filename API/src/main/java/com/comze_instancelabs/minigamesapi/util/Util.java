@@ -921,19 +921,17 @@ public class Util {
 		if (pli.getMessagesConfig().getConfig().isSet("messages.stats")) {
 			int kills_ = pli.getStatsInstance().getKills(p.getName());
 			int deaths_ = pli.getStatsInstance().getDeaths(p.getName());
-			//adding money variable
 			int money_ = (int) MinigamesAPI.econ.getBalance(p.getName());
-			
+
 			String wins = Integer.toString(pli.getStatsInstance().getWins(p.getName()));
 			String loses = Integer.toString(pli.getStatsInstance().getLoses(p.getName()));
 			String kills = Integer.toString(kills_);
 			String deaths = Integer.toString(deaths_);
-			//converting int to string money
-			String money =  Integer.toString(money_);
+			String money = Integer.toString(money_);
 			String points = Integer.toString(pli.getStatsInstance().getPoints(p.getName()));
 			String kdr = Integer.toString(Math.max(kills_, 1) / Math.max(deaths_, 1));
 			for (String key : pli.getMessagesConfig().getConfig().getConfigurationSection("messages.stats").getKeys(false)) {
-				//adding replace value for <money> to show string money(balance of player)
+				// Each line from the config gets checked for variables like <wins> or <money> and these get replaced by the values calculated above
 				String msg = pli.getMessagesConfig().getConfig().getString("messages.stats." + key).replaceAll("<wins>", wins).replaceAll("<loses>", loses).replaceAll("<alltime_kills>", kills).replaceAll("<alltime_deaths>", deaths).replaceAll("<points>", points).replaceAll("<kdr>", kdr).replaceAll("<money>", money);
 				Util.sendMessage(pli.getPlugin(), p, ChatColor.translateAlternateColorCodes('&', msg));
 			}
