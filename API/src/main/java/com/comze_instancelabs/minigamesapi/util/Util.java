@@ -921,7 +921,10 @@ public class Util {
 		if (pli.getMessagesConfig().getConfig().isSet("messages.stats")) {
 			int kills_ = pli.getStatsInstance().getKills(p.getName());
 			int deaths_ = pli.getStatsInstance().getDeaths(p.getName());
-			int money_ = (int) MinigamesAPI.econ.getBalance(p.getName());
+			int money_ = 0;
+			if (MinigamesAPI.economy) {
+				money_ = (int) MinigamesAPI.econ.getBalance(p.getName());
+			}
 
 			String wins = Integer.toString(pli.getStatsInstance().getWins(p.getName()));
 			String loses = Integer.toString(pli.getStatsInstance().getLoses(p.getName()));
