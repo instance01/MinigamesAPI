@@ -422,6 +422,7 @@ public class Arena {
 				this.skip_join_lobby = plugin.getConfig().getBoolean("config.countdowns.skip_lobby");
 			}
 
+			final Arena a = this;
 			ap.setInventories(p.getInventory().getContents(), p.getInventory().getArmorContents());
 			if (this.getArenaType() == ArenaType.JUMPNRUN) {
 				Util.teleportPlayerFixed(p, this.spawns.get(currentspawn));
@@ -453,7 +454,9 @@ public class Arena {
 					ap.setOriginalXplvl(p.getLevel());
 					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 						public void run() {
-							Util.giveLobbyItems(plugin, p);
+							if (a.getArenaState() != ArenaState.INGAME) {
+								Util.giveLobbyItems(plugin, p);
+							}
 							ap.setOriginalGamemode(p.getGameMode());
 							p.setGameMode(GameMode.SURVIVAL);
 						}
@@ -479,7 +482,6 @@ public class Arena {
 					Util.clearInv(p);
 				}
 			}, 10L);
-			final Arena a = this;
 			ap.setOriginalXplvl(p.getLevel());
 			Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 				public void run() {
