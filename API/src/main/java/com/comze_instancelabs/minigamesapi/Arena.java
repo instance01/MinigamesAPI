@@ -84,7 +84,6 @@ public class Arena {
 
 	int global_coin_multiplier = 1;
 
-	BukkitTask spectator_task;
 	BukkitTask maximum_game_time;
 
 	ArrayList<ItemStack> global_drops = new ArrayList<ItemStack>();
@@ -1082,42 +1081,6 @@ public class Arena {
 		if (plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running")) {
 			Bukkit.setWhitelist(true);
 		}
-		spectator_task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
-			public void run() {
-				// We don't need any pushing back if we use the 1.8 spectator mode
-				if (pli.spectator_mode_1_8) {
-					return;
-				}
-				try {
-					// check if any spectator is near a player
-					for (String p_ : a.getAllPlayers()) {
-						if (!pli.global_lost.containsKey(p_)) {
-							continue;
-						}
-						Player p = Bukkit.getPlayer(p_);
-						if (p != null) {
-							for (String p__ : a.getAllPlayers()) {
-								if (p_ != p__) {
-									Player p2 = Bukkit.getPlayer(p__);
-									if ((Math.abs(p.getLocation().getBlockX() - p2.getLocation().getBlockX()) < 4) && (Math.abs(p.getLocation().getBlockZ() - p2.getLocation().getBlockZ()) < 4) && (Math.abs(p.getLocation().getBlockY() - p2.getLocation().getBlockY()) < 4)) {
-										Vector direction = p2.getLocation().add(0D, -0.5D, 0D).toVector().subtract(p.getLocation().toVector()).normalize().multiply(-1.15D);
-										p.setVelocity(direction);
-										if (p.isInsideVehicle()) {
-											p.getVehicle().setVelocity(direction.multiply(2D));
-										}
-										break;
-									}
-								}
-							}
-						}
-					}
-				} catch (Exception e) {
-					if (spectator_task != null) {
-						spectator_task.cancel();
-					}
-				}
-			}
-		}, 10L, 10L);
 		started = true;
 		Bukkit.getServer().getPluginManager().callEvent(new ArenaStartedEvent(plugin, this));
 		started();
@@ -1158,9 +1121,6 @@ public class Arena {
 	public void stop() {
 		Bukkit.getServer().getPluginManager().callEvent(new ArenaStopEvent(plugin, this));
 		final Arena a = this;
-		if (spectator_task != null) {
-			spectator_task.cancel();
-		}
 		if (maximum_game_time != null) {
 			maximum_game_time.cancel();
 		}
