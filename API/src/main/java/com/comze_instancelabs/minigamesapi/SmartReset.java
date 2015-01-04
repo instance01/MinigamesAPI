@@ -69,9 +69,16 @@ public class SmartReset {
 		return null;
 	}
 
+	@Deprecated
 	public void addChanged(Location l) {
 		if (!changed.containsKey(l)) {
-			changed.put(l, new SmartArenaBlock(l));
+			changed.put(l, new SmartArenaBlock(l, Material.AIR, (byte) 0));
+		}
+	}
+
+	public void addChanged(Location l, Material m, byte data) {
+		if (!changed.containsKey(l)) {
+			changed.put(l, new SmartArenaBlock(l, m, data));
 		}
 	}
 

@@ -31,7 +31,6 @@ public class BungeeSocket {
 
 	public static void sendSignUpdate(final PluginInstance pli, final Arena a) {
 		try {
-			System.out.println("" + init);
 			if (init) {
 				for (int i : portsUp) {
 					ArenaLogger.debug("Sending to port " + i);

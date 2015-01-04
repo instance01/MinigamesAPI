@@ -91,12 +91,13 @@ public class SmartArenaBlock implements Serializable {
 		}
 	}
 
-	public SmartArenaBlock(Location l) {
-		m = Material.AIR;
+	public SmartArenaBlock(Location l, Material m, byte data) {
+		this.m = m;
 		x = l.getBlockX();
 		y = l.getBlockY();
 		z = l.getBlockZ();
 		world = l.getWorld().getName();
+		this.data = data;
 	}
 
 	public Block getBlock() {

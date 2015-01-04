@@ -480,8 +480,7 @@ public class ArenaListener implements Listener {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
-						a.getSmartReset().addChanged(event.getBlock().getLocation());
-						// a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+						a.getSmartReset().addChanged(event.getBlock().getLocation(), Material.AIR, (byte) 0);
 					} else if (a.getArenaState() == ArenaState.RESTARTING) {
 						event.setCancelled(true);
 					}
@@ -601,7 +600,7 @@ public class ArenaListener implements Listener {
 					if (c.containsLocWithoutY(start)) {
 						for (BlockState bs : event.getBlocks()) {
 							Block b = bs.getBlock();
-							a.getSmartReset().addChanged(b.getLocation());
+							a.getSmartReset().addChanged(b.getLocation(), Material.AIR, (byte) 0);
 						}
 					}
 				}
@@ -618,7 +617,11 @@ public class ArenaListener implements Listener {
 				event.setCancelled(true);
 				return;
 			}
-			a.getSmartReset().addChanged(event.getBlock().getLocation());
+			if (event.getBlockReplacedState().getType() != Material.AIR) {
+				a.getSmartReset().addChanged(event.getBlock().getLocation(), event.getBlockReplacedState().getType(), event.getBlockReplacedState().getData().getData());
+			} else {
+				a.getSmartReset().addChanged(event.getBlock().getLocation(), Material.AIR, (byte) 0);
+			}
 		}
 		if (pli.getStatsInstance().skullsetup.contains(p.getName())) {
 			if (event.getBlock().getType() == Material.SKULL_ITEM || event.getBlock().getType() == Material.SKULL) {
@@ -633,7 +636,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onSignUse(PlayerInteractEvent event) {
 		if (event.hasBlock()) {
-			if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN) {
+			if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN || event.getClickedBlock().getType() == Material.SIGN) {
 				if (event.getClickedBlock().getType() == Material.FIRE) {
 					return;
 				}
