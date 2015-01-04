@@ -592,12 +592,12 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onStructureGrow(StructureGrowEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if (Validator.isArenaValid(plugin, a) && a.getArenaType() == ArenaType.REGENERATION) {
+			if(a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME){
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null) {
 					Location start = event.getLocation();
-					a.getSmartReset().addChanged(start.getBlock(), false);
 					if (c.containsLocWithoutY(start)) {
+						a.getSmartReset().addChanged(start.getBlock(), false);
 						for (BlockState bs : event.getBlocks()) {
 							Block b = bs.getBlock();
 							a.getSmartReset().addChanged(b.getLocation(), Material.AIR, (byte) 0);
