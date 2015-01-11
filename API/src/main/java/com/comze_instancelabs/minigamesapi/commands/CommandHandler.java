@@ -488,15 +488,15 @@ public class CommandHandler {
 			return true;
 		}
 		if (args.length > 1) {
-			if(args.equals("night")) {
+			if(args.equalsIgnoreCase("night")) {
 				p.getWorld().setTime(18000);
-			} else if (args.equals("day")) {
+			} else if (args.equalsIgnoreCase("day")) {
 				p.getWorld().setTime(0);
-			} else if (args.equals("sunset")) {
+			} else if (args.equalsIgnoreCase("sunset")) {
 				p.getWorld().setTime(12550);
-			} else if (args.equals("rain")) {
+			} else if (args.equalsIgnoreCase("rain")) {
 				p.getWorld().setStorm(true);
-			} else if (args.equals("clear")) {
+			} else if (args.equalsIgnoreCase("clear")) {
 				p.getWorld().setStorm(false);
 			}
 		}
