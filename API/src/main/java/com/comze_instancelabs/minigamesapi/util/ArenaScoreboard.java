@@ -107,11 +107,11 @@ public class ArenaScoreboard {
 									score = (int) MinigamesAPI.econ.getBalance(p__);
 								}
 								if (line_.length() < 15) {
-									ascore.get(p__).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
-									aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
+									ascore.get(p__).resetScores(ChatColor.GREEN + line_);
+									aobjective.get(p__).getScore(ChatColor.GREEN + line).setScore(score);
 								} else {
-									ascore.get(p__).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))));
-									aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
+									ascore.get(p__).resetScores(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)));
+									aobjective.get(p__).getScore(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))).setScore(score);
 								}
 							}
 
@@ -142,9 +142,9 @@ public class ArenaScoreboard {
 								}
 								try {
 									if (p_.getName().length() < 15) {
-										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName())).setScore(0);
+										aobjective.get(arena.getInternalName()).getScore(ChatColor.GREEN + p_.getName()).setScore(0);
 									} else {
-										aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName().substring(0, p_.getName().length() - 3))).setScore(0);
+										aobjective.get(arena.getInternalName()).getScore(ChatColor.GREEN + p_.getName().substring(0, p_.getName().length() - 3)).setScore(0);
 									}
 								} catch (Exception e) {
 								}
@@ -153,11 +153,11 @@ public class ArenaScoreboard {
 									if (currentscore.containsKey(p___)) {
 										int score = currentscore.get(p___);
 										if (p_.getName().length() < 15) {
-											ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName()));
-											aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.RED + p_.getName())).setScore(0);
+											ascore.get(arena.getInternalName()).resetScores(ChatColor.GREEN + p_.getName());
+											aobjective.get(arena.getInternalName()).getScore(ChatColor.RED + p_.getName()).setScore(0);
 										} else {
-											ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + p_.getName().substring(0, p_.getName().length() - 3)));
-											aobjective.get(arena.getInternalName()).getScore(Bukkit.getOfflinePlayer(ChatColor.RED + p_.getName().substring(0, p_.getName().length() - 3))).setScore(0);
+											ascore.get(arena.getInternalName()).resetScores(ChatColor.GREEN + p_.getName().substring(0, p_.getName().length() - 3));
+											aobjective.get(arena.getInternalName()).getScore(ChatColor.RED + p_.getName().substring(0, p_.getName().length() - 3)).setScore(0);
 										}
 									}
 								} catch (Exception e) {
