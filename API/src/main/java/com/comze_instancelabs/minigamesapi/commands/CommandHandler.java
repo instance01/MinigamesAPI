@@ -780,6 +780,11 @@ public class CommandHandler {
 			String all = "";
 			for (AClass k : pli.getAClasses().values()) {
 				if (k.isEnabled()) {
+					if (!pli.show_classes_without_usage_permission) {
+						if (!pli.getClassesHandler().kitPlayerHasPermission(k.getInternalName(), p)) {
+							continue;
+						}
+					}
 					all += k.getInternalName() + ", ";
 				}
 			}

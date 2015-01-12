@@ -22,6 +22,7 @@ import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
 import com.comze_instancelabs.minigamesapi.util.AClass;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 import com.shampaggon.crackshot.CSUtility;
 
 public class Classes {
@@ -44,6 +45,10 @@ public class Classes {
 		final Classes cl = this;
 		IconMenu iconm;
 		int mincount = pli.getAClasses().keySet().size();
+		if (!Validator.isPlayerOnline(p)) {
+			return;
+		}
+		Player player = Bukkit.getPlayerExact(p);
 		if (lasticonm.containsKey(p)) {
 			iconm = lasticonm.get(p);
 		} else {
@@ -64,11 +69,16 @@ public class Classes {
 					event.setWillClose(true);
 				}
 			}, plugin);
-			
+
 			int c = 0;
 			for (String ac : pli.getAClasses().keySet()) {
 				AClass ac_ = pli.getAClasses().get(ac);
 				if (ac_.isEnabled()) {
+					if (!pli.show_classes_without_usage_permission) {
+						if (!kitPlayerHasPermission(ac_.getInternalName(), player)) {
+							continue;
+						}
+					}
 					int slot = c;
 					if (pli.getClassesConfig().getConfig().isSet("config.kits." + ac_.getInternalName() + ".slot")) {
 						slot = pli.getClassesConfig().getConfig().getInt("config.kits." + ac_.getInternalName() + ".slot");
@@ -82,7 +92,7 @@ public class Classes {
 			}
 		}
 
-		iconm.open(Bukkit.getPlayerExact(p));
+		iconm.open(player);
 		lasticonm.put(p, iconm);
 	}
 
