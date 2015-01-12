@@ -7,8 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.net.DatagramSocket;
-import java.net.ServerSocket;
+import java.lang.reflect.Method;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +24,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -48,6 +48,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -56,7 +59,6 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaLogger;
 import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.ArenaState;
-import com.comze_instancelabs.minigamesapi.Effects;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -654,11 +656,11 @@ public class Util {
 				MinigamesAPI.getAPI().getLogger().severe("Found invalid class in config!");
 			}
 		} catch (Exception e) {
+			ret.add(new ItemStack(Material.STAINED_GLASS_PANE));
+			System.out.println("Failed to load class items: " + e.getMessage() + " at [1] " + e.getStackTrace()[1].getLineNumber() + " [0] " + e.getStackTrace()[0].getLineNumber());
 			if (MinigamesAPI.debug) {
 				e.printStackTrace();
 			}
-			ret.add(new ItemStack(Material.STAINED_GLASS_PANE));
-			System.out.println("Failed to load class items: " + e.getMessage() + " at [1] " + e.getStackTrace()[1].getLineNumber() + " [0] " + e.getStackTrace()[0].getLineNumber());
 			ItemStack rose = new ItemStack(Material.RED_ROSE);
 			ItemMeta im = rose.getItemMeta();
 			im.setDisplayName(ChatColor.RED + "Sowwy, failed to load class.");
@@ -948,6 +950,58 @@ public class Util {
 			p.getVehicle().setVelocity(direction.multiply(2D));
 		}
 		p.playEffect(p.getLocation(), Effect.POTION_BREAK, 5);
+	}
+
+	public static Score getScore(Objective obj, String text) {
+		Score s = null;
+		if (MinigamesAPI.getAPI().version.startsWith("v1_7_R4") || MinigamesAPI.getAPI().version.startsWith("v1_8")) {
+			Method getScore_;
+			try {
+				getScore_ = obj.getClass().getDeclaredMethod("getScore", String.class);
+				getScore_.setAccessible(true);
+				s = (Score) getScore_.invoke(obj, text);
+			} catch (Exception e) {
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			Method getScore_;
+			try {
+				getScore_ = obj.getClass().getDeclaredMethod("getScore", OfflinePlayer.class);
+				getScore_.setAccessible(true);
+				s = (Score) getScore_.invoke(obj, Bukkit.getOfflinePlayer(text));
+			} catch (Exception e) {
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return s;
+	}
+
+	public static void resetScores(Scoreboard obj, String text) {
+		if (MinigamesAPI.getAPI().version.startsWith("v1_7_R4") || MinigamesAPI.getAPI().version.startsWith("v1_8")) {
+			try {
+				Method resetScores_ = obj.getClass().getDeclaredMethod("resetScores", String.class);
+				resetScores_.setAccessible(true);
+				resetScores_.invoke(obj, text);
+			} catch (Exception e) {
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			try {
+				Method resetScores_ = obj.getClass().getDeclaredMethod("resetScores", OfflinePlayer.class);
+				resetScores_.setAccessible(true);
+				resetScores_.invoke(obj, Bukkit.getOfflinePlayer(text));
+			} catch (Exception e) {
+				if (MinigamesAPI.debug) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

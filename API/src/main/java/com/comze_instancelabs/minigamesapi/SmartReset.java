@@ -40,6 +40,7 @@ public class SmartReset implements Runnable {
 
 	Arena a;
 	private ArrayList<SmartArenaBlock> failedblocks = new ArrayList<SmartArenaBlock>();
+	long time = 0L;
 
 	public SmartReset(Arena a) {
 		this.a = a;
@@ -84,10 +85,10 @@ public class SmartReset implements Runnable {
 			changed.put(l, new SmartArenaBlock(l, m, data));
 		}
 	}
-	
+
 	public void run() {
 		int rolledBack = 0;
-		
+
 		// Rollback 70 blocks at a time
 		Iterator<Entry<Location, SmartArenaBlock>> it = changed.entrySet().iterator();
 		while (it.hasNext() && rolledBack <= 70) {
@@ -99,19 +100,19 @@ public class SmartReset implements Runnable {
 			} catch (Exception e) {
 				failedblocks.add(ablock);
 			}
-			
+
 			rolledBack++;
 		}
-		
+
 		if (changed.size() != 0) {
 			Bukkit.getScheduler().runTaskLater(a.plugin, this, 2L);
 			return;
 		}
-		
+
 		a.setArenaState(ArenaState.JOIN);
 		Util.updateSign(a.plugin, a);
 
-		a.plugin.getLogger().info(failedblocks.size() + " to redo.");
+		ArenaLogger.debug(failedblocks.size() + " to redo.");
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
@@ -130,17 +131,23 @@ public class SmartReset implements Runnable {
 					}
 				}
 			}
-		}, 40L);
+		}, 30L);
 
+		ArenaLogger.debug("Reset time: " + (System.currentTimeMillis() - time) + "ms");
 	}
 
+	/**
+	 * Resets all changed blocks in tasks each 70 blocks
+	 */
 	public void reset() {
+		time = System.currentTimeMillis();
 		a.plugin.getLogger().info(changed.size() + " to reset for arena " + a.getInternalName() + ".");
-		
 		Bukkit.getScheduler().runTask(a.plugin, this);
-
 	}
 
+	/**
+	 * Resets the raw changed blocks on the main thread
+	 */
 	public void resetRaw() {
 		for (final SmartArenaBlock ablock : changed.values()) {
 			try {

@@ -51,18 +51,18 @@ public class ArenaLobbyScoreboard {
 
 		Bukkit.getScheduler().runTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				for (String p__ : arena.getAllPlayers()) {
-					if (!Validator.isPlayerValid(plugin, p__, arena)) {
+				for (String playername : arena.getAllPlayers()) {
+					if (!Validator.isPlayerValid(plugin, playername, arena)) {
 						return;
 					}
-					Player p = Bukkit.getPlayer(p__);
-					if (!ascore.containsKey(p__)) {
-						ascore.put(p__, Bukkit.getScoreboardManager().getNewScoreboard());
+					Player p = Bukkit.getPlayer(playername);
+					if (!ascore.containsKey(playername)) {
+						ascore.put(playername, Bukkit.getScoreboardManager().getNewScoreboard());
 					}
-					if (!aobjective.containsKey(p__)) {
-						aobjective.put(p__, ascore.get(p__).registerNewObjective(p__, "dummy"));
-						aobjective.get(p__).setDisplaySlot(DisplaySlot.SIDEBAR);
-						aobjective.get(p__).setDisplayName(pli.getMessagesConfig().scoreboard_lobby_title.replaceAll("<arena>", arena.getInternalName()));
+					if (!aobjective.containsKey(playername)) {
+						aobjective.put(playername, ascore.get(playername).registerNewObjective(playername, "dummy"));
+						aobjective.get(playername).setDisplaySlot(DisplaySlot.SIDEBAR);
+						aobjective.get(playername).setDisplayName(pli.getMessagesConfig().scoreboard_lobby_title.replaceAll("<arena>", arena.getInternalName()));
 					}
 
 					try {
@@ -82,22 +82,22 @@ public class ArenaLobbyScoreboard {
 							} else if (score_identifier.equalsIgnoreCase("<maxplayercount>")) {
 								score = arena.getMaxPlayers();
 							} else if (score_identifier.equalsIgnoreCase("<points>")) {
-								score = pli.getStatsInstance().getPoints(p__);
+								score = pli.getStatsInstance().getPoints(playername);
 							} else if (score_identifier.equalsIgnoreCase("<wins>")) {
-								score = pli.getStatsInstance().getWins(p__);
+								score = pli.getStatsInstance().getWins(playername);
 							} else if (score_identifier.equalsIgnoreCase("<money>")) {
-								score = (int) MinigamesAPI.econ.getBalance(p__);
+								score = (int) MinigamesAPI.econ.getBalance(playername);
 							}
 							if (line_.length() < 15) {
 								// ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
-								aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
+								Util.getScore(aobjective.get(playername), ChatColor.GREEN + line_).setScore(score);
 							} else {
 								// ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0,
 								// Math.min(line_.length() - 3, 13))));
-								aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
+								Util.getScore(aobjective.get(playername), ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))).setScore(score);
 							}
 						}
-						p.setScoreboard(ascore.get(p__));
+						p.setScoreboard(ascore.get(playername));
 					} catch (Exception e) {
 						System.out.println("Failed to set custom scoreboard: ");
 						e.printStackTrace();
