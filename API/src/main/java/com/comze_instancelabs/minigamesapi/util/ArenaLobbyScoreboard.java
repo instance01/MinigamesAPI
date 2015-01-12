@@ -90,11 +90,11 @@ public class ArenaLobbyScoreboard {
 							}
 							if (line_.length() < 15) {
 								// ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
-								aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_)).setScore(score);
+								aobjective.get(p__).getScore(ChatColor.GREEN + line_).setScore(score);
 							} else {
 								// ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0,
 								// Math.min(line_.length() - 3, 13))));
-								aobjective.get(p__).getScore(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13)))).setScore(score);
+								aobjective.get(p__).getScore(ChatColor.GREEN + line_.substring(0, Math.min(line_.length() - 3, 13))).setScore(score);
 							}
 						}
 						p.setScoreboard(ascore.get(p__));
