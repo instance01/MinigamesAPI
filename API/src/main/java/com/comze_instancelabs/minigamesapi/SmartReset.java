@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,13 +32,14 @@ import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
-public class SmartReset {
+public class SmartReset implements Runnable {
 
 	// will only reset broken/placed blocks
 
 	HashMap<Location, SmartArenaBlock> changed = new HashMap<Location, SmartArenaBlock>();
 
 	Arena a;
+	private ArrayList<SmartArenaBlock> failedblocks = new ArrayList<SmartArenaBlock>();
 
 	public SmartReset(Arena a) {
 		this.a = a;
@@ -81,56 +84,60 @@ public class SmartReset {
 			changed.put(l, new SmartArenaBlock(l, m, data));
 		}
 	}
+	
+	public void run() {
+		int rolledBack = 0;
+		
+		// Rollback 70 blocks at a time
+		Iterator<Entry<Location, SmartArenaBlock>> it = changed.entrySet().iterator();
+		while (it.hasNext() && rolledBack <= 70) {
+			SmartArenaBlock ablock = it.next().getValue();
 
-	public void reset() {
-		System.out.println(changed.size() + " to reset for arena " + a.getInternalName() + ".");
+			try {
+				resetSmartResetBlock(ablock);
+				it.remove();
+			} catch (Exception e) {
+				failedblocks.add(ablock);
+			}
+			
+			rolledBack++;
+		}
+		
+		if (changed.size() != 0) {
+			Bukkit.getScheduler().runTaskLater(a.plugin, this, 2L);
+			return;
+		}
+		
+		a.setArenaState(ArenaState.JOIN);
+		Util.updateSign(a.plugin, a);
 
-		final ArrayList<SmartArenaBlock> failedblocks = new ArrayList<SmartArenaBlock>();
+		a.plugin.getLogger().info(failedblocks.size() + " to redo.");
 
-		Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), new Runnable() {
 			public void run() {
-				int failcount = 0;
-				for (final SmartArenaBlock ablock : changed.values()) {
-					try {
-						resetSmartResetBlock(ablock);
-					} catch (Exception e) {
-						failcount += 1;
-						failedblocks.add(ablock);
+				changed.clear();
+				for (SmartArenaBlock ablock : failedblocks) {
+					Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
+					if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
+						b_.setType(ablock.getMaterial());
+						b_.setData(ablock.getData());
+					}
+					if (b_.getType() == Material.CHEST) {
+						b_.setType(ablock.getMaterial());
+						b_.setData(ablock.getData());
+						((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
+						((Chest) b_.getState()).update();
 					}
 				}
-
-				changed.clear();
-				a.setArenaState(ArenaState.JOIN);
-				Bukkit.getScheduler().runTask(a.plugin, new Runnable() {
-					public void run() {
-						a.setArenaState(ArenaState.JOIN);
-						Util.updateSign(a.plugin, a);
-					}
-				});
-
-				System.out.println(failcount + " to redo.");
-
-				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), new Runnable() {
-					public void run() {
-						changed.clear();
-						for (SmartArenaBlock ablock : failedblocks) {
-							Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
-							if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString())) {
-								b_.setType(ablock.getMaterial());
-								b_.setData(ablock.getData());
-							}
-							if (b_.getType() == Material.CHEST) {
-								b_.setType(ablock.getMaterial());
-								b_.setData(ablock.getData());
-								((Chest) b_.getState()).getInventory().setContents(ablock.getInventory());
-								((Chest) b_.getState()).update();
-							}
-						}
-					}
-				}, 40L);
-				System.out.println("Done.");
 			}
-		});
+		}, 40L);
+
+	}
+
+	public void reset() {
+		a.plugin.getLogger().info(changed.size() + " to reset for arena " + a.getInternalName() + ".");
+		
+		Bukkit.getScheduler().runTask(a.plugin, this);
 
 	}
 
