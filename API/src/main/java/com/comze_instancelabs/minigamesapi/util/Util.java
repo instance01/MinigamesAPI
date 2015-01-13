@@ -87,7 +87,9 @@ public class Util {
 			ent.eject();
 		}
 		if (l != null) {
-			l.getBlock().getChunk().load();
+			if (l.getWorld() == null) {
+				return;
+			}
 			p.teleport(l, TeleportCause.PLUGIN);
 			p.setFallDistance(-1F);
 			p.setVelocity(new Vector(0D, 0D, 0D));
