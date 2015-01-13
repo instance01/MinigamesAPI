@@ -956,52 +956,36 @@ public class Util {
 
 	public static Score getScore(Objective obj, String text) {
 		Score s = null;
-		if (MinigamesAPI.getAPI().version.startsWith("v1_7_R4") || MinigamesAPI.getAPI().version.startsWith("v1_8")) {
-			Method getScore_;
-			try {
-				getScore_ = obj.getClass().getDeclaredMethod("getScore", String.class);
-				getScore_.setAccessible(true);
-				s = (Score) getScore_.invoke(obj, text);
-			} catch (Exception e) {
-				if (MinigamesAPI.debug) {
-					e.printStackTrace();
-				}
-			}
-		} else {
-			Method getScore_;
-			try {
+		Method getScore_ = null;
+		try {
+			if (MinigamesAPI.getAPI().below1710) {
 				getScore_ = obj.getClass().getDeclaredMethod("getScore", OfflinePlayer.class);
-				getScore_.setAccessible(true);
-				s = (Score) getScore_.invoke(obj, Bukkit.getOfflinePlayer(text));
-			} catch (Exception e) {
-				if (MinigamesAPI.debug) {
-					e.printStackTrace();
-				}
+			} else {
+				getScore_ = obj.getClass().getDeclaredMethod("getScore", String.class);
+			}
+			getScore_.setAccessible(true);
+			s = (Score) getScore_.invoke(obj, text);
+		} catch (Exception e) {
+			if (MinigamesAPI.debug) {
+				e.printStackTrace();
 			}
 		}
 		return s;
 	}
 
 	public static void resetScores(Scoreboard obj, String text) {
-		if (MinigamesAPI.getAPI().version.startsWith("v1_7_R4") || MinigamesAPI.getAPI().version.startsWith("v1_8")) {
-			try {
-				Method resetScores_ = obj.getClass().getDeclaredMethod("resetScores", String.class);
-				resetScores_.setAccessible(true);
-				resetScores_.invoke(obj, text);
-			} catch (Exception e) {
-				if (MinigamesAPI.debug) {
-					e.printStackTrace();
-				}
+		Method resetScores_ = null;
+		try {
+			if (MinigamesAPI.getAPI().below1710) {
+				resetScores_ = obj.getClass().getDeclaredMethod("resetScores", OfflinePlayer.class);
+			} else {
+				resetScores_ = obj.getClass().getDeclaredMethod("resetScores", String.class);
 			}
-		} else {
-			try {
-				Method resetScores_ = obj.getClass().getDeclaredMethod("resetScores", OfflinePlayer.class);
-				resetScores_.setAccessible(true);
-				resetScores_.invoke(obj, Bukkit.getOfflinePlayer(text));
-			} catch (Exception e) {
-				if (MinigamesAPI.debug) {
-					e.printStackTrace();
-				}
+			resetScores_.setAccessible(true);
+			resetScores_.invoke(obj, text);
+		} catch (Exception e) {
+			if (MinigamesAPI.debug) {
+				e.printStackTrace();
 			}
 		}
 	}

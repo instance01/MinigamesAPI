@@ -55,6 +55,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	public StatsGlobalConfig statsglobal;
 
 	public String version = "";
+	public boolean below1710 = false; // Used for scoreboard function (wether to use getScore(OfflinePlayer) or getScore(String))
 
 	Metrics metrics;
 
@@ -62,6 +63,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 		instance = this;
 
 		this.version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
+		this.below1710 = version.startsWith("v1_7_R3") || version.startsWith("v1_7_R2") || version.startsWith("v1_7_R1") || version.startsWith("v1_6") || version.startsWith("v1_5"); 
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + version + ".");
 
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
