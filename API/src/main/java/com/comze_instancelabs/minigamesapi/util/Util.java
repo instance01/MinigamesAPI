@@ -960,11 +960,13 @@ public class Util {
 		try {
 			if (MinigamesAPI.getAPI().below1710) {
 				getScore_ = obj.getClass().getDeclaredMethod("getScore", OfflinePlayer.class);
+				getScore_.setAccessible(true);
+				s = (Score) getScore_.invoke(obj, Bukkit.getOfflinePlayer(text));
 			} else {
 				getScore_ = obj.getClass().getDeclaredMethod("getScore", String.class);
+				getScore_.setAccessible(true);
+				s = (Score) getScore_.invoke(obj, text);
 			}
-			getScore_.setAccessible(true);
-			s = (Score) getScore_.invoke(obj, text);
 		} catch (Exception e) {
 			if (MinigamesAPI.debug) {
 				e.printStackTrace();
@@ -978,11 +980,13 @@ public class Util {
 		try {
 			if (MinigamesAPI.getAPI().below1710) {
 				resetScores_ = obj.getClass().getDeclaredMethod("resetScores", OfflinePlayer.class);
+				resetScores_.setAccessible(true);
+				resetScores_.invoke(obj, Bukkit.getOfflinePlayer(text));
 			} else {
 				resetScores_ = obj.getClass().getDeclaredMethod("resetScores", String.class);
+				resetScores_.setAccessible(true);
+				resetScores_.invoke(obj, text);
 			}
-			resetScores_.setAccessible(true);
-			resetScores_.invoke(obj, text);
 		} catch (Exception e) {
 			if (MinigamesAPI.debug) {
 				e.printStackTrace();
