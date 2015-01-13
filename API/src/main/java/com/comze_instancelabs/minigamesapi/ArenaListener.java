@@ -12,10 +12,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -348,9 +350,31 @@ public class ArenaListener implements Listener {
 
 							event.setCancelled(true);
 							event.getDamager().remove();
+						} else if (event.getDamager() instanceof Egg) {
+							p.teleport(p.getLocation().add(0, 3D, 0));
+
+							Egg egg = attacker.launchProjectile(Egg.class);
+							egg.setShooter(attacker);
+							egg.setVelocity(((Egg) event.getDamager()).getVelocity());
+							egg.setBounce(false);
+
+							event.setCancelled(true);
+							event.getDamager().remove();
+						} else if (event.getDamager() instanceof Snowball) {
+							p.teleport(p.getLocation().add(0, 3D, 0));
+
+							Snowball sb = attacker.launchProjectile(Snowball.class);
+							sb.setShooter(attacker);
+							sb.setVelocity(((Snowball) event.getDamager()).getVelocity());
+							sb.setBounce(false);
+
+							event.setCancelled(true);
+							event.getDamager().remove();
 						}
+						event.setCancelled(true);
+						return;
 					}
-					if (pli.containsGlobalLost(attacker.getName()) || pli.getSpectatorManager().isSpectating(p)) {
+					if (pli.containsGlobalLost(attacker.getName())) {
 						event.setCancelled(true);
 						return;
 					}
