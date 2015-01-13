@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -336,6 +337,19 @@ public class ArenaListener implements Listener {
 
 			if (p != null && attacker != null) {
 				if (pli.containsGlobalPlayer(p.getName()) && pli.containsGlobalPlayer(attacker.getName())) {
+					if (pli.getSpectatorManager().isSpectating(p)) {
+						if (event.getDamager() instanceof Arrow) {
+							p.teleport(p.getLocation().add(0, 3D, 0));
+
+							Arrow arr = attacker.launchProjectile(Arrow.class);
+							arr.setShooter(attacker);
+							arr.setVelocity(((Arrow) event.getDamager()).getVelocity());
+							arr.setBounce(false);
+
+							event.setCancelled(true);
+							event.getDamager().remove();
+						}
+					}
 					if (pli.containsGlobalLost(attacker.getName()) || pli.getSpectatorManager().isSpectating(p)) {
 						event.setCancelled(true);
 						return;
@@ -592,7 +606,7 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onStructureGrow(StructureGrowEvent event) {
 		for (Arena a : pli.getArenas()) {
-			if(a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME){
+			if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
 				Cuboid c = new Cuboid(Util.getComponentForArena(plugin, a.getInternalName(), "bounds.low"), Util.getComponentForArena(plugin, a.getInternalName(), "bounds.high"));
 				if (c != null) {
 					Location start = event.getLocation();

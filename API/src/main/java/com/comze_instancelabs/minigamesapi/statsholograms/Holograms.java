@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.comze_instancelabs.minigamesapi.ArenaLogger;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.config.HologramsConfig;
@@ -30,8 +31,14 @@ public class Holograms {
 		if (config.getConfig().isSet("holograms.")) {
 			for (String str : config.getConfig().getConfigurationSection("holograms.").getKeys(false)) {
 				String base = "holograms." + str;
-				Location l = new Location(Bukkit.getWorld(config.getConfig().getString(base + ".world")), config.getConfig().getDouble(base + ".location.x"), config.getConfig().getDouble(base + ".location.y"), config.getConfig().getDouble(base + ".location.z"), (float) config.getConfig().getDouble(base + ".location.yaw"), (float) config.getConfig().getDouble(base + ".location.pitch"));
-				holo.put(l, new Hologram(pli, l));
+				try {
+					Location l = new Location(Bukkit.getWorld(config.getConfig().getString(base + ".world")), config.getConfig().getDouble(base + ".location.x"), config.getConfig().getDouble(base + ".location.y"), config.getConfig().getDouble(base + ".location.z"), (float) config.getConfig().getDouble(base + ".location.yaw"), (float) config.getConfig().getDouble(base + ".location.pitch"));
+					if (l != null && l.getWorld() != null) {
+						holo.put(l, new Hologram(pli, l));
+					}
+				} catch (Exception e) {
+					ArenaLogger.debug("Failed loading hologram as invalid location was found: " + e.getMessage());
+				}
 			}
 		}
 	}
