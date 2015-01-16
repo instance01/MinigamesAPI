@@ -146,6 +146,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 
 	public void onDisable() {
 		for (PluginInstance pli : this.pinstances.values()) {
+			// Reset arenas
 			for (Arena a : pli.getArenas()) {
 				if (a != null) {
 					if (a.isSuccessfullyInit()) {
@@ -166,7 +167,14 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 					}
 				}
 			}
+			
+			// Save important configs
+			pli.getArenasConfig().saveConfig();
+			pli.getPlugin().saveConfig();
+			pli.getMessagesConfig().saveConfig();
+			pli.getClassesConfig().saveConfig();
 		}
+		
 	}
 
 	/**
