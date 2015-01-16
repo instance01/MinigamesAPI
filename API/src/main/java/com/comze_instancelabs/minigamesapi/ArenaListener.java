@@ -13,6 +13,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -366,6 +367,16 @@ public class ArenaListener implements Listener {
 							Snowball sb = attacker.launchProjectile(Snowball.class);
 							sb.setShooter(attacker);
 							sb.setVelocity(((Snowball) event.getDamager()).getVelocity());
+							sb.setBounce(false);
+
+							event.setCancelled(true);
+							event.getDamager().remove();
+						} else if (event.getDamager() instanceof EnderPearl) {
+							p.teleport(p.getLocation().add(0, 3D, 0));
+
+							EnderPearl sb = attacker.launchProjectile(EnderPearl.class);
+							sb.setShooter(attacker);
+							sb.setVelocity(((EnderPearl) event.getDamager()).getVelocity());
 							sb.setBounce(false);
 
 							event.setCancelled(true);
