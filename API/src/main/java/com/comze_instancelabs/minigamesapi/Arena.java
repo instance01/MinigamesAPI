@@ -406,7 +406,22 @@ public class Arena {
 			if (pli.getArenasConfig().getConfig().isSet("arenas." + this.getInternalName() + ".description")) {
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().description_of_the_map.replaceAll("<arena>", this.getDisplayName()).replaceAll("<description>", pli.getArenasConfig().getConfig().getString("arenas." + this.getInternalName() + ".description")));
 			}
-			pli.getHologramsHandler().sendAllHolograms(p);
+
+			Bukkit.getScheduler().runTaskLater(this.getPlugin(), new Runnable() {
+				public void run() {
+					try {
+						if (p != null) {
+							pli.getHologramsHandler().sendAllHolograms(p);
+						}
+					} catch (Exception e) {
+						System.out.println("Failed playing hologram: " + e.getMessage());
+						if (MinigamesAPI.getAPI().debug) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}, 10L);
+
 			for (String p_ : this.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_) && !p_.equalsIgnoreCase(p.getName())) {
 					Player p__ = Bukkit.getPlayer(p_);
@@ -685,6 +700,21 @@ public class Arena {
 
 		Util.updateSign(plugin, this);
 
+		Bukkit.getScheduler().runTaskLater(this.getPlugin(), new Runnable() {
+			public void run() {
+				try {
+					if (p != null) {
+						pli.getHologramsHandler().sendAllHolograms(p);
+					}
+				} catch (Exception e) {
+					System.out.println("Failed playing hologram: " + e.getMessage());
+					if (MinigamesAPI.getAPI().debug) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}, 10L);
+		
 		if (pli.getClassesHandler().lasticonm.containsKey(p.getName())) {
 			IconMenu iconm = pli.getClassesHandler().lasticonm.get(p.getName());
 			iconm.destroy();
