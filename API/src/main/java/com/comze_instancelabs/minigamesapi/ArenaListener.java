@@ -1010,6 +1010,17 @@ public class ArenaListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChat(final AsyncPlayerChatEvent event) {
 		Player p = event.getPlayer();
+		if (!pli.chat_enabled) {
+			if (pli.containsGlobalPlayer(p.getName())) {
+				event.setCancelled(true);
+				return;
+			}
+		}
+		if (plugin.getConfig().getBoolean("config.chat_show_score_in_arena")) {
+			if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
+				event.setFormat(ChatColor.GRAY + "[" + ChatColor.GREEN + pli.getStatsInstance().getPoints(event.getPlayer().getName()) + ChatColor.GRAY + "] " + event.getFormat());
+			}
+		}
 		if (plugin.getConfig().getBoolean("config.chat_per_arena_only")) {
 			if (pli.containsGlobalPlayer(p.getName())) {
 				String msg = String.format(event.getFormat(), p.getName(), event.getMessage());
@@ -1021,11 +1032,6 @@ public class ArenaListener implements Listener {
 					}
 				}
 				event.setCancelled(true);
-			}
-		}
-		if (plugin.getConfig().getBoolean("config.chat_show_score_in_arena")) {
-			if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
-				event.setFormat(ChatColor.GRAY + "[" + ChatColor.GREEN + pli.getStatsInstance().getPoints(event.getPlayer().getName()) + ChatColor.GRAY + "] " + event.getFormat());
 			}
 		}
 	}

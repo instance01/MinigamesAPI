@@ -40,7 +40,7 @@ public class MessagesConfig {
 
 	public void init() {
 		// all signs
-		this.getConfig().options().header("Contains all messages for easy translation.");
+		this.getConfig().options().header("Contains all messages for easy translation. You can remove a mesage by setting it to nothing, like so: ''");
 		HashMap<String, String> namecol = ArenaState.getAllStateNameColors();
 		for (String state : namecol.keySet()) {
 			String color = namecol.get(state);

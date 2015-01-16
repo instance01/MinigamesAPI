@@ -72,6 +72,7 @@ public class PluginInstance {
 	boolean last_man_standing = true;
 	boolean old_reset = false;
 	public boolean show_classes_without_usage_permission = true;
+	public boolean chat_enabled = true;
 
 	public HashMap<String, ArrayList<String>> cached_sign_states = new HashMap<String, ArrayList<String>>();
 
@@ -116,6 +117,7 @@ public class PluginInstance {
 		last_man_standing = plugin.getConfig().getBoolean("config.last_man_standing_wins");
 		old_reset = plugin.getConfig().getBoolean("config.use_old_reset_method");
 		show_classes_without_usage_permission = plugin.getConfig().getBoolean("config.show_classes_without_usage_permission");
+		chat_enabled = plugin.getConfig().getBoolean("config.chat_enabled");
 
 		// Cache sign configuration
 		for (String state : ArenaState.getAllStateNames()) {

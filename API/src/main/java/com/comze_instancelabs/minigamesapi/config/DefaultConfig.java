@@ -106,6 +106,7 @@ public class DefaultConfig {
 			config.addDefault("config.send_stats_on_stop", true);
 			config.addDefault("config.use_xp_bar_level", true);
 			config.addDefault("config.use_old_reset_method", false);
+			config.addDefault("config.chat_enabled", true);
 
 			config.addDefault("config.extra_lobby_item.item0.enabled", false);
 			config.addDefault("config.extra_lobby_item.item0.item", 9);
