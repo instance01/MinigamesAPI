@@ -271,7 +271,7 @@ public class ArenaListener implements Listener {
 					for (String p_ : arena.getAllPlayers()) {
 						if (Validator.isPlayerOnline(p_)) {
 							Player p__ = Bukkit.getPlayer(p_);
-							Util.sendMessage(plugin, p__, pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
+							//Util.sendMessage(plugin, p__, pli.getMessagesConfig().broadcast_players_left.replaceAll("<count>", arena.getPlayerCount()));
 						}
 					}
 				}
