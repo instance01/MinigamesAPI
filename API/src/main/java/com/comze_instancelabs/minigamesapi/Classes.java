@@ -232,7 +232,6 @@ public class Classes {
 				internalname = c;
 			}
 		}
-		
 		boolean continue_ = true;
 		if (money) {
 			if (kitRequiresMoney(internalname) && !kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
