@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.MCE-Plugins</groupId>
 	<artifactId>MinigamesLib</artifactId>
-	<version>1.14.9-SNPASHOT</version>
+	<version>1.14.9-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>MinigamesLib-API</name>
 	<description>Rich Minigames API</description>
@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
   			<artifactId>bukkit</artifactId>
-  			<version>1.9.4-R0.1-SNAPSHOT</version>
+  			<version>1.10-R0.1-SNAPSHOT</version>
   			<scope>provided</scope>
 		</dependency>
 		<dependency>
