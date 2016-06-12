@@ -1147,7 +1147,7 @@ public class ArenaListener implements Listener {
 				for (Player receiver : event.getRecipients()) {
 					if (pli.containsGlobalPlayer(receiver.getName())) {
 						if (pli.global_players.get(receiver.getName()) == pli.global_players.get(p.getName())) {
-							receiver.sendMessage("ง7" + msg);
+							receiver.sendMessage("ยง7" + msg);
 						}
 					}
 				}
