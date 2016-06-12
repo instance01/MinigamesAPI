@@ -21,7 +21,7 @@ public class StatsConfig {
         	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.wins", 1);
         	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.loses", 1);
         	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.points", 10);
-        	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.playername", "InstanceLabs");
+        	this.getConfig().addDefault("players.3c8c41ff-51f5-4b7a-8c2b-44df0beba03b.playername", "TheMrQuake");
     	}
     	this.getConfig().options().copyDefaults(true);
     	this.saveConfig();

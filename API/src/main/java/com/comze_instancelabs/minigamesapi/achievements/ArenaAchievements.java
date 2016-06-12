@@ -41,9 +41,9 @@ public class ArenaAchievements {
 
 		int c = 0;
 		for (AAchievement aa : alist) {
-			ItemStack icon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+			ItemStack icon = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 			if (aa.isDone()) {
-				icon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
+				icon = new ItemStack(Material.STAINED_CLAY, 1, (short) 5);
 			}
 			iconm.setOption(c, icon, ChatColor.translateAlternateColorCodes('&', pli.getAchievementsConfig().getConfig().getString("config.achievements." + aa.getAchievementNameRaw() + ".name")), "Done: " + aa.isDone());
 			c++;
@@ -96,7 +96,7 @@ public class ArenaAchievements {
 	}
 
 	public void addDefaultAchievement(String internalname, String name, int default_money_reward) {
-		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".enabled", true);
+		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".enabled", false);
 		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".name", name);
 		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".reward.economy_reward", true);
 		pli.getAchievementsConfig().getConfig().addDefault("config.achievements." + internalname + ".reward.econ_reward_amount", default_money_reward);

@@ -92,7 +92,7 @@ public class Holograms {
 			playerConnection.setAccessible(true);
 			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + version + ".Packet"));
 
-			final Constructor packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + version + ".PacketPlayOutEntityDestroy").getConstructor(int[].class);
+			final Constructor<?> packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + version + ".PacketPlayOutEntityDestroy").getConstructor(int[].class);
 
 			Object destroyPacket = packetPlayOutEntityDestroyConstr.newInstance((Object) convertIntegers(h.getIds()));
 			sendPacket.invoke(playerConnection.get(getPlayerHandle.invoke(p)), destroyPacket);

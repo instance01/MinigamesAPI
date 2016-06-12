@@ -41,9 +41,9 @@ public class SpectatorManager {
 				p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 9999999, 5), true);
 				Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").addPlayer(p);
 			} else {
-				p.removePotionEffect(PotionEffectType.INVISIBILITY);
 				if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p)) {
 					Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").removePlayer(p);
+					p.removePotionEffect(PotionEffectType.INVISIBILITY);
 				}
 			}
 		} catch (Exception e) {
@@ -51,7 +51,7 @@ public class SpectatorManager {
 	}
 
 	@Deprecated
-	public boolean isSpectating(Player p) {
+	public static boolean isSpectating(Player p) {
 		return Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p);
 	}
 
@@ -60,6 +60,7 @@ public class SpectatorManager {
 		ArrayList<OfflinePlayer> offp_set = new ArrayList<OfflinePlayer>(t.getPlayers());
 		for (OfflinePlayer offp : offp_set) {
 			t.removePlayer(offp);
+			
 		}
 	}
 
@@ -113,7 +114,7 @@ public class SpectatorManager {
 		for (String p_ : players) {
 			if (Validator.isPlayerOnline(p_)) {
 				Player p = Bukkit.getPlayer(p_);
-				p.hidePlayer(spec);
+				spec.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20*600, 1));
 				if (pspecs.containsKey(p_)) {
 					ArrayList<String> t = pspecs.get(p_);
 					t.add(spec.getName());
@@ -131,10 +132,10 @@ public class SpectatorManager {
 			for (String p_ : splayers.get(spec.getName())) {
 				if (Validator.isPlayerOnline(p_)) {
 					Player p = Bukkit.getPlayer(p_);
-					p.showPlayer(spec);
 					if (pspecs.containsKey(p_)) {
 						ArrayList<String> t = pspecs.get(p_);
 						t.remove(spec.getName());
+						spec.removePotionEffect(PotionEffectType.INVISIBILITY);
 						pspecs.put(p_, t);
 					}
 				}
@@ -148,10 +149,10 @@ public class SpectatorManager {
 			for (String p_ : pspecs.get(p.getName())) {
 				if (Validator.isPlayerOnline(p_)) {
 					Player spec = Bukkit.getPlayer(p_);
-					p.showPlayer(spec);
 					if (splayers.containsKey(p_)) {
 						ArrayList<String> t = splayers.get(p_);
 						t.remove(spec.getName());
+						spec.removePotionEffect(PotionEffectType.INVISIBILITY);
 						splayers.put(p_, t);
 					}
 				}

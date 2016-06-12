@@ -87,7 +87,9 @@ public class ArenaLobbyScoreboard {
 								score = pli.getStatsInstance().getWins(playername);
 							} else if (score_identifier.equalsIgnoreCase("<money>")) {
 								score = (int) MinigamesAPI.econ.getBalance(playername);
-							}
+						} else if (score_identifier.equalsIgnoreCase("<kills>")) {
+							score = pli.getStatsInstance().getKills(playername);
+						}
 							if (line_.length() < 15) {
 								// ascore.get(arena.getInternalName()).resetScores(Bukkit.getOfflinePlayer(ChatColor.GREEN + line_));
 								Util.getScore(aobjective.get(playername), ChatColor.GREEN + line_).setScore(score);

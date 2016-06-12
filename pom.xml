@@ -1,43 +1,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.comze_instancelabs</groupId>
+	<groupId>com.github.MCE-Plugins</groupId>
 	<artifactId>MinigamesLib-parent</artifactId>
-	<version>parent</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
-	<name>MinigamesLib</name>
+	<name>MinigamesLib-parent</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<instancedev.global.server>instancedev</instancedev.global.server>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>1.8</java.version>
+		<junit.version>4.12</junit.version>
 	</properties>
 	<description>Rich Minigames API and base of all of my new minigames.</description>
 
 	<modules>
 		<module>API</module>
-		
 	</modules>
 
 	<repositories>
 		<repository>
-			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/groups/public</url>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
 		</repository>
 	</repositories>
-
-	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<fork>true</fork>
-					<!-- <executable>C:\Program Files\Java\jdk1.7.0_45\bin\javac.exe</executable> -->
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

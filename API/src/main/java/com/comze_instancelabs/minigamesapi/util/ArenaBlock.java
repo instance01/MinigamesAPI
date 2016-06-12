@@ -1,5 +1,9 @@
 package com.comze_instancelabs.minigamesapi.util;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,10 +14,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class ArenaBlock implements Serializable {
     private static final long serialVersionUID = -1894759842709524780L;

@@ -17,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.block.Block;
+import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.DoubleChest;
@@ -131,7 +132,7 @@ public class SmartReset implements Runnable {
 					}
 				}
 			}
-		}, 30L);
+		}, 25L);
 
 		ArenaLogger.debug("Reset time: " + (System.currentTimeMillis() - time) + "ms");
 	}
@@ -180,6 +181,10 @@ public class SmartReset implements Runnable {
 		if (b_.getType() == Material.DROPPER) {
 			((Dropper) b_.getState()).getInventory().clear();
 			((Dropper) b_.getState()).update();
+		}
+		if (b_.getType() == Material.BREWING_STAND) {
+			((BrewingStand) b_.getState()).getInventory().clear();
+			((BrewingStand) b_.getState()).update();
 		}
 		if (!b_.getType().equals(ablock.getMaterial()) || b_.getData() != ablock.getData()) {
 			b_.setType(ablock.getMaterial());

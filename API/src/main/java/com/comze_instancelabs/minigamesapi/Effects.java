@@ -24,7 +24,7 @@ public class Effects {
 	public static int getClientProtocolVersion(Player p) {
 		int ret = 0;
 		try {
-			if (!MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
+			if (!MinigamesAPI.getAPI().version.startsWith("v1_8_") || !MinigamesAPI.getAPI().version.startsWith("v1_9_")) {
 				Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
 				Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
 				playerConnection.setAccessible(true);
@@ -58,8 +58,8 @@ public class Effects {
 			if (Validator.isPlayerOnline(p_)) {
 				Player p = Bukkit.getPlayer(p_);
 				ParticleEffectNew eff = ParticleEffectNew.valueOf(effectname);
-				eff.setId(152);
-				eff.animateReflected(p, l, 1F, 3);
+				eff.setId(55);
+				eff.animateReflected(p, l, 1F, 2);
 			}
 		}
 	}
@@ -75,8 +75,8 @@ public class Effects {
 			playerConnection.setAccessible(true);
 			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
 
-			Constructor packetPlayOutNamedEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutNamedEntitySpawn").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHuman"));
-			Constructor packetPlayOutBedConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutBed").getConstructor();
+			Constructor<?> packetPlayOutNamedEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutNamedEntitySpawn").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHuman"));
+			Constructor<?> packetPlayOutBedConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutBed").getConstructor();
 
 			final int id = -p.getEntityId() - 1000;
 
@@ -169,7 +169,7 @@ public class Effects {
 			for (int z_ = -cr; z_ <= cr; z_++) {
 				int t = (x_ * x_) + (z_ * z_);
 				if (t >= cradius_s && t <= (cradius_s + 90)) {
-					p.playEffect(new Location(start.getWorld(), x - x_, y, z - z_), Effect.POTION_BREAK, 5);
+					p.playEffect(new Location(start.getWorld(), x - x_, y, z - z_), Effect.SMOKE/* todo not present in 1.9: PORTAL */, 5);
 				}
 			}
 		}
@@ -196,7 +196,7 @@ public class Effects {
 			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
 			final Method a = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".ChatSerializer").getMethod("a", String.class);
 
-			Constructor packetPlayOutTitleConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutTitle").getConstructor();
+			Constructor<?> packetPlayOutTitleConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutTitle").getConstructor();
 
 			final Object packet = packetPlayOutTitleConstr.newInstance();
 			setValue(packet, "a", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EnumTitleAction").getEnumConstants()[enumindex]);
@@ -228,26 +228,29 @@ public class Effects {
 	 */
 	public static ArrayList<Integer> playHologram(final Player p, final Location l, String text, boolean moveDown, boolean removeAfterCooldown) {
 		ArrayList<Integer> ret = new ArrayList<Integer>();
-		if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_r1")) {
+		if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_8_R1")
+				|| MinigamesAPI.getAPI().version.startsWith("v1_8_")
+				|| MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_9_R2")
+				|| MinigamesAPI.getAPI().version.startsWith("v1_9_")) {
 			try {
 				final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
 				final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
 				playerConnection.setAccessible(true);
 				final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
 
-				Class craftw = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".CraftWorld");
-				Class w = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".World");
-				Class entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity");
+				Class<?> craftw = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".CraftWorld");
+				Class<?> w = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".World");
+				Class<?> entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity");
 				Method getWorldHandle = craftw.getDeclaredMethod("getHandle");
 				Object worldServer = getWorldHandle.invoke(craftw.cast(l.getWorld()));
-				final Constructor packetPlayOutSpawnEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntity").getConstructor(entity, int.class);
-				final Constructor packetPlayOutSpawnEntityLivingConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntityLiving").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityLiving"));
-				final Constructor packetPlayOutAttachEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutAttachEntity").getConstructor(int.class, entity, entity);
-				final Constructor packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityDestroy").getConstructor(int[].class);
-				final Constructor packetPlayOutEntityVelocity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityVelocity").getConstructor(int.class, double.class, double.class, double.class);
+				Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntity").getConstructor(entity, int.class);
+				final Constructor<?> packetPlayOutSpawnEntityLivingConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntityLiving").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityLiving"));
+				Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutAttachEntity").getConstructor(int.class, entity, entity);
+				final Constructor<?> packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityDestroy").getConstructor(int[].class);
+				final Constructor<?> packetPlayOutEntityVelocity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityVelocity").getConstructor(int.class, double.class, double.class, double.class);
 
 				// EntityArmorStand
-				Constructor entityArmorStandConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityArmorStand").getConstructor(w);
+				Constructor<?> entityArmorStandConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityArmorStand").getConstructor(w);
 				final Object entityArmorStand = entityArmorStandConstr.newInstance(worldServer);
 				final Method setLoc2 = entityArmorStand.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
 				setLoc2.invoke(entityArmorStand, l.getX(), l.getY() - 1D, l.getZ(), 0F, 0F);
@@ -325,19 +328,19 @@ public class Effects {
 			playerConnection.setAccessible(true);
 			final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
 
-			Class craftw = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".CraftWorld");
-			Class w = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".World");
-			Class entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity");
+			Class<?> craftw = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".CraftWorld");
+			Class<?> w = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".World");
+			Class<?> entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Entity");
 			Method getWorldHandle = craftw.getDeclaredMethod("getHandle");
 			Object worldServer = getWorldHandle.invoke(craftw.cast(l.getWorld()));
-			final Constructor packetPlayOutSpawnEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntity").getConstructor(entity, int.class);
-			final Constructor packetPlayOutSpawnEntityLivingConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntityLiving").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityLiving"));
-			final Constructor packetPlayOutAttachEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutAttachEntity").getConstructor(int.class, entity, entity);
-			final Constructor packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityDestroy").getConstructor(int[].class);
-			final Constructor packetPlayOutEntityVelocity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityVelocity").getConstructor(int.class, double.class, double.class, double.class);
+			final Constructor<?> packetPlayOutSpawnEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntity").getConstructor(entity, int.class);
+			final Constructor<?> packetPlayOutSpawnEntityLivingConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutSpawnEntityLiving").getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityLiving"));
+			final Constructor<?> packetPlayOutAttachEntityConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutAttachEntity").getConstructor(int.class, entity, entity);
+			final Constructor<?> packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityDestroy").getConstructor(int[].class);
+			final Constructor<?> packetPlayOutEntityVelocity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".PacketPlayOutEntityVelocity").getConstructor(int.class, double.class, double.class, double.class);
 
 			// WitherSkull
-			Constructor witherSkullConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityWitherSkull").getConstructor(w);
+			Constructor<?> witherSkullConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityWitherSkull").getConstructor(w);
 			final Object witherSkull = witherSkullConstr.newInstance(worldServer);
 			final Method setLoc = witherSkull.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
 			setLoc.invoke(witherSkull, l.getX(), l.getY() + 33D, l.getZ(), 0F, 0F);
@@ -345,7 +348,7 @@ public class Effects {
 			final int witherSkullId = (Integer) (getWitherSkullId.invoke(witherSkull));
 
 			// EntityHorse
-			Constructor entityHorseConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHorse").getConstructor(w);
+			Constructor<?> entityHorseConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityHorse").getConstructor(w);
 			final Object entityHorse = entityHorseConstr.newInstance(worldServer);
 			final Method setLoc2 = entityHorse.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
 			setLoc2.invoke(entityHorse, l.getX(), l.getY() + (playerIs1_8 ? -1D : 33D), l.getZ(), 0F, 0F);
@@ -377,7 +380,7 @@ public class Effects {
 				Object datawatcherInstance = datawatcher.get(entityHorse);
 				Field d = datawatcherInstance.getClass().getDeclaredField("d");
 				d.setAccessible(true);
-				Map dmap = (Map) d.get(datawatcherInstance);
+				Map<?, ?> dmap = (Map<?, ?>) d.get(datawatcherInstance);
 				dmap.remove(10);
 				// These are the Rotation ones
 				dmap.remove(11);
@@ -460,7 +463,7 @@ public class Effects {
 	public static void sendGameModeChange(Player p, int gamemode) {
 		// NOT_SET(-1, ""), SURVIVAL(0, "survival"), CREATIVE(1, "creative"), ADVENTURE(2, "adventure"), SPECTATOR(3, "spectator");
 
-		if (!MinigamesAPI.getAPI().version.startsWith("v1_8") && gamemode == 3) {
+		if (!MinigamesAPI.getAPI().version.startsWith("v1_8") && gamemode == 3 || !MinigamesAPI.getAPI().version.startsWith("v1_9") && gamemode == 3) {
 			return;
 		}
 

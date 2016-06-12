@@ -161,7 +161,7 @@ public class ArenaSetup {
 		pli.addArena(a);
 
 		// experimental:
-		Class clazz = plugin.getClass();
+		Class<? extends JavaPlugin> clazz = plugin.getClass();
 		try {
 			Method method = clazz.getDeclaredMethod("loadArenas", JavaPlugin.class, pli.getArenasConfig().getClass());
 			if (method != null) {

@@ -1,7 +1,7 @@
 name: MinigamesLib
 main: com.comze_instancelabs.minigamesapi.MinigamesAPI
-version: 1.13.1
-author: InstanceLabs
+version: 1.14.8
+author: [InstanceLabs, MysticCity, MasteroftheHell, TheMrQuake, mepeisen]
 softdepend: [Vault]
 commands:
    mapi:

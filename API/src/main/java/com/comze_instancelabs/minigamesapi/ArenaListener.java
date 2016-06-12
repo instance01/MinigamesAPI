@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +12,16 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
@@ -46,15 +52,18 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.comze_instancelabs.minigamesapi.util.ChangeCause;
@@ -67,8 +76,12 @@ public class ArenaListener implements Listener {
 
 	JavaPlugin plugin = null;
 	PluginInstance pli = null;
+	SpectatorManager sm;
+	
 	private String minigame = "minigame";
 
+	
+	
 	private ArrayList<String> cmds = new ArrayList<String>();
 	private String leave_cmd = "/leave";
 
@@ -127,6 +140,50 @@ public class ArenaListener implements Listener {
 				}
 			}
 		}
+	}
+	
+	  private List<Entity> getEntitiesByLocation(Location loc, double d)
+	  {
+	    List<Entity> ent = new ArrayList();
+	    for (Entity e : loc.getWorld().getEntities()) {
+	      if (e.getLocation().distanceSquared(loc) <= d) {
+	        ent.add(e);
+	      }
+	    }
+	    return ent;
+	  }	
+	
+	@EventHandler
+	public void Space(PlayerMoveEvent event) {
+			Player p = (Player) event.getPlayer();
+			if (pli.containsGlobalPlayer(p.getName())) {
+				Arena a = pli.global_players.get(p.getName());
+				if (a != null) {
+					if (a.getArenaState() == ArenaState.INGAME) {
+						  if (!isSpectating(p)) {
+						for (Entity e : getEntitiesByLocation(p.getLocation(), 30D)) {
+						
+						if (e instanceof Player) {
+				        Player sp = (Player) e;			
+				
+			          if (isSpectating(sp)) {
+			        	  sp.setVelocity(sp.getLocation().getDirection().setY(0.05D));
+			        	  sp.setVelocity(sp.getLocation().getDirection().multiply(-2));
+			          }
+
+					}
+			          }
+					}
+				}
+			}
+		}
+	}
+			
+		
+
+	@Deprecated
+	public static boolean isSpectating(Player p) {
+		return Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -227,15 +284,15 @@ public class ArenaListener implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		if (pli.containsGlobalPlayer(event.getEntity().getName())) {
 			event.setDeathMessage(null);
-			event.getEntity().setHealth(20D);
 			final Player p = event.getEntity();
+			
+			p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 3, 50));
 
 			final Arena arena = pli.global_players.get(p.getName());
 			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.startedIngameCountdown)) {
 				if (arena.isArcadeMain()) {
 					Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
 				}
-				return;
 			}
 
 			arena.global_drops.addAll(event.getDrops());
@@ -285,7 +342,48 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
+	
 
+
+		   @EventHandler
+		   public void NoDamageEntityInLobby(EntityDamageByEntityEvent event){
+		   if (event.getDamager() instanceof Player) {
+			   Player p = (Player) event.getDamager();
+			if (pli.containsGlobalPlayer(p.getName())) {
+				final Arena arena = pli.global_players.get(p.getName());
+			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING)) {
+				   Entity e = event.getEntity();
+				   if (e instanceof ArmorStand || e instanceof ItemFrame || e instanceof Painting || e instanceof Minecart) {
+					   event.setCancelled(false);
+				   }
+			}
+			}
+		   }
+		   }
+			
+		   
+		   @EventHandler
+		   public void NoClickEntityInLobby(PlayerInteractEntityEvent event) throws IOException{
+		   Player p = event.getPlayer();
+		   Entity e = event.getRightClicked();
+		   if(!(e instanceof Player)){
+				final Arena arena = pli.global_players.get(p.getName());
+				if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING)) {
+				   if (event.getRightClicked().getType().equals(EntityType.ARMOR_STAND)
+					   || event.getRightClicked().getType().equals(EntityType.MINECART)
+					   || event.getRightClicked().getType().equals(EntityType.MINECART_CHEST)
+					   || event.getRightClicked().getType().equals(EntityType.MINECART_HOPPER)
+					   || event.getRightClicked().getType().equals(EntityType.ITEM_FRAME)
+					   || event.getRightClicked().getType().equals(EntityType.PAINTING)) {
+					   event.setCancelled(true);
+					   return;
+				   }
+				}
+		   }
+		   }
+		   
+		   
+		   
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
@@ -410,7 +508,7 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onPaintingBreak(HangingBreakByEntityEvent event) {
 		if (event.getRemover() instanceof Player) {
 			String p_ = ((Player) event.getRemover()).getName();
@@ -420,8 +518,9 @@ public class ArenaListener implements Listener {
 		}
 
 	}
+	
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onExplode(EntityExplodeEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (a.getArenaType() == ArenaType.REGENERATION) {
@@ -439,7 +538,7 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockFromTo(BlockFromToEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (a.getArenaType() == ArenaType.REGENERATION) {
@@ -457,7 +556,7 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockFade(BlockFadeEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
@@ -471,7 +570,7 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onLeavesDecay(LeavesDecayEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME) {
@@ -485,7 +584,7 @@ public class ArenaListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPhysics(BlockPhysicsEvent event) {
 		for (Arena a : pli.getArenas()) {
 			if (a.getArenaType() == ArenaType.REGENERATION) {
@@ -513,7 +612,6 @@ public class ArenaListener implements Listener {
 				Cuboid c = a.getBoundaries();
 				if (c != null) {
 					if (a.getArenaState() == ArenaState.INGAME) {
-						event.getBlock().setData((byte) 0); // Reset redstone before adding it to smartreset index
 						a.getSmartReset().addChanged(event.getBlock(), false);
 					}
 				}
@@ -656,7 +754,20 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
+	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onBlockBreak2(BlockBreakEvent event) {
+		Player p = event.getPlayer();
+		if (pli.containsGlobalPlayer(p.getName())) {
+			Arena a = pli.global_players.get(p.getName());
+			if (event.getBlock().getType() != Material.AIR) {
+				a.getSmartReset().addChanged(event.getBlock().getLocation(), event.getBlock().getType(), event.getBlock().getData());
+			}
+		}
+	}
 
+	
+	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player p = event.getPlayer();
@@ -669,7 +780,7 @@ public class ArenaListener implements Listener {
 			if (event.getBlockReplacedState().getType() != Material.AIR) {
 				a.getSmartReset().addChanged(event.getBlock().getLocation(), event.getBlockReplacedState().getType(), event.getBlockReplacedState().getData().getData());
 			} else {
-				a.getSmartReset().addChanged(event.getBlock().getLocation(), Material.AIR, (byte) 0);
+
 			}
 		}
 		if (pli.getStatsInstance().skullsetup.contains(p.getName())) {
@@ -685,7 +796,8 @@ public class ArenaListener implements Listener {
 	@EventHandler
 	public void onSignUse(PlayerInteractEvent event) {
 		if (event.hasBlock()) {
-			if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN || event.getClickedBlock().getType() == Material.SIGN) {
+			if (event.getClickedBlock().getType() == Material.SIGN_POST
+					|| event.getClickedBlock().getType() == Material.WALL_SIGN || event.getClickedBlock().getType() == Material.SIGN) {
 				if (event.getClickedBlock().getType() == Material.FIRE) {
 					return;
 				}
@@ -700,6 +812,7 @@ public class ArenaListener implements Listener {
 					Player p = event.getPlayer();
 					if (!arena.containsPlayer(p.getName())) {
 						arena.joinPlayerLobby(p.getName());
+						Util.updateSign(plugin, arena);
 					} else {
 						Util.sendMessage(plugin, p, pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getInternalName()));
 					}
@@ -714,6 +827,7 @@ public class ArenaListener implements Listener {
 										if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
 											if (!a.containsPlayer(event.getPlayer().getName())) {
 												a.joinPlayerLobby(event.getPlayer().getName());
+												Util.updateSign(plugin, arena);
 												return;
 											}
 										}
@@ -733,6 +847,7 @@ public class ArenaListener implements Listener {
 										if (loc.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
 											if (loc.distance(s.getLocation()) < 1) {
 												pli.global_players.get(event.getPlayer().getName()).leavePlayer(event.getPlayer().getName(), false, false);
+												Util.updateSign(plugin, arena);
 												return;
 											}
 										}
@@ -930,10 +1045,13 @@ public class ArenaListener implements Listener {
 								p.getInventory().addItem(plugin.getConfig().getItemStack("temp.left_players." + p.getName() + ".items." + key));
 							}
 						}
+						Arena arena = pli.global_players.get(p.getName());
 						p.updateInventory();
 						p.setWalkSpeed(0.2F);
 						p.removePotionEffect(PotionEffectType.JUMP);
+						p.removePotionEffect(PotionEffectType.INVISIBILITY);
 						p.setGameMode(GameMode.SURVIVAL);
+						Util.updateSign(plugin, arena);
 						pli.getSpectatorManager().setSpectate(p, false);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -963,6 +1081,8 @@ public class ArenaListener implements Listener {
 				public void run() {
 					if (p != null) {
 						pli.getArenas().get(0).joinPlayerLobby(p.getName());
+						Arena arena = pli.global_players.get(p.getName());
+						Util.updateSign(plugin, arena);
 					}
 				}
 			}, 30L);
@@ -1027,7 +1147,7 @@ public class ArenaListener implements Listener {
 				for (Player receiver : event.getRecipients()) {
 					if (pli.containsGlobalPlayer(receiver.getName())) {
 						if (pli.global_players.get(receiver.getName()) == pli.global_players.get(p.getName())) {
-							receiver.sendMessage(msg);
+							receiver.sendMessage("§7" + msg);
 						}
 					}
 				}
@@ -1117,7 +1237,6 @@ public class ArenaListener implements Listener {
 		return res;
 	}
 
-	// TP Fix end
 
 	public String getName() {
 		return minigame;

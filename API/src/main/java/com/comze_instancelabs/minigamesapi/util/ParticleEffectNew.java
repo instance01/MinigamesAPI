@@ -184,7 +184,7 @@ public enum ParticleEffectNew {
 			Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
 
 			String packetname = "PacketPlayOutWorldParticles";
-			if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_6_R2")) {
+			if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_6_R2") || MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_9_R1") || MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_9_R2")) {
 				packetname = "Packet63WorldParticles";
 			}
 

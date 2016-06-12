@@ -75,6 +75,8 @@ public class CommandHandler {
 				return this.startArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("stop")) {
 				return this.stopArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("sings")) {
+				return this.stopArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("stopall")) {
 				return this.stopAllArenas(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("removearena")) {
@@ -101,7 +103,7 @@ public class CommandHandler {
 				return this.spectate(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("shop")) {
 				return this.openShop(pli, sender, args, uber_permission, cmd, action, plugin, p);
-			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb")) {
+			} else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb") || action.equalsIgnoreCase("top")) {
 				return this.getLeaderboards(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("stats")) {
 				return this.getStats(pli, sender, args, uber_permission, cmd, action, plugin, p);
@@ -167,31 +169,35 @@ public class CommandHandler {
 	public static LinkedHashMap<String, String> cmddesc;
 	static {
 		cmddesc = new LinkedHashMap<String, String>();
-		cmddesc.put("", "");
+		cmddesc.put("", null);
 		cmddesc.put("setspawn <arena>", "Sets the spawn point.");
 		cmddesc.put("setlobby <arena>", "Sets the lobby point.");
 		cmddesc.put("setmainlobby", "Sets the main lobby point.");
 		cmddesc.put("setbounds <arena> <low/high>", "Sets the low or high boundary point for later arena regeneration.");
 		cmddesc.put("savearena <arena>", "Saves the arena.");
-		cmddesc.put(" ", "");
+		cmddesc.put("", null);
 		cmddesc.put("setmaxplayers <arena> <count>", "Sets the max players allowed to join to given count.");
 		cmddesc.put("setminplayers <arena> <count>", "Sets the min players needed to start to given count.");
 		cmddesc.put("setarenavip <arena> <true/false>", "Sets whether arena needs permission to join.");
 		cmddesc.put("removearena <arena>", "Deletes an arena from config.");
 		cmddesc.put("removespawn <arena> <count>", "Deletes a spawn from config.");
 		cmddesc.put("setenabled", "Enables/Disables the arena.");
+		cmddesc.put("", null);
 		cmddesc.put("join <arena>", "Joins the arena.");
 		cmddesc.put("leave", "Leaves the arena.");
+		cmddesc.put("", "");
 		cmddesc.put("start <arena>", "Forces the arena to start.");
 		cmddesc.put("stop <arena>", "Forces the arena to stop.");
 		cmddesc.put("list", "Lists all arenas.");
 		cmddesc.put("reload", "Reloads the config.");
 		cmddesc.put("reset <arena>", "Forces the arena to reset.");
+		cmddesc.put("", null);
 		cmddesc.put("setlobbybounds <arena> <low/high>", "Optional: Set lobby boundaries.");
 		cmddesc.put("setspecbounds <arena> <low/high>", "Optional: Set extra spectator boundaries.");
 		cmddesc.put("setauthor <arena> <author>", "Will always display the author of the map at join.");
 		cmddesc.put("setdescription <arena> <description>", "Will always display a description of the map at join.");
 		cmddesc.put("setdisplayname <arena> <displayname>", "Allows changing displayname of an arena (whitespaces and colors).");
+		cmddesc.put("", null);
 	}
 
 	public static void sendHelp(String cmd, CommandSender sender) {
@@ -202,7 +208,7 @@ public class CommandHandler {
 				continue;
 			}
 			String v = cmddesc.get(k);
-			sender.sendMessage(ChatColor.DARK_AQUA + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
+			sender.sendMessage(ChatColor.YELLOW + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
 		}
 	}
 
@@ -226,7 +232,7 @@ public class CommandHandler {
 				continue;
 			}
 			String v = cmdpartydesc.get(k);
-			sender.sendMessage(ChatColor.DARK_AQUA + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
+			sender.sendMessage(ChatColor.YELLOW + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
 		}
 	}
 
@@ -890,7 +896,7 @@ public class CommandHandler {
 	private void sendLeaderboards(PluginInstance pli, CommandSender sender, int count, boolean wins) {
 		int c = 0;
 		if (wins) {
-			sender.sendMessage(ChatColor.DARK_GREEN + "--- Leaderboards: Wins ---");
+			sender.sendMessage(ChatColor.DARK_GREEN + "--- TOP WINS ---");
 			TreeMap<String, Double> sorted_wins = pli.getStatsInstance().getTop(count, true);
 			for (Map.Entry<String, Double> entry : sorted_wins.entrySet()) {
 				c++;
@@ -900,7 +906,7 @@ public class CommandHandler {
 				sender.sendMessage(ChatColor.GREEN + "" + Integer.toString((int) entry.getValue().doubleValue()) + ChatColor.DARK_GREEN + " - " + ChatColor.GREEN + "" + entry.getKey());
 			}
 		} else {
-			sender.sendMessage(ChatColor.DARK_GREEN + "-- Leaderboards: Points --");
+			sender.sendMessage(ChatColor.DARK_GREEN + "-- TOP POINTS --");
 			TreeMap<String, Double> sorted_wins = pli.getStatsInstance().getTop(count, false);
 			for (Map.Entry<String, Double> entry : sorted_wins.entrySet()) {
 				c++;

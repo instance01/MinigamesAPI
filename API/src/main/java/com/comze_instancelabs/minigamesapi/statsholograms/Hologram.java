@@ -1,7 +1,6 @@
 package com.comze_instancelabs.minigamesapi.statsholograms;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.bukkit.ChatColor;
@@ -11,7 +10,6 @@ import org.bukkit.entity.Player;
 import com.comze_instancelabs.minigamesapi.Effects;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
-import com.comze_instancelabs.minigamesapi.util.Util;
 
 public class Hologram {
 

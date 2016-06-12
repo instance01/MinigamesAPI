@@ -55,8 +55,6 @@ public class Arena {
 	private int max_players;
 	private int min_players;
 	private boolean viparena;
-	private String permission_node;
-
 	private ArrayList<String> players = new ArrayList<String>();
 	private ArrayList<String> temp_players = new ArrayList<String>();
 
@@ -420,7 +418,7 @@ public class Arena {
 						}
 					}
 				}
-			}, 10L);
+			}, 15L);
 
 			for (String p_ : this.getAllPlayers()) {
 				if (Validator.isPlayerOnline(p_) && !p_.equalsIgnoreCase(p.getName())) {
@@ -446,8 +444,8 @@ public class Arena {
 				Util.clearInv(p);
 				ap.setOriginalGamemode(p.getGameMode());
 				ap.setOriginalXplvl(p.getLevel());
-				p.setGameMode(GameMode.SURVIVAL);
-				p.setHealth(20D);
+				 p.setGameMode(GameMode.SURVIVAL);
+				 p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 2, 50));
 				return;
 			} else {
 				if (startedIngameCountdown) {
@@ -464,7 +462,7 @@ public class Arena {
 						public void run() {
 							Util.clearInv(p);
 						}
-					}, 10L);
+					}, 15L);
 					ap.setOriginalXplvl(p.getLevel());
 					Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 						public void run() {
@@ -474,7 +472,7 @@ public class Arena {
 							ap.setOriginalGamemode(p.getGameMode());
 							p.setGameMode(GameMode.SURVIVAL);
 						}
-					}, 15L);
+					}, 20L);
 					pli.scoreboardManager.updateScoreboard(plugin, this);
 					return;
 				} else {
@@ -483,9 +481,9 @@ public class Arena {
 						Util.teleportPlayerFixed(p, this.waitinglobby);
 						Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), new Runnable() {
 							public void run() {
-								p.setHealth(20D);
+						 p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 2, 50));
 							}
-						}, 2L);
+						}, 3L);
 					} else {
 						Util.teleportAllPlayers(currentarena.getArena().getAllPlayers(), currentarena.getArena().spawns);
 					}
@@ -504,7 +502,7 @@ public class Arena {
 					}
 					ap.setOriginalGamemode(p.getGameMode());
 					p.setGameMode(GameMode.SURVIVAL);
-					p.setHealth(20D);
+					p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 2, 50));
 				}
 			}, 15L);
 			if (!skip_join_lobby) {
@@ -638,6 +636,7 @@ public class Arena {
 				}
 				if (p != null) {
 					p.removePotionEffect(PotionEffectType.JUMP);
+					p.removePotionEffect(PotionEffectType.INVISIBILITY);
 					Util.teleportPlayerFixed(p, this.mainlobby);
 					p.setFireTicks(0);
 					p.setFlying(false);
@@ -651,9 +650,10 @@ public class Arena {
 					p.updateInventory();
 
 					p.setWalkSpeed(0.2F);
-					p.setFoodLevel(20);
-					p.setHealth(20D);
+					p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 20 * 2, 50));
+					p.setHealth(20);
 					p.removePotionEffect(PotionEffectType.JUMP);
+					p.removePotionEffect(PotionEffectType.INVISIBILITY);
 					pli.getSpectatorManager().setSpectate(p, false);
 					pli.getStatsInstance().updateSQLKillsDeathsAfter(p, this);
 				}
@@ -670,7 +670,6 @@ public class Arena {
 		Util.clearInv(p);
 		p.setWalkSpeed(0.2F);
 		p.setFoodLevel(20);
-		p.setHealth(20D);
 		p.setFireTicks(0);
 		p.removePotionEffect(PotionEffectType.JUMP);
 		pli.getSpectatorManager().setSpectate(p, false);
@@ -684,7 +683,19 @@ public class Arena {
 		}
 
 		for (Entity e : p.getNearbyEntities(50D, 50D, 50D)) {
-			if (e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER) {
+			if (e.getType() == EntityType.DROPPED_ITEM 
+					|| e.getType() == EntityType.SLIME
+					|| e.getType() == EntityType.ZOMBIE
+					|| e.getType() == EntityType.SKELETON 
+					|| e.getType() == EntityType.SPIDER
+					|| e.getType() == EntityType.CREEPER
+					|| e.getType() == EntityType.VILLAGER
+					|| e.getType() == EntityType.ARMOR_STAND
+					|| e.getType() == EntityType.PIG_ZOMBIE
+					|| e.getType() == EntityType.ARMOR_STAND
+					|| e.getType() == EntityType.BOAT
+					|| e.getType() == EntityType.HORSE
+					|| e.getType() == EntityType.ARROW) {
 				e.remove();
 			}
 		}
@@ -1102,6 +1113,7 @@ public class Arena {
 			}
 			Player p = Bukkit.getPlayer(p_);
 			p.setWalkSpeed(0.2F);
+			p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 2, 50));
 			p.setFoodLevel(20);
 			p.removePotionEffect(PotionEffectType.JUMP);
 			if (send_game_started_msg) {
@@ -1190,7 +1202,16 @@ public class Arena {
 					public void run() {
 						if (Validator.isPlayerOnline(p_)) {
 							for (Entity e : Bukkit.getPlayer(p_).getNearbyEntities(50, 50, 50)) {
-								if (e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER) {
+								if (e.getType() == EntityType.DROPPED_ITEM 
+										|| e.getType() == EntityType.ENDERMAN
+										|| e.getType() == EntityType.SLIME 
+										|| e.getType() == EntityType.ZOMBIE 
+										|| e.getType() == EntityType.SKELETON 
+										|| e.getType() == EntityType.SPIDER 
+										|| e.getType() == EntityType.CREEPER
+										|| e.getType() == EntityType.VILLAGER
+										|| e.getType() == EntityType.ARMOR_STAND
+										|| e.getType() == EntityType.ARROW) {
 									e.remove();
 								}
 							}
