@@ -274,8 +274,8 @@ public class Arena {
 	/**
 	 * Please do not use this function to add players
 	 * 
-	 * @param playername
-	 * @return
+	 * @param playername name of the player
+	 * @return true on success
 	 */
 	@Deprecated
 	public boolean addPlayer(String playername) {
@@ -285,8 +285,8 @@ public class Arena {
 	/**
 	 * Please do not use this function to remove players
 	 * 
-	 * @param playername
-	 * @return
+	 * @param playername name of the player
+	 * @return true on success
 	 */
 	@Deprecated
 	public boolean removePlayer(String playername) {
@@ -522,8 +522,8 @@ public class Arena {
 	/**
 	 * Primarily used for ArcadeInstance to join a waiting lobby without countdown
 	 * 
-	 * @param playername
-	 * @param countdown
+	 * @param playername name of the player
+	 * @param countdown seconds
 	 */
 	public void joinPlayerLobby(String playername, boolean countdown) {
 		temp_countdown = countdown;
