@@ -39,6 +39,9 @@ import com.google.common.io.ByteStreams;
 import net.milkbowl.vault.economy.Economy;
 
 public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
+	
+	/** the overall minecraft server versioon. */
+	public static final MinecraftVersionsType SERVER_VERSION = getServerVersion();
 
 	static MinigamesAPI instance = null;
 	public static Economy econ = null;
@@ -65,12 +68,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 
 		this.version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
 		this.below1710 = 
-				version.startsWith("v1_9_")
-				|| version.startsWith("v1_9_R1")
-				|| version.startsWith("v1_9_R2")
-				|| version.startsWith("v1_8_") 
-				|| version.startsWith("v1_8_R1") 
-				|| version.startsWith("v1_7_R3") 
+				 version.startsWith("v1_7_R3") 
 				|| version.startsWith("v1_7_R2") 
 				|| version.startsWith("v1_7_R1") 
 				|| version.startsWith("v1_6")
@@ -169,6 +167,53 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 		}, 0, 20 * (int) getConfig().getInt("signs_updating_time"));
 	}
     
+
+	/**
+	 * Calculates the minecraft server version.
+	 * 
+	 * @return Minecraft server version.
+	 */
+	private static MinecraftVersionsType getServerVersion() {
+		final String v = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
+		if (v.startsWith("v1_7_R1"))
+		{
+			return MinecraftVersionsType.V1_7_R1;
+		}
+		if (v.startsWith("v1_7_R2"))
+		{
+			return MinecraftVersionsType.V1_7_R2;
+		}
+		if (v.startsWith("v1_7_R3"))
+		{
+			return MinecraftVersionsType.V1_7_R3;
+		}
+		if (v.startsWith("v1_7_R4"))
+		{
+			return MinecraftVersionsType.V1_7_R4;
+		}
+		if (v.startsWith("v1_8_R1"))
+		{
+			return MinecraftVersionsType.V1_8_R1;
+		}
+		if (v.startsWith("v1_8_R2"))
+		{
+			return MinecraftVersionsType.V1_8_R2;
+		}
+		if (v.startsWith("v1_9_R1"))
+		{
+			return MinecraftVersionsType.V1_9_R1;
+		}
+		if (v.startsWith("v1_9_R2"))
+		{
+			return MinecraftVersionsType.V1_9_R2;
+		}
+		if (v.startsWith("v1_10_R1"))
+		{
+			return MinecraftVersionsType.V1_10_R1;
+		}
+		return MinecraftVersionsType.Unknown;
+	}
+
 
 	public void onDisable() {
 		for (PluginInstance pli : MinigamesAPI.pinstances.values()) {
