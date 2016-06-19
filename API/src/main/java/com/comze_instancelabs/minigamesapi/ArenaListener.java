@@ -58,7 +58,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -74,9 +73,8 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaListener implements Listener {
 
-	JavaPlugin plugin = null;
-	PluginInstance pli = null;
-	SpectatorManager sm;
+	private JavaPlugin plugin = null;
+	private PluginInstance pli = null;
 	
 	private String minigame = "minigame";
 
@@ -209,7 +207,7 @@ public class ArenaListener implements Listener {
 						}
 					} else if (a.getArenaState() == ArenaState.STARTING || a.getArenaState() == ArenaState.JOIN) {
 						if (!a.isArcadeMain()) {
-							if (!a.startedIngameCountdown) {
+							if (!a.getIngameCountdownStarted()) {
 								if (p.getLocation().getBlockY() < 0) {
 									try {
 										Util.teleportPlayerFixed(p, a.getWaitingLobbyTemp());
@@ -289,7 +287,7 @@ public class ArenaListener implements Listener {
 			p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 3, 50));
 
 			final Arena arena = pli.global_players.get(p.getName());
-			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.startedIngameCountdown)) {
+			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.getIngameCountdownStarted())) {
 				if (arena.isArcadeMain()) {
 					Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
 				}
@@ -337,7 +335,7 @@ public class ArenaListener implements Listener {
 			if (pli.last_man_standing) {
 				if (count < 2) {
 					// last man standing
-					arena.stop();
+					arena.stopArena();
 				}
 			}
 		}
@@ -489,7 +487,7 @@ public class ArenaListener implements Listener {
 					}
 					Arena a = (Arena) pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
-						a.lastdamager.put(p.getName(), attacker.getName());
+						a.setLastDamager(p.getName(), attacker.getName());
 						if (pli.damage_identifier_effects) {
 							ChatColor c = ChatColor.YELLOW;
 							if (event.getDamage() >= 5D) {

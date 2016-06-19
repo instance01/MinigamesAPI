@@ -18,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
 import com.comze_instancelabs.minigamesapi.events.ArenaStartEvent;
@@ -35,17 +34,17 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 public class Arena {
 
 	// Plugin the arena belongs to
-	JavaPlugin plugin;
-	PluginInstance pli;
+	private JavaPlugin plugin;
+	private PluginInstance pli;
 	private ArcadeInstance ai;
 	private boolean isArcadeMain = false;
 	private boolean isSuccessfullyInitialized = false;
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
-	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
-	public HashMap<String, String> lastdamager = new HashMap<String, String>();
-	public HashMap<String, Integer> temp_kill_count = new HashMap<String, Integer>();
-	public HashMap<String, Integer> temp_death_count = new HashMap<String, Integer>();
+	private HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
+	private HashMap<String, String> lastdamager = new HashMap<String, String>();
+	HashMap<String, Integer> temp_kill_count = new HashMap<String, Integer>();
+	HashMap<String, Integer> temp_death_count = new HashMap<String, Integer>();
 
 	private Location mainlobby;
 	private Location waitinglobby;
@@ -60,29 +59,29 @@ public class Arena {
 
 	private ArenaType type = ArenaType.DEFAULT;
 	private ArenaState currentstate = ArenaState.JOIN;
-	String name = "mainarena";
-	String displayname = "mainarena";
+	private String name = "mainarena";
+	private String displayname = "mainarena";
 
 	private Arena currentarena;
-	boolean started = false;
-	boolean startedIngameCountdown = false;
+	private boolean started = false;
+	private boolean startedIngameCountdown = false;
 	private boolean showArenascoreboard = true;
 	private boolean alwaysPvP = false;
 
-	SmartReset sr = null;
+	private SmartReset sr = null;
 
-	Cuboid boundaries;
-	Cuboid lobby_boundaries;
-	Cuboid spec_boundaries;
+	private Cuboid boundaries;
+	private Cuboid lobby_boundaries;
+	private Cuboid spec_boundaries;
 
-	boolean temp_countdown = true;
+	private boolean temp_countdown = true;
 	boolean skip_join_lobby = false;
 
-	int currentspawn = 0;
+	private int currentspawn = 0;
 
 	int global_coin_multiplier = 1;
 
-	BukkitTask maximum_game_time;
+	private BukkitTask maximum_game_time;
 
 	ArrayList<ItemStack> global_drops = new ArrayList<ItemStack>();
 
@@ -583,7 +582,7 @@ public class Arena {
 						}
 						return;
 					}
-					this.stop();
+					this.stopArena();
 				}
 			}
 		}
@@ -818,7 +817,7 @@ public class Arena {
 				final Arena a = this;
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
-						a.stop();
+						a.stopArena();
 					}
 				}, 20L);
 			} else {
@@ -1141,7 +1140,7 @@ public class Arena {
 				}
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
-						a.stop();
+						a.stopArena();
 					}
 				}, 5 * 20L);
 			}
@@ -1156,11 +1155,19 @@ public class Arena {
 	}
 
 	boolean temp_delay_stopped = false;
+	
+	/**
+	 * Invoked externally to stop the arena; esures that it only is called once.
+	 */
+	public synchronized void stopArena() {
+		// TODO eliminate synchronized but check for the current arena state before actually invoking stop
+		this.stop();
+	}
 
 	/**
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
-	public void stop() {
+	protected void stop() {
 		Bukkit.getServer().getPluginManager().callEvent(new ArenaStopEvent(plugin, this));
 		final Arena a = this;
 		if (maximum_game_time != null) {
@@ -1172,7 +1179,7 @@ public class Arena {
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
 						temp_delay_stopped = true;
-						a.stop();
+						a.stopArena();
 					}
 				}, plugin.getConfig().getInt("config.delay.amount_seconds") * 20L);
 				this.setArenaState(ArenaState.RESTARTING);
@@ -1465,6 +1472,11 @@ public class Arena {
 
 	public boolean isSuccessfullyInit() {
 		return isSuccessfullyInitialized;
+	}
+	
+	public void setLastDamager(String targetPlayer, String damager)
+	{
+		this.lastdamager.put(targetPlayer, damager);
 	}
 
 }

@@ -121,7 +121,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 		}, 60L);
 
 		if (getConfig().getBoolean("config.auto_updating")) {
-			Updater updater = new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
+			new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
 		}
 
 		if (getServer().getPluginManager().getPlugin("CrackShot") != null) {
