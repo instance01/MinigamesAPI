@@ -58,7 +58,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	public PartyMessagesConfig partymessages;
 	public StatsGlobalConfig statsglobal;
 
-	public String version = "";
+	@Deprecated
+	public String internalServerVersion = "";
 	public boolean below1710 = false; // Used for scoreboard function (wether to use getScore(OfflinePlayer) or getScore(String))
 
 	Metrics metrics;
@@ -66,14 +67,9 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener {
 	public void onEnable() {
 		instance = this;
 
-		this.version = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
-		this.below1710 = 
-				 version.startsWith("v1_7_R3") 
-				|| version.startsWith("v1_7_R2") 
-				|| version.startsWith("v1_7_R1") 
-				|| version.startsWith("v1_6")
-				|| version.startsWith("v1_5"); 
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + version + ".");
+		this.internalServerVersion = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
+		this.below1710 = SERVER_VERSION.isBelow(MinecraftVersionsType.V1_7_R4); 
+		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + SERVER_VERSION + ".");
 
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);

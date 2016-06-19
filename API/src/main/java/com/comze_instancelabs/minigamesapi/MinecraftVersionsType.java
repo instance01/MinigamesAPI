@@ -43,7 +43,7 @@ public enum MinecraftVersionsType {
 	 *            version to compare to.
 	 * @return {@code true} if this version matches given version.
 	 */
-	public boolean equals(MinecraftVersionsType type) {
+	public boolean isEqual(MinecraftVersionsType type) {
 		switch (this) {
 		case V1_10:
 			return type == V1_10 || type == V1_10_R1;
@@ -71,7 +71,7 @@ public enum MinecraftVersionsType {
 	 * @return {@code true} if this version matches given version.
 	 */
 	public boolean isBelow(MinecraftVersionsType type) {
-		if (equals(type)) return false;
+		if (isEqual(type)) return false;
 		return this.ordinal() < type.ordinal();
 	}
 
@@ -88,7 +88,7 @@ public enum MinecraftVersionsType {
 	 * @return {@code true} if this version matches given version.
 	 */
 	public boolean isAfter(MinecraftVersionsType type) {
-		if (equals(type)) return false;
+		if (isEqual(type)) return false;
 		return this.ordinal() > type.ordinal();
 	}
 

@@ -85,8 +85,9 @@ public class Holograms {
 	}
 
 	public void destroyHologram(final Player p, Hologram h) {
-		String version = MinigamesAPI.getAPI().version;
+		String version = MinigamesAPI.getAPI().internalServerVersion;
 		try {
+			// TODO Do not use reflection :-(
 			final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + version + ".entity.CraftPlayer").getMethod("getHandle");
 			final Field playerConnection = Class.forName("net.minecraft.server." + version + ".EntityPlayer").getField("playerConnection");
 			playerConnection.setAccessible(true);
