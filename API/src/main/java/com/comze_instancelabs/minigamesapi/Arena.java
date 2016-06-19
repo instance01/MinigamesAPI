@@ -42,9 +42,9 @@ public class Arena {
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
 	private HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
-	public HashMap<String, String> lastdamager = new HashMap<String, String>();
-	public HashMap<String, Integer> temp_kill_count = new HashMap<String, Integer>();
-	public HashMap<String, Integer> temp_death_count = new HashMap<String, Integer>();
+	private HashMap<String, String> lastdamager = new HashMap<String, String>();
+	HashMap<String, Integer> temp_kill_count = new HashMap<String, Integer>();
+	HashMap<String, Integer> temp_death_count = new HashMap<String, Integer>();
 
 	private Location mainlobby;
 	private Location waitinglobby;
@@ -59,29 +59,29 @@ public class Arena {
 
 	private ArenaType type = ArenaType.DEFAULT;
 	private ArenaState currentstate = ArenaState.JOIN;
-	String name = "mainarena";
-	String displayname = "mainarena";
+	private String name = "mainarena";
+	private String displayname = "mainarena";
 
 	private Arena currentarena;
-	boolean started = false;
-	boolean startedIngameCountdown = false;
+	private boolean started = false;
+	private boolean startedIngameCountdown = false;
 	private boolean showArenascoreboard = true;
 	private boolean alwaysPvP = false;
 
-	SmartReset sr = null;
+	private SmartReset sr = null;
 
-	Cuboid boundaries;
-	Cuboid lobby_boundaries;
-	Cuboid spec_boundaries;
+	private Cuboid boundaries;
+	private Cuboid lobby_boundaries;
+	private Cuboid spec_boundaries;
 
-	boolean temp_countdown = true;
+	private boolean temp_countdown = true;
 	boolean skip_join_lobby = false;
 
-	int currentspawn = 0;
+	private int currentspawn = 0;
 
 	int global_coin_multiplier = 1;
 
-	BukkitTask maximum_game_time;
+	private BukkitTask maximum_game_time;
 
 	ArrayList<ItemStack> global_drops = new ArrayList<ItemStack>();
 
@@ -1464,6 +1464,11 @@ public class Arena {
 
 	public boolean isSuccessfullyInit() {
 		return isSuccessfullyInitialized;
+	}
+	
+	public void setLastDamager(String targetPlayer, String damager)
+	{
+		this.lastdamager.put(targetPlayer, damager);
 	}
 
 }

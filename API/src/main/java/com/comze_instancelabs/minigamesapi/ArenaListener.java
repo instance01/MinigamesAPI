@@ -207,7 +207,7 @@ public class ArenaListener implements Listener {
 						}
 					} else if (a.getArenaState() == ArenaState.STARTING || a.getArenaState() == ArenaState.JOIN) {
 						if (!a.isArcadeMain()) {
-							if (!a.startedIngameCountdown) {
+							if (!a.getIngameCountdownStarted()) {
 								if (p.getLocation().getBlockY() < 0) {
 									try {
 										Util.teleportPlayerFixed(p, a.getWaitingLobbyTemp());
@@ -287,7 +287,7 @@ public class ArenaListener implements Listener {
 			p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 3, 50));
 
 			final Arena arena = pli.global_players.get(p.getName());
-			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.startedIngameCountdown)) {
+			if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING && !arena.getIngameCountdownStarted())) {
 				if (arena.isArcadeMain()) {
 					Util.teleportPlayerFixed(p, arena.getWaitingLobbyTemp());
 				}
@@ -487,7 +487,7 @@ public class ArenaListener implements Listener {
 					}
 					Arena a = (Arena) pli.global_players.get(p.getName());
 					if (a.getArenaState() == ArenaState.INGAME) {
-						a.lastdamager.put(p.getName(), attacker.getName());
+						a.setLastDamager(p.getName(), attacker.getName());
 						if (pli.damage_identifier_effects) {
 							ChatColor c = ChatColor.YELLOW;
 							if (event.getDamage() >= 5D) {
