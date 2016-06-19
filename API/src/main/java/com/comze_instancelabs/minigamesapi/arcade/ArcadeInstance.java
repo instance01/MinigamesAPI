@@ -227,10 +227,10 @@ public class ArcadeInstance {
 					String arenaname = mg.getPlugin().getConfig().getString("config.arcade.arena_to_prefer.arena");
 					Arena a = mg.getArenaByName(arenaname);
 					if (a != null) {
-						a.stop();
+						a.stopArena();
 					}
 				} else {
-					minigames.get(currentindex).getArenas().get(0).stop();
+					minigames.get(currentindex).getArenas().get(0).stopArena();
 				}
 			}
 		}
@@ -246,7 +246,7 @@ public class ArcadeInstance {
 		if (currentindex < minigames.size() - 1) {
 			currentindex++;
 		} else {
-			arena.stop();
+			arena.stopArena();
 			// stopArcade();
 			return;
 		}

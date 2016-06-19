@@ -335,7 +335,7 @@ public class ArenaListener implements Listener {
 			if (pli.last_man_standing) {
 				if (count < 2) {
 					// last man standing
-					arena.stop();
+					arena.stopArena();
 				}
 			}
 		}

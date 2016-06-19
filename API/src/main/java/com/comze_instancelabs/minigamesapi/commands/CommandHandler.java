@@ -513,7 +513,7 @@ public class CommandHandler {
 		if (args.length > 1) {
 			Arena temp = pli.getArenaByName(args[1]);
 			if (temp != null) {
-				temp.stop();
+				temp.stopArena();
 				sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "stopped"));
 			} else {
 				sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
@@ -521,7 +521,7 @@ public class CommandHandler {
 		} else {
 			if (pli.containsGlobalPlayer(p.getName())) {
 				Arena a = pli.global_players.get(p.getName());
-				a.stop();
+				a.stopArena();
 				sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "stopped"));
 				return true;
 			}
@@ -536,7 +536,7 @@ public class CommandHandler {
 			return true;
 		}
 		for (Arena a : pli.getArenas()) {
-			a.stop();
+			a.stopArena();
 		}
 		return true;
 	}

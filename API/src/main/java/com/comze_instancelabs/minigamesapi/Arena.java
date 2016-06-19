@@ -582,7 +582,7 @@ public class Arena {
 						}
 						return;
 					}
-					this.stop();
+					this.stopArena();
 				}
 			}
 		}
@@ -817,7 +817,7 @@ public class Arena {
 				final Arena a = this;
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
-						a.stop();
+						a.stopArena();
 					}
 				}, 20L);
 			} else {
@@ -1140,7 +1140,7 @@ public class Arena {
 				}
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
-						a.stop();
+						a.stopArena();
 					}
 				}, 5 * 20L);
 			}
@@ -1155,11 +1155,19 @@ public class Arena {
 	}
 
 	boolean temp_delay_stopped = false;
+	
+	/**
+	 * Invoked externally to stop the arena; esures that it only is called once.
+	 */
+	public synchronized void stopArena() {
+		// TODO eliminate synchronized but check for the current arena state before actually invoking stop
+		this.stop();
+	}
 
 	/**
 	 * Stops the arena and teleports all players to the mainlobby
 	 */
-	public void stop() {
+	protected void stop() {
 		Bukkit.getServer().getPluginManager().callEvent(new ArenaStopEvent(plugin, this));
 		final Arena a = this;
 		if (maximum_game_time != null) {
@@ -1171,7 +1179,7 @@ public class Arena {
 				Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 					public void run() {
 						temp_delay_stopped = true;
-						a.stop();
+						a.stopArena();
 					}
 				}, plugin.getConfig().getInt("config.delay.amount_seconds") * 20L);
 				this.setArenaState(ArenaState.RESTARTING);
