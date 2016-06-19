@@ -58,7 +58,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -74,9 +73,8 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 
 public class ArenaListener implements Listener {
 
-	JavaPlugin plugin = null;
-	PluginInstance pli = null;
-	SpectatorManager sm;
+	private JavaPlugin plugin = null;
+	private PluginInstance pli = null;
 	
 	private String minigame = "minigame";
 

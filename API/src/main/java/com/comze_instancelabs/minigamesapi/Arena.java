@@ -18,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
 import com.comze_instancelabs.minigamesapi.events.ArenaStartEvent;
@@ -35,14 +34,14 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 public class Arena {
 
 	// Plugin the arena belongs to
-	JavaPlugin plugin;
-	PluginInstance pli;
+	private JavaPlugin plugin;
+	private PluginInstance pli;
 	private ArcadeInstance ai;
 	private boolean isArcadeMain = false;
 	private boolean isSuccessfullyInitialized = false;
 
 	private ArrayList<Location> spawns = new ArrayList<Location>();
-	HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
+	private HashMap<String, Location> pspawnloc = new HashMap<String, Location>();
 	public HashMap<String, String> lastdamager = new HashMap<String, String>();
 	public HashMap<String, Integer> temp_kill_count = new HashMap<String, Integer>();
 	public HashMap<String, Integer> temp_death_count = new HashMap<String, Integer>();

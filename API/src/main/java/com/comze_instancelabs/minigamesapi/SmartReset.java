@@ -106,12 +106,12 @@ public class SmartReset implements Runnable {
 		}
 
 		if (changed.size() != 0) {
-			Bukkit.getScheduler().runTaskLater(a.plugin, this, 2L);
+			Bukkit.getScheduler().runTaskLater(a.getPlugin(), this, 2L);
 			return;
 		}
 
 		a.setArenaState(ArenaState.JOIN);
-		Util.updateSign(a.plugin, a);
+		Util.updateSign(a.getPlugin(), a);
 
 		ArenaLogger.debug(failedblocks.size() + " to redo.");
 
@@ -142,8 +142,8 @@ public class SmartReset implements Runnable {
 	 */
 	public void reset() {
 		time = System.currentTimeMillis();
-		a.plugin.getLogger().info(changed.size() + " to reset for arena " + a.getInternalName() + ".");
-		Bukkit.getScheduler().runTask(a.plugin, this);
+		a.getPlugin().getLogger().info(changed.size() + " to reset for arena " + a.getInternalName() + ".");
+		Bukkit.getScheduler().runTask(a.getPlugin(), this);
 	}
 
 	/**
@@ -155,13 +155,13 @@ public class SmartReset implements Runnable {
 				resetSmartResetBlock(ablock);
 			} catch (Exception e) {
 				a.setArenaState(ArenaState.JOIN);
-				Util.updateSign(a.plugin, a);
+				Util.updateSign(a.getPlugin(), a);
 			}
 		}
 
 		changed.clear();
 		a.setArenaState(ArenaState.JOIN);
-		Util.updateSign(a.plugin, a);
+		Util.updateSign(a.getPlugin(), a);
 	}
 
 	public void resetSmartResetBlock(SmartArenaBlock ablock) {
