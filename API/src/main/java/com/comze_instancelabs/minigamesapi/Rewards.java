@@ -226,8 +226,8 @@ public class Rewards {
 
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_won);
 				Util.sendMessage(plugin, p, received_rewards_msg);
-				if (plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.getAPI().version.startsWith("v1_8")
-						|| plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.getAPI().version.startsWith("v1_9")) {
+				if (plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
+				{
 					Effects.playTitle(p, pli.getMessagesConfig().you_won, 0);
 				}
 
@@ -249,8 +249,8 @@ public class Rewards {
 				}
 			} else {
 				Util.sendMessage(plugin, p, pli.getMessagesConfig().you_lost);
-				if (plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.getAPI().version.startsWith("v1_8")
-						|| plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.getAPI().version.startsWith("v1_9")) {
+				if (plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
+				{
 					Effects.playTitle(p, pli.getMessagesConfig().you_lost, 0);
 				}
 				MinigamesAPI.getAPI().getPluginInstance(plugin).getStatsInstance().lose(p_);

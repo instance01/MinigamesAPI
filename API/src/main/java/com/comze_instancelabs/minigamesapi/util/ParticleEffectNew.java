@@ -178,17 +178,17 @@ public enum ParticleEffectNew {
 
 	public void animateReflected(Player p, Location location, float speed, int count) {
 		try {
-			Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().version + ".entity.CraftPlayer").getMethod("getHandle");
-			Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".EntityPlayer").getField("playerConnection");
+			Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().internalServerVersion + ".entity.CraftPlayer").getMethod("getHandle");
+			Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EntityPlayer").getField("playerConnection");
 			playerConnection.setAccessible(true);
-			Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + ".Packet"));
+			Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Packet"));
 
 			String packetname = "PacketPlayOutWorldParticles";
-			if (MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_6_R2") || MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_9_R1") || MinigamesAPI.getAPI().version.equalsIgnoreCase("v1_9_R2")) {
+			if (MinigamesAPI.getAPI().internalServerVersion.equalsIgnoreCase("v1_6_R2")) {
 				packetname = "Packet63WorldParticles";
 			}
 
-			Constructor packetConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().version + "." + packetname).getConstructor();
+			Constructor packetConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + "." + packetname).getConstructor();
 
 			Object packet = packetConstr.newInstance();
 			setValue(packet, "a", packetName.replace("%id%", "" + _id).replace("%data%", "" + _data));
