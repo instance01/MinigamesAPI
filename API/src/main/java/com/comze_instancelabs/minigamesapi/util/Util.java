@@ -423,6 +423,8 @@ public class Util {
 	}
 
 	public static void updateSign(JavaPlugin plugin, Arena arena) {
+		if (arena == null) return;
+		
 		Sign s = getSignFromArena(plugin, arena.getInternalName());
 		if (s != null) {
 			ArenaLogger.debug("Updating sign for arena " + arena.getInternalName() + " in " + plugin.getName());

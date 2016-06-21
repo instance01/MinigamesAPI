@@ -790,6 +790,19 @@ public class ArenaListener implements Listener {
 			}
 		}
 	}
+	
+	private boolean checkLocationMatchesSign(Location l, Sign s) {
+		if (l != null) {
+			if (l.getWorld() != null) {
+				if (l.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
+					if (l.distance(s.getLocation()) < 1) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	@EventHandler
 	public void onSignUse(PlayerInteractEvent event) {
@@ -817,39 +830,26 @@ public class ArenaListener implements Listener {
 				} else {
 					// try getting random sign
 					Location l = Util.getComponentForArenaRaw(plugin, "random", "sign");
-					if (l != null) {
-						if (l.getWorld() != null) {
-							if (l.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
-								if (l.distance(s.getLocation()) < 1) {
-									for (Arena a : pli.getArenas()) {
-										if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
-											if (!a.containsPlayer(event.getPlayer().getName())) {
-												a.joinPlayerLobby(event.getPlayer().getName());
-												Util.updateSign(plugin, arena);
-												return;
-											}
-										}
-									}
+					if (checkLocationMatchesSign(l, s)) {
+						for (Arena a : pli.getArenas()) {
+							if (a.getArenaState() == ArenaState.JOIN || a.getArenaState() == ArenaState.STARTING) {
+								if (!a.containsPlayer(event.getPlayer().getName())) {
+									a.joinPlayerLobby(event.getPlayer().getName());
+									Util.updateSign(plugin, a);
+									return;
 								}
 							}
 						}
 					}
 					// try getting leave sign
 					if (pli.containsGlobalPlayer(event.getPlayer().getName())) {
-						int count = 0;
 						if (pli.getArenasConfig().getConfig().isSet("arenas.leave")) {
 							for (String str : pli.getArenasConfig().getConfig().getConfigurationSection("arenas.leave.").getKeys(false)) {
 								Location loc = Util.getComponentForArenaRaw(plugin, "leave." + str, "sign");
-								if (loc != null) {
-									if (loc.getWorld() != null) {
-										if (loc.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName())) {
-											if (loc.distance(s.getLocation()) < 1) {
-												pli.global_players.get(event.getPlayer().getName()).leavePlayer(event.getPlayer().getName(), false, false);
-												Util.updateSign(plugin, arena);
-												return;
-											}
-										}
-									}
+								if (checkLocationMatchesSign(loc, s)) {
+									pli.global_players.get(event.getPlayer().getName()).leavePlayer(event.getPlayer().getName(), false, false);
+									Util.updateSign(plugin, pli.getArenaByName("leave"));
+									return;
 								}
 							}
 						}
