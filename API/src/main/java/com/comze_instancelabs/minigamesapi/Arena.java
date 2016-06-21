@@ -633,6 +633,7 @@ public class Arena {
 				if (pli.global_arcade_spectator.containsKey(playername)) {
 					pli.global_arcade_spectator.remove(playername);
 				}
+				// TODO Do we need null check here? It already returns if p is null (see above)
 				if (p != null) {
 					p.removePotionEffect(PotionEffectType.JUMP);
 					p.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -655,6 +656,14 @@ public class Arena {
 					p.removePotionEffect(PotionEffectType.INVISIBILITY);
 					pli.getSpectatorManager().setSpectate(p, false);
 					pli.getStatsInstance().updateSQLKillsDeathsAfter(p, this);
+					
+					if (hasLeaveCommand()) {
+						Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+							public void run() {
+								playLeaveCommand(p);
+							}
+						}, 10L);
+					}
 				}
 				if (pli.getClassesHandler().lasticonm.containsKey(p.getName())) {
 					IconMenu iconm = pli.getClassesHandler().lasticonm.get(p.getName());
@@ -794,6 +803,17 @@ public class Arena {
 			}, 30L);
 			return;
 		}
+	}
+
+	protected void playLeaveCommand(Player p) {
+		final String path = "arenas." + name + ".leavecommand";
+		final String leavecommand = pli.getArenasConfig().getConfig().getString(path);
+		p.getServer().dispatchCommand(p, leavecommand);
+	}
+
+	private boolean hasLeaveCommand() {
+		final String path = "arenas." + name + ".leavecommand";
+		return pli.getArenasConfig().getConfig().isSet(path);
 	}
 
 	/**
