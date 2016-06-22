@@ -749,6 +749,13 @@ public class Arena {
 					if (ai == null || a.isArcadeMain()) {
 						if (a.mainlobby != null) {
 							Util.teleportPlayerFixed(p, a.mainlobby);
+							if (hasLeaveCommand()) {
+								Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+									public void run() {
+										playLeaveCommand(p);
+									}
+								}, 10L);
+							}
 						} else if (a.waitinglobby != null) {
 							Util.teleportPlayerFixed(p, a.waitinglobby);
 						}
