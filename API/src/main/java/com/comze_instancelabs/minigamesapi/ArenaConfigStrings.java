@@ -12,24 +12,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package com.comze_instancelabs.minigamesapi;
 
-public enum ArenaType
+/**
+ * Strings for arenas config.
+ * 
+ * @author mepeisen
+ */
+public interface ArenaConfigStrings
 {
     
-    /**
-     * Standard arena with lobby + spawn and lobby countdown; can have multiple spawns too
-     */
-    DEFAULT,
+    /** arenas lower boundary. */
+    String BOUNDS_LOW = "bounds.low"; //$NON-NLS-1$
     
-    /**
-     * Players just join the game whenever they like, no lobby countdowns or arena/sign states; doesn't allow multiple spawns
-     */
-    JUMPNRUN,
-    
-    /**
-     * Default arena + automatic regeneration
-     */
-    REGENERATION
+    /** arenas higher boundary. */
+    String BOUNDS_HIGH = "bounds.high"; //$NON-NLS-1$
     
 }
