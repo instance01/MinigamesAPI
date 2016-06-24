@@ -1,3 +1,17 @@
+/*
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.comze_instancelabs.minigamesapi.util;
 
 import java.io.Serializable;
@@ -15,110 +29,130 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
 
-public class ArenaBlock implements Serializable {
-    private static final long serialVersionUID = -1894759842709524780L;
-
-    private int x, y, z;
-    private String world;
-    private Material m;
-    private byte data;
+public class ArenaBlock implements Serializable
+{
+    private static final long   serialVersionUID = -1894759842709524780L;
+    
+    private final int           x, y, z;
+    private final String        world;
+    private final Material      m;
+    private byte                data;
     private ArrayList<Material> item_mats;
-    private ArrayList<Byte> item_data;
-    private ArrayList<Integer> item_amounts;
-    private ArrayList<String> item_displaynames;
-
+    private ArrayList<Byte>     item_data;
+    private ArrayList<Integer>  item_amounts;
+    private ArrayList<String>   item_displaynames;
+    
     // optional stuff
-    private ArrayList<Boolean> item_splash;
-
-    private ItemStack[] inv;
-
-    public ArenaBlock(Block b, boolean c) {
-        m = b.getType();
-        x = b.getX();
-        y = b.getY();
-        z = b.getZ();
-        data = b.getData();
-        world = b.getWorld().getName();
-        if (c) {
-            inv = ((Chest) b.getState()).getInventory().getContents();
-            item_mats = new ArrayList<Material>();
-            item_data = new ArrayList<Byte>();
-            item_amounts = new ArrayList<Integer>();
-            item_displaynames = new ArrayList<String>();
-            item_splash = new ArrayList<Boolean>();
-
-            for (ItemStack i : ((Chest) b.getState()).getInventory().getContents()) {
-                if (i != null) {
-                    item_mats.add(i.getType());
-                    item_data.add(i.getData().getData());
-                    item_amounts.add(i.getAmount());
-                    item_displaynames.add(i.getItemMeta().getDisplayName());
-                    if (i.getType() == Material.POTION && i.getDurability() > 0 && i.getData().getData() > 0) {
-                        Potion potion = Potion.fromDamage(i.getDurability() & 0x3F);
-                        item_splash.add(potion.isSplash());
-                    } else {
-                        item_splash.add(false);
+    private ArrayList<Boolean>  item_splash;
+    
+    private ItemStack[]         inv;
+    
+    public ArenaBlock(final Block b, final boolean c)
+    {
+        this.m = b.getType();
+        this.x = b.getX();
+        this.y = b.getY();
+        this.z = b.getZ();
+        this.data = b.getData();
+        this.world = b.getWorld().getName();
+        if (c)
+        {
+            this.inv = ((Chest) b.getState()).getInventory().getContents();
+            this.item_mats = new ArrayList<>();
+            this.item_data = new ArrayList<>();
+            this.item_amounts = new ArrayList<>();
+            this.item_displaynames = new ArrayList<>();
+            this.item_splash = new ArrayList<>();
+            
+            for (final ItemStack i : ((Chest) b.getState()).getInventory().getContents())
+            {
+                if (i != null)
+                {
+                    this.item_mats.add(i.getType());
+                    this.item_data.add(i.getData().getData());
+                    this.item_amounts.add(i.getAmount());
+                    this.item_displaynames.add(i.getItemMeta().getDisplayName());
+                    if (i.getType() == Material.POTION && i.getDurability() > 0 && i.getData().getData() > 0)
+                    {
+                        final Potion potion = Potion.fromDamage(i.getDurability() & 0x3F);
+                        this.item_splash.add(potion.isSplash());
+                    }
+                    else
+                    {
+                        this.item_splash.add(false);
                     }
                 }
             }
         }
     }
-
-    public ArenaBlock(Location l) {
-        m = Material.AIR;
-        x = l.getBlockX();
-        y = l.getBlockY();
-        z = l.getBlockZ();
-        world = l.getWorld().getName();
+    
+    public ArenaBlock(final Location l)
+    {
+        this.m = Material.AIR;
+        this.x = l.getBlockX();
+        this.y = l.getBlockY();
+        this.z = l.getBlockZ();
+        this.world = l.getWorld().getName();
     }
-
-    public Block getBlock() {
-        World w = Bukkit.getWorld(world);
+    
+    public Block getBlock()
+    {
+        final World w = Bukkit.getWorld(this.world);
         if (w == null)
+        {
             return null;
-        Block b = w.getBlockAt(x, y, z);
+        }
+        final Block b = w.getBlockAt(this.x, this.y, this.z);
         return b;
     }
-
-    public Material getMaterial() {
-        return m;
+    
+    public Material getMaterial()
+    {
+        return this.m;
     }
-
-    public Byte getData() {
-        return data;
+    
+    public Byte getData()
+    {
+        return this.data;
     }
-
-    public ItemStack[] getInventory() {
-        return inv;
+    
+    public ItemStack[] getInventory()
+    {
+        return this.inv;
     }
-
-    public ArrayList<ItemStack> getNewInventory() {
-        int c = 0;
-        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        for (int i = 0; i < item_mats.size(); i++) {
-            ItemStack item = new ItemStack(item_mats.get(i), item_amounts.get(i), item_data.get(i));
-            ItemMeta im = item.getItemMeta();
-            im.setDisplayName(item_displaynames.get(i));
+    
+    public ArrayList<ItemStack> getNewInventory()
+    {
+        final int c = 0;
+        final ArrayList<ItemStack> ret = new ArrayList<>();
+        for (int i = 0; i < this.item_mats.size(); i++)
+        {
+            ItemStack item = new ItemStack(this.item_mats.get(i), this.item_amounts.get(i), this.item_data.get(i));
+            final ItemMeta im = item.getItemMeta();
+            im.setDisplayName(this.item_displaynames.get(i));
             item.setItemMeta(im);
-            if (item.getType() == Material.POTION && item.getDurability() > 0) {
-                Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
-                potion.setSplash(item_splash.get(i));
-                item = potion.toItemStack(item_amounts.get(i));
+            if (item.getType() == Material.POTION && item.getDurability() > 0)
+            {
+                final Potion potion = Potion.fromDamage(item.getDurability() & 0x3F);
+                potion.setSplash(this.item_splash.get(i));
+                item = potion.toItemStack(this.item_amounts.get(i));
             }
             ret.add(item);
         }
         return ret;
     }
-
-    public static ItemStack getEnchantmentBook(Map<Enchantment, Integer> t) {
-        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
-        ItemMeta meta = book.getItemMeta();
-        int i = 0;
-        for (Enchantment e : t.keySet()) {
+    
+    public static ItemStack getEnchantmentBook(final Map<Enchantment, Integer> t)
+    {
+        final ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
+        final ItemMeta meta = book.getItemMeta();
+        final int i = 0;
+        for (final Enchantment e : t.keySet())
+        {
             meta.addEnchant(e, t.get(e), true);
         }
         book.setItemMeta(meta);
         return book;
     }
-
+    
 }
