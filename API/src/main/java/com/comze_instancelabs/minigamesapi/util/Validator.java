@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
 import com.comze_instancelabs.minigamesapi.ArenaLogger;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
@@ -97,9 +98,9 @@ public class Validator
     public static boolean isArenaValid(final JavaPlugin plugin, final String arena)
     {
         final FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
-        if (!config.isSet("arenas." + arena + ".lobby") || !config.isSet("arenas." + arena + ".spawns.spawn0"))
+        if (!config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".lobby") || !config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.spawn0"))
         {
-            ArenaLogger.debug(ChatColor.AQUA + arena + " is invalid! lobby:" + config.isSet("arenas." + arena + ".lobby") + " spawns.spawn0:" + config.isSet("arenas." + arena + ".spawns.spawn0"));
+            ArenaLogger.debug(ChatColor.AQUA + arena + " is invalid! lobby:" + config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".lobby") + " spawns.spawn0:" + config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.spawn0"));
             return false;
         }
         return true;
@@ -114,7 +115,7 @@ public class Validator
     public static boolean isArenaValid(final JavaPlugin plugin, final String arena, final FileConfiguration cf)
     {
         final FileConfiguration config = cf;
-        if (!config.isSet("arenas." + arena + ".lobby") || !config.isSet("arenas." + arena + ".spawns.spawn0"))
+        if (!config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".lobby") || !config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.spawn0"))
         {
             return false;
         }

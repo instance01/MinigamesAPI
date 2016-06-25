@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
 import com.comze_instancelabs.minigamesapi.ArenaState;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
@@ -63,7 +64,7 @@ public class ArcadeInstance
         {
             return;
         }
-        if (this.players.size() >= this.plugin.getConfig().getInt("config.arcade.min_players"))
+        if (this.players.size() >= this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_ARCADE_MIN_PLAYERS))
         {
             boolean msg = true;
             if (!this.started)
@@ -110,7 +111,7 @@ public class ArcadeInstance
         else
         {
             p.sendMessage(MinigamesAPI.getAPI().getPluginInstance(this.plugin).getMessagesConfig().arcade_joined_waiting.replaceAll("<count>",
-                    Integer.toString(this.plugin.getConfig().getInt("config.arcade.min_players") - this.players.size())));
+                    Integer.toString(this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_ARCADE_MIN_PLAYERS) - this.players.size())));
         }
     }
     
@@ -201,7 +202,7 @@ public class ArcadeInstance
         this.started = true;
         Collections.shuffle(this.minigames);
         
-        this.currentlobbycount = this.plugin.getConfig().getInt("config.arcade.lobby_countdown") + 1;
+        this.currentlobbycount = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_ARCADE_LOBBY_COUNTDOWN) + 1;
         final ArcadeInstance ai = this;
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(this.plugin);
         
@@ -261,14 +262,14 @@ public class ArcadeInstance
         temp.clear();
         temp.addAll(hs);
         final ArcadeInstance ai = this;
-        if (stopOfGame && this.plugin.getConfig().getBoolean("config.arcade.infinite_mode.enabled"))
+        if (stopOfGame && this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_ARCADE_INFINITE_ENABLED))
         {
             if (temp.size() > 1)
             {
                 for (final String p_ : temp)
                 {
                     Util.sendMessage(this.plugin, Bukkit.getPlayer(p_), MinigamesAPI.getAPI().getPluginInstance(this.plugin).getMessagesConfig().arcade_new_round.replaceAll("<count>",
-                            Integer.toString(this.plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round"))));
+                            Integer.toString(this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_ARCADE_INFINITE_SECONDS_TO_NEW_ROUND))));
                 }
                 Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                     for (final String p_ : temp)
@@ -279,7 +280,7 @@ public class ArcadeInstance
                         }
                     }
                     ai.startArcade();
-                }, Math.max(40L, 20L * this.plugin.getConfig().getInt("config.arcade.infinite_mode.seconds_to_new_round")));
+                }, Math.max(40L, 20L * this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_ARCADE_INFINITE_SECONDS_TO_NEW_ROUND)));
             }
         }
     }
@@ -296,9 +297,9 @@ public class ArcadeInstance
             final PluginInstance mg = this.minigames.get(this.currentindex);
             if (mg.getArenas().size() > 0)
             {
-                if (mg.getPlugin().getConfig().getBoolean("config.arcade.arena_to_prefer.enabled"))
+                if (mg.getPlugin().getConfig().getBoolean(ArenaConfigStrings.CONFIG_ARCADE_ARENA_TO_PREFER_ENABLED))
                 {
-                    final String arenaname = mg.getPlugin().getConfig().getString("config.arcade.arena_to_prefer.arena");
+                    final String arenaname = mg.getPlugin().getConfig().getString(ArenaConfigStrings.CONFIG_ARCADE_ARENA_TO_PREFER_ARENA);
                     final Arena a = mg.getArenaByName(arenaname);
                     if (a != null)
                     {
@@ -338,12 +339,12 @@ public class ArcadeInstance
             final ArrayList<String> temp = new ArrayList<>(ArcadeInstance.this.players);
             
             final PluginInstance mg = ArcadeInstance.this.minigames.get(ArcadeInstance.this.currentindex);
-            if (mg.getPlugin().getConfig().getBoolean("config.arcade.enabled"))
+            if (mg.getPlugin().getConfig().getBoolean(ArenaConfigStrings.CONFIG_ARCADE_ENABLED))
             {
                 Arena a = null;
-                if (mg.getPlugin().getConfig().getBoolean("config.arcade.arena_to_prefer.enabled"))
+                if (mg.getPlugin().getConfig().getBoolean(ArenaConfigStrings.CONFIG_ARCADE_ARENA_TO_PREFER_ENABLED))
                 {
-                    final String arenaname = mg.getPlugin().getConfig().getString("config.arcade.arena_to_prefer.arena");
+                    final String arenaname = mg.getPlugin().getConfig().getString(ArenaConfigStrings.CONFIG_ARCADE_ARENA_TO_PREFER_ARENA);
                     a = mg.getArenaByName(arenaname);
                     if (a == null)
                     {
@@ -382,7 +383,7 @@ public class ArcadeInstance
                             {
                                 Bukkit.getPlayer(p_)
                                         .sendMessage(mg.getMessagesConfig().arcade_next_minigame.replaceAll("<minigame>", Character.toUpperCase(minigame.charAt(0)) + minigame.substring(1)));
-                                a.joinPlayerLobby(p_, ai, ArcadeInstance.this.plugin.getConfig().getBoolean("config.arcade.show_each_lobby_countdown"), false);
+                                a.joinPlayerLobby(p_, ai, ArcadeInstance.this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_ARCADE_SHOW_EACH_LOBBY_COUNTDOWN), false);
                             }
                             pli.getSpectatorManager().setSpectate(Bukkit.getPlayer(p_), false);
                         }

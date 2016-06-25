@@ -60,21 +60,21 @@ public class Rewards
     
     public void reloadVariables()
     {
-        this.economyrewards = this.plugin.getConfig().getBoolean("config.rewards.economy");
-        this.itemrewards = this.plugin.getConfig().getBoolean("config.rewards.item_reward");
-        this.commandrewards = this.plugin.getConfig().getBoolean("config.rewards.command_reward");
-        this.kill_economyrewards = this.plugin.getConfig().getBoolean("config.rewards.economy_for_kills");
-        this.kill_commandrewards = this.plugin.getConfig().getBoolean("config.rewards.command_reward_for_kills");
-        this.participation_economyrewards = this.plugin.getConfig().getBoolean("config.rewards.economy_for_participation");
-        this.participation_commandrewards = this.plugin.getConfig().getBoolean("config.rewards.command_reward_for_participation");
+        this.economyrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_ECONOMY);
+        this.itemrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_ITEM_REWARD);
+        this.commandrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_COMMAND_REWARD);
+        this.kill_economyrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_ECONOMY_FOR_KILLS);
+        this.kill_commandrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_COMMAND_REWARD_FOR_KILLS);
+        this.participation_economyrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_ECONOMY_FOR_PARTICIPATION);
+        this.participation_commandrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_COMMAND_REWARD_FOR_PARTICIPATION);
         
-        this.econ_reward = this.plugin.getConfig().getInt("config.rewards.economy_reward");
-        this.command = this.plugin.getConfig().getString("config.rewards.command");
-        this.items = Util.parseItems(this.plugin.getConfig().getString("config.rewards.item_reward_ids")).toArray(new ItemStack[0]);
-        this.kill_econ_reward = this.plugin.getConfig().getInt("config.rewards.economy_reward_for_kills");
-        this.kill_command = this.plugin.getConfig().getString("config.rewards.command_for_kills");
-        this.participation_econ_reward = this.plugin.getConfig().getInt("config.rewards.economy_reward_for_participation");
-        this.participation_command = this.plugin.getConfig().getString("config.rewards.command_for_participation");
+        this.econ_reward = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_REWARDS_ECONOMY_REWARD);
+        this.command = this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_REWARDS_COMMAND);
+        this.items = Util.parseItems(this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_REWARDS_ITEM_REWARD_IDS)).toArray(new ItemStack[0]);
+        this.kill_econ_reward = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_REWARDS_ECONOMY_REWARD_FOR_KILLS);
+        this.kill_command = this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_REWARDS_COMMAND_FOR_KILLS);
+        this.participation_econ_reward = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_REWARDS_ECONOMY_REWARD_FOR_PARTICIPATION);
+        this.participation_command = this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_REWARDS_COMMAND_FOR_PARTICIPATION);
     }
     
     /**
@@ -263,7 +263,7 @@ public class Rewards
                 
                 try
                 {
-                    if (this.plugin.getConfig().getBoolean("config.broadcast_win"))
+                    if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BROADCAST_WIN))
                     {
                         final String msgs[] = pli.getMessagesConfig().server_broadcast_winner.replaceAll("<player>", p_).replaceAll("<arena>", a.getInternalName()).split(";");
                         for (final String msg : msgs)
@@ -290,7 +290,7 @@ public class Rewards
                 
                 Util.sendMessage(this.plugin, p, pli.getMessagesConfig().you_won);
                 Util.sendMessage(this.plugin, p, received_rewards_msg);
-                if (this.plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EFFECTS_1_8_TITLES) && MinigamesAPI.SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
                 {
                     Effects.playTitle(p, pli.getMessagesConfig().you_won, 0);
                 }
@@ -308,7 +308,7 @@ public class Rewards
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.command.replaceAll("<player>", p_));
                 }
                 
-                if (this.plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners"))
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SPAWN_FIREWORKS_FOR_WINNERS))
                 {
                     Bukkit.getScheduler().runTaskLater(this.plugin, () -> Util.spawnFirework(p), 20L);
                 }
@@ -316,7 +316,7 @@ public class Rewards
             else
             {
                 Util.sendMessage(this.plugin, p, pli.getMessagesConfig().you_lost);
-                if (this.plugin.getConfig().getBoolean("config.effects.1_8_titles") && MinigamesAPI.SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EFFECTS_1_8_TITLES) && MinigamesAPI.SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
                 {
                     Effects.playTitle(p, pli.getMessagesConfig().you_lost, 0);
                 }

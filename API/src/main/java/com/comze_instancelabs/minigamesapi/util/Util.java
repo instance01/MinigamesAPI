@@ -166,7 +166,7 @@ public class Util
     {
         if (Validator.isArenaValid(plugin, arenaname))
         {
-            final String base = "arenas." + arenaname + "." + component + count;
+            final String base = ArenaConfigStrings.ARENAS_PREFIX + arenaname + "." + component + count;
             final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
             if (!pli.getArenasConfig().getConfig().isSet(base + ".world") || Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")) == null)
             {
@@ -183,7 +183,7 @@ public class Util
     {
         if (Validator.isArenaValid(plugin, arenaname))
         {
-            final String base = "arenas." + arenaname + "." + component;
+            final String base = ArenaConfigStrings.ARENAS_PREFIX + arenaname + "." + component;
             final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
             if (!pli.getArenasConfig().getConfig().isSet(base + ".world") || Bukkit.getWorld(pli.getArenasConfig().getConfig().getString(base + ".world")) == null)
             {
@@ -198,7 +198,7 @@ public class Util
     
     public static Location getComponentForArenaRaw(final JavaPlugin plugin, final String arenaname, final String component)
     {
-        final String base = "arenas." + arenaname + "." + component;
+        final String base = ArenaConfigStrings.ARENAS_PREFIX + arenaname + "." + component;
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
         if (pli.getArenasConfig().getConfig().isSet(base))
         {
@@ -220,13 +220,13 @@ public class Util
     
     public static boolean isComponentForArenaValidRaw(final JavaPlugin plugin, final String arenaname, final String component)
     {
-        final String base = "arenas." + arenaname + "." + component;
+        final String base = ArenaConfigStrings.ARENAS_PREFIX + arenaname + "." + component;
         return MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig().isSet(base);
     }
     
     public static void saveComponentForArena(final JavaPlugin plugin, final String arenaname, final String component, final Location comploc)
     {
-        final String base = "arenas." + arenaname + "." + component;
+        final String base = ArenaConfigStrings.ARENAS_PREFIX + arenaname + "." + component;
         final ArenasConfig config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig();
         config.getConfig().set(base + ".world", comploc.getWorld().getName());
         config.getConfig().set(base + ".location.x", comploc.getX());
@@ -265,9 +265,9 @@ public class Util
     {
         final FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
         final ArrayList<Location> ret = new ArrayList<>();
-        if (config.isSet("arenas." + arena + ".spawns"))
+        if (config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns"))
         {
-            for (final String spawn : config.getConfigurationSection("arenas." + arena + ".spawns.").getKeys(false))
+            for (final String spawn : config.getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.").getKeys(false))
             {
                 ret.add(Util.getComponentForArena(plugin, arena, "spawns." + spawn));
             }
@@ -338,13 +338,13 @@ public class Util
     public static Sign getSignFromArena(final JavaPlugin plugin, final String arena)
     {
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-        if (!pli.getArenasConfig().getConfig().isSet("arenas." + arena + ".sign.world"))
+        if (!pli.getArenasConfig().getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.world"))
         {
             return null;
         }
-        final Location b_ = new Location(Bukkit.getServer().getWorld(pli.getArenasConfig().getConfig().getString("arenas." + arena + ".sign.world")),
-                pli.getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.x"), pli.getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.y"),
-                pli.getArenasConfig().getConfig().getInt("arenas." + arena + ".sign.loc.z"));
+        final Location b_ = new Location(Bukkit.getServer().getWorld(pli.getArenasConfig().getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.world")),
+                pli.getArenasConfig().getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.x"), pli.getArenasConfig().getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.y"),
+                pli.getArenasConfig().getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.z"));
         if (b_ != null)
         {
             if (b_.getWorld() != null)
@@ -540,7 +540,7 @@ public class Util
         {
             return ret;
         }
-        for (final String arena : config.getConfigurationSection("arenas.").getKeys(false))
+        for (final String arena : config.getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX).getKeys(false))
         {
             if (Validator.isArenaValid(plugin, arena, cf.getConfig()))
             {
@@ -769,7 +769,7 @@ public class Util
     {
         ArenaLogger.debug("Giving lobby items to " + p.getName());
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-        final ItemStack classes_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.classes_selection_item"));
+        final ItemStack classes_item = new ItemStack(plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_CLASS_SELECTION_ITEM));
         if (classes_item.getType() != Material.AIR)
         {
             final ItemMeta cimeta = classes_item.getItemMeta();
@@ -777,9 +777,9 @@ public class Util
             classes_item.setItemMeta(cimeta);
         }
         
-        if (!plugin.getConfig().getBoolean("config.bungee.game_on_join"))
+        if (!plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUNGEE_GAME_ON_JOIN))
         {
-            final ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.exit_item"));
+            final ItemStack exit_item = new ItemStack(plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_EXIT_ITEM));
             if (exit_item.getType() != Material.AIR)
             {
                 final ItemMeta exitimeta = exit_item.getItemMeta();
@@ -790,7 +790,7 @@ public class Util
             p.updateInventory();
         }
         
-        final ItemStack achievement_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.achievement_item"));
+        final ItemStack achievement_item = new ItemStack(plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_ACHIEVEMENT_ITEMS));
         if (achievement_item.getType() != Material.AIR)
         {
             final ItemMeta achievement_itemmeta = achievement_item.getItemMeta();
@@ -798,7 +798,7 @@ public class Util
             achievement_item.setItemMeta(achievement_itemmeta);
         }
         
-        final ItemStack shop_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.shop_selection_item"));
+        final ItemStack shop_item = new ItemStack(plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_SHOP_SELECTION_ITEM));
         if (shop_item.getType() != Material.AIR)
         {
             final ItemMeta shop_itemmeta = shop_item.getItemMeta();
@@ -806,7 +806,7 @@ public class Util
             shop_item.setItemMeta(shop_itemmeta);
         }
         
-        if (plugin.getConfig().getBoolean("config.classes_enabled"))
+        if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_CLASSES_ENABLED))
         {
             p.getInventory().addItem(classes_item);
         }
@@ -814,20 +814,20 @@ public class Util
         {
             p.getInventory().addItem(achievement_item);
         }
-        if (plugin.getConfig().getBoolean("config.shop_enabled"))
+        if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SHOP_ENABLED))
         {
             p.getInventory().addItem(shop_item);
         }
         p.updateInventory();
         
         // custom lobby item
-        if (plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled"))
+        if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ENABLED_SUFFIX))
         {
-            final ItemStack custom_item0 = new ItemStack(plugin.getConfig().getInt("config.extra_lobby_item.item0.item"));
+            final ItemStack custom_item0 = new ItemStack(plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ITEM_SUFFIX));
             if (custom_item0.getType() != Material.AIR)
             {
                 final ItemMeta custom_item0meta = custom_item0.getItemMeta();
-                custom_item0meta.setDisplayName(plugin.getConfig().getString("config.extra_lobby_item.item0.name"));
+                custom_item0meta.setDisplayName(plugin.getConfig().getString(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_NAME_SUFFIX));
                 custom_item0.setItemMeta(custom_item0meta);
             }
             p.getInventory().addItem(custom_item0);
@@ -838,12 +838,12 @@ public class Util
     public static void giveSpectatorItems(final JavaPlugin plugin, final Player p)
     {
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-        final ItemStack s_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.spectator_item"));
+        final ItemStack s_item = new ItemStack(plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_SPECTATOR_ITEM));
         final ItemMeta s_imeta = s_item.getItemMeta();
         s_imeta.setDisplayName(pli.getMessagesConfig().spectator_item);
         s_item.setItemMeta(s_imeta);
         
-        final ItemStack exit_item = new ItemStack(plugin.getConfig().getInt("config.selection_items.exit_item"));
+        final ItemStack exit_item = new ItemStack(plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_EXIT_ITEM));
         final ItemMeta exitimeta = exit_item.getItemMeta();
         exitimeta.setDisplayName(pli.getMessagesConfig().exit_item);
         exit_item.setItemMeta(exitimeta);
@@ -891,7 +891,7 @@ public class Util
         c.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 100000));
         final Item i = w.dropItem(l, item);
         c.setPassenger(i);
-        if (plugin.getConfig().getBoolean("config.powerup_spawning.broadcast"))
+        if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_POWERUP_BROADCAST))
         {
             for (final String p_ : a.getAllPlayers())
             {
@@ -902,7 +902,7 @@ public class Util
                 }
             }
         }
-        if (plugin.getConfig().getBoolean("config.powerup_spawning.spawn_firework"))
+        if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_POWERUP_FIREWORKS))
         {
             Util.spawnFirework(l);
         }

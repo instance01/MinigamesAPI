@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
+
 public class MainSQL
 {
     
@@ -41,15 +43,15 @@ public class MainSQL
         
         if (mysql)
         {
-            this.MySQL = new MySQL(plugin.getConfig().getString("mysql.host"), "3306", plugin.getConfig().getString("mysql.database"), plugin.getConfig().getString("mysql.user"),
-                    plugin.getConfig().getString("mysql.pw"));
+            this.MySQL = new MySQL(plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_HOST), "3306", plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_DATABASE), plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_USER),
+                    plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_PW));
         }
         else
         {
-            this.SQLite = new SQLite(plugin.getConfig().getString("mysql.database"), plugin.getConfig().getString("mysql.user"), plugin.getConfig().getString("mysql.pw"));
+            this.SQLite = new SQLite(plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_DATABASE), plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_USER), plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_PW));
         }
         
-        if (plugin.getConfig().getBoolean("mysql.enabled") && this.MySQL != null)
+        if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED) && this.MySQL != null)
         {
             try
             {
@@ -58,21 +60,21 @@ public class MainSQL
             catch (final Exception e)
             {
                 System.out.println("Failed initializing MySQL. Disabling!");
-                plugin.getConfig().set("mysql.enabled", false);
+                plugin.getConfig().set(ArenaConfigStrings.CONFIG_MYSQL_ENABLED, false);
                 plugin.saveConfig();
             }
         }
-        else if (plugin.getConfig().getBoolean("mysql.enabled") && this.MySQL == null)
+        else if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED) && this.MySQL == null)
         {
             System.out.println("Failed initializing MySQL. Disabling!");
-            plugin.getConfig().set("mysql.enabled", false);
+            plugin.getConfig().set(ArenaConfigStrings.CONFIG_MYSQL_ENABLED, false);
             plugin.saveConfig();
         }
     }
     
     public void createTables()
     {
-        if (!this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             return;
         }
@@ -84,7 +86,7 @@ public class MainSQL
         
         try
         {
-            c.createStatement().execute("CREATE DATABASE IF NOT EXISTS `" + this.plugin.getConfig().getString("mysql.database") + "`");
+            c.createStatement().execute("CREATE DATABASE IF NOT EXISTS `" + this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_MYSQL_DATABASE) + "`");
             c.createStatement()
                     .execute("CREATE TABLE IF NOT EXISTS " + this.plugin.getName() + " (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, player VARCHAR(100), points INT, wins INT, loses INT, kills INT)");
             final ResultSet res = c.createStatement().executeQuery("SHOW COLUMNS FROM `" + this.plugin.getName() + "` LIKE 'kills'");
@@ -115,7 +117,7 @@ public class MainSQL
     
     public void updateWinnerStats(final Player p, final int reward, final boolean addwin)
     {
-        if (!this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             return;
         }
@@ -157,7 +159,7 @@ public class MainSQL
     
     public void updateLoserStats(final Player p)
     {
-        if (!this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             return;
         }
@@ -195,7 +197,7 @@ public class MainSQL
     
     public void updateKillerStats(final Player p, final int kills_)
     {
-        if (!this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             return;
         }
@@ -233,7 +235,7 @@ public class MainSQL
     
     public void updateDeathStats(final Player p, final int deaths_)
     {
-        if (!this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             return;
         }
@@ -271,7 +273,7 @@ public class MainSQL
     
     public int getPoints(final Player p)
     {
-        if (!this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             return -1;
         }
@@ -310,7 +312,7 @@ public class MainSQL
     
     public int getWins(final Player p)
     {
-        if (!this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             return -1;
         }

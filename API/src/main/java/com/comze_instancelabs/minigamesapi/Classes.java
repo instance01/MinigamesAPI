@@ -74,8 +74,8 @@ public class Classes
         }
         else
         {
-            iconm = new IconMenu(this.pli.getMessagesConfig().classes_item, (9 * this.plugin.getConfig().getInt("config.GUI.classes_gui_rows") > mincount - 1)
-                    ? 9 * this.plugin.getConfig().getInt("config.GUI.classes_gui_rows") : Math.round(mincount / 9) * 9 + 9, event -> {
+            iconm = new IconMenu(this.pli.getMessagesConfig().classes_item, (9 * this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_CLASSES_GUI_ROWS) > mincount - 1)
+                    ? 9 * this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_CLASSES_GUI_ROWS) : Math.round(mincount / 9) * 9 + 9, event -> {
                         if (event.getPlayer().getName().equalsIgnoreCase(p))
                         {
                             if (Classes.this.pli.global_players.containsKey(p))
@@ -448,7 +448,7 @@ public class Classes
     public boolean kitTakeMoney(final Player p, final String kit)
     {
         // Credits
-        if (this.plugin.getConfig().getBoolean("config.use_credits_instead_of_money_for_kits"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_USE_CREADITS_INSTEAD_MONEY_FOR_KITS))
         {
             final String uuid = p.getUniqueId().toString();
             int points = 0;
@@ -462,7 +462,7 @@ public class Classes
             {
                 points = MinigamesAPI.getAPI().statsglobal.getConfig().getInt("players." + uuid + ".points");
             }
-            if (this.plugin.getConfig().getBoolean("config.buy_classes_forever"))
+            if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUY_CLASSES_FOREVER))
             {
                 final ClassesConfig cl = this.pli.getClassesConfig();
                 if (!cl.getConfig().isSet("players.bought_kits." + p.getName() + "." + kit))
@@ -524,7 +524,7 @@ public class Classes
         }
         if (MinigamesAPI.economy)
         {
-            if (this.plugin.getConfig().getBoolean("config.buy_classes_forever"))
+            if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUY_CLASSES_FOREVER))
             {
                 final ClassesConfig cl = this.pli.getClassesConfig();
                 if (!cl.getConfig().isSet("players.bought_kits." + p.getName() + "." + kit))

@@ -124,19 +124,19 @@ public class PluginInstance
     
     public void reloadVariables()
     {
-        this.lobby_countdown = this.plugin.getConfig().getInt("config.countdowns.lobby_countdown") + 1;
-        this.ingame_countdown = this.plugin.getConfig().getInt("config.countdowns.ingame_countdown") + 1;
-        this.spectator_move_y_lock = this.plugin.getConfig().getBoolean("config.spectator.spectator_move_y_lock");
-        this.use_xp_bar_level = this.plugin.getConfig().getBoolean("config.use_xp_bar_level");
-        this.blood_effects = this.plugin.getConfig().getBoolean("config.effects.blood");
-        this.damage_identifier_effects = this.plugin.getConfig().getBoolean("config.effects.damage_identifier_holograms");
-        this.dead_in_fake_bed_effects = this.plugin.getConfig().getBoolean("config.effects.dead_in_fake_bed");
-        this.color_background_wool_of_signs = this.plugin.getConfig().getBoolean("config.color_background_wool_of_signs");
-        this.spectator_mode_1_8 = this.plugin.getConfig().getBoolean("config.effects.1_8_spectator_mode");
-        this.last_man_standing = this.plugin.getConfig().getBoolean("config.last_man_standing_wins");
-        this.old_reset = this.plugin.getConfig().getBoolean("config.use_old_reset_method");
-        this.show_classes_without_usage_permission = this.plugin.getConfig().getBoolean("config.show_classes_without_usage_permission");
-        this.chat_enabled = this.plugin.getConfig().getBoolean("config.chat_enabled");
+        this.lobby_countdown = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_LOBBY_COUNTDOWN) + 1;
+        this.ingame_countdown = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_INGAME_COUNTDOWN) + 1;
+        this.spectator_move_y_lock = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SPECTATOR_MOVE_Y_LOCK);
+        this.use_xp_bar_level = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_USE_XP_BAR_LEVEL);
+        this.blood_effects = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EFFECTS_BLOOD);
+        this.damage_identifier_effects = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EFFECTS_DMG_IDENTIFIER_HOLO);
+        this.dead_in_fake_bed_effects = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EFFECTS_DEAD_IN_FAKE_BED);
+        this.color_background_wool_of_signs = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_COLOR_BACKGROUND_WOOL);
+        this.spectator_mode_1_8 = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EFFECTS_1_8_SPECTATOR_MODE);
+        this.last_man_standing = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_LAST_MAN_STANDING_WINS);
+        this.old_reset = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_USE_OLD_RESET_METHOD);
+        this.show_classes_without_usage_permission = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SHOW_CLASSES_WITHOUT_PERM);
+        this.chat_enabled = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_CHAT_ENABLED);
         
         // Cache sign configuration
         for (final String state : ArenaState.getAllStateNames())

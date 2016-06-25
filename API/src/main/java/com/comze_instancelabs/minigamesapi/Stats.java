@@ -58,8 +58,8 @@ public class Stats
     
     public void reloadVariables()
     {
-        this.stats_kill_points = this.plugin.getConfig().getInt("config.stats.points_for_kill");
-        this.stats_win_points = this.plugin.getConfig().getInt("config.stats.points_for_win");
+        this.stats_kill_points = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_STATS_POINTS_FOR_KILL);
+        this.stats_win_points = this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_STATS_POINTS_FOR_WIN);
     }
     
     public void win(final String playername, final int count)
@@ -104,7 +104,7 @@ public class Stats
      */
     public void update(final String playername)
     {
-        if (this.plugin.getConfig().getBoolean("mysql.enabled"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
         {
             final Player p = Bukkit.getPlayer(playername);
             final String uuid = p.getUniqueId().toString();

@@ -333,13 +333,13 @@ public class Arena
                 this.isSuccessfullyInitialized = false;
             }
         }
-        if (Util.isComponentForArenaValid(this.plugin, this.getInternalName(), "lobbybounds.bounds.low")
-                && Util.isComponentForArenaValid(this.plugin, this.getInternalName(), "lobbybounds.bounds.high"))
+        if (Util.isComponentForArenaValid(this.plugin, this.getInternalName(), ArenaConfigStrings.LOBBY_BOUNDS_LOW)
+                && Util.isComponentForArenaValid(this.plugin, this.getInternalName(), ArenaConfigStrings.LOBBY_BOUNDS_HIGH))
         {
             try
             {
-                this.lobby_boundaries = new Cuboid(Util.getComponentForArena(this.plugin, this.getInternalName(), "lobbybounds.bounds.low"),
-                        Util.getComponentForArena(this.plugin, this.getInternalName(), "lobbybounds.bounds.high"));
+                this.lobby_boundaries = new Cuboid(Util.getComponentForArena(this.plugin, this.getInternalName(), ArenaConfigStrings.LOBBY_BOUNDS_LOW),
+                        Util.getComponentForArena(this.plugin, this.getInternalName(), ArenaConfigStrings.LOBBY_BOUNDS_HIGH));
             }
             catch (final Exception e)
             {
@@ -347,12 +347,12 @@ public class Arena
                 this.isSuccessfullyInitialized = false;
             }
         }
-        if (Util.isComponentForArenaValid(this.plugin, this.getInternalName(), "specbounds.bounds.low") && Util.isComponentForArenaValid(this.plugin, this.getInternalName(), "specbounds.bounds.high"))
+        if (Util.isComponentForArenaValid(this.plugin, this.getInternalName(), ArenaConfigStrings.SPEC_BOUNDS_LOW) && Util.isComponentForArenaValid(this.plugin, this.getInternalName(), ArenaConfigStrings.SPEC_BOUNDS_HIGH))
         {
             try
             {
-                this.spec_boundaries = new Cuboid(Util.getComponentForArena(this.plugin, this.getInternalName(), "specbounds.bounds.low"),
-                        Util.getComponentForArena(this.plugin, this.getInternalName(), "specbounds.bounds.high"));
+                this.spec_boundaries = new Cuboid(Util.getComponentForArena(this.plugin, this.getInternalName(), ArenaConfigStrings.SPEC_BOUNDS_LOW),
+                        Util.getComponentForArena(this.plugin, this.getInternalName(), ArenaConfigStrings.SPEC_BOUNDS_HIGH));
             }
             catch (final Exception e)
             {
@@ -361,15 +361,15 @@ public class Arena
             }
         }
         
-        if (Util.isComponentForArenaValid(this.plugin, this.getInternalName(), "specspawn"))
+        if (Util.isComponentForArenaValid(this.plugin, this.getInternalName(), ArenaConfigStrings.SPEC_SPAWN))
         {
-            this.specspawn = Util.getComponentForArena(this.plugin, this.getInternalName(), "specspawn");
+            this.specspawn = Util.getComponentForArena(this.plugin, this.getInternalName(), ArenaConfigStrings.SPEC_SPAWN);
         }
         
-        final String path = "arenas." + this.name + ".displayname";
+        final String path = ArenaConfigStrings.ARENAS_PREFIX + this.name + ArenaConfigStrings.DISPLAYNAME_SUFFIX;
         if (this.pli.getArenasConfig().getConfig().isSet(path))
         {
-            this.displayname = ChatColor.translateAlternateColorCodes('&', this.pli.getArenasConfig().getConfig().getString("arenas." + this.name + ".displayname"));
+            this.displayname = ChatColor.translateAlternateColorCodes('&', this.pli.getArenasConfig().getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + this.name + ArenaConfigStrings.DISPLAYNAME_SUFFIX));
         }
         else
         {
@@ -749,7 +749,7 @@ public class Arena
         {
             if (Validator.isPlayerOnline(playername))
             {
-                if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getInternalName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*"))
+                if (!Bukkit.getPlayer(playername).hasPermission(ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*"))
                 {
                     Util.sendMessage(this.plugin, Bukkit.getPlayer(playername), this.pli.getMessagesConfig().no_perm_to_join_arena.replaceAll("<arena>", this.getInternalName()));
                     return;
@@ -762,7 +762,7 @@ public class Arena
             
             // if player vip -> kick someone and continue
             System.out.println(playername + " is vip: " + Bukkit.getPlayer(playername).hasPermission("arenas.*"));
-            if (!Bukkit.getPlayer(playername).hasPermission("arenas." + this.getInternalName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*"))
+            if (!Bukkit.getPlayer(playername).hasPermission(ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName()) && !Bukkit.getPlayer(playername).hasPermission("arenas.*"))
             {
                 // no VIP.
                 return;
@@ -775,7 +775,7 @@ public class Arena
             {
                 if (Validator.isPlayerOnline(p_))
                 {
-                    if (!Bukkit.getPlayer(p_).hasPermission("arenas." + this.getInternalName()) && !Bukkit.getPlayer(p_).hasPermission("arenas.*"))
+                    if (!Bukkit.getPlayer(p_).hasPermission(ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName()) && !Bukkit.getPlayer(p_).hasPermission("arenas.*"))
                     {
                         this.leavePlayer(p_, false, true);
                         Bukkit.getPlayer(p_).sendMessage(this.pli.getMessagesConfig().you_got_kicked_because_vip_joined);
@@ -840,15 +840,15 @@ public class Arena
             Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinLobbyEvent(p, this.plugin, this));
             Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().you_joined_arena.replaceAll("<arena>", this.getDisplayName()));
             Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().minigame_description);
-            if (this.pli.getArenasConfig().getConfig().isSet("arenas." + this.getInternalName() + ".author"))
+            if (this.pli.getArenasConfig().getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName() + ArenaConfigStrings.AUTHOR_SUFFIX))
             {
                 Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().author_of_the_map.replaceAll("<arena>", this.getDisplayName()).replaceAll("<author>",
-                        this.pli.getArenasConfig().getConfig().getString("arenas." + this.getInternalName() + ".author")));
+                        this.pli.getArenasConfig().getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName() + ArenaConfigStrings.AUTHOR_SUFFIX)));
             }
-            if (this.pli.getArenasConfig().getConfig().isSet("arenas." + this.getInternalName() + ".description"))
+            if (this.pli.getArenasConfig().getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName() + ArenaConfigStrings.DESCRIPTION_SUFFIX))
             {
                 Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().description_of_the_map.replaceAll("<arena>", this.getDisplayName()).replaceAll("<description>",
-                        this.pli.getArenasConfig().getConfig().getString("arenas." + this.getInternalName() + ".description")));
+                        this.pli.getArenasConfig().getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName() + ArenaConfigStrings.DESCRIPTION_SUFFIX)));
             }
             
             Bukkit.getScheduler().runTaskLater(this.getPlugin(), () -> {
@@ -885,7 +885,7 @@ public class Arena
             
             if (this.ai == null && !this.isArcadeMain())
             {
-                this.skip_join_lobby = this.plugin.getConfig().getBoolean("config.countdowns.skip_lobby");
+                this.skip_join_lobby = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SKIP_LOBBY);
             }
             
             final Arena a = this;
@@ -1112,7 +1112,7 @@ public class Arena
         {
             this.plugin.getConfig().set("temp.left_players." + playername + ".name", playername);
             this.plugin.getConfig().set("temp.left_players." + playername + ".plugin", this.plugin.getName());
-            if (this.plugin.getConfig().getBoolean("config.reset_inventory_when_players_leave_server"))
+            if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_RESET_INV_WHEN_LEAVING_SERVER))
             {
                 for (final ItemStack i : ap.getInventory())
                 {
@@ -1291,7 +1291,7 @@ public class Arena
                     }
                 }
                 
-                if (Arena.this.plugin.getConfig().getBoolean("config.send_stats_on_stop"))
+                if (Arena.this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SEND_STATS_ON_STOP))
                 {
                     Util.sendStatsMessage(Arena.this.pli, p);
                 }
@@ -1317,9 +1317,9 @@ public class Arena
             }
         }, 5L);
         
-        if (this.plugin.getConfig().getBoolean("config.bungee.teleport_all_to_server_on_stop.tp"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUNGEE_TELEPORT_ALL_TO_SERVER_ON_STOP_TP))
         {
-            final String server = this.plugin.getConfig().getString("config.bungee.teleport_all_to_server_on_stop.server");
+            final String server = this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_BUNGEE_TELEPORT_ALL_TO_SERVER_ON_STOP_SERVER);
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> BungeeUtil.connectToServer(MinigamesAPI.getAPI(), p.getName(), server), 30L);
             return;
         }
@@ -1333,7 +1333,7 @@ public class Arena
      */
     void playLeaveCommand(final Player p)
     {
-        final String path = "arenas." + this.name + ".leavecommand";
+        final String path = ArenaConfigStrings.ARENAS_PREFIX + this.name + ".leavecommand";
         final String leavecommand = this.pli.getArenasConfig().getConfig().getString(path);
         p.getServer().dispatchCommand(p, leavecommand);
     }
@@ -1345,7 +1345,7 @@ public class Arena
      */
     private boolean hasLeaveCommand()
     {
-        final String path = "arenas." + this.name + ".leavecommand";
+        final String path = ArenaConfigStrings.ARENAS_PREFIX + this.name + ".leavecommand";
         return this.pli.getArenasConfig().getConfig().isSet(path);
     }
     
@@ -1417,7 +1417,7 @@ public class Arena
             this.pli.global_lost.put(playername, this);
             
             this.pli.getSpectatorManager().setSpectate(p, true);
-            if (!this.plugin.getConfig().getBoolean("config.spectator.spectator_after_fall_or_death"))
+            if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SPECTATOR_AFTER_FALL_OR_DEATH))
             {
                 this.leavePlayer(playername, false, false);
                 this.pli.scoreboardManager.updateScoreboard(this.plugin, this);
@@ -1550,7 +1550,7 @@ public class Arena
         Sound lobbycountdown_sound_ = null;
         try
         {
-            lobbycountdown_sound_ = Sound.valueOf(this.plugin.getConfig().getString("config.sounds.lobby_countdown"));
+            lobbycountdown_sound_ = Sound.valueOf(this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_SOUNDS_LOBBY_COUNTDOWN));
         }
         catch (final Exception e)
         {
@@ -1624,7 +1624,7 @@ public class Arena
         {
             this.pspawnloc = Util.teleportAllPlayers(this.getAllPlayers(), this.spawns);
         }
-        final boolean clearinv = this.plugin.getConfig().getBoolean("config.countdowns.clearinv_while_ingamecountdown");
+        final boolean clearinv = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_CLEANINV_WHILE_INGAMECOUNTDOWN);
         for (final String p_ : this.getAllPlayers())
         {
             final Player p = Bukkit.getPlayer(p_);
@@ -1639,7 +1639,7 @@ public class Arena
         }
         Bukkit.getScheduler().runTaskLater(this.plugin, () -> Arena.this.pli.scoreboardManager.updateScoreboard(Arena.this.plugin, this), 20L);
         this.startedIngameCountdown = true;
-        if (!this.plugin.getConfig().getBoolean("config.countdowns.ingame_countdown_enabled"))
+        if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_INGAME_COUNTDOWN_ENABLED))
         {
             this.startRaw();
             return;
@@ -1648,7 +1648,7 @@ public class Arena
         Sound ingamecountdown_sound_ = null;
         try
         {
-            ingamecountdown_sound_ = Sound.valueOf(this.plugin.getConfig().getString("config.sounds.ingame_countdown"));
+            ingamecountdown_sound_ = Sound.valueOf(this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_SOUNDS_INGAME_COUNTDOWN));
         }
         catch (final Exception e)
         {
@@ -1716,7 +1716,7 @@ public class Arena
         this.startedIngameCountdown = false;
         Util.updateSign(this.plugin, this);
         Bukkit.getServer().getPluginManager().callEvent(new ArenaStartEvent(this.plugin, this));
-        final boolean send_game_started_msg = this.plugin.getConfig().getBoolean("config.send_game_started_msg");
+        final boolean send_game_started_msg = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SEND_GAME_STARTED_MSG);
         for (final String p_ : this.getAllPlayers())
         {
             try
@@ -1724,7 +1724,7 @@ public class Arena
                 if (!this.pli.global_lost.containsKey(p_))
                 {
                     final Player p = Bukkit.getPlayer(p_);
-                    if (this.plugin.getConfig().getBoolean("config.auto_add_default_kit"))
+                    if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_AUTO_ADD_DEFAULT_KIT))
                     {
                         if (!this.pli.getClassesHandler().hasClass(p_))
                         {
@@ -1737,7 +1737,7 @@ public class Arena
                         Util.clearInv(Bukkit.getPlayer(p_));
                         this.pli.getClassesHandler().getClass(p_);
                     }
-                    if (this.plugin.getConfig().getBoolean("config.shop_enabled"))
+                    if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SHOP_ENABLED))
                     {
                         this.pli.getShopHandler().giveShopItems(p);
                     }
@@ -1763,7 +1763,7 @@ public class Arena
                 p.sendMessage(this.pli.getMessagesConfig().game_started);
             }
         }
-        if (this.plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUNGEE_WHITELIST_WHILE_GAME_RUNNING))
         {
             Bukkit.setWhitelist(true);
         }
@@ -1789,7 +1789,7 @@ public class Arena
                 }
             }
             Bukkit.getScheduler().runTaskLater(Arena.this.plugin, () -> this.stopArena(), 5 * 20L);
-        }, 20L * 60L * (long) this.plugin.getConfig().getDouble("config.defaults.default_max_game_time_in_minutes") - 5 * 20L);
+        }, 20L * 60L * (long) this.plugin.getConfig().getDouble(ArenaConfigStrings.CONFIG_DEFAULT_MAX_GAME_TIME_IN_MINUTES) - 5 * 20L);
     }
     
     /**
@@ -1826,15 +1826,15 @@ public class Arena
         this.temp_players = new ArrayList<>(this.players);
         if (!this.temp_delay_stopped)
         {
-            if (this.plugin.getConfig().getBoolean("config.delay.enabled"))
+            if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_DELAY_ENABLED))
             {
                 Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                     Arena.this.temp_delay_stopped = true;
                     a.stopArena();
-                }, this.plugin.getConfig().getInt("config.delay.amount_seconds") * 20L);
+                }, this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_DELAY_AMOUNT_SECONDS) * 20L);
                 this.setArenaState(ArenaState.RESTARTING);
                 Util.updateSign(this.plugin, this);
-                if (this.plugin.getConfig().getBoolean("config.spawn_fireworks_for_winners"))
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SPAWN_FIREWORKS_FOR_WINNERS))
                 {
                     if (this.getAllPlayers().size() > 0)
                     {
@@ -1940,14 +1940,14 @@ public class Arena
          * }
          */
         
-        if (this.plugin.getConfig().getBoolean("config.bungee.whitelist_while_game_running"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUNGEE_WHITELIST_WHILE_GAME_RUNNING))
         {
             Bukkit.setWhitelist(false);
         }
         
-        if (this.plugin.getConfig().getBoolean("config.execute_cmds_on_stop"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EXECUTE_CMDS_ON_STOP))
         {
-            final String[] cmds = this.plugin.getConfig().getString("config.cmds").split(";");
+            final String[] cmds = this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_CMDS).split(";");
             if (cmds.length > 0)
             {
                 for (final String cmd : cmds)
@@ -1957,9 +1957,9 @@ public class Arena
             }
         }
         
-        if (this.plugin.getConfig().getBoolean("config.bungee.teleport_all_to_server_on_stop.tp"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUNGEE_TELEPORT_ALL_TO_SERVER_ON_STOP_TP))
         {
-            final String server = this.plugin.getConfig().getString("config.bungee.teleport_all_to_server_on_stop.server");
+            final String server = this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_BUNGEE_TELEPORT_ALL_TO_SERVER_ON_STOP_SERVER);
             Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
                 for (final Player p : Bukkit.getOnlinePlayers())
                 {
@@ -1969,9 +1969,9 @@ public class Arena
             return;
         }
         
-        if (this.plugin.getConfig().getBoolean("config.execute_cmds_on_stop"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EXECUTE_CMDS_ON_STOP))
         {
-            final String[] cmds = this.plugin.getConfig().getString("config.cmds_after").split(";");
+            final String[] cmds = this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_CMDS_AFTER).split(";");
             if (cmds.length > 0)
             {
                 for (final String cmd : cmds)
@@ -1999,7 +1999,7 @@ public class Arena
             {
                 return;
             }
-            if (this.plugin.getConfig().getBoolean("config.map_rotation"))
+            if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MAP_ROTATION))
             {
                 Bukkit.getScheduler().runTaskLater(this.plugin, () -> a.nextArenaOnMapRotation(temp), 35L);
             }

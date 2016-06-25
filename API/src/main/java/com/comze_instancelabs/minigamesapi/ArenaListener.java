@@ -103,7 +103,7 @@ public class ArenaListener implements Listener
         this.plugin = plugin;
         this.pli = pinstance;
         this.setName(minigame);
-        this.leave_cmd = plugin.getConfig().getString("config.leave_command");
+        this.leave_cmd = plugin.getConfig().getString(ArenaConfigStrings.CONFIG_LEAVE_COMMAND);
     }
     
     public ArenaListener(final JavaPlugin plugin, final PluginInstance pinstance, final String minigame, final ArrayList<String> cmds)
@@ -901,7 +901,7 @@ public class ArenaListener implements Listener
             final Arena arena = Util.getArenaBySignLocation(this.plugin, event.getBlock().getLocation());
             if (arena != null)
             {
-                this.pli.getArenasConfig().getConfig().set("arenas." + arena.getInternalName() + ".sign", null);
+                this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena.getInternalName() + ".sign", null);
                 this.pli.getArenasConfig().saveConfig();
             }
         }
@@ -1186,7 +1186,7 @@ public class ArenaListener implements Listener
             {
                 return;
             }
-            if (event.getItem().getTypeId() == this.plugin.getConfig().getInt("config.selection_items.classes_selection_item"))
+            if (event.getItem().getTypeId() == this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_CLASS_SELECTION_ITEM))
             {
                 if (a.getArenaState() != ArenaState.INGAME)
                 {
@@ -1194,7 +1194,7 @@ public class ArenaListener implements Listener
                     event.setCancelled(true);
                 }
             }
-            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt("config.selection_items.exit_item"))
+            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_EXIT_ITEM))
             {
                 if (a.getArenaState() != ArenaState.INGAME)
                 {
@@ -1210,7 +1210,7 @@ public class ArenaListener implements Listener
                     }
                 }
             }
-            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt("config.selection_items.spectator_item"))
+            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_SPECTATOR_ITEM))
             {
                 if (this.pli.containsGlobalLost(p.getName()))
                 {
@@ -1218,7 +1218,7 @@ public class ArenaListener implements Listener
                     event.setCancelled(true);
                 }
             }
-            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt("config.selection_items.achievement_item"))
+            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_ACHIEVEMENT_ITEMS))
             {
                 if (this.pli.isAchievementGuiEnabled())
                 {
@@ -1229,7 +1229,7 @@ public class ArenaListener implements Listener
                     }
                 }
             }
-            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt("config.selection_items.shop_selection_item"))
+            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_SHOP_SELECTION_ITEM))
             {
                 if (a.getArenaState() != ArenaState.INGAME)
                 {
@@ -1237,14 +1237,13 @@ public class ArenaListener implements Listener
                     event.setCancelled(true);
                 }
             }
-            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt("config.extra_lobby_item.item0.item"))
+            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ITEM_SUFFIX))
             {
-                if (this.plugin.getConfig().getBoolean("config.extra_lobby_item.item0.enabled"))
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ENABLED_SUFFIX))
                 {
                     if (a.getArenaState() != ArenaState.INGAME)
                     {
-                        // Bukkit.dispatchCommand(Bukkit.getConsoleSender(), plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
-                        p.performCommand(this.plugin.getConfig().getString("config.extra_lobby_item.item0.command"));
+                        p.performCommand(this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_COMMAND_SUFFIX));
                     }
                 }
             }
@@ -1252,7 +1251,7 @@ public class ArenaListener implements Listener
             {
                 if (a.getArenaState() == ArenaState.INGAME)
                 {
-                    if (this.plugin.getConfig().getBoolean("config.compass_tracking_enabled"))
+                    if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_COMPASS_TRACKING_ENABLED))
                     {
                         final CompassPlayer temp = Util.getNearestPlayer(p, a);
                         if (temp.getPlayer() != null)
@@ -1284,10 +1283,10 @@ public class ArenaListener implements Listener
                     final String arena = event.getLine(1);
                     if (arena.equalsIgnoreCase("random"))
                     {
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.x", event.getBlock().getLocation().getBlockX());
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.y", event.getBlock().getLocation().getBlockY());
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.world", p.getWorld().getName());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.location.x", event.getBlock().getLocation().getBlockX());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.location.y", event.getBlock().getLocation().getBlockY());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
                         this.pli.getArenasConfig().saveConfig();
                         Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena (random) sign"));
                         Util.updateSign(this.plugin, event, arena);
@@ -1302,10 +1301,10 @@ public class ArenaListener implements Listener
                                 count++;
                             }
                         }
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.world", p.getWorld().getName());
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.location.x", event.getBlock().getLocation().getBlockX());
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.location.y", event.getBlock().getLocation().getBlockY());
-                        this.pli.getArenasConfig().getConfig().set("arenas." + arena + "." + count + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + "." + count + ".sign.world", p.getWorld().getName());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + "." + count + ".sign.location.x", event.getBlock().getLocation().getBlockX());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + "." + count + ".sign.location.y", event.getBlock().getLocation().getBlockY());
+                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + "." + count + ".sign.location.z", event.getBlock().getLocation().getBlockZ());
                         this.pli.getArenasConfig().saveConfig();
                         Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena (leave) sign"));
                         Util.updateSign(this.plugin, event, arena);
@@ -1314,10 +1313,10 @@ public class ArenaListener implements Listener
                     {
                         if (Validator.isArenaValid(this.plugin, arena))
                         {
-                            this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.world", p.getWorld().getName());
-                            this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
-                            this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
-                            this.pli.getArenasConfig().getConfig().set("arenas." + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
+                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.world", p.getWorld().getName());
+                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
+                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
+                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
                             this.pli.getArenasConfig().saveConfig();
                             Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
                         }
@@ -1391,7 +1390,7 @@ public class ArenaListener implements Listener
             }, 5);
         }
         
-        if (this.plugin.getConfig().getBoolean("config.bungee.game_on_join"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUNGEE_GAME_ON_JOIN))
         {
             int c = 0;
             final List<String> arenas = new ArrayList<>();
@@ -1482,14 +1481,14 @@ public class ArenaListener implements Listener
                 return;
             }
         }
-        if (this.plugin.getConfig().getBoolean("config.chat_show_score_in_arena"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_CHAT_SHOW_SCORE_IN_ARENA))
         {
             if (this.pli.containsGlobalPlayer(event.getPlayer().getName()))
             {
                 event.setFormat(ChatColor.GRAY + "[" + ChatColor.GREEN + this.pli.getStatsInstance().getPoints(event.getPlayer().getName()) + ChatColor.GRAY + "] " + event.getFormat());
             }
         }
-        if (this.plugin.getConfig().getBoolean("config.chat_per_arena_only"))
+        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_CHAT_PER_ARENA_ONLY))
         {
             if (this.pli.containsGlobalPlayer(p.getName()))
             {
@@ -1524,11 +1523,11 @@ public class ArenaListener implements Listener
         }
         if (this.pli.containsGlobalPlayer(event.getPlayer().getName()) && !event.getPlayer().isOp())
         {
-            if (!this.plugin.getConfig().getBoolean("config.disable_commands_in_arena"))
+            if (!this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_DISABLE_COMMANDS_IN_ARENA))
             {
                 return;
             }
-            if (this.plugin.getConfig().getString("config.command_whitelist").toLowerCase().contains(event.getMessage().toLowerCase()))
+            if (this.plugin.getConfig().getString(ArenaConfigStrings.CONFIG_COMMAND_WHITELIST).toLowerCase().contains(event.getMessage().toLowerCase()))
             {
                 return;
             }
