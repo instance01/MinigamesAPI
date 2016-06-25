@@ -383,7 +383,7 @@ public class CommandHandler
         }
         if (args.length > 1)
         {
-            Util.saveComponentForArena(plugin, args[1], "specspawn", p.getLocation());
+            Util.saveComponentForArena(plugin, args[1], ArenaConfigStrings.SPEC_SPAWN, p.getLocation());
             sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "spectator spawn"));
         }
         else
@@ -807,7 +807,7 @@ public class CommandHandler
         }
         if (args.length > 1)
         {
-            pli.getArenasConfig().getConfig().set("arenas." + args[1], null);
+            pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + args[1], null);
             pli.getArenasConfig().saveConfig();
             if (pli.removeArena(pli.getArenaByName(args[1])))
             {
@@ -978,7 +978,7 @@ public class CommandHandler
             final String author = args[2];
             if (Validator.isArenaValid(plugin, args[1]))
             {
-                pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".author", author);
+                pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + args[1] + ArenaConfigStrings.AUTHOR_SUFFIX, author);
                 pli.getArenasConfig().saveConfig();
                 sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "author"));
             }
@@ -1003,7 +1003,7 @@ public class CommandHandler
             final String desc = args[2];
             if (Validator.isArenaValid(plugin, args[1]))
             {
-                pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".description", desc);
+                pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + args[1] + ArenaConfigStrings.DESCRIPTION_SUFFIX, desc);
                 pli.getArenasConfig().saveConfig();
                 sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "description"));
             }
@@ -1028,7 +1028,7 @@ public class CommandHandler
             final String displayname = args[2];
             if (Validator.isArenaValid(plugin, args[1]))
             {
-                pli.getArenasConfig().getConfig().set("arenas." + args[1] + ".displayname", displayname);
+                pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + args[1] + ArenaConfigStrings.DISPLAYNAME_SUFFIX, displayname);
                 pli.getArenasConfig().saveConfig();
                 pli.reloadArena(args[1]);
                 sender.sendMessage(pli.getMessagesConfig().successfully_set.replaceAll("<component>", "displayname"));
@@ -1091,7 +1091,7 @@ public class CommandHandler
         Player p = player;
         if (args.length > 1)
         {
-            if (!plugin.getConfig().getBoolean("config.classes_enabled"))
+            if (!plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_CLASSES_ENABLED))
             {
                 return true;
             }
@@ -1103,7 +1103,7 @@ public class CommandHandler
                     return true;
                 }
             }
-            if (!plugin.getConfig().getBoolean("config.allow_classes_selection_out_of_arenas"))
+            if (!plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_ALLOW_CLASSES_SELECTION_OUT_OF_ARENAS))
             {
                 if (pli.global_players.containsKey(p.getName()))
                 {
@@ -1160,7 +1160,7 @@ public class CommandHandler
         else
         {
             sender.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + " Usage: " + cmd + " " + action + " <kit>");
-            if (!plugin.getConfig().getBoolean("config.classes_enabled"))
+            if (!plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_CLASSES_ENABLED))
             {
                 return true;
             }
@@ -1181,7 +1181,7 @@ public class CommandHandler
     {
         if (args.length > 1)
         {
-            if (!plugin.getConfig().getBoolean("config.shop_enabled"))
+            if (!plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SHOP_ENABLED))
             {
                 return true;
             }
@@ -1210,7 +1210,7 @@ public class CommandHandler
         }
         else
         {
-            if (!plugin.getConfig().getBoolean("config.shop_enabled"))
+            if (!plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SHOP_ENABLED))
             {
                 return true;
             }

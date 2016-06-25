@@ -59,7 +59,7 @@ public class Shop
         else
         {
             iconm = new IconMenu(this.pli.getMessagesConfig().shop_item,
-                    (9 * this.plugin.getConfig().getInt("config.GUI.shop_gui_rows") > mincount - 1) ? 9 * this.plugin.getConfig().getInt("config.GUI.shop_gui_rows") : Math.round(mincount / 9) * 9 + 9,
+                    (9 * this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_SHOP_GUI_ROWS) > mincount - 1) ? 9 * this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_SHOP_GUI_ROWS) : Math.round(mincount / 9) * 9 + 9,
                     event -> {
                         if (event.getPlayer().getName().equalsIgnoreCase(p))
                         {
