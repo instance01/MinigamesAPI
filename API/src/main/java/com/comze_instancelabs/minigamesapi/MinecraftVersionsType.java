@@ -118,4 +118,25 @@ public enum MinecraftVersionsType
         return this.ordinal() > type.ordinal();
     }
     
+    /**
+     * Checks if this version is at least given version.
+     * 
+     * <ul>
+     * <li>V1_7_R4 will be at least V1_7.</li>
+     * <li>V1_7_R3 will be after V1_7_R2.</li>
+     * </ul>
+     * 
+     * @param type
+     *            version to compare to.
+     * @return {@code true} if this version matches given version.
+     */
+    public boolean isAtLeast(final MinecraftVersionsType type)
+    {
+        if (this.isEqual(type))
+        {
+            return true;
+        }
+        return this.ordinal() > type.ordinal();
+    }
+    
 }

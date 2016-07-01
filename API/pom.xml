@@ -35,7 +35,13 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-		</resources>
+        	<resource>
+            	<directory>src/main/java</directory>
+            	<includes>
+                	<include>**/*.properties</include>
+            	</includes>
+        	</resource>
+    	</resources>
 		<plugins>
 			<plugin>
 				<version>3.0.0</version>

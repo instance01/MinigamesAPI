@@ -19,10 +19,13 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -57,6 +60,9 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /** the overall minecraft server versioon. */
     public static final MinecraftVersionsType         SERVER_VERSION        = MinigamesAPI.getServerVersion();
+    
+    /** the locale to be used. TODO: Change via config */
+    public static Locale LOCALE = Locale.ENGLISH;
     
     static MinigamesAPI                               instance              = null;
     public static Economy                             econ                  = null;
@@ -847,6 +853,73 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     public PluginInstance getPluginInstance(final JavaPlugin plugin)
     {
         return MinigamesAPI.pinstances.get(plugin);
+    }
+    
+    /**
+     * Version safe conversion utility (temporary workaround)
+     * @param playername
+     * @return uuid of the player
+     * @deprecated starting with 1.5.0 (and by dropping support for spigot 1.7.x) you should directly use {@link Player#getUniqueId()} 
+     */
+    @Deprecated
+    public static UUID playerToUUID(String playername)
+    {
+        final Player player = Bukkit.getPlayer(playername);
+        if (player != null)
+        {
+            return playerToUUID(player);
+        }
+        return null;
+    }
+    
+    /**
+     * Version safe conversion utility (temporary workaround)
+     * @param player
+     * @return uuid of the player
+     * @deprecated starting with 1.5.0 (and by dropping support for spigot 1.7.x) you should directly use {@link Player#getUniqueId()}
+     */
+    public static UUID playerToUUID(Player player)
+    {
+        if (SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
+        {
+            return player.getUniqueId();
+        }
+        else
+        {
+            try
+            {
+                final Object handle = player.getClass().getDeclaredMethod("getHandle").invoke(player);
+                return (UUID) handle.getClass().getDeclaredMethod("getUniqueID").invoke(handle);
+            }
+            catch (Exception ex)
+            {
+                // TODO Logging
+                return null;
+            }
+        }
+    }
+    
+    /**
+     * Version safe conversion utility (temporary workaround)
+     * @param uuid
+     * @return player object
+     * @deprecated starting with 1.5.0 (and by dropping support for spigot 1.7.x) you should directly use {@link Bukkit#getPlayer(UUID)}
+     */
+    public static Player uuidToPlayer(UUID uuid)
+    {
+        if (SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
+        {
+            return Bukkit.getPlayer(uuid);
+        }
+        
+        for (Player p : Bukkit.getServer().getOnlinePlayers())
+        {
+            if (uuid.equals(playerToUUID(p)))
+            {
+                return p;
+            }
+        }
+        return null;
     }
     
 }
