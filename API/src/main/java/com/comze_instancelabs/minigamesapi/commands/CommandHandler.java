@@ -30,6 +30,7 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
 import com.comze_instancelabs.minigamesapi.ArenaPlayer;
 import com.comze_instancelabs.minigamesapi.ArenaState;
+import com.comze_instancelabs.minigamesapi.CommandStrings;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.Party;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
@@ -66,147 +67,143 @@ public class CommandHandler
             final Player p = (Player) sender;
             final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
             final String action = args[0];
-            if (action.equalsIgnoreCase("setspawn"))
+            if (action.equalsIgnoreCase(CommandStrings.GAME_SET_SPAWN))
             {
                 return this.setSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setspecspawn"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_SPEC_SPAWN))
             {
                 return this.setSpecSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setlobby"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_LOBBY))
             {
                 return this.setLobby(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setmainlobby"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_MAINLOBBY))
             {
                 return this.setMainLobby(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setbounds"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_BOUNDS))
             {
                 return this.setBounds(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setlobbybounds"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_LOBBY_BOUNDS))
             {
                 return this.setLobbyBounds(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setspecbounds"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_SPEC_BOUNDS))
             {
                 return this.setSpecBounds(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("savearena") || action.equalsIgnoreCase("save"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SAVE_ARENA) || action.equalsIgnoreCase(CommandStrings.GAME_SAVE))
             {
                 return this.saveArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setmaxplayers"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_MAX_PLAYERS))
             {
                 return this.setMaxPlayers(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setminplayers"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_MIN_PLAYERS))
             {
                 return this.setMinPlayers(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setarenavip") || action.equalsIgnoreCase("setvip"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_ARENA_VIP) || action.equalsIgnoreCase(CommandStrings.GAME_SET_VIP))
             {
                 return this.setArenaVIP(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("join"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_JOIN))
             {
                 return this.joinArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("leave"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_LEAVE))
             {
                 return this.leaveArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("start"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_START))
             {
                 return this.startArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("stop"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_STOP))
             {
                 return this.stopArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("sings"))
-            {
-                return this.stopArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
-            }
-            else if (action.equalsIgnoreCase("stopall"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_STOP_ALL))
             {
                 return this.stopAllArenas(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("removearena"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_REMOVE_ARENA))
             {
                 return this.removeArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("removespawn"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_REMOVE_SPAWN))
             {
                 return this.removeSpawn(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setskull"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_SKULL))
             {
                 return this.setSkull(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setenabled"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_ENABLED))
             {
                 return this.setEnabled(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setshowscoreboard"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_SHOW_SCOREBOARD))
             {
                 return this.setShowScoreboard(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("reset"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_RESET))
             {
                 return this.resetArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setauthor"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_AUTHOR))
             {
                 return this.setAuthor(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setdescription"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_DESCRIPTION))
             {
                 return this.setDescription(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("setdisplayname"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_DISPLAYNAME))
             {
                 return this.setArenaDisplayName(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("kit"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_KIT))
             {
                 return this.setKit(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("spectate"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SPECTATE))
             {
                 return this.spectate(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("shop"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SHOP))
             {
                 return this.openShop(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("leaderboards") || action.equalsIgnoreCase("lb") || action.equalsIgnoreCase("top"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_LEADER_BOARDS) || action.equalsIgnoreCase(CommandStrings.GAME_LB) || action.equalsIgnoreCase(CommandStrings.GAME_TOP))
             {
                 return this.getLeaderboards(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("stats"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_STATS))
             {
                 return this.getStats(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("sethologram"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_SET_HOLOGRAM))
             {
                 return this.setHologram(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("listholograms"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_LIST_HOLOGRAMS))
             {
                 return this.listHolograms(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("removehologram"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_REMOVE_HOLOGRAM))
             {
                 return this.removeHologram(pli, sender, args, uber_permission, cmd, action, plugin, p);
             }
-            else if (action.equalsIgnoreCase("help"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_HELP))
             {
                 CommandHandler.sendHelp(cmd, sender);
             }
-            else if (action.equalsIgnoreCase("list"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_LIST))
             {
                 sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Arenas" + ChatColor.DARK_GRAY + " -------");
                 for (final Arena a : pli.getArenas())
@@ -221,7 +218,7 @@ public class CommandHandler
                     }
                 }
             }
-            else if (action.equalsIgnoreCase("reload"))
+            else if (action.equalsIgnoreCase(CommandStrings.GAME_RELOAD))
             {
                 plugin.reloadConfig();
                 pli.getMessagesConfig().reloadConfig();

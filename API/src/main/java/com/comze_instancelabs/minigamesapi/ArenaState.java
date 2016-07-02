@@ -15,34 +15,81 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * The states for an arena.
+ * 
+ * @author instancelabs
+ */
 public enum ArenaState
 {
     
-    JOIN, STARTING, INGAME, RESTARTING;
+    /** the default state; players can join. */
+    JOIN("&a"), //$NON-NLS-1$
     
-    public static ArrayList<String> getAllStateNames()
+    /** the game is starting. */
+    STARTING("&a"), //$NON-NLS-1$
+    
+    /** the game is running. */
+    INGAME("&4"), //$NON-NLS-1$
+    
+    /** the arena is restarting after game ended; for example the broken blocks are replaced. */
+    RESTARTING("&e"); //$NON-NLS-1$
+    
+    /** the states color code. */
+    private String colorCode;
+    
+    /**
+     * Constructor.
+     * 
+     * @param colorCode
+     *            the states color code
+     */
+    private ArenaState(String colorCode)
     {
-        return new ArrayList<>(Arrays.asList("JOIN", "STARTING", "INGAME", "RESTARTING"));
+        this.colorCode = colorCode;
     }
     
-    public static HashMap<String, String> getAllStateNameColors()
+    /**
+     * Returns the color code for this state.
+     * 
+     * @return color code used to display this state.
+     */
+    public String getColorCode()
     {
-        final HashMap<String, String> ret = new HashMap<String, String>() {
-            /**
-             *
-             */
-            private static final long serialVersionUID = 3343763360644032212L;
-            
-            {
-                this.put("JOIN", "&a");
-                this.put("STARTING", "&a");
-                this.put("INGAME", "&4");
-                this.put("RESTARTING", "&e");
-            }
-        };
-        return ret;
+        return this.colorCode;
+    }
+    
+    /**
+     * Returns a list with all state names.
+     * 
+     * @return list with all state names.
+     */
+    public static Iterable<String> getAllStateNames()
+    {
+        final List<String> result = new ArrayList<>();
+        for (final ArenaState state : ArenaState.values())
+        {
+            result.add(state.name());
+        }
+        return result;
+    }
+    
+    /**
+     * Returns a map from state name to color code.
+     * 
+     * @return map from state name to color code.
+     */
+    public static Map<String, String> getAllStateNameColors()
+    {
+        final Map<String, String> result = new HashMap<>();
+        for (final ArenaState state : ArenaState.values())
+        {
+            result.put(state.name(), state.getColorCode());
+        }
+        return result;
     }
 }

@@ -62,8 +62,8 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
  * NOTICE: There are some race conditions on high load. For example joining VIPs while state switches etc. Spigot itself may invoke the tasks serial meaning one after another but there can be external
  * events from network at the moment (MinigamesAPI-Bungee).
  * </p>
- *
- * @author mepeisen
+ * 
+ * @author instancelabs
  */
 public class Arena
 {

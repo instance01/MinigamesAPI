@@ -36,36 +36,6 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 public class Effects
 {
     
-    @Deprecated
-    public static int getClientProtocolVersion(final Player p)
-    {
-        int ret = 0;
-        try
-        {
-            if (!!MinigamesAPI.SERVER_VERSION.isEqual(MinecraftVersionsType.V1_7))
-            {
-                final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().internalServerVersion + ".entity.CraftPlayer").getMethod("getHandle");
-                final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EntityPlayer").getField("playerConnection");
-                playerConnection.setAccessible(true);
-                final Object playerConInstance = playerConnection.get(getHandle.invoke(p));
-                final Field networkManager = playerConInstance.getClass().getField("networkManager");
-                networkManager.setAccessible(true);
-                final Object networkManagerInstance = networkManager.get(playerConInstance);
-                final Method getVersion = networkManagerInstance.getClass().getMethod("getVersion");
-                final Object version = getVersion.invoke(networkManagerInstance);
-                ret = (Integer) version;
-            }
-        }
-        catch (final Exception e)
-        {
-            if (MinigamesAPI.debug)
-            {
-                e.printStackTrace();
-            }
-        }
-        return ret;
-    }
-    
     /**
      * Shows the particles of a redstone block breaking
      * 
@@ -386,7 +356,7 @@ public class Effects
         try
         {
             // If player is on 1.8, we'll have to use armor stands, otherwise just use the old 1.7 technique
-            final boolean playerIs1_8 = Effects.getClientProtocolVersion(p) > 5;
+            final boolean playerIs1_8 = MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_8);
             
             final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().internalServerVersion + ".entity.CraftPlayer").getMethod("getHandle");
             final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EntityPlayer").getField("playerConnection");

@@ -88,7 +88,7 @@ import com.comze_instancelabs.minigamesapi.util.Validator;
 /**
  * Bukkit event listener for minigames-lib; one instance per minigame plugin.
  * 
- * @author mepeisen
+ * @author instancelabs
  */
 public class ArenaListener implements Listener
 {

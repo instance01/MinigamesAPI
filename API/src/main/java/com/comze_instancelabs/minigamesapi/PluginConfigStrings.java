@@ -16,35 +16,31 @@
 package com.comze_instancelabs.minigamesapi;
 
 /**
- * Strings for messages.
+ * Strings for plugins config.
  * 
  * @author mepeisen
  */
-public interface ArenaMessageStrings
+public interface PluginConfigStrings
 {
-
-    /** ARENA replacement. */
-    String ARENA = "<arena>"; //$NON-NLS-1$
     
-    /** ACTION replacement. */
-    String ACTION = "<action>"; //$NON-NLS-1$
-
-    /** AUTHOR replacement. */
-    String AUTHOR = "<author>"; //$NON-NLS-1$
-
-    /** DESCRIPTION replacement. */
-    String DESCRIPTION = "<description>"; //$NON-NLS-1$
-
-    /** PLAYER replacement. */
-    String PLAYER = "<player>"; //$NON-NLS-1$
-
-    /** KILLER replacement. */
-    String KILLER = "<killer>"; //$NON-NLS-1$
-
-    /** COUNT replacement. */
-    String COUNT = "<count>"; //$NON-NLS-1$
-
-    /** MAXCOUNT replacement. */
-    String MAXCOUNT = "<maxcount>"; //$NON-NLS-1$
+    /**
+     * debug flag for minigames lib.
+     */
+    String DEBUG = "config.debug"; //$NON-NLS-1$
+    
+    /**
+     * flag to support the party command (playing with friends).
+     */
+    String PARTY_COMMAND_ENABLED = "config.party_command_enabled"; //$NON-NLS-1$
+    
+    /**
+     * the update interval for arena signs.
+     */
+    String SIGNS_UPDATE_TIME = "signs_updating_time"; //$NON-NLS-1$
+    
+    /**
+     * flag for controlling auto updates.
+     */
+    String AUTO_UPDATING = "config.auto_updating"; //$NON-NLS-1$
     
 }

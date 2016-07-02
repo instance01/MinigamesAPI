@@ -16,35 +16,17 @@
 package com.comze_instancelabs.minigamesapi;
 
 /**
- * Strings for messages.
+ * Strings for common permissions.
  * 
  * @author mepeisen
  */
-public interface ArenaMessageStrings
+public interface PermissionStrings
 {
-
-    /** ARENA replacement. */
-    String ARENA = "<arena>"; //$NON-NLS-1$
     
-    /** ACTION replacement. */
-    String ACTION = "<action>"; //$NON-NLS-1$
-
-    /** AUTHOR replacement. */
-    String AUTHOR = "<author>"; //$NON-NLS-1$
-
-    /** DESCRIPTION replacement. */
-    String DESCRIPTION = "<description>"; //$NON-NLS-1$
-
-    /** PLAYER replacement. */
-    String PLAYER = "<player>"; //$NON-NLS-1$
-
-    /** KILLER replacement. */
-    String KILLER = "<killer>"; //$NON-NLS-1$
-
-    /** COUNT replacement. */
-    String COUNT = "<count>"; //$NON-NLS-1$
-
-    /** MAXCOUNT replacement. */
-    String MAXCOUNT = "<maxcount>"; //$NON-NLS-1$
+    /** permission prefix for minigames party. */
+    String MINIGAMES_PARTY = "minigamesapi.party"; //$NON-NLS-1$
+    
+    /** permission for start command. */
+    String MINIGAMES_START = "minigamesapi.start"; //$NON-NLS-1$
     
 }

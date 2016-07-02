@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.ChannelStrings;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.bungee.BungeeSocket;
@@ -44,7 +45,7 @@ public class BungeeUtil
         {
             e.printStackTrace();
         }
-        Bukkit.getPlayer(player).sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
+        Bukkit.getPlayer(player).sendPluginMessage(plugin, ChannelStrings.CHANNEL_BUNGEE_CORD, stream.toByteArray());
     }
     
     public static void sendSignUpdateRequest(final JavaPlugin plugin, final String minigame, final Arena arena)
@@ -66,7 +67,7 @@ public class BungeeUtil
             out.writeShort(msgbytes.toByteArray().length);
             out.write(msgbytes.toByteArray());
             
-            Bukkit.getServer().sendPluginMessage(MinigamesAPI.getAPI(), "BungeeCord", out.toByteArray());
+            Bukkit.getServer().sendPluginMessage(MinigamesAPI.getAPI(), ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
         }
         catch (final Exception e)
         {

@@ -999,79 +999,6 @@ public class Util
         return ret;
     }
     
-    static boolean windows = false;
-    
-    public static void restartServer()
-    {
-        final String system = System.getProperty("os.name");
-        final String startDir = System.getProperty("user.dir");
-        String fileName = "start.sh";
-        String jarFile = "craftbukkit.jar";
-        if (system.contains("Windows"))
-        {
-            fileName = "start.bat";
-            Util.windows = true;
-        }
-        if (Bukkit.getVersion().contains("Spigot"))
-        {
-            jarFile = "spigot.jar";
-        }
-        System.out.println(Bukkit.getVersion());
-        System.out.println(system);
-        System.out.println(startDir);
-        final File f = new File(startDir + "\\" + fileName);
-        if (!f.exists())
-        {
-            PrintWriter writer;
-            try
-            {
-                
-                writer = new PrintWriter(f, "UTF-8");
-                if (Util.windows)
-                {
-                    writer.println("@ECHO OFF");
-                }
-                else
-                {
-                    writer.println("#!/bin/bash");
-                }
-                writer.println("java -Xms1024M -Xmx1024M -jar " + jarFile);
-                if (Util.windows)
-                {
-                    writer.println("PAUSE");
-                }
-                writer.close();
-            }
-            catch (final Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    if (Util.windows)
-                    {
-                        Runtime.getRuntime().exec("CMD /C START \"" + f.getPath() + "\"");
-                    }
-                    else
-                    {
-                        Runtime.getRuntime().exec("sh " + f);
-                    }
-                }
-                catch (final IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });
-        Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), () -> Bukkit.getServer().shutdown(), 20L);
-    }
-    
     public static void sendStatsMessage(final PluginInstance pli, final Player p)
     {
         if (pli.getMessagesConfig().getConfig().isSet("messages.stats"))
@@ -1121,7 +1048,7 @@ public class Util
         Method getScore_ = null;
         try
         {
-            if (MinigamesAPI.getAPI().below1710)
+            if (MinigamesAPI.SERVER_VERSION.isBelow(MinecraftVersionsType.V1_7_R4))
             {
                 getScore_ = obj.getClass().getDeclaredMethod("getScore", OfflinePlayer.class);
                 getScore_.setAccessible(true);
@@ -1149,7 +1076,7 @@ public class Util
         Method resetScores_ = null;
         try
         {
-            if (MinigamesAPI.getAPI().below1710)
+            if (MinigamesAPI.SERVER_VERSION.isBelow(MinecraftVersionsType.V1_7_R4))
             {
                 resetScores_ = obj.getClass().getDeclaredMethod("resetScores", OfflinePlayer.class);
                 resetScores_.setAccessible(true);
