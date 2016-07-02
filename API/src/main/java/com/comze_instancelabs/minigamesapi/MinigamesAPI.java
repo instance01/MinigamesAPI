@@ -73,21 +73,69 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     /** the minigames plugin instance. */
     private static MinigamesAPI                       instance              = null;
     
+    /**
+     * Vault economy instance.
+     * @deprecated will be private and non-static in 1.5.0; replaced by new method
+     */
+    @Deprecated
     public static Economy                             econ                  = null;
+    
+    /**
+     * {@code true} if economy is installed.
+     * @deprecated will be private and non-static in 1.5.0, replace by {@link #economyAvailable()}
+     */
+    @Deprecated
     public static boolean                             economy               = true;
+    
+    /**
+     * {@code true} if crackshot is installed.
+     * @deprecated will be private in 1.5.0, replace by {@link #crackshotAvailable()}
+     */
+    @Deprecated
     public boolean                                    crackshot             = false;
     
     /** a global debug flag; controls the output of finer debug messages. */
     public static boolean                             debug                 = false;
     
+    /**
+     * @deprecated will be removed in 1.5.0
+     */
+    @Deprecated
     int                                               updatetime            = 20 * 10;
     
+    /**
+     * TODO decribe this field.
+     * @deprecated will be be private in 1.5.0; replaced by new method
+     */
+    @Deprecated
     public HashMap<String, Party>                     global_party          = new HashMap<>();
+
+    /**
+     * TODO decribe this field.
+     * @deprecated will be be private in 1.5.0; replaced by new method
+     */
+    @Deprecated
     public HashMap<String, ArrayList<Party>>          global_party_invites  = new HashMap<>();
     
+    /**
+     * Hash map with internal plugin representations of each registered minigame.
+     * @deprecated will be private in 1.5.0; replaced by {@link #getPluginInstance(JavaPlugin)}
+     */
+    @Deprecated
     public static HashMap<JavaPlugin, PluginInstance> pinstances            = new HashMap<>();
     
+    /**
+     * The party messages.
+     * @deprecated will be private in 1.5.0; replaced by new methods.
+     */
+    @Deprecated
     public PartyMessagesConfig                        partymessages;
+    
+    /**
+     * The stats config.
+     * @deprecated will be private in 1.5.0; replaced by new methods.
+     */
+    @Deprecated
     public StatsGlobalConfig                          statsglobal;
     
     /**
@@ -103,8 +151,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
      * 
      * @deprecated will be removed in 1.5.0; replaced by SERVER_VERSION enumeration.
      */
-    public boolean                                    below1710             = false;                          // Used for scoreboard function (wether to use getScore(OfflinePlayer) or
-                                                                                                              // getScore(String))
+    public boolean                                    below1710             = false;
+    
     /**
      * The plugin metrics report.
      */
@@ -122,13 +170,10 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, ChannelStrings.CHANNEL_BUNGEE_CORD);
         this.getServer().getMessenger().registerIncomingPluginChannel(this, ChannelStrings.CHANNEL_BUNGEE_CORD, this);
         
-        if (MinigamesAPI.economy)
+        if (!this.setupEconomy())
         {
-            if (!this.setupEconomy())
-            {
-                this.getLogger().severe(String.format("[%s] - No Economy (Vault) dependency found! Disabling Economy.", this.getDescription().getName())); //$NON-NLS-1$
-                MinigamesAPI.economy = false;
-            }
+            this.getLogger().severe(String.format("[%s] - No Economy (Vault) dependency found! Disabling Economy.", this.getDescription().getName())); //$NON-NLS-1$
+            MinigamesAPI.economy = false;
         }
         
         this.getConfig().options().header("Want bugfree versions? Set this to true for automatic updates:"); //$NON-NLS-1$
@@ -220,6 +265,24 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                 }
             }
         }, 0, 20 * this.getConfig().getInt(PluginConfigStrings.SIGNS_UPDATE_TIME));
+    }
+    
+    /**
+     * Checks if crackshot is available.
+     * @return {@code true} if crackshot is available.
+     */
+    public boolean crackshotAvailable()
+    {
+        return this.crackshot;
+    }
+    
+    /**
+     * Checks if economy is available.
+     * @return {@code true} if economy is available.
+     */
+    public boolean economyAvailable()
+    {
+        return this.economy;
     }
     
     /**

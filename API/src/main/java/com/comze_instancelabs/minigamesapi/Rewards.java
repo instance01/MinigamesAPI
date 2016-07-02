@@ -50,7 +50,7 @@ public class Rewards
         this.plugin = plugin;
         this.reloadVariables();
         
-        if (!MinigamesAPI.economy)
+        if (!MinigamesAPI.getAPI().economyAvailable())
         {
             this.economyrewards = false;
             this.kill_economyrewards = false;
@@ -123,7 +123,7 @@ public class Rewards
             final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(this.plugin);
             final Player p = Bukkit.getPlayer(p_);
             
-            if (this.kill_economyrewards && MinigamesAPI.economy)
+            if (this.kill_economyrewards && MinigamesAPI.getAPI().economyAvailable())
             {
                 MinigamesAPI.getAPI();
                 MinigamesAPI.econ.depositPlayer(p.getName(), this.kill_econ_reward);
@@ -165,7 +165,7 @@ public class Rewards
         {
             final Player p = Bukkit.getPlayer(p_);
             
-            if (econ && MinigamesAPI.economy)
+            if (econ && MinigamesAPI.getAPI().economyAvailable())
             {
                 MinigamesAPI.getAPI();
                 MinigamesAPI.econ.depositPlayer(p.getName(), money_reward);
@@ -208,7 +208,7 @@ public class Rewards
             if (!pli.global_lost.containsKey(p_))
             {
                 String received_rewards_msg = pli.getMessagesConfig().you_received_rewards;
-                if (this.economyrewards && MinigamesAPI.economy)
+                if (this.economyrewards && MinigamesAPI.getAPI().economyAvailable())
                 {
                     int multiplier = global_multiplier;
                     if (pli.getShopHandler().hasItemBought(p_, "coin_boost2_solo"))
@@ -240,7 +240,7 @@ public class Rewards
                     {
                         items_str = items_str.substring(0, items_str.length() - 2);
                     }
-                    if (this.economyrewards && MinigamesAPI.economy)
+                    if (this.economyrewards && MinigamesAPI.getAPI().economyAvailable())
                     {
                         received_rewards_msg += pli.getMessagesConfig().you_received_rewards_2;
                         received_rewards_msg += pli.getMessagesConfig().you_received_rewards_3.replaceAll("<itemreward>", items_str);

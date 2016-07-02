@@ -1125,7 +1125,7 @@ public class CommandHandler
                 {
                     if (ac.isEnabled())
                     {
-                        pli.getClassesHandler().setClass(kit, p.getName(), MinigamesAPI.economy);
+                        pli.getClassesHandler().setClass(kit, p.getName(), MinigamesAPI.getAPI().economyAvailable());
                         return true;
                     }
                 }

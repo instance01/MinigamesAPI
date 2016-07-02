@@ -177,7 +177,7 @@ public class Shop
     public boolean takeMoney(final Player p, final String item)
     {
         MinigamesAPI.getAPI();
-        if (!MinigamesAPI.economy)
+        if (!MinigamesAPI.getAPI().economyAvailable())
         {
             this.plugin.getLogger().warning("Economy is turned OFF. Turn it ON in the config.");
             return false;
@@ -186,7 +186,7 @@ public class Shop
         {
             return false;
         }
-        if (MinigamesAPI.economy)
+        if (MinigamesAPI.getAPI().economyAvailable())
         {
             final ShopConfig shopConfig = this.pli.getShopConfig();
             if (!shopConfig.getConfig().isSet("players.bought." + p.getName() + "." + item))

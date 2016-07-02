@@ -1006,7 +1006,7 @@ public class Util
             final int kills_ = pli.getStatsInstance().getKills(p.getName());
             final int deaths_ = pli.getStatsInstance().getDeaths(p.getName());
             int money_ = 0;
-            if (MinigamesAPI.economy)
+            if (MinigamesAPI.getAPI().economyAvailable())
             {
                 money_ = (int) MinigamesAPI.econ.getBalance(p.getName());
             }
