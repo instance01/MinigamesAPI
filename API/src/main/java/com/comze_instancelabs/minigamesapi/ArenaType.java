@@ -14,6 +14,9 @@
 */
 package com.comze_instancelabs.minigamesapi;
 
+/**
+ * Arena types.
+ */
 public enum ArenaType
 {
     
