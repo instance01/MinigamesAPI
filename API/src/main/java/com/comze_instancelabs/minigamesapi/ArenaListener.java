@@ -85,19 +85,41 @@ import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Util.CompassPlayer;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
+/**
+ * Bukkit event listener for minigames-lib; one instance per minigame plugin.
+ * 
+ * @author mepeisen
+ */
 public class ArenaListener implements Listener
 {
     
+    /** minigame plugin. */
     private JavaPlugin        plugin    = null;
+    
+    /** reference to internal representation of minigames plugin. */
     private PluginInstance    pli       = null;
     
-    private String            minigame  = "minigame";
+    /** name of the minigame. */
+    private String            minigame  = "minigame";       //$NON-NLS-1$
     
+    /** the commands that we use. */
     private ArrayList<String> cmds      = new ArrayList<>();
-    private String            leave_cmd = "/leave";
+    
+    /** the leave command. */
+    private String            leave_cmd = "/leave";         //$NON-NLS-1$
     
     public int                loseY     = 4;
     
+    /**
+     * Constructor to create the arena listener.
+     * 
+     * @param plugin
+     *            minigame plugin
+     * @param pinstance
+     *            internal representation of minigame plugin
+     * @param minigame
+     *            name of the minigame.
+     */
     public ArenaListener(final JavaPlugin plugin, final PluginInstance pinstance, final String minigame)
     {
         this.plugin = plugin;
@@ -106,12 +128,441 @@ public class ArenaListener implements Listener
         this.leave_cmd = plugin.getConfig().getString(ArenaConfigStrings.CONFIG_LEAVE_COMMAND);
     }
     
+    /**
+     * Constructor to create the arena listener.
+     * 
+     * @param plugin
+     *            minigame plugin
+     * @param pinstance
+     *            internal representation of minigame plugin
+     * @param minigame
+     *            name of the minigame.
+     * @param cmds
+     *            the commands that we use
+     */
     public ArenaListener(final JavaPlugin plugin, final PluginInstance pinstance, final String minigame, final ArrayList<String> cmds)
     {
         this(plugin, pinstance, minigame);
         this.cmds = cmds;
     }
     
+    // *************************
+    // ***** smart reset support
+    // *************************
+    
+    /**
+     * Player explode event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onExplode(final EntityExplodeEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    if (event.getEntity() != null)
+                    {
+                        if (c.containsLocWithoutY(event.getEntity().getLocation()))
+                        {
+                            for (final Block b : event.blockList())
+                            {
+                                a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Block from/to event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries.
+     * </p>
+     * 
+     * <p>
+     * Will cancel the event during RESTARTING phase of the arena.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockFromTo(final BlockFromToEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    if (c.containsLocWithoutYD(event.getBlock().getLocation()))
+                    {
+                        if (a.getArenaState() == ArenaState.INGAME)
+                        {
+                            a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST), ChangeCause.FROM_TO);
+                        }
+                        else if (a.getArenaState() == ArenaState.RESTARTING)
+                        {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Block fade event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries and while in INGAME arena state.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockFade(final BlockFadeEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    if (c.containsLocWithoutY(event.getBlock().getLocation()))
+                    {
+                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.FADE);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Block physics event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries and while in INGAME arena state.
+     * </p>
+     * 
+     * <p>
+     * Ignores materials: carpet and red_block (=bed).
+     * </p>
+     * 
+     * <p>
+     * Will cancel the event during RESTARTING phase of the arena.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockPhysics(final BlockPhysicsEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    if (a.getArenaState() == ArenaState.INGAME)
+                    {
+                        if (c.containsLocWithoutY(event.getBlock().getLocation()))
+                        {
+                            if (event.getChangedType() == Material.CARPET || event.getChangedType() == Material.BED_BLOCK)
+                            {
+                                return;
+                            }
+                            a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.PHYSICS);
+                        }
+                    }
+                    else if (a.getArenaState() == ArenaState.RESTARTING)
+                    {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Block redstone event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries and while in INGAME arena state.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void onBlockRedstone(final BlockRedstoneEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    if (a.getArenaState() == ArenaState.INGAME)
+                    {
+                        a.getSmartReset().addChanged(event.getBlock(), false);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Block spread event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries and while in INGAME arena state.
+     * </p>
+     * 
+     * <p>
+     * Will cancel the event during RESTARTING phase of the arena.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void onBlockSpread(final BlockSpreadEvent event)
+    {
+        // disallow fire spread while the arena restarts
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    if (a.getArenaState() == ArenaState.INGAME)
+                    {
+                        a.getSmartReset().addChanged(event.getBlock().getLocation(), Material.AIR, (byte) 0);
+                    }
+                    else if (a.getArenaState() == ArenaState.RESTARTING)
+                    {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Entity change block event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void onEntityChangeBlock(final EntityChangeBlockEvent event)
+    {
+        if (event.getEntity() instanceof Enderman)
+        {
+            for (final Arena a : this.pli.getArenas())
+            {
+                if (a.getArenaType() == ArenaType.REGENERATION)
+                {
+                    final Cuboid c = a.getBoundaries();
+                    if (c != null)
+                    {
+                        if (c.containsLocWithoutY(event.getEntity().getLocation()))
+                        {
+                            a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.ENTITY_CHANGE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Leaves decay event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries and while in INGAME arena state.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onLeavesDecay(final LeavesDecayEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    if (c.containsLocWithoutY(event.getBlock().getLocation()))
+                    {
+                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Block burn event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void onBlockBurn(final BlockBurnEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (Validator.isArenaValid(this.plugin, a) && a.getArenaType() == ArenaType.REGENERATION)
+            {
+                final Cuboid c = new Cuboid(Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_LOW),
+                        Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_HIGH));
+                if (c != null)
+                {
+                    if (c.containsLocWithoutY(event.getBlock().getLocation()))
+                    {
+                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.BURN);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * On Structure grow event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void onStructureGrow(final StructureGrowEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME)
+            {
+                final Cuboid c = new Cuboid(Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_LOW),
+                        Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_HIGH));
+                if (c != null)
+                {
+                    final Location start = event.getLocation();
+                    if (c.containsLocWithoutY(start))
+                    {
+                        a.getSmartReset().addChanged(start.getBlock(), false);
+                        for (final BlockState bs : event.getBlocks())
+                        {
+                            final Block b = bs.getBlock();
+                            a.getSmartReset().addChanged(b.getLocation(), Material.AIR, (byte) 0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Block break event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries.
+     * </p>
+     * 
+     * TODO difference to blockbreak2?
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockBreak2(final BlockBreakEvent event)
+    {
+        final Player p = event.getPlayer();
+        if (this.pli.containsGlobalPlayer(p.getName()))
+        {
+            final Arena a = this.pli.global_players.get(p.getName());
+            if (event.getBlock().getType() != Material.AIR)
+            {
+                a.getSmartReset().addChanged(event.getBlock().getLocation(), event.getBlock().getType(), event.getBlock().getData());
+            }
+        }
+    }
+    
+    // *******************
+    // ***** cancel events
+    // *******************
+    
+    /**
+     * Player drop item event.
+     * 
+     * <p>
+     * Cancelled while ingame and player already lost the game.
+     * </p>
+     * 
+     * <p>
+     * Cancelled while not ingame and this is not an arcade arena.
+     * TODO: Any reason why?
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onPlayerDrop(final PlayerDropItemEvent event)
     {
@@ -132,6 +583,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player pickup item event.
+     * 
+     * <p>
+     * Cancelled while ingame and this is not arcade.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onPlayerPickupItem(final PlayerPickupItemEvent event)
     {
@@ -150,6 +611,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player inventory click event.
+     * 
+     * <p>
+     * Cancelled while starting and this is not arcade.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent event)
     {
@@ -170,19 +641,135 @@ public class ArenaListener implements Listener
         }
     }
     
-    private List<Entity> getEntitiesByLocation(final Location loc, final double d)
+    /**
+     * Player hunger event.
+     * 
+     * <p>
+     * Cancelled while in arena and not in arcade.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void onHunger(final FoodLevelChangeEvent event)
     {
-        final List<Entity> ent = new ArrayList();
-        for (final Entity e : loc.getWorld().getEntities())
+        if (event.getEntity() instanceof Player)
         {
-            if (e.getLocation().distanceSquared(loc) <= d)
+            final Player p = (Player) event.getEntity();
+            if (this.pli.containsGlobalPlayer(p.getName()))
             {
-                ent.add(e);
+                if (!this.pli.global_players.get(p.getName()).isArcadeMain())
+                {
+                    event.setCancelled(true);
+                }
             }
         }
-        return ent;
     }
     
+    /**
+     * Player damage event.
+     * 
+     * <p>
+     * Cancelled while in lobby (JOIN/STARTING state)
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void NoDamageEntityInLobby(final EntityDamageByEntityEvent event)
+    {
+        if (event.getDamager() instanceof Player)
+        {
+            final Player p = (Player) event.getDamager();
+            if (this.pli.containsGlobalPlayer(p.getName()))
+            {
+                final Arena arena = this.pli.global_players.get(p.getName());
+                if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING))
+                {
+                    final Entity e = event.getEntity();
+                    if (e instanceof ArmorStand || e instanceof ItemFrame || e instanceof Painting || e instanceof Minecart)
+                    {
+                        event.setCancelled(false);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Player interact entity event.
+     * 
+     * <p>
+     * Cancelled while in lobby (JOIN/STARTING phase)
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler
+    public void NoClickEntityInLobby(final PlayerInteractEntityEvent event) throws IOException
+    {
+        final Player p = event.getPlayer();
+        final Entity e = event.getRightClicked();
+        if (!(e instanceof Player))
+        {
+            final Arena arena = this.pli.global_players.get(p.getName());
+            if (arena != null)
+            {
+                if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING))
+                {
+                    if (event.getRightClicked().getType().equals(EntityType.ARMOR_STAND) || event.getRightClicked().getType().equals(EntityType.MINECART)
+                            || event.getRightClicked().getType().equals(EntityType.MINECART_CHEST) || event.getRightClicked().getType().equals(EntityType.MINECART_HOPPER)
+                            || event.getRightClicked().getType().equals(EntityType.ITEM_FRAME) || event.getRightClicked().getType().equals(EntityType.PAINTING))
+                    {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Player painting break event.
+     * 
+     * <p>
+     * Cancelled while being in arena.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPaintingBreak(final HangingBreakByEntityEvent event)
+    {
+        if (event.getRemover() instanceof Player)
+        {
+            final String p_ = ((Player) event.getRemover()).getName();
+            if (this.pli.containsGlobalPlayer(p_))
+            {
+                event.setCancelled(true);
+            }
+        }
+        
+    }
+    
+    // ******************
+    // ***** other events
+    // ******************
+    
+    /**
+     * Fetches player move event.
+     * 
+     * <p>
+     * TODO describe what this event is doing. Seems to ensure that players cannot collide.
+     * </p>
+     * 
+     * @param event
+     *            the player move event.
+     */
     @EventHandler
     public void Space(final PlayerMoveEvent event)
     {
@@ -217,12 +804,16 @@ public class ArenaListener implements Listener
         }
     }
     
-    @Deprecated
-    public static boolean isSpectating(final Player p)
-    {
-        return Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p);
-    }
-    
+    /**
+     * Fetches player move event.
+     * 
+     * <p>
+     * TODO describe what this event is doing.
+     * </p>
+     * 
+     * @param event
+     *            the player move event.
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(final PlayerMoveEvent event)
     {
@@ -336,22 +927,16 @@ public class ArenaListener implements Listener
         
     }
     
-    @EventHandler
-    public void onHunger(final FoodLevelChangeEvent event)
-    {
-        if (event.getEntity() instanceof Player)
-        {
-            final Player p = (Player) event.getEntity();
-            if (this.pli.containsGlobalPlayer(p.getName()))
-            {
-                if (!this.pli.global_players.get(p.getName()).isArcadeMain())
-                {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
-    
+    /**
+     * Player death event.
+     * 
+     * <p>
+     * TODO describe what is going on
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(final PlayerDeathEvent event)
     {
@@ -425,48 +1010,16 @@ public class ArenaListener implements Listener
         }
     }
     
-    @EventHandler
-    public void NoDamageEntityInLobby(final EntityDamageByEntityEvent event)
-    {
-        if (event.getDamager() instanceof Player)
-        {
-            final Player p = (Player) event.getDamager();
-            if (this.pli.containsGlobalPlayer(p.getName()))
-            {
-                final Arena arena = this.pli.global_players.get(p.getName());
-                if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING))
-                {
-                    final Entity e = event.getEntity();
-                    if (e instanceof ArmorStand || e instanceof ItemFrame || e instanceof Painting || e instanceof Minecart)
-                    {
-                        event.setCancelled(false);
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler
-    public void NoClickEntityInLobby(final PlayerInteractEntityEvent event) throws IOException
-    {
-        final Player p = event.getPlayer();
-        final Entity e = event.getRightClicked();
-        if (!(e instanceof Player))
-        {
-            final Arena arena = this.pli.global_players.get(p.getName());
-            if (arena.getArenaState() == ArenaState.JOIN || (arena.getArenaState() == ArenaState.STARTING))
-            {
-                if (event.getRightClicked().getType().equals(EntityType.ARMOR_STAND) || event.getRightClicked().getType().equals(EntityType.MINECART)
-                        || event.getRightClicked().getType().equals(EntityType.MINECART_CHEST) || event.getRightClicked().getType().equals(EntityType.MINECART_HOPPER)
-                        || event.getRightClicked().getType().equals(EntityType.ITEM_FRAME) || event.getRightClicked().getType().equals(EntityType.PAINTING))
-                {
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-    }
-    
+    /**
+     * Player entity damage event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onEntityDamage(final EntityDamageEvent event)
     {
@@ -517,6 +1070,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player entity damage event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onEntityDamageByEntity(final EntityDamageByEntityEvent event)
     {
@@ -631,204 +1194,16 @@ public class ArenaListener implements Listener
         }
     }
     
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPaintingBreak(final HangingBreakByEntityEvent event)
-    {
-        if (event.getRemover() instanceof Player)
-        {
-            final String p_ = ((Player) event.getRemover()).getName();
-            if (this.pli.containsGlobalPlayer(p_))
-            {
-                event.setCancelled(true);
-            }
-        }
-        
-    }
-    
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onExplode(final EntityExplodeEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION)
-            {
-                final Cuboid c = a.getBoundaries();
-                if (c != null)
-                {
-                    if (event.getEntity() != null)
-                    {
-                        if (c.containsLocWithoutY(event.getEntity().getLocation()))
-                        {
-                            for (final Block b : event.blockList())
-                            {
-                                a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockFromTo(final BlockFromToEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION)
-            {
-                final Cuboid c = a.getBoundaries();
-                if (c != null)
-                {
-                    if (c.containsLocWithoutYD(event.getBlock().getLocation()))
-                    {
-                        if (a.getArenaState() == ArenaState.INGAME)
-                        {
-                            a.getSmartReset().addChanged(event.getToBlock(), event.getToBlock().getType().equals(Material.CHEST), ChangeCause.FROM_TO);
-                        }
-                        else if (a.getArenaState() == ArenaState.RESTARTING)
-                        {
-                            event.setCancelled(true);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockFade(final BlockFadeEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME)
-            {
-                final Cuboid c = a.getBoundaries();
-                if (c != null)
-                {
-                    if (c.containsLocWithoutY(event.getBlock().getLocation()))
-                    {
-                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.FADE);
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onLeavesDecay(final LeavesDecayEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME)
-            {
-                final Cuboid c = a.getBoundaries();
-                if (c != null)
-                {
-                    if (c.containsLocWithoutY(event.getBlock().getLocation()))
-                    {
-                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST));
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockPhysics(final BlockPhysicsEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION)
-            {
-                final Cuboid c = a.getBoundaries();
-                if (c != null)
-                {
-                    if (a.getArenaState() == ArenaState.INGAME)
-                    {
-                        if (c.containsLocWithoutY(event.getBlock().getLocation()))
-                        {
-                            if (event.getChangedType() == Material.CARPET || event.getChangedType() == Material.BED_BLOCK)
-                            {
-                                return;
-                            }
-                            a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.PHYSICS);
-                        }
-                    }
-                    else if (a.getArenaState() == ArenaState.RESTARTING)
-                    {
-                        event.setCancelled(true);
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler
-    public void onBlockRedstone(final BlockRedstoneEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION)
-            {
-                final Cuboid c = a.getBoundaries();
-                if (c != null)
-                {
-                    if (a.getArenaState() == ArenaState.INGAME)
-                    {
-                        a.getSmartReset().addChanged(event.getBlock(), false);
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler
-    public void onBlockSpread(final BlockSpreadEvent event)
-    {
-        // disallow fire spread while the arena restarts
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION)
-            {
-                final Cuboid c = a.getBoundaries();
-                if (c != null)
-                {
-                    if (a.getArenaState() == ArenaState.INGAME)
-                    {
-                        a.getSmartReset().addChanged(event.getBlock().getLocation(), Material.AIR, (byte) 0);
-                    }
-                    else if (a.getArenaState() == ArenaState.RESTARTING)
-                    {
-                        event.setCancelled(true);
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler
-    public void onEntityChangeBlock(final EntityChangeBlockEvent event)
-    {
-        if (event.getEntity() instanceof Enderman)
-        {
-            for (final Arena a : this.pli.getArenas())
-            {
-                if (a.getArenaType() == ArenaType.REGENERATION)
-                {
-                    final Cuboid c = a.getBoundaries();
-                    if (c != null)
-                    {
-                        if (c.containsLocWithoutY(event.getEntity().getLocation()))
-                        {
-                            a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.ENTITY_CHANGE);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
+    /**
+     * Block break event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(final BlockBreakEvent event)
     {
@@ -907,25 +1282,16 @@ public class ArenaListener implements Listener
         }
     }
     
-    @EventHandler
-    public void onBlockBurn(final BlockBurnEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (Validator.isArenaValid(this.plugin, a) && a.getArenaType() == ArenaType.REGENERATION)
-            {
-                final Cuboid c = new Cuboid(Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_LOW), Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_HIGH));
-                if (c != null)
-                {
-                    if (c.containsLocWithoutY(event.getBlock().getLocation()))
-                    {
-                        a.getSmartReset().addChanged(event.getBlock(), event.getBlock().getType().equals(Material.CHEST), ChangeCause.BURN);
-                    }
-                }
-            }
-        }
-    }
-    
+    /**
+     * Player bucket empty event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerBucketEmpty(final PlayerBucketEmptyEvent event)
     {
@@ -952,45 +1318,16 @@ public class ArenaListener implements Listener
         }
     }
     
-    @EventHandler
-    public void onStructureGrow(final StructureGrowEvent event)
-    {
-        for (final Arena a : this.pli.getArenas())
-        {
-            if (a.getArenaType() == ArenaType.REGENERATION && a.getArenaState() == ArenaState.INGAME)
-            {
-                final Cuboid c = new Cuboid(Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_LOW), Util.getComponentForArena(this.plugin, a.getInternalName(), ArenaConfigStrings.BOUNDS_HIGH));
-                if (c != null)
-                {
-                    final Location start = event.getLocation();
-                    if (c.containsLocWithoutY(start))
-                    {
-                        a.getSmartReset().addChanged(start.getBlock(), false);
-                        for (final BlockState bs : event.getBlocks())
-                        {
-                            final Block b = bs.getBlock();
-                            a.getSmartReset().addChanged(b.getLocation(), Material.AIR, (byte) 0);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockBreak2(final BlockBreakEvent event)
-    {
-        final Player p = event.getPlayer();
-        if (this.pli.containsGlobalPlayer(p.getName()))
-        {
-            final Arena a = this.pli.global_players.get(p.getName());
-            if (event.getBlock().getType() != Material.AIR)
-            {
-                a.getSmartReset().addChanged(event.getBlock().getLocation(), event.getBlock().getType(), event.getBlock().getData());
-            }
-        }
-    }
-    
+    /**
+     * Block place event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(final BlockPlaceEvent event)
     {
@@ -1022,24 +1359,20 @@ public class ArenaListener implements Listener
         }
     }
     
-    private boolean checkLocationMatchesSign(final Location l, final Sign s)
-    {
-        if (l != null)
-        {
-            if (l.getWorld() != null)
-            {
-                if (l.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName()))
-                {
-                    if (l.distance(s.getLocation()) < 1)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+    // *****************
+    // ***** sign events
+    // *****************
     
+    /**
+     * Sign use event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onSignUse(final PlayerInteractEvent event)
     {
@@ -1237,7 +1570,8 @@ public class ArenaListener implements Listener
                     event.setCancelled(true);
                 }
             }
-            else if (event.getItem().getTypeId() == this.plugin.getConfig().getInt(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ITEM_SUFFIX))
+            else if (event.getItem().getTypeId() == this.plugin.getConfig()
+                    .getInt(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ITEM_SUFFIX))
             {
                 if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ENABLED_SUFFIX))
                 {
@@ -1270,6 +1604,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Sign change event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onSignChange(final SignChangeEvent event)
     {
@@ -1342,6 +1686,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player join event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event)
     {
@@ -1419,6 +1773,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player leave event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onPlayerLeave(final PlayerQuitEvent event)
     {
@@ -1469,6 +1833,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player chat event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChat(final AsyncPlayerChatEvent event)
     {
@@ -1508,6 +1882,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player command preprocessor event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     @EventHandler
     public void onPlayerCommandPreprocessEvent(final PlayerCommandPreprocessEvent event)
     {
@@ -1548,6 +1932,16 @@ public class ArenaListener implements Listener
         }
     }
     
+    /**
+     * Player teleport event.
+     * 
+     * <p>
+     * TODO describe when this event is cancelled
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
     // TP Fix start
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(final PlayerTeleportEvent event)
@@ -1567,6 +1961,73 @@ public class ArenaListener implements Listener
                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(ArenaListener.this.plugin, () -> ArenaListener.this.updateEntities(nearby, true), 1);
             }, 5L);
         }
+    }
+    
+    // *************************
+    // ***** helpers / utilities
+    // *************************
+    
+    /**
+     * Checks if a player is in spectation mode.
+     * 
+     * @param p
+     *            player object
+     * @return {@code true} if player is spectating
+     * @deprecated TODO replacement?
+     */
+    @Deprecated
+    public static boolean isSpectating(final Player p)
+    {
+        return Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p);
+    }
+    
+    /**
+     * Finds entities by location and squared distance.
+     * 
+     * @param loc
+     *            base
+     * @param d
+     *            maximum squared distance
+     * @return list of entities.
+     */
+    private List<Entity> getEntitiesByLocation(final Location loc, final double d)
+    {
+        final List<Entity> ent = new ArrayList<>();
+        for (final Entity e : loc.getWorld().getEntities())
+        {
+            if (e.getLocation().distanceSquared(loc) <= d)
+            {
+                ent.add(e);
+            }
+        }
+        return ent;
+    }
+    
+    /**
+     * Check if given location matches given sign.
+     * 
+     * @param l
+     *            the location to be checked
+     * @param s
+     *            the sign to be checked
+     * @return {@code true} if the location matches given sign.
+     */
+    private boolean checkLocationMatchesSign(final Location l, final Sign s)
+    {
+        if (l != null)
+        {
+            if (l.getWorld() != null)
+            {
+                if (l.getWorld().getName().equalsIgnoreCase(s.getLocation().getWorld().getName()))
+                {
+                    if (l.distance(s.getLocation()) < 1)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     private void updateEntities(final List<Player> players, final boolean visible)

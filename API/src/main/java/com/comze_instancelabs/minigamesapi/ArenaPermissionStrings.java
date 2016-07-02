@@ -12,27 +12,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package com.comze_instancelabs.minigamesapi;
 
 /**
- * Arena types.
+ * Strings for arenas permissions.
+ * 
+ * @author mepeisen
  */
-public enum ArenaType
+public interface ArenaPermissionStrings
 {
     
-    /**
-     * Standard arena with lobby + spawn and lobby countdown; can have multiple spawns too
-     */
-    DEFAULT,
+    /** arenas vip permission. */
+    String VIP = "arenas.*"; //$NON-NLS-1$
     
-    /**
-     * Players just join the game whenever they like, no lobby countdowns or arena/sign states; doesn't allow multiple spawns
-     */
-    JUMPNRUN,
-    
-    /**
-     * Default arena + automatic regeneration
-     */
-    REGENERATION
+    /** arena prefix for permission. */
+    String PREFIX = "arenas."; //$NON-NLS-1$
     
 }

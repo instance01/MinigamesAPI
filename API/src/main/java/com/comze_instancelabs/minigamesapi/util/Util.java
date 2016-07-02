@@ -70,6 +70,7 @@ import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
 import com.comze_instancelabs.minigamesapi.ArenaLogger;
 import com.comze_instancelabs.minigamesapi.ArenaSetup;
 import com.comze_instancelabs.minigamesapi.ArenaState;
+import com.comze_instancelabs.minigamesapi.MinecraftVersionsType;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -1108,7 +1109,10 @@ public class Util
         {
             p.getVehicle().setVelocity(direction.multiply(2.2D));
         }
-        p.spawnParticle(Particle.PORTAL, p.getLocation(), 10);
+        if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_9))
+        {
+            p.spawnParticle(Particle.PORTAL, p.getLocation(), 10);
+        }
     }
     
     public static Score getScore(final Objective obj, final String text)

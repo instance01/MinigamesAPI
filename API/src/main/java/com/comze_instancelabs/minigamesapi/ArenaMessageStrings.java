@@ -12,27 +12,36 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package com.comze_instancelabs.minigamesapi;
 
 /**
- * Arena types.
+ * Strings for messages.
+ * 
+ * @author mepeisen
  */
-public enum ArenaType
+public interface ArenaMessageStrings
 {
-    
-    /**
-     * Standard arena with lobby + spawn and lobby countdown; can have multiple spawns too
-     */
-    DEFAULT,
-    
-    /**
-     * Players just join the game whenever they like, no lobby countdowns or arena/sign states; doesn't allow multiple spawns
-     */
-    JUMPNRUN,
-    
-    /**
-     * Default arena + automatic regeneration
-     */
-    REGENERATION
+
+    /** ARENA replacement. */
+    String ARENA = "<arena>"; //$NON-NLS-1$
+
+    /** AUTHOR replacement. */
+    String AUTHOR = "<author>"; //$NON-NLS-1$
+
+    /** DESCRIPTION replacement. */
+    String DESCRIPTION = "<description>"; //$NON-NLS-1$
+
+    /** PLAYER replacement. */
+    String PLAYER = "<player>"; //$NON-NLS-1$
+
+    /** KILLER replacement. */
+    String KILLER = "<killer>"; //$NON-NLS-1$
+
+    /** COUNT replacement. */
+    String COUNT = "<count>"; //$NON-NLS-1$
+
+    /** MAXCOUNT replacement. */
+    String MAXCOUNT = "<maxcount>"; //$NON-NLS-1$
     
 }
