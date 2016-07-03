@@ -39,6 +39,11 @@ import com.shampaggon.crackshot.CSUtility;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
+/**
+ * Classes helper.
+ * 
+ * @author instancelabs
+ */
 public class Classes
 {
     
@@ -256,7 +261,7 @@ public class Classes
         // p.getInventory().setContents((ItemStack[]) items.toArray(new ItemStack[items.size()]));
         p.updateInventory();
         
-        if (MinigamesAPI.getAPI().crackshot)
+        if (MinigamesAPI.getAPI().crackshotAvailable())
         {
             for (final String t : tempguns)
             {
@@ -517,12 +522,12 @@ public class Classes
         
         MinigamesAPI.getAPI();
         // Money (economy)
-        if (!MinigamesAPI.economy)
+        if (!MinigamesAPI.getAPI().economyAvailable())
         {
             this.plugin.getLogger().warning("Economy is turned OFF. You can turn it on in the config.");
             return false;
         }
-        if (MinigamesAPI.economy)
+        if (MinigamesAPI.getAPI().economyAvailable())
         {
             if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_BUY_CLASSES_FOREVER))
             {

@@ -110,33 +110,33 @@ public interface ArenaConfigStrings
     /** TODO: describe config option. */
     String CONFIG_SHOW_CLASSES_WITHOUT_PERM = "config.show_classes_without_usage_permission"; //$NON-NLS-1$
     
-    /** TODO: describe config option. */
+    /** {@code true} to gain economy rewards on win. */
     String CONFIG_REWARDS_ECONOMY = "config.rewards.economy"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** Amount of money to give for win. */
     String CONFIG_REWARDS_ECONOMY_REWARD = "config.rewards.economy_reward"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** {@code true} to gain item rewards on win. */
     String CONFIG_REWARDS_ITEM_REWARD = "config.rewards.item_reward"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** the items wo give for win. */
     String CONFIG_REWARDS_ITEM_REWARD_IDS = "config.rewards.item_reward_ids"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** {@code true} to execute a command on win. */
     String CONFIG_REWARDS_COMMAND_REWARD = "config.rewards.command_reward"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** the command to execute for win. */
     String CONFIG_REWARDS_COMMAND = "config.rewards.command"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** {@code true} to gain economy rewards on kills. */
     String CONFIG_REWARDS_ECONOMY_FOR_KILLS = "config.rewards.economy_for_kills"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** money to give per kill. */
     String CONFIG_REWARDS_ECONOMY_REWARD_FOR_KILLS = "config.rewards.economy_reward_for_kills"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** {@code true} to gain a command for kills. */
     String CONFIG_REWARDS_COMMAND_REWARD_FOR_KILLS = "config.rewards.command_reward_for_kills"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** command to execute for kills. */
     String CONFIG_REWARDS_COMMAND_FOR_KILLS = "config.rewards.command_for_kills"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** {@code true} to gain economy rewards for participation. */
     String CONFIG_REWARDS_ECONOMY_FOR_PARTICIPATION = "config.rewards.economy_for_participation"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** money to give for participation. */
     String CONFIG_REWARDS_ECONOMY_REWARD_FOR_PARTICIPATION = "config.rewards.economy_reward_for_participation"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** {@code true} to execute a command for participation. */
     String CONFIG_REWARDS_COMMAND_REWARD_FOR_PARTICIPATION = "config.rewards.command_reward_for_participation"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** command to execute for participation. */
     String CONFIG_REWARDS_COMMAND_FOR_PARTICIPATION = "config.rewards.command_for_participation"; //$NON-NLS-1$
     
     /** TODO: describe config option. */
@@ -232,8 +232,14 @@ public interface ArenaConfigStrings
     String CONFIG_SEND_STATS_ON_STOP = "config.send_stats_on_stop"; //$NON-NLS-1$
     /** TODO: describe config option. */
     String CONFIG_USE_XP_BAR_LEVEL = "config.use_xp_bar_level"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    
+    /** 
+     * {@code true} for using old reset (from files); {@code false} for using smart reset
+     * @deprecated will be removed in 1.4.10
+     */
+    @Deprecated
     String CONFIG_USE_OLD_RESET_METHOD = "config.use_old_reset_method"; //$NON-NLS-1$
+    
     /** TODO: describe config option. */
     String CONFIG_CHAT_ENABLED = "config.chat_enabled"; //$NON-NLS-1$
     

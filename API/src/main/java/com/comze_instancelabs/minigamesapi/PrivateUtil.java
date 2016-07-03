@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -44,15 +45,23 @@ import com.comze_instancelabs.minigamesapi.util.Util;
 public class PrivateUtil
 {
 
+    /**
+     * Old arena regeneration, developed by instancelabs
+     * @param plugin
+     * @param arena
+     * @deprecated will be removed in 1.4.10
+     */
+    @Deprecated
     public static void loadArenaFromFileSYNC(final JavaPlugin plugin, final Arena arena)
     {
+        @SuppressWarnings("unused")
         int failcount = 0;
         final ArrayList<ArenaBlock> failedblocks = new ArrayList<>();
         
-        final File f = new File(plugin.getDataFolder() + "/" + arena.getInternalName());
+        final File f = new File(plugin.getDataFolder() + "/" + arena.getInternalName()); //$NON-NLS-1$
         if (!f.exists())
         {
-            plugin.getLogger().warning("Could not find arena file for " + arena.getInternalName());
+            plugin.getLogger().warning("Could not find arena file for " + arena.getInternalName()); //$NON-NLS-1$
             arena.setArenaState(ArenaState.JOIN);
             Bukkit.getScheduler().runTask(plugin, () -> Util.updateSign(plugin, arena));
             return;
@@ -64,9 +73,10 @@ public class PrivateUtil
             fis = new FileInputStream(f);
             ois = new BukkitObjectInputStream(fis);
         }
-        catch (final IOException e)
+        catch (final IOException ex)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Something is wrong with your arena file and the reset might not be successful. Also, you're using an outdated reset method.", ex); //$NON-NLS-1$
+            return;
         }
         
         try
@@ -78,16 +88,16 @@ public class PrivateUtil
                 {
                     b = ois.readObject();
                 }
-                catch (final EOFException e)
+                catch (@SuppressWarnings("unused") final EOFException ex)
                 {
-                    MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena.getInternalName() + " with old reset method.");
+                    MinigamesAPI.getAPI().getLogger().info("Finished restoring map for " + arena.getInternalName() + " with old reset method.");  //$NON-NLS-1$//$NON-NLS-2$
                     
                     arena.setArenaState(ArenaState.JOIN);
                     Bukkit.getScheduler().runTask(plugin, () -> Util.updateSign(plugin, arena));
                 }
-                catch (final ClosedChannelException e)
+                catch (final ClosedChannelException ex)
                 {
-                    System.out.println("Something is wrong with your arena file and the reset might not be successful. Also, you're using an outdated reset method.");
+                    MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Something is wrong with your arena file and the reset might not be successful. Also, you're using an outdated reset method.", ex); //$NON-NLS-1$
                 }
                 catch (final Exception e)
                 {
@@ -113,7 +123,7 @@ public class PrivateUtil
                             ((Chest) b_.getState()).update();
                         }
                     }
-                    catch (final IllegalStateException e)
+                    catch (@SuppressWarnings("unused") final IllegalStateException ex)
                     {
                         failcount += 1;
                         failedblocks.add(ablock);
@@ -156,9 +166,7 @@ public class PrivateUtil
                 }
             }
         }, 40L);
-        MinigamesAPI.getAPI().getLogger().info("Successfully finished!");
-        
-        return;
+        MinigamesAPI.getAPI().getLogger().info("Successfully finished!"); //$NON-NLS-1$
     }
     
 }

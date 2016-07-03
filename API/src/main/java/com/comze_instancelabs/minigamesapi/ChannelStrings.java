@@ -16,35 +16,24 @@
 package com.comze_instancelabs.minigamesapi;
 
 /**
- * Strings for messages.
+ * Pluginc hannel strings.
  * 
  * @author mepeisen
  */
-public interface ArenaMessageStrings
+public interface ChannelStrings
 {
-
-    /** ARENA replacement. */
-    String ARENA = "<arena>"; //$NON-NLS-1$
     
-    /** ACTION replacement. */
-    String ACTION = "<action>"; //$NON-NLS-1$
-
-    /** AUTHOR replacement. */
-    String AUTHOR = "<author>"; //$NON-NLS-1$
-
-    /** DESCRIPTION replacement. */
-    String DESCRIPTION = "<description>"; //$NON-NLS-1$
-
-    /** PLAYER replacement. */
-    String PLAYER = "<player>"; //$NON-NLS-1$
-
-    /** KILLER replacement. */
-    String KILLER = "<killer>"; //$NON-NLS-1$
-
-    /** COUNT replacement. */
-    String COUNT = "<count>"; //$NON-NLS-1$
-
-    /** MAXCOUNT replacement. */
-    String MAXCOUNT = "<maxcount>"; //$NON-NLS-1$
+    /** bungee cord plugin channel. */
+    String CHANNEL_BUNGEE_CORD = "BungeeCord"; //$NON-NLS-1$
+    
+    /**
+     * Bungee-cord sub channel for minigames lib.
+     */
+    String SUBCHANNEL_MINIGAMESLIB_BACK = "MinigamesLibBack"; //$NON-NLS-1$
+    
+    /**
+     * Bungee-cord sub channel for minigames lib.
+     */
+    String SUBCHANNEL_MINIGAMESLIB_REQUEST = "MinigamesLibRequest"; //$NON-NLS-1$
     
 }

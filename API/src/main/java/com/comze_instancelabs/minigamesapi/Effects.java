@@ -33,49 +33,35 @@ import org.bukkit.scheduler.BukkitTask;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
+/**
+ * Particle/Animation helper.
+ * 
+ * @author instancelabs
+ */
 public class Effects
 {
     
-    @Deprecated
-    public static int getClientProtocolVersion(final Player p)
-    {
-        int ret = 0;
-        try
-        {
-            if (!!MinigamesAPI.SERVER_VERSION.isEqual(MinecraftVersionsType.V1_7))
-            {
-                final Method getHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().internalServerVersion + ".entity.CraftPlayer").getMethod("getHandle");
-                final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EntityPlayer").getField("playerConnection");
-                playerConnection.setAccessible(true);
-                final Object playerConInstance = playerConnection.get(getHandle.invoke(p));
-                final Field networkManager = playerConInstance.getClass().getField("networkManager");
-                networkManager.setAccessible(true);
-                final Object networkManagerInstance = networkManager.get(playerConInstance);
-                final Method getVersion = networkManagerInstance.getClass().getMethod("getVersion");
-                final Object version = getVersion.invoke(networkManagerInstance);
-                ret = (Integer) version;
-            }
-        }
-        catch (final Exception e)
-        {
-            if (MinigamesAPI.debug)
-            {
-                e.printStackTrace();
-            }
-        }
-        return ret;
-    }
-    
     /**
-     * Shows the particles of a redstone block breaking
+     * Shows the particles of a redstone block breaking, simulating a blood effect.
      * 
      * @param p
+     *            target player.
      */
     public static void playBloodEffect(final Player p)
     {
         p.getWorld().playEffect(p.getLocation().add(0D, 1D, 0D), Effect.STEP_SOUND, 152);
     }
     
+    /**
+     * Plays an effect by name.
+     * 
+     * @param a
+     *            arena
+     * @param l
+     *            target location
+     * @param effectname
+     *            effect name.
+     */
     public static void playEffect(final Arena a, final Location l, final String effectname)
     {
         for (final String p_ : a.getAllPlayers())
@@ -90,11 +76,35 @@ public class Effects
         }
     }
     
+    /**
+     * Places a fake bed on the current player position.
+     * 
+     * @param a
+     *            arena
+     * @param p
+     *            target player
+     * @return bukkit task that can be cancelled.
+     */
     public static BukkitTask playFakeBed(final Arena a, final Player p)
     {
         return Effects.playFakeBed(a, p, p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
     }
     
+    /**
+     * Places a fake bed on the given position.
+     * 
+     * @param a
+     *            arena
+     * @param p
+     *            target player
+     * @param x
+     *            x-position
+     * @param y
+     *            y-position
+     * @param z
+     *            z-position
+     * @return bukkit task that can be cancelled.
+     */
     public static BukkitTask playFakeBed(final Arena a, final Player p, final int x, final int y, final int z)
     {
         try
@@ -162,7 +172,19 @@ public class Effects
         return null;
     }
     
-    public static void setValue(final Object instance, final String fieldName, final Object value) throws Exception
+    /**
+     * Sets private object value.
+     * 
+     * @param instance
+     *            object instance
+     * @param fieldName
+     *            field name
+     * @param value
+     *            new value
+     * @throws Exception
+     *             thrown on problems setting the field.
+     */
+    private static void setValue(final Object instance, final String fieldName, final Object value) throws Exception
     {
         final Field field = instance.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
@@ -197,27 +219,6 @@ public class Effects
                 System.out.println("Failed additional respawn packet: " + e.getMessage());
             }
         }, 1L);
-    }
-    
-    // TODO Unused right now
-    public void playAura(final Player p, final int cr)
-    {
-        final int cradius_s = cr * cr;
-        final Location start = p.getLocation();
-        final int x = start.getBlockX();
-        final int y = start.getBlockY();
-        final int z = start.getBlockZ();
-        for (int x_ = -cr; x_ <= cr; x_++)
-        {
-            for (int z_ = -cr; z_ <= cr; z_++)
-            {
-                final int t = (x_ * x_) + (z_ * z_);
-                if (t >= cradius_s && t <= (cradius_s + 90))
-                {
-                    p.playEffect(new Location(start.getWorld(), x - x_, y, z - z_), Effect.SMOKE/* todo not present in 1.9: PORTAL */, 5);
-                }
-            }
-        }
     }
     
     /**
@@ -275,7 +276,7 @@ public class Effects
      *            Whether to play a moving down animation
      * @param removeAfterCooldown
      *            Whether to remove the hologram after a few seconds or not
-     * @return
+     * @return ids
      */
     public static ArrayList<Integer> playHologram(final Player p, final Location l, final String text, final boolean moveDown, final boolean removeAfterCooldown)
     {
@@ -386,7 +387,7 @@ public class Effects
         try
         {
             // If player is on 1.8, we'll have to use armor stands, otherwise just use the old 1.7 technique
-            final boolean playerIs1_8 = Effects.getClientProtocolVersion(p) > 5;
+            final boolean playerIs1_8 = MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_8);
             
             final Method getPlayerHandle = Class.forName("org.bukkit.craftbukkit." + MinigamesAPI.getAPI().internalServerVersion + ".entity.CraftPlayer").getMethod("getHandle");
             final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EntityPlayer").getField("playerConnection");
@@ -547,6 +548,14 @@ public class Effects
         return ret;
     }
     
+    /**
+     * Sends a game mode change to given player.
+     * 
+     * @param p
+     *            target player
+     * @param gamemode
+     *            new game mode.
+     */
     public static void sendGameModeChange(final Player p, final int gamemode)
     {
         // NOT_SET(-1, ""), SURVIVAL(0, "survival"), CREATIVE(1, "creative"), ADVENTURE(2, "adventure"), SPECTATOR(3, "spectator");
@@ -557,6 +566,5 @@ public class Effects
         }
         
         p.setGameMode(GameMode.getByValue(gamemode));
-        
     }
 }

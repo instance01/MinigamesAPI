@@ -21,8 +21,47 @@ package com.comze_instancelabs.minigamesapi;
  */
 public enum MinecraftVersionsType
 {
-    Unknown(false), V1_7(true), V1_7_R1(true), V1_7_R2(true), V1_7_R3(true), V1_7_R4(true), V1_8(true), V1_8_R1(true), V1_8_R2(true), V1_9(true), V1_9_R1(true), V1_9_R2(true), V1_10(true), V1_10_R1(
-            true);
+    /** an unknown version/ not supported. */
+    Unknown(false),
+    
+    /** any 1.7 version. */
+    V1_7(true),
+    
+    /** V1.7 R1 */
+    V1_7_R1(true),
+    
+    /** V1.7 R2 */
+    V1_7_R2(true),
+    
+    /** V1.7 R3 */
+    V1_7_R3(true),
+    
+    /** V1.7 R4 */
+    V1_7_R4(true),
+    
+    /** any 1.8 version. */
+    V1_8(true),
+    
+    /** V1.8 R1 */
+    V1_8_R1(true),
+    
+    /** V1.8 R2 */
+    V1_8_R2(true),
+    
+    /** any 1.9 version. */
+    V1_9(true),
+    
+    /** V1.9 R1 */
+    V1_9_R1(true),
+    
+    /** V1.9 R2 */
+    V1_9_R2(true),
+    
+    /** any 1.10 version. */
+    V1_10(true),
+    
+    /** V1.10 R1 */
+    V1_10_R1(true);
     
     /**
      * {@code true} if this version is still supported.
@@ -41,7 +80,9 @@ public enum MinecraftVersionsType
     }
     
     /**
-     * {@code true} if this version is still supported. return {@code true} if this version is still supported.
+     * {@code true} if this version is still supported.
+     * 
+     * @return {@code true} if this version is still supported.
      */
     public boolean isSupported()
     {
@@ -71,8 +112,22 @@ public enum MinecraftVersionsType
                 return type == V1_8 || type == V1_8_R1 || type == V1_8_R2;
             case V1_9:
                 return type == V1_9 || type == V1_9_R1 || type == V1_9_R2;
+                //$CASES-OMITTED$
             default:
-                return type == this;
+                switch (type)
+                {
+                    case V1_10:
+                        return this == V1_10 || this == V1_10_R1;
+                    case V1_7:
+                        return this == V1_7 || this == V1_7_R1 || this == V1_7_R2 || this == V1_7_R3 || this == V1_7_R4;
+                    case V1_8:
+                        return this == V1_8 || this == V1_8_R1 || this == V1_8_R2;
+                    case V1_9:
+                        return this == V1_9 || this == V1_9_R1 || this == V1_9_R2;
+                        //$CASES-OMITTED$
+                    default:
+                        return type == this;
+                }
         }
     }
     

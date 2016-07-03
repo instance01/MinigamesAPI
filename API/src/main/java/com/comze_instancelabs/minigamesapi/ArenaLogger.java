@@ -24,7 +24,7 @@ import org.bukkit.Bukkit;
 /**
  * Logging helper for arenas.
  * 
- * @author mepeisen
+ * @author instancelabs
  */
 public class ArenaLogger
 {

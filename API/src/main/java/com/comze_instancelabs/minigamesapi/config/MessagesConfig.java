@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,7 +59,7 @@ public class MessagesConfig
     {
         // all signs
         this.getConfig().options().header("Contains all messages for easy translation. You can remove a mesage by setting it to nothing, like so: ''");
-        final HashMap<String, String> namecol = ArenaState.getAllStateNameColors();
+        final Map<String, String> namecol = ArenaState.getAllStateNameColors();
         for (final String state : namecol.keySet())
         {
             final String color = namecol.get(state);

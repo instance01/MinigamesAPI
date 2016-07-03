@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,6 +55,12 @@ import com.google.common.io.ByteStreams;
 
 import net.milkbowl.vault.economy.Economy;
 
+/**
+ * Main minigames API; plugin mplementation.
+ * 
+ * @author instancelabs
+ *
+ */
 public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
 {
     
@@ -62,28 +68,94 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     public static final MinecraftVersionsType         SERVER_VERSION        = MinigamesAPI.getServerVersion();
     
     /** the locale to be used. TODO: Change via config */
-    public static Locale LOCALE = Locale.ENGLISH;
+    public static Locale                              LOCALE                = Locale.ENGLISH;
     
-    static MinigamesAPI                               instance              = null;
+    /** the minigames plugin instance. */
+    private static MinigamesAPI                       instance              = null;
+    
+    /**
+     * Vault economy instance.
+     * @deprecated will be private and non-static in 1.5.0; replaced by new method
+     */
+    @Deprecated
     public static Economy                             econ                  = null;
+    
+    /**
+     * {@code true} if economy is installed.
+     * @deprecated will be private and non-static in 1.5.0, replace by {@link #economyAvailable()}
+     */
+    @Deprecated
     public static boolean                             economy               = true;
+    
+    /**
+     * {@code true} if crackshot is installed.
+     * @deprecated will be private in 1.5.0, replace by {@link #crackshotAvailable()}
+     */
+    @Deprecated
     public boolean                                    crackshot             = false;
+    
+    /** a global debug flag; controls the output of finer debug messages. */
     public static boolean                             debug                 = false;
+    
+    /**
+     * @deprecated will be removed in 1.5.0
+     */
+    @Deprecated
     int                                               updatetime            = 20 * 10;
     
+    /**
+     * TODO decribe this field.
+     * @deprecated will be be private in 1.5.0; replaced by new method
+     */
+    @Deprecated
     public HashMap<String, Party>                     global_party          = new HashMap<>();
+
+    /**
+     * TODO decribe this field.
+     * @deprecated will be be private in 1.5.0; replaced by new method
+     */
+    @Deprecated
     public HashMap<String, ArrayList<Party>>          global_party_invites  = new HashMap<>();
     
+    /**
+     * Hash map with internal plugin representations of each registered minigame.
+     * @deprecated will be private in 1.5.0; replaced by {@link #getPluginInstance(JavaPlugin)}
+     */
+    @Deprecated
     public static HashMap<JavaPlugin, PluginInstance> pinstances            = new HashMap<>();
     
+    /**
+     * The party messages.
+     * @deprecated will be private in 1.5.0; replaced by new methods.
+     */
+    @Deprecated
     public PartyMessagesConfig                        partymessages;
+    
+    /**
+     * The stats config.
+     * @deprecated will be private in 1.5.0; replaced by new methods.
+     */
+    @Deprecated
     public StatsGlobalConfig                          statsglobal;
     
+    /**
+     * textual server version.
+     * 
+     * @deprecated will be removed in 1.5.0; replaced by SERVER_VERSION enumeration.
+     */
     @Deprecated
-    public String                                     internalServerVersion = "";
-    public boolean                                    below1710             = false;                                    // Used for scoreboard function (wether to use getScore(OfflinePlayer) or
-                                                                                                                        // getScore(String))
+    public String                                     internalServerVersion = ""; //$NON-NLS-1$
     
+    /**
+     * {@code true} if this is below 1.7.10
+     * 
+     * @deprecated will be removed in 1.5.0; replaced by SERVER_VERSION enumeration.
+     */
+    public boolean                                    below1710             = false;
+    
+    /**
+     * The plugin metrics report.
+     */
     Metrics                                           metrics;
     
     @Override
@@ -91,27 +163,24 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     {
         MinigamesAPI.instance = this;
         
-        this.internalServerVersion = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
+        this.internalServerVersion = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1); //$NON-NLS-1$
         this.below1710 = MinigamesAPI.SERVER_VERSION.isBelow(MinecraftVersionsType.V1_7_R4);
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Loaded MinigamesAPI. We're on " + MinigamesAPI.SERVER_VERSION + ".");
+        this.getLogger().info(String.format("§c§lLoaded MinigamesAPI. We're on %0$s.", MinigamesAPI.SERVER_VERSION.name())); //$NON-NLS-1$
         
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, ChannelStrings.CHANNEL_BUNGEE_CORD);
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, ChannelStrings.CHANNEL_BUNGEE_CORD, this);
         
-        if (MinigamesAPI.economy)
+        if (!this.setupEconomy())
         {
-            if (!this.setupEconomy())
-            {
-                this.getLogger().severe(String.format("[%s] - No Economy (Vault) dependency found! Disabling Economy.", this.getDescription().getName()));
-                MinigamesAPI.economy = false;
-            }
+            this.getLogger().severe(String.format("[%s] - No Economy (Vault) dependency found! Disabling Economy.", this.getDescription().getName())); //$NON-NLS-1$
+            MinigamesAPI.economy = false;
         }
         
-        this.getConfig().options().header("Want bugfree versions? Set this to true:");
-        this.getConfig().addDefault("config.auto_updating", false);
-        this.getConfig().addDefault("signs_updating_time", 20);
-        this.getConfig().addDefault("config.party_command_enabled", true);
-        this.getConfig().addDefault("config.debug", false);
+        this.getConfig().options().header("Want bugfree versions? Set this to true for automatic updates:"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.AUTO_UPDATING, false);
+        this.getConfig().addDefault(PluginConfigStrings.SIGNS_UPDATE_TIME, 20);
+        this.getConfig().addDefault(PluginConfigStrings.PARTY_COMMAND_ENABLED, true);
+        this.getConfig().addDefault(PluginConfigStrings.DEBUG, false);
         
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
@@ -119,14 +188,14 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
         this.partymessages = new PartyMessagesConfig(this);
         this.statsglobal = new StatsGlobalConfig(this, false);
         
-        MinigamesAPI.debug = this.getConfig().getBoolean("config.debug");
+        MinigamesAPI.debug = this.getConfig().getBoolean(PluginConfigStrings.DEBUG);
         
         Bukkit.getScheduler().runTaskLater(this, () -> {
             try
             {
                 MinigamesAPI.this.metrics = new Metrics(MinigamesAPI.instance);
                 
-                final Graph components = MinigamesAPI.this.metrics.createGraph("Minigames");
+                final Graph components = MinigamesAPI.this.metrics.createGraph("Minigames"); //$NON-NLS-1$
                 for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                 {
                     components.addPlotter(new Metrics.Plotter(pli.getPlugin().getName()) {
@@ -138,7 +207,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                     });
                     if (MinigamesAPI.debug)
                     {
-                        System.out.println("Loaded Graph for: " + pli.getPlugin().getName());
+                        this.getLogger().fine("Loaded Graph for: " + pli.getPlugin().getName()); //$NON-NLS-1$
                     }
                 }
                 
@@ -146,16 +215,16 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
             }
             catch (final IOException e)
             {
-                System.out.println("# " + e.getMessage());
+                this.getLogger().log(Level.WARNING, "Exception while updating metrics", e); //$NON-NLS-1$
             }
         }, 60L);
         
-        if (this.getConfig().getBoolean("config.auto_updating"))
+        if (this.getConfig().getBoolean(PluginConfigStrings.AUTO_UPDATING))
         {
             new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
         }
         
-        if (this.getServer().getPluginManager().getPlugin("CrackShot") != null)
+        if (this.getServer().getPluginManager().getPlugin("CrackShot") != null) //$NON-NLS-1$
         {
             this.crackshot = true;
         }
@@ -177,13 +246,13 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                         }
                         else
                         {
-                            System.out.println(a.getInternalName() + " not initialized at onEnable.");
+                            this.getLogger().log(Level.WARNING, "Arena " + pli.getPlugin().getName() + "/" + a.getInternalName() + " not initialized at onEnable."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         }
                     }
                     i++;
                 }
             }
-            System.out.println("Found " + i + " arenas.");
+            this.getLogger().info("Found " + i + " arenas."); //$NON-NLS-1$//$NON-NLS-2$
         }, 50L);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             MinigamesAPI.getAPI();
@@ -195,7 +264,25 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                     
                 }
             }
-        }, 0, 20 * this.getConfig().getInt("signs_updating_time"));
+        }, 0, 20 * this.getConfig().getInt(PluginConfigStrings.SIGNS_UPDATE_TIME));
+    }
+    
+    /**
+     * Checks if crackshot is available.
+     * @return {@code true} if crackshot is available.
+     */
+    public boolean crackshotAvailable()
+    {
+        return this.crackshot;
+    }
+    
+    /**
+     * Checks if economy is available.
+     * @return {@code true} if economy is available.
+     */
+    public boolean economyAvailable()
+    {
+        return this.economy;
     }
     
     /**
@@ -205,42 +292,49 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
      */
     private static MinecraftVersionsType getServerVersion()
     {
-        final String v = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1);
-        if (v.startsWith("v1_7_R1"))
+        try
         {
-            return MinecraftVersionsType.V1_7_R1;
+            final String v = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1); //$NON-NLS-1$
+            if (v.startsWith("v1_7_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R1;
+            }
+            if (v.startsWith("v1_7_R2")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R2;
+            }
+            if (v.startsWith("v1_7_R3")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R3;
+            }
+            if (v.startsWith("v1_7_R4")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R4;
+            }
+            if (v.startsWith("v1_8_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_8_R1;
+            }
+            if (v.startsWith("v1_8_R2")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_8_R2;
+            }
+            if (v.startsWith("v1_9_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_9_R1;
+            }
+            if (v.startsWith("v1_9_R2")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_9_R2;
+            }
+            if (v.startsWith("v1_10_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_10_R1;
+            }
         }
-        if (v.startsWith("v1_7_R2"))
+        catch (@SuppressWarnings("unused") Exception ex)
         {
-            return MinecraftVersionsType.V1_7_R2;
-        }
-        if (v.startsWith("v1_7_R3"))
-        {
-            return MinecraftVersionsType.V1_7_R3;
-        }
-        if (v.startsWith("v1_7_R4"))
-        {
-            return MinecraftVersionsType.V1_7_R4;
-        }
-        if (v.startsWith("v1_8_R1"))
-        {
-            return MinecraftVersionsType.V1_8_R1;
-        }
-        if (v.startsWith("v1_8_R2"))
-        {
-            return MinecraftVersionsType.V1_8_R2;
-        }
-        if (v.startsWith("v1_9_R1"))
-        {
-            return MinecraftVersionsType.V1_9_R1;
-        }
-        if (v.startsWith("v1_9_R2"))
-        {
-            return MinecraftVersionsType.V1_9_R2;
-        }
-        if (v.startsWith("v1_10_R1"))
-        {
-            return MinecraftVersionsType.V1_10_R1;
+            // silently ignore
         }
         return MinecraftVersionsType.Unknown;
     }
@@ -272,12 +366,12 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                         }
                         catch (final Exception e)
                         {
-                            System.out.println("Failed resetting arena at onDisable. " + e.getMessage());
+                            this.getLogger().log(Level.WARNING, "Failed resetting arena " + pli.getPlugin().getName() + "/" + a.getInternalName() + " at onDisable.", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         }
                     }
                     else
                     {
-                        System.out.println(a.getName() + " not initialized thus not reset at onDisable.");
+                        this.getLogger().log(Level.WARNING, "Arena " + pli.getPlugin().getName() + "/" + a.getInternalName() + " not initialized thus not reset at onDisable."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
                 }
             }
@@ -292,17 +386,32 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     }
     
     /**
-     * Sets up the API allowing to override all configs
+     * Sets up the API allowing to override all configs.
+     * 
+     * <p>
+     * This method is meant to be called within concrete minigame plugin onEable.
+     * </p>
      * 
      * @param plugin_
+     *            the java plugin representing the minigame.
+     * @param minigame
+     *            internal name of the minigame.
      * @param arenaclass
+     *            the class implementing/ overriding the arena class; {@link Arena}.
      * @param arenasconfig
+     *            the arenas config store.
      * @param messagesconfig
+     *            the messages config store.
      * @param classesconfig
+     *            the classes config store.
      * @param statsconfig
-     * @return
+     *            the statistics store.
+     * @param defaultconfig
+     *            the default plugin config. TODO variable is never read?
+     * @param customlistener
+     *            {@code true} if there is a custom listener handling the arenas; {@code false} to register the default arena listener; {@link ArenaListener}.
+     * @return the api instance (this plugin).
      */
-    @SuppressWarnings("deprecation")
     public static MinigamesAPI setupAPI(final JavaPlugin plugin_, final String minigame, final Class<?> arenaclass, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig,
             final ClassesConfig classesconfig, final StatsConfig statsconfig, final DefaultConfig defaultconfig, final boolean customlistener)
     {
@@ -319,31 +428,76 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
         return MinigamesAPI.instance;
     }
     
+    /**
+     * Use this to register your custom arena listener.
+     * 
+     * @param plugin_
+     *            the minigames plugin.
+     * @param arenalistener
+     *            the arena listener.
+     */
     public static void registerArenaListenerLater(final JavaPlugin plugin_, final ArenaListener arenalistener)
     {
+        // TODO check plugin code; should we invoke MinigamesAPI.pinstances.get(plugin_).setArenaListener(arenalistener);
         Bukkit.getPluginManager().registerEvents(arenalistener, plugin_);
     }
     
+    /**
+     * registers additional arena setup
+     * 
+     * <p>
+     * TODO: Do we still need this?
+     * </p>
+     * 
+     * @param plugin_
+     *            the minigames plugin.
+     * @param arenasetup
+     *            the arena setup.
+     */
     public static void registerArenaSetup(final JavaPlugin plugin_, final ArenaSetup arenasetup)
     {
         MinigamesAPI.pinstances.get(plugin_).arenaSetup = arenasetup;
     }
     
+    /**
+     * registers additional scoreboard
+     * 
+     * <p>
+     * TODO: Do we still need this?
+     * </p>
+     * 
+     * @param plugin_
+     *            the minigames plugin.
+     * @param board
+     *            the arena scoreboard.
+     */
     public static void registerScoreboard(final JavaPlugin plugin_, final ArenaScoreboard board)
     {
         MinigamesAPI.pinstances.get(plugin_).scoreboardManager = board;
     }
     
     /**
-     * Sets up the API, stuff won't work without that
+     * Sets up the API and prepare for manual setup.
+     * 
+     * <p>
+     * This method is meant to be called within concrete minigame plugin onEable.
+     * </p>
+     * 
+     * <p>
+     * Allow loading of arenas with own extended arena class into PluginInstance: after this setup, get the PluginInstance, load the arenas by yourself and add the loaded arenas w/ custom arena class
+     * into the PluginInstance
+     * </p>
      * 
      * @param plugin_
-     * @return
+     *            the java plugin representing the minigame.
+     * @param minigame
+     *            internal name of the minigame.
+     * @param arenaclass
+     *            the class implementing/ overriding the arena class; {@link Arena}.
+     * @return the api instance (this plugin).
+     * @deprecated will be removed in 1.5.0
      */
-    // Allow loading of arenas with own extended arena class into
-    // PluginInstance:
-    // after this setup, get the PluginInstance, load the arenas by yourself
-    // and add the loaded arenas w/ custom arena class into the PluginInstance
+    @Deprecated
     public static MinigamesAPI setupAPI(final JavaPlugin plugin_, final String minigame, final Class<?> arenaclass)
     {
         MinigamesAPI.setupRaw(plugin_, minigame);
@@ -351,11 +505,24 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     }
     
     /**
-     * Sets up the API, stuff won't work without that
+     * Sets up the API.
+     * 
+     * <p>
+     * This method is meant to be called within concrete minigame plugin onEable. Loads all arenas (default implementation).
+     * </p>
+     * 
+     * <p>
+     * TODO: Compare to {@link #setupAPI(JavaPlugin, String, Class, ArenasConfig, MessagesConfig, ClassesConfig, StatsConfig, DefaultConfig, boolean)}
+     * </p>
      * 
      * @param plugin_
-     * @return
+     *            the java plugin representing the minigame.
+     * @param minigame
+     *            internal name of the minigame.
+     * @return the api instance (this plugin).
+     * @deprecated will be removed in 1.5.0
      */
+    @Deprecated
     public static MinigamesAPI setupAPI(final JavaPlugin plugin_, final String minigame)
     {
         final PluginInstance pli = MinigamesAPI.setupRaw(plugin_, minigame);
@@ -363,6 +530,17 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
         return MinigamesAPI.instance;
     }
     
+    /**
+     * Raw (internal) setup method.
+     * 
+     * @param plugin_
+     *            the java plugin representing the minigame.
+     * @param minigame
+     *            internal name of the minigame.
+     * @return internal plugin representation of the minigame.
+     * @deprecated will be removed in 1.5.0
+     */
+    @Deprecated
     public static PluginInstance setupRaw(final JavaPlugin plugin_, final String minigame)
     {
         final ArenasConfig arenasconfig = new ArenasConfig(plugin_);
@@ -381,19 +559,36 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
         return pli;
     }
     
+    /**
+     * Returns the minigames API plugin.
+     * 
+     * @return minigames API plugin.
+     */
     public static MinigamesAPI getAPI()
     {
         return MinigamesAPI.instance;
     }
     
+    /**
+     * Creates a new Command handler.
+     * 
+     * @return command handler.
+     * @deprecated removed in 1.5.0
+     */
+    @Deprecated
     public static CommandHandler getCommandHandler()
     {
         return new CommandHandler();
     }
     
+    /**
+     * Setup the economy vault.
+     * 
+     * @return {@code true} if vault was initialized.
+     */
     private boolean setupEconomy()
     {
-        if (this.getServer().getPluginManager().getPlugin("Vault") == null)
+        if (this.getServer().getPluginManager().getPlugin("Vault") == null) //$NON-NLS-1$
         {
             return false;
         }
@@ -409,16 +604,16 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args)
     {
-        if (cmd.getName().equalsIgnoreCase("start"))
+        if (cmd.getName().equalsIgnoreCase(CommandStrings.START))
         {
             if (!(sender instanceof Player))
             {
-                sender.sendMessage("Please execute this command ingame.");
+                sender.sendMessage(Messages.getString("MinigamesAPI.ExecuteIngame", LOCALE)); //$NON-NLS-1$
                 return true;
             }
-            if (!sender.hasPermission("minigamesapi.start"))
+            if (!sender.hasPermission(PermissionStrings.MINIGAMES_START))
             {
-                // TODO no_perm message
+                sender.sendMessage(Messages.getString("MinigamesAPI.NoPermissionForStart", LOCALE)); //$NON-NLS-1$
                 return true;
             }
             final Player p = (Player) sender;
@@ -428,108 +623,112 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                 if (pli.containsGlobalPlayer(p.getName()))
                 {
                     final Arena a = pli.global_players.get(p.getName());
-                    System.out.println(a.getName());
+                    this.getLogger().info("Arena " + a.getInternalName() + " started because of start command from player " + p.getName()); //$NON-NLS-1$//$NON-NLS-2$
                     if (a.getArenaState() == ArenaState.JOIN || (a.getArenaState() == ArenaState.STARTING && !a.getIngameCountdownStarted()))
                     {
                         a.start(true);
-                        sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", a.getDisplayName()).replaceAll("<action>", "started"));
-                        break;
+                        sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll(ArenaMessageStrings.ARENA, a.getDisplayName()).replaceAll(ArenaMessageStrings.ACTION, Messages.getString("MinigamesAPI.Started", LOCALE))); //$NON-NLS-1$
+                        return true;
                     }
                 }
             }
+            sender.sendMessage(Messages.getString("MinigamesAPI.StartNotWithinArena", LOCALE)); //$NON-NLS-1$
             return true;
         }
-        if (cmd.getName().equalsIgnoreCase("party"))
+        
+        if (cmd.getName().equalsIgnoreCase(CommandStrings.PARTY))
         {
-            if (!this.getConfig().getBoolean("config.party_command_enabled"))
+            if (!this.getConfig().getBoolean(PluginConfigStrings.PARTY_COMMAND_ENABLED))
             {
                 return true;
             }
-            final CommandHandler cmdhandler = MinigamesAPI.getCommandHandler();
+            final CommandHandler cmdhandler = new CommandHandler();
             if (!(sender instanceof Player))
             {
-                sender.sendMessage("Please execute this command ingame.");
+                sender.sendMessage(Messages.getString("MinigamesAPI.ExecuteIngame", LOCALE)); //$NON-NLS-1$
                 return true;
             }
             final Player p = (Player) sender;
             if (args.length > 0)
             {
                 final String action = args[0];
-                if (action.equalsIgnoreCase("invite"))
+                if (action.equalsIgnoreCase(CommandStrings.PARTY_INVITE))
                 {
-                    cmdhandler.partyInvite(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+                    cmdhandler.partyInvite(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
-                else if (action.equalsIgnoreCase("accept"))
+                else if (action.equalsIgnoreCase(CommandStrings.PARTY_ACCEPT))
                 {
-                    cmdhandler.partyAccept(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+                    cmdhandler.partyAccept(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
-                else if (action.equalsIgnoreCase("kick"))
+                else if (action.equalsIgnoreCase(CommandStrings.PARTY_KICK))
                 {
-                    cmdhandler.partyKick(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+                    cmdhandler.partyKick(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
-                else if (action.equalsIgnoreCase("list"))
+                else if (action.equalsIgnoreCase(CommandStrings.PARTY_LIST))
                 {
-                    cmdhandler.partyList(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+                    cmdhandler.partyList(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
-                else if (action.equalsIgnoreCase("disband"))
+                else if (action.equalsIgnoreCase(CommandStrings.PARTY_DISBAND))
                 {
-                    cmdhandler.partyDisband(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+                    cmdhandler.partyDisband(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
-                else if (action.equalsIgnoreCase("leave"))
+                else if (action.equalsIgnoreCase(CommandStrings.PARTY_LEAVE))
                 {
-                    cmdhandler.partyLeave(sender, args, "minigamesapi.party", "/" + cmd.getName(), action, this, p);
+                    cmdhandler.partyLeave(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
                 else
                 {
-                    CommandHandler.sendPartyHelp("/" + cmd.getName(), sender);
+                    CommandHandler.sendPartyHelp("/" + cmd.getName(), sender); //$NON-NLS-1$
                 }
             }
             else
             {
-                CommandHandler.sendPartyHelp("/" + cmd.getName(), sender);
+                CommandHandler.sendPartyHelp("/" + cmd.getName(), sender); //$NON-NLS-1$
             }
+            return true;
         }
-        else
+        
+        if (cmd.getName().equalsIgnoreCase(CommandStrings.MGAPI) || cmd.getName().equalsIgnoreCase(CommandStrings.MGLIB) || cmd.getName().equalsIgnoreCase(CommandStrings.MAPI))
         {
             if (args.length > 0)
             {
-                if (args[0].equalsIgnoreCase("info"))
+                if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_INFO))
                 {
                     if (args.length > 1)
                     {
                         final String p = args[1];
-                        sender.sendMessage("Debug info about " + p);
-                        sender.sendMessage("~ global_players: ");
+                        sender.sendMessage(Messages.getString("MinigamesAPI.DebugInfoHeader", LOCALE) + p); //$NON-NLS-1$
+                        sender.sendMessage(Messages.getString("MinigamesAPI.DebugGlobalPlayers", LOCALE)); //$NON-NLS-1$
                         for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                         {
                             if (pli.global_players.containsKey(p))
                             {
-                                sender.sendMessage(" " + pli.getPlugin().getName());
+                                sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugGlobalPlayersLine", LOCALE), pli.getPlugin().getName())); //$NON-NLS-1$
                             }
                         }
-                        sender.sendMessage("~ global_lost: ");
+                        sender.sendMessage(Messages.getString("MinigamesAPI.DebugGlobalLost", LOCALE)); //$NON-NLS-1$
                         for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                         {
                             if (pli.global_lost.containsKey(p))
                             {
-                                sender.sendMessage(" " + pli.getPlugin().getName());
+                                sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugGlobalLostLine", LOCALE), pli.getPlugin().getName())); //$NON-NLS-1$
                             }
                         }
-                        sender.sendMessage("~ SpectatorManager: ");
+                        sender.sendMessage(Messages.getString("MinigamesAPI.DebugSpectatorManager", LOCALE)); //$NON-NLS-1$
                         for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                         {
                             pli.getSpectatorManager();
                             if (SpectatorManager.isSpectating(Bukkit.getPlayer(p)))
                             {
-                                sender.sendMessage(" " + pli.getPlugin().getName());
+                                sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugSpectatorManagerLine", LOCALE), pli.getPlugin().getName())); //$NON-NLS-1$
                             }
                         }
-                        sender.sendMessage("~ Arenas: ");
+                        sender.sendMessage(Messages.getString("MinigamesAPI.DebugArenas", LOCALE)); //$NON-NLS-1$
                         for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                         {
                             if (pli.global_players.containsKey(p))
                             {
-                                sender.sendMessage(" " + pli.global_players.get(p).getInternalName() + " - " + pli.global_players.get(p).getArenaState());
+                                sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugArenasLine", LOCALE), pli.global_players.get(p).getInternalName(), pli.global_players.get(p).getArenaState().name())); //$NON-NLS-1$
                             }
                         }
                     }
@@ -537,51 +736,43 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                     {
                         for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                         {
-                            sender.sendMessage("~ All players for " + pli.getPlugin().getName() + ": ");
+                            sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugAllPlayers", LOCALE), pli.getPlugin().getName())); //$NON-NLS-1$
                             for (final Arena a : pli.getArenas())
                             {
                                 if (a != null)
                                 {
                                     for (final String p_ : a.getAllPlayers())
                                     {
-                                        sender.sendMessage(ChatColor.GRAY + " " + pli.getPlugin().getName() + " " + a.getInternalName() + " " + p_);
+                                        sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugAllPlayersLine", LOCALE), pli.getPlugin().getName(), a.getInternalName(), p_)); //$NON-NLS-1$
                                     }
                                 }
                             }
                         }
                     }
                 }
-                else if (args[0].equalsIgnoreCase("debug"))
+                else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_DEBUG))
                 {
                     MinigamesAPI.debug = !MinigamesAPI.debug;
-                    this.getConfig().set("config.debug", MinigamesAPI.debug);
+                    this.getConfig().set(PluginConfigStrings.DEBUG, MinigamesAPI.debug);
                     this.saveConfig();
-                    sender.sendMessage(ChatColor.GOLD + "Debug mode is now: " + MinigamesAPI.debug);
+                    sender.sendMessage(String.format(Messages.getString("MinigamesAPI.SetDebugMode", LOCALE), String.valueOf(MinigamesAPI.debug))); //$NON-NLS-1$
                 }
-                else if (args[0].equalsIgnoreCase("list"))
+                else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_LIST))
                 {
                     int c = 0;
                     MinigamesAPI.getAPI();
                     for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                     {
                         c++;
-                        sender.sendMessage("~ " + pli.getPlugin().getName() + ": " + pli.getArenas().size() + " Arenas");
+                        sender.sendMessage(String.format(Messages.getString("MinigamesAPI.ListArenasLine", LOCALE), pli.getPlugin().getName(), pli.getArenas().size())); //$NON-NLS-1$
                         return false;
                     }
                     if (c < 1)
                     {
-                        sender.sendMessage("~ No installed minigames found! Download/Install some from the project page.");
+                        sender.sendMessage(Messages.getString("MinigamesAPI.NoMinigamesFound", LOCALE)); //$NON-NLS-1$
                     }
                 }
-                else if (args[0].equalsIgnoreCase("restartserver"))
-                {
-                    if (sender.isOp())
-                    {
-                        Util.restartServer();
-                        return false;
-                    }
-                }
-                else if (args[0].equalsIgnoreCase("title"))
+                else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_TITLE))
                 {
                     if (args.length > 1)
                     {
@@ -592,7 +783,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                         }
                     }
                 }
-                else if (args[0].equalsIgnoreCase("subtitle"))
+                else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_SUBTITLE))
                 {
                     if (args.length > 1)
                     {
@@ -603,7 +794,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                         }
                     }
                 }
-                else if (args[0].equalsIgnoreCase("signs"))
+                else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_SIGNS))
                 {
                     if (sender instanceof Player)
                     {
@@ -613,22 +804,22 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                             for (final Arena a : pli.getArenas())
                             {
                                 Util.updateSign(pli.getPlugin(), a);
-                                sender.sendMessage(ChatColor.GREEN + "All signs updated!");
+                                sender.sendMessage(Messages.getString("MinigamesAPI.AllSignsUpdated", LOCALE)); //$NON-NLS-1$
                                 return false;
                             }
                         }
                     }
-                    else if (args[0].equalsIgnoreCase("hologram"))
+                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_HOLOGRAM))
                     {
                         if (sender instanceof Player)
                         {
                             final Player p = (Player) sender;
-                            p.sendMessage("Playing hologram.");
-                            Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "TEST", true, true);
+                            p.sendMessage(Messages.getString("MinigamesAPI.PlayingHologram", LOCALE)); //$NON-NLS-1$
+                            Effects.playHologram(p, p.getLocation(), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "TEST", true, true); //$NON-NLS-1$
                             return false;
                         }
                     }
-                    else if (args[0].equalsIgnoreCase("statshologram"))
+                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_STATS_HOLOGRAM))
                     {
                         if (sender instanceof Player)
                         {
@@ -636,38 +827,21 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                             if (args.length > 1)
                             {
                                 final PluginInstance pli = this.getPluginInstance((JavaPlugin) Bukkit.getPluginManager().getPlugin(args[1]));
-                                p.sendMessage("Playing statistics hologram.");
+                                p.sendMessage(Messages.getString("MinigamesAPI.PlayingStatsHologram", LOCALE)); //$NON-NLS-1$
                                 
                                 Effects.playHologram(p, p.getLocation().add(0D, 1D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Wins: " + pli.getStatsInstance().getWins(p.getName()), false, false);
+                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsWins", LOCALE) + pli.getStatsInstance().getWins(p.getName()), false, false); //$NON-NLS-1$
                                 Effects.playHologram(p, p.getLocation().add(0D, 0.75D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Potions: " + pli.getStatsInstance().getPoints(p.getName()), false, false);
+                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsPotions", LOCALE) + pli.getStatsInstance().getPoints(p.getName()), false, false); //$NON-NLS-1$
                                 Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Kills: " + pli.getStatsInstance().getKills(p.getName()), false, false);
+                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsKills", LOCALE) + pli.getStatsInstance().getKills(p.getName()), false, false); //$NON-NLS-1$
                                 Effects.playHologram(p, p.getLocation().add(0D, 0.25D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + "Deaths: " + pli.getStatsInstance().getDeaths(p.getName()), false, false);
+                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsDeaths", LOCALE) + pli.getStatsInstance().getDeaths(p.getName()), false, false); //$NON-NLS-1$
                                 return false;
                             }
                         }
                     }
-                    else if (args[0].equalsIgnoreCase("protocol"))
-                    {
-                        if (sender instanceof Player)
-                        {
-                            Player p = (Player) sender;
-                            if (args.length > 1)
-                            {
-                                p = Bukkit.getPlayer(args[1]);
-                            }
-                            if (p != null)
-                            {
-                                final int version = Effects.getClientProtocolVersion(p);
-                                sender.sendMessage("Protocol version of " + p.getName() + ": " + version);
-                                return false;
-                            }
-                        }
-                    }
-                    else if (args[0].equalsIgnoreCase("gamemodetest"))
+                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_GAMEMODE_TEST))
                     {
                         if (sender instanceof Player)
                         {
@@ -679,14 +853,15 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                             }
                         }
                     }
-                    else if (args[0].equalsIgnoreCase("bungeetest"))
+                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_BUNGEE_TEST))
                     {
                         if (sender instanceof Player)
                         {
                             final Player p = (Player) sender;
                             if (p.isOp())
                             {
-                                final PluginInstance pli = MinigamesAPI.pinstances.get(Bukkit.getPluginManager().getPlugin("MGSkyWars"));
+                                // TODO Why we have sky wars hard coded???
+                                final PluginInstance pli = MinigamesAPI.pinstances.get(Bukkit.getPluginManager().getPlugin("MGSkyWars")); //$NON-NLS-1$
                                 BungeeSocket.sendSignUpdate(pli, pli.getArenas().get(0));
                                 return false;
                             }
@@ -696,30 +871,28 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                 }
                 if (args.length < 1)
                 {
-                    sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MinigamesLib <3 " + this.getDescription().getVersion());
+                    sender.sendMessage(String.format(Messages.getString("MinigamesAPI.MinigamesLibHeader", LOCALE), this.getDescription().getVersion())); //$NON-NLS-1$
                     int c = 0;
                     MinigamesAPI.getAPI();
                     for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                     {
                         c++;
-                        sender.sendMessage("~ " + ChatColor.GRAY + pli.getPlugin().getName() + ": " + ChatColor.WHITE + pli.getArenas().size() + " Arenas");
+                        sender.sendMessage(String.format(Messages.getString("MinigamesAPI.PluginArenaCount", LOCALE), pli.getPlugin().getName(), pli.getArenas().size())); //$NON-NLS-1$
                     }
                     if (c < 1)
                     {
-                        sender.sendMessage("~ No installed minigames found! Download/Install some from the project page.");
+                        sender.sendMessage(Messages.getString("MinigamesAPI.NoMinigamesFound", LOCALE)); //$NON-NLS-1$
                     }
-                    sender.sendMessage(ChatColor.GOLD + "Subcommands: ");
-                    sender.sendMessage("/mapi info <player>");
-                    sender.sendMessage("/mapi debug");
-                    sender.sendMessage("/mapi list");
-                    sender.sendMessage("/mapi title <title>");
-                    sender.sendMessage("/mapi subtitle <subtitle>");
-                    sender.sendMessage("/mapi restartserver");
-                    sender.sendMessage("/mapi hologram");
-                    sender.sendMessage("/mapi signs - Update all signs");
-                    sender.sendMessage("/mapi protocol <player>");
-                    sender.sendMessage("/mapi <potioneffect>");
-                    sender.sendMessage("/mapi setstatshologram");
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommands", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandInfo", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandDebug", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandList", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandTitle", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandSubtitle", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandHologram", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandSigns", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandPotionEffect", LOCALE)); //$NON-NLS-1$
+                    sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandStatsHologram", LOCALE)); //$NON-NLS-1$
                 }
                 if (sender instanceof Player && args.length > 0)
                 {
@@ -734,7 +907,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                     }
                     if (!cont)
                     {
-                        sender.sendMessage(ChatColor.RED + "Couldn't find particle effect.");
+                        sender.sendMessage(Messages.getString("MinigamesAPI.CannotFindParticleEffect", LOCALE)); //$NON-NLS-1$
                         return true;
                     }
                     final ParticleEffectNew eff = ParticleEffectNew.valueOf(args[0]);
@@ -757,14 +930,14 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     @Override
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] message)
     {
-        if (!channel.equals("BungeeCord"))
+        if (!channel.equals(ChannelStrings.CHANNEL_BUNGEE_CORD))
         {
             return;
         }
         final ByteArrayDataInput in = ByteStreams.newDataInput(message);
         final String subchannel = in.readUTF();
         System.out.println(subchannel);
-        if (subchannel.equals("MinigamesLibBack"))
+        if (subchannel.equals(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_BACK))
         {
             final short len = in.readShort();
             final byte[] msgbytes = new byte[len];
@@ -774,10 +947,16 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
             try
             {
                 final String playerData = msgin.readUTF();
-                final String plugin_ = playerData.split(":")[0];
-                final String arena = playerData.split(":")[1];
-                final String playername = playerData.split(":")[2];
-                System.out.println(plugin_ + " -> " + arena);
+                final String[] split = playerData.split(":"); //$NON-NLS-1$
+                final String plugin_ = split[0];
+                final String arena = split[1];
+                final String playername = split[2];
+                
+                if (debug)
+                {
+                    this.getLogger().info("channel message: " + ChannelStrings.SUBCHANNEL_MINIGAMESLIB_BACK + " -> " + playerData); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                
                 JavaPlugin plugin = null;
                 for (final JavaPlugin pl : MinigamesAPI.pinstances.keySet())
                 {
@@ -804,7 +983,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                     }
                     else
                     {
-                        System.out.println("Arena " + arena + " couldn't be found, please fix your setup.");
+                        this.getLogger().warning("Arena " + arena + " for MINIGAMESLIB_BACK couldn't be found, please fix your setup."); //$NON-NLS-1$//$NON-NLS-2$
                     }
                 }
             }
@@ -813,7 +992,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                 e.printStackTrace();
             }
         }
-        else if (subchannel.equals("MinigamesLibRequest"))
+        else if (subchannel.equals(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_REQUEST))
         { // Lobby requests sign data
             final short len = in.readShort();
             final byte[] msgbytes = new byte[len];
@@ -823,9 +1002,15 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
             try
             {
                 final String requestData = msgin.readUTF();
-                final String plugin_ = requestData.split(":")[0];
-                final String arena = requestData.split(":")[1];
-                System.out.println(plugin_ + " -> " + arena);
+                final String[] split = requestData.split(":"); //$NON-NLS-1$
+                final String plugin_ = split[0];
+                final String arena = split[1];
+                
+                if (debug)
+                {
+                    this.getLogger().info("channel message: " + ChannelStrings.SUBCHANNEL_MINIGAMESLIB_REQUEST + " -> " + requestData); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+                
                 for (final JavaPlugin pl : MinigamesAPI.pinstances.keySet())
                 {
                     if (pl.getName().contains(plugin_))
@@ -837,7 +1022,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                         }
                         else
                         {
-                            System.out.println("Arena " + arena + " couldn't be found, please fix your setup.");
+                            this.getLogger().warning("Arena " + arena + " for MINIGAMESLIB_REQUEST couldn't be found, please fix your setup."); //$NON-NLS-1$//$NON-NLS-2$
                         }
                         break;
                     }
@@ -850,6 +1035,13 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
         }
     }
     
+    /**
+     * Returns the minigames lib representation of a minigame plugin.
+     * 
+     * @param plugin
+     *            minigame java plugin.
+     * @return plugin instance or {@code null} if this is not a minigames plugin or if setupAPI was not called.
+     */
     public PluginInstance getPluginInstance(final JavaPlugin plugin)
     {
         return MinigamesAPI.pinstances.get(plugin);
@@ -857,9 +1049,10 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * Version safe conversion utility (temporary workaround)
+     * 
      * @param playername
      * @return uuid of the player
-     * @deprecated starting with 1.5.0 (and by dropping support for spigot 1.7.x) you should directly use {@link Player#getUniqueId()} 
+     * @deprecated starting with 1.5.0 (and by dropping support for spigot 1.7.x) you should directly use {@link Player#getUniqueId()}
      */
     @Deprecated
     public static UUID playerToUUID(String playername)
@@ -874,37 +1067,39 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * Version safe conversion utility (temporary workaround)
+     * 
      * @param player
      * @return uuid of the player
      * @deprecated starting with 1.5.0 (and by dropping support for spigot 1.7.x) you should directly use {@link Player#getUniqueId()}
      */
+    @Deprecated
     public static UUID playerToUUID(Player player)
     {
         if (SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
         {
             return player.getUniqueId();
         }
-        else
+        
+        try
         {
-            try
-            {
-                final Object handle = player.getClass().getDeclaredMethod("getHandle").invoke(player);
-                return (UUID) handle.getClass().getDeclaredMethod("getUniqueID").invoke(handle);
-            }
-            catch (Exception ex)
-            {
-                // TODO Logging
-                return null;
-            }
+            final Object handle = player.getClass().getDeclaredMethod("getHandle").invoke(player); //$NON-NLS-1$
+            return (UUID) handle.getClass().getDeclaredMethod("getUniqueID").invoke(handle); //$NON-NLS-1$
+        }
+        catch (Exception ex)
+        {
+            instance.getLogger().log(Level.SEVERE, "Problems converting player to uuid.", ex); //$NON-NLS-1$
+            return null;
         }
     }
     
     /**
      * Version safe conversion utility (temporary workaround)
+     * 
      * @param uuid
      * @return player object
      * @deprecated starting with 1.5.0 (and by dropping support for spigot 1.7.x) you should directly use {@link Bukkit#getPlayer(UUID)}
      */
+    @Deprecated
     public static Player uuidToPlayer(UUID uuid)
     {
         if (SERVER_VERSION.isAfter(MinecraftVersionsType.V1_7))
