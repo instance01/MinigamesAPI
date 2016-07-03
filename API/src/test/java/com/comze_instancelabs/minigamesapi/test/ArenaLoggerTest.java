@@ -53,7 +53,7 @@ public class ArenaLoggerTest
     /** resulting message */
     private static final String RESULT_RETURN = "[arena:" + ARENA + "] RETURN"; //$NON-NLS-1$ //$NON-NLS-2$
     /** resulting message */
-    private static final String RESULT_THROW = "[arena:" + ARENA + "] RETURN"; //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String RESULT_THROW = "[arena:" + ARENA + "] THROW"; //$NON-NLS-1$ //$NON-NLS-2$
     /** source class for logp */
     static final String SOURCE_CLASS = ArenaLoggerTest.class.getName();
     /** source method for logp */
@@ -620,7 +620,16 @@ public class ArenaLoggerTest
             public boolean matches(Object argument)
             {
                 final LogRecord lr = (LogRecord) argument;
-                return lr.getSourceClassName().equals(SOURCE_CLASS) && lr.getSourceMethodName().equals(SOURCE_METHOD) && lr.getThrown().equals(someObject) && Level.FINER == lr.getLevel() && RESULT_THROW.equals(lr.getMessage());
+                final boolean m1 = lr.getSourceClassName().equals(SOURCE_CLASS);
+                final boolean m2 = lr.getSourceMethodName().equals(SOURCE_METHOD);
+                final boolean m3 = lr.getThrown().equals(someObject);
+                final boolean m4 = RESULT_THROW.equals(lr.getMessage());
+                return m1 && m2 && m3 && m4(lr) && m4;
+            }
+
+            private boolean m4(final LogRecord lr)
+            {
+                return Level.FINER == lr.getLevel();
             }
         }));
     }

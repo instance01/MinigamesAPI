@@ -292,42 +292,49 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
      */
     private static MinecraftVersionsType getServerVersion()
     {
-        final String v = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1); //$NON-NLS-1$
-        if (v.startsWith("v1_7_R1")) //$NON-NLS-1$
+        try
         {
-            return MinecraftVersionsType.V1_7_R1;
+            final String v = Bukkit.getServer().getClass().getPackage().getName().substring(Bukkit.getServer().getClass().getPackage().getName().lastIndexOf(".") + 1); //$NON-NLS-1$
+            if (v.startsWith("v1_7_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R1;
+            }
+            if (v.startsWith("v1_7_R2")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R2;
+            }
+            if (v.startsWith("v1_7_R3")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R3;
+            }
+            if (v.startsWith("v1_7_R4")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_7_R4;
+            }
+            if (v.startsWith("v1_8_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_8_R1;
+            }
+            if (v.startsWith("v1_8_R2")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_8_R2;
+            }
+            if (v.startsWith("v1_9_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_9_R1;
+            }
+            if (v.startsWith("v1_9_R2")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_9_R2;
+            }
+            if (v.startsWith("v1_10_R1")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_10_R1;
+            }
         }
-        if (v.startsWith("v1_7_R2")) //$NON-NLS-1$
+        catch (@SuppressWarnings("unused") Exception ex)
         {
-            return MinecraftVersionsType.V1_7_R2;
-        }
-        if (v.startsWith("v1_7_R3")) //$NON-NLS-1$
-        {
-            return MinecraftVersionsType.V1_7_R3;
-        }
-        if (v.startsWith("v1_7_R4")) //$NON-NLS-1$
-        {
-            return MinecraftVersionsType.V1_7_R4;
-        }
-        if (v.startsWith("v1_8_R1")) //$NON-NLS-1$
-        {
-            return MinecraftVersionsType.V1_8_R1;
-        }
-        if (v.startsWith("v1_8_R2")) //$NON-NLS-1$
-        {
-            return MinecraftVersionsType.V1_8_R2;
-        }
-        if (v.startsWith("v1_9_R1")) //$NON-NLS-1$
-        {
-            return MinecraftVersionsType.V1_9_R1;
-        }
-        if (v.startsWith("v1_9_R2")) //$NON-NLS-1$
-        {
-            return MinecraftVersionsType.V1_9_R2;
-        }
-        if (v.startsWith("v1_10_R1")) //$NON-NLS-1$
-        {
-            return MinecraftVersionsType.V1_10_R1;
+            // silently ignore
         }
         return MinecraftVersionsType.Unknown;
     }
