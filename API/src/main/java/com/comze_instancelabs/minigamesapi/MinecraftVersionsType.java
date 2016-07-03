@@ -114,7 +114,20 @@ public enum MinecraftVersionsType
                 return type == V1_9 || type == V1_9_R1 || type == V1_9_R2;
                 //$CASES-OMITTED$
             default:
-                return type == this;
+                switch (type)
+                {
+                    case V1_10:
+                        return this == V1_10 || this == V1_10_R1;
+                    case V1_7:
+                        return this == V1_7 || this == V1_7_R1 || this == V1_7_R2 || this == V1_7_R3 || this == V1_7_R4;
+                    case V1_8:
+                        return this == V1_8 || this == V1_8_R1 || this == V1_8_R2;
+                    case V1_9:
+                        return this == V1_9 || this == V1_9_R1 || this == V1_9_R2;
+                        //$CASES-OMITTED$
+                    default:
+                        return type == this;
+                }
         }
     }
     
