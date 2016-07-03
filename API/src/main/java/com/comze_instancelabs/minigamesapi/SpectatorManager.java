@@ -31,6 +31,11 @@ import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
+/**
+ * Spectator manager.
+ * 
+ * @author instancelabs
+ */
 public class SpectatorManager
 {
     

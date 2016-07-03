@@ -1554,7 +1554,7 @@ public class Arena
         }
         this.setArenaState(ArenaState.STARTING);
         Util.updateSign(this.plugin, this);
-        this.currentlobbycount = this.pli.lobby_countdown;
+        this.currentlobbycount = this.pli.getLobbyCountdown();
         final Arena a = this;
         
         // skip countdown
@@ -1600,7 +1600,7 @@ public class Arena
                 if (Validator.isPlayerOnline(p_2))
                 {
                     final Player p2 = Bukkit.getPlayer(p_2);
-                    p2.setExp(1F * ((1F * Arena.this.currentlobbycount) / (1F * Arena.this.pli.lobby_countdown)));
+                    p2.setExp(1F * ((1F * Arena.this.currentlobbycount) / (1F * Arena.this.pli.getLobbyCountdown())));
                     if (Arena.this.pli.use_xp_bar_level)
                     {
                         p2.setLevel(Arena.this.currentlobbycount);
@@ -1637,7 +1637,7 @@ public class Arena
         {
             // silently ignore
         }
-        this.currentingamecount = this.pli.ingame_countdown;
+        this.currentingamecount = this.pli.getIngameCountdown();
         if (tp)
         {
             this.pspawnloc = Util.teleportAllPlayers(this.getAllPlayers(), this.spawns);
@@ -1697,7 +1697,7 @@ public class Arena
                 if (Validator.isPlayerOnline(p_2))
                 {
                     final Player p2 = Bukkit.getPlayer(p_2);
-                    p2.setExp(1F * ((1F * Arena.this.currentingamecount) / (1F * Arena.this.pli.ingame_countdown)));
+                    p2.setExp(1F * ((1F * Arena.this.currentingamecount) / (1F * Arena.this.pli.getIngameCountdown())));
                     if (Arena.this.pli.use_xp_bar_level)
                     {
                         p2.setLevel(Arena.this.currentingamecount);

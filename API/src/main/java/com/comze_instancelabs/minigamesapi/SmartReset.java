@@ -47,6 +47,11 @@ import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
+/**
+ * The smart reset for resetting an arena to original state.
+ * 
+ * @author instancelabs
+ */
 public class SmartReset implements Runnable
 {
     

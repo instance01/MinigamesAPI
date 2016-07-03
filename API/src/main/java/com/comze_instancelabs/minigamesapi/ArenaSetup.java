@@ -27,6 +27,11 @@ import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
+/**
+ * Arena setup helper.
+ * 
+ * @author instancelabs
+ */
 public class ArenaSetup
 {
     

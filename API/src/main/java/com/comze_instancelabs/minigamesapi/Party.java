@@ -19,27 +19,57 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+/**
+ * A (temporary) party for group playing with friends.
+ * 
+ * @author instancelabs
+ */
 public class Party
 {
     
-    String            owner;
-    ArrayList<String> players = new ArrayList<>();
+    /** party owner. */
+    private String            owner;
     
+    /** party members. */
+    private ArrayList<String> players = new ArrayList<>();
+    
+    /**
+     * Constructor.
+     * 
+     * @param owner
+     *            party owner (player name)
+     */
     public Party(final String owner)
     {
         this.owner = owner;
     }
     
+    /**
+     * returns the owner player name
+     * 
+     * @return player name
+     */
     public String getOwner()
     {
         return this.owner;
     }
     
+    /**
+     * Returns the party members.
+     * 
+     * @return party members.
+     */
     public ArrayList<String> getPlayers()
     {
         return this.players;
     }
     
+    /**
+     * Adds a players (invite).
+     * 
+     * @param p
+     *            player to add.
+     */
     public void addPlayer(final String p)
     {
         if (!this.players.contains(p))
@@ -50,6 +80,13 @@ public class Party
         this.tellAll(MinigamesAPI.getAPI().partymessages.player_joined_party.replaceAll("<player>", p));
     }
     
+    /**
+     * Removes a player.
+     * 
+     * @param p
+     *            player to remove
+     * @return {@code true} if the player was contained in the list
+     */
     public boolean removePlayer(final String p)
     {
         if (this.players.contains(p))
@@ -66,11 +103,21 @@ public class Party
         return false;
     }
     
+    /**
+     * Checks if a player is present in party list.
+     * 
+     * @param p
+     *            playeer to be checked.
+     * @return {@code true} if the player is within the party list.
+     */
     public boolean containsPlayer(final String p)
     {
         return this.players.contains(p);
     }
     
+    /**
+     * Disband/Delete the party.
+     */
     public void disband()
     {
         this.tellAll(MinigamesAPI.getAPI().partymessages.party_disbanded);
@@ -81,6 +128,12 @@ public class Party
         }
     }
     
+    /**
+     * Internal chat message for all players within the list.
+     * 
+     * @param msg
+     *            message
+     */
     private void tellAll(final String msg)
     {
         for (final String p_ : this.getPlayers())

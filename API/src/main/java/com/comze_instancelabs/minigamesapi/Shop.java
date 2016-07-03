@@ -31,6 +31,11 @@ import com.comze_instancelabs.minigamesapi.util.Util;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
+/**
+ * The shop gui.
+ * 
+ * @author instancelabs
+ */
 public class Shop
 {
     

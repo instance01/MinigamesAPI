@@ -24,27 +24,53 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
+/**
+ * Rewards helper for minigames.
+ * 
+ * @author instancelabs
+ */
 public class Rewards
 {
     
+    /** minigame java plugin. */
     private JavaPlugin  plugin                    = null;
     
+    /** {@code true} for activated economy rewards. */
     private boolean     economyrewards;
+    /** {@code true} for activated item rewards. */
     private boolean     itemrewards;
+    /** {@code true} for activated command rewards. */
     private boolean     commandrewards;
+    /** {@code true} for activated kill economy rewards. */
     private boolean     kill_economyrewards;
+    /** {@code true} for activated kill command rewards. */
     private boolean     kill_commandrewards;
+    /** {@code true} for activated participation economy rewards. */
     private boolean     participation_economyrewards;
+    /** {@code true} for activated participation command rewards. */
     private boolean     participation_commandrewards;
     
+    /** money to give for winning. */
     private int         econ_reward               = 0;
+    /** money to give per kill. */
     private int         kill_econ_reward          = 0;
+    /** money to give for participation. */
     private int         participation_econ_reward = 0;
-    private String      command                   = "";
-    private String      kill_command              = "";
-    private String      participation_command     = "";
+    /** command to execute for winning. */
+    private String      command                   = "";  //$NON-NLS-1$
+    /** command to execute per kill. */
+    private String      kill_command              = "";  //$NON-NLS-1$
+    /** command to execute for participation. */
+    private String      participation_command     = "";  //$NON-NLS-1$
+    /** items to reward for winning. */
     private ItemStack[] items                     = null;
     
+    /**
+     * Constructor to create a rewards helper.
+     * 
+     * @param plugin
+     *            minigame java plugin.
+     */
     public Rewards(final JavaPlugin plugin)
     {
         this.plugin = plugin;
@@ -58,6 +84,9 @@ public class Rewards
         }
     }
     
+    /**
+     * Reload variables from config.
+     */
     public void reloadVariables()
     {
         this.economyrewards = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_REWARDS_ECONOMY);
@@ -91,6 +120,13 @@ public class Rewards
         }
     }
     
+    /**
+     * Give reward for given player.
+     * 
+     * @param p_
+     *            player name
+     * @deprecated will be removed in 1.5.0
+     */
     @Deprecated
     public void giveReward(final String p_)
     {
@@ -139,6 +175,15 @@ public class Rewards
         }
     }
     
+    /**
+     * Give a player a kill reward
+     * 
+     * @param p_
+     *            Playername
+     * @param reward
+     *            Amount of statistics points the player gets; will be ignored
+     * @deprecated will be removed in 1.5.0; replaced by {@link #giveKillReward(String)}
+     */
     @Deprecated
     public void giveKillReward(final String p_, final int reward)
     {
@@ -152,14 +197,14 @@ public class Rewards
      *            Playername
      * @param econ
      *            Whether economy rewards are enabled
-     * @param command
+     * @param isCommand
      *            Whether command rewards are enabled
      * @param money_reward
      *            Amount of money to reward if economy rewards are enabled
      * @param cmd
      *            Command to execute if command rewards are enabled
      */
-    public void giveAchievementReward(final String p_, final boolean econ, final boolean command, final int money_reward, final String cmd)
+    public void giveAchievementReward(final String p_, final boolean econ, final boolean isCommand, final int money_reward, final String cmd)
     {
         if (Validator.isPlayerOnline(p_))
         {
@@ -170,19 +215,36 @@ public class Rewards
                 MinigamesAPI.getAPI();
                 MinigamesAPI.econ.depositPlayer(p.getName(), money_reward);
             }
-            if (command)
+            if (isCommand)
             {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replaceAll("<player>", p_));
             }
         }
     }
     
-    public void giveWinReward(final String p_, final Arena a)
+    /**
+     * Give win rewards to given player
+     * 
+     * @param p_
+     *            player name
+     * @param a
+     *            Arena
+     */
+    private void giveWinReward(final String p_, final Arena a)
     {
         this.giveWinReward(p_, a, 1);
     }
     
-    public void giveWinReward(final String p_, final Arena a, final int global_multiplier)
+    /**
+     * Give all win rewards to players who won the game
+     * 
+     * @param p_
+     *            player name
+     * @param a
+     *            Arena
+     * @param global_multiplier
+     */
+    private void giveWinReward(final String p_, final Arena a, final int global_multiplier)
     {
         this.giveWinReward(p_, a, a.getAllPlayers(), global_multiplier);
     }
@@ -305,7 +367,7 @@ public class Rewards
                 }
                 if (this.participation_commandrewards)
                 {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.command.replaceAll("<player>", p_));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.participation_command.replaceAll("<player>", p_));
                 }
                 
                 if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_SPAWN_FIREWORKS_FOR_WINNERS))

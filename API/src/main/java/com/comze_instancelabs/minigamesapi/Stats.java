@@ -35,6 +35,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.comze_instancelabs.minigamesapi.config.StatsConfig;
 import com.comze_instancelabs.minigamesapi.util.Util.ValueComparator;
 
+/**
+ * Statistics helper.
+ * 
+ * @author instancelabs
+ */
 public class Stats
 {
     

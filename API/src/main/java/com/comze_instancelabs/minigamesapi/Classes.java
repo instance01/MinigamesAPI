@@ -39,6 +39,11 @@ import com.shampaggon.crackshot.CSUtility;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
+/**
+ * Classes helper.
+ * 
+ * @author instancelabs
+ */
 public class Classes
 {
     
