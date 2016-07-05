@@ -397,7 +397,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
      * @param minigame
      *            internal name of the minigame.
      * @param arenaclass
-     *            the class implementing/ overriding the arena class; {@link Arena}.
+     *            the class implementing/ overriding the arena class; {@link Arena}. TODO currently not in use
      * @param arenasconfig
      *            the arenas config store.
      * @param messagesconfig

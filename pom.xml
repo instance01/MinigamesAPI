@@ -15,12 +15,14 @@
 		<junit.version>4.12</junit.version>
 		<minigames.releaseversion>1.14.9</minigames.releaseversion>
 		<minigames.timestamp>${maven.build.timestamp}</minigames.timestamp>
+		<spigot.version>1.10-R0.1-SNAPSHOT</spigot.version>
 		<maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
 	</properties>
 	<description>Rich Minigames API and base of all of my new minigames.</description>
 
 	<modules>
 		<module>API</module>
+		<module>Spigot-Test</module>
 	</modules>
 
 	<repositories>
@@ -43,7 +45,13 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
   			<artifactId>bukkit</artifactId>
-  			<version>1.10-R0.1-SNAPSHOT</version>
+  			<version>${spigot.version}</version>
+  			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+  			<artifactId>spigot</artifactId>
+  			<version>${spigot.version}</version>
   			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -81,6 +89,12 @@
         	<groupId>org.powermock</groupId>
         	<artifactId>powermock-api-mockito</artifactId>
         	<version>${powermock.version}</version>
+        	<scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesLib-Spigot-Test</artifactId>
+        	<version>${project.version}</version>
         	<scope>test</scope>
         </dependency>
 	</dependencies>

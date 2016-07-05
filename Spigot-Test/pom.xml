@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.MCE-Plugins</groupId>
+	<artifactId>MinigamesLib-Spigot-Test</artifactId>
+	<version>1.14.9-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>MinigamesLib-Spigot-Test</name>
+	<description>Spigot-Test-Utilities</description>
+
+	<parent>
+		<groupId>com.github.MCE-Plugins</groupId>
+		<artifactId>MinigamesLib-parent</artifactId>
+		<version>1.14.9-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<!-- <dependency>
+			<groupId>org.bukkit</groupId>
+  			<artifactId>bukkit</artifactId>
+		</dependency> -->
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot</artifactId>
+		</dependency>
+        
+        <dependency>
+        	<groupId>junit</groupId>
+        	<artifactId>junit</artifactId>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.powermock</groupId>
+        	<artifactId>powermock-module-junit4</artifactId>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.powermock</groupId>
+        	<artifactId>powermock-api-mockito</artifactId>
+        	<scope>compile</scope>
+        </dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+        	<resource>
+            	<directory>src/main/java</directory>
+            	<includes>
+                	<include>**/*.properties</include>
+            	</includes>
+        	</resource>
+    	</resources>
+		<plugins>
+			<plugin>
+				<version>3.0.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<version>2.10.3</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

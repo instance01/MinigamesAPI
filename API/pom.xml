@@ -16,8 +16,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.bukkit</groupId>
-  			<artifactId>bukkit</artifactId>
+			<groupId>org.spigotmc</groupId>
+  			<artifactId>spigot</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
@@ -39,6 +39,10 @@
         <dependency>
         	<groupId>org.powermock</groupId>
         	<artifactId>powermock-api-mockito</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesLib-Spigot-Test</artifactId>
         </dependency>
 	</dependencies>
 

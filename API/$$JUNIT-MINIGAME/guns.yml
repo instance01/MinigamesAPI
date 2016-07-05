@@ -1,0 +1,44 @@
+# Be aware that this config is barely used in any minigame. 
+# Used for saving gun classes. Default:
+config:
+  guns:
+    pistol:
+      name: Pistol
+      items: 256#DAMAGE_ALL:1#KNOCKBACK*1
+      icon: 256#DAMAGE_ALL:1#KNOCKBACK*1
+      lore: The Pistol.
+      speed: 1.0
+      durability: 50
+      shoot_amount: 1
+      knockback_multiplier: 1.1
+      permission_node: minigames.guns.pistol
+    sniper:
+      name: Sniper
+      items: 292#DAMAGE_ALL:1#KNOCKBACK*1
+      icon: 292#DAMAGE_ALL:1#KNOCKBACK*1
+      lore: The Sniper.
+      speed: 0.5
+      durability: 10
+      shoot_amount: 1
+      knockback_multiplier: 3.0
+      permission_node: minigames.guns.sniper
+    grenade:
+      name: Grenade Launcher
+      items: 257#DAMAGE_ALL:1#KNOCKBACK*1
+      icon: 257#DAMAGE_ALL:1#KNOCKBACK*1
+      lore: The Grenade Launcher.
+      speed: 0.1
+      durability: 10
+      shoot_amount: 1
+      knockback_multiplier: 2.5
+      permission_node: minigames.guns.grenade
+    freeze:
+      name: Freeze Gun
+      items: 258#DAMAGE_ALL:1#KNOCKBACK*1
+      icon: 258#DAMAGE_ALL:1#KNOCKBACK*1
+      lore: The Freeze Gun.
+      speed: 0.8
+      durability: 5
+      shoot_amount: 1
+      knockback_multiplier: 0.5
+      permission_node: minigames.guns.freeze

@@ -13,7 +13,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.comze_instancelabs.minigamesapi.testutil;
+package com.comze_instancelabs.minigamesapi.spigottest;
 
 import static org.mockito.Matchers.argThat;
 

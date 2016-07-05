@@ -15,8 +15,8 @@
 
 package com.comze_instancelabs.minigamesapi.test;
 
-import static com.comze_instancelabs.minigamesapi.testutil.ArgUtil.argEquals;
-import static com.comze_instancelabs.minigamesapi.testutil.ArgUtil.argSupplier;
+import static com.comze_instancelabs.minigamesapi.spigottest.ArgUtil.argEquals;
+import static com.comze_instancelabs.minigamesapi.spigottest.ArgUtil.argSupplier;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.times;

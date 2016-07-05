@@ -1,0 +1,52 @@
+# Used for saving achievements details.
+config:
+  enabled: true
+  achievements:
+    first_blood:
+      enabled: true
+      name: First Blood!
+      reward:
+        economy_reward: true
+        econ_reward_amount: 20
+        command_reward: false
+        cmd: tell <player> Good job!
+    ten_kills:
+      enabled: true
+      name: Ten Kills!
+      reward:
+        economy_reward: true
+        econ_reward_amount: 50
+        command_reward: false
+        cmd: tell <player> Good job!
+    hundred_kills:
+      enabled: true
+      name: Hundred Kills!
+      reward:
+        economy_reward: true
+        econ_reward_amount: 1000
+        command_reward: false
+        cmd: tell <player> Good job!
+    first_win:
+      enabled: true
+      name: Your first win!
+      reward:
+        economy_reward: true
+        econ_reward_amount: 30
+        command_reward: false
+        cmd: tell <player> Good job!
+    ten_wins:
+      enabled: true
+      name: Ten wins!
+      reward:
+        economy_reward: true
+        econ_reward_amount: 30
+        command_reward: false
+        cmd: tell <player> Good job!
+    achievement_guy:
+      enabled: true
+      name: All achievement guy!
+      reward:
+        economy_reward: true
+        econ_reward_amount: 30
+        command_reward: false
+        cmd: tell <player> Good job!
