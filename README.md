@@ -1,6 +1,9 @@
 MinigamesAPI [![Build Status](https://drone.io/github.com/instance01/MinigamesAPI/status.png?1)](https://drone.io/github.com/instance01/MinigamesAPI/latest)
 ============
 
+Quick note: I'm not interested in working on Minecraft related projects anymore, thus no updates on this project on my part, but there are many good forks and other libraries to check out. There seems to be an active fork by MysticCity for example.
+
+
 Rich MinigamesAPI supporting different types of Minigames.
 
 
