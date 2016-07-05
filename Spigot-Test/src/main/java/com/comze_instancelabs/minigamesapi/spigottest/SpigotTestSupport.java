@@ -226,7 +226,7 @@ public abstract class SpigotTestSupport
             return invocation.callRealMethod();
         });
         final PluginLogger logger = mock(PluginLogger.class);
-        final File dataFolder = new File("$" + name); //$NON-NLS-1$
+        final File dataFolder = new File(".$" + name); //$NON-NLS-1$
         final PluginDescriptionFile description = new PluginDescriptionFile(name, version, "foo"); //$NON-NLS-1$
         Whitebox.setInternalState(plugin, "newConfig", config); //$NON-NLS-1$
         Whitebox.setInternalState(plugin, "logger", logger); //$NON-NLS-1$
