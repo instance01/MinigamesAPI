@@ -37,6 +37,7 @@ public class MessagesConfig
     public MessagesConfig(final JavaPlugin plugin)
     {
         this.plugin = plugin;
+        // TODO use static initializer
         Arrays.fill(MessagesConfig.squares_mid, (char) 0x25A0);
         Arrays.fill(MessagesConfig.squares_full, (char) 0x2588);
         Arrays.fill(MessagesConfig.squares_medium, (char) 0x2592);

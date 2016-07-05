@@ -1,0 +1,4 @@
+# Used for saving arena details.
+arenas:
+  junit-arena:
+    displayname: junit-arena

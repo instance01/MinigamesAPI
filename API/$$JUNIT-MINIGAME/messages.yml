@@ -1,0 +1,141 @@
+# Contains all messages for easy translation. You can remove a mesage by setting it to nothing, like so: ''
+signs:
+  starting:
+    '0': '&a[]'
+    '1': '&a<arena>'
+    '2': '&a<count>/<maxcount>'
+    '3': '&a[]'
+  join:
+    '0': '&a[]'
+    '1': '&a<arena>'
+    '2': '&a<count>/<maxcount>'
+    '3': '&a[]'
+  ingame:
+    '0': '&4[]'
+    '1': '&4<arena>'
+    '2': '&4<count>/<maxcount>'
+    '3': '&4[]'
+  restarting:
+    '0': '&e[]'
+    '1': '&e<arena>'
+    '2': '&e<count>/<maxcount>'
+    '3': '&e[]'
+  arcade:
+    '0': '[]'
+    '1': '&cArcade'
+    '2': <count>/<maxcount>
+    '3': '[]'
+  leave:
+    '0': ''
+    '1': '&4Leave'
+    '2': ''
+    '3': ''
+  random:
+    '0': '&a[]'
+    '1': '&2Random'
+    '2': ''
+    '3': '&a[]'
+messages:
+  no_perm: '&cYou don''t have permission.'
+  successfully_reloaded: '&aSuccessfully reloaded all configs.'
+  successfully_set: '&aSuccessfully set &3<component>&a.'
+  successfully_saved_arena: '&aSuccessfully saved &3<arena>&a.'
+  arena_invalid: '&3<arena> &cappears to be invalid.'
+  failed_saving_arena: '&cFailed to save &3<arena>&c.'
+  broadcast_players_left: '&eThere are &4<count> &eplayers left!'
+  broadcast_player_joined: '&2<player> &ajoined the arena! (<count>/<maxcount>)'
+  player_died: '&c<player> died.'
+  arena_action: '&aYou <action> arena &3<arena>&a!'
+  you_already_are_in_arena: '&aYou already seem to be in arena &3<arena>&a!'
+  you_joined_arena: '&aYou joined arena &3<arena>&a!'
+  not_in_arena: '&cYou don''t seem to be in an arena right now.'
+  teleporting_to_arena_in: '&7Teleporting to arena in <count>.'
+  starting_in: '&aStarting in <count>!'
+  failed_removing_arena: '&cFailed to remove &3<arena>&c.'
+  successfully_removed: '&cSuccessfully removed &3<component>&c!'
+  failed_removing_component: '&cFailed removing &3<component>&c. <cause>.'
+  joined_arena: '&aYou joined &3<arena>&a.'
+  you_won: '&aYou &2won &athe game!'
+  you_lost: '&cYou &4lost &cthe game.'
+  you_got_a_kill: '&aYou killed &2<player>!'
+  player_was_killed_by: '&4<player> &cwas killed by &4<killer>&c!'
+  arena_not_initialized: '&cThe arena appears to be not initialized, did you save
+    the arena?'
+  guns:
+    attributelevel_increased: '&aThe <attribute> level was increased successfully!'
+    not_enough_credits: '&cThe max level of 3 was reached or you don''t have enough
+      credits. Needed: <credits>'
+    too_many_main_guns: '&cYou already have 2 main guns, remove one first.'
+    successfully_set_main_gun: '&aSuccessfully set a main gun (of a maximum of two).'
+    all_guns: '&aYour current main guns: &2<guns>'
+  arcade_next_minigame: '&6Next Arcade game: &4<minigame>&6!'
+  arcade_joined_waiting: '&6You joined Arcade! Waiting for <count> more players to
+    start.'
+  arcade_joined_spectator: '&6You joined Arcade as a spectator! You''ll be able to
+    play in the next minigame.'
+  arcade_new_round: '&6Next Arcade round in <count>!'
+  arena_disabled: '&cThe arena is disabled thus you can''t join.'
+  you_can_leave_with: '&cYou can leave with <cmd> or /l!'
+  no_perm_to_join_arena: '&cYou don''t have permission (arenas.<arena>) to join this
+    arena as it''s vip!'
+  set_kit: '&aSuccessfully set &2<kit>&a!'
+  classes_item: '&4Classes'
+  achievement_item: '&4Achievements'
+  shop_item: '&4Shop'
+  spectator_item: '&4Players'
+  server_broadcast_winner: '&2<player> &awon the game on &2<arena>&a!'
+  exit_item: '&4Leave the game'
+  successfully_bought_kit: '&aSuccessfully bought &2<kit> &afor &2<money>&a.'
+  scoreboard:
+    title: '&4<arena>'
+    lobby_title: '&4[<arena>]'
+  you_got_kicked_because_vip_joined: '&cYou got kicked out of the game because a vip
+    joined!'
+  powerup_spawned: '&2A Powerup spawned!'
+  you_got_the_achievement: '&3You got the achievement &b<achievement>&3!'
+  game_started: '&2The game has started!'
+  author_of_the_map: '&3You are playing on the map &b<arena> &3by &b<author>&3!'
+  description_of_the_map: <description>
+  not_enough_money: '&cYou don''t have enough money.'
+  possible_kits: '&aPossible kits: &2'
+  possible_shopitems: '&aPossible shop items: &2'
+  cancelled_starting: '&cThe starting countdown was cancelled because there''s only
+    one player left in the arena.'
+  minigame_description: ''
+  successfully_bought_shopitem: '&aSuccessfully bought &2<shopitem> &afor &2<money>&a.'
+  already_bought_shopitem: '&aYou already had &2<shopitem>&a.'
+  you_received_rewards: '&aYou received a reward of &2<economyreward>'
+  you_received_rewards_2: ' &aand '
+  you_received_rewards_3: '&2<itemreward>&a!'
+  already_in_arena: '&cYou are already in an arena.'
+  stop_cause_maximum_game_time: '&cThe game is stopping in 5 seconds because the maximum
+    game time was reached.'
+  compass:
+    no_player_found: '&cNo near players found!'
+    found_player: '&aThe compass is tracking &3<player> &anow. Distance: <distance>'
+  you_got_a_participation_reward: '&aYou received &2<economyreward> &afor participating!'
+  kit_warning: '&7Be aware that you''ll only get the &8last &7kit you bought even
+    if you buy all of them.'
+  custom_scoreboard:
+    line0: Players:<playercount>
+    line1: Spectators:<lostplayercount>
+    line2: Alive:<playeralivecount>
+    line3: Your Credits:<points>
+    line4: Your Wins:<wins>
+  custom_lobby_scoreboard:
+    line0: Players:<playercount>
+    line1: Max Players:<maxplayercount>
+    line2: Your Credits:<points>
+    line3: Your Wins:<wins>
+  stats:
+    line0: '&7----- &a&lStats &7-----; '
+    line1: '&7Wins: &a<wins>'
+    line2: '&7Loses: &c<loses>'
+    line3: '&7Alltime Kills: &a<alltime_kills>'
+    line4: '&7Alltime Deaths: &c<alltime_deaths>'
+    line5: '&7KDR: &e<kdr>'
+    line6: '&7Points: &e<points>'
+    line7: ' ;&7-----------------'
+config:
+  generatedv182: true
+  generatedv1102: true
