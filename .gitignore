@@ -9,3 +9,5 @@ bin
 target/
 javadocs/
 *.iml
+**/.$*
+**/.$*
