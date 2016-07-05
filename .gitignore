@@ -9,4 +9,4 @@ bin
 target/
 javadocs/
 *.iml
-$$*/*
+API/$*/*
