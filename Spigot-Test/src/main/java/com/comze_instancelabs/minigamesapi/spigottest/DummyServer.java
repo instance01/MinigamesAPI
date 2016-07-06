@@ -1,5 +1,6 @@
 package com.comze_instancelabs.minigamesapi.spigottest;
 
+import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -7,16 +8,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemFactory;
 import org.bukkit.craftbukkit.v1_10_R1.scheduler.CraftScheduler;
 import org.bukkit.craftbukkit.v1_10_R1.util.Versioning;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * originally taken from spigot test sources
@@ -83,6 +87,9 @@ class DummyServer implements InvocationHandler {
     private DummyPluginManager pluginManager = new DummyPluginManager();
     private DummyScoreboardManager scoreboardManager = new DummyScoreboardManager();
     private CraftScheduler scheduler = new CraftScheduler();
+    private Map<String, World> worlds = new HashMap<>();
+    
+    private final Map<File, YamlConfiguration> configFiles = new HashMap<>();
     
     private int tick = 1;
 
@@ -115,6 +122,8 @@ class DummyServer implements InvocationHandler {
                 return Collections.unmodifiableList(this.onlineList);
             case "getScheduler":
                 return this.scheduler;
+            case "getWorld":
+                return this.worlds.get((String) args[0]);
             case "getPlayer":
                 for (final Player player : onlineList)
                 {
@@ -168,6 +177,16 @@ class DummyServer implements InvocationHandler {
     {
         this.onlineList.clear();
     }
+    
+    public Map<File, YamlConfiguration> getConfigFiles()
+    {
+        return this.configFiles;
+    }
+    
+    public void clearWorlds()
+    {
+        this.worlds.clear();
+    }
 
     /**
      * 
@@ -177,5 +196,15 @@ class DummyServer implements InvocationHandler {
         this.scheduler.cancelAllTasks();
         this.tick = 1;
         this.scheduler = new CraftScheduler();
+    }
+
+    /**
+     * Initializes a new dummy world.
+     * @param name
+     * @return world instance
+     */
+    public World initWorld(String name)
+    {
+        return this.worlds.computeIfAbsent(name, (n) -> new DummyWorld());
     }
 }

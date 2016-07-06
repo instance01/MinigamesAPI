@@ -27,9 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.junit.After;
 import org.junit.Before;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
@@ -48,7 +48,7 @@ import com.comze_instancelabs.minigamesapi.spigottest.SpigotTestSupport;
  * 
  * @author mepeisen
  */
-@PrepareForTest({MinigamesAPI.class})
+@PrepareForTest({ MinigamesAPI.class })
 public abstract class TestUtil extends SpigotTestSupport
 {
     
@@ -62,7 +62,7 @@ public abstract class TestUtil extends SpigotTestSupport
     public void setupMinigameTest()
     {
         this.minigameTest = new MinigameTestHelper();
-
+        
         final MinigamesAPI api = mock(MinigamesAPI.class);
         mockStatic(MinigamesAPI.class);
         when(MinigamesAPI.getAPI()).thenReturn(api);
@@ -73,92 +73,146 @@ public abstract class TestUtil extends SpigotTestSupport
     }
     
     /**
-     * Tear down all plugins and players.
-     */
-    @After
-    public void teardownMinigamesAndPlayers()
-    {
-        this.teardownPlugins();
-        this.teardownPlayers();
-        teardownConfigFiles();
-        this.teardownScoreboards();
-        this.teardownTasks();
-    }
-    
-    /**
-     * Setup a minigame.
-     * @param name minigame plugin name
-     * @return the minigame data
-     */
-    protected Minigame setupMinigame(String name)
-    {
-        return setupMinigame(name, null);
-    }
-    
-    /**
-     * Setup a minigame and perform some setup before loading via minigames api.
-     * @param name minigame plugin name
-     * @param preSetup setup function
-     * @return the minigame data
-     */
-    protected Minigame setupMinigame(String name, Consumer<Minigame> preSetup)
-    {
-        final Minigame minigame = new Minigame();
-        final YamlConfiguration config = mockFileConfig();
-        final JavaPlugin plugin = this.mockPlugin(name, "1.0", config); //$NON-NLS-1$
-        minigame.javaPlugin = plugin;
-        minigame.achievementsYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "achievements.yml"))); //$NON-NLS-1$
-        minigame.arenasYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "arenas.yml"))); //$NON-NLS-1$
-        minigame.classesYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "classes.yml"))); //$NON-NLS-1$
-        minigame.gunsYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "guns.yml"))); //$NON-NLS-1$
-        minigame.hologramsYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "holograms.yml"))); //$NON-NLS-1$
-        minigame.messagesYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "messages.yml"))); //$NON-NLS-1$
-        minigame.shopYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "shop.yml"))); //$NON-NLS-1$
-        minigame.statsYml = setupConfigFile((file) -> file.equals(new File(plugin.getDataFolder(), "stats.yml"))); //$NON-NLS-1$
-        if (preSetup != null)
-        {
-            preSetup.accept(minigame);
-        }
-        MinigamesAPI.setupAPI(
-                plugin,
-                name,
-                Arena.class,
-                new ArenasConfig(plugin),
-                new MessagesConfig(plugin),
-                new ClassesConfig(plugin, true),
-                new StatsConfig(plugin, true),
-                new DefaultConfig(plugin, true),
-                false);
-        minigame.pluginInstance = MinigamesAPI.getAPI().getPluginInstance(plugin);
-        return minigame;
-    }
-    
-    /**
      * Helper class for minigame api access.
+     * 
      * @author mepeisen
      */
-    public static final class MinigameTestHelper
+    public final class MinigameTestHelper
     {
-        public MinigamesAPI api;
+        /** the minigames api. */
+        public MinigamesAPI          api;
+        /** hashmap with minigames by internal name. */
         public Map<String, Minigame> minigames = new HashMap<>();
+        
+        /**
+         * Setup a minigame.
+         * 
+         * @param name
+         *            minigame plugin name
+         * @return the minigame data
+         */
+        public Minigame setupMinigame(String name)
+        {
+            return setupMinigame(name, null);
+        }
+        
+        /**
+         * Setup a minigame and perform some setup before loading via minigames api.
+         * 
+         * @param name
+         *            minigame plugin name
+         * @param preSetup
+         *            setup function
+         * @return the minigame data
+         */
+        public Minigame setupMinigame(String name, Consumer<Minigame> preSetup)
+        {
+            final Minigame minigame = new Minigame();
+            this.minigames.put(name, minigame);
+            final YamlConfiguration config = mockFileConfig();
+            final JavaPlugin plugin = mockPlugin(name, "1.0", config); //$NON-NLS-1$
+            minigame.javaPlugin = plugin;
+            minigame.achievementsYml = setupConfigFile(new File(plugin.getDataFolder(), "achievements.yml")); //$NON-NLS-1$
+            minigame.arenasYml = setupConfigFile(new File(plugin.getDataFolder(), "arenas.yml")); //$NON-NLS-1$
+            minigame.classesYml = setupConfigFile(new File(plugin.getDataFolder(), "classes.yml")); //$NON-NLS-1$
+            minigame.gunsYml = setupConfigFile(new File(plugin.getDataFolder(), "guns.yml")); //$NON-NLS-1$
+            minigame.hologramsYml = setupConfigFile(new File(plugin.getDataFolder(), "holograms.yml")); //$NON-NLS-1$
+            minigame.messagesYml = setupConfigFile(new File(plugin.getDataFolder(), "messages.yml")); //$NON-NLS-1$
+            minigame.shopYml = setupConfigFile(new File(plugin.getDataFolder(), "shop.yml")); //$NON-NLS-1$
+            minigame.statsYml = setupConfigFile(new File(plugin.getDataFolder(), "stats.yml")); //$NON-NLS-1$
+            if (preSetup != null)
+            {
+                preSetup.accept(minigame);
+            }
+            MinigamesAPI.setupAPI(plugin, name, Arena.class, new ArenasConfig(plugin), new MessagesConfig(plugin), new ClassesConfig(plugin, true), new StatsConfig(plugin, true),
+                    new DefaultConfig(plugin, true), false);
+            minigame.pluginInstance = MinigamesAPI.getAPI().getPluginInstance(plugin);
+            return minigame;
+        }
     }
     
     /**
      * data of a single minigame
+     * 
      * @author mepeisen
      */
     public static final class Minigame
     {
+        /** stats.yml */
         public YamlConfiguration statsYml;
+        /** shop.yml */
         public YamlConfiguration shopYml;
+        /** messages.yml */
         public YamlConfiguration messagesYml;
+        /** holograms.yml */
         public YamlConfiguration hologramsYml;
+        /** classes.yml */
         public YamlConfiguration classesYml;
+        /** guns.yml */
         public YamlConfiguration gunsYml;
+        /** arenas.yml */
         public YamlConfiguration arenasYml;
+        /** achievements.yml */
         public YamlConfiguration achievementsYml;
-        public PluginInstance pluginInstance;
-        public JavaPlugin javaPlugin;
+        /** this minigame plugin instance. */
+        public PluginInstance    pluginInstance;
+        /** the minigame java plugin. */
+        public JavaPlugin        javaPlugin;
+        
+        /**
+         * Adds a location component to config
+         * 
+         * @param arenaName
+         *            arena name
+         * @param component
+         *            component path (f.e. "lobby")
+         * @param world
+         *            the world
+         * @param x
+         *            the x coordinate
+         * @param y
+         *            the y coordinate
+         * @param z
+         *            the z coordinate
+         * @param pitch
+         *            the pitch
+         * @param yaw
+         *            the yaw
+         */
+        public void addArenaComponentToConfig(String arenaName, String component, String world, double x, double y, double z, double pitch, double yaw)
+        {
+            ConfigurationSection arenas = this.arenasYml.getConfigurationSection("arenas"); //$NON-NLS-1$
+            if (arenas == null)
+            {
+                arenas = this.arenasYml.createSection("arenas"); //$NON-NLS-1$
+            }
+            
+            ConfigurationSection carena = arenas.getConfigurationSection(arenaName);
+            if (carena == null)
+            {
+                carena = arenas.createSection(arenaName);
+            }
+            
+            ConfigurationSection ccomponent = carena;
+            for (String path : component.split("\\.")) //$NON-NLS-1$
+            {
+                ConfigurationSection csect = ccomponent.getConfigurationSection(path);
+                if (csect == null)
+                {
+                    csect = ccomponent.createSection(path);
+                }
+                ccomponent = csect;
+            }
+            
+            ccomponent.set("world", world); //$NON-NLS-1$
+            final Map<String, Object> location = new HashMap<>();
+            location.put("x", Double.valueOf(x)); //$NON-NLS-1$
+            location.put("y", Double.valueOf(y)); //$NON-NLS-1$
+            location.put("z", Double.valueOf(z)); //$NON-NLS-1$
+            location.put("pitch", Double.valueOf(pitch)); //$NON-NLS-1$
+            location.put("yaw", Double.valueOf(yaw)); //$NON-NLS-1$
+            ccomponent.createSection("location", location); //$NON-NLS-1$
+        }
     }
     
 }

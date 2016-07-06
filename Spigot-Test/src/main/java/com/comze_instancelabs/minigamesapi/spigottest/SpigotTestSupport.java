@@ -27,21 +27,19 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -59,48 +57,63 @@ import net.minecraft.server.v1_10_R1.DispenserRegistry;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(YamlConfiguration.class)
-@PowerMockIgnore({"org.apache.*", "com.sun.*", "javax.*"})
+@PowerMockIgnore({ "org.apache.*", "com.sun.*", "javax.*" })
 public abstract class SpigotTestSupport
 {
-    
-    /** installed yaml configurations. */
-    static final List<Function<File, YamlConfiguration>> configFiles = new ArrayList<>();
     
     /**
      * Initializes the dummy server.
      */
-    @BeforeClass
-    public static void setupServer()
+    @Before
+    public void setupServer()
     {
         DispenserRegistry.c();
         DummyServer.setup();
         DummyEnchantments.setup();
         mockStatic(YamlConfiguration.class);
-        when(YamlConfiguration.loadConfiguration(any(File.class))).thenAnswer(new Answer<YamlConfiguration>(){
-
+        when(YamlConfiguration.loadConfiguration(any(File.class))).thenAnswer(new Answer<YamlConfiguration>() {
+            
             @Override
             public YamlConfiguration answer(InvocationOnMock invocation) throws Throwable
             {
                 final File arg = invocation.getArgumentAt(0, File.class);
-                for (final Function<File, YamlConfiguration> func : configFiles)
-                {
-                    final YamlConfiguration cfg = func.apply(arg);
-                    if (cfg != null)
-                    {
-                        return cfg;
-                    }
-                }
-                return null;
+                return getDummyServer().getConfigFiles().get(arg);
             }
             
         });
     }
+
+    
+    /**
+     * Tear down all plugins and players.
+     */
+    @After
+    public void teardownMinigamesAndPlayers()
+    {
+        this.teardownPlugins();
+        this.teardownPlayers();
+        this.teardownConfigFiles();
+        this.teardownScoreboards();
+        this.teardownTasks();
+        this.teardownWorlds();
+    }
+    
+    /**
+     * Initializes a new dummy world.
+     * @param name world name
+     * @return World instance.
+     */
+    public World initWorld(String name)
+    {
+        return getDummyServer().initWorld(name);
+    }
     
     /**
      * Returns the dummy server.
+     * 
      * @return summy server
      */
-    private DummyServer getDummyServer()
+    static DummyServer getDummyServer()
     {
         final Server server = Bukkit.getServer();
         return (DummyServer) Proxy.getInvocationHandler(server);
@@ -108,27 +121,25 @@ public abstract class SpigotTestSupport
     
     /**
      * Setup a config file for being returned by {@link YamlConfiguration#load(File)}
-     * @param predicate test function
+     * 
+     * @param file
+     *            the file path
      * @return config file
      */
-    protected static YamlConfiguration setupConfigFile(Predicate<File> predicate)
+    public static YamlConfiguration setupConfigFile(File file)
     {
         final YamlConfiguration config = mockFileConfig();
-        configFiles.add((file) -> {
-            if (predicate.test(file)) {
-                return config;
-            }
-            return null;
-        });
+        getDummyServer().getConfigFiles().put(file, config);
+        file.deleteOnExit();
         return config;
     }
     
     /**
      * Tear down all config files.
      */
-    protected static void teardownConfigFiles()
+    protected void teardownConfigFiles()
     {
-        configFiles.clear();
+        getDummyServer().getConfigFiles().clear();
     }
     
     /**
@@ -144,7 +155,15 @@ public abstract class SpigotTestSupport
      */
     protected void teardownPlayers()
     {
-        this.getDummyServer().clearPlayers();
+        getDummyServer().clearPlayers();
+    }
+    
+    /**
+     * Removes all players.
+     */
+    protected void teardownWorlds()
+    {
+        getDummyServer().clearWorlds();
     }
     
     /**
@@ -152,7 +171,7 @@ public abstract class SpigotTestSupport
      */
     protected void teardownScoreboards()
     {
-        ((DummyScoreboardManager)Bukkit.getScoreboardManager()).teardown();
+        ((DummyScoreboardManager) Bukkit.getScoreboardManager()).teardown();
     }
     
     /**
@@ -174,7 +193,7 @@ public abstract class SpigotTestSupport
      */
     protected Player mockOnlinePlayer(String name, UUID uuid)
     {
-        final DummyServer server = (DummyServer) Bukkit.getServer();
+        final DummyServer server = this.getDummyServer();
         final Player player = mock(Player.class);
         when(player.getName()).thenReturn(name);
         when(player.getUniqueId()).thenReturn(uuid);
@@ -187,7 +206,7 @@ public abstract class SpigotTestSupport
      * 
      * @return yaml file configuration
      */
-    protected static YamlConfiguration mockFileConfig()
+    public static YamlConfiguration mockFileConfig()
     {
         final YamlConfiguration config = spy(YamlConfiguration.class);
         try
@@ -218,7 +237,7 @@ public abstract class SpigotTestSupport
      *            plugin config
      * @return mocked java plugin.
      */
-    protected JavaPlugin mockPlugin(String name, String version, FileConfiguration config)
+    public JavaPlugin mockPlugin(String name, String version, FileConfiguration config)
     {
         final JavaPlugin plugin = mock(JavaPlugin.class, (Answer<?>) invocation -> {
             if (invocation.getMethod().getName().equals("getResource")) //$NON-NLS-1$
@@ -234,7 +253,7 @@ public abstract class SpigotTestSupport
         Whitebox.setInternalState(plugin, "description", description); //$NON-NLS-1$
         Whitebox.setInternalState(plugin, "isEnabled", true); //$NON-NLS-1$
         
-        ((DummyPluginManager)Bukkit.getPluginManager()).addMockedPlugin(plugin);
+        ((DummyPluginManager) Bukkit.getPluginManager()).addMockedPlugin(plugin);
         
         return plugin;
     }
