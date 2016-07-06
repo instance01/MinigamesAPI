@@ -24,15 +24,22 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
 import com.comze_instancelabs.minigamesapi.ArenaLogger;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+import com.comze_instancelabs.minigamesapi.PluginInstance;
 
+/**
+ * Validation helpers.
+ * 
+ * @author instancelabs
+ */
 public class Validator
 {
     
     /***
      * returns true if given player is online
      * 
-     * @param arena
-     * @return
+     * @param player
+     *            name of the player.
+     * @return true if the player is online.
      */
     public static boolean isPlayerOnline(final String player)
     {
@@ -47,8 +54,13 @@ public class Validator
     /***
      * returns true if given player is online and in arena
      * 
+     * @param plugin
+     *            minigame java plugin.
+     * @param player
+     *            the player name
      * @param arena
-     * @return
+     *            the arena
+     * @return {@code true} if the player is online and in given arena.
      */
     public static boolean isPlayerValid(final JavaPlugin plugin, final String player, final Arena arena)
     {
@@ -58,8 +70,13 @@ public class Validator
     /***
      * returns true if given player is online and in arena
      * 
+     * @param plugin
+     *            the minigame java plugin
+     * @param player
+     *            the player name
      * @param arena
-     * @return
+     *            the arena name
+     * @return {@code true} if the player is online and in given arena.
      */
     public static boolean isPlayerValid(final JavaPlugin plugin, final String player, final String arena)
     {
@@ -67,11 +84,12 @@ public class Validator
         {
             return false;
         }
-        if (!MinigamesAPI.getAPI().getPluginInstance(plugin).global_players.containsKey(player))
+        final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
+        if (!pli.global_players.containsKey(player))
         {
             return false;
         }
-        if (!MinigamesAPI.getAPI().getPluginInstance(plugin).global_players.get(player).getInternalName().equalsIgnoreCase(arena))
+        if (!pli.global_players.get(player).getInternalName().equalsIgnoreCase(arena))
         {
             return false;
         }
@@ -79,10 +97,13 @@ public class Validator
     }
     
     /***
-     * returns true if given arena was set up correctly
+     * returns true if given arena was set up correctly; if it contains a lobby and at leats one spawn.
      * 
+     * @param plugin
+     *            the minigame java plugin
      * @param arena
-     * @return
+     *            the arena to test
+     * @return {@code true} if the arena is valid
      */
     public static boolean isArenaValid(final JavaPlugin plugin, final Arena arena)
     {
@@ -92,31 +113,37 @@ public class Validator
     /***
      * returns true if given arena was set up correctly
      * 
+     * @param plugin
+     *            the minigame java plugin
      * @param arena
-     * @return
+     *            the arena to test
+     * @return {@code true} if the arena is valid
      */
     public static boolean isArenaValid(final JavaPlugin plugin, final String arena)
     {
         final FileConfiguration config = MinigamesAPI.getAPI().getPluginInstance(plugin).getArenasConfig().getConfig();
-        if (!config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".lobby") || !config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.spawn0"))
-        {
-            ArenaLogger.debug(ChatColor.AQUA + arena + " is invalid! lobby:" + config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".lobby") + " spawns.spawn0:" + config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.spawn0"));
-            return false;
-        }
-        return true;
+        return isArenaValid(plugin, arena, config);
     }
     
     /***
      * returns true if given arena was set up correctly
      * 
+     * @param plugin
+     *            the minigame java plugin
      * @param arena
-     * @return
+     *            the arena to test
+     * @param cf
+     *            the configuration to test
+     * @return {@code true} if the arena is valid
      */
     public static boolean isArenaValid(final JavaPlugin plugin, final String arena, final FileConfiguration cf)
     {
         final FileConfiguration config = cf;
-        if (!config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".lobby") || !config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.spawn0"))
+        final boolean hasLobby = config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".lobby");
+        final boolean hasSpawn0 = config.isSet(ArenaConfigStrings.ARENAS_PREFIX + arena + ".spawns.spawn0");
+        if (!hasLobby || !hasSpawn0)
         {
+            ArenaLogger.debug(ChatColor.AQUA + arena + " is invalid! lobby:" + hasLobby + " spawns.spawn0:" + hasSpawn0); //$NON-NLS-1$ //$NON-NLS-2$
             return false;
         }
         return true;
