@@ -25,7 +25,6 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ChannelStrings;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
-import com.comze_instancelabs.minigamesapi.bungee.BungeeSocket;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
@@ -51,7 +50,7 @@ public class BungeeUtil
     public static void sendSignUpdateRequest(final JavaPlugin plugin, final String minigame, final Arena arena)
     {
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-        BungeeSocket.sendSignUpdate(pli, arena);
+        MinigamesAPI.getAPI().sendSignUpdate(pli, arena);
         final ByteArrayDataOutput out = ByteStreams.newDataOutput();
         try
         {

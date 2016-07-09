@@ -348,4 +348,9 @@ public interface CommandStrings
      */
     String MGLIB_BUNGEE_TEST = "bungeetest"; //$NON-NLS-1$
     
+    /**
+     * Command action: &quot;/mglib &lt;join&gt; ...
+     */
+    String MGLIB_JOIN = "join"; //$NON-NLS-1$
+    
 }

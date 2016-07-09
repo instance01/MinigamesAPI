@@ -15,7 +15,9 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,14 +28,23 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import com.comze_instancelabs.minigamesapi.bungee.BungeeSocket;
 import com.comze_instancelabs.minigamesapi.commands.CommandHandler;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
 import com.comze_instancelabs.minigamesapi.config.ClassesConfig;
@@ -48,9 +59,11 @@ import com.comze_instancelabs.minigamesapi.util.BungeeUtil;
 import com.comze_instancelabs.minigamesapi.util.Metrics;
 import com.comze_instancelabs.minigamesapi.util.Metrics.Graph;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
+import com.comze_instancelabs.minigamesapi.util.Signs;
 import com.comze_instancelabs.minigamesapi.util.Updater;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
 import net.milkbowl.vault.economy.Economy;
@@ -61,7 +74,7 @@ import net.milkbowl.vault.economy.Economy;
  * @author instancelabs
  *
  */
-public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
+public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, Listener
 {
     
     /** the overall minecraft server versioon. */
@@ -75,6 +88,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * Vault economy instance.
+     * 
      * @deprecated will be private and non-static in 1.5.0; replaced by new method
      */
     @Deprecated
@@ -82,6 +96,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * {@code true} if economy is installed.
+     * 
      * @deprecated will be private and non-static in 1.5.0, replace by {@link #economyAvailable()}
      */
     @Deprecated
@@ -89,6 +104,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * {@code true} if crackshot is installed.
+     * 
      * @deprecated will be private in 1.5.0, replace by {@link #crackshotAvailable()}
      */
     @Deprecated
@@ -105,13 +121,15 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * TODO decribe this field.
+     * 
      * @deprecated will be be private in 1.5.0; replaced by new method
      */
     @Deprecated
     public HashMap<String, Party>                     global_party          = new HashMap<>();
-
+    
     /**
      * TODO decribe this field.
+     * 
      * @deprecated will be be private in 1.5.0; replaced by new method
      */
     @Deprecated
@@ -119,6 +137,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * Hash map with internal plugin representations of each registered minigame.
+     * 
      * @deprecated will be private in 1.5.0; replaced by {@link #getPluginInstance(JavaPlugin)}
      */
     @Deprecated
@@ -126,6 +145,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * The party messages.
+     * 
      * @deprecated will be private in 1.5.0; replaced by new methods.
      */
     @Deprecated
@@ -133,6 +153,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * The stats config.
+     * 
      * @deprecated will be private in 1.5.0; replaced by new methods.
      */
     @Deprecated
@@ -144,7 +165,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
      * @deprecated will be removed in 1.5.0; replaced by SERVER_VERSION enumeration.
      */
     @Deprecated
-    public String                                     internalServerVersion = ""; //$NON-NLS-1$
+    public String                                     internalServerVersion = "";                             //$NON-NLS-1$
     
     /**
      * {@code true} if this is below 1.7.10
@@ -181,6 +202,14 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
         this.getConfig().addDefault(PluginConfigStrings.SIGNS_UPDATE_TIME, 20);
         this.getConfig().addDefault(PluginConfigStrings.PARTY_COMMAND_ENABLED, true);
         this.getConfig().addDefault(PluginConfigStrings.DEBUG, false);
+        
+        for (final ArenaState state : ArenaState.values())
+        {
+            this.getConfig().addDefault("signs." + state.name().toLowerCase() + ".0", state.getColorCode() + "<minigame>");
+            this.getConfig().addDefault("signs." + state.name().toLowerCase() + ".1", state.getColorCode() + "<arena>");
+            this.getConfig().addDefault("signs." + state.name().toLowerCase() + ".2", state.getColorCode() + "<count>/<maxcount>");
+            this.getConfig().addDefault("signs." + state.name().toLowerCase() + ".3", state.getColorCode() + "");
+        }
         
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
@@ -265,10 +294,13 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                 }
             }
         }, 0, 20 * this.getConfig().getInt(PluginConfigStrings.SIGNS_UPDATE_TIME));
+        
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
     
     /**
      * Checks if crackshot is available.
+     * 
      * @return {@code true} if crackshot is available.
      */
     public boolean crackshotAvailable()
@@ -278,6 +310,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
     
     /**
      * Checks if economy is available.
+     * 
      * @return {@code true} if economy is available.
      */
     public boolean economyAvailable()
@@ -627,7 +660,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                     if (a.getArenaState() == ArenaState.JOIN || (a.getArenaState() == ArenaState.STARTING && !a.getIngameCountdownStarted()))
                     {
                         a.start(true);
-                        sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll(ArenaMessageStrings.ARENA, a.getDisplayName()).replaceAll(ArenaMessageStrings.ACTION, Messages.getString("MinigamesAPI.Started", LOCALE))); //$NON-NLS-1$
+                        sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll(ArenaMessageStrings.ARENA, a.getDisplayName()).replaceAll(ArenaMessageStrings.ACTION,
+                                Messages.getString("MinigamesAPI.Started", LOCALE))); //$NON-NLS-1$
                         return true;
                     }
                 }
@@ -728,7 +762,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                         {
                             if (pli.global_players.containsKey(p))
                             {
-                                sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugArenasLine", LOCALE), pli.global_players.get(p).getInternalName(), pli.global_players.get(p).getArenaState().name())); //$NON-NLS-1$
+                                sender.sendMessage(String.format(Messages.getString("MinigamesAPI.DebugArenasLine", LOCALE), pli.global_players.get(p).getInternalName(), //$NON-NLS-1$
+                                        pli.global_players.get(p).getArenaState().name()));
                             }
                         }
                     }
@@ -829,19 +864,73 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                                 final PluginInstance pli = this.getPluginInstance((JavaPlugin) Bukkit.getPluginManager().getPlugin(args[1]));
                                 p.sendMessage(Messages.getString("MinigamesAPI.PlayingStatsHologram", LOCALE)); //$NON-NLS-1$
                                 
-                                Effects.playHologram(p, p.getLocation().add(0D, 1D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsWins", LOCALE) + pli.getStatsInstance().getWins(p.getName()), false, false); //$NON-NLS-1$
-                                Effects.playHologram(p, p.getLocation().add(0D, 0.75D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsPotions", LOCALE) + pli.getStatsInstance().getPoints(p.getName()), false, false); //$NON-NLS-1$
-                                Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsKills", LOCALE) + pli.getStatsInstance().getKills(p.getName()), false, false); //$NON-NLS-1$
-                                Effects.playHologram(p, p.getLocation().add(0D, 0.25D, 0D),
-                                        ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)] + Messages.getString("MinigamesAPI.StatsDeaths", LOCALE) + pli.getStatsInstance().getDeaths(p.getName()), false, false); //$NON-NLS-1$
+                                Effects.playHologram(p, p.getLocation().add(0D, 1D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)]
+                                        + Messages.getString("MinigamesAPI.StatsWins", LOCALE) + pli.getStatsInstance().getWins(p.getName()), false, false); //$NON-NLS-1$
+                                Effects.playHologram(p, p.getLocation().add(0D, 0.75D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)]
+                                        + Messages.getString("MinigamesAPI.StatsPotions", LOCALE) + pli.getStatsInstance().getPoints(p.getName()), false, false); //$NON-NLS-1$
+                                Effects.playHologram(p, p.getLocation().add(0D, 0.5D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)]
+                                        + Messages.getString("MinigamesAPI.StatsKills", LOCALE) + pli.getStatsInstance().getKills(p.getName()), false, false); //$NON-NLS-1$
+                                Effects.playHologram(p, p.getLocation().add(0D, 0.25D, 0D), ChatColor.values()[(int) (Math.random() * ChatColor.values().length - 1)]
+                                        + Messages.getString("MinigamesAPI.StatsDeaths", LOCALE) + pli.getStatsInstance().getDeaths(p.getName()), false, false); //$NON-NLS-1$
                                 return false;
                             }
                         }
                     }
-                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_GAMEMODE_TEST))
+                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_JOIN))
+                    {
+                        if (args.length > 3)
+                        {
+                            String game = args[1];
+                            String arena = args[2];
+                            String server = args[3];
+                            
+                            Player p = null;
+                            
+                            if (sender instanceof Player)
+                            {
+                                p = (Player) sender;
+                            }
+                            if (args.length > 3)
+                            {
+                                // TODO permission to teleport foreign players
+                                p = Bukkit.getPlayer(args[3]);
+                            }
+                            if (p == null)
+                            {
+                                return true;
+                            }
+                            
+                            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                            try
+                            {
+                                out.writeUTF("Forward");
+                                out.writeUTF("ALL");
+                                out.writeUTF(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_BACK);
+                                
+                                ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+                                DataOutputStream msgout = new DataOutputStream(msgbytes);
+                                String info = game + ":" + arena + ":" + p.getName();
+                                getLogger().info("player join: " + info); //$NON-NLS-1$
+                                msgout.writeUTF(info);
+                                
+                                out.writeShort(msgbytes.toByteArray().length);
+                                out.write(msgbytes.toByteArray());
+                                
+                                Bukkit.getServer().sendPluginMessage(this, ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            connectToServer(this, p.getName(), server);
+                        }
+                        else
+                        {
+                            sender.sendMessage(ChatColor.GRAY + "Usage: /join <game> <arena> <server> [player]");
+                            sender.sendMessage(ChatColor.GRAY + "[player] is optional.");
+                        }
+                    }
+                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_GAMEMODE_TEST)) // TODO remove
                     {
                         if (sender instanceof Player)
                         {
@@ -853,16 +942,15 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                             }
                         }
                     }
-                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_BUNGEE_TEST))
+                    else if (args[0].equalsIgnoreCase(CommandStrings.MGLIB_BUNGEE_TEST)) // TODO remove
                     {
                         if (sender instanceof Player)
                         {
                             final Player p = (Player) sender;
                             if (p.isOp())
                             {
-                                // TODO Why we have sky wars hard coded???
-                                final PluginInstance pli = MinigamesAPI.pinstances.get(Bukkit.getPluginManager().getPlugin("MGSkyWars")); //$NON-NLS-1$
-                                BungeeSocket.sendSignUpdate(pli, pli.getArenas().get(0));
+                                // final PluginInstance pli = MinigamesAPI.pinstances.get(Bukkit.getPluginManager().getPlugin("MGSkyWars")); //$NON-NLS-1$
+                                // BungeeSocket.sendSignUpdate(pli, pli.getArenas().get(0));
                                 return false;
                             }
                         }
@@ -893,6 +981,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
                     sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandSigns", LOCALE)); //$NON-NLS-1$
                     sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandPotionEffect", LOCALE)); //$NON-NLS-1$
                     sender.sendMessage(Messages.getString("MinigamesAPI.MgApiSubcommandStatsHologram", LOCALE)); //$NON-NLS-1$
+                    // TODO Subcommand join
                 }
                 if (sender instanceof Player && args.length > 0)
                 {
@@ -925,6 +1014,22 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
             return true;
         }
         return false;
+    }
+    
+    private void connectToServer(JavaPlugin plugin, String player, String server)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(stream);
+        try
+        {
+            out.writeUTF("Connect");
+            out.writeUTF(server);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        Bukkit.getPlayer(player).sendPluginMessage(plugin, ChannelStrings.CHANNEL_BUNGEE_CORD, stream.toByteArray());
     }
     
     @Override
@@ -993,7 +1098,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
             }
         }
         else if (subchannel.equals(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_REQUEST))
-        { // Lobby requests sign data
+        {
+            // Lobby requests sign data
             final short len = in.readShort();
             final byte[] msgbytes = new byte[len];
             in.readFully(msgbytes);
@@ -1030,6 +1136,36 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
             }
             catch (final IOException e)
             {
+                e.printStackTrace();
+            }
+        }
+        else if (subchannel.equals(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_SIGN))
+        {
+            short len = in.readShort();
+            byte[] msgbytes = new byte[len];
+            in.readFully(msgbytes);
+
+            DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
+            try {
+                final String signData = msgin.readUTF();
+                final String[] splitted = signData.split(":"); //$NON-NLS-1$
+                final String plugin_ = splitted[0];
+                final String arena = splitted[1];
+                final String arenastate = splitted[2];
+                final int count = Integer.parseInt(splitted[3]);
+                final int maxcount = Integer.parseInt(splitted[4]);
+                
+                if (debug)
+                {
+                    this.getLogger().info("channel message: " + ChannelStrings.SUBCHANNEL_MINIGAMESLIB_SIGN + " -> " + signData); //$NON-NLS-1$ //$NON-NLS-2$
+                }
+
+                Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+                    public void run() {
+                        updateSign(plugin_, arena, arenastate, count, maxcount);
+                    }
+                }, 10L);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -1115,6 +1251,310 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener
             }
         }
         return null;
+    }
+    
+    // Bungee-support
+    
+    /**
+     * Sign break event.
+     * 
+     * <p>
+     * TODO description.
+     * </p>
+     * 
+     * @param event
+     */
+    @EventHandler
+    public void onBreak(BlockBreakEvent event)
+    {
+        if (event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN)
+        {
+            if (getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX))
+            {
+                for (String mg_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX).getKeys(false))
+                {
+                    for (String arena_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + mg_key + ".").getKeys(false))
+                    {
+                        Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world")),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
+                        // TODO debug System.out.println(l);
+                        if (l.distance(event.getBlock().getLocation()) < 1)
+                        {
+                            // getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".server", null);
+                            getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key, null);
+                            saveConfig();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Sign use event.
+     * 
+     * <p>
+     * TODO description.
+     * </p>
+     * 
+     * @param event
+     */
+    @EventHandler
+    public void onSignUse(PlayerInteractEvent event)
+    {
+        if (event.hasBlock())
+        {
+            if (event.getClickedBlock().getType() == Material.SIGN_POST || event.getClickedBlock().getType() == Material.WALL_SIGN)
+            {
+                if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+                {
+                    return;
+                }
+                final Sign s = (Sign) event.getClickedBlock().getState();
+                String server = getServerBySignLocation(s.getLocation());
+                if (server != null && server != "")
+                {
+                    try
+                    {
+                        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                        try
+                        {
+                            out.writeUTF("Forward");
+                            out.writeUTF("ALL");
+                            out.writeUTF(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_BACK);
+                            
+                            ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+                            DataOutputStream msgout = new DataOutputStream(msgbytes);
+                            String info = getInfoBySignLocation(s.getLocation()) + ":" + event.getPlayer().getName();
+                            System.out.println(info);
+                            msgout.writeUTF(info);
+                            
+                            out.writeShort(msgbytes.toByteArray().length);
+                            out.write(msgbytes.toByteArray());
+                            
+                            Bukkit.getServer().sendPluginMessage(this, ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
+                        }
+                        catch (Exception e)
+                        {
+                            // TODO logging
+                            e.printStackTrace();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // TODO Logging
+                        System.out.println("Error occurred while sending first sign request: " + e.getMessage() + " - Invalid server/minigame/arena?");
+                    }
+                    connectToServer(this, event.getPlayer().getName(), server);
+                }
+            }
+        }
+        
+    }
+    
+    @EventHandler
+    public void onSignChange(SignChangeEvent event)
+    {
+        Player p = event.getPlayer();
+        if (event.getLine(0).toLowerCase().equalsIgnoreCase("mglib"))
+        {
+            if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp())
+            {
+                if (!event.getLine(1).equalsIgnoreCase("") && !event.getLine(2).equalsIgnoreCase("") && !event.getLine(3).equalsIgnoreCase(""))
+                {
+                    String mg = event.getLine(1);
+                    String arena = event.getLine(2);
+                    String server = event.getLine(3);
+                    
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".server", server);
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".world", p.getWorld().getName());
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".loc.x", event.getBlock().getLocation().getBlockX());
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".loc.y", event.getBlock().getLocation().getBlockY());
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".loc.z", event.getBlock().getLocation().getBlockZ());
+                    saveConfig();
+                    
+                    p.sendMessage(ChatColor.GREEN + "Successfully set sign.");
+                    
+                    updateSign(mg, arena, "JOIN", event);
+                    
+                    requestServerSign(mg, arena);
+                    
+                }
+            }
+        }
+    }
+    
+    public void requestServerSign(String mg_key, String arena_key)
+    {
+        try
+        {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            try
+            {
+                out.writeUTF("Forward");
+                out.writeUTF("ALL");
+                out.writeUTF(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_REQUEST);
+                
+                ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+                DataOutputStream msgout = new DataOutputStream(msgbytes);
+                msgout.writeUTF(mg_key + ":" + arena_key);
+                
+                out.writeShort(msgbytes.toByteArray().length);
+                out.write(msgbytes.toByteArray());
+                
+                Bukkit.getServer().sendPluginMessage(this, ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
+                
+                // TODO if no answer after 2 seconds, server empty!
+                
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error occurred while sending extra sign request: " + e.getMessage());
+        }
+    }
+
+    private Sign getSignFromArena(String mg, String arena) {
+        if (!getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".world")) {
+            return null;
+        }
+        Location b_ = new Location(Bukkit.getServer().getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".world")), getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".loc.x"), getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".loc.y"), getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".loc.z"));
+        if (b_ != null) {
+            if (b_.getWorld() != null) {
+                if (b_.getBlock().getState() != null) {
+                    BlockState bs = b_.getBlock().getState();
+                    Sign s_ = null;
+                    if (bs instanceof Sign) {
+                        s_ = (Sign) bs;
+                    }
+                    return s_;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void updateSign(String mg, String arenaname, String arenastate, int count, int maxcount) {
+        Sign s = getSignFromArena(mg, arenaname);
+        if (s != null) {
+            s.getBlock().getChunk().load();
+            s.setLine(0, Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".0").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.setLine(1, Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".1").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.setLine(2, Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".2").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.setLine(3, Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".3").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.update();
+        }
+    }
+    
+    public void sendSignUpdate(final PluginInstance pli, final Arena a)
+    {
+        String signString;
+
+        if (a == null)
+        {
+            signString = pli.getPlugin().getName() + ":null:JOIN:0:0";
+        }
+        else
+        {
+            signString = pli.getPlugin().getName() + ":" + a.getInternalName() + ":" + a.getArenaState().toString() + ":" + a.getAllPlayers().size() + ":" + a.getMaxPlayers();
+        }
+        
+        try
+        {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            try
+            {
+                out.writeUTF("Forward");
+                out.writeUTF("ALL");
+                out.writeUTF(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_SIGN);
+                
+                ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+                DataOutputStream msgout = new DataOutputStream(msgbytes);
+                msgout.writeUTF(signString);
+                
+                out.writeShort(msgbytes.toByteArray().length);
+                out.write(msgbytes.toByteArray());
+                
+                Bukkit.getServer().sendPluginMessage(this, ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error occurred while sending extra sign request: " + e.getMessage());
+        }
+    }
+
+    public void updateSign(String mg, String arenaname, String arenastate, SignChangeEvent event)
+    {
+        int count = 0;
+        int maxcount = 10;
+        event.setLine(0,
+                Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".0").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                        .replace("<arena>", arenaname).replace("<minigame>", mg)));
+        event.setLine(1,
+                Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".1").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                        .replace("<arena>", arenaname).replace("<minigame>", mg)));
+        event.setLine(2,
+                Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".2").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                        .replace("<arena>", arenaname).replace("<minigame>", mg)));
+        event.setLine(3,
+                Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".3").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                        .replace("<arena>", arenaname).replace("<minigame>", mg)));
+    }
+    
+    public String getServerBySignLocation(Location sign)
+    {
+        if (getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX))
+        {
+            for (String mg_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX).getKeys(false))
+            {
+                for (String arena_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + mg_key + ".").getKeys(false))
+                {
+                    Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world")),
+                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
+                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
+                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
+                    if (l.distance(sign) < 1)
+                    {
+                        return getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".server");
+                    }
+                }
+            }
+        }
+        return "";
+    }
+    
+    public String getInfoBySignLocation(Location sign)
+    {
+        if (getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX))
+        {
+            for (String mg_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX).getKeys(false))
+            {
+                for (String arena_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + mg_key + ".").getKeys(false))
+                {
+                    Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world")),
+                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
+                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
+                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
+                    if (l.distance(sign) < 1)
+                    {
+                        return mg_key + ":" + arena_key;
+                    }
+                }
+            }
+        }
+        return "";
     }
     
 }

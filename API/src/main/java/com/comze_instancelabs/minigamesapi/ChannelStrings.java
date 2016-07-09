@@ -36,4 +36,9 @@ public interface ChannelStrings
      */
     String SUBCHANNEL_MINIGAMESLIB_REQUEST = "MinigamesLibRequest"; //$NON-NLS-1$
     
+    /**
+     * Bungee-cord sub channel for minigames lib.
+     */
+    String SUBCHANNEL_MINIGAMESLIB_SIGN = "MinigamesLibSign"; //$NON-NLS-1$
+    
 }
