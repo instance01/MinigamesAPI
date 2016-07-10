@@ -232,16 +232,16 @@ public class Classes {
 				internalname = c;
 			}
 		}
-		if (!kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
+		boolean continue_ = true;
+		if (money) {
+			if (kitRequiresMoney(internalname) && !kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
+				continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname);
+			}
+		}else if (!kitPlayerHasPermission(internalname, Bukkit.getPlayer(player))) {
 			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().no_perm);
 			return;
 		}
-		boolean continue_ = true;
-		if (money) {
-			if (kitRequiresMoney(internalname)) {
-				continue_ = kitTakeMoney(Bukkit.getPlayer(player), internalname);
-			}
-		}
+		
 		if (continue_) {
 			pli.setPClass(player, this.getClassByInternalname(internalname));
 			Bukkit.getPlayer(player).sendMessage(pli.getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', getClassByInternalname(internalname).getName())));
