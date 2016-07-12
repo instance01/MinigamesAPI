@@ -51,27 +51,27 @@ public class BungeeUtil
     {
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
         MinigamesAPI.getAPI().sendSignUpdate(pli, arena);
-        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        try
-        {
-            out.writeUTF("Forward");
-            out.writeUTF("ALL");
-            out.writeUTF("MinigamesLib");
-            
-            final ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
-            final DataOutputStream msgout = new DataOutputStream(msgbytes);
-            msgout.writeUTF(minigame + ":" + arena.getInternalName() + ":" + arena.getArenaState().toString() + ":" + Integer.toString(arena.getAllPlayers().size()) + ":"
-                    + Integer.toString(arena.getMaxPlayers()));
-            
-            out.writeShort(msgbytes.toByteArray().length);
-            out.write(msgbytes.toByteArray());
-            
-            Bukkit.getServer().sendPluginMessage(MinigamesAPI.getAPI(), ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
+//        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+//        try
+//        {
+//            out.writeUTF("Forward");
+//            out.writeUTF("ALL");
+//            out.writeUTF("MinigamesLib");
+//            
+//            final ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+//            final DataOutputStream msgout = new DataOutputStream(msgbytes);
+//            msgout.writeUTF(minigame + ":" + arena.getInternalName() + ":" + arena.getArenaState().toString() + ":" + Integer.toString(arena.getAllPlayers().size()) + ":"
+//                    + Integer.toString(arena.getMaxPlayers()));
+//            
+//            out.writeShort(msgbytes.toByteArray().length);
+//            out.write(msgbytes.toByteArray());
+//            
+//            Bukkit.getServer().sendPluginMessage(MinigamesAPI.getAPI(), ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
+//        }
+//        catch (final Exception e)
+//        {
+//            e.printStackTrace();
+//        }
     }
     
 }

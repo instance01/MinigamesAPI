@@ -853,7 +853,7 @@ public class Util
         {
             return;
         }
-        final String[] msgs = msgraw.replaceAll("<player>", p.getName()).replaceAll("<game>", plugin.getName()).split(";");
+        final String[] msgs = msgraw.replace("<player>", p.getName()).replace("<game>", plugin.getName()).split(";");
         for (final String msg : msgs)
         {
             p.sendMessage(msg);

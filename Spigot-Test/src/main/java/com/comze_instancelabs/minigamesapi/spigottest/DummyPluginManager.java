@@ -133,7 +133,17 @@ class DummyPluginManager implements PluginManager
     @Override
     public void callEvent(Event event) throws IllegalStateException
     {
-        throw new UnsupportedOperationException();
+        for (final RegisteredListener listener : getEventListeners(getRegistrationClass(event.getClass())).getRegisteredListeners())
+        {
+            try
+            {
+                listener.callEvent(event);
+            }
+            catch (EventException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
     
     @Override
