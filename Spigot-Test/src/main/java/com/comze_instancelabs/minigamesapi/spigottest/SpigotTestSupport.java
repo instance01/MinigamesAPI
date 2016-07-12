@@ -15,6 +15,7 @@
 
 package com.comze_instancelabs.minigamesapi.spigottest;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -23,10 +24,14 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -35,6 +40,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,6 +53,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 
 import net.minecraft.server.v1_10_R1.DispenserRegistry;
 
@@ -82,7 +91,6 @@ public abstract class SpigotTestSupport
             
         });
     }
-
     
     /**
      * Tear down all plugins and players.
@@ -96,11 +104,14 @@ public abstract class SpigotTestSupport
         this.teardownScoreboards();
         this.teardownTasks();
         this.teardownWorlds();
+        this.teardownMessages();
     }
     
     /**
      * Initializes a new dummy world.
-     * @param name world name
+     * 
+     * @param name
+     *            world name
      * @return World instance.
      */
     public World initWorld(String name)
@@ -140,6 +151,14 @@ public abstract class SpigotTestSupport
     protected void teardownConfigFiles()
     {
         getDummyServer().getConfigFiles().clear();
+    }
+    
+    /**
+     * Tear down all messages.
+     */
+    protected void teardownMessages()
+    {
+        getDummyServer().clearMessages();
     }
     
     /**
@@ -193,11 +212,13 @@ public abstract class SpigotTestSupport
      */
     protected Player mockOnlinePlayer(String name, UUID uuid)
     {
-        final DummyServer server = this.getDummyServer();
+        final DummyServer server = getDummyServer();
         final Player player = mock(Player.class);
+        final PlayerInventory inv = new DummyPlayerInventory();
         when(player.getName()).thenReturn(name);
         when(player.getUniqueId()).thenReturn(uuid);
         server.addMockedPlayer(player);
+        when(player.getInventory()).thenReturn(inv);
         return player;
     }
     
@@ -239,7 +260,31 @@ public abstract class SpigotTestSupport
      */
     public JavaPlugin mockPlugin(String name, String version, FileConfiguration config)
     {
-        final JavaPlugin plugin = mock(JavaPlugin.class, (Answer<?>) invocation -> {
+        return mockPlugin(name, version, config, JavaPlugin.class, null);
+    }
+    
+    /**
+     * Mocks a plugin and returns it.
+     * 
+     * @param name
+     *            plugin name
+     * @param version
+     *            plugin version
+     * @param config
+     *            plugin config
+     * @param clazz
+     *            plugin class
+     * @param answers
+     *            additional answers for mocking
+     * @return mocked java plugin.
+     */
+    public <T extends JavaPlugin> T mockPlugin(String name, String version, FileConfiguration config, Class<T> clazz, Map<Method, Answer<?>> answers)
+    {
+        final T plugin = mock(clazz, (Answer<?>) invocation -> {
+            if (answers != null && answers.containsKey(invocation.getMethod()))
+            {
+                return answers.get(invocation.getMethod()).answer(invocation);
+            }
             if (invocation.getMethod().getName().equals("getResource")) //$NON-NLS-1$
                 return null;
             return invocation.callRealMethod();
@@ -263,7 +308,95 @@ public abstract class SpigotTestSupport
      */
     protected void tick()
     {
-        this.getDummyServer().tick();
+        getDummyServer().tick();
+    }
+    
+    /**
+     * Assert that a given message was sent.
+     * @param senderPlugin
+     * @param channel
+     * @param message
+     */
+    public static void verifyPluginMessage(JavaPlugin senderPlugin, String channel, Object... message)
+    {
+        final byte[] bytes = toByteArray(message);
+        final PluginMessage msg = new PluginMessage(senderPlugin, channel, bytes);
+
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Expected plugin message not sent.\nplugin: ").append(senderPlugin.getName()); //$NON-NLS-1$
+        builder.append("\nchannel: ").append(channel); //$NON-NLS-1$
+        for (Object obj : message)
+        {
+            builder.append("\n  arg:").append(obj); //$NON-NLS-1$
+        }
+        builder.append("\n  bytes: ").append(Arrays.toString(bytes)); //$NON-NLS-1$
+        
+        for (final PluginMessage sent : getDummyServer().getMessages())
+        {
+            if (sent.equals(msg))
+            {
+                // we found the message
+                return;
+            }
+            builder.append("\n candidate: ").append(sent.getPlugin().getName()).append("/").append(sent.getChannel()).append("/").append(Arrays.toString(sent.getData())); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        fail(builder.toString());
+    }
+
+    private static byte[] toByteArray(Object... message)
+    {
+        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        for (Object obj : message)
+        {
+            if (obj instanceof String)
+            {
+                out.writeUTF((String) obj);
+            }
+            else if (obj instanceof Boolean)
+            {
+                out.writeBoolean((Boolean) obj);
+            }
+            else if (obj instanceof Byte)
+            {
+                out.writeByte((Byte) obj);
+            }
+            else if (obj instanceof Character)
+            {
+                out.writeChar((Character) obj);
+            }
+            else if (obj instanceof Double)
+            {
+                out.writeDouble((Double) obj);
+            }
+            else if (obj instanceof Float)
+            {
+                out.writeFloat((Float) obj);
+            }
+            else if (obj instanceof Integer)
+            {
+                out.writeInt((Integer) obj);
+            }
+            else if (obj instanceof Long)
+            {
+                out.writeLong((Long) obj);
+            }
+            else if (obj instanceof Short)
+            {
+                out.writeShort((Short) obj);
+            }
+            else if (obj instanceof Object[])
+            {
+                final byte[] arr = toByteArray((Object[]) obj);
+                out.writeShort(arr.length);
+                out.write(arr);
+            }
+            else
+            {
+                fail("Unknown object type for assert message"); //$NON-NLS-1$
+            }
+        }
+        final byte[] bytes = out.toByteArray();
+        return bytes;
     }
     
 }

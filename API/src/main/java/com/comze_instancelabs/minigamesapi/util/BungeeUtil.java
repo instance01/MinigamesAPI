@@ -25,7 +25,6 @@ import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ChannelStrings;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
-import com.comze_instancelabs.minigamesapi.bungee.BungeeSocket;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
@@ -51,28 +50,28 @@ public class BungeeUtil
     public static void sendSignUpdateRequest(final JavaPlugin plugin, final String minigame, final Arena arena)
     {
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-        BungeeSocket.sendSignUpdate(pli, arena);
-        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        try
-        {
-            out.writeUTF("Forward");
-            out.writeUTF("ALL");
-            out.writeUTF("MinigamesLib");
-            
-            final ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
-            final DataOutputStream msgout = new DataOutputStream(msgbytes);
-            msgout.writeUTF(minigame + ":" + arena.getInternalName() + ":" + arena.getArenaState().toString() + ":" + Integer.toString(arena.getAllPlayers().size()) + ":"
-                    + Integer.toString(arena.getMaxPlayers()));
-            
-            out.writeShort(msgbytes.toByteArray().length);
-            out.write(msgbytes.toByteArray());
-            
-            Bukkit.getServer().sendPluginMessage(MinigamesAPI.getAPI(), ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
-        }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
+        MinigamesAPI.getAPI().sendSignUpdate(pli, arena);
+//        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+//        try
+//        {
+//            out.writeUTF("Forward");
+//            out.writeUTF("ALL");
+//            out.writeUTF("MinigamesLib");
+//            
+//            final ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+//            final DataOutputStream msgout = new DataOutputStream(msgbytes);
+//            msgout.writeUTF(minigame + ":" + arena.getInternalName() + ":" + arena.getArenaState().toString() + ":" + Integer.toString(arena.getAllPlayers().size()) + ":"
+//                    + Integer.toString(arena.getMaxPlayers()));
+//            
+//            out.writeShort(msgbytes.toByteArray().length);
+//            out.write(msgbytes.toByteArray());
+//            
+//            Bukkit.getServer().sendPluginMessage(MinigamesAPI.getAPI(), ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
+//        }
+//        catch (final Exception e)
+//        {
+//            e.printStackTrace();
+//        }
     }
     
 }

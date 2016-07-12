@@ -13,32 +13,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.comze_instancelabs.minigamesapi;
+package com.comze_instancelabs.minigamesapi.spigottest;
+
+import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftInventoryPlayer;
+import org.bukkit.inventory.InventoryHolder;
 
 /**
- * Pluginc hannel strings.
+ * Helper class for player inventories.
  * 
  * @author mepeisen
  */
-public interface ChannelStrings
+public class DummyPlayerInventory extends CraftInventoryPlayer
 {
-    
-    /** bungee cord plugin channel. */
-    String CHANNEL_BUNGEE_CORD = "BungeeCord"; //$NON-NLS-1$
-    
+
     /**
-     * Bungee-cord sub channel for minigames lib.
+     * Constructor
      */
-    String SUBCHANNEL_MINIGAMESLIB_BACK = "MinigamesLibBack"; //$NON-NLS-1$
-    
-    /**
-     * Bungee-cord sub channel for minigames lib.
-     */
-    String SUBCHANNEL_MINIGAMESLIB_REQUEST = "MinigamesLibRequest"; //$NON-NLS-1$
-    
-    /**
-     * Bungee-cord sub channel for minigames lib.
-     */
-    String SUBCHANNEL_MINIGAMESLIB_SIGN = "MinigamesLibSign"; //$NON-NLS-1$
+    public DummyPlayerInventory()
+    {
+        super(new net.minecraft.server.v1_10_R1.PlayerInventory(null){
+
+            @Override
+            public InventoryHolder getOwner()
+            {
+                return null;
+            }
+            
+        });
+    }
     
 }

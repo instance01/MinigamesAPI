@@ -37,24 +37,8 @@ public class MessagesConfig
     public MessagesConfig(final JavaPlugin plugin)
     {
         this.plugin = plugin;
-        // TODO use static initializer
-        Arrays.fill(MessagesConfig.squares_mid, (char) 0x25A0);
-        Arrays.fill(MessagesConfig.squares_full, (char) 0x2588);
-        Arrays.fill(MessagesConfig.squares_medium, (char) 0x2592);
-        Arrays.fill(MessagesConfig.squares_light, (char) 0x2591);
-        for (int i = 0; i < 10; i++)
-        {
-            MessagesConfig.squares += Character.toString((char) 0x25A0);
-        }
         this.init();
     }
-    
-    public static String squares        = Character.toString((char) 0x25A0);
-    
-    public static char[] squares_mid    = new char[10];
-    public static char[] squares_full   = new char[10];
-    public static char[] squares_medium = new char[10];
-    public static char[] squares_light  = new char[10];
     
     public void init()
     {

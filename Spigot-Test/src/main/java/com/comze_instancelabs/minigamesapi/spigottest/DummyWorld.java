@@ -15,6 +15,8 @@
 
 package com.comze_instancelabs.minigamesapi.spigottest;
 
+import static org.powermock.api.mockito.PowerMockito.mock;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -197,44 +199,28 @@ public class DummyWorld implements World
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.bukkit.World#getChunkAt(int, int)
-     */
     @Override
     public Chunk getChunkAt(int paramInt1, int paramInt2)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return mock(Chunk.class);
     }
 
-    /* (non-Javadoc)
-     * @see org.bukkit.World#getChunkAt(org.bukkit.Location)
-     */
     @Override
     public Chunk getChunkAt(Location paramLocation)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return mock(Chunk.class);
     }
 
-    /* (non-Javadoc)
-     * @see org.bukkit.World#getChunkAt(org.bukkit.block.Block)
-     */
     @Override
     public Chunk getChunkAt(Block paramBlock)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return mock(Chunk.class);
     }
 
-    /* (non-Javadoc)
-     * @see org.bukkit.World#isChunkLoaded(org.bukkit.Chunk)
-     */
     @Override
     public boolean isChunkLoaded(Chunk paramChunk)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     /* (non-Javadoc)

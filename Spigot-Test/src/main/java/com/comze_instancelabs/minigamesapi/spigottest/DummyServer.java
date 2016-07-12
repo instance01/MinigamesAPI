@@ -21,6 +21,7 @@ import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemFactory;
 import org.bukkit.craftbukkit.v1_10_R1.scheduler.CraftScheduler;
 import org.bukkit.craftbukkit.v1_10_R1.util.Versioning;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 /**
  * originally taken from spigot test sources
@@ -88,6 +89,7 @@ class DummyServer implements InvocationHandler {
     private DummyScoreboardManager scoreboardManager = new DummyScoreboardManager();
     private CraftScheduler scheduler = new CraftScheduler();
     private Map<String, World> worlds = new HashMap<>();
+    private List<PluginMessage> messages = new ArrayList<>();
     
     private final Map<File, YamlConfiguration> configFiles = new HashMap<>();
     
@@ -114,6 +116,9 @@ class DummyServer implements InvocationHandler {
         }
         switch (method.getName())
         {
+            case "sendPluginMessage":
+                this.messages.add(new PluginMessage((Plugin) args[0], (String) args[1], (byte[]) args[2]));
+                return null;
             case "getPluginManager":
                 return this.pluginManager;
             case "getScoreboardManager":
@@ -196,6 +201,23 @@ class DummyServer implements InvocationHandler {
         this.scheduler.cancelAllTasks();
         this.tick = 1;
         this.scheduler = new CraftScheduler();
+    }
+    
+    /**
+     * 
+     */
+    public void clearMessages()
+    {
+        this.messages.clear();
+    }
+    
+    /**
+     * Returns the plugin messages
+     * @return plugin messages
+     */
+    public Iterable<PluginMessage> getMessages()
+    {
+        return this.messages;
     }
 
     /**

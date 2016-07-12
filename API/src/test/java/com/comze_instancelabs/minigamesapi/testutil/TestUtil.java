@@ -20,20 +20,26 @@ import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Before;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import com.comze_instancelabs.minigamesapi.Arena;
+import com.comze_instancelabs.minigamesapi.MinecraftVersionsType;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
@@ -57,19 +63,29 @@ public abstract class TestUtil extends SpigotTestSupport
     
     /**
      * Setup the minigame test framework.
+     * @throws IllegalAccessException 
+     * @throws IllegalArgumentException 
      */
     @Before
-    public void setupMinigameTest()
+    public void setupMinigameTest() throws IllegalArgumentException, IllegalAccessException
     {
         this.minigameTest = new MinigameTestHelper();
-        
-        final MinigamesAPI api = mock(MinigamesAPI.class);
+
+        final YamlConfiguration config = mockFileConfig();
+        final MinigamesAPI api = this.mockPlugin("MinigamesLib", "1.0", config, MinigamesAPI.class, null);
         mockStatic(MinigamesAPI.class);
         when(MinigamesAPI.getAPI()).thenReturn(api);
-        when(api.getPluginInstance(any())).thenCallRealMethod();
         when(MinigamesAPI.setupAPI(any(), anyString(), any(), any(), any(), any(), any(), any(), anyBoolean())).thenCallRealMethod();
+        when(MinigamesAPI.playerToUUID(any(Player.class))).thenCallRealMethod();
+        when(MinigamesAPI.playerToUUID(anyString())).thenCallRealMethod();
+        when(MinigamesAPI.uuidToPlayer(any(UUID.class))).thenCallRealMethod();
         
         this.minigameTest.api = api;
+        api.global_party = new HashMap<>();
+        
+        final Field field = PowerMockito.field(MinigamesAPI.class, "SERVER_VERSION");
+        field.setAccessible(true);
+        field.set(MinigamesAPI.class, MinecraftVersionsType.V1_10_R1);
     }
     
     /**

@@ -414,40 +414,32 @@ public class Util
             if (pli.cached_sign_states.containsKey(state))
             {
                 s.setLine(0,
-                        pli.cached_sign_states.get(state).get(0).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
-                                .replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.cached_sign_states.get(state).get(0).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                                .replace("<arena>", arena.getDisplayName())));
                 s.setLine(1,
-                        pli.cached_sign_states.get(state).get(1).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
-                                .replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.cached_sign_states.get(state).get(1).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                                .replace("<arena>", arena.getDisplayName())));
                 s.setLine(2,
-                        pli.cached_sign_states.get(state).get(2).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
-                                .replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.cached_sign_states.get(state).get(2).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                                .replace("<arena>", arena.getDisplayName())));
                 s.setLine(3,
-                        pli.cached_sign_states.get(state).get(3).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
-                                .replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.cached_sign_states.get(state).get(3).replaceAll("&", "§").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount))
+                                .replace("<arena>", arena.getDisplayName())));
             }
             else
             {
                 s.setLine(0,
-                        pli.getMessagesConfig().getConfig().getString("signs." + state + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + state + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
                 s.setLine(1,
-                        pli.getMessagesConfig().getConfig().getString("signs." + state + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + state + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
                 s.setLine(2,
-                        pli.getMessagesConfig().getConfig().getString("signs." + state + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + state + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
                 s.setLine(3,
-                        pli.getMessagesConfig().getConfig().getString("signs." + state + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                                        new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                        Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + state + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                                .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
             }
             s.getBlock().getChunk().load();
             s.update();
@@ -487,21 +479,17 @@ public class Util
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
         final String arenastate = arena.getArenaState().toString().toLowerCase();
         event.setLine(0,
-                pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid))
-                        .replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".0").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
         event.setLine(1,
-                pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid))
-                        .replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".1").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
         event.setLine(2,
-                pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid))
-                        .replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".2").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
         event.setLine(3,
-                pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count))
-                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName()).replace("[]", new String(MessagesConfig.squares_mid))
-                        .replace("[1]", new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+                Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".3").replaceAll("&", "§").replace("<count>", Integer.toString(count))
+                        .replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arena.getDisplayName())));
         if (pli.color_background_wool_of_signs)
         {
             final org.bukkit.material.Sign s_ = (org.bukkit.material.Sign) event.getBlock().getState().getData();
@@ -523,14 +511,10 @@ public class Util
     public static void updateSign(final JavaPlugin plugin, final SignChangeEvent event, final String arenastate)
     {
         final PluginInstance pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
-        event.setLine(0, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".0").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-        event.setLine(1, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".1").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-        event.setLine(2, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".2").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
-        event.setLine(3, pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".3").replaceAll("&", "§").replace("[]", new String(MessagesConfig.squares_mid)).replace("[1]",
-                new String(MessagesConfig.squares_full).replace("[2]", new String(MessagesConfig.squares_medium)).replace("[3]", new String(MessagesConfig.squares_light))));
+        event.setLine(0, Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".0").replaceAll("&", "§")));
+        event.setLine(1, Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".1").replaceAll("&", "§")));
+        event.setLine(2, Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".2").replaceAll("&", "§")));
+        event.setLine(3, Signs.replaceSquares(pli.getMessagesConfig().getConfig().getString("signs." + arenastate + ".3").replaceAll("&", "§")));
     }
     
     public static ArrayList<Arena> loadArenas(final JavaPlugin plugin, final ArenasConfig cf)
@@ -869,7 +853,7 @@ public class Util
         {
             return;
         }
-        final String[] msgs = msgraw.replaceAll("<player>", p.getName()).replaceAll("<game>", plugin.getName()).split(";");
+        final String[] msgs = msgraw.replace("<player>", p.getName()).replace("<game>", plugin.getName()).split(";");
         for (final String msg : msgs)
         {
             p.sendMessage(msg);
