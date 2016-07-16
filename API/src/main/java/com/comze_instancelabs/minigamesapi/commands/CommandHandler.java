@@ -71,6 +71,8 @@ public class CommandHandler {
 				return this.joinArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("leave")) {
 				return this.leaveArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
+			} else if (action.equalsIgnoreCase("vote")) {
+				return this.vote(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("start")) {
 				return this.startArena(pli, sender, args, uber_permission, cmd, action, plugin, p);
 			} else if (action.equalsIgnoreCase("stop")) {
@@ -479,7 +481,28 @@ public class CommandHandler {
 		}
 		return true;
 	}
-
+	
+	public boolean vote(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
+		if (!sender.hasPermission(uber_permission + ".vote")) {
+			sender.sendMessage(pli.getMessagesConfig().no_perm);
+			return true;
+		}
+		if (args.length > 1) {
+			if(args.equalsIgnoreCase("night")) {
+				p.getWorld().setTime(18000);
+			} else if (args.equalsIgnoreCase("day")) {
+				p.getWorld().setTime(0);
+			} else if (args.equalsIgnoreCase("sunset")) {
+				p.getWorld().setTime(12550);
+			} else if (args.equalsIgnoreCase("rain")) {
+				p.getWorld().setStorm(true);
+			} else if (args.equalsIgnoreCase("clear")) {
+				p.getWorld().setStorm(false);
+			}
+		}
+		return true;
+	}
+	
 	public boolean startArena(PluginInstance pli, CommandSender sender, String[] args, String uber_permission, String cmd, String action, JavaPlugin plugin, Player p) {
 		if (!sender.hasPermission(uber_permission + ".start")) {
 			sender.sendMessage(pli.getMessagesConfig().no_perm);
