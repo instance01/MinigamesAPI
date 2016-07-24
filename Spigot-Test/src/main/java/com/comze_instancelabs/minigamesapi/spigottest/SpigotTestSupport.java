@@ -24,21 +24,22 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.WorldType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_10_R1.scoreboard.CraftScoreboard;
+import org.bukkit.craftbukkit.v1_10_R1.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -53,6 +54,7 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
+import org.spigotmc.SpigotConfig;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -65,7 +67,7 @@ import net.minecraft.server.v1_10_R1.DispenserRegistry;
  * @author mepeisen
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(YamlConfiguration.class)
+@PrepareForTest({ YamlConfiguration.class, CraftServer.class, CraftScoreboardManager.class, CraftScoreboard.class })
 @PowerMockIgnore({ "org.apache.*", "com.sun.*", "javax.*" })
 public abstract class SpigotTestSupport
 {
@@ -90,6 +92,7 @@ public abstract class SpigotTestSupport
             }
             
         });
+        SpigotConfig.config = mockFileConfig();
     }
     
     /**
@@ -120,14 +123,27 @@ public abstract class SpigotTestSupport
     }
     
     /**
+     * Initializes a flat world hold in memory.
+     * 
+     * @param name
+     *            world name
+     * @return world instance.
+     */
+    public World initFlatWorld(String name)
+    {
+        return getDummyServer().initWorld(name, WorldType.FLAT, 123);
+    }
+    
+    /**
      * Returns the dummy server.
      * 
-     * @return summy server
+     * @return dummy server
      */
     static DummyServer getDummyServer()
     {
-        final Server server = Bukkit.getServer();
-        return (DummyServer) Proxy.getInvocationHandler(server);
+//        final Server server = Bukkit.getServer();
+//        return (DummyServer) Proxy.getInvocationHandler(server);
+        return DummyServer.DUMMY_SERVER;
     }
     
     /**
@@ -190,7 +206,7 @@ public abstract class SpigotTestSupport
      */
     protected void teardownScoreboards()
     {
-        ((DummyScoreboardManager) Bukkit.getScoreboardManager()).teardown();
+        getDummyServer().teardownScoreboards();
     }
     
     /**
@@ -313,6 +329,7 @@ public abstract class SpigotTestSupport
     
     /**
      * Assert that a given message was sent.
+     * 
      * @param senderPlugin
      * @param channel
      * @param message
@@ -321,7 +338,7 @@ public abstract class SpigotTestSupport
     {
         final byte[] bytes = toByteArray(message);
         final PluginMessage msg = new PluginMessage(senderPlugin, channel, bytes);
-
+        
         final StringBuilder builder = new StringBuilder();
         builder.append("Expected plugin message not sent.\nplugin: ").append(senderPlugin.getName()); //$NON-NLS-1$
         builder.append("\nchannel: ").append(channel); //$NON-NLS-1$
@@ -342,7 +359,7 @@ public abstract class SpigotTestSupport
         }
         fail(builder.toString());
     }
-
+    
     private static byte[] toByteArray(Object... message)
     {
         final ByteArrayDataOutput out = ByteStreams.newDataOutput();

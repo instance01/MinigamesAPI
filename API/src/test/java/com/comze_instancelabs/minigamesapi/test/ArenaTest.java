@@ -17,6 +17,8 @@ package com.comze_instancelabs.minigamesapi.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
@@ -35,6 +37,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -137,8 +140,8 @@ public class ArenaTest extends TestUtil
             
             mg.addArenaComponentToConfig(ARENA3, ArenaConfigStrings.SPEC_SPAWN, "world", 9, 10, 11, 80, 80); //$NON-NLS-1$
             
-            mg.arenasYml.getConfigurationSection("arenas").getConfigurationSection(ARENA3).set("displayname", "FOO"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            mg.arenasYml.getConfigurationSection("arenas").getConfigurationSection(ARENA3).set("showscoreboard", Boolean.FALSE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            mg.arenasYml.set("arenas." + ARENA3 + ".displayname", "FOO"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            mg.arenasYml.set("arenas." + ARENA3 + ".showscoreboard", Boolean.FALSE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         });
         
         // 1) normal init with unknown arena
@@ -299,10 +302,12 @@ public class ArenaTest extends TestUtil
     @Test
     public void testJoinLobbyAndWait()
     {
-        final World world = this.initWorld("world"); //$NON-NLS-1$
+        final World world = this.initFlatWorld("world"); //$NON-NLS-1$
         final Minigame minigame = this.minigameTest.setupMinigame(MINIGAME + "NormalGame", (mg) -> { //$NON-NLS-1$
             mg.addArenaComponentToConfig(ARENA, "lobby", "world", 1, 1, 1, 80, 80); //$NON-NLS-1$ //$NON-NLS-2$
             mg.addArenaComponentToConfig(ARENA, "spawns.spawn0", "world", 1, 1, 1, 80, 80); //$NON-NLS-1$ //$NON-NLS-2$
+
+            mg.addArenaComponentToConfig(ARENA, "sign", "world", 1, 1, 1, 80, 80); //$NON-NLS-1$ //$NON-NLS-2$
             
             mg.addArenaComponentToConfig(ARENA, ArenaConfigStrings.BOUNDS_LOW, "world", 1, 2, 3, 80, 80); //$NON-NLS-1$
             mg.addArenaComponentToConfig(ARENA, ArenaConfigStrings.BOUNDS_HIGH, "world", 2, 3, 4, 80, 80); //$NON-NLS-1$
@@ -315,8 +320,13 @@ public class ArenaTest extends TestUtil
             
             mg.addArenaComponentToConfig(ARENA, ArenaConfigStrings.SPEC_SPAWN, "world", 9, 10, 11, 80, 80); //$NON-NLS-1$
             
-            mg.arenasYml.getConfigurationSection("arenas").getConfigurationSection(ARENA).set("author", "JUNIT-AUTHOR"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            mg.arenasYml.getConfigurationSection("arenas").getConfigurationSection(ARENA).set("description", "JUNIT TEST CASE"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            mg.arenasYml.set("arenas." + ARENA + ".author", "JUNIT-AUTHOR"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            mg.arenasYml.set("arenas." + ARENA + ".description", "JUNIT TEST CASE"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            
+            // old config name, ensures it is migrated to newer version because config.version is not set...
+            mg.javaPlugin.getConfig().set("config.exit_item", Integer.valueOf(1));
+            
+            //mg.add
         });
         
         minigame.pluginInstance.getMessagesConfig().you_joined_arena = "<player> joined <arena> of <game>"; //$NON-NLS-1$
@@ -324,6 +334,8 @@ public class ArenaTest extends TestUtil
         minigame.pluginInstance.getMessagesConfig().author_of_the_map = "<arena> was created by <author>"; //$NON-NLS-1$
         minigame.pluginInstance.getMessagesConfig().description_of_the_map = "<arena> description: <description>"; //$NON-NLS-1$
         minigame.pluginInstance.getMessagesConfig().broadcast_player_joined = "<player> joined arena <count>/<maxcount>"; //$NON-NLS-1$
+        
+        minigame.pluginInstance.getMessagesConfig().exit_item = "EXIT"; //$NON-NLS-1$
         
         final Arena arena = new Arena(minigame.javaPlugin, ARENA);
         final Location signLoc = new Location(world, 1, 1, 1);
@@ -337,6 +349,7 @@ public class ArenaTest extends TestUtil
         final Player player1 = this.mockOnlinePlayer(PLAYER1, UUID.randomUUID());
         final Player player2 = this.mockOnlinePlayer(PLAYER2, UUID.randomUUID());
         player1.getInventory().addItem(new ItemStack(Material.APPLE, 12));
+        player1.getInventory().setBoots(new ItemStack(Material.GOLD_BOOTS, 1));
         when(player1.getGameMode()).thenReturn(GameMode.CREATIVE);
         when(player1.getLevel()).thenReturn(16);
         when(player2.getGameMode()).thenReturn(GameMode.ADVENTURE);
@@ -372,7 +385,32 @@ public class ArenaTest extends TestUtil
         assertEquals(16, aplayer1.getOriginalXplvl());
         assertEquals(GameMode.ADVENTURE, aplayer2.getOriginalGamemode());
         assertEquals(17, aplayer2.getOriginalXplvl());
-        // TODO inventory
+        
+        final ItemStack[] savedInv = aplayer1.getInventory();
+        assertNotNull(savedInv[0]);
+        assertEquals(12, savedInv[0].getAmount());
+        assertEquals(Material.APPLE, savedInv[0].getType());
+        for (int i = 1; i < savedInv.length - 5; i++) assertNull(savedInv[i]); // -5 to skip the armory contents (the boots)
+        final ItemStack[] savedArmor = aplayer1.getArmorInventory();
+        assertNotNull(savedArmor[0]);
+        assertEquals(1, savedArmor[0].getAmount());
+        assertEquals(Material.GOLD_BOOTS, savedArmor[0].getType());
+        for (int i = 1; i < savedArmor.length; i++) assertNull(savedArmor[i]);
+        
+        // check for cleared/lobby inventory
+        final ItemStack exitItem = new ItemStack(1);
+        final ItemMeta exitItemMeta = exitItem.getItemMeta();
+        exitItemMeta.setDisplayName("EXIT"); //$NON-NLS-1$
+        exitItem.setItemMeta(exitItemMeta);
+        final ItemStack[] newInv = player1.getInventory().getContents();
+        for (int i = 0; i < newInv.length; i++)
+        {
+            // check for giveLobbyItems
+            if (i == 8) assertEquals(exitItem, newInv[i]);
+            else assertNull(newInv[i]);
+        }
+        final ItemStack[] newArmor = player1.getInventory().getArmorContents();
+        for (int i = 0; i < newArmor.length; i++) assertNull(newArmor[i]);
 
         // verify set game mode survival
         verify(player1, times(1)).setGameMode(GameMode.SURVIVAL);
@@ -411,12 +449,7 @@ public class ArenaTest extends TestUtil
                 new Object[]{MINIGAME + "NormalGame:" + ARENA + ":" + ArenaState.JOIN.name() + ":2:5"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         
         // TODO sendAllHolograms
-        // TODO Util.updateSign
-        
-        // TODO Saved inventory (ArenaPlayer)
-        
-        // TODO Add Task to clear inv (Arena:968)
-        // TODO giveLobbyItems (Arena:973)
+        // TODO sign updates (in current world) Util.updateSign
     }
     
 }
