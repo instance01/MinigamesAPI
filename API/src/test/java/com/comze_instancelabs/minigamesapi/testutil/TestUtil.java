@@ -18,9 +18,7 @@ package com.comze_instancelabs.minigamesapi.testutil;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import java.io.File;
@@ -30,7 +28,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -197,37 +194,39 @@ public abstract class TestUtil extends SpigotTestSupport
          */
         public void addArenaComponentToConfig(String arenaName, String component, String world, double x, double y, double z, double pitch, double yaw)
         {
-            ConfigurationSection arenas = this.arenasYml.getConfigurationSection("arenas"); //$NON-NLS-1$
-            if (arenas == null)
-            {
-                arenas = this.arenasYml.createSection("arenas"); //$NON-NLS-1$
-            }
-            
-            ConfigurationSection carena = arenas.getConfigurationSection(arenaName);
-            if (carena == null)
-            {
-                carena = arenas.createSection(arenaName);
-            }
-            
-            ConfigurationSection ccomponent = carena;
-            for (String path : component.split("\\.")) //$NON-NLS-1$
-            {
-                ConfigurationSection csect = ccomponent.getConfigurationSection(path);
-                if (csect == null)
-                {
-                    csect = ccomponent.createSection(path);
-                }
-                ccomponent = csect;
-            }
-            
-            ccomponent.set("world", world); //$NON-NLS-1$
+            this.addComponentToConfig(this.arenasYml, "arenas." + arenaName + "." + component, world, x, y, z, pitch, yaw); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        
+        /**
+         * Adds a location component to config
+         * 
+         * @param config
+         *            configuration to use
+         * @param path
+         *            component path (f.e. "arenas.xyz.lobby")
+         * @param world
+         *            the world
+         * @param x
+         *            the x coordinate
+         * @param y
+         *            the y coordinate
+         * @param z
+         *            the z coordinate
+         * @param pitch
+         *            the pitch
+         * @param yaw
+         *            the yaw
+         */
+        public void addComponentToConfig(YamlConfiguration config, String path, String world, double x, double y, double z, double pitch, double yaw)
+        {
+            config.set(path + ".world", world); //$NON-NLS-1$
             final Map<String, Object> location = new HashMap<>();
             location.put("x", Double.valueOf(x)); //$NON-NLS-1$
             location.put("y", Double.valueOf(y)); //$NON-NLS-1$
             location.put("z", Double.valueOf(z)); //$NON-NLS-1$
             location.put("pitch", Double.valueOf(pitch)); //$NON-NLS-1$
             location.put("yaw", Double.valueOf(yaw)); //$NON-NLS-1$
-            ccomponent.createSection("location", location); //$NON-NLS-1$
+            config.createSection(path + ".location", location); //$NON-NLS-1$
         }
     }
     
