@@ -220,6 +220,11 @@ public class CommandHandler
             }
             else if (action.equalsIgnoreCase(CommandStrings.GAME_RELOAD))
             {
+                if (!sender.hasPermission(uber_permission + ".setup"))
+                {
+                    sender.sendMessage(pli.getMessagesConfig().no_perm);
+                    return true;
+                }
                 plugin.reloadConfig();
                 pli.getMessagesConfig().reloadConfig();
                 pli.getArenasConfig().reloadConfig();
