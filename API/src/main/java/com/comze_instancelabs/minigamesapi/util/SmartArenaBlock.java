@@ -25,6 +25,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.DoubleChest;
@@ -72,7 +73,7 @@ public class SmartArenaBlock implements Serializable
     boolean                                      isDoubleChest    = false;
     DoubleChest                                  doubleChest      = null;
     
-    public SmartArenaBlock(final Block b, final boolean c, final boolean s)
+    public SmartArenaBlock(final Block b, final boolean isChest, final boolean isSign)
     {
         this.m = b.getType();
         this.x = b.getX();
@@ -102,7 +103,7 @@ public class SmartArenaBlock implements Serializable
                 this.setInventory(((Dispenser) b.getState()).getInventory());
             }
         }
-        if (s)
+        if (isSign)
         {
             final Sign sign = (Sign) b.getState();
             if (sign != null)
@@ -110,9 +111,54 @@ public class SmartArenaBlock implements Serializable
                 this.sign_lines.addAll(Arrays.asList(sign.getLines()));
             }
         }
-        else if (c)
+        else if (isChest)
         {
             final Chest chest = (Chest) b.getState();
+            this.setInventory(chest.getInventory());
+        }
+    }
+    
+    public SmartArenaBlock(final BlockState b, final boolean isChest, final boolean isSign)
+    {
+        this.m = b.getType();
+        this.x = b.getX();
+        this.y = b.getY();
+        this.z = b.getZ();
+        this.data = b.getData().getData();
+        this.world = b.getWorld().getName();
+        if (this.m.equals(Material.SKULL))
+        {
+            if (b instanceof Skull)
+            {
+                this.skull_owner = ((Skull) b).getOwner();
+                this.skull_rotation = ((Skull) b).getRotation();
+            }
+        }
+        if (this.m.equals(Material.DROPPER))
+        {
+            if (b instanceof Dropper)
+            {
+                this.setInventory(((Dropper) b).getInventory());
+            }
+        }
+        if (this.m.equals(Material.DISPENSER))
+        {
+            if (b instanceof Dispenser)
+            {
+                this.setInventory(((Dispenser) b).getInventory());
+            }
+        }
+        if (isSign)
+        {
+            final Sign sign = (Sign) b;
+            if (sign != null)
+            {
+                this.sign_lines.addAll(Arrays.asList(sign.getLines()));
+            }
+        }
+        else if (isChest)
+        {
+            final Chest chest = (Chest) b;
             this.setInventory(chest.getInventory());
         }
     }
