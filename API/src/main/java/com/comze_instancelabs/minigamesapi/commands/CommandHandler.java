@@ -866,6 +866,7 @@ public class CommandHandler
             return true;
         }
         sender.sendMessage(ChatColor.GRAY + "This feature is not implemented yet.");
+        if (true) return true; // TODO will be reimplemented in future versions, work is under progress
         if (args.length > 1)
         {
             if (Util.isNumeric(args[1]))
