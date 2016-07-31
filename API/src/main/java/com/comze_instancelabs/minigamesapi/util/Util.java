@@ -18,7 +18,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
@@ -74,7 +76,6 @@ import com.comze_instancelabs.minigamesapi.MinecraftVersionsType;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 import com.comze_instancelabs.minigamesapi.config.ArenasConfig;
-import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 
 public class Util
 {
@@ -119,7 +120,39 @@ public class Util
             p.teleport(l, TeleportCause.PLUGIN);
             p.setFallDistance(-1F);
             p.setVelocity(new Vector(0D, 0D, 0D));
-            l.getWorld().refreshChunk(l.getChunk().getX(), l.getChunk().getZ());
+            
+            final Chunk chunk = l.getChunk();
+            try
+            {
+                final Method getChunkHandle = chunk.getClass().getMethod("getHandle");
+                final Method getPlayerHandle = p.getClass().getMethod("getHandle");
+                final Object handle = getPlayerHandle.invoke(p);
+                final Field playerConnection = handle.getClass().getField("playerConnection");
+                playerConnection.setAccessible(true);
+                final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Packet"));
+                final Class<?> chunkClazz = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Chunk");
+                final Object packet;
+                if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_9_R2))
+                {
+                    final Constructor<?> constr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutMapChunk").getConstructor(chunkClazz, int.class);
+                    packet = constr.newInstance(getChunkHandle.invoke(chunk), 20);
+                }
+                else
+                {
+                    final Constructor<?> constr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutMapChunk").getConstructor(chunkClazz, boolean.class, int.class);
+                    packet = constr.newInstance(getChunkHandle.invoke(chunk), true, 20);
+                }
+                sendPacket.invoke(playerConnection.get(handle), packet);
+                
+                // ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(((CraftChunk)chunk).getHandle(), true, 65535));
+                chunk.unload(true);
+                chunk.load();
+            }
+            catch (Exception ex)
+            {
+                // TODO logging
+                ex.printStackTrace();
+            }
         }
         else
         {
