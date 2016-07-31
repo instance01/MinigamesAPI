@@ -31,6 +31,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
@@ -72,29 +73,60 @@ public class SmartReset implements Runnable
     {
         if (!this.changed.containsKey(b.getLocation()))
         {
+            if (MinigamesAPI.debug)
+            {
+                System.out.println("(1) adding changed block for location " + b.getLocation());
+            }
             final SmartArenaBlock sablock = new SmartArenaBlock(b, b.getType() == Material.CHEST, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
             this.changed.put(b.getLocation(), sablock);
             return sablock;
         }
         return null;
     }
-    
-    public SmartArenaBlock addChanged(final Block b, final boolean c)
+
+    /**
+     * @param b
+     * @param blockReplacedState
+     */
+    public SmartArenaBlock addChanged(Block b, BlockState blockReplacedState)
     {
         if (!this.changed.containsKey(b.getLocation()))
         {
-            final SmartArenaBlock sablock = new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
+            if (MinigamesAPI.debug)
+            {
+                System.out.println("(1.1) adding changed block for location " + b.getLocation());
+            }
+            final SmartArenaBlock sablock = new SmartArenaBlock(blockReplacedState, b.getType() == Material.CHEST, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
             this.changed.put(b.getLocation(), sablock);
             return sablock;
         }
         return null;
     }
     
-    public SmartArenaBlock addChanged(final Block b, final boolean c, final ChangeCause cause)
+    public SmartArenaBlock addChanged(final Block b, final boolean isChest)
     {
         if (!this.changed.containsKey(b.getLocation()))
         {
-            final SmartArenaBlock sablock = new SmartArenaBlock(b, c, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
+            if (MinigamesAPI.debug)
+            {
+                System.out.println("(2) adding changed block for location " + b.getLocation());
+            }
+            final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
+            this.changed.put(b.getLocation(), sablock);
+            return sablock;
+        }
+        return null;
+    }
+    
+    public SmartArenaBlock addChanged(final Block b, final boolean isChest, final ChangeCause cause)
+    {
+        if (!this.changed.containsKey(b.getLocation()))
+        {
+            if (MinigamesAPI.debug)
+            {
+                System.out.println("(3) adding changed block for location " + b.getLocation());
+            }
+            final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
             this.changed.put(b.getLocation(), sablock);
             return sablock;
         }
@@ -106,6 +138,10 @@ public class SmartReset implements Runnable
     {
         if (!this.changed.containsKey(l))
         {
+            if (MinigamesAPI.debug)
+            {
+                System.out.println("(4) adding changed block for location " + l);
+            }
             this.changed.put(l, new SmartArenaBlock(l, Material.AIR, (byte) 0));
         }
     }
@@ -114,6 +150,10 @@ public class SmartReset implements Runnable
     {
         if (!this.changed.containsKey(l))
         {
+            if (MinigamesAPI.debug)
+            {
+                System.out.println("(5) adding changed block for location " + l);
+            }
             this.changed.put(l, new SmartArenaBlock(l, m, data));
         }
     }
@@ -131,11 +171,17 @@ public class SmartReset implements Runnable
             
             try
             {
+                System.out.println("resetting block " + ablock.getBlock().getLocation());
                 this.resetSmartResetBlock(ablock);
                 it.remove();
             }
             catch (final Exception e)
             {
+                if (MinigamesAPI.debug)
+                {
+                    System.out.println("failed block " + ablock.getBlock().getLocation());
+                    e.printStackTrace();
+                }
                 this.failedblocks.add(ablock);
             }
             
@@ -157,6 +203,7 @@ public class SmartReset implements Runnable
             SmartReset.this.changed.clear();
             for (final SmartArenaBlock ablock : SmartReset.this.failedblocks)
             {
+                System.out.println("retrying failed block " + ablock.getBlock().getLocation());
                 final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
                 if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString()))
                 {
@@ -214,36 +261,47 @@ public class SmartReset implements Runnable
         final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
         if (b_.getType() == Material.FURNACE)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back furnace inventory");
             ((Furnace) b_.getState()).getInventory().clear();
             ((Furnace) b_.getState()).update();
         }
         if (b_.getType() == Material.CHEST)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back chest inventory");
             ((Chest) b_.getState()).getBlockInventory().clear();
             ((Chest) b_.getState()).update();
         }
         if (b_.getType() == Material.DISPENSER)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back dispenser inventory");
             ((Dispenser) b_.getState()).getInventory().clear();
             ((Dispenser) b_.getState()).update();
         }
         if (b_.getType() == Material.DROPPER)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back dropper inventory");
             ((Dropper) b_.getState()).getInventory().clear();
             ((Dropper) b_.getState()).update();
         }
         if (b_.getType() == Material.BREWING_STAND)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back brewing stand inventory");
             ((BrewingStand) b_.getState()).getInventory().clear();
             ((BrewingStand) b_.getState()).update();
         }
         if (!b_.getType().equals(ablock.getMaterial()) || b_.getData() != ablock.getData())
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back block material/data to " + ablock.getMaterial() + "/" + ablock.getData());
             b_.setType(ablock.getMaterial());
             b_.setData(ablock.getData());
         }
+        else if (MinigamesAPI.debug)
+        {
+            System.out.println("Skipping block rollback from " + b_.getType() + "/" + b_.getData() + " to " + ablock.getMaterial() + "/" + ablock.getData());
+        }
         if (b_.getType() == Material.CHEST)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back chest");
             if (ablock.isDoubleChest())
             {
                 final DoubleChest dc = ablock.getDoubleChest();
@@ -277,6 +335,7 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.DISPENSER)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back dispenser");
             final Dispenser d = (Dispenser) b_.getState();
             d.getInventory().clear();
             final HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
@@ -296,6 +355,7 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.DROPPER)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back dropper");
             final Dropper d = (Dropper) b_.getState();
             d.getInventory().clear();
             final HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
@@ -314,6 +374,7 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.WALL_SIGN || b_.getType() == Material.SIGN_POST)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back sign");
             final Sign sign = (Sign) b_.getState();
             if (sign != null)
             {
@@ -332,6 +393,7 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.SKULL)
         {
+            if (MinigamesAPI.debug) System.out.println("Rolling back skull");
             b_.setData((byte) 0x1);
             b_.getState().setType(Material.SKULL);
             if (b_.getState() instanceof Skull)
@@ -456,4 +518,5 @@ public class SmartReset implements Runnable
             f.delete();
         }
     }
+    
 }

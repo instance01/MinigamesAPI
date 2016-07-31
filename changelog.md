@@ -25,6 +25,7 @@
 * sub command "spectate" with given player name is now protected by permission "adminspectate"
 * sub command "setskull" deactivated. Will be reimplemented later on (https://github.com/MysticCity/MinigamesAPI/issues/59)
 * NPE fix (https://github.com/MysticCity/MinigamesAPI/issues/57)
+* Fixed disappearing objects (villagers, npc etx.) after teleports (https://github.com/MysticCity/MinigamesAPI/issues/37)
 
 ###### Minigames-API-Bungee
 * removed everything (now part of Minigames-API)
@@ -38,4 +39,5 @@
 ###### BedWars
 * do never remove NPCs on map reset
 * removed maxuses of trades/ set to 999999 because of some bugs (see https://github.com/MysticCity/MinigamesAPI/issues/61)
+* fixed arena reset, now respects all playerblock events
 
