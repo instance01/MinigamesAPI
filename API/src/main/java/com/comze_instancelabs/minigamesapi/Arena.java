@@ -17,6 +17,7 @@ package com.comze_instancelabs.minigamesapi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -1217,11 +1218,9 @@ public class Arena
             }
         }
         
-        for (final Entity e : p.getNearbyEntities(50D, 50D, 50D))
+        for (final Entity e : this.getResetEntitiesOnPlayerLeave(playername))
         {
-            if (e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER
-                    || e.getType() == EntityType.CREEPER || e.getType() == EntityType.VILLAGER || e.getType() == EntityType.ARMOR_STAND || e.getType() == EntityType.PIG_ZOMBIE
-                    || e.getType() == EntityType.ARMOR_STAND || e.getType() == EntityType.BOAT || e.getType() == EntityType.HORSE || e.getType() == EntityType.ARROW)
+            if (this.isEntityResetOnPlayerLeave(playername, e))
             {
                 e.remove();
             }
@@ -1826,6 +1825,50 @@ public class Arena
     }
     
     /**
+     * Returns the possible entites to be removed for reset
+     * @param player
+     * @return entites
+     */
+    protected List<Entity> getResetEntitiesOnPlayerLeave(String player)
+    {
+        return this.getResetEntities(player);
+    }
+    
+    /**
+     * Checks if given entity is removed for resetting the map
+     * @param player
+     * @param e
+     * @return {@code true} for removing the entity
+     */
+    protected boolean isEntityResetOnPlayerLeave(String player, Entity e)
+    {
+        return this.isEntityReset(player, e);
+    }
+    
+    /**
+     * Returns the possible entites to be removed for reset
+     * @param player
+     * @return entites
+     */
+    protected List<Entity> getResetEntities(String player)
+    {
+        return Bukkit.getPlayer(player).getNearbyEntities(50, 50, 50);
+    }
+    
+    /**
+     * Checks if given entity is removed for resetting the map
+     * @param player
+     * @param e
+     * @return {@code true} for removing the entity
+     */
+    protected boolean isEntityReset(String player, Entity e)
+    {
+        return e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.ENDERMAN || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE
+                || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER || e.getType() == EntityType.VILLAGER
+                || e.getType() == EntityType.ARMOR_STAND || e.getType() == EntityType.ARROW;
+    }
+    
+    /**
      * Stops the arena and teleports all players to the mainlobby
      */
     protected void stop()
@@ -1880,9 +1923,7 @@ public class Arena
                     {
                         for (final Entity e : Bukkit.getPlayer(p_).getNearbyEntities(50, 50, 50))
                         {
-                            if (e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.ENDERMAN || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE
-                                    || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER || e.getType() == EntityType.VILLAGER
-                                    || e.getType() == EntityType.ARMOR_STAND || e.getType() == EntityType.ARROW)
+                            if (this.isEntityReset(p_, e))
                             {
                                 e.remove();
                             }

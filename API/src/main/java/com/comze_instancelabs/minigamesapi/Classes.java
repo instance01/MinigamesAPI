@@ -316,9 +316,14 @@ public class Classes
         }
         if (continue_)
         {
-            this.pli.setPClass(player, this.getClassByInternalname(internalname));
-            Bukkit.getPlayer(player)
-                    .sendMessage(this.pli.getMessagesConfig().set_kit.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', this.getClassByInternalname(internalname).getName())));
+            final AClass classByInternalname = this.getClassByInternalname(internalname);
+            this.pli.setPClass(player, classByInternalname);
+            if (classByInternalname != null)
+            {
+                final String set_kit_msg = this.pli.getMessagesConfig().set_kit;
+                Bukkit.getPlayer(player)
+                    .sendMessage(set_kit_msg.replaceAll("<kit>", ChatColor.translateAlternateColorCodes('&', classByInternalname.getName())));
+            }
         }
     }
     
