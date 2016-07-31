@@ -76,6 +76,7 @@ public interface CommandStrings
     /**
      * Command action: &quot;/minigame &lt;save&gt; ...
      */
+    @Deprecated
     String GAME_SAVE = "save"; //$NON-NLS-1$
     
     /**
@@ -96,6 +97,7 @@ public interface CommandStrings
     /**
      * Command action: &quot;/minigame &lt;setvip&gt; ...
      */
+    @Deprecated
     String GAME_SET_VIP = "setvip"; //$NON-NLS-1$
     
     /**
@@ -191,6 +193,7 @@ public interface CommandStrings
     /**
      * Command action: &quot;/minigame &lt;top&gt; ...
      */
+    @Deprecated
     String GAME_TOP = "top"; //$NON-NLS-1$
     
     /**

@@ -208,19 +208,12 @@ public class CommandHandler
                 sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Arenas" + ChatColor.DARK_GRAY + " -------");
                 for (final Arena a : pli.getArenas())
                 {
-                    if (args.length > 1)
-                    {
-                        sender.sendMessage(ChatColor.GREEN + a.getInternalName() + "[" + a.getClass().getSimpleName().toString() + "]");
-                    }
-                    else
-                    {
-                        sender.sendMessage(ChatColor.GREEN + a.getInternalName());
-                    }
+                    sender.sendMessage(ChatColor.GREEN + a.getInternalName());
                 }
             }
             else if (action.equalsIgnoreCase(CommandStrings.GAME_RELOAD))
             {
-                if (!sender.hasPermission(uber_permission + ".setup"))
+                if (!sender.hasPermission(uber_permission + ".reload"))
                 {
                     sender.sendMessage(pli.getMessagesConfig().no_perm);
                     return true;
@@ -647,6 +640,11 @@ public class CommandHandler
             String playername = p.getName();
             if (args.length > 2)
             {
+                if (!sender.hasPermission(uber_permission + ".adminjoin"))
+                {
+                    sender.sendMessage(pli.getMessagesConfig().no_perm);
+                    return true;
+                }
                 if (Validator.isPlayerOnline(args[2]))
                 {
                     playername = args[2];
@@ -1046,11 +1044,17 @@ public class CommandHandler
     public boolean spectate(final PluginInstance pli, final CommandSender sender, final String[] args, final String uber_permission, final String cmd, final String action, final JavaPlugin plugin,
             final Player p)
     {
+        // TODO args > 1 and else leave current player arena
         if (args.length > 0)
         {
             String playername = p.getName();
             if (args.length > 2)
             {
+                if (!sender.hasPermission(uber_permission + ".adminspectate"))
+                {
+                    sender.sendMessage(pli.getMessagesConfig().no_perm);
+                    return true;
+                }
                 if (Validator.isPlayerOnline(args[2]))
                 {
                     playername = args[2];
@@ -1078,6 +1082,7 @@ public class CommandHandler
                         sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
                     }
                 }
+                // TODO else error
             }
             else
             {
@@ -1099,6 +1104,11 @@ public class CommandHandler
             }
             if (args.length > 2)
             {
+                if (!sender.hasPermission(uber_permission + ".adminkit"))
+                {
+                    sender.sendMessage(pli.getMessagesConfig().no_perm);
+                    return true;
+                }
                 p = Bukkit.getPlayer(args[2]);
                 if (p == null)
                 {

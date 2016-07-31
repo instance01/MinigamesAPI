@@ -19,6 +19,10 @@
 * Upgraded dependencies to vault and crackshot
 * Fix for some race conditions while stopping arena
 * Fixed some UTF-8 encoding
+* sub command "join" with given player name now is protected by permission "adminjoin"
+* sub command "reload" is now protected by permission "reload"
+* sub command "setkit" with given player name is now protected by permission "adminkit"
+* sub command "spectate" with given player name is now protected by permission "adminspectate"
 
 ###### Minigames-API-Bungee
 * removed everything (now part of Minigames-API)
