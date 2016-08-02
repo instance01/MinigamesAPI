@@ -1341,6 +1341,8 @@ public class ArenaListener implements Listener
                 event.setCancelled(true);
                 return;
             }
+            // TODO Is this clever? We should add every block change to smart reset.
+            // currently BedWars has its own onBlockPlace
             if (event.getBlockReplacedState().getType() != Material.AIR)
             {
                 a.getSmartReset().addChanged(event.getBlock().getLocation(), event.getBlockReplacedState().getType(), event.getBlockReplacedState().getData().getData());
