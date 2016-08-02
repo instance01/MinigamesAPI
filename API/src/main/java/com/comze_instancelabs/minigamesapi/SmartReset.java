@@ -24,7 +24,9 @@ import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -56,106 +58,159 @@ import com.comze_instancelabs.minigamesapi.util.Util;
 public class SmartReset implements Runnable
 {
     
-    // will only reset broken/placed blocks
+    /** the changed blocks. */
+    private final SmartBlockMap              changed      = new SmartBlockMap();
     
-    HashMap<Location, SmartArenaBlock>       changed      = new HashMap<>();
+    /** the underlying arena. */
+    private Arena                            a;
     
-    Arena                                    a;
+    /** the blocks that failed while resetting. */
     private final ArrayList<SmartArenaBlock> failedblocks = new ArrayList<>();
-    long                                     time         = 0L;
     
+    /** time for reset progress. */
+    private long                             time         = 0L;
+    
+    /**
+     * Constructor.
+     * 
+     * @param a
+     *            arena owner of this smart reset.
+     */
     public SmartReset(final Arena a)
     {
         this.a = a;
     }
     
+    /**
+     * Adds changed block.
+     * 
+     * @param b
+     *            block to be added
+     * @return the smart arena block or {@code null} if the block already was added before
+     */
     public SmartArenaBlock addChanged(final Block b)
     {
-        if (!this.changed.containsKey(b.getLocation()))
+        if (!this.changed.hasBlock(b.getLocation()))
         {
             if (MinigamesAPI.debug)
             {
                 System.out.println("(1) adding changed block for location " + b.getLocation());
             }
             final SmartArenaBlock sablock = new SmartArenaBlock(b, b.getType() == Material.CHEST, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
-            this.changed.put(b.getLocation(), sablock);
-            return sablock;
-        }
-        return null;
-    }
-
-    /**
-     * @param b
-     * @param blockReplacedState
-     */
-    public SmartArenaBlock addChanged(Block b, BlockState blockReplacedState)
-    {
-        if (!this.changed.containsKey(b.getLocation()))
-        {
-            if (MinigamesAPI.debug)
-            {
-                System.out.println("(1.1) adding changed block for location " + b.getLocation());
-            }
-            final SmartArenaBlock sablock = new SmartArenaBlock(blockReplacedState, b.getType() == Material.CHEST, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
-            this.changed.put(b.getLocation(), sablock);
+            this.changed.putBlock(b.getLocation(), sablock);
             return sablock;
         }
         return null;
     }
     
+    /**
+     * Adds changed block.
+     * 
+     * @param b
+     *            block to be added
+     * @param blockReplacedState
+     *            state of the block
+     * @return the smart arena block or {@code null} if the block already was added before
+     */
+    public SmartArenaBlock addChanged(Block b, BlockState blockReplacedState)
+    {
+        return this.addChanged(b.getLocation(), blockReplacedState.getType(), blockReplacedState.getData().getData());
+    }
+    
+    /**
+     * Adds changed block.
+     * 
+     * @param b
+     *            block to be added
+     * @param isChest
+     *            true if block is a chest
+     * @return the smart arena block or {@code null} if the block already was added before
+     */
     public SmartArenaBlock addChanged(final Block b, final boolean isChest)
     {
-        if (!this.changed.containsKey(b.getLocation()))
+        if (!this.changed.hasBlock(b.getLocation()))
         {
             if (MinigamesAPI.debug)
             {
                 System.out.println("(2) adding changed block for location " + b.getLocation());
             }
             final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
-            this.changed.put(b.getLocation(), sablock);
+            this.changed.putBlock(b.getLocation(), sablock);
             return sablock;
         }
         return null;
     }
     
+    /**
+     * Adds changed block.
+     * 
+     * @param b
+     *            block to be added
+     * @param isChest
+     *            true if block is a chest
+     * @param cause
+     *            the cause for adding the change (currently ignore)
+     * @return the smart arena block or {@code null} if the block already was added before
+     */
     public SmartArenaBlock addChanged(final Block b, final boolean isChest, final ChangeCause cause)
     {
-        if (!this.changed.containsKey(b.getLocation()))
+        if (!this.changed.hasBlock(b.getLocation()))
         {
             if (MinigamesAPI.debug)
             {
                 System.out.println("(3) adding changed block for location " + b.getLocation());
             }
             final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
-            this.changed.put(b.getLocation(), sablock);
+            this.changed.putBlock(b.getLocation(), sablock);
             return sablock;
         }
         return null;
     }
     
+    /**
+     * Adds changed block
+     * 
+     * @param l
+     *            location of the block
+     * @deprecated will be removed in future versions.
+     */
     @Deprecated
     public void addChanged(final Location l)
     {
-        if (!this.changed.containsKey(l))
+        if (!this.changed.hasBlock(l))
         {
             if (MinigamesAPI.debug)
             {
                 System.out.println("(4) adding changed block for location " + l);
             }
-            this.changed.put(l, new SmartArenaBlock(l, Material.AIR, (byte) 0));
+            this.changed.putBlock(l, new SmartArenaBlock(l, Material.AIR, (byte) 0));
         }
     }
     
-    public void addChanged(final Location l, final Material m, final byte data)
+    /**
+     * Adds changed block
+     * 
+     * @param l
+     *            location of the block.
+     * @param m
+     *            original material.
+     * @param data
+     *            original data value.
+     * @return the smart arena block or {@code null} if the block already was added before
+     */
+    public SmartArenaBlock addChanged(final Location l, final Material m, final byte data)
     {
-        if (!this.changed.containsKey(l))
+        if (!this.changed.hasBlock(l))
         {
             if (MinigamesAPI.debug)
             {
                 System.out.println("(5) adding changed block for location " + l);
             }
-            this.changed.put(l, new SmartArenaBlock(l, m, data));
+            final SmartArenaBlock sab = new SmartArenaBlock(l, m, data);
+            this.changed.putBlock(l, sab);
+            return sab;
         }
+        return null;
     }
     
     @Override
@@ -164,10 +219,10 @@ public class SmartReset implements Runnable
         int rolledBack = 0;
         
         // Rollback 70 blocks at a time
-        final Iterator<Entry<Location, SmartArenaBlock>> it = this.changed.entrySet().iterator();
+        final Iterator<SmartArenaBlock> it = this.changed.getBlocks().iterator();
         while (it.hasNext() && rolledBack <= 70)
         {
-            final SmartArenaBlock ablock = it.next().getValue();
+            final SmartArenaBlock ablock = it.next();
             
             try
             {
@@ -238,7 +293,7 @@ public class SmartReset implements Runnable
      */
     public void resetRaw()
     {
-        for (final SmartArenaBlock ablock : this.changed.values())
+        for (final SmartArenaBlock ablock : this.changed.getBlocks())
         {
             try
             {
@@ -261,37 +316,43 @@ public class SmartReset implements Runnable
         final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
         if (b_.getType() == Material.FURNACE)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back furnace inventory");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back furnace inventory");
             ((Furnace) b_.getState()).getInventory().clear();
             ((Furnace) b_.getState()).update();
         }
         if (b_.getType() == Material.CHEST)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back chest inventory");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back chest inventory");
             ((Chest) b_.getState()).getBlockInventory().clear();
             ((Chest) b_.getState()).update();
         }
         if (b_.getType() == Material.DISPENSER)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back dispenser inventory");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back dispenser inventory");
             ((Dispenser) b_.getState()).getInventory().clear();
             ((Dispenser) b_.getState()).update();
         }
         if (b_.getType() == Material.DROPPER)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back dropper inventory");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back dropper inventory");
             ((Dropper) b_.getState()).getInventory().clear();
             ((Dropper) b_.getState()).update();
         }
         if (b_.getType() == Material.BREWING_STAND)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back brewing stand inventory");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back brewing stand inventory");
             ((BrewingStand) b_.getState()).getInventory().clear();
             ((BrewingStand) b_.getState()).update();
         }
         if (!b_.getType().equals(ablock.getMaterial()) || b_.getData() != ablock.getData())
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back block material/data to " + ablock.getMaterial() + "/" + ablock.getData());
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back block material/data to " + ablock.getMaterial() + "/" + ablock.getData());
             b_.setType(ablock.getMaterial());
             b_.setData(ablock.getData());
         }
@@ -301,7 +362,8 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.CHEST)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back chest");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back chest");
             if (ablock.isDoubleChest())
             {
                 final DoubleChest dc = ablock.getDoubleChest();
@@ -335,7 +397,8 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.DISPENSER)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back dispenser");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back dispenser");
             final Dispenser d = (Dispenser) b_.getState();
             d.getInventory().clear();
             final HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
@@ -355,7 +418,8 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.DROPPER)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back dropper");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back dropper");
             final Dropper d = (Dropper) b_.getState();
             d.getInventory().clear();
             final HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
@@ -374,7 +438,8 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.WALL_SIGN || b_.getType() == Material.SIGN_POST)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back sign");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back sign");
             final Sign sign = (Sign) b_.getState();
             if (sign != null)
             {
@@ -393,7 +458,8 @@ public class SmartReset implements Runnable
         }
         if (b_.getType() == Material.SKULL)
         {
-            if (MinigamesAPI.debug) System.out.println("Rolling back skull");
+            if (MinigamesAPI.debug)
+                System.out.println("Rolling back skull");
             b_.setData((byte) 0x1);
             b_.getState().setType(Material.SKULL);
             if (b_.getState() instanceof Skull)
@@ -423,7 +489,7 @@ public class SmartReset implements Runnable
             e.printStackTrace();
         }
         
-        for (final SmartArenaBlock bl : this.changed.values())
+        for (final SmartArenaBlock bl : this.changed.getBlocks())
         {
             try
             {
@@ -517,6 +583,96 @@ public class SmartReset implements Runnable
         {
             f.delete();
         }
+    }
+    
+    /**
+     * A map holding smart reset blocks per Y coordinate (level).
+     */
+    private static final class SmartBlockMap extends TreeMap<Integer, Map<Location, SmartArenaBlock>>
+    {
+        
+        /**
+         * serial version uid.
+         */
+        private static final long serialVersionUID = 8336943154139693760L;
+
+        /**
+         * Puts a block into map.
+         * 
+         * @param l
+         *            location
+         * @param block
+         *            smart reset block
+         */
+        public void putBlock(Location l, SmartArenaBlock block)
+        {
+            this.computeIfAbsent(l.getBlockY(), (key) -> new HashMap<>()).put(l, block);
+        }
+        
+        /**
+         * Checks if given location is already present within map.
+         * 
+         * @param l
+         *            location to check
+         * @return {@code true} if location is known
+         */
+        public boolean hasBlock(Location l)
+        {
+            final Map<Location, SmartArenaBlock> map = this.get(l.getBlockZ());
+            if (map != null)
+            {
+                return map.containsKey(l);
+            }
+            return false;
+        }
+        
+        /**
+         * Returns an iterable over all blocks within this map.
+         * 
+         * @return iterable over all blocks.
+         */
+        public Iterable<SmartArenaBlock> getBlocks()
+        {
+            return new Iterable<SmartArenaBlock>() {
+                
+                @Override
+                public Iterator<SmartArenaBlock> iterator()
+                {
+                    final Iterator<Map<Location, SmartArenaBlock>> iter = SmartBlockMap.this.values().iterator();
+                    return new Iterator<SmartArenaBlock>() {
+                        private Iterator<SmartArenaBlock> iter2 = null;
+                        
+                        @Override
+                        public boolean hasNext()
+                        {
+                            return (this.iter2 != null && this.iter2.hasNext()) || iter.hasNext();
+                        }
+                        
+                        @Override
+                        public SmartArenaBlock next()
+                        {
+                            if (this.iter2 == null || !this.iter2.hasNext())
+                            {
+                                this.iter2 = iter.next().values().iterator();
+                            }
+                            return this.iter2.next();
+                        }
+                        
+                        @Override
+                        public void remove()
+                        {
+                            if (this.iter2 == null)
+                            {
+                                throw new IllegalStateException("next not called"); //$NON-NLS-1$
+                            }
+                            this.iter2.remove();
+                        }
+                    };
+                }
+                
+            };
+        }
+        
     }
     
 }
