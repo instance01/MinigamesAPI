@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
@@ -102,7 +102,22 @@ public class SmartReset implements Runnable
         }
         return null;
     }
-    
+
+    /**
+     * Adds changed blocks
+     * @param loc
+     */
+    public void addChanged(Block[] loc)
+    {
+        if (loc != null)
+        {
+            for (final Block b : loc)
+            {
+                this.addChanged(b);
+            }
+        }
+    }
+
     /**
      * Adds changed block.
      * 
@@ -618,7 +633,7 @@ public class SmartReset implements Runnable
          */
         public boolean hasBlock(Location l)
         {
-            final Map<Location, SmartArenaBlock> map = this.get(l.getBlockZ());
+            final Map<Location, SmartArenaBlock> map = this.get(l.getBlockY());
             if (map != null)
             {
                 return map.containsKey(l);
@@ -638,40 +653,102 @@ public class SmartReset implements Runnable
                 @Override
                 public Iterator<SmartArenaBlock> iterator()
                 {
-                    final Iterator<Map<Location, SmartArenaBlock>> iter = SmartBlockMap.this.values().iterator();
-                    return new Iterator<SmartArenaBlock>() {
-                        private Iterator<SmartArenaBlock> iter2 = null;
-                        
-                        @Override
-                        public boolean hasNext()
-                        {
-                            return (this.iter2 != null && this.iter2.hasNext()) || iter.hasNext();
-                        }
-                        
-                        @Override
-                        public SmartArenaBlock next()
-                        {
-                            if (this.iter2 == null || !this.iter2.hasNext())
-                            {
-                                this.iter2 = iter.next().values().iterator();
-                            }
-                            return this.iter2.next();
-                        }
-                        
-                        @Override
-                        public void remove()
-                        {
-                            if (this.iter2 == null)
-                            {
-                                throw new IllegalStateException("next not called"); //$NON-NLS-1$
-                            }
-                            this.iter2.remove();
-                        }
-                    };
+                    return new NestedIterator<>(SmartBlockMap.this.values().iterator());
                 }
-                
             };
         }
+        
+    }
+    
+    /**
+     * Helper class for nesting iterators.
+     * @author mepeisen
+     *
+     * @param <K>
+     * @param <T>
+     */
+    public static final class NestedIterator<K, T> implements Iterator<T>
+    {
+        
+        /** outer iterator. */
+        private Iterator<Map<K, T>> outer = null;
+        
+        /** inner iterator. */
+        private Iterator<T> inner = null;
+        
+        /** prev iterator for remove. */
+        private Iterator<T> prev = null;
+        
+        /**
+         * Constructor.
+         * @param iter
+         */
+        public NestedIterator(Iterator<Map<K, T>> iter)
+        {
+            this.outer = iter;
+            moveNext();
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            // inner iterator existing and has an element?
+            if (this.inner != null)
+            {
+                return this.inner.hasNext();
+            }
+            
+            // no more elements
+            return false;
+        }
+
+        @Override
+        public T next()
+        {
+            if (this.inner == null)
+            {
+                throw new NoSuchElementException();
+            }
+            final T result = this.inner.next();
+            this.prev = this.inner;
+            if (!this.inner.hasNext())
+            {
+                this.inner = null;
+                moveNext();
+            }
+            return result;
+        }
+
+        /**
+         * Moves to next element
+         */
+        private void moveNext()
+        {
+            while (this.inner == null)
+            {
+                if (!this.outer.hasNext())
+                {
+                    // no elements found
+                    break;
+                }
+                this.inner = this.outer.next().values().iterator();
+                if (!this.inner.hasNext())
+                {
+                    this.inner = null;
+                }
+            }
+        }
+
+        @Override
+        public void remove()
+        {
+            if (this.prev == null)
+            {
+                throw new IllegalStateException("no next called"); //$NON-NLS-1$
+            }
+            this.prev.remove();
+        }
+
         
     }
     
