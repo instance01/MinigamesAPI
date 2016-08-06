@@ -43,4 +43,9 @@ public interface PluginConfigStrings
      */
     String AUTO_UPDATING = "config.auto_updating"; //$NON-NLS-1$
     
+    /**
+     * flag for controlling metrics.
+     */
+    String POST_METRICS = "config.post_metrics"; //$NON-NLS-1$
+    
 }

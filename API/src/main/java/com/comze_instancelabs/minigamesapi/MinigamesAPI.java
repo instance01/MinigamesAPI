@@ -200,6 +200,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         
         this.getConfig().options().header("Want bugfree versions? Set this to true for automatic updates:"); //$NON-NLS-1$
         this.getConfig().addDefault(PluginConfigStrings.AUTO_UPDATING, true);
+        this.getConfig().addDefault(PluginConfigStrings.POST_METRICS, true);
         this.getConfig().addDefault(PluginConfigStrings.SIGNS_UPDATE_TIME, 20);
         this.getConfig().addDefault(PluginConfigStrings.PARTY_COMMAND_ENABLED, true);
         this.getConfig().addDefault(PluginConfigStrings.DEBUG, false);
@@ -220,34 +221,37 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         
         MinigamesAPI.debug = this.getConfig().getBoolean(PluginConfigStrings.DEBUG);
         
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            try
-            {
-                MinigamesAPI.this.metrics = new Metrics(MinigamesAPI.instance);
-                
-                final Graph components = MinigamesAPI.this.metrics.createGraph("Minigames"); //$NON-NLS-1$
-                for (final PluginInstance pli : MinigamesAPI.pinstances.values())
+        if (this.getConfig().getBoolean(PluginConfigStrings.POST_METRICS, true))
+        {
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                try
                 {
-                    components.addPlotter(new Metrics.Plotter(pli.getPlugin().getName()) {
-                        @Override
-                        public int getValue()
-                        {
-                            return 1;
-                        }
-                    });
-                    if (MinigamesAPI.debug)
+                    MinigamesAPI.this.metrics = new Metrics(MinigamesAPI.instance);
+                    
+                    final Graph components = MinigamesAPI.this.metrics.createGraph("Minigames"); //$NON-NLS-1$
+                    for (final PluginInstance pli : MinigamesAPI.pinstances.values())
                     {
-                        this.getLogger().fine("Loaded Graph for: " + pli.getPlugin().getName()); //$NON-NLS-1$
+                        components.addPlotter(new Metrics.Plotter(pli.getPlugin().getName()) {
+                            @Override
+                            public int getValue()
+                            {
+                                return 1;
+                            }
+                        });
+                        if (MinigamesAPI.debug)
+                        {
+                            this.getLogger().fine("Loaded Graph for: " + pli.getPlugin().getName()); //$NON-NLS-1$
+                        }
                     }
+                    
+                    MinigamesAPI.this.metrics.start();
                 }
-                
-                MinigamesAPI.this.metrics.start();
-            }
-            catch (final IOException e)
-            {
-                this.getLogger().log(Level.WARNING, "Exception while updating metrics", e); //$NON-NLS-1$
-            }
-        }, 60L);
+                catch (final IOException e)
+                {
+                    this.getLogger().log(Level.WARNING, "Exception while updating metrics", e); //$NON-NLS-1$
+                }
+            }, 60L);
+        }
         
         if (this.getConfig().getBoolean(PluginConfigStrings.AUTO_UPDATING))
         {
