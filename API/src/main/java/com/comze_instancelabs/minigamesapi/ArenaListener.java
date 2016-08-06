@@ -45,6 +45,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -151,7 +152,7 @@ public class ArenaListener implements Listener
     // *************************
     
     /**
-     * Player explode event.
+     * entity explode event.
      * 
      * <p>
      * Registers the block changes for smart resets.
@@ -180,6 +181,40 @@ public class ArenaListener implements Listener
                             {
                                 a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * block explode event.
+     * 
+     * <p>
+     * Registers the block changes for smart resets.
+     * At the end of the game the blocks will reset to original state.
+     * Only available by REGENERATION arena types and for blocks within the arena boundaries.
+     * </p>
+     * 
+     * @param event
+     *            event object
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onExplode2(final BlockExplodeEvent event)
+    {
+        for (final Arena a : this.pli.getArenas())
+        {
+            if (a.getArenaType() == ArenaType.REGENERATION)
+            {
+                final Cuboid c = a.getBoundaries();
+                if (c != null)
+                {
+                    for (final Block b : event.blockList())
+                    {
+                        if (c.containsLocWithoutY(b.getLocation()))
+                        {
+                            a.getSmartReset().addChanged(b, b.getType().equals(Material.CHEST));
                         }
                     }
                 }
