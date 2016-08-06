@@ -27,6 +27,7 @@
 * NPE fix (https://github.com/MysticCity/MinigamesAPI/issues/57)
 * Fixed disappearing objects (villagers, npc etx.) after teleports (https://github.com/MysticCity/MinigamesAPI/issues/37)
 * New updater using a nexus query script (https://github.com/MysticCity/MinigamesAPI/issues/23), NOTICE: It does currently only query newer versions with WARNING log level. It does not yet update automatically.
+* added config option to disable metrics updates (https://github.com/MysticCity/MinigamesAPI/issues/10)
 
 ###### Minigames-API-Bungee
 * removed everything (now part of Minigames-API)
