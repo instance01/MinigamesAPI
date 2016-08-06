@@ -92,7 +92,7 @@ public class SmartReset implements Runnable
     {
         if (!this.changed.hasBlock(b.getLocation()))
         {
-            if (MinigamesAPI.debug && b.getLocation().getBlockY() == 12)
+            if (MinigamesAPI.debug)
             {
                 System.out.println("(1) adding changed block for location " + b.getLocation());
             }
