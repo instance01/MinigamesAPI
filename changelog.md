@@ -43,3 +43,6 @@
 * removed maxuses of trades/ set to 999999 because of some bugs (see https://github.com/MysticCity/MinigamesAPI/issues/61)
 * fixed arena reset, now respects all playerblock events
 
+###### Jumper
+* disabled the jumper scoreboard
+
