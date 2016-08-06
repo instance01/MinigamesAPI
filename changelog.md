@@ -50,3 +50,5 @@
 ###### Jumper
 * disabled the jumper scoreboard
 
+###### Conquer
+* Command "setcheckpoint" is now protected by permission "setup"
