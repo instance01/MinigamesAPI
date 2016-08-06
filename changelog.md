@@ -45,6 +45,7 @@
 
 ###### MobEscape
 * fixed arena reset, now resetting lower Y levels first (https://github.com/MysticCity/MinigamesAPI/issues/68)
+* added jumpFactor configuration value, see wiki for details.
 
 ###### Jumper
 * disabled the jumper scoreboard
