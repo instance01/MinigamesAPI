@@ -22,61 +22,67 @@ package com.comze_instancelabs.minigamesapi;
 public enum MinecraftVersionsType
 {
     /** an unknown version/ not supported. */
-    Unknown(false),
+    Unknown(false, "invalid"), //$NON-NLS-1$
     
     /** any 1.7 version. */
-    V1_7(true),
+    V1_7(true, "v1_7_R1"), //$NON-NLS-1$
     
     /** V1.7 R1 */
-    V1_7_R1(true),
+    V1_7_R1(true, "v1_7_R1"), //$NON-NLS-1$
     
     /** V1.7 R2 */
-    V1_7_R2(true),
+    V1_7_R2(true, "v1_7_R2"), //$NON-NLS-1$
     
     /** V1.7 R3 */
-    V1_7_R3(true),
+    V1_7_R3(true, "v1_7_R3"), //$NON-NLS-1$
     
     /** V1.7 R4 */
-    V1_7_R4(true),
+    V1_7_R4(true, "v1_7_R4"), //$NON-NLS-1$
     
     /** any 1.8 version. */
-    V1_8(true),
+    V1_8(true, "v1_8_R1"), //$NON-NLS-1$
     
     /** V1.8 R1 */
-    V1_8_R1(true),
+    V1_8_R1(true, "v1_8_R1"), //$NON-NLS-1$
     
     /** V1.8 R2 */
-    V1_8_R2(true),
+    V1_8_R2(true, "v1_8_R2"), //$NON-NLS-1$
     
     /** any 1.9 version. */
-    V1_9(true),
+    V1_9(true, "v1_9_R1"), //$NON-NLS-1$
     
     /** V1.9 R1 */
-    V1_9_R1(true),
+    V1_9_R1(true, "v1_9_R1"), //$NON-NLS-1$
     
     /** V1.9 R2 */
-    V1_9_R2(true),
+    V1_9_R2(true, "v1_9_R2"), //$NON-NLS-1$
     
     /** any 1.10 version. */
-    V1_10(true),
+    V1_10(true, "v1_10_R1"), //$NON-NLS-1$
     
     /** V1.10 R1 */
-    V1_10_R1(true);
+    V1_10_R1(true, "v1_10_R1"); //$NON-NLS-1$
     
     /**
      * {@code true} if this version is still supported.
      */
     private final boolean isSupported;
     
+    /** the maven version string for update requests. */
+    private final String  mavenVersion;
+    
     /**
      * Constructor to create a version.
      * 
      * @param supported
      *            true for support.
+     * @param mavenVersion
+     *            the maven version string for update queries.
      */
-    private MinecraftVersionsType(final boolean supported)
+    private MinecraftVersionsType(final boolean supported, final String mavenVersion)
     {
         this.isSupported = supported;
+        this.mavenVersion = mavenVersion;
     }
     
     /**
@@ -112,7 +118,7 @@ public enum MinecraftVersionsType
                 return type == V1_8 || type == V1_8_R1 || type == V1_8_R2;
             case V1_9:
                 return type == V1_9 || type == V1_9_R1 || type == V1_9_R2;
-                //$CASES-OMITTED$
+            // $CASES-OMITTED$
             default:
                 switch (type)
                 {
@@ -124,7 +130,7 @@ public enum MinecraftVersionsType
                         return this == V1_8 || this == V1_8_R1 || this == V1_8_R2;
                     case V1_9:
                         return this == V1_9 || this == V1_9_R1 || this == V1_9_R2;
-                        //$CASES-OMITTED$
+                    // $CASES-OMITTED$
                     default:
                         return type == this;
                 }
@@ -192,6 +198,16 @@ public enum MinecraftVersionsType
             return true;
         }
         return this.ordinal() > type.ordinal();
+    }
+    
+    /**
+     * Returns the maven version string for update queries.
+     * 
+     * @return maven version string.
+     */
+    public String mavenVersionString()
+    {
+        return this.mavenVersion;
     }
     
 }

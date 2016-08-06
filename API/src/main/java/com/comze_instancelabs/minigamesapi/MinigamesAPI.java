@@ -60,7 +60,8 @@ import com.comze_instancelabs.minigamesapi.util.Metrics;
 import com.comze_instancelabs.minigamesapi.util.Metrics.Graph;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Signs;
-import com.comze_instancelabs.minigamesapi.util.Updater;
+import com.comze_instancelabs.minigamesapi.util.UpdaterBukkit;
+import com.comze_instancelabs.minigamesapi.util.UpdaterNexus;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -198,7 +199,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         }
         
         this.getConfig().options().header("Want bugfree versions? Set this to true for automatic updates:"); //$NON-NLS-1$
-        this.getConfig().addDefault(PluginConfigStrings.AUTO_UPDATING, false);
+        this.getConfig().addDefault(PluginConfigStrings.AUTO_UPDATING, true);
         this.getConfig().addDefault(PluginConfigStrings.SIGNS_UPDATE_TIME, 20);
         this.getConfig().addDefault(PluginConfigStrings.PARTY_COMMAND_ENABLED, true);
         this.getConfig().addDefault(PluginConfigStrings.DEBUG, false);
@@ -250,7 +251,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         
         if (this.getConfig().getBoolean(PluginConfigStrings.AUTO_UPDATING))
         {
-            new Updater(this, 83025, this.getFile(), Updater.UpdateType.DEFAULT, false);
+            // new UpdaterBukkit(this, 83025, this.getFile(), UpdaterBukkit.UpdateType.DEFAULT, false);
+            new UpdaterNexus(this, this.getFile());
         }
         
         if (this.getServer().getPluginManager().getPlugin("CrackShot") != null) //$NON-NLS-1$
