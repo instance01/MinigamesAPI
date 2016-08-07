@@ -52,3 +52,6 @@
 
 ###### Conquer
 * Command "setcheckpoint" is now protected by permission "setup"
+
+###### FlyingCars
+* NPW fix while leaving minecart
