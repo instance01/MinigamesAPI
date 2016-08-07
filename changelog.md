@@ -54,4 +54,8 @@
 * Command "setcheckpoint" is now protected by permission "setup"
 
 ###### FlyingCars
-* NPW fix while leaving minecart
+* NPE fix while leaving minecart
+
+###### Sudoku
+* Sudoku join sign now uses "sudoku.sign" permission instead of "horseracingplus.sign" permission.
+* Fixed join sign
