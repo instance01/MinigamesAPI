@@ -42,6 +42,7 @@
 * do never remove NPCs on map reset
 * removed maxuses of trades/ set to 999999 because of some bugs (see https://github.com/MysticCity/MinigamesAPI/issues/61)
 * fixed arena reset, now respects all playerblock events
+* removed experience on trade (https://github.com/MysticCity/MinigamesAPI/issues/66)
 
 ###### MobEscape
 * fixed arena reset, now resetting lower Y levels first (https://github.com/MysticCity/MinigamesAPI/issues/68)
