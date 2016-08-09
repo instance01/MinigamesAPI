@@ -22,6 +22,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+
 public class ClassesConfig
 {
     
@@ -43,7 +45,7 @@ public class ClassesConfig
             this.getConfig().addDefault("config.kits.default.requires_money", false);
             this.getConfig().addDefault("config.kits.default.requires_permission", false);
             this.getConfig().addDefault("config.kits.default.money_amount", 100);
-            this.getConfig().addDefault("config.kits.default.permission_node", "minigames.kits.default");
+            this.getConfig().addDefault("config.kits.default.permission_node", MinigamesAPI.getAPI().getPermissionKitPrefix() + ".default");
         }
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();

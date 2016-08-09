@@ -22,6 +22,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+
 public class GunsConfig
 {
     
@@ -45,7 +47,7 @@ public class GunsConfig
             this.getConfig().addDefault("config.guns.pistol.durability", 50);
             this.getConfig().addDefault("config.guns.pistol.shoot_amount", 1);
             this.getConfig().addDefault("config.guns.pistol.knockback_multiplier", 1.1D);
-            this.getConfig().addDefault("config.guns.pistol.permission_node", "minigames.guns.pistol");
+            this.getConfig().addDefault("config.guns.pistol.permission_node", MinigamesAPI.getAPI().getPermissionGunPrefix() + ".pistol");
             
             this.getConfig().addDefault("config.guns.sniper.name", "Sniper");
             this.getConfig().addDefault("config.guns.sniper.items", "292#DAMAGE_ALL:1#KNOCKBACK*1");
@@ -55,7 +57,7 @@ public class GunsConfig
             this.getConfig().addDefault("config.guns.sniper.durability", 10);
             this.getConfig().addDefault("config.guns.sniper.shoot_amount", 1);
             this.getConfig().addDefault("config.guns.sniper.knockback_multiplier", 3D);
-            this.getConfig().addDefault("config.guns.sniper.permission_node", "minigames.guns.sniper");
+            this.getConfig().addDefault("config.guns.sniper.permission_node", MinigamesAPI.getAPI().getPermissionGunPrefix() + ".sniper");
             
             this.getConfig().addDefault("config.guns.grenade.name", "Grenade Launcher");
             this.getConfig().addDefault("config.guns.grenade.items", "257#DAMAGE_ALL:1#KNOCKBACK*1");
@@ -65,7 +67,7 @@ public class GunsConfig
             this.getConfig().addDefault("config.guns.grenade.durability", 10);
             this.getConfig().addDefault("config.guns.grenade.shoot_amount", 1);
             this.getConfig().addDefault("config.guns.grenade.knockback_multiplier", 2.5D);
-            this.getConfig().addDefault("config.guns.grenade.permission_node", "minigames.guns.grenade");
+            this.getConfig().addDefault("config.guns.grenade.permission_node", MinigamesAPI.getAPI().getPermissionGunPrefix() + ".grenade");
             
             this.getConfig().addDefault("config.guns.freeze.name", "Freeze Gun");
             this.getConfig().addDefault("config.guns.freeze.items", "258#DAMAGE_ALL:1#KNOCKBACK*1");
@@ -75,7 +77,7 @@ public class GunsConfig
             this.getConfig().addDefault("config.guns.freeze.durability", 5);
             this.getConfig().addDefault("config.guns.freeze.shoot_amount", 1);
             this.getConfig().addDefault("config.guns.freeze.knockback_multiplier", 0.5D);
-            this.getConfig().addDefault("config.guns.freeze.permission_node", "minigames.guns.freeze");
+            this.getConfig().addDefault("config.guns.freeze.permission_node", MinigamesAPI.getAPI().getPermissionGunPrefix() + ".freeze");
         }
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();

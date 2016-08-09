@@ -775,7 +775,7 @@ public class Arena
         {
             if (Validator.isPlayerOnline(playername))
             {
-                if (!player.hasPermission(ArenaPermissionStrings.PREFIX + this.getInternalName()) && !player.hasPermission(ArenaPermissionStrings.VIP))
+                if (!player.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP))
                 {
                     Util.sendMessage(this.plugin, player, this.pli.getMessagesConfig().no_perm_to_join_arena.replaceAll(ArenaMessageStrings.ARENA, this.getInternalName()));
                     return;
@@ -787,8 +787,8 @@ public class Arena
             // arena full
             
             // if player vip -> kick someone and continue
-            this.logger.fine(playername + " is vip: " + player.hasPermission(ArenaPermissionStrings.VIP)); //$NON-NLS-1$
-            if (!player.hasPermission(ArenaPermissionStrings.PREFIX + this.getInternalName()) && !player.hasPermission(ArenaPermissionStrings.VIP))
+            this.logger.fine(playername + " is vip: " + player.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP)); //$NON-NLS-1$
+            if (!player.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP))
             {
                 // no VIP.
                 return;
@@ -802,7 +802,7 @@ public class Arena
                 if (Validator.isPlayerOnline(p_))
                 {
                     final Player player_ = Bukkit.getPlayer(p_);
-                    if (!player_.hasPermission(ArenaPermissionStrings.PREFIX + this.getInternalName()) && !player_.hasPermission(ArenaPermissionStrings.VIP))
+                    if (!player_.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP))
                     {
                         this.leavePlayer(p_, false, true);
                         player_.sendMessage(this.pli.getMessagesConfig().you_got_kicked_because_vip_joined);

@@ -24,9 +24,9 @@ public interface PermissionStrings
 {
     
     /** permission prefix for minigames party. */
-    String MINIGAMES_PARTY = "minigamesapi.party"; //$NON-NLS-1$
+    String MINIGAMES_PARTY = ".party"; //$NON-NLS-1$
     
     /** permission for start command. */
-    String MINIGAMES_START = "minigamesapi.start"; //$NON-NLS-1$
+    String MINIGAMES_START = ".start"; //$NON-NLS-1$
     
 }

@@ -325,6 +325,52 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
     }
     
     /**
+     * Returns the permission prefix for minigames lib itself.
+     * @return permission prefix minigames lib.
+     */
+    public String getPermissionPrefix()
+    {
+        return this.getConfig().getString(PluginConfigStrings.PERMISSION_PREFIX, "minigames.core"); //$NON-NLS-1$
+    }
+    
+    /**
+     * Returns the permission prefix for minigames lib itself.
+     * @return permission prefix minigames lib.
+     */
+    public String getPermissionKitPrefix()
+    {
+        return this.getConfig().getString(PluginConfigStrings.PERMISSION_KITS_PREFIX, "minigames.core.kits"); //$NON-NLS-1$
+    }
+    
+    /**
+     * Returns the permission prefix for minigames lib itself.
+     * @return permission prefix minigames lib.
+     */
+    public String getPermissionGunPrefix()
+    {
+        return this.getConfig().getString(PluginConfigStrings.PERMISSION_GUN_PREFIX, "minigames.core.guns"); //$NON-NLS-1$
+    }
+    
+    /**
+     * Returns the permission prefix for minigames lib itself.
+     * @return permission prefix minigames lib.
+     */
+    public String getPermissionShopPrefix()
+    {
+        return this.getConfig().getString(PluginConfigStrings.PERMISSION_SHOP_PREFIX, "minigames.core.shopitems"); //$NON-NLS-1$
+    }
+    
+    /**
+     * Returns the permission prefix for a minigame.
+     * @param game the minigame name.
+     * @return permission prefix
+     */
+    public String getPermissionGamePrefix(String game)
+    {
+        return this.getConfig().getString(PluginConfigStrings.PERMISSION_GAME_PREFIX, "minigames.") + game; //$NON-NLS-1$
+    }
+    
+    /**
      * Calculates the minecraft server version.
      * 
      * @return Minecraft server version.
@@ -650,7 +696,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 sender.sendMessage(Messages.getString("MinigamesAPI.ExecuteIngame", LOCALE)); //$NON-NLS-1$
                 return true;
             }
-            if (!sender.hasPermission(PermissionStrings.MINIGAMES_START))
+            if (!sender.hasPermission(getPermissionPrefix() + PermissionStrings.MINIGAMES_START))
             {
                 sender.sendMessage(Messages.getString("MinigamesAPI.NoPermissionForStart", LOCALE)); //$NON-NLS-1$
                 return true;
@@ -694,27 +740,27 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 final String action = args[0];
                 if (action.equalsIgnoreCase(CommandStrings.PARTY_INVITE))
                 {
-                    cmdhandler.partyInvite(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
+                    cmdhandler.partyInvite(sender, args, getPermissionPrefix() + PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
                 else if (action.equalsIgnoreCase(CommandStrings.PARTY_ACCEPT))
                 {
-                    cmdhandler.partyAccept(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
+                    cmdhandler.partyAccept(sender, args, getPermissionPrefix() + PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
                 else if (action.equalsIgnoreCase(CommandStrings.PARTY_KICK))
                 {
-                    cmdhandler.partyKick(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
+                    cmdhandler.partyKick(sender, args, getPermissionPrefix() + PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
                 else if (action.equalsIgnoreCase(CommandStrings.PARTY_LIST))
                 {
-                    cmdhandler.partyList(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
+                    cmdhandler.partyList(sender, args, getPermissionPrefix() + PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
                 else if (action.equalsIgnoreCase(CommandStrings.PARTY_DISBAND))
                 {
-                    cmdhandler.partyDisband(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
+                    cmdhandler.partyDisband(sender, args, getPermissionPrefix() + PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
                 else if (action.equalsIgnoreCase(CommandStrings.PARTY_LEAVE))
                 {
-                    cmdhandler.partyLeave(sender, args, PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
+                    cmdhandler.partyLeave(sender, args, getPermissionPrefix() + PermissionStrings.MINIGAMES_PARTY, "/" + cmd.getName(), action, this, p); //$NON-NLS-1$
                 }
                 else
                 {
@@ -1367,7 +1413,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         Player p = event.getPlayer();
         if (event.getLine(0).toLowerCase().equalsIgnoreCase("mglib"))
         {
-            if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp())
+            if (event.getPlayer().hasPermission(getPermissionPrefix() + ".sign") || event.getPlayer().isOp())
             {
                 if (!event.getLine(1).equalsIgnoreCase("") && !event.getLine(2).equalsIgnoreCase("") && !event.getLine(3).equalsIgnoreCase(""))
                 {

@@ -22,6 +22,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+
 public class ShopConfig
 {
     
@@ -44,7 +46,7 @@ public class ShopConfig
             this.getConfig().addDefault("config.shop_items.coin_boost2.requires_money", true);
             this.getConfig().addDefault("config.shop_items.coin_boost2.requires_permission", false);
             this.getConfig().addDefault("config.shop_items.coin_boost2.money_amount", 1500);
-            this.getConfig().addDefault("config.shop_items.coin_boost2.permission_node", "minigames.shop_item.coin_boost2");
+            this.getConfig().addDefault("config.shop_items.coin_boost2.permission_node", MinigamesAPI.getAPI().getPermissionShopPrefix() + ".coin_boost2");
             
             this.getConfig().addDefault("config.shop_items.coin_boost3.name", "Coin boost * 3");
             this.getConfig().addDefault("config.shop_items.coin_boost3.enabled", true);
@@ -55,7 +57,7 @@ public class ShopConfig
             this.getConfig().addDefault("config.shop_items.coin_boost3.requires_money", true);
             this.getConfig().addDefault("config.shop_items.coin_boost3.requires_permission", false);
             this.getConfig().addDefault("config.shop_items.coin_boost3.money_amount", 3000);
-            this.getConfig().addDefault("config.shop_items.coin_boost3.permission_node", "minigames.shop_item.coin_boost3");
+            this.getConfig().addDefault("config.shop_items.coin_boost3.permission_node", MinigamesAPI.getAPI().getPermissionShopPrefix() + ".coin_boost3");
             
             this.getConfig().addDefault("config.shop_items.coin_boost2_solo.name", "Coin boost * 2 Solo");
             this.getConfig().addDefault("config.shop_items.coin_boost2_solo.enabled", true);
@@ -66,7 +68,7 @@ public class ShopConfig
             this.getConfig().addDefault("config.shop_items.coin_boost2_solo.requires_money", true);
             this.getConfig().addDefault("config.shop_items.coin_boost2_solo.requires_permission", false);
             this.getConfig().addDefault("config.shop_items.coin_boost2_solo.money_amount", 1000);
-            this.getConfig().addDefault("config.shop_items.coin_boost2_solo.permission_node", "minigames.shop_item.coin_boost2_solo");
+            this.getConfig().addDefault("config.shop_items.coin_boost2_solo.permission_node", MinigamesAPI.getAPI().getPermissionShopPrefix() + ".coin_boost2_solo");
             
             this.getConfig().addDefault("config.shop_items.coin_boost3_solo.name", "Coin boost * 3 Solo");
             this.getConfig().addDefault("config.shop_items.coin_boost3_solo.enabled", true);
@@ -77,7 +79,7 @@ public class ShopConfig
             this.getConfig().addDefault("config.shop_items.coin_boost3_solo.requires_money", true);
             this.getConfig().addDefault("config.shop_items.coin_boost3_solo.requires_permission", false);
             this.getConfig().addDefault("config.shop_items.coin_boost3_solo.money_amount", 2000);
-            this.getConfig().addDefault("config.shop_items.coin_boost3_solo.permission_node", "minigames.shop_item.coin_boost3_solo");
+            this.getConfig().addDefault("config.shop_items.coin_boost3_solo.permission_node", MinigamesAPI.getAPI().getPermissionShopPrefix() + ".coin_boost3_solo");
         }
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
