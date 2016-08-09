@@ -7,6 +7,7 @@
 
 * Using same version numbers (Games and minigamesAPI share same version number to make dependencies more intuitive)
 * Support for Spigot 1.10
+* Incompatible change: Reworking the permissions, see https://github.com/MysticCity/MinigamesAPI/wiki/Permissions for details
 
 ###### Minigames-API
 * various JUnit-Tests
