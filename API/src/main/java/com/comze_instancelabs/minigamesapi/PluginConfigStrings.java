@@ -48,4 +48,29 @@ public interface PluginConfigStrings
      */
     String POST_METRICS = "config.post_metrics"; //$NON-NLS-1$
     
+    /**
+     * Prefix for core permissions.
+     */
+    String PERMISSION_PREFIX = "config.permissions_prefix"; //$NON-NLS-1$
+    
+    /**
+     * Prefix for core permissions.
+     */
+    String PERMISSION_KITS_PREFIX = "config.permissions_kits_prefix"; //$NON-NLS-1$
+    
+    /**
+     * Prefix for gun permissions.
+     */
+    String PERMISSION_GUN_PREFIX = "config.permissions_gun_prefix"; //$NON-NLS-1$
+    
+    /**
+     * Prefix for shop-item permissions.
+     */
+    String PERMISSION_SHOP_PREFIX = "config.permissions_shop_prefix"; //$NON-NLS-1$
+    
+    /**
+     * Prefix for game permissions.
+     */
+    String PERMISSION_GAME_PREFIX = "config.permissions_game_prefix"; //$NON-NLS-1$
+    
 }

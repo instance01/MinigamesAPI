@@ -1657,7 +1657,7 @@ public class ArenaListener implements Listener
         final Player p = event.getPlayer();
         if (event.getLine(0).toLowerCase().equalsIgnoreCase(this.getName()))
         {
-            if (event.getPlayer().hasPermission("mgapi.sign") || event.getPlayer().isOp())
+            if (event.getPlayer().hasPermission(MinigamesAPI.getAPI().getPermissionPrefix() + ".sign") || event.getPlayer().isOp())
             {
                 if (!event.getLine(1).equalsIgnoreCase(""))
                 {

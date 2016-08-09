@@ -24,9 +24,9 @@ public interface ArenaPermissionStrings
 {
     
     /** arenas vip permission. */
-    String VIP = "arenas.*"; //$NON-NLS-1$
+    String VIP = ".vip"; //$NON-NLS-1$
     
     /** arena prefix for permission. */
-    String PREFIX = "arenas."; //$NON-NLS-1$
+    String PREFIX = ".arenas."; //$NON-NLS-1$
     
 }
