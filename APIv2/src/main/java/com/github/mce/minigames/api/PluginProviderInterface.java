@@ -55,6 +55,17 @@ public interface PluginProviderInterface
     Iterable<Class<? extends Enum<?>>> getMessageClasses();
     
     /**
+     * Returns the permission classes.
+     * 
+     * <p>
+     * Simple return {@code null} if you only use the default permissions from minigames library.
+     * </p>
+     * 
+     * @return permission classes for predefined permissions.
+     */
+    Iterable<Class<? extends Enum<?>>> getPermissions();
+    
+    /**
      * Returns the bukkit (main) commands registered by this minigame.
      * 
      * <p>

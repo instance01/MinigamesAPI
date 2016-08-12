@@ -16,6 +16,7 @@
 package com.github.mce.minigames.api;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -46,6 +47,8 @@ public interface MglibInterface
      */
     String CORE_MINIGAME = "core"; //$NON-NLS-1$
     
+    // common methods
+    
     /**
      * Returns the current library state.
      * 
@@ -59,6 +62,15 @@ public interface MglibInterface
      * @return minecraft server version.
      */
     MinecraftVersionsType getMinecraftVersion();
+    
+    /**
+     * Returns a logger for the library.
+     * 
+     * @return logger instance.
+     */
+    Logger getLogger();
+    
+    // initialization
     
     /**
      * Registers a new minigame; should be called in {@link JavaPlugin#onEnable()}.
@@ -76,6 +88,8 @@ public interface MglibInterface
      */
     MinigamePluginInterface register(PluginProviderInterface provider) throws MinigameException;
     
+    // main api
+    
     /**
      * Returns the minigame with given name.
      * 
@@ -85,6 +99,8 @@ public interface MglibInterface
      * @return the minigame or {@code null} if is not available.
      */
     MinigameInterface getMinigame(String minigame);
+    
+    // zone api
     
     /**
      * Finds a zone by location.
@@ -120,6 +136,8 @@ public interface MglibInterface
      */
     Iterable<ZoneInterface> findZones(Location location);
     
+    // player api
+    
     /**
      * Returns the player for given bukkit player.
      * 
@@ -144,6 +162,8 @@ public interface MglibInterface
      */
     ArenaPlayerInterface getPlayer(UUID uuid);
     
+    // arena api
+    
     /**
      * Returns all known arena types.
      * 
@@ -166,6 +186,39 @@ public interface MglibInterface
      * @return the arenas of given type.
      */
     Iterable<ArenaInterface> getArenas(ArenaTypeInterface type);
+    
+    // context
+    
+    /**
+     * Returns a session variable.
+     * 
+     * @param clazz
+     *            the class of the variable to be returned.
+     * @return Context variable or {@code null} if the variable was not set.
+     */
+    <T> T getContext(Class<T> clazz);
+    
+    /**
+     * Returns the current player.
+     * 
+     * @return current player.
+     */
+    default ArenaPlayerInterface getCurrentPlayer()
+    {
+        return this.getContext(ArenaPlayerInterface.class);
+    }
+    
+    /**
+     * Returns the current arena.
+     * 
+     * @return current arena.
+     */
+    default ArenaInterface getCurrentArena()
+    {
+        return this.getContext(ArenaInterface.class);
+    }
+    
+    // common singleton getter
     
     /**
      * Singleton access.

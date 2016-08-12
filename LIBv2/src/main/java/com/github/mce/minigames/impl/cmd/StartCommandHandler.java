@@ -15,12 +15,19 @@
 
 package com.github.mce.minigames.impl.cmd;
 
-import org.bukkit.entity.Player;
+import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
+import static com.github.mce.minigames.api.player.ArenaPlayerInterface.hasPerm;
+import static com.github.mce.minigames.api.player.ArenaPlayerInterface.isInArena;
 
 import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.CommonMessages;
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.perms.CommonPermissions;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
  * A handler for the /start command.
@@ -34,11 +41,23 @@ public class StartCommandHandler implements CommandHandlerInterface
     public void handle(CommandInterface command) throws MinigameException
     {
         // only in-game
-        command.when(command.isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
+        command.when(isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
+
+        // check permission
+        final ArenaPlayerInterface player = command.getPlayer();
+        player.when(hasPerm(CommonPermissions.start).negate()).thenThrow(CommonErrors.NoPermissionForStart);
         
-        // we are a player
-        final Player player = (Player) command.getSender();
+        // only inside arena
+        player.when(isInArena().negate()).thenThrow(CommonErrors.StartNotWithinArena);
         
+        // check if the arena can be started directly
+        final ArenaInterface arena = player.getArena();
+        arena.when(arena.canStart().negate()).thenThrow(CommonErrors.CannotStart);
+        
+        // start it, log and send success message
+        MglibInterface.INSTANCE.get().getLogger().info("Arena " + arena.getInternalName() + " started because of start command from player " + player.getName()); //$NON-NLS-1$//$NON-NLS-2$
+        arena.start();
+        player.sendMessage(CommonMessages.ArenaStartedByCommand, arena.getDisplayName(), player.getName());
     }
     
 }

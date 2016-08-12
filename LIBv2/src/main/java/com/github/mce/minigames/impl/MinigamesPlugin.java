@@ -46,6 +46,7 @@ import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.zones.ZoneInterface;
+import com.github.mce.minigames.impl.cmd.StartCommandHandler;
 
 /**
  * A plugin for minigames.
@@ -99,7 +100,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 public Map<String, CommandHandlerInterface> getBukkitCommands()
                 {
                     final Map<String, CommandHandlerInterface> result = new HashMap<>();
-                    result.put("start", new StartCommandHandler());
+                    result.put("start", new StartCommandHandler()); //$NON-NLS-1$
                     // TODO
                     return result;
                 }

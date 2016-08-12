@@ -20,6 +20,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
 
@@ -37,6 +38,13 @@ public interface CommandInterface
      * @return bukkit command sender.
      */
     CommandSender getSender();
+    
+    /**
+     * Returns the arena player for this command/ the command sender.
+     * 
+     * @return the arena player or {@code null} if the sender is not a regular bukkit player.
+     */
+    ArenaPlayerInterface getPlayer();
     
     /**
      * Returns the command.
@@ -60,7 +68,7 @@ public interface CommandInterface
     String[] getArgs();
     
     /**
-     * Checks this command for given criteria and invokes wither then or else statements.
+     * Checks this command for given criteria and invokes either then or else statements.
      * 
      * <p>
      * NOTICE: If the test function throws an exception it will be re thrown and no then or else statement will be invoked.
@@ -79,9 +87,9 @@ public interface CommandInterface
     /**
      * Returns a test function to check if the command sender is a player.
      * 
-     * @return true if the command sender is a player.
+     * @return predicate to return {@code true} if the command sender is a player.
      */
-    default MgPredicate<CommandInterface> isPlayer()
+    static MgPredicate<CommandInterface> isPlayer()
     {
         return (cmd) -> cmd.getSender() instanceof Player;
     }

@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.api;
 
+import java.util.logging.Logger;
+
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
@@ -66,5 +68,12 @@ public interface MinigameInterface
      * @return arena or {@code null} if the arena does not exist.
      */
     ArenaInterface getArenas(String name);
+    
+    /**
+     * Returns a logger for the library.
+     * 
+     * @return logger instance.
+     */
+    Logger getLogger();
     
 }

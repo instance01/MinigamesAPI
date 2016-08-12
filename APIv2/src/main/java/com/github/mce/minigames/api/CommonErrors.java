@@ -61,4 +61,28 @@ public enum CommonErrors implements MinigameErrorCode
     @LocalizedMessage(defaultMessage = "Invoke this command in-game.", severity = MessageSeverityType.Error)
     InvokeIngame,
     
+    /**
+     * No permissions for start command.
+     * 
+     * <p>No Arguments</p>
+     */
+    @LocalizedMessage(defaultMessage = "No permission for /start command.", severity = MessageSeverityType.Error)
+    NoPermissionForStart,
+    
+    /**
+     * Start command outside arena.
+     * 
+     * <p>No Arguments</p>
+     */
+    @LocalizedMessage(defaultMessage = "You are not inside an arena.", severity = MessageSeverityType.Error)
+    StartNotWithinArena,
+    
+    /**
+     * Arena cannot be started.
+     * 
+     * <p>No Arguments</p>
+     */
+    @LocalizedMessage(defaultMessage = "Arena cannot be started directly.", severity = MessageSeverityType.Error)
+    CannotStart,
+    
 }
