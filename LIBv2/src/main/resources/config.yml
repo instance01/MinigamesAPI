@@ -1,0 +1,6 @@
+# MinigamesAPI Config #
+# If you want bugfree versions, turn this to true:
+# NO USE TRUE MODE!
+config:
+  auto_updating: false
+signs_updating_time: 20 

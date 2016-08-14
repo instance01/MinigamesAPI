@@ -1,5 +1,19 @@
 # Changelog
 
+#### 1.14.10
+
+###### All
+
+* Changed permissions prefix to "ancient."
+* Fixed smart
+
+###### Minigames-API
+
+* Fixed smart reset on big arenas/ hundreds of blocks
+
+###### DeathRun
+
+* Fixed falling blocks animation
 
 #### 1.14.9
 

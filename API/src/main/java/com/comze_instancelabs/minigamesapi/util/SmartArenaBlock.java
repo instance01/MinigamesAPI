@@ -39,6 +39,8 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.Potion;
 
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+
 public class SmartArenaBlock implements Serializable
 {
     private static final long                    serialVersionUID = -1894759842709524780L;
@@ -115,6 +117,10 @@ public class SmartArenaBlock implements Serializable
         {
             final Chest chest = (Chest) b.getState();
             this.setInventory(chest.getInventory());
+        }
+        if (MinigamesAPI.debug)
+        {
+            System.out.println("Added smart arena block @ " + this.x + "/" + this.y + "/" + this.z + " with material " + this.m);
         }
     }
     
