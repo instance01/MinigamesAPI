@@ -258,7 +258,7 @@ public class SmartReset implements Runnable
             rolledBack++;
         }
         
-        if (this.changed.size() != 0)
+        if (it.hasNext())
         {
             Bukkit.getScheduler().runTaskLater(this.a.getPlugin(), this, 2L);
             return;
