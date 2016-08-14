@@ -60,7 +60,6 @@ import com.comze_instancelabs.minigamesapi.util.Metrics;
 import com.comze_instancelabs.minigamesapi.util.Metrics.Graph;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Signs;
-import com.comze_instancelabs.minigamesapi.util.UpdaterBukkit;
 import com.comze_instancelabs.minigamesapi.util.UpdaterNexus;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.google.common.io.ByteArrayDataInput;
@@ -204,6 +203,12 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         this.getConfig().addDefault(PluginConfigStrings.SIGNS_UPDATE_TIME, 20);
         this.getConfig().addDefault(PluginConfigStrings.PARTY_COMMAND_ENABLED, true);
         this.getConfig().addDefault(PluginConfigStrings.DEBUG, false);
+        
+        this.getConfig().addDefault(PluginConfigStrings.PERMISSION_PREFIX, "ancient.core"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.PERMISSION_KITS_PREFIX, "ancient.core.kits"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.PERMISSION_GUN_PREFIX, "ancient.core.guns"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.PERMISSION_SHOP_PREFIX, "ancient.core.shopitems"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.PERMISSION_GAME_PREFIX, "ancient."); //$NON-NLS-1$
         
         for (final ArenaState state : ArenaState.values())
         {
