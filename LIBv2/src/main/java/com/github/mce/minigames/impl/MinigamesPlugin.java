@@ -44,8 +44,12 @@ import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.config.ConfigurationValueInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.zones.ZoneInterface;
+import com.github.mce.minigames.impl.cmd.PartyCommandHandler;
 import com.github.mce.minigames.impl.cmd.StartCommandHandler;
 
 /**
@@ -101,8 +105,23 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 {
                     final Map<String, CommandHandlerInterface> result = new HashMap<>();
                     result.put("start", new StartCommandHandler()); //$NON-NLS-1$
+                    result.put("party", new PartyCommandHandler()); //$NON-NLS-1$
                     // TODO
                     return result;
+                }
+
+                @Override
+                public Iterable<Class<? extends Enum<?>>> getPermissions()
+                {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                @Override
+                public Iterable<Class<? extends Enum<?>>> getConfigurations()
+                {
+                    // TODO Auto-generated method stub
+                    return null;
                 }
             }).init();
         }
@@ -290,6 +309,56 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
      */
     @Override
     public Iterable<ArenaInterface> getArenas(ArenaTypeInterface type)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromMsg(com.github.mce.minigames.api.locale.LocalizedMessageInterface)
+     */
+    @Override
+    public MinigameInterface getMinigameFromMsg(LocalizedMessageInterface item)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromPerm(com.github.mce.minigames.api.perms.PermissionsInterface)
+     */
+    @Override
+    public MinigameInterface getMinigameFromPerm(PermissionsInterface item)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromCfg(com.github.mce.minigames.api.config.ConfigurationValueInterface)
+     */
+    @Override
+    public MinigameInterface getMinigameFromCfg(ConfigurationValueInterface item)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getContext(java.lang.Class)
+     */
+    @Override
+    public <T> T getContext(Class<T> clazz)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#resolveContextVar(java.lang.String)
+     */
+    @Override
+    public String resolveContextVar(String src)
     {
         // TODO Auto-generated method stub
         return null;

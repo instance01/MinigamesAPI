@@ -22,5 +22,7 @@ package com.github.mce.minigames.api.arena;
  */
 public interface WaitQueue
 {
+
+    // TODO
     
 }

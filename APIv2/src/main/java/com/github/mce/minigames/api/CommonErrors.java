@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.locale.MessageSeverityType;
  * 
  * @author mepeisen
  */
-@LocalizedMessages(minigame = "core", path = "errors")
+@LocalizedMessages("errors")
 public enum CommonErrors implements MinigameErrorCode
 {
     
@@ -84,5 +84,13 @@ public enum CommonErrors implements MinigameErrorCode
      */
     @LocalizedMessage(defaultMessage = "Arena cannot be started directly.", severity = MessageSeverityType.Error)
     CannotStart,
+    
+    /**
+     * The party command is disabled.
+     * 
+     * <p>No Arguments</p>
+     */
+    @LocalizedMessage(defaultMessage = "Party command disabled.", severity = MessageSeverityType.Error)
+    PartyCommandDisabled,
     
 }

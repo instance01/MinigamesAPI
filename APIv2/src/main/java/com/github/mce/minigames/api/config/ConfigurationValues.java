@@ -13,7 +13,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.locale;
+package com.github.mce.minigames.api.config;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -22,27 +22,36 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * A localized message class used within messages.yml of a plugin; should be used by enumerations that implement the {@link LocalizedMessageInterface}.
+ * A list of permissions; should be used by enumerations that implement the {@link ConfigurationValueInterface}.
  * 
  * @author mepeisen
  */
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface LocalizedMessages
+public @interface ConfigurationValues
 {
     
     /**
-     * The default locale this plugin uses.
+     * The default path used as a prefix for the configuration values.
      * 
-     * @return default/fallback locale.
+     * <p>
+     * Within path the following variables can be used:
+     * </p>
+     * 
+     * <ul>
+     * <li>"$MINIGAME$" : will be replaced by the current minigame name.</li>
+     * <li>"$ARENA$" : will be replaced by the current arena name.</li>
+     * </ul>
+     * 
+     * @return default path used as a prefix.
      */
-    String defaultLocale() default "en";
+    String path();
     
     /**
-     * The default path used within messages.yml.
+     * Returns the name of the configuration file.
      * 
-     * @return default path for this message.
+     * @return configuration file name.
      */
-    String value();
+    String file() default "config.yml";
     
 }

@@ -27,6 +27,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.api.config.ConfigurationValueInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.zones.ZoneInterface;
 
@@ -99,6 +102,36 @@ public interface MglibInterface
      * @return the minigame or {@code null} if is not available.
      */
     MinigameInterface getMinigame(String minigame);
+    
+    /**
+     * Returns the minigame declaring the given enumeration class.
+     * 
+     * @param item
+     *            the enumeration value; only works on classes that are returned by a plugin provider during initialization.
+     * 
+     * @return minigame or {@code null} if the class was not declared by any minigame.
+     */
+    MinigameInterface getMinigameFromMsg(LocalizedMessageInterface item);
+    
+    /**
+     * Returns the minigame declaring the given enumeration class.
+     * 
+     * @param item
+     *            the enumeration value; only works on classes that are returned by a plugin provider during initialization.
+     * 
+     * @return minigame or {@code null} if the class was not declared by any minigame.
+     */
+    MinigameInterface getMinigameFromPerm(PermissionsInterface item);
+    
+    /**
+     * Returns the minigame declaring the given configuration value.
+     * 
+     * @param item
+     *            the configuration value; only works on classes that are returned by a plugin provider during initialization.
+     * 
+     * @return minigame or {@code null} if the class was not declared by any minigame.
+     */
+    MinigameInterface getMinigameFromCfg(ConfigurationValueInterface item);
     
     // zone api
     
@@ -217,6 +250,13 @@ public interface MglibInterface
     {
         return this.getContext(ArenaInterface.class);
     }
+
+    /**
+     * Resolves a context variable.
+     * @param src
+     * @return result
+     */
+    String resolveContextVar(String src);
     
     // common singleton getter
     

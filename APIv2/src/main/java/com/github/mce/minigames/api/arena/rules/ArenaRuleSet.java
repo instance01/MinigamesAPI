@@ -22,4 +22,6 @@ package com.github.mce.minigames.api.arena.rules;
 public interface ArenaRuleSet
 {
     
+    // TODO
+    
 }

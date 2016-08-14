@@ -76,4 +76,15 @@ public interface PluginProviderInterface
      */
     Map<String, CommandHandlerInterface> getBukkitCommands();
     
+    /**
+     * Returns the configuration classes.
+     * 
+     * <p>
+     * Simple return {@code null} if you only use the default configuration options from minigames library.
+     * </p>
+     * 
+     * @return configuration classes for predefined configurations.
+     */
+    Iterable<Class<? extends Enum<?>>> getConfigurations();
+    
 }

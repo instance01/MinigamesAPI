@@ -35,7 +35,7 @@ public @interface Permission
      * The name of the permission.
      * 
      * <p>
-     * The name is appended to the path of the {@link Permissions} annotation on the num class.
+     * The name is appended to the path of the {@link Permissions} annotation on the enum class.
      * </p>
      * 
      * @return Name of permission; empty string to use the constant name.

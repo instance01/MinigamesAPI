@@ -13,36 +13,40 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.locale;
+package com.github.mce.minigames.api.config;
 
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * A localized message class used within messages.yml of a plugin; should be used by enumerations that implement the {@link LocalizedMessageInterface}.
+ * A single configuration value.
  * 
  * @author mepeisen
  */
 @Retention(RUNTIME)
-@Target(TYPE)
-public @interface LocalizedMessages
+@Target(FIELD)
+public @interface ConfigurationInt
 {
     
     /**
-     * The default locale this plugin uses.
+     * The name of the configuration value.
      * 
-     * @return default/fallback locale.
+     * <p>
+     * The name is appended to the path of the {@link ConfigurationValues} annotation on the enum class.
+     * </p>
+     * 
+     * @return Name of configuration value; empty string to use the constant name.
      */
-    String defaultLocale() default "en";
+    String name() default "";
     
     /**
-     * The default path used within messages.yml.
+     * The default value of this configuration option.
      * 
-     * @return default path for this message.
+     * @return default value.
      */
-    String value();
+    int defaultValue() default 0;
     
 }

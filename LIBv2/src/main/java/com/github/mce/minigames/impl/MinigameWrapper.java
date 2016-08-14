@@ -15,6 +15,10 @@
 
 package com.github.mce.minigames.impl;
 
+import java.util.logging.Logger;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
@@ -70,6 +74,26 @@ class MinigameWrapper implements MinigameInterface
 
     @Override
     public ArenaInterface getArenas(String name)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MinigameInterface#getLogger()
+     */
+    @Override
+    public Logger getLogger()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MinigameInterface#getConfig(java.lang.String)
+     */
+    @Override
+    public ConfigurationSection getConfig(String file)
     {
         // TODO Auto-generated method stub
         return null;

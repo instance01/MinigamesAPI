@@ -66,13 +66,13 @@ public interface LocalizedMessageInterface
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
             }
             final MglibInterface mglib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = mglib.getMinigame(msgs.minigame());
+            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
             if (minigame == null)
             {
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            final String smsg = minigame.getMessages().getString(locale, msgs.path() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
+            final String smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
             return String.format(smsg, (Object[])args);
         }
         catch (NoSuchFieldException ex)
@@ -101,16 +101,16 @@ public interface LocalizedMessageInterface
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
             }
             final MglibInterface mglib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = mglib.getMinigame(msgs.minigame());
+            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
             if (minigame == null)
             {
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            String smsg = minigame.getMessages().getAdminString(locale, msgs.path() + "." + ((Enum<?>)this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
+            String smsg = minigame.getMessages().getAdminString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
             if (smsg.length() == 0)
             {
-                smsg = minigame.getMessages().getString(locale, msgs.path() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
+                smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
             }
             return String.format(smsg, (Object[])args);
         }

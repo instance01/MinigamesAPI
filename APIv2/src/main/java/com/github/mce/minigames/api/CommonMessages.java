@@ -25,7 +25,7 @@ import com.github.mce.minigames.api.locale.MessageSeverityType;
  * 
  * @author mepeisen
  */
-@LocalizedMessages(minigame = "core", path = "messages")
+@LocalizedMessages("messages")
 public enum CommonMessages implements LocalizedMessageInterface
 {
     

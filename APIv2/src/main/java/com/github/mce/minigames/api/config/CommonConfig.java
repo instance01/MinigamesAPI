@@ -13,15 +13,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.zones;
+package com.github.mce.minigames.api.config;
 
 /**
+ * Common permissions within minigames lib.
+ * 
  * @author mepeisen
- *
  */
-public interface ZoneInterface
+@ConfigurationValues(path = "config")
+public enum CommonConfig implements ConfigurationValueInterface
 {
     
-    // TODO
+    /**
+     * Permission to perform the start command.
+     */
+    @ConfigurationBool(name = "party_command_enabled", defaultValue = true)
+    PartyCommandEnabled,
     
 }

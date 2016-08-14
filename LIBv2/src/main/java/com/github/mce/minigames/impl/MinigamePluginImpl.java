@@ -15,6 +15,10 @@
 
 package com.github.mce.minigames.impl;
 
+import java.util.logging.Logger;
+
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
@@ -105,6 +109,26 @@ class MinigamePluginImpl implements MinigamePluginInterface
      */
     @Override
     public ArenaTypeBuilderInterface createArenaType(ArenaTypeInterface type, boolean isDefault) throws MinigameException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MinigameInterface#getLogger()
+     */
+    @Override
+    public Logger getLogger()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MinigameInterface#getConfig(java.lang.String)
+     */
+    @Override
+    public ConfigurationSection getConfig(String file)
     {
         // TODO Auto-generated method stub
         return null;

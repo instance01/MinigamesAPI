@@ -21,6 +21,7 @@
       <item name="Road Map" href="roadmap.html" />
       <item name="Development" href="development.html" />
       <item name="Game rules" href="gamerules.html" />
+      <item name="Migration List" href="migrationList.html" />
     </menu>
 
     <menu ref="reports"/>

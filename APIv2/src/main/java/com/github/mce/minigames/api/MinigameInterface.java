@@ -17,6 +17,8 @@ package com.github.mce.minigames.api;
 
 import java.util.logging.Logger;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
@@ -75,5 +77,14 @@ public interface MinigameInterface
      * @return logger instance.
      */
     Logger getLogger();
+    
+    /**
+     * Returns the bukkit configuration for given file.
+     * 
+     * @param file
+     *            configuration file name.
+     * @return the configuration file.
+     */
+    ConfigurationSection getConfig(String file);
     
 }

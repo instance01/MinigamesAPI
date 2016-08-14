@@ -13,15 +13,27 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.zones;
+package com.github.mce.minigames.impl.cmd;
+
+import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
+import com.github.mce.minigames.api.cmd.CommandInterface;
 
 /**
  * @author mepeisen
  *
  */
-public interface ZoneInterface
+public class PartyKickCommandHandler implements CommandHandlerInterface
 {
     
-    // TODO
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#handle(com.github.mce.minigames.api.cmd.CommandInterface)
+     */
+    @Override
+    public void handle(CommandInterface command) throws MinigameException
+    {
+        // TODO Auto-generated method stub
+        
+    }
     
 }
