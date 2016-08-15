@@ -31,6 +31,7 @@ import com.github.mce.minigames.api.config.ConfigurationValueInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.sign.SignInterface;
 import com.github.mce.minigames.api.zones.ZoneInterface;
 
 /**
@@ -51,6 +52,13 @@ public interface MglibInterface
     String CORE_MINIGAME = "core"; //$NON-NLS-1$
     
     // common methods
+    
+    /**
+     * Checks for debug flag.
+     * 
+     * @return {@code true} if the library debugging is enabled.
+     */
+    boolean debug();
     
     /**
      * Returns the current library state.
@@ -195,6 +203,54 @@ public interface MglibInterface
      */
     ArenaPlayerInterface getPlayer(UUID uuid);
     
+    // sign api
+    
+    /**
+     * Returns all declared arena/join signs
+     * 
+     * @return arena signs.
+     */
+    Iterable<SignInterface> getSigns();
+    
+    /**
+     * Returns the sign on given location.
+     * 
+     * @param l
+     *            bukkit location
+     * @return sign or {@code null} if there is no sign.
+     */
+    SignInterface getSignForLocation(Location l);
+    
+    /**
+     * Returns all declared arena/join signs for given arena type.
+     * 
+     * @param type
+     *            arena type.
+     * 
+     * @return arena signs.
+     */
+    Iterable<SignInterface> getSigns(ArenaTypeInterface type);
+    
+    /**
+     * Returns all declared arena/join signs for given arena
+     * 
+     * @param arena
+     *            the arena.
+     * 
+     * @return arena signs.
+     */
+    Iterable<SignInterface> getSigns(ArenaInterface arena);
+    
+    /**
+     * Returns all declared arena/join signs for given minigame
+     * 
+     * @param minigame
+     *            the minigame.
+     * 
+     * @return arena signs.
+     */
+    Iterable<SignInterface> getSigns(MinigameInterface minigame);
+    
     // arena api
     
     /**
@@ -250,9 +306,10 @@ public interface MglibInterface
     {
         return this.getContext(ArenaInterface.class);
     }
-
+    
     /**
      * Resolves a context variable.
+     * 
      * @param src
      * @return result
      */

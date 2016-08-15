@@ -21,8 +21,11 @@
 - [ ] ArrayList<String> temp\_players
 - [ ] ArenaType type
 - [ ] ArenaState currentstate
-- [ ] String name
-- [ ] String displayname
+- [X] String name
+    > com.github.mce.minigames.api.arena.ArenaInterface.getInternalName()
+- [X] String displayname
+    > com.github.mce.minigames.api.arena.ArenaInterface.getDisplayName()
+    > com.github.mce.minigames.api.arena.ArenaInterface.getDisplayName(Locale)
 - [ ] boolean started
 - [ ] boolean startedIngameCountdown
 - [ ] boolean showArenascoreboard
@@ -46,7 +49,8 @@
 - [ ] Arena(final JavaPlugin plugin, final String name, final ArenaType type)
 - [ ] public void init(final Location signloc, final ArrayList<Location> spawns, final Location mainlobby, final Location waitinglobby, final int max\_players, final int min\_players, final boolean viparena)
 - [ ] Arena initArena(final Location signloc, final ArrayList<Location> spawn, final Location mainlobby, final Location waitinglobby, final int max\_players, final int min\_players, final boolean viparena)
-- [ ] Arena getArena()
+- [X] Arena getArena()
+    > removed (does not make sense)
 - [ ] SmartReset getSmartReset()
 - [ ] boolean getShowScoreboard()
 - [ ] boolean getAlwaysPvP()
@@ -57,9 +61,13 @@
 - [ ] Cuboid getBoundaries()
 - [ ] Cuboid getLobbyBoundaries()
 - [ ] Cuboid getSpecBoundaries()
-- [ ] String getInternalName()
-- [ ] String getDisplayName()
-- [ ] String getName()
+- [X] String getInternalName()
+    > com.github.mce.minigames.api.arena.ArenaInterface.getInternalName()
+- [X] String getDisplayName()
+    > com.github.mce.minigames.api.arena.ArenaInterface.getDisplayName()
+    > com.github.mce.minigames.api.arena.ArenaInterface.getDisplayName(Locale)
+- [X] String getName()
+    > com.github.mce.minigames.api.arena.ArenaInterface.getInternalName()
 - [ ] int getMaxPlayers()
 - [ ] int getMinPlayers()
 - [ ] void setMinPlayers(final int i)
@@ -90,6 +98,7 @@
 - [ ] int getTaskId()
 - [ ] void startLobby(final boolean countdown)
 - [ ] void start(final boolean tp)
+    > com.github.mce.minigames.api.arena.ArenaInterface.start()
 - [ ] void startRaw()
 - [ ] void stopArena()
 - [ ] List<Entity> getResetEntitiesOnPlayerLeave(String player)
@@ -278,7 +287,8 @@
 
 ## ArenaLogger.java
 
-- [ ] logging methods
+- [X] logging methods
+    > com.github.mce.minigames.api.arena.ArenaInterface.getLogger()
 
 ## ArenaMessageStrings.java
 
@@ -298,7 +308,8 @@
 
 ## ArenaPlayer.java
 
-- [ ] String playername
+- [X] String playername
+    > com.github.mce.minigames.api.player.ArenaPlayerInterface.getName()
 - [ ] ItemStack[] inv
 - [ ] ItemStack[] armor\_inv
 - [ ] GameMode original\_gamemode
@@ -306,10 +317,15 @@
 - [ ] boolean noreward
 - [ ] Arena currentArena
 - [ ] AClass currentClass
-- [ ] HashMap<String, ArenaPlayer> players
-- [ ] ArenaPlayer getPlayerInstance(final String playername)
-- [ ] ArenaPlayer(final String playername)
-- [ ] Player getPlayer()
+- [X] HashMap<String, ArenaPlayer> players
+    > no direct replacement, see com.github.mce.minigames.api.MglibInterface.getPlayer(OfflinePlayer)
+- [X] ArenaPlayer getPlayerInstance(final String playername)
+    > no direct replacement, see com.github.mce.minigames.api.MglibInterface.getPlayer(OfflinePlayer)
+- [X] ArenaPlayer(final String playername)
+    > no direct replacement, see com.github.mce.minigames.api.MglibInterface.getPlayer(OfflinePlayer)
+- [X] Player getPlayer()
+    > com.github.mce.minigames.api.player.ArenaPlayerInterface.getOfflinePlayer()
+    > com.github.mce.minigames.api.player.ArenaPlayerInterface.getBukkitPlayer()
 - [ ] void setInventories(final ItemStack[] inv, final ItemStack[] armor\_inv)
 - [ ] ItemStack[] getInventory()
 - [ ] ItemStack[] getArmorInventory()
@@ -469,17 +485,21 @@
 
 ## MinecraftVersionsType.java
 
-- [ ] migrate version types
+- [X] migrate version types
+    > com.github.mce.minigames.api.MinecraftVersionsType
 
 ## MinigamesAPI.java
 
-- [ ] MinecraftVersionsType SERVER\_VERSION
+- [X] MinecraftVersionsType SERVER\_VERSION
+    > com.github.mce.minigames.api.MglibInterface.getMinecraftVersion()
 - [ ] Locale LOCALE
-- [ ] MinigamesAPI instance
+- [X] MinigamesAPI instance
+    > com.github.mce.minigames.api.MglibInterface.INSTANCE.get()
 - [ ] Economy econ
 - [ ] boolean economy
 - [ ] boolean crackshot
-- [ ] boolean debug
+- [X] boolean debug
+    > com.github.mce.minigames.api.MglibInterface.debug()
 - [ ] int updatetime
 - [ ] HashMap<String, Party> global\_party
 - [ ] HashMap<String, ArrayList<Party>> global\_party\_invites
@@ -487,7 +507,8 @@
 - [ ] PartyMessagesConfig partymessages
 - [ ] StatsGlobalConfig statsglobal
 - [ ] String internalServerVersion = "";
-- [ ] boolean below1710
+- [X] boolean below1710
+    > no replacement, check com.github.mce.minigames.api.MglibInterface.getMinecraftVersion() against 1.7.10 
 - [ ] Metrics metrics
 - [ ] void onEnable()
 - [ ] boolean crackshotAvailable()
@@ -497,7 +518,8 @@
 - [ ] String getPermissionGunPrefix()
 - [ ] String getPermissionShopPrefix()
 - [ ] String getPermissionGamePrefix(String game)
-- [ ] MinecraftVersionsType getServerVersion()
+- [X] MinecraftVersionsType getServerVersion()
+    > com.github.mce.minigames.api.MglibInterface.getMinecraftVersion()
 - [ ] void onDisable()
 - [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame, final Class<?> arenaclass, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig, final DefaultConfig defaultconfig, final boolean customlistener)
 - [ ] void registerArenaListenerLater(final JavaPlugin plugin\_, final ArenaListener arenalistener)
@@ -506,16 +528,24 @@
 - [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame, final Class<?> arenaclass)
 - [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame)
 - [ ] PluginInstance setupRaw(final JavaPlugin plugin\_, final String minigame)
-- [ ] MinigamesAPI getAPI()
+- [X] MinigamesAPI getAPI()
+    > com.github.mce.minigames.api.MglibInterface.INSTANCE.get()
 - [ ] CommandHandler getCommandHandler()
 - [ ] boolean setupEconomy()
 - [ ] boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args)
 - [ ] void connectToServer(JavaPlugin plugin, String player, String server)
 - [ ] void onPluginMessageReceived(final String channel, final Player player, final byte[] message)
 - [ ] PluginInstance getPluginInstance(final JavaPlugin plugin)
-- [ ] UUID playerToUUID(String playername)
-- [ ] UUID playerToUUID(Player player)
-- [ ] Player uuidToPlayer(UUID uuid)
+- [X] UUID playerToUUID(String playername)
+    > no direct replacement, we do not use player names any more
+    > com.github.mce.minigames.api.MglibInterface.getPlayer(Player)
+    > com.github.mce.minigames.api.player.ArenaPlayerInterface.getPlayerUUID()
+- [X] UUID playerToUUID(Player player)
+    > no direct replacement, we do not use player names any more
+    > com.github.mce.minigames.api.MglibInterface.getPlayer(Player)
+    > com.github.mce.minigames.api.player.ArenaPlayerInterface.getPlayerUUID()
+- [X] Player uuidToPlayer(UUID uuid)
+    > com.github.mce.minigames.api.MglibInterface.getPlayer(UUID)
 - [ ] onBreak(BlockBreakEvent event)
 - [ ] onSignUse(PlayerInteractEvent event)
 - [ ] onSignChange(SignChangeEvent event)
@@ -606,7 +636,8 @@
 - [ ] PluginInstance(final JavaPlugin plugin, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig, final ArrayList<Arena> arenas)
 - [ ] PluginInstance(final JavaPlugin plugin, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig)
 - [ ] void reloadVariables()
-- [ ] JavaPlugin getPlugin()
+- [X] JavaPlugin getPlugin()
+    > com.github.mce.minigames.api.PluginProviderInterface.getJavaPlugin()
 - [ ] HashMap<String, AClass> getAClasses()
 - [ ] HashMap<String, AClass> getPClasses()
 - [ ] addAClass(final String name, final AClass a)
