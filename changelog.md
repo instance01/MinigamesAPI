@@ -1,5 +1,11 @@
 # Changelog
 
+#### 1.14.11
+
+###### All
+
+* removed system.out.println and printstacktrace
+
 #### 1.14.10
 
 ###### All
