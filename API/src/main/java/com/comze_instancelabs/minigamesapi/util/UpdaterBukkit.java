@@ -31,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -39,6 +40,8 @@ import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 /**
  * Check dev.bukkit.org to find updates for a given plugin, and download the updates if needed.
@@ -187,8 +190,7 @@ public class UpdaterBukkit
             }
             catch (final IOException e)
             {
-                plugin.getLogger().severe("The updater could not create a configuration in " + updaterFile.getAbsolutePath());
-                e.printStackTrace();
+                plugin.getLogger().log(Level.SEVERE, "The updater could not create a configuration in " + updaterFile.getAbsolutePath(), e);
             }
         }
         this.config = YamlConfiguration.loadConfiguration(updaterConfigFile);
@@ -209,8 +211,7 @@ public class UpdaterBukkit
             }
             catch (final IOException e)
             {
-                plugin.getLogger().severe("The updater could not save the configuration in " + updaterFile.getAbsolutePath());
-                e.printStackTrace();
+                plugin.getLogger().log(Level.SEVERE, "The updater could not save the configuration in " + updaterFile.getAbsolutePath(), e);
             }
         }
         
@@ -234,9 +235,8 @@ public class UpdaterBukkit
         }
         catch (final MalformedURLException e)
         {
-            plugin.getLogger().severe("The project ID provided for updating, " + id + " is invalid.");
+            plugin.getLogger().log(Level.SEVERE, "The project ID provided for updating, " + id + " is invalid.", e);
             this.result = UpdateResult.FAIL_BADID;
-            e.printStackTrace();
         }
         
         this.thread = new Thread(new UpdateRunnable());
@@ -301,7 +301,7 @@ public class UpdaterBukkit
             }
             catch (final InterruptedException e)
             {
-                e.printStackTrace();
+                // silently ignore
             }
         }
     }
@@ -474,9 +474,8 @@ public class UpdaterBukkit
         }
         catch (final IOException ex)
         {
-            this.plugin.getLogger().warning("The auto-updater tried to unzip a new update file, but was unsuccessful.");
+            this.plugin.getLogger().log(Level.WARNING, "The auto-updater tried to unzip a new update file, but was unsuccessful.", ex);
             this.result = UpdaterBukkit.UpdateResult.FAIL_DOWNLOAD;
-            ex.printStackTrace();
         }
         new File(file).delete();
     }
@@ -623,7 +622,7 @@ public class UpdaterBukkit
                         .warning("If you have not recently modified your configuration and this is the first time you are seeing this message, the site may be experiencing temporary downtime.");
                 this.result = UpdateResult.FAIL_DBO;
             }
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             return false;
         }
     }

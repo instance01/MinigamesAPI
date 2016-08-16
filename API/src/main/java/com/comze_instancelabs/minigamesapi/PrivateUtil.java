@@ -101,7 +101,7 @@ public class PrivateUtil
                 }
                 catch (final Exception e)
                 {
-                    e.printStackTrace();
+                    MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                     arena.setArenaState(ArenaState.JOIN);
                     Bukkit.getScheduler().runTask(plugin, () -> Util.updateSign(plugin, arena));
                 }
@@ -138,7 +138,7 @@ public class PrivateUtil
         }
         catch (final Exception e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
         
         try
@@ -147,7 +147,7 @@ public class PrivateUtil
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
         
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(MinigamesAPI.getAPI(), () -> {

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -237,7 +238,7 @@ public class CommandHandler
                 }
                 catch (final Exception e)
                 {
-                    System.out.println("Looks like one arena is invalid, but most arenas should be reloaded just fine. " + e.getMessage());
+                    pli.getPlugin().getLogger().log(Level.WARNING, "Looks like one arena is invalid, but most arenas should be reloaded just fine.", e);
                 }
                 sender.sendMessage(pli.getMessagesConfig().successfully_reloaded);
             }

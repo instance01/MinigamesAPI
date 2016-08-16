@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -150,13 +151,12 @@ public class Util
             }
             catch (Exception ex)
             {
-                // TODO logging
-                ex.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", ex);
             }
         }
         else
         {
-            System.out.println("Couldn't teleport Player " + p.getName() + ", the location was not valid. Probably forgot to set a spawn/lobby?");
+            MinigamesAPI.getAPI().getLogger().warning("Couldn't teleport Player " + p.getName() + ", the location was not valid. Probably forgot to set a spawn/lobby?");
         }
         p.setFireTicks(0);
         p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 2, 30));
@@ -332,7 +332,7 @@ public class Util
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
         
         for (int i = 0; i <= width; i++)
@@ -351,7 +351,7 @@ public class Util
                     }
                     catch (final IOException e)
                     {
-                        System.out.println(e.getMessage());
+                        MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "io error", e);
                     }
                 }
             }
@@ -363,7 +363,7 @@ public class Util
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
         
         MinigamesAPI.getAPI().getLogger().info("saved");
@@ -501,7 +501,7 @@ public class Util
         }
         catch (final Exception e)
         {
-            System.out.println("Failed sending bungee sign update: " + e.getMessage());
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed sending bungee sign update: ", e);
         }
     }
     
@@ -682,7 +682,7 @@ public class Util
                 final int itemid_int = Util.isNumeric(itemid) ? Integer.parseInt(itemid) : 0;
                 if (itemid_int < 1)
                 {
-                    System.out.println("Invalid item id: " + itemid);
+                    MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Invalid item id: " + itemid);
                     continue;
                 }
                 final int itemamount_int = Util.isNumeric(itemamount) ? Integer.parseInt(itemamount) : 1;
@@ -756,7 +756,7 @@ public class Util
                     }
                     catch (final Exception e)
                     {
-                        System.out.println("Failed parsing enchanted book. " + e.getMessage());
+                        MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed parsing enchanted book. ", e);
                     }
                 }
                 ret.add(nitem);
@@ -769,11 +769,7 @@ public class Util
         catch (final Exception e)
         {
             ret.add(new ItemStack(Material.STAINED_GLASS_PANE));
-            System.out.println("Failed to load class items: " + e.getMessage() + " at [1] " + e.getStackTrace()[1].getLineNumber() + " [0] " + e.getStackTrace()[0].getLineNumber());
-            if (MinigamesAPI.debug)
-            {
-                e.printStackTrace();
-            }
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed to load class items", e);
             final ItemStack rose = new ItemStack(Material.RED_ROSE);
             final ItemMeta im = rose.getItemMeta();
             im.setDisplayName(ChatColor.RED + "Sowwy, failed to load class.");
@@ -1082,7 +1078,7 @@ public class Util
         {
             if (MinigamesAPI.debug)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         return s;
@@ -1110,7 +1106,7 @@ public class Util
         {
             if (MinigamesAPI.debug)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
     }

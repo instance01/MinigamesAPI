@@ -17,6 +17,7 @@ package com.comze_instancelabs.minigamesapi.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -112,7 +113,7 @@ public enum ParticleEffectNew
      * 
      * CraftPlayer craftPlayer = (CraftPlayer) player;
      * 
-     * try { craftPlayer.getHandle().playerConnection.sendPacket(getParticle(player.getLocation(), xStack, yStack, zStack, speed, count)); } catch (Exception e) { e.printStackTrace(); } }
+     * try { craftPlayer.getHandle().playerConnection.sendPacket(getParticle(player.getLocation(), xStack, yStack, zStack, speed, count)); } catch (Exception e) { logtrace } }
      */
     
     // added
@@ -128,7 +129,7 @@ public enum ParticleEffectNew
      * 
      * CraftPlayer craftPlayer = (CraftPlayer) player;
      * 
-     * try { craftPlayer.getHandle().playerConnection.sendPacket(getParticle(loc, xStack, yStack, zStack, speed, count)); } catch (Exception e) { e.printStackTrace(); } }
+     * try { craftPlayer.getHandle().playerConnection.sendPacket(getParticle(loc, xStack, yStack, zStack, speed, count)); } catch (Exception e) { logtrace } }
      */
     
     /**
@@ -143,7 +144,7 @@ public enum ParticleEffectNew
      * 
      * try { for (Entity entity : location.getWorld().getEntities()) { if (entity instanceof CraftPlayer) { if (entity.getLocation().distance(location) < 333) { // Not sure what max render distance is
      * for particles, so made up 333 CraftPlayer craftPlayer = (CraftPlayer) entity; craftPlayer.getHandle().playerConnection.sendPacket(getParticle(location, xStack, yStack, zStack, speed, count)); }
-     * } } } catch (Exception e) { e.printStackTrace(); } }
+     * } } } catch (Exception e) { logtrace } }
      */
     
     /**
@@ -230,7 +231,7 @@ public enum ParticleEffectNew
         }
         catch (final Exception e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
     }
 }

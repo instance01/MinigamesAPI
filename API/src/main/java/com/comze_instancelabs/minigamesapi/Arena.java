@@ -887,11 +887,6 @@ public class Arena
                 catch (final Exception e)
                 {
                     this.logger.log(Level.WARNING, "Failed playing hologram: ", e); //$NON-NLS-1$
-                    MinigamesAPI.getAPI();
-                    if (MinigamesAPI.debug)
-                    {
-                        e.printStackTrace();
-                    }
                 }
             }, 15L);
             
@@ -1247,11 +1242,6 @@ public class Arena
             catch (final Exception e)
             {
                 this.logger.log(Level.WARNING, "Failed playing hologram:", e); //$NON-NLS-1$
-                MinigamesAPI.getAPI();
-                if (MinigamesAPI.debug)
-                {
-                    e.printStackTrace();
-                }
             }
         }, 10L);
         

@@ -17,6 +17,7 @@ package com.comze_instancelabs.minigamesapi;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -896,7 +897,7 @@ public class ArenaListener implements Listener
                                     }
                                     catch (final Exception e)
                                     {
-                                        System.out.println("Waiting lobby for arena " + a.getInternalName() + " missing, please fix by setting it. " + e.getMessage());
+                                        this.plugin.getLogger().warning("Waiting lobby for arena " + a.getInternalName() + " missing, please fix by setting it. " + e.getMessage());
                                     }
                                 }
                                 if (a.getLobbyBoundaries() != null && !a.skip_join_lobby)
@@ -956,7 +957,7 @@ public class ArenaListener implements Listener
         {
             if (MinigamesAPI.debug)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         
@@ -1076,7 +1077,6 @@ public class ArenaListener implements Listener
                     final Arena a = this.pli.global_players.get(p.getName());
                     if (a.getArenaState() != ArenaState.INGAME && a.getArcadeInstance() == null && !a.getAlwaysPvP())
                     {
-                        // System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
                         event.setCancelled(true);
                     }
                     if (this.pli.blood_effects && (a.getArenaState() == ArenaState.INGAME || a.getAlwaysPvP()) && !a.isArcadeMain())
@@ -1087,7 +1087,6 @@ public class ArenaListener implements Listener
                 this.pli.getSpectatorManager();
                 if (this.pli.containsGlobalLost(p.getName()) || SpectatorManager.isSpectating(p))
                 {
-                    // System.out.println(pli.getPlugin().getName() + " disallowed a pvp action.");
                     event.setCancelled(true);
                 }
             }
@@ -1773,7 +1772,7 @@ public class ArenaListener implements Listener
                 }
                 catch (final Exception e)
                 {
-                    e.printStackTrace();
+                    MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                     Util.sendMessage(ArenaListener.this.plugin, p, ChatColor.RED + "Failed restoring your stuff. Did the server restart/reload while you were offline?");
                 }
                 ArenaListener.this.plugin.getConfig().set("temp.left_players." + p.getName(), null);
@@ -1844,11 +1843,7 @@ public class ArenaListener implements Listener
             }
             catch (final Exception e)
             {
-                MinigamesAPI.getAPI().getLogger().warning("Error occurred while refreshing sign. " + e.getMessage());
-                if (MinigamesAPI.debug)
-                {
-                    e.printStackTrace();
-                }
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Error occurred while refreshing sign. ", e);
             }
         }
         if (MinigamesAPI.getAPI().global_party.containsKey(event.getPlayer().getName()))

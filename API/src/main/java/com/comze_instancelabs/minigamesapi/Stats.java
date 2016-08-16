@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -80,7 +81,7 @@ public class Stats
         {
             if (MinigamesAPI.debug)
             {
-                System.out.println("Failed updating SQL Stats as the player is not online anymore!");
+                this.plugin.getLogger().fine("Failed updating SQL Stats as the player is not online anymore!");
             }
         }
     }
@@ -97,7 +98,7 @@ public class Stats
         {
             if (MinigamesAPI.debug)
             {
-                System.out.println("Failed updating SQL Stats as the player is not online anymore!");
+                this.plugin.getLogger().fine("Failed updating SQL Stats as the player is not online anymore!");
             }
         }
     }
@@ -132,7 +133,7 @@ public class Stats
     {
         if (!a.getPlugin().isEnabled())
         {
-            System.out.println("Couldn't save Death/Kill SQL stats as the server stopped/restarted.");
+            this.plugin.getLogger().fine("Couldn't save Death/Kill SQL stats as the server stopped/restarted.");
             return;
         }
         // Update sql server with kills stats at the end
@@ -140,7 +141,7 @@ public class Stats
         {
             if (MinigamesAPI.debug)
             {
-                System.out.println(a.temp_kill_count.get(p.getName()));
+                this.plugin.getLogger().fine("" + a.temp_kill_count.get(p.getName())); //$NON-NLS-1$
             }
             this.pli.getSQLInstance().updateKillerStats(p, a.temp_kill_count.get(p.getName()));
             a.temp_kill_count.remove(p.getName());
@@ -150,7 +151,7 @@ public class Stats
         {
             if (MinigamesAPI.debug)
             {
-                System.out.println(a.temp_death_count.get(p.getName()));
+                this.plugin.getLogger().fine("" + a.temp_death_count.get(p.getName())); //$NON-NLS-1$
             }
             this.pli.getSQLInstance().updateDeathStats(p, a.temp_death_count.get(p.getName()));
             a.temp_death_count.remove(p.getName());
@@ -430,12 +431,12 @@ public class Stats
                     final Skull skull_ = (Skull) state;
                     skull_.setRotation(BlockFace.valueOf(dir));
                     skull_.setSkullType(SkullType.PLAYER);
-                    System.out.println(pos + " " + sorted_wins.keySet().size());
+                    this.plugin.getLogger().fine(pos + " " + sorted_wins.keySet().size());
                     if (pos <= sorted_wins.keySet().size())
                     {
                         final String name = (String) sorted_wins.keySet().toArray()[pos - 1];
                         skull_.setOwner(name);
-                        System.out.println(name);
+                        this.plugin.getLogger().fine(name);
                     }
                     skull_.update();
                 }

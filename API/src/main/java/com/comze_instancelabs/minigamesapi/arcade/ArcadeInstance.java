@@ -82,7 +82,6 @@ public class ArcadeInstance
                             if (p != null)
                             {
                                 final PluginInstance pli_ = this.minigames.get(this.currentindex);
-                                System.out.println(pli_.getPlugin().getName() + " " + this.currentarena.getInternalName() + " " + p.getName());
                                 if (this.currentarena.getArenaState() != ArenaState.INGAME && this.currentarena.getArenaState() != ArenaState.RESTARTING)
                                 {
                                     this.currentarena.joinPlayerLobby(playername, this, false, true);
@@ -333,7 +332,6 @@ public class ArcadeInstance
             // stopArcade();
             return;
         }
-        // System.out.println(delay + " " + currentindex);
         final ArcadeInstance ai = this;
         Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), () -> {
             final ArrayList<String> temp = new ArrayList<>(ArcadeInstance.this.players);

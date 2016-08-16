@@ -54,6 +54,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
+
 public class Metrics
 {
     
@@ -492,7 +494,7 @@ public class Metrics
         
         if (this.debug)
         {
-            System.out.println("[Metrics] Prepared request for " + pluginName + " uncompressed=" + uncompressed.length + " compressed=" + compressed.length);
+            plugin.getLogger().fine("[Metrics] Prepared request for " + pluginName + " uncompressed=" + uncompressed.length + " compressed=" + compressed.length);
         }
         
         // Write the data
@@ -562,7 +564,7 @@ public class Metrics
         }
         catch (final IOException e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
         finally
         {
