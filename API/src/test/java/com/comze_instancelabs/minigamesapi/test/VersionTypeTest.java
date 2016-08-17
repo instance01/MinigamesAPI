@@ -47,11 +47,12 @@ public class VersionTypeTest
         assertEquals(6, MinecraftVersionsType.V1_8.ordinal());
         assertEquals(7, MinecraftVersionsType.V1_8_R1.ordinal());
         assertEquals(8, MinecraftVersionsType.V1_8_R2.ordinal());
-        assertEquals(9, MinecraftVersionsType.V1_9.ordinal());
-        assertEquals(10, MinecraftVersionsType.V1_9_R1.ordinal());
-        assertEquals(11, MinecraftVersionsType.V1_9_R2.ordinal());
-        assertEquals(12, MinecraftVersionsType.V1_10.ordinal());
-        assertEquals(13, MinecraftVersionsType.V1_10_R1.ordinal());
+        assertEquals(9, MinecraftVersionsType.V1_8_R3.ordinal());
+        assertEquals(10, MinecraftVersionsType.V1_9.ordinal());
+        assertEquals(11, MinecraftVersionsType.V1_9_R1.ordinal());
+        assertEquals(12, MinecraftVersionsType.V1_9_R2.ordinal());
+        assertEquals(13, MinecraftVersionsType.V1_10.ordinal());
+        assertEquals(14, MinecraftVersionsType.V1_10_R1.ordinal());
     }
     
     /**
