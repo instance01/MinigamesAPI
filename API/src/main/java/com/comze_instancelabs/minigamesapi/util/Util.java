@@ -123,35 +123,42 @@ public class Util
             p.setVelocity(new Vector(0D, 0D, 0D));
             
             final Chunk chunk = l.getChunk();
-            try
+            if (MinigamesAPI.SERVER_VERSION.isBelow(MinecraftVersionsType.V1_8))
             {
-                final Method getChunkHandle = chunk.getClass().getMethod("getHandle");
-                final Method getPlayerHandle = p.getClass().getMethod("getHandle");
-                final Object handle = getPlayerHandle.invoke(p);
-                final Field playerConnection = handle.getClass().getField("playerConnection");
-                playerConnection.setAccessible(true);
-                final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Packet"));
-                final Class<?> chunkClazz = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Chunk");
-                final Object packet;
-                if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_9_R2))
-                {
-                    final Constructor<?> constr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutMapChunk").getConstructor(chunkClazz, int.class);
-                    packet = constr.newInstance(getChunkHandle.invoke(chunk), 20);
-                }
-                else
-                {
-                    final Constructor<?> constr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutMapChunk").getConstructor(chunkClazz, boolean.class, int.class);
-                    packet = constr.newInstance(getChunkHandle.invoke(chunk), true, 20);
-                }
-                sendPacket.invoke(playerConnection.get(handle), packet);
-                
-                // ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(((CraftChunk)chunk).getHandle(), true, 65535));
-                chunk.unload(true);
-                chunk.load();
+                l.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
             }
-            catch (Exception ex)
+            else
             {
-                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", ex);
+                try
+                {
+                    final Method getChunkHandle = chunk.getClass().getMethod("getHandle");
+                    final Method getPlayerHandle = p.getClass().getMethod("getHandle");
+                    final Object handle = getPlayerHandle.invoke(p);
+                    final Field playerConnection = handle.getClass().getField("playerConnection");
+                    playerConnection.setAccessible(true);
+                    final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Packet"));
+                    final Class<?> chunkClazz = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Chunk");
+                    final Object packet;
+                    if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_9_R2))
+                    {
+                        final Constructor<?> constr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutMapChunk").getConstructor(chunkClazz, int.class);
+                        packet = constr.newInstance(getChunkHandle.invoke(chunk), 20);
+                    }
+                    else
+                    {
+                        final Constructor<?> constr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutMapChunk").getConstructor(chunkClazz, boolean.class, int.class);
+                        packet = constr.newInstance(getChunkHandle.invoke(chunk), false, 20);
+                    }
+                    sendPacket.invoke(playerConnection.get(handle), packet);
+                    
+                    // ((CraftPlayer)p).getHandle().playerConnection.sendPacket(new PacketPlayOutMapChunk(((CraftChunk)chunk).getHandle(), true, 65535));
+                    chunk.unload(true);
+                    chunk.load();
+                }
+                catch (Exception ex)
+                {
+                    MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", ex);
+                }
             }
         }
         else
