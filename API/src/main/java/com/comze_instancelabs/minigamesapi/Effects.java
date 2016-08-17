@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -161,13 +162,13 @@ public class Effects
                 }
                 catch (final Exception e)
                 {
-                    e.printStackTrace();
+                    MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                 }
             }, 20L * 4);
         }
         catch (final Exception e)
         {
-            System.out.println("Failed playing fakebed effect: " + e.getMessage());
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed playing fakebed effect", e);
         }
         return null;
     }
@@ -216,7 +217,7 @@ public class Effects
             }
             catch (final Exception e)
             {
-                System.out.println("Failed additional respawn packet: " + e.getMessage());
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed additional respawn packet", e);
             }
         }, 1L);
     }
@@ -256,7 +257,7 @@ public class Effects
         }
         catch (final Exception e)
         {
-            System.out.println("Failed sending title packet: " + e.getMessage());
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed sending title packet", e);
         }
     }
     
@@ -347,7 +348,7 @@ public class Effects
                         {
                             if (MinigamesAPI.debug)
                             {
-                                e.printStackTrace();
+                                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                             }
                         }
                     }, 2L, 2L).getTaskId());
@@ -366,7 +367,7 @@ public class Effects
                         {
                             if (MinigamesAPI.debug)
                             {
-                                e.printStackTrace();
+                                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                             }
                         }
                     }, 20L * 2);
@@ -379,7 +380,7 @@ public class Effects
             {
                 if (MinigamesAPI.debug)
                 {
-                    e.printStackTrace();
+                    MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                 }
             }
             return ret;
@@ -509,7 +510,7 @@ public class Effects
                     {
                         if (MinigamesAPI.debug)
                         {
-                            e.printStackTrace();
+                            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                         }
                     }
                 }, 2L, 2L).getTaskId());
@@ -528,7 +529,7 @@ public class Effects
                     {
                         if (MinigamesAPI.debug)
                         {
-                            e.printStackTrace();
+                            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                         }
                     }
                 }, 20L * 2);
@@ -542,7 +543,7 @@ public class Effects
         {
             if (MinigamesAPI.debug)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         return ret;

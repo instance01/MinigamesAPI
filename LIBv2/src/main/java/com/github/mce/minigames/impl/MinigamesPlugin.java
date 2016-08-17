@@ -48,6 +48,7 @@ import com.github.mce.minigames.api.config.ConfigurationValueInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.sign.SignInterface;
 import com.github.mce.minigames.api.zones.ZoneInterface;
 import com.github.mce.minigames.impl.cmd.PartyCommandHandler;
 import com.github.mce.minigames.impl.cmd.StartCommandHandler;
@@ -359,6 +360,66 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
      */
     @Override
     public String resolveContextVar(String src)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#debug()
+     */
+    @Override
+    public boolean debug()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getSigns()
+     */
+    @Override
+    public Iterable<SignInterface> getSigns()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getSignForLocation(org.bukkit.Location)
+     */
+    @Override
+    public SignInterface getSignForLocation(Location l)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getSigns(com.github.mce.minigames.api.arena.ArenaTypeInterface)
+     */
+    @Override
+    public Iterable<SignInterface> getSigns(ArenaTypeInterface type)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getSigns(com.github.mce.minigames.api.arena.ArenaInterface)
+     */
+    @Override
+    public Iterable<SignInterface> getSigns(ArenaInterface arena)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getSigns(com.github.mce.minigames.api.MinigameInterface)
+     */
+    @Override
+    public Iterable<SignInterface> getSigns(MinigameInterface minigame)
     {
         // TODO Auto-generated method stub
         return null;

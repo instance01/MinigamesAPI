@@ -17,6 +17,7 @@ package com.comze_instancelabs.minigamesapi.sql;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
@@ -48,11 +49,11 @@ public class MySQL extends Database
         }
         catch (final SQLException e)
         {
-            System.out.println("Could not connect to MySQL server! Cause: " + e.getMessage());
+            MinigamesAPI.getAPI().getLogger().log(Level.SEVERE, "Could not connect to MySQL server!", e);
         }
         catch (final ClassNotFoundException e)
         {
-            System.out.println("JDBC Driver not found!");
+            MinigamesAPI.getAPI().getLogger().severe("JDBC Driver not found!");
         }
         return this.c;
     }
@@ -81,7 +82,7 @@ public class MySQL extends Database
         {
             if (MinigamesAPI.debug)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         this.c = null;

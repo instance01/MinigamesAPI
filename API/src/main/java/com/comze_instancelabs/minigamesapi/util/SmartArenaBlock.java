@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -120,7 +121,7 @@ public class SmartArenaBlock implements Serializable
         }
         if (MinigamesAPI.debug)
         {
-            System.out.println("Added smart arena block @ " + this.x + "/" + this.y + "/" + this.z + " with material " + this.m);
+            MinigamesAPI.getAPI().getLogger().fine("Added smart arena block @ " + this.x + "/" + this.y + "/" + this.z + " with material " + this.m);
         }
     }
     
@@ -254,7 +255,7 @@ public class SmartArenaBlock implements Serializable
                         }
                         catch (final Exception e)
                         {
-                            System.out.println("Failed applying enchantment to enchantment book at reset.");
+                            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed applying enchantment to enchantment book at reset.", e);
                         }
                         c_++;
                     }

@@ -16,6 +16,7 @@ package com.comze_instancelabs.minigamesapi;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -211,15 +212,13 @@ public class ArenaSetup
             {
                 method.setAccessible(true);
                 final Object ret = method.invoke(this, plugin, pli.getArenasConfig());
-                System.out.println(ret);
                 pli.clearArenas();
                 pli.addLoadedArenas((ArrayList<Arena>) ret);
             }
         }
         catch (final Exception e)
         {
-            System.out.println("Failed to update Arena list, please reload the server.");
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Failed to update Arena list, please reload the server.", e);
         }
         
         final String path = ArenaConfigStrings.ARENAS_PREFIX + arenaname + ArenaConfigStrings.DISPLAYNAME_SUFFIX;

@@ -977,7 +977,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                             }
                             catch (Exception e)
                             {
-                                e.printStackTrace();
+                                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
                             }
                             connectToServer(this, p.getName(), server);
                         }
@@ -1084,7 +1084,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
         Bukkit.getPlayer(player).sendPluginMessage(plugin, ChannelStrings.CHANNEL_BUNGEE_CORD, stream.toByteArray());
     }
@@ -1098,7 +1098,6 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         }
         final ByteArrayDataInput in = ByteStreams.newDataInput(message);
         final String subchannel = in.readUTF();
-        System.out.println(subchannel);
         if (subchannel.equals(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_BACK))
         {
             final short len = in.readShort();
@@ -1151,7 +1150,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             }
             catch (final IOException e)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         else if (subchannel.equals(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_REQUEST))
@@ -1193,7 +1192,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             }
             catch (final IOException e)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         else if (subchannel.equals(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_SIGN))
@@ -1223,7 +1222,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                     }
                 }, 10L);
             } catch (IOException e) {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
     }
@@ -1336,7 +1335,6 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                                 getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
                                 getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
                                 getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
-                        // TODO debug System.out.println(l);
                         if (l.distance(event.getBlock().getLocation()) < 1)
                         {
                             // getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".server", null);
@@ -1386,7 +1384,6 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                             ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
                             DataOutputStream msgout = new DataOutputStream(msgbytes);
                             String info = getInfoBySignLocation(s.getLocation()) + ":" + event.getPlayer().getName();
-                            System.out.println(info);
                             msgout.writeUTF(info);
                             
                             out.writeShort(msgbytes.toByteArray().length);
@@ -1396,14 +1393,12 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                         }
                         catch (Exception e)
                         {
-                            // TODO logging
-                            e.printStackTrace();
+                            this.getLogger().log(Level.WARNING, "error sending message", e);
                         }
                     }
                     catch (Exception e)
                     {
-                        // TODO Logging
-                        System.out.println("Error occurred while sending first sign request: " + e.getMessage() + " - Invalid server/minigame/arena?");
+                        this.getLogger().log(Level.WARNING, "Error occurred while sending first sign request - Invalid server/minigame/arena?", e);
                     }
                     connectToServer(this, event.getPlayer().getName(), server);
                 }
@@ -1469,12 +1464,12 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         catch (Exception e)
         {
-            System.out.println("Error occurred while sending extra sign request: " + e.getMessage());
+            this.getLogger().log(Level.WARNING,"Error occurred while sending extra sign request: ", e);
         }
     }
 
@@ -1543,12 +1538,12 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
             }
         }
         catch (Exception e)
         {
-            System.out.println("Error occurred while sending extra sign request: " + e.getMessage());
+            this.getLogger().log(Level.WARNING,"Error occurred while sending extra sign request: ", e);
         }
     }
 

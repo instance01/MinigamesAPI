@@ -15,7 +15,8 @@
 
 package com.github.mce.minigames.api.arena;
 
-import java.io.Serializable;
+import java.util.Locale;
+import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
@@ -29,6 +30,8 @@ import com.github.mce.minigames.api.util.function.MgPredicate;
 public interface ArenaInterface
 {
     
+    // arena information
+    
     /**
      * Returns the internal name of this arena.
      * 
@@ -41,7 +44,44 @@ public interface ArenaInterface
      * 
      * @return arena display name; defaults to internal name.
      */
-    Serializable getDisplayName();
+    String getDisplayName();
+    
+    /**
+     * Returns the display name for given locale.
+     * 
+     * @param locale
+     * @return arena display name; defaults to {@link #getDisplayName()}
+     */
+    String getDisplayName(Locale locale);
+    
+    /**
+     * Changes the display name
+     * 
+     * @param name
+     * @param locale
+     *            the locale to be used or {@code null} to change the default display name.
+     * @throws MinigameException
+     *             thrown if save failed.
+     */
+    void setDisplayName(String name, Locale locale) throws MinigameException;
+    
+    // states
+    
+    /**
+     * Starts the arena (forces the start if needed).
+     */
+    void start();
+    
+    // common methods
+    
+    /**
+     * Returns a logger for the library.
+     * 
+     * @return logger instance.
+     */
+    Logger getLogger();
+    
+    // stubbing
     
     /**
      * Checks this arena for given criteria and invokes either then or else statements.
@@ -66,10 +106,5 @@ public interface ArenaInterface
      * @return predicate to return {@code true} if the arena can be started.
      */
     MgPredicate<ArenaInterface> canStart();
-    
-    /**
-     * Starts the arena (forces the start if needed).
-     */
-    void start();
     
 }

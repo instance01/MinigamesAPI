@@ -15,6 +15,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -347,7 +348,7 @@ public class Rewards
                 }
                 catch (final Exception e)
                 {
-                    System.out.println("Could not find arena for broadcast. " + e.getMessage());
+                    this.plugin.getLogger().log(Level.WARNING, "Could not find arena for broadcast. ", e);
                 }
                 
                 Util.sendMessage(this.plugin, p, pli.getMessagesConfig().you_won);

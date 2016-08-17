@@ -16,6 +16,7 @@ package com.comze_instancelabs.minigamesapi.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -147,8 +148,7 @@ public class ArenaLobbyScoreboard
                 }
                 catch (final Exception e)
                 {
-                    System.out.println("Failed to set custom scoreboard: ");
-                    e.printStackTrace();
+                    pli.getPlugin().getLogger().log(Level.SEVERE, "Failed to set custom scoreboard", e);
                 }
             }
         });
@@ -165,7 +165,7 @@ public class ArenaLobbyScoreboard
         }
         catch (final Exception e)
         {
-            e.printStackTrace();
+            MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
     }
     

@@ -17,11 +17,13 @@ package com.comze_instancelabs.minigamesapi.sql;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
+import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
 public class MainSQL
 {
@@ -59,14 +61,14 @@ public class MainSQL
             }
             catch (final Exception e)
             {
-                System.out.println("Failed initializing MySQL. Disabling!");
+                plugin.getLogger().log(Level.SEVERE, "Failed initializing MySQL. Disabling!", e);
                 plugin.getConfig().set(ArenaConfigStrings.CONFIG_MYSQL_ENABLED, false);
                 plugin.saveConfig();
             }
         }
         else if (plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED) && this.MySQL == null)
         {
-            System.out.println("Failed initializing MySQL. Disabling!");
+            plugin.getLogger().severe("Failed initializing MySQL. Disabling!");
             plugin.getConfig().set(ArenaConfigStrings.CONFIG_MYSQL_ENABLED, false);
             plugin.saveConfig();
         }
@@ -111,7 +113,7 @@ public class MainSQL
         }
         catch (final SQLException e)
         {
-            e.printStackTrace();
+        	MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
     }
     
@@ -153,7 +155,7 @@ public class MainSQL
         }
         catch (final SQLException e)
         {
-            e.printStackTrace();
+        	MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
     }
     
@@ -191,7 +193,7 @@ public class MainSQL
         }
         catch (final SQLException e)
         {
-            e.printStackTrace();
+        	MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
     }
     
@@ -229,7 +231,7 @@ public class MainSQL
         }
         catch (final SQLException e)
         {
-            e.printStackTrace();
+        	MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
     }
     
@@ -267,7 +269,7 @@ public class MainSQL
         }
         catch (final SQLException e)
         {
-            e.printStackTrace();
+        	MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
         }
     }
     
@@ -298,10 +300,10 @@ public class MainSQL
                 final int credits = res3.getInt("points");
                 return credits;
             }
-            else
-            {
-                // System.out.println("New User detected.");
-            }
+//            else
+//            {
+//                // log("New User detected.");
+//            }
         }
         catch (final SQLException e)
         {
@@ -337,10 +339,10 @@ public class MainSQL
                 final int wins = res3.getInt("wins");
                 return wins;
             }
-            else
-            {
-                // System.out.println("New User detected.");
-            }
+//            else
+//            {
+//                // log("New User detected.");
+//            }
         }
         catch (final SQLException e)
         {

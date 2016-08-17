@@ -16,6 +16,7 @@
 package com.github.mce.minigames.api.player;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
@@ -36,6 +37,8 @@ import com.github.mce.minigames.api.util.function.MgPredicate;
  */
 public interface ArenaPlayerInterface
 {
+    
+    // common methods (player info)
     
     /**
      * Returns the bukkit player (if this player is online).
@@ -65,6 +68,8 @@ public interface ArenaPlayerInterface
      */
     UUID getPlayerUUID();
     
+    // localization
+    
     /**
      * Sends a message to given player.
      * 
@@ -74,6 +79,25 @@ public interface ArenaPlayerInterface
      *            arguments to use for this message.
      */
     void sendMessage(LocalizedMessageInterface msg, Serializable... args);
+    
+    /**
+     * Returns the preferred locale
+     * 
+     * @return preferred user locale or {@code null} if the player uses server default locale.
+     */
+    Locale getPreferredLocale();
+    
+    /**
+     * Sets the preferred locale for this user.
+     * 
+     * @param locale
+     *            preferred locale
+     * @throws MinigameException
+     *             thrown if there are problems saving the data.
+     */
+    void setPreferredLocale(Locale locale) throws MinigameException;
+    
+    // arena data
     
     /**
      * Returns the arena this player is currently in; within a match.
@@ -90,6 +114,15 @@ public interface ArenaPlayerInterface
     Iterable<WaitQueue> getWaitingQueues();
     
     /**
+     * Joins a waiting queue for the next match.
+     * 
+     * @param queue
+     */
+    void join(WaitQueue queue);
+    
+    // permissions check
+    
+    /**
      * Checks if the user has a permission.
      * 
      * @param perm
@@ -97,6 +130,8 @@ public interface ArenaPlayerInterface
      * @return {@code true} if the user has a permission.
      */
     boolean checkPermission(PermissionsInterface perm);
+    
+    // stubbing
     
     /**
      * Checks this player for given criteria and invokes either then or else statements.
