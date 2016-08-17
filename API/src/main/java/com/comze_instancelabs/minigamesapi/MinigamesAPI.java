@@ -409,6 +409,10 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             {
                 return MinecraftVersionsType.V1_8_R2;
             }
+            if (v.startsWith("v1_8_R3")) //$NON-NLS-1$
+            {
+                return MinecraftVersionsType.V1_8_R3;
+            }
             if (v.startsWith("v1_9_R1")) //$NON-NLS-1$
             {
                 return MinecraftVersionsType.V1_9_R1;
