@@ -61,6 +61,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
@@ -2005,8 +2006,38 @@ public class ArenaListener implements Listener
     {
         for (final Arena arena : this.pli.getArenas())
         {
-            final Cuboid c = arena.getBoundaries();
+            Cuboid c = arena.getBoundaries();
             if (c != null && c.containsLoc(evt.getLocation()))
+            {
+                evt.setCancelled(true);
+                return;
+            }
+            c = arena.getLobbyBoundaries();
+            if (c != null && c.containsLoc(evt.getLocation()))
+            {
+                evt.setCancelled(true);
+                return;
+            }
+            c = arena.getSpecBoundaries();
+            if (c != null && c.containsLoc(evt.getLocation()))
+            {
+                evt.setCancelled(true);
+                return;
+            }
+        }
+    }
+    
+    /**
+     * Deny mob movement inside arena.
+     * @param evt create spawn event.
+     */
+    @EventHandler
+    public void onMobTarget(EntityTargetEvent evt)
+    {
+        if (!(evt.getEntity() instanceof Player) && evt.getTarget() instanceof Player)
+        {
+            final Player target = (Player) evt.getTarget();
+            if (this.pli.containsGlobalPlayer(target.getName()))
             {
                 evt.setCancelled(true);
             }
