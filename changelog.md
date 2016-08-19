@@ -6,6 +6,10 @@
 
 * removed system.out.println and printstacktrace
 
+###### Minigames-API
+
+* NoSuchMethodError in Effects.playHologram for 1.9 and 1.10
+
 #### 1.14.10
 
 ###### All

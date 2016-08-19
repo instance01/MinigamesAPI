@@ -296,10 +296,10 @@ public class Effects
                 final Class<?> entity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Entity");
                 final Method getWorldHandle = craftw.getDeclaredMethod("getHandle");
                 final Object worldServer = getWorldHandle.invoke(craftw.cast(l.getWorld()));
-                Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutSpawnEntity").getConstructor(entity, int.class);
+//                Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutSpawnEntity").getConstructor(entity, int.class);
                 final Constructor<?> packetPlayOutSpawnEntityLivingConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutSpawnEntityLiving")
                         .getConstructor(Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EntityLiving"));
-                Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutAttachEntity").getConstructor(int.class, entity, entity);
+//                Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutAttachEntity").getConstructor(int.class, entity, entity);
                 final Constructor<?> packetPlayOutEntityDestroyConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutEntityDestroy")
                         .getConstructor(int[].class);
                 final Constructor<?> packetPlayOutEntityVelocity = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutEntityVelocity")
