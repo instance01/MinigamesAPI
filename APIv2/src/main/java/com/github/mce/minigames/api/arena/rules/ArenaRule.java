@@ -15,14 +15,21 @@
 
 package com.github.mce.minigames.api.arena.rules;
 
+import org.bukkit.event.Event;
+
+import com.github.mce.minigames.api.MinigameException;
+
 /**
- * Base interface for arena rule sets.
+ * A single arena rule.
  * 
  * @author mepeisen
+ * 
+ * @param <Evt> Bukkit Event class
+ * @param <MgEvt> Minigame event class
  */
-public interface ArenaRuleSet
+public interface ArenaRule<Evt extends Event, MgEvt extends MinigameEvent<Evt>>
 {
     
-    // TODO
+    void passEvent(MgEvt event) throws MinigameException;
     
 }

@@ -10,6 +10,15 @@
 
 * NoSuchMethodError in Effects.playHologram for 1.9 and 1.10
 
+###### Splegg
+
+* removed arena points, fixes https://github.com/MysticCity/MinigamesAPI/issues/81
+
+###### SeaBattle
+
+* Workaround for boat under water https://github.com/MysticCity/MinigamesAPI/issues/95
+* Workaround for deny boat movement on startup count down https://github.com/MysticCity/MinigamesAPI/issues/107
+
 #### 1.14.10
 
 ###### All
