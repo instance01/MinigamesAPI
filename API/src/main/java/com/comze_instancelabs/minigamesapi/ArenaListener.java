@@ -55,6 +55,7 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -1992,6 +1993,23 @@ public class ArenaListener implements Listener
                 ArenaListener.this.updateEntities(nearby, false);
                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(ArenaListener.this.plugin, () -> ArenaListener.this.updateEntities(nearby, true), 1);
             }, 5L);
+        }
+    }
+    
+    /**
+     * Deny mob spawn inside arena.
+     * @param evt create spawn event.
+     */
+    @EventHandler
+    public void onMobSpawn(CreatureSpawnEvent evt)
+    {
+        for (final Arena arena : this.pli.getArenas())
+        {
+            final Cuboid c = arena.getBoundaries();
+            if (c != null && c.containsLoc(evt.getLocation()))
+            {
+                evt.setCancelled(true);
+            }
         }
     }
     
