@@ -10,6 +10,10 @@
 
 * NoSuchMethodError in Effects.playHologram for 1.9 and 1.10
 
+###### Splegg
+
+removed arena points, fixes https://github.com/MysticCity/MinigamesAPI/issues/81
+
 #### 1.14.10
 
 ###### All
