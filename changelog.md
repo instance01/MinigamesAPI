@@ -9,11 +9,24 @@
 ###### Minigames-API
 
 * NoSuchMethodError in Effects.playHologram for 1.9 and 1.10
+* Spawns of living entites inside arenas is now forbidden. No more need of worldguard etc (https://github.com/MysticCity/MinigamesAPI/issues/79)
+
+###### BedWars
+
+* Spawning villagers inside BedWars arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
 
 ###### BowBash
 
 * fixed console spams of "Cancelled powerup task"
 * fixed powerup task error (https://github.com/MysticCity/MinigamesAPI/issues/104)
+
+###### HorseRacingPlus
+
+* Spawning horses inside HroseRacingPlus arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
+
+###### MobEscape
+
+* Spawning witches and dragons inside MobEscape arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
 
 ###### Snake
 
@@ -23,6 +36,7 @@
 
 * removed arena points, fixes https://github.com/MysticCity/MinigamesAPI/issues/81
 * fixed powerup task error (https://github.com/MysticCity/MinigamesAPI/issues/104)
+* Spawning slime and sheeps inside Snake arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
 
 ###### SeaBattle
 
