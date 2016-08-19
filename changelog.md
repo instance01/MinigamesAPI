@@ -19,6 +19,18 @@
 * Workaround for boat under water https://github.com/MysticCity/MinigamesAPI/issues/95
 * Workaround for deny boat movement on startup count down https://github.com/MysticCity/MinigamesAPI/issues/107
 
+##### Warlock
+
+* fixed non-generated arena on first arena start (https://github.com/MysticCity/MinigamesAPI/issues/83)
+
+##### Warlock-Tactical
+
+* fixed non-generated arena on first arena start (https://github.com/MysticCity/MinigamesAPI/issues/83)
+
+##### TrapdoorSpleef
+
+* fixed non-generated arena on first arena start (https://github.com/MysticCity/MinigamesAPI/issues/83)
+
 #### 1.14.10
 
 ###### All
