@@ -13,16 +13,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena.rules;
+package com.github.mce.minigames.api.arena.rules.bevents;
+
+import org.bukkit.event.inventory.InventoryOpenEvent;
+
+import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Base interface for arena rule sets.
+ * Block break event.
  * 
  * @author mepeisen
  */
-public interface ArenaRuleSet
+public interface MinigameInventoryOpenEvent extends MinigameEvent<InventoryOpenEvent>
 {
     
-    // TODO
+    // TODO default stubbings
     
 }
