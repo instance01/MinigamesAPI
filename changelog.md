@@ -10,14 +10,38 @@
 
 * NoSuchMethodError in Effects.playHologram for 1.9 and 1.10
 
+###### BowBash
+
+* fixed console spams of "Cancelled powerup task"
+* fixed powerup task error (https://github.com/MysticCity/MinigamesAPI/issues/104)
+
+###### Snake
+
+* fixed powerup task error (https://github.com/MysticCity/MinigamesAPI/issues/104)
+
 ###### Splegg
 
 * removed arena points, fixes https://github.com/MysticCity/MinigamesAPI/issues/81
+* fixed powerup task error (https://github.com/MysticCity/MinigamesAPI/issues/104)
 
 ###### SeaBattle
 
 * Workaround for boat under water https://github.com/MysticCity/MinigamesAPI/issues/95
 * Workaround for deny boat movement on startup count down https://github.com/MysticCity/MinigamesAPI/issues/107
+
+##### TrapdoorSpleef
+
+* fixed non-generated arena on first arena start (https://github.com/MysticCity/MinigamesAPI/issues/83)
+
+##### Warlock
+
+* fixed non-generated arena on first arena start (https://github.com/MysticCity/MinigamesAPI/issues/83)
+
+##### Warlock-Tactical
+
+* fixed non-generated arena on first arena start (https://github.com/MysticCity/MinigamesAPI/issues/83)
+
+
 
 #### 1.14.10
 
@@ -33,6 +57,8 @@
 ###### DeathRun
 
 * Fixed falling blocks animation
+
+
 
 #### 1.14.9
 
