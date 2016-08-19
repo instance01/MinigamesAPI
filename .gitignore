@@ -1,7 +1,4 @@
-.settings
 bin
-.classpath
-.project
 *.bak
 *.rar
 *.zip
