@@ -132,6 +132,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
             // because in constructor we neither are in wrong state
             // nor do we already know the 'core' minigame
             ex.printStackTrace();
+            // TODO
         }
     }
     
