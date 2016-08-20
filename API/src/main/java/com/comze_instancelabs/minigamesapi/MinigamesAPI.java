@@ -20,9 +20,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -41,6 +45,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -179,6 +184,12 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
      */
     Metrics                                           metrics;
     
+    /** the current motd */
+    private String motd;
+    
+    /** suppliers or the motd strings. */
+    private Iterator<Supplier<String>> motdStrings = Collections.emptyIterator();
+    
     @Override
     public void onEnable()
     {
@@ -209,6 +220,15 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         this.getConfig().addDefault(PluginConfigStrings.PERMISSION_GUN_PREFIX, "ancient.core.guns"); //$NON-NLS-1$
         this.getConfig().addDefault(PluginConfigStrings.PERMISSION_SHOP_PREFIX, "ancient.core.shopitems"); //$NON-NLS-1$
         this.getConfig().addDefault(PluginConfigStrings.PERMISSION_GAME_PREFIX, "ancient."); //$NON-NLS-1$
+        
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_ENABLED, false);
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_ROTATION_SECONDS, 15);
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_TEXT, "<minigame> arena <arena> <state>: <players>/<maxplayers>"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_STATE_JOIN, "JOIN"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_STATE_STARTING, "STARTING"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_STATE_INGAME, "INGAME"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_STATE_RESTARTING, "RESTARTING"); //$NON-NLS-1$
+        this.getConfig().addDefault(PluginConfigStrings.MOTD_STATE_DISABLED, "DISABLED"); //$NON-NLS-1$
         
         for (final ArenaState state : ArenaState.values())
         {
@@ -305,6 +325,71 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 }
             }
         }, 0, 20 * this.getConfig().getInt(PluginConfigStrings.SIGNS_UPDATE_TIME));
+        
+        if (this.getConfig().getBoolean(PluginConfigStrings.MOTD_ENABLED))
+        {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+                if (this.motdStrings.hasNext())
+                {
+                    this.motd = this.motdStrings.next().get();
+                }
+                else
+                {
+                    final List<Supplier<String>> suppliers = new ArrayList<>();
+                    for (final PluginInstance pli : MinigamesAPI.pinstances.values())
+                    {
+                        for (final Arena arena : pli.getArenas())
+                        {
+                            suppliers.add(() -> {
+                                String motdString = getConfig().getString(PluginConfigStrings.MOTD_TEXT);
+                                String stateString = null;
+                                if (arena.isSuccessfullyInit() && pli.arenaSetup.getArenaEnabled(pli.getPlugin(), arena.getInternalName()))
+                                {
+                                    switch (arena.getArenaState())
+                                    {
+                                        case INGAME:
+                                            stateString = getConfig().getString(PluginConfigStrings.MOTD_STATE_INGAME);
+                                            break;
+                                        case JOIN:
+                                            stateString = getConfig().getString(PluginConfigStrings.MOTD_STATE_JOIN);
+                                            break;
+                                        case RESTARTING:
+                                            stateString = getConfig().getString(PluginConfigStrings.MOTD_STATE_RESTARTING);
+                                            break;
+                                        case STARTING:
+                                            stateString = getConfig().getString(PluginConfigStrings.MOTD_STATE_STARTING);
+                                            break;
+                                        default:
+                                            stateString = getConfig().getString(PluginConfigStrings.MOTD_STATE_DISABLED);
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    stateString = getConfig().getString(PluginConfigStrings.MOTD_STATE_DISABLED);
+                                }
+                                motdString = motdString.replace("<minigame>", arena.getPluginInstance().getPlugin().getDescription().getName());
+                                motdString = motdString.replace("<arena>", arena.getDisplayName());
+                                motdString = motdString.replace("<state>", stateString);
+                                motdString = motdString.replace("<players>", String.valueOf(arena.getAllPlayers().size()));
+                                motdString = motdString.replace("<minplayers>", String.valueOf(arena.getMinPlayers()));
+                                motdString = motdString.replace("<maxplayers>", String.valueOf(arena.getMaxPlayers()));
+                                return motdString;
+                            });
+                        }
+                    }
+                    this.motdStrings = suppliers.iterator();
+                    if (this.motdStrings.hasNext())
+                    {
+                        this.motd = this.motdStrings.next().get();
+                    }
+                    else
+                    {
+                        this.motd = null;
+                    }
+                }
+            }, 0, 20 * this.getConfig().getInt(PluginConfigStrings.MOTD_ROTATION_SECONDS));
+        }
         
         Bukkit.getPluginManager().registerEvents(this, this);
     }
@@ -1611,6 +1696,15 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             }
         }
         return "";
+    }
+    
+    @EventHandler
+    public void onServerPing(ServerListPingEvent evt)
+    {
+        if (this.motd != null)
+        {
+            evt.setMotd(this.motd);
+        }
     }
     
 }
