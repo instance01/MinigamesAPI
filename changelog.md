@@ -31,6 +31,7 @@
 ###### MobEscape
 
 * Spawning witches and dragons inside MobEscape arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
+* Added new arena config option for falling-block-ratio, see https://github.com/MysticCity/MinigamesAPI/wiki/MGMobEscape for details (https://github.com/MysticCity/MinigamesAPI/issues/64)
 
 ###### SkyWars
 
