@@ -11,6 +11,7 @@
 * NoSuchMethodError in Effects.playHologram for 1.9 and 1.10
 * Spawns of living entites inside arenas is now forbidden. No more need of worldguard etc (https://github.com/MysticCity/MinigamesAPI/issues/79)
 * Players being inside arenas or waiting lobby can no longer be attacked by mobs.
+* Effects.playOutTitle fixed (https://github.com/MysticCity/MinigamesAPI/issues/112)
 
 ###### BedWars
 

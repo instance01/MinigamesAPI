@@ -34,6 +34,9 @@ import org.bukkit.scheduler.BukkitTask;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
+import net.minecraft.server.v1_10_R1.ChatComponentText;
+import net.minecraft.server.v1_10_R1.IChatBaseComponent.ChatSerializer;
+
 /**
  * Particle/Animation helper.
  * 
@@ -245,13 +248,24 @@ public class Effects
             final Field playerConnection = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EntityPlayer").getField("playerConnection");
             playerConnection.setAccessible(true);
             final Method sendPacket = playerConnection.getType().getMethod("sendPacket", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".Packet"));
-            final Method a = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".ChatSerializer").getMethod("a", String.class);
+            Class<?> enumClass = null;
+            Object chatComp = null;
+            if (MinigamesAPI.SERVER_VERSION.isBelow(MinecraftVersionsType.V1_8_R2))
+            {
+                Method a = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".ChatSerializer").getMethod("a", String.class);
+                enumClass = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EnumTitleAction");
+                chatComp = a.invoke(null, "{text:\"" + title + "\"}");
+            }
+            else
+            {
+                enumClass = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutTitle$EnumTitleAction");
+                chatComp = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".ChatComponentText").getConstructor(String.class).newInstance(title);
+            }
             
             final Constructor<?> packetPlayOutTitleConstr = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".PacketPlayOutTitle").getConstructor();
-            
             final Object packet = packetPlayOutTitleConstr.newInstance();
-            Effects.setValue(packet, "a", Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".EnumTitleAction").getEnumConstants()[enumindex]);
-            Effects.setValue(packet, "b", a.invoke(null, "{text:\"" + title + "\"}"));
+            Effects.setValue(packet, "a", enumClass.getEnumConstants()[enumindex]);
+            Effects.setValue(packet, "b", chatComp);
             
             sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packet);
         }
