@@ -78,6 +78,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -853,6 +854,64 @@ public class ArenaListener implements Listener
      *            the player move event.
      */
     @EventHandler(priority = EventPriority.HIGHEST)
+    public void onVMove(final VehicleMoveEvent event)
+    {
+        if (event.getVehicle().getPassenger() instanceof Player)
+        {
+            final Player p = (Player) event.getVehicle().getPassenger();
+            if (this.pli.containsGlobalPlayer(p.getName()))
+            {
+                final Arena a = this.pli.global_players.get(p.getName());
+                if (!this.pli.containsGlobalLost(p.getName()) && !this.pli.global_arcade_spectator.containsKey(p.getName()))
+                {
+                    if (a.getArenaState() == ArenaState.INGAME)
+                    {
+                        if (MinigamesAPI.debug)
+                        {
+                            plugin.getLogger().log(Level.INFO, "Player " + p + " moved ingame to " + event.getTo());
+                        }
+                        if (event.getTo().getBlockY() + this.loseY < a.getSpawns().get(0).getBlockY())
+                        {
+//                            if (a.getArenaType() == ArenaType.JUMPNRUN)
+//                            {
+//                                Util.teleportPlayerFixed(p, a.getSpawns().get(0));
+//                            }
+//                            else
+//                            {
+//                                a.spectate(p.getName());
+//                            }
+                            a.spectate(p.getName());
+                            return;
+                        }
+                        if (a.getBoundaries() != null)
+                        {
+                            if (!a.getBoundaries().containsLocWithoutY(event.getTo()))
+                            {
+                                if (MinigamesAPI.debug)
+                                {
+                                    plugin.getLogger().log(Level.INFO, "Player " + p + " left arena bounds.");
+                                }
+                                a.spectate(p.getName());
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Fetches player move event.
+     * 
+     * <p>
+     * TODO describe what this event is doing.
+     * </p>
+     * 
+     * @param event
+     *            the player move event.
+     */
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onMove(final PlayerMoveEvent event)
     {
         try
@@ -865,6 +924,10 @@ public class ArenaListener implements Listener
                 {
                     if (a.getArenaState() == ArenaState.INGAME)
                     {
+                        if (MinigamesAPI.debug)
+                        {
+                            plugin.getLogger().log(Level.INFO, "Player " + p + " moved ingame to " + p.getLocation());
+                        }
                         if (p.getLocation().getBlockY() + this.loseY < a.getSpawns().get(0).getBlockY())
                         {
                             if (a.getArenaType() == ArenaType.JUMPNRUN)
@@ -881,6 +944,10 @@ public class ArenaListener implements Listener
                         {
                             if (!a.getBoundaries().containsLocWithoutY(p.getLocation()))
                             {
+                                if (MinigamesAPI.debug)
+                                {
+                                    plugin.getLogger().log(Level.INFO, "Player " + p + " left arena bounds.");
+                                }
                                 Util.pushBack(a.getSpawns().get(0), p);
                             }
                         }

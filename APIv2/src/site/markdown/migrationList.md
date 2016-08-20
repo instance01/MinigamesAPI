@@ -264,6 +264,7 @@
 - [ ] void onPaintingBreak(final HangingBreakByEntityEvent event)
 - [ ] void Space(final PlayerMoveEvent event)
 - [ ] void onMove(final PlayerMoveEvent event)
+- [ ] void onVMove(final VehicleMoveEvent event)
 - [ ] void onPlayerDeath(final PlayerDeathEvent event)
 - [ ] void onEntityDamage(final EntityDamageEvent event)
 - [ ] void onEntityDamageByEntity(final EntityDamageByEntityEvent event)
