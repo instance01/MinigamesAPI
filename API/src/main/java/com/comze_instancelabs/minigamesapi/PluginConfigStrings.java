@@ -49,6 +49,46 @@ public interface PluginConfigStrings
     String POST_METRICS = "config.post_metrics"; //$NON-NLS-1$
     
     /**
+     * flag for enabling motd manipulation.
+     */
+    String MOTD_ENABLED = "config.motd.enabled"; //$NON-NLS-1$
+    
+    /**
+     * seconds to rotate from arena to arena.
+     */
+    String MOTD_ROTATION_SECONDS = "config.motd.rotation"; //$NON-NLS-1$
+    
+    /**
+     * string to set for motd
+     */
+    String MOTD_TEXT = "config.motd.text"; //$NON-NLS-1$
+    
+    /**
+     * string for motd state text
+     */
+    String MOTD_STATE_JOIN = "config.motd.state.join"; //$NON-NLS-1$
+    
+    /**
+     * string for motd state text
+     */
+    String MOTD_STATE_STARTING = "config.motd.state.starting"; //$NON-NLS-1$
+    
+    /**
+     * string for motd state text
+     */
+    String MOTD_STATE_INGAME = "config.motd.state.ingame"; //$NON-NLS-1$
+    
+    /**
+     * string for motd state text
+     */
+    String MOTD_STATE_RESTARTING = "config.motd.state.restarting"; //$NON-NLS-1$
+    
+    /**
+     * string for motd state text
+     */
+    String MOTD_STATE_DISABLED = "config.motd.state.disabled"; //$NON-NLS-1$
+    
+    /**
      * Prefix for core permissions.
      */
     String PERMISSION_PREFIX = "config.permissions_prefix"; //$NON-NLS-1$

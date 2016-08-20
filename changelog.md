@@ -12,6 +12,7 @@
 * Spawns of living entites inside arenas is now forbidden. No more need of worldguard etc (https://github.com/MysticCity/MinigamesAPI/issues/79)
 * Players being inside arenas or waiting lobby can no longer be attacked by mobs.
 * Effects.playOutTitle fixed (https://github.com/MysticCity/MinigamesAPI/issues/112)
+* Feature for displaying arena states in MOTD. See config.yml of Minigames-LIB, enable at config.motd.enabled (https://github.com/MysticCity/MinigamesAPI/issues/54)
 
 ###### BedWars
 

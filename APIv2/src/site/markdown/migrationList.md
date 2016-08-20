@@ -277,6 +277,8 @@
 - [ ] void onChat(final AsyncPlayerChatEvent event)
 - [ ] void onPlayerCommandPreprocessEvent(final PlayerCommandPreprocessEvent event)
 - [ ] void onPlayerTeleport(final PlayerTeleportEvent event)
+- [ ] void onMobSpawn(CreatureSpawnEvent evt)
+- [ ] void onMobTarget(EntityTargetEvent evt)
 - [ ] boolean isSpectating(final Player p)
 - [ ] List<Entity> getEntitiesByLocation(final Location loc, final double d)
 - [ ] boolean checkLocationMatchesSign(final Location l, final Sign s)
@@ -510,6 +512,8 @@
 - [X] boolean below1710
     > no replacement, check com.github.mce.minigames.api.MglibInterface.getMinecraftVersion() against 1.7.10 
 - [ ] Metrics metrics
+- [ ] String motd
+- [ ] Iterator motdStrings
 - [ ] void onEnable()
 - [ ] boolean crackshotAvailable()
 - [ ] boolean economyAvailable()
@@ -556,6 +560,7 @@
 - [ ] void updateSign(String mg, String arenaname, String arenastate, SignChangeEvent event)
 - [ ] String getServerBySignLocation(Location sign)
 - [ ] String getInfoBySignLocation(Location sign)
+- [ ] void onServerPing(ServerListPingEvent evt)
 
 ## Party.java
 
@@ -587,6 +592,14 @@
 - [ ] String PERMISSION\_GUN\_PREFIX
 - [ ] String PERMISSION\_SHOP\_PREFIX
 - [ ] String PERMISSION\_GAME\_PREFIX
+- [ ] String MOTD\_ENABLED
+- [ ] String MOTD\_ROTATION\_SECONDS
+- [ ] String MOTD\_TEXT\_SECONDS
+- [ ] String MOTD\_STATE\_JOIN
+- [ ] String MOTD\_STATE\_STARTING
+- [ ] String MOTD\_STATE\_INGAME
+- [ ] String MOTD\_STATE\_RESETTING
+- [ ] String MOTD\_STATE\_DISABLED
 
 ## PluginInstance.java
 
