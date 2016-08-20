@@ -13,6 +13,7 @@
 * Players being inside arenas or waiting lobby can no longer be attacked by mobs.
 * Effects.playOutTitle fixed (https://github.com/MysticCity/MinigamesAPI/issues/112)
 * Feature for displaying arena states in MOTD. See config.yml of Minigames-LIB, enable at config.motd.enabled (https://github.com/MysticCity/MinigamesAPI/issues/54)
+* Players in vehicles can not longer leave arena bounds (https://github.com/MysticCity/MinigamesAPI/issues/78)
 
 ###### BedWars
 
@@ -31,6 +32,10 @@
 
 * Spawning witches and dragons inside MobEscape arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
 
+###### SkyWars
+
+* Players in vehicles can not longer leave arena bounds (https://github.com/MysticCity/MinigamesAPI/issues/78)
+
 ###### Snake
 
 * fixed powerup task error (https://github.com/MysticCity/MinigamesAPI/issues/104)
@@ -45,6 +50,7 @@
 
 * Workaround for boat under water https://github.com/MysticCity/MinigamesAPI/issues/95
 * Workaround for deny boat movement on startup count down https://github.com/MysticCity/MinigamesAPI/issues/107
+* Players in vehicles can not longer leave arena bounds (https://github.com/MysticCity/MinigamesAPI/issues/78)
 
 ##### TrapdoorSpleef
 
