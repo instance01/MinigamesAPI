@@ -87,4 +87,12 @@ public interface MinigameInterface
      */
     ConfigurationSection getConfig(String file);
     
+    /**
+     * Saves the configuration for given file.
+     * 
+     * @param file
+     *            configuration file name.
+     */
+    void saveConfig(String file);
+    
 }

@@ -17,6 +17,7 @@ package com.github.mce.minigames.api.locale;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.function.BiFunction;
 
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigameInterface;
@@ -26,7 +27,7 @@ import com.github.mce.minigames.api.MinigameInterface;
  * 
  * @author mepeisen
  */
-public interface LocalizedMessageInterface
+public interface LocalizedMessageInterface extends Serializable
 {
     
     /**
@@ -37,7 +38,7 @@ public interface LocalizedMessageInterface
     {
         try
         {
-            final LocalizedMessage msg = this.getClass().getField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
             return msg.severity();
         }
         catch (NoSuchFieldException ex)
@@ -60,7 +61,7 @@ public interface LocalizedMessageInterface
         try
         {
             final LocalizedMessages msgs = this.getClass().getAnnotation(LocalizedMessages.class);
-            final LocalizedMessage msg = this.getClass().getField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
             if (msgs == null || msg == null)
             {
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
@@ -73,6 +74,7 @@ public interface LocalizedMessageInterface
             }
             
             final String smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
+            // TODO Convert DynamicArg, see toArg()
             return String.format(smsg, (Object[])args);
         }
         catch (NoSuchFieldException ex)
@@ -95,7 +97,7 @@ public interface LocalizedMessageInterface
         try
         {
             final LocalizedMessages msgs = this.getClass().getAnnotation(LocalizedMessages.class);
-            final LocalizedMessage msg = this.getClass().getField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
             if (msgs == null || msg == null)
             {
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
@@ -112,12 +114,32 @@ public interface LocalizedMessageInterface
             {
                 smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
             }
+            // TODO Convert DynamicArg, see toArg()
             return String.format(smsg, (Object[])args);
         }
         catch (NoSuchFieldException ex)
         {
             throw new IllegalStateException(ex);
         }
+    }
+    
+    /**
+     * Converts this message to a string function
+     * @param args arguments to use.
+     * @return ths string function
+     */
+    default DynamicArg toArg(Serializable... args)
+    {
+        return (loc, isAdmin) -> isAdmin ? this.toAdminMessage(loc, args) : this.toUserMessage(loc, args);
+    }
+    
+    /**
+     * Helper interface for dynamic arguments.
+     */
+    @FunctionalInterface
+    interface DynamicArg extends BiFunction<Locale, Boolean, String>, Serializable
+    {
+        // marker only
     }
     
 }

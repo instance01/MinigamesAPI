@@ -45,7 +45,7 @@ class ConfigurationTool
         try
         {
             final ConfigurationValues configs = val.getClass().getAnnotation(ConfigurationValues.class);
-            final Annot config = val.getClass().getField(((Enum<?>) val).name()).getAnnotation(clazz);
+            final Annot config = val.getClass().getDeclaredField(((Enum<?>) val).name()).getAnnotation(clazz);
             if (configs == null || config == null)
             {
                 throw new IllegalStateException("Invalid configuration class."); //$NON-NLS-1$
@@ -150,7 +150,7 @@ class ConfigurationTool
         try
         {
             final ConfigurationValues configs = val.getClass().getAnnotation(ConfigurationValues.class);
-            final Annot config = val.getClass().getField(((Enum<?>) val).name()).getAnnotation(clazz);
+            final Annot config = val.getClass().getDeclaredField(((Enum<?>) val).name()).getAnnotation(clazz);
             if (configs == null || config == null)
             {
                 throw new IllegalStateException("Invalid configuration class."); //$NON-NLS-1$
@@ -259,7 +259,7 @@ class ConfigurationTool
     {
         try
         {
-            final Field field = val.getClass().getField(((Enum<?>) val).name());
+            final Field field = val.getClass().getDeclaredField(((Enum<?>) val).name());
             return field.getAnnotation(clazz) != null;
         }
         catch (Exception ex)

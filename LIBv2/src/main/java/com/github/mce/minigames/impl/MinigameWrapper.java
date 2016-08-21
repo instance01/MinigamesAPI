@@ -98,5 +98,15 @@ class MinigameWrapper implements MinigameInterface
         // TODO Auto-generated method stub
         return null;
     }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MinigameInterface#saveConfig(java.lang.String)
+     */
+    @Override
+    public void saveConfig(String file)
+    {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

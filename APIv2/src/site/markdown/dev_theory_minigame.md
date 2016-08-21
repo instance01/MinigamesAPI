@@ -20,7 +20,7 @@ A minigame has an unique name (='lms') to identify it internally in the minecraf
     
     com.github.mce.minigames.api.MglibInterface.register(PluginProviderInterface)
     
-A plugin may create multiple minigames if it likes to.
+A plugin must not create multiple minigames.
 
 Having a look at the PluginProviderInterface you will see that a minigame is made of several helpers.
 

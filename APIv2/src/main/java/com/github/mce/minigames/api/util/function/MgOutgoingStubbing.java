@@ -35,57 +35,64 @@ public interface MgOutgoingStubbing<T>
      * 
      * @param consumer
      * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
      */
-    MgOutgoingStubbing<T> then(MgConsumer<T> consumer);
+    MgOutgoingStubbing<T> then(MgConsumer<T> consumer) throws MinigameException;
     
     /**
      * Let us throw an exception if the condition meets the criteria.
      * 
      * @param consumer
      * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
      */
-    MgOutgoingStubbing<T> thenThrow(MgFunction<T, MinigameException> consumer);
+    MgOutgoingStubbing<T> thenThrow(MgFunction<T, MinigameException> consumer) throws MinigameException;
     
     /**
      * Let us throw an exception if the condition meets the criteria.
      * 
      * @param code
      * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
      */
-    MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code);
+    MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code) throws MinigameException;
+    
+    /**
+     * Let us throw an exception if the condition meets the criteria.
+     * 
+     * @param code
+     * @param args
+     * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
+     */
+    MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args) throws MinigameException;
     
     /**
      * Let the given consumer be invoked if the condition does not meet the criteria.
      * 
      * @param consumer
      * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
      */
-    MgOutgoingStubbing<T> _else(MgConsumer<T> consumer);
-    
-    /**
-     * Let the given consumer be invoked if the condition does not meet the criteria.
-     * 
-     * @param consumer
-     * @param args
-     * @return this object for chaining additional then or else consumers.
-     */
-    MgOutgoingStubbing<T> _else(MgConsumer<T> consumer, MgFunction<T, Serializable[]> args);
+    MgOutgoingStubbing<T> _else(MgConsumer<T> consumer) throws MinigameException;
     
     /**
      * Let us throw an exception if the condition does not meet the criteria.
      * 
      * @param consumer
      * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
      */
-    MgOutgoingStubbing<T> _elseThrow(MgFunction<T, MinigameException> consumer);
+    MgOutgoingStubbing<T> _elseThrow(MgFunction<T, MinigameException> consumer) throws MinigameException;
     
     /**
      * Let us throw an exception if the condition does not meet the criteria.
      * 
      * @param code
      * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
      */
-    MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code);
+    MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code) throws MinigameException;
     
     /**
      * Let us throw an exception if the condition does not meet the criteria.
@@ -93,7 +100,8 @@ public interface MgOutgoingStubbing<T>
      * @param code
      * @param args
      * @return this object for chaining additional then or else consumers.
+     * @throws MinigameException 
      */
-    MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args);
+    MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args) throws MinigameException;
     
 }

@@ -26,7 +26,8 @@
 
 ###### HorseRacingPlus
 
-* Spawning horses inside HroseRacingPlus arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
+* Spawning horses inside HorseRacingPlus arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
+* Started migration to MinigamesLib (https://github.com/MysticCity/MinigamesAPI/issues/12)
 
 ###### MobEscape
 
