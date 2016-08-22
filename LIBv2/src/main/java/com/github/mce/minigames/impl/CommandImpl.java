@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.impl;
 
+import java.util.Arrays;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -109,6 +111,13 @@ public class CommandImpl implements CommandInterface
     public String getLabel()
     {
         return this.label;
+    }
+
+    @Override
+    public CommandInterface consumeArgs(int count)
+    {
+        final String[] args2 = Arrays.copyOfRange(this.args, count, this.args.length);
+        return new CommandImpl(this.sender, this.plugin, this.command, this.label, args2);
     }
     
     @Override

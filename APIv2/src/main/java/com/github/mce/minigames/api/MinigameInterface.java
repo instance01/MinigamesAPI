@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 
 /**
@@ -54,7 +54,7 @@ public interface MinigameInterface
      * 
      * @return arena types.
      */
-    Iterable<ArenaTypeInterface> getDeclaredTypes();
+    Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes();
     
     /**
      * Returns all declared arenas within this minigame.

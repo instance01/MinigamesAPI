@@ -13,57 +13,57 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.impl.cmd;
+package com.github.mce.minigames.api.cmd;
 
-import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
-import com.github.mce.minigames.api.cmd.CommandInterface;
-import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
-import com.github.mce.minigames.api.config.CommonConfig;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
- * A handler for the /party command.
+ * Prints help based on single sub command handlers.
  * 
  * @author mepeisen
+ *
  */
-public class PartyCommandHandler extends AbstractCompositeCommandHandler implements SubCommandHandlerInterface
+public class HelpCommandHandler implements SubCommandHandlerInterface
 {
     
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * @param command
+     *            the underlying command for the help.
      */
-    public PartyCommandHandler()
+    public HelpCommandHandler(SubCommandHandlerInterface command)
     {
-        this.subCommands.put("invite", new PartyInviteCommandHandler()); //$NON-NLS-1$
-        this.subCommands.put("accept", new PartyAcceptCommandHandler()); //$NON-NLS-1$
-        this.subCommands.put("kick", new PartyKickCommandHandler()); //$NON-NLS-1$
-        this.subCommands.put("list", new PartyListCommandHandler()); //$NON-NLS-1$
-        this.subCommands.put("disband", new PartyDisbandCommandHandler()); //$NON-NLS-1$
-        this.subCommands.put("leave", new PartyLeaveCommandHandler()); //$NON-NLS-1$
+        // TODO Auto-generated constructor stub
     }
     
-    @Override
-    protected boolean pre(CommandInterface command) throws MinigameException
+    /**
+     * Constructor.
+     * 
+     * @param command
+     *            the underlying command for the help.
+     */
+    public HelpCommandHandler(AbstractCompositeCommandHandler command)
     {
-        if (!CommonConfig.PartyCommandEnabled.getBoolean())
-        {
-            throw new MinigameException(CommonErrors.PartyCommandDisabled);
-        }
-        
-        return super.pre(command);
+        // TODO Auto-generated constructor stub
     }
-
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#handle(com.github.mce.minigames.api.cmd.CommandInterface)
+     */
     @Override
-    protected void sendUsage(CommandInterface command, ArenaPlayerInterface player)
+    public void handle(CommandInterface command) throws MinigameException
     {
         // TODO Auto-generated method stub
         
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription()
      */
     @Override
@@ -72,8 +72,10 @@ public class PartyCommandHandler extends AbstractCompositeCommandHandler impleme
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription()
      */
     @Override

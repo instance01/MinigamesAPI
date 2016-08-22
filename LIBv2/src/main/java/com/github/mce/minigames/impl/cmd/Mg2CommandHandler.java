@@ -15,50 +15,34 @@
 
 package com.github.mce.minigames.impl.cmd;
 
-import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
-import static com.github.mce.minigames.api.player.ArenaPlayerInterface.hasPerm;
-import static com.github.mce.minigames.api.player.ArenaPlayerInterface.isInArena;
-
-import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
-import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
+import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
-import com.github.mce.minigames.api.perms.CommonPermissions;
+import com.github.mce.minigames.api.cmd.HelpCommandHandler;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
- * A handler for the /start command.
+ * A handler for the /mg2 command.
  * 
  * @author mepeisen
  */
-public class Mg2CommandHandler implements CommandHandlerInterface
+public class Mg2CommandHandler extends AbstractCompositeCommandHandler
 {
     
-    @Override
-    public void handle(CommandInterface command) throws MinigameException
+    /**
+     * Constructor to create the mg2 command handler.
+     */
+    public Mg2CommandHandler()
     {
-        // TODO
-        // only in-game
-        command.when(isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
-
-        // check permission
-        final ArenaPlayerInterface player = command.getPlayer();
-        player.when(hasPerm(CommonPermissions.start).negate()).thenThrow(CommonErrors.NoPermissionForStart);
-        
-        // only inside arena
-        player.when(isInArena().negate()).thenThrow(CommonErrors.StartNotWithinArena);
-        
-        // check if the arena can be started directly
-        final ArenaInterface arena = player.getArena();
-        arena.when(arena.canStart().negate()).thenThrow(CommonErrors.CannotStart);
-        
-        // start it, log and send success message
-        MglibInterface.INSTANCE.get().getLogger().info("Arena " + arena.getInternalName() + " started because of start command from player " + player.getName()); //$NON-NLS-1$//$NON-NLS-2$
-        arena.start();
-        player.sendMessage(CommonMessages.ArenaStartedByCommand, arena.getDisplayName(), player.getName());
+        this.injectSubCommand("party", new PartyCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("help", new HelpCommandHandler(this)); //$NON-NLS-1$
+        // TODO additional commands
+    }
+    
+    @Override
+    protected void sendUsage(CommandInterface command, ArenaPlayerInterface player)
+    {
+        player.sendMessage(CommonMessages.Mg2CommandUsage);
     }
     
 }

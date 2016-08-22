@@ -68,6 +68,15 @@ public interface CommandInterface
     String[] getArgs();
     
     /**
+     * Returns a new command interface consuming given amount of arguments.
+     * 
+     * @param count
+     *            number of arguments to consume
+     * @return new command interface containing remaining arguments.
+     */
+    CommandInterface consumeArgs(int count);
+    
+    /**
      * Checks this command for given criteria and invokes either then or else statements.
      * 
      * <p>

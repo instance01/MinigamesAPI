@@ -42,4 +42,12 @@ public enum CommonMessages implements LocalizedMessageInterface
     @LocalizedMessage(defaultMessage = "Arena %0$s was started by player: %1$s.", severity = MessageSeverityType.Success)
     ArenaStartedByCommand,
     
+    /**
+     * Mg2 command usage.
+     * 
+     * <p>No arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = "&7Type &9/mg2 help &7for detailed help", severity = MessageSeverityType.Success)
+    Mg2CommandUsage,
+    
 }

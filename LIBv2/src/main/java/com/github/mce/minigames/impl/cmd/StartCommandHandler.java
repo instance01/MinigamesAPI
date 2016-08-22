@@ -24,8 +24,9 @@ import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.CommonPermissions;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
@@ -34,7 +35,7 @@ import com.github.mce.minigames.api.player.ArenaPlayerInterface;
  * 
  * @author mepeisen
  */
-public class StartCommandHandler implements CommandHandlerInterface
+public class StartCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
@@ -58,6 +59,36 @@ public class StartCommandHandler implements CommandHandlerInterface
         MglibInterface.INSTANCE.get().getLogger().info("Arena " + arena.getInternalName() + " started because of start command from player " + player.getName()); //$NON-NLS-1$//$NON-NLS-2$
         arena.start();
         player.sendMessage(CommonMessages.ArenaStartedByCommand, arena.getDisplayName(), player.getName());
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription()
+     */
+    @Override
+    public LocalizedMessageInterface getShortDescription(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription()
+     */
+    @Override
+    public LocalizedMessageInterface[] getDescription(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getUsage()
+     */
+    @Override
+    public LocalizedMessageInterface getUsage(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

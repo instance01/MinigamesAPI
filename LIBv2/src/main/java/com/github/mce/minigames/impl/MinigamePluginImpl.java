@@ -34,6 +34,7 @@ import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.config.ConfigurationBool;
 import com.github.mce.minigames.api.config.ConfigurationBoolList;
@@ -71,27 +72,42 @@ class MinigamePluginImpl implements MinigamePluginInterface
     /**
      * the messages configuration.
      */
-    private final MessagesConfig                           messages;
+    private final MessagesConfig                                         messages;
     
     /**
      * The minigame name.
      */
-    private final String                                   name;
+    private final String                                                 name;
     
     /**
      * The declaring java plugin.
      */
-    private final JavaPlugin                               plugin;
+    private final JavaPlugin                                             plugin;
     
     /**
      * The configuration files.
      */
-    private final Map<String, FileConfiguration>           configurations = new HashMap<>();
+    private final Map<String, FileConfiguration>                         configurations   = new HashMap<>();
     
     /**
      * The default configurations.
      */
-    private Map<String, List<ConfigurationValueInterface>> defaultConfigs;
+    private Map<String, List<ConfigurationValueInterface>>               defaultConfigs;
+    
+    /**
+     * the known arena types of this minigame.
+     */
+    private final Map<ArenaTypeInterface, ArenaTypeDeclarationInterface> arenaTypes       = new HashMap<>();
+    
+    /**
+     * the known arena types of this minigame.
+     */
+    private final Map<String, ArenaTypeInterface>                        arenaTypesByName = new HashMap<>();
+    
+    /**
+     * the default arena type to use.
+     */
+    private ArenaTypeDeclarationInterface                                defaultType;
     
     /**
      * Constructor to create a minigame.
@@ -138,7 +154,7 @@ class MinigamePluginImpl implements MinigamePluginInterface
      * @see com.github.mce.minigames.api.MinigameInterface#getDeclaredTypes()
      */
     @Override
-    public Iterable<ArenaTypeInterface> getDeclaredTypes()
+    public Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes()
     {
         // TODO Auto-generated method stub
         return null;
@@ -217,7 +233,7 @@ class MinigamePluginImpl implements MinigamePluginInterface
                     try
                     {
                         final ConfigurationValues clazzDef = cfg.getClass().getAnnotation(ConfigurationValues.class);
-                        final Field field = cfg.getClass().getDeclaredField(((Enum<?>)cfg).name());
+                        final Field field = cfg.getClass().getDeclaredField(((Enum<?>) cfg).name());
                         // final ConfigurationValue valueDef = .getAnnotation(LocalizedMessage.class);
                         if (clazzDef == null)
                         {
@@ -339,7 +355,7 @@ class MinigamePluginImpl implements MinigamePluginInterface
             return fileConfig;
         });
     }
-
+    
     @Override
     public void saveConfig(String file)
     {
