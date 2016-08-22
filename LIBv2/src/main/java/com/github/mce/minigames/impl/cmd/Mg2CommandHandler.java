@@ -19,7 +19,6 @@ import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.cmd.HelpCommandHandler;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
  * A handler for the /mg2 command.
@@ -40,9 +39,9 @@ public class Mg2CommandHandler extends AbstractCompositeCommandHandler
     }
     
     @Override
-    protected void sendUsage(CommandInterface command, ArenaPlayerInterface player)
+    protected void sendUsage(CommandInterface command)
     {
-        player.sendMessage(CommonMessages.Mg2CommandUsage);
+        command.send(CommonMessages.Mg2CommandUsage);
     }
     
 }

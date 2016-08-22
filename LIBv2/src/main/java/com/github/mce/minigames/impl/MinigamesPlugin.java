@@ -160,7 +160,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         {
             try
             {
-                final CommandInterface cmd = new CommandImpl(sender, this, command, label, args);
+                final CommandInterface cmd = new CommandImpl(sender, this, command, label, args, '/' + command.getName());
                 handler.handle(cmd);
             }
             catch (MinigameException ex)

@@ -22,7 +22,6 @@ import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
  * A handler for the /party command.
@@ -57,7 +56,7 @@ public class PartyCommandHandler extends AbstractCompositeCommandHandler impleme
     }
 
     @Override
-    protected void sendUsage(CommandInterface command, ArenaPlayerInterface player)
+    protected void sendUsage(CommandInterface command)
     {
         // TODO Auto-generated method stub
         

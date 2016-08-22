@@ -15,11 +15,16 @@
 
 package com.github.mce.minigames.api.cmd;
 
+import java.io.Serializable;
+import java.util.Locale;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
@@ -75,6 +80,54 @@ public interface CommandInterface
      * @return new command interface containing remaining arguments.
      */
     CommandInterface consumeArgs(int count);
+
+    /**
+     * Returns the command path being used before the arguments.
+     * @return current command path.
+     */
+    String getCommandPath();
+    
+    /**
+     * Sends a message to command sender
+     * @param msg message to send
+     * @param args message arguments
+     */
+    default void send(LocalizedMessageInterface msg, Serializable... args)
+    {
+        if (this.getPlayer() != null)
+        {
+            this.getPlayer().sendMessage(msg, args);
+        }
+        else
+        {
+            final Locale locale = Locale.ENGLISH;
+            final boolean isAdmin = this.getSender().isOp();
+            final String msg2 = msg.toArg(args).apply(locale, isAdmin);
+            switch (msg.getSeverity())
+            {
+                default:
+                case Error:
+                    this.getSender().sendMessage(ChatColor.DARK_RED + msg2);
+                    break;
+                case Information:
+                    this.getSender().sendMessage(ChatColor.WHITE + msg2);
+                    break;
+                case Loser:
+                    this.getSender().sendMessage(ChatColor.RED + msg2);
+                    break;
+                case Success:
+                    this.getSender().sendMessage(ChatColor.GREEN + msg2);
+                    break;
+                case Warning:
+                    this.getSender().sendMessage(ChatColor.YELLOW + msg2);
+                    break;
+                case Winner:
+                    this.getSender().sendMessage(ChatColor.GOLD + msg2);
+                    break;
+            }
+
+        }
+    }
     
     /**
      * Checks this command for given criteria and invokes either then or else statements.

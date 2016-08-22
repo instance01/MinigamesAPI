@@ -63,6 +63,11 @@ public class CommandImpl implements CommandInterface
     private final String[]        args;
     
     /**
+     * current command path.
+     */
+    private final String          commandPath;
+    
+    /**
      * Constructor to create the command.
      * 
      * @param sender
@@ -75,14 +80,17 @@ public class CommandImpl implements CommandInterface
      *            the command label
      * @param args
      *            the command arguments
+     * @param commandPath
+     *            the current command path
      */
-    public CommandImpl(CommandSender sender, MinigamesPlugin plugin, Command command, String label, String[] args)
+    public CommandImpl(CommandSender sender, MinigamesPlugin plugin, Command command, String label, String[] args, String commandPath)
     {
         this.sender = sender;
         this.plugin = plugin;
         this.command = command;
         this.label = label;
         this.args = args;
+        this.commandPath = commandPath;
     }
     
     @Override
@@ -112,12 +120,18 @@ public class CommandImpl implements CommandInterface
     {
         return this.label;
     }
-
+    
     @Override
     public CommandInterface consumeArgs(int count)
     {
         final String[] args2 = Arrays.copyOfRange(this.args, count, this.args.length);
-        return new CommandImpl(this.sender, this.plugin, this.command, this.label, args2);
+        StringBuilder newPath = new StringBuilder(this.commandPath);
+        for (int i = 0; i < count; i++)
+        {
+            newPath.append(' ');
+            newPath.append(this.args[i]);
+        }
+        return new CommandImpl(this.sender, this.plugin, this.command, this.label, args2, newPath.toString());
     }
     
     @Override
@@ -134,6 +148,12 @@ public class CommandImpl implements CommandInterface
             return new TrueStub<>(this);
         }
         return new FalseStub<>(this);
+    }
+    
+    @Override
+    public String getCommandPath()
+    {
+        return this.commandPath;
     }
     
 }

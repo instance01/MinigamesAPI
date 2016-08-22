@@ -22,7 +22,6 @@ import java.util.TreeMap;
 
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
  * A handler for enabling sub commands.
@@ -65,7 +64,7 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
         // check for sub command
         if (command.getArgs().length == 0)
         {
-            sendUsage(command, command.getPlayer());
+            sendUsage(command);
             return;
         }
         
@@ -73,7 +72,7 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
         final CommandHandlerInterface handler = this.subCommands.get(name);
         if (handler == null)
         {
-            sendUsage(command, command.getPlayer());
+            sendUsage(command);
             return;
         }
         
@@ -83,8 +82,10 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
     /**
      * Injects a new sub command.
      * 
-     * @param name sub command name
-     * @param handler handler
+     * @param name
+     *            sub command name
+     * @param handler
+     *            handler
      * @return {@code true} if the sub command was added, {@code false} if it already exists.
      */
     public boolean injectSubCommand(String name, SubCommandHandlerInterface handler)
@@ -103,9 +104,7 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
      * 
      * @param command
      *            the command to be used.
-     * @param player
-     *            the player to send the usage strings to
      */
-    protected abstract void sendUsage(CommandInterface command, ArenaPlayerInterface player);
+    protected abstract void sendUsage(CommandInterface command);
     
 }
