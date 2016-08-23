@@ -28,7 +28,7 @@ To declare a message simply create an enumeration.
          * <li>String: player name</li>
          * </ol>
          */
-        @LocalizedMessage(defaultMessage = "Player %0$s did a looping", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Player %1$s did a looping", severity = MessageSeverityType.Success)
         PlayerDidLooping,
         
         /**
@@ -41,7 +41,7 @@ To declare a message simply create an enumeration.
          * <li>String: some cause</li>
          * </ol>
          */
-        @LocalizedMessage(defaultMessage = "Player %0$s seems to be a noob", defaultAdminMessage = "Player %0$s seems to be a noob. Cause: %1$s", severity = MessageSeverityType.Warning)
+        @LocalizedMessage(defaultMessage = "Player %1$s seems to be a noob", defaultAdminMessage = "Player %1$s seems to be a noob. Cause: %2$s", severity = MessageSeverityType.Warning)
         PlayerIsNoob,
     }
     
@@ -64,7 +64,7 @@ The path "core" is always preserved for minigames lib itself.
 
 The messages are parsed through javas System.format.
 
-If a message can be individualized by parameters you can add those parameter tags. "%0$s" will display the first argument and assume it is a string.
+If a message can be individualized by parameters you can add those parameter tags. "%1$s" will display the first argument and assume it is a string.
 Read the oracle javadoc of the java language for details.
 
 ## Editing the messages.yml
@@ -76,13 +76,13 @@ The above example will result in the following messages.yml
         PlayerDidLooping:
           default_locale: en
           user:
-            en: 'Player %0$s did a looping'
+            en: 'Player %1$s did a looping'
         PlayerIsNoob:
           default_locale: en
           user:
-            en: 'Player %0$s seems to be a noob'
+            en: 'Player %1$s seems to be a noob'
           admin:
-            en: 'Player %0$s seems to be a noob. Cause: %1$s'
+            en: 'Player %1$s seems to be a noob. Cause: %2$s'
 
 The user section holds all messages per locale display to a common user. The admin section holds the administrator message per locale.
 
@@ -125,6 +125,63 @@ they implement interface MinigameErrorCode instead of LocalizedMessageInterface.
 The error codes are mainly meant to be used in MinigameExceptions. Typically the represent messages or errors in command
 handlers.
 
+## Special message type: Message lists
+
+A message list is a collection of multiple messages. It represents individual lines.
+For example a help text in a command may be made of 4 lines in English and of 5 lines
+in German. That the code does not get confused with these lines we support
+this special message type.
+
+To declare the localized message list first use the LocalizedMessageList annotation inside your enumeration.
+
+    /**
+     * Some multi-line message.
+     * 
+     * <p>Arguments:</p>
+     *
+     * <ol>
+     * <li>String: player name</li>
+     * </ol>
+     */
+    @LocalizedMessageList({
+        @LocalizedMessage(defaultMessage = "Welcome to this adventure, player %1$s!"),
+        @LocalizedMessage(defaultMessage = "Can you find the Yeti?"),
+        @LocalizedMessage(defaultMessage = "Sam and Max are absent."),
+        @LocalizedMessage(defaultMessage = "HELP!")
+    })
+    MultiLineMessage,
+
+This will result in following entries in messages.yml
+
+    myplugin:
+      ingame:
+        MultiLineMessage:
+          default_locale: en
+          user:
+            en:
+              0: 'Welcome to this adventure, player %1$s!'
+              1: 'Can you find the Yeti?'
+              2: 'Sam and Max are absent.'
+              3: 'HELP!'
+
+As you see the lines are enumerated. If you have a language only containing three lines this can be done by changing
+it to the following:
+
+    myplugin:
+      ingame:
+        MultiLineMessage:
+          default_locale: en
+          user:
+            en:
+              0: 'Welcome to this adventure, player %1$s!'
+              1: 'Can you find the Yeti?'
+              2: 'Sam and Max are absent.'
+              3: 'HELP!'
+            de:
+              0: 'Willkommen bei deinem Abenteuer, Spieler %1$s!'
+              1: 'Findest du den Yeti?'
+              2: 'Sam und Max sind verschwunden. HILFE!'
+
 ## Special message type: Message sets
 
 The message sets are predefined messages used within typical minigames.
@@ -142,4 +199,8 @@ The minigames lib can add comments to your messages.yml.
 This helps administrators to manipulate your messages and provide language packs.
 
 TODO
+
+## Referencing user defined messages
+
+TODO for example the arena description
 

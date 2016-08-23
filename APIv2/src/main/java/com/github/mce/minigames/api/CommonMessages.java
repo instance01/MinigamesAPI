@@ -17,6 +17,7 @@ package com.github.mce.minigames.api;
 
 import com.github.mce.minigames.api.locale.LocalizedMessage;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageList;
 import com.github.mce.minigames.api.locale.LocalizedMessages;
 import com.github.mce.minigames.api.locale.MessageSeverityType;
 
@@ -125,5 +126,55 @@ public enum CommonMessages implements LocalizedMessageInterface
      */
     @LocalizedMessage(defaultMessage = "§7Usage: §9%1$s [page] §7Display the given page.")
     PageUsage,
+    
+    /**
+     * Help command usage.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command that was entered</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "§9%1$s help [page] Display help with given page number.")
+    HelpPagedUsage,
+    
+    /**
+     * Help command usage.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command that was entered</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "§9%1$s help [page] Display the help with given page number.")
+    HelpCommandUsage,
+    
+    /**
+     * Help command short description.
+     * 
+     * <p>No arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = "§7Display command help")
+    HelpShortDescription,
+    
+    /**
+     * Help command long description.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command that was entered</li>
+     * <li>String: The usage of this command</li>
+     * </ol>
+     */
+    @LocalizedMessageList({
+        @LocalizedMessage(defaultMessage = "§7Displays command help for command §9%1$s"),
+        @LocalizedMessage(defaultMessage = "§7Usage: §9%1$s [page] §7Display the given help page."),
+        @LocalizedMessage(defaultMessage = "§7The argument §9page is optional. If not entered it"),
+        @LocalizedMessage(defaultMessage = "§7will always display the first help page."),
+    })
+    HelpLongDescription,
     
 }

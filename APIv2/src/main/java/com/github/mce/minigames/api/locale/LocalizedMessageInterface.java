@@ -32,13 +32,14 @@ public interface LocalizedMessageInterface extends Serializable
     
     /**
      * Returns the message severity type.
+     * 
      * @return severity type.
      */
     default MessageSeverityType getSeverity()
     {
         try
         {
-            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessage.class);
             return msg.severity();
         }
         catch (NoSuchFieldException ex)
@@ -61,7 +62,7 @@ public interface LocalizedMessageInterface extends Serializable
         try
         {
             final LocalizedMessages msgs = this.getClass().getAnnotation(LocalizedMessages.class);
-            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessage.class);
             if (msgs == null || msg == null)
             {
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
@@ -73,9 +74,43 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            final String smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
-            // TODO Convert DynamicArg, see toArg()
-            return String.format(smsg, (Object[])args);
+            final String smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
+            return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
+        }
+        catch (NoSuchFieldException ex)
+        {
+            throw new IllegalStateException(ex);
+        }
+    }
+    
+    /**
+     * Returns a human readable message for this message; this message will be displayed to common users.
+     * 
+     * @param locale
+     *            locale to be used.
+     * @param args
+     *            object arguments that can be used to build the message.
+     * @return message string.
+     */
+    default String[] toUserMessageLine(Locale locale, Serializable... args)
+    {
+        try
+        {
+            final LocalizedMessages msgs = this.getClass().getAnnotation(LocalizedMessages.class);
+            final LocalizedMessageList msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessageList.class);
+            if (msgs == null || msg == null)
+            {
+                throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
+            }
+            final MglibInterface mglib = MglibInterface.INSTANCE.get();
+            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
+            if (minigame == null)
+            {
+                throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
+            }
+            
+            final String smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
+            return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
         }
         catch (NoSuchFieldException ex)
         {
@@ -97,7 +132,7 @@ public interface LocalizedMessageInterface extends Serializable
         try
         {
             final LocalizedMessages msgs = this.getClass().getAnnotation(LocalizedMessages.class);
-            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>)this).name()).getAnnotation(LocalizedMessage.class);
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessage.class);
             if (msgs == null || msg == null)
             {
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
@@ -109,13 +144,51 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            String smsg = minigame.getMessages().getAdminString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
+            String smsg = minigame.getMessages().getAdminString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
             if (smsg.length() == 0)
             {
-                smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>)this).name(), msg.defaultMessage()); //$NON-NLS-1$
+                smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
             }
-            // TODO Convert DynamicArg, see toArg()
-            return String.format(smsg, (Object[])args);
+            return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
+        }
+        catch (NoSuchFieldException ex)
+        {
+            throw new IllegalStateException(ex);
+        }
+    }
+    
+    /**
+     * Returns a human readable message for this message; the message will be displayed to administrators only.
+     * 
+     * @param locale
+     *            locale to be used.
+     * @param args
+     *            object arguments that can be used to build the message.
+     * @return message string.
+     */
+    default String[] toAdminMessageLine(Locale locale, Serializable... args)
+    {
+        try
+        {
+            final LocalizedMessages msgs = this.getClass().getAnnotation(LocalizedMessages.class);
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessage.class);
+            if (msgs == null || msg == null)
+            {
+                throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
+            }
+            final MglibInterface mglib = MglibInterface.INSTANCE.get();
+            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
+            if (minigame == null)
+            {
+                throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
+            }
+            
+            String smsg = minigame.getMessages().getAdminString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
+            if (smsg.length() == 0)
+            {
+                smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
+            }
+            return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
         }
         catch (NoSuchFieldException ex)
         {
@@ -125,7 +198,9 @@ public interface LocalizedMessageInterface extends Serializable
     
     /**
      * Converts this message to a string function
-     * @param args arguments to use.
+     * 
+     * @param args
+     *            arguments to use.
      * @return ths string function
      */
     default DynamicArg toArg(Serializable... args)
@@ -134,10 +209,47 @@ public interface LocalizedMessageInterface extends Serializable
     }
     
     /**
+     * Converts this message to a string function
+     * 
+     * @param startLine
+     *            starting line
+     * @param lineLimit
+     *            limit of lines
+     * @param args
+     *            arguments to use.
+     * @return ths string function
+     */
+    default DynamicListArg toListArg(int startLine, int lineLimit, Serializable... args)
+    {
+        return (loc, isAdmin) -> isAdmin ? this.toAdminMessageLine(loc, args) : this.toUserMessageLine(loc, args);
+    }
+    
+    /**
+     * Converts this message to a string function
+     * 
+     * @param args
+     *            arguments to use.
+     * @return ths string function
+     */
+    default DynamicListArg toListArg(Serializable... args)
+    {
+        return (loc, isAdmin) -> isAdmin ? this.toAdminMessageLine(loc, args) : this.toUserMessageLine(loc, args);
+    }
+    
+    /**
      * Helper interface for dynamic arguments.
      */
     @FunctionalInterface
     interface DynamicArg extends BiFunction<Locale, Boolean, String>, Serializable
+    {
+        // marker only
+    }
+    
+    /**
+     * Helper interface for dynamic arguments.
+     */
+    @FunctionalInterface
+    interface DynamicListArg extends BiFunction<Locale, Boolean, String[]>, Serializable
     {
         // marker only
     }

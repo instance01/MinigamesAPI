@@ -51,8 +51,6 @@ public interface SubCommandHandlerInterface extends CommandHandlerInterface
      *            the command to be used.
      * @return long description line for command details.
      */
-    Serializable
-    
-    [] getDescription(CommandInterface command);
+    Serializable[] getDescription(CommandInterface command);
     
 }
