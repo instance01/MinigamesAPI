@@ -39,7 +39,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>String: player name</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "Arena %0$s was started by player: %1$s.", severity = MessageSeverityType.Success)
+    @LocalizedMessage(defaultMessage = "Arena %1$s was started by player: %2$s.", severity = MessageSeverityType.Success)
     ArenaStartedByCommand,
     
     // ***** commands, usages etc.
@@ -49,8 +49,21 @@ public enum CommonMessages implements LocalizedMessageInterface
      * 
      * <p>No arguments.</p>
      */
-    @LocalizedMessage(defaultMessage = "&7Type &9/mg2 help &7for detailed help", severity = MessageSeverityType.Success)
+    @LocalizedMessage(defaultMessage = "§7Type §9/mg2 help §7for detailed help", severity = MessageSeverityType.Success)
     Mg2CommandUsage,
+    
+    /**
+     * Invalid sub command in composite command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * <li>String: current sub command</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unknown command §9%1$s %2$s", severity = MessageSeverityType.Error)
+    CompositeUnknownSubCommand,
     
     /**
      * Paged output; header.
@@ -63,7 +76,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>Integer: total pages</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "&7=====&9%0$s&7====&9Page &1%1$d &9 from &1%2$d&7=====")
+    @LocalizedMessage(defaultMessage = "§7=====§9%1$s§7====§9Page §1%2$d §9 from §1%2$d§7=====")
     PagedHeader,
     
     /**
@@ -76,7 +89,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>Integer: line number</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = " &7")
+    @LocalizedMessage(defaultMessage = " §7")
     PagedLine,
     
     /**
@@ -89,7 +102,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>Integer: Total page count being available</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "Page %0$d out of range. Only values from 1 to %1$d allowed.", severity = MessageSeverityType.Error)
+    @LocalizedMessage(defaultMessage = "Page %1$d out of range. Only values from 1 to %2$d allowed.", severity = MessageSeverityType.Error)
     PagedWrongPageNum,
     
 
@@ -110,7 +123,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>String: The command that was entered</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "&7Usage: &9%0$s [page] &7Display the given page.")
+    @LocalizedMessage(defaultMessage = "§7Usage: §9%1$s [page] §7Display the given page.")
     PageUsage,
     
 }

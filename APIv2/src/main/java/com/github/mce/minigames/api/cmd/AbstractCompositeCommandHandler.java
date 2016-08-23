@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MinigameException;
 
 /**
@@ -72,6 +73,7 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
         final CommandHandlerInterface handler = this.subCommands.get(name);
         if (handler == null)
         {
+            command.send(CommonMessages.CompositeUnknownSubCommand, command.getCommandPath(), command.getArgs()[0]);
             sendUsage(command);
             return;
         }

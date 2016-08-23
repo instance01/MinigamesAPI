@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.api.cmd;
 
+import java.io.Serializable;
+
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
@@ -24,9 +26,14 @@ import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
  * @author mepeisen
  *
  */
-public class HelpCommandHandler implements SubCommandHandlerInterface
+public class HelpCommandHandler extends AbstractPagableCommandHandler implements SubCommandHandlerInterface
 {
     
+    /** help on sub command. */
+    private SubCommandHandlerInterface subCommand;
+    /** help on composite command. */
+    private AbstractCompositeCommandHandler compositeCommand;
+
     /**
      * Constructor.
      * 
@@ -35,7 +42,7 @@ public class HelpCommandHandler implements SubCommandHandlerInterface
      */
     public HelpCommandHandler(SubCommandHandlerInterface command)
     {
-        // TODO Auto-generated constructor stub
+        this.subCommand = command;
     }
     
     /**
@@ -46,19 +53,7 @@ public class HelpCommandHandler implements SubCommandHandlerInterface
      */
     public HelpCommandHandler(AbstractCompositeCommandHandler command)
     {
-        // TODO Auto-generated constructor stub
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#handle(com.github.mce.minigames.api.cmd.CommandInterface)
-     */
-    @Override
-    public void handle(CommandInterface command) throws MinigameException
-    {
-        // TODO Auto-generated method stub
-        
+        this.compositeCommand = command;
     }
     
     /*
@@ -90,6 +85,37 @@ public class HelpCommandHandler implements SubCommandHandlerInterface
      */
     @Override
     public LocalizedMessageInterface getUsage(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)+,
+     * 3
+     * @see com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler#getLineCount(com.github.mce.minigames.api.cmd.CommandInterface)
+     */
+    @Override
+    protected int getLineCount(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler#getHeader(com.github.mce.minigames.api.cmd.CommandInterface)
+     */
+    @Override
+    protected Serializable getHeader(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler#getLines(com.github.mce.minigames.api.cmd.CommandInterface, int, int)
+     */
+    @Override
+    protected Serializable[] getLines(CommandInterface command, int start, int count)
     {
         // TODO Auto-generated method stub
         return null;

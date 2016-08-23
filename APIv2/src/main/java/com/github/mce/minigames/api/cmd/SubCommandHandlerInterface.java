@@ -15,7 +15,8 @@
 
 package com.github.mce.minigames.api.cmd;
 
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import java.io.Serializable;
+
 
 /**
  * Extends the command handler interface to be placed as a sub command in {@link AbstractCompositeCommandHandler}
@@ -32,7 +33,7 @@ public interface SubCommandHandlerInterface extends CommandHandlerInterface
      *            the command to be used.
      * @return short description line for command help.
      */
-    LocalizedMessageInterface getShortDescription(CommandInterface command);
+    Serializable getShortDescription(CommandInterface command);
     
     /**
      * Returns a usage information.
@@ -41,7 +42,7 @@ public interface SubCommandHandlerInterface extends CommandHandlerInterface
      *            the command to be used.
      * @return short usage information for command help.
      */
-    LocalizedMessageInterface getUsage(CommandInterface command);
+    Serializable getUsage(CommandInterface command);
     
     /**
      * Returns a long description.
@@ -50,6 +51,8 @@ public interface SubCommandHandlerInterface extends CommandHandlerInterface
      *            the command to be used.
      * @return long description line for command details.
      */
-    LocalizedMessageInterface[] getDescription(CommandInterface command);
+    Serializable
+    
+    [] getDescription(CommandInterface command);
     
 }

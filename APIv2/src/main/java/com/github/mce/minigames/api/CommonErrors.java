@@ -38,7 +38,7 @@ public enum CommonErrors implements MinigameErrorCode
      * <li>String: current plugin lib state</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "Unable to create minigame %0$s because of wrong MinigamesLib plugin state: %1$s.", severity = MessageSeverityType.Error)
+    @LocalizedMessage(defaultMessage = "Unable to create minigame %1$s because of wrong MinigamesLib plugin state: %2$s.", severity = MessageSeverityType.Error)
     Cannot_Create_Game_Wrong_State,
     
     /**
@@ -50,7 +50,7 @@ public enum CommonErrors implements MinigameErrorCode
      * <li>String: minigame name</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "Unable to create minigame %0$s because it already exists.", severity = MessageSeverityType.Error)
+    @LocalizedMessage(defaultMessage = "Unable to create minigame %1$s because it already exists.", severity = MessageSeverityType.Error)
     DuplicateMinigame,
     
     /**
