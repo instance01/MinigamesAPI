@@ -51,4 +51,30 @@ public interface MessagesConfigInterface
      */
     String getAdminString(Locale locale, String path, String defaultValue);
     
+    /**
+     * Returns an array of Strings for given option path,
+     * 
+     * @param locale
+     *            the locale to be used
+     * @param path
+     *            configuration option path
+     * @param defaultValue
+     *            default value to return
+     * @return array of strings
+     */
+    String[] getStringList(Locale locale, String path, String[] defaultValue);
+    
+    /**
+     * Returns an array of Strings for given option path,
+     * 
+     * @param locale
+     *            the locale to be used
+     * @param path
+     *            configuration option path
+     * @param defaultValue
+     *            default value to return
+     * @return array of strings
+     */
+    String[] getAdminStringList(Locale locale, String path, String[] defaultValue);
+    
 }

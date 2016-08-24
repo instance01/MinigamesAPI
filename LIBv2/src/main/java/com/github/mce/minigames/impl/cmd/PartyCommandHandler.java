@@ -16,6 +16,7 @@
 package com.github.mce.minigames.impl.cmd;
 
 import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
@@ -58,38 +59,19 @@ public class PartyCommandHandler extends AbstractCompositeCommandHandler impleme
     @Override
     protected void sendUsage(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        
+        command.send(CommonMessages.PartyCommandUsage, command.getCommandPath());
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription()
-     */
     @Override
     public LocalizedMessageInterface getShortDescription(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.PartyCommandShortDescription;
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription()
-     */
     @Override
-    public LocalizedMessageInterface[] getDescription(CommandInterface command)
+    public LocalizedMessageInterface getDescription(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getUsage()
-     */
-    @Override
-    public LocalizedMessageInterface getUsage(CommandInterface command)
-    {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.PartyCommandDescription;
     }
     
 }

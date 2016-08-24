@@ -103,7 +103,7 @@ public abstract class AbstractPagableCommandHandler implements CommandHandlerInt
             }
         }
         
-        command.send(CommonMessages.PagedHeader, page, pageCount);
+        command.send(CommonMessages.PagedHeader, this.getHeader(command), page, pageCount);
         int i = 1;
         for (Serializable line : this.getLines(command, start, lineCount))
         {

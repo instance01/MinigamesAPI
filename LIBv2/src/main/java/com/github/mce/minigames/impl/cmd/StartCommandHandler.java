@@ -41,6 +41,13 @@ public class StartCommandHandler implements SubCommandHandlerInterface
     @Override
     public void handle(CommandInterface command) throws MinigameException
     {
+        if (command.getArgs().length > 0)
+        {
+            command.send(CommonMessages.TooManyArguments);
+            command.send(CommonMessages.StartCommandUsage, command.getCommandPath());
+            return;
+        }
+        
         // only in-game
         command.when(isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
 
@@ -61,34 +68,16 @@ public class StartCommandHandler implements SubCommandHandlerInterface
         player.sendMessage(CommonMessages.ArenaStartedByCommand, arena.getDisplayName(), player.getName());
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription()
-     */
     @Override
     public LocalizedMessageInterface getShortDescription(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.StartCommandShortDescription;
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription()
-     */
     @Override
-    public LocalizedMessageInterface[] getDescription(CommandInterface command)
+    public LocalizedMessageInterface getDescription(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getUsage()
-     */
-    @Override
-    public LocalizedMessageInterface getUsage(CommandInterface command)
-    {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.StartCommandDescription;
     }
     
 }

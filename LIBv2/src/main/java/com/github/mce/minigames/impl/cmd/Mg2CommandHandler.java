@@ -34,6 +34,7 @@ public class Mg2CommandHandler extends AbstractCompositeCommandHandler
     public Mg2CommandHandler()
     {
         this.injectSubCommand("party", new PartyCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("start", new StartCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("help", new HelpCommandHandler(this)); //$NON-NLS-1$
         // TODO additional commands
     }

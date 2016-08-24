@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl.msg;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.locale.LocalizedMessage;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageList;
 import com.github.mce.minigames.api.locale.LocalizedMessages;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 
@@ -102,6 +104,38 @@ public class MessagesConfig implements MessagesConfigInterface
         }
         return result == null ? defaultValue : result;
     }
+
+    @Override
+    public String[] getStringList(Locale locale, String path, String[] defaultValue)
+    {
+        final FileConfiguration config1 = this.getConfig();
+        List<String> result = config1.getStringList(path + ".user." + locale.toString()); //$NON-NLS-1$
+        if (result == null)
+        {
+            final String defaultLocale = config1.getString(path + ".default_locale"); //$NON-NLS-1$
+            if (defaultLocale != null)
+            {
+                result = config1.getStringList(path + ".user." + defaultLocale); //$NON-NLS-1$
+            }
+        }
+        return result == null ? defaultValue : result.toArray(new String[result.size()]);
+    }
+
+    @Override
+    public String[] getAdminStringList(Locale locale, String path, String[] defaultValue)
+    {
+        final FileConfiguration config1 = this.getConfig();
+        List<String> result = config1.getStringList(path + ".admin." + locale.toString()); //$NON-NLS-1$
+        if (result == null)
+        {
+            final String defaultLocale = config1.getString(path + ".default_locale"); //$NON-NLS-1$
+            if (defaultLocale != null)
+            {
+                result = config1.getStringList(path + ".admin." + defaultLocale); //$NON-NLS-1$
+            }
+        }
+        return result == null ? defaultValue : result.toArray(new String[result.size()]);
+    }
     
     /**
      * Returns the file configuration.
@@ -154,16 +188,31 @@ public class MessagesConfig implements MessagesConfigInterface
             {
                 final LocalizedMessages clazzDef = msg.getClass().getAnnotation(LocalizedMessages.class);
                 final LocalizedMessage valueDef = msg.getClass().getDeclaredField(((Enum<?>)msg).name()).getAnnotation(LocalizedMessage.class);
-                if (clazzDef == null || valueDef == null)
+                final LocalizedMessageList listDef = msg.getClass().getDeclaredField(((Enum<?>)msg).name()).getAnnotation(LocalizedMessageList.class);
+                if (clazzDef == null || (listDef == null && valueDef == null))
                 {
                     throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
                 }
-                final String path =  clazzDef.value() + "." + ((Enum<?>)msg).name(); //$NON-NLS-1$
-                this.config.addDefault(path + ".default_locale", clazzDef.defaultLocale()); //$NON-NLS-1$
-                this.config.addDefault(path + ".user." + clazzDef.defaultLocale(), valueDef.defaultMessage()); //$NON-NLS-1$
-                if (valueDef.defaultAdminMessage().length() > 0)
+                
+                if (valueDef == null && listDef != null)
                 {
-                    this.config.addDefault(path + ".admin." + clazzDef.defaultLocale(), valueDef.defaultAdminMessage()); //$NON-NLS-1$
+                    final String path =  clazzDef.value() + "." + ((Enum<?>)msg).name(); //$NON-NLS-1$
+                    this.config.addDefault(path + ".default_locale", clazzDef.defaultLocale()); //$NON-NLS-1$
+                    this.config.addDefault(path + ".user." + clazzDef.defaultLocale(), Arrays.asList(listDef.value())); //$NON-NLS-1$
+                    if (listDef.adminMessages().length > 0)
+                    {
+                        this.config.addDefault(path + ".admin." + clazzDef.defaultLocale(), Arrays.asList(listDef.adminMessages())); //$NON-NLS-1$
+                    }
+                }
+                else if (valueDef != null)
+                {
+                    final String path =  clazzDef.value() + "." + ((Enum<?>)msg).name(); //$NON-NLS-1$
+                    this.config.addDefault(path + ".default_locale", clazzDef.defaultLocale()); //$NON-NLS-1$
+                    this.config.addDefault(path + ".user." + clazzDef.defaultLocale(), valueDef.defaultMessage()); //$NON-NLS-1$
+                    if (valueDef.defaultAdminMessage().length() > 0)
+                    {
+                        this.config.addDefault(path + ".admin." + clazzDef.defaultLocale(), valueDef.defaultAdminMessage()); //$NON-NLS-1$
+                    }
                 }
             }
             catch (NoSuchFieldException ex)

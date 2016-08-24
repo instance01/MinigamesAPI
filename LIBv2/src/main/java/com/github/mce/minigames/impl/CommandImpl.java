@@ -16,6 +16,7 @@
 package com.github.mce.minigames.impl;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -154,6 +155,16 @@ public class CommandImpl implements CommandInterface
     public String getCommandPath()
     {
         return this.commandPath;
+    }
+
+    @Override
+    public Locale getLocale()
+    {
+        if (this.getPlayer() != null)
+        {
+            return this.getPlayer().getPreferredLocale();
+        }
+        return Locale.ENGLISH; // TODO override by config?
     }
     
 }

@@ -144,10 +144,10 @@ To declare the localized message list first use the LocalizedMessageList annotat
      * </ol>
      */
     @LocalizedMessageList({
-        @LocalizedMessage(defaultMessage = "Welcome to this adventure, player %1$s!"),
-        @LocalizedMessage(defaultMessage = "Can you find the Yeti?"),
-        @LocalizedMessage(defaultMessage = "Sam and Max are absent."),
-        @LocalizedMessage(defaultMessage = "HELP!")
+        "Welcome to this adventure, player %1$s!",
+        "Can you find the Yeti?",
+        "Sam and Max are absent.",
+        "HELP!"
     })
     MultiLineMessage,
 

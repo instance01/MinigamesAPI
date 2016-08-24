@@ -57,6 +57,7 @@ import com.github.mce.minigames.api.zones.ZoneInterface;
 import com.github.mce.minigames.impl.cmd.Mg2CommandHandler;
 import com.github.mce.minigames.impl.cmd.PartyCommandHandler;
 import com.github.mce.minigames.impl.cmd.StartCommandHandler;
+import com.github.mce.minigames.impl.player.PlayerRegistry;
 
 /**
  * A plugin for minigames.
@@ -81,6 +82,11 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     
     /** options to minigames. */
     private final Map<ConfigurationValueInterface, String> optionsToMinigame  = new HashMap<>();
+    
+    /**
+     * the players registry.
+     */
+    private final PlayerRegistry                           players            = new PlayerRegistry();
     
     /**
      * Constructor to create the plugin.
@@ -327,40 +333,22 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         return null;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getPlayer(org.bukkit.entity.Player)
-     */
-    @Override
+    @Override 
     public ArenaPlayerInterface getPlayer(Player player)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.players.getPlayer(player);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getPlayer(org.bukkit.OfflinePlayer)
-     */
     @Override
     public ArenaPlayerInterface getPlayer(OfflinePlayer player)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.players.getPlayer(player);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getPlayer(java.util.UUID)
-     */
     @Override
     public ArenaPlayerInterface getPlayer(UUID uuid)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.players.getPlayer(uuid);
     }
     
     /*

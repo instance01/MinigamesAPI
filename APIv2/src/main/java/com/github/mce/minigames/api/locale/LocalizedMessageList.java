@@ -36,6 +36,13 @@ public @interface LocalizedMessageList
      * 
      * @return predefined list of messages.
      */
-    LocalizedMessage[] value();
+    String[] value();
+    
+    /**
+     * The array of localized messages (lines) inside this list.
+     * 
+     * @return predefined list of messages.
+     */
+    String[] adminMessages() default {};
     
 }

@@ -51,17 +51,7 @@ public class PartyKickCommandHandler implements SubCommandHandlerInterface
      * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription()
      */
     @Override
-    public LocalizedMessageInterface[] getDescription(CommandInterface command)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getUsage()
-     */
-    @Override
-    public LocalizedMessageInterface getUsage(CommandInterface command)
+    public LocalizedMessageInterface getDescription(CommandInterface command)
     {
         // TODO Auto-generated method stub
         return null;

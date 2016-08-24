@@ -16,8 +16,11 @@
 package com.github.mce.minigames.api.cmd;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.github.mce.minigames.api.CommonMessages;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
 /**
  * Prints help based on single sub command handlers.
@@ -30,6 +33,7 @@ public class HelpCommandHandler extends AbstractPagableCommandHandler implements
     
     /** help on sub command. */
     private SubCommandHandlerInterface subCommand;
+    
     /** help on composite command. */
     private AbstractCompositeCommandHandler compositeCommand;
 
@@ -56,57 +60,57 @@ public class HelpCommandHandler extends AbstractPagableCommandHandler implements
     }
     
    @Override
-    public Serializable getShortDescription(CommandInterface command)
+    public LocalizedMessageInterface getShortDescription(CommandInterface command)
     {
-        return CommonMessages.HelpShortDescription.toArg();
+        return CommonMessages.HelpShortDescription;
     }
     
     @Override
-    public Serializable[] getDescription(CommandInterface command)
+    public LocalizedMessageInterface getDescription(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.HelpLongDescription;
     }
 
-    @Override
-    public Serializable getUsage(CommandInterface command)
-    {
-        if (this.compositeCommand != null)
-        {
-            return CommonMessages.HelpPagedUsage.toArg(command.getCommandPath());
-        }
-        return CommonMessages.HelpCommandUsage.toArg(command.getCommandPath());
-    }
+//    @Override
+//    public LocalizedMessageInterface getUsage(CommandInterface command)
+//    {
+//        if (this.compositeCommand != null)
+//        {
+//            return CommonMessages.HelpPagedUsage;
+//        }
+//        return CommonMessages.HelpCommandUsage;
+//    }
 
-    /* (non-Javadoc)+,
-     * 3
-     * @see com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler#getLineCount(com.github.mce.minigames.api.cmd.CommandInterface)
-     */
     @Override
     protected int getLineCount(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (this.compositeCommand != null)
+        {
+            return this.compositeCommand.subCommands.size();
+        }
+        return this.subCommand.getDescription(command).toListArg(command.getCommandPath()).apply(command.getLocale(), command.isOp()).length;
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler#getHeader(com.github.mce.minigames.api.cmd.CommandInterface)
-     */
     @Override
     protected Serializable getHeader(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.HelpHeader.toArg(command.getCommandPath());
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler#getLines(com.github.mce.minigames.api.cmd.CommandInterface, int, int)
-     */
     @Override
     protected Serializable[] getLines(CommandInterface command, int start, int count)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (this.compositeCommand != null)
+        {
+            final List<String> keys = new ArrayList<>(this.compositeCommand.subCommands.keySet());
+            final List<Serializable> result = new ArrayList<>();
+            for (final String key : keys.subList(start, start + count))
+            {
+                result.add(CommonMessages.HelpLineUsage.toArg(key, this.compositeCommand.subCommands.get(key).getShortDescription(command).toArg(command.getCommandPath())));
+            }
+            return result.toArray(new Serializable[result.size()]);
+        }
+        return this.subCommand.getDescription(command).toListArg(start, count, new Serializable[]{command.getCommandPath()}).apply(command.getLocale(), command.isOp());
     }
     
 }

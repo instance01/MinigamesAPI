@@ -88,6 +88,21 @@ public interface CommandInterface
     String getCommandPath();
     
     /**
+     * Returns the locale of the sender.
+     * @return senders locale
+     */
+    Locale getLocale();
+    
+    /**
+     * Checks if the sender is an operator
+     * @return {@code true} for operators.
+     */
+    default boolean isOp()
+    {
+        return this.getSender().isOp();
+    }
+    
+    /**
      * Sends a message to command sender
      * @param msg message to send
      * @param args message arguments
@@ -100,7 +115,7 @@ public interface CommandInterface
         }
         else
         {
-            final Locale locale = Locale.ENGLISH;
+            final Locale locale = this.getLocale();
             final boolean isAdmin = this.getSender().isOp();
             final String msg2 = msg.toArg(args).apply(locale, isAdmin);
             switch (msg.getSeverity())

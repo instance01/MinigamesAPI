@@ -49,7 +49,7 @@ public interface LocalizedMessageInterface extends Serializable
     }
     
     /**
-     * Returns a human readable message for this message; this message will be displayed to common users.
+     * Returns a human readable text for this message; this message will be displayed to common users.
      * 
      * @param locale
      *            locale to be used.
@@ -84,13 +84,13 @@ public interface LocalizedMessageInterface extends Serializable
     }
     
     /**
-     * Returns a human readable message for this message; this message will be displayed to common users.
+     * Returns an array of human readable texts for this message; this message will be displayed to common users.
      * 
      * @param locale
      *            locale to be used.
      * @param args
      *            object arguments that can be used to build the message.
-     * @return message string.
+     * @return message string array.
      */
     default String[] toUserMessageLine(Locale locale, Serializable... args)
     {
@@ -109,8 +109,15 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            final String smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
-            return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
+            final String[] smsg = minigame.getMessages().getStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.value()); //$NON-NLS-1$
+            final String[] result = new String[smsg.length];
+            int i = 0;
+            for (final String lmsg : smsg)
+            {
+                result[i] = String.format(locale, lmsg, (Object[]) MessageTool.convertArgs(locale, false, args));
+                i++;
+            }
+            return result;
         }
         catch (NoSuchFieldException ex)
         {
@@ -119,7 +126,7 @@ public interface LocalizedMessageInterface extends Serializable
     }
     
     /**
-     * Returns a human readable message for this message; the message will be displayed to administrators only.
+     * Returns an array of human readable texts for this message; the message will be displayed to administrators only.
      * 
      * @param locale
      *            locale to be used.
@@ -158,7 +165,7 @@ public interface LocalizedMessageInterface extends Serializable
     }
     
     /**
-     * Returns a human readable message for this message; the message will be displayed to administrators only.
+     * Returns an array of human readable texts for this message; the message will be displayed to administrators only.
      * 
      * @param locale
      *            locale to be used.
@@ -171,7 +178,7 @@ public interface LocalizedMessageInterface extends Serializable
         try
         {
             final LocalizedMessages msgs = this.getClass().getAnnotation(LocalizedMessages.class);
-            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessage.class);
+            final LocalizedMessageList msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessageList.class);
             if (msgs == null || msg == null)
             {
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
@@ -183,12 +190,19 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            String smsg = minigame.getMessages().getAdminString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
-            if (smsg.length() == 0)
+            String[] smsg = minigame.getMessages().getAdminStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.adminMessages().length == 0 ? null : msg.adminMessages()); //$NON-NLS-1$
+            if (smsg == null)
             {
-                smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
+                smsg = minigame.getMessages().getStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.value()); //$NON-NLS-1$
             }
-            return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
+            final String[] result = new String[smsg.length];
+            int i = 0;
+            for (final String lmsg : smsg)
+            {
+                result[i] = String.format(locale, lmsg, (Object[]) MessageTool.convertArgs(locale, false, args));
+                i++;
+            }
+            return result;
         }
         catch (NoSuchFieldException ex)
         {
