@@ -46,6 +46,20 @@ public interface MinigamePluginInterface extends MinigameInterface
     ArenaTypeBuilderInterface createArenaType(ArenaTypeInterface type, boolean isDefault) throws MinigameException;
     
     /**
+     * Registers a context handler to calculate context variables.
+     * 
+     * @param clazz
+     *            context class.
+     * @param handler
+     *            the context handler.
+     * @throws MinigameException
+     *             thrown if the class to register is already registered.
+     * @param <T>
+     *            context class to register
+     */
+    <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws MinigameException;
+    
+    /**
      * Initialize this minigame.
      * 
      * <p>

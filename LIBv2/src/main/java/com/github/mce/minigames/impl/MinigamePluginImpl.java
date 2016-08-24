@@ -29,6 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.mce.minigames.api.ContextHandlerInterface;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
@@ -109,19 +110,25 @@ class MinigamePluginImpl implements MinigamePluginInterface
      */
     private ArenaTypeDeclarationInterface                                defaultType;
     
+    /** the minigames plugin. */
+    private final MinigamesPlugin                                        mgplugin;
+    
     /**
      * Constructor to create a minigame.
      * 
+     * @param mgplugin
+     *            minigames plugin
      * @param name
      *            internal name of the minigame.
      * @param provider
      *            the provider.
      */
-    public MinigamePluginImpl(String name, PluginProviderInterface provider)
+    public MinigamePluginImpl(MinigamesPlugin mgplugin, String name, PluginProviderInterface provider)
     {
         this.plugin = provider.getJavaPlugin();
         this.messages = new MessagesConfig(this.plugin);
         this.name = name;
+        this.mgplugin = mgplugin;
     }
     
     @Override
@@ -389,6 +396,12 @@ class MinigamePluginImpl implements MinigamePluginInterface
     void initConfgurations(Map<String, List<ConfigurationValueInterface>> configs)
     {
         this.defaultConfigs = configs;
+    }
+    
+    @Override
+    public <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws MinigameException
+    {
+        this.mgplugin.getApiContext().registerContextHandler(clazz, handler);
     }
     
 }

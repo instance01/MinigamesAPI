@@ -57,6 +57,8 @@ import com.github.mce.minigames.api.zones.ZoneInterface;
 import com.github.mce.minigames.impl.cmd.Mg2CommandHandler;
 import com.github.mce.minigames.impl.cmd.PartyCommandHandler;
 import com.github.mce.minigames.impl.cmd.StartCommandHandler;
+import com.github.mce.minigames.impl.context.ArenaPlayerInterfaceProvider;
+import com.github.mce.minigames.impl.context.MinigameContextImpl;
 import com.github.mce.minigames.impl.player.PlayerRegistry;
 
 /**
@@ -89,6 +91,11 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     private final PlayerRegistry                           players            = new PlayerRegistry();
     
     /**
+     * the minigame context implementation.
+     */
+    private MinigameContextImpl                            contextImpl        = new MinigameContextImpl();
+    
+    /**
      * Constructor to create the plugin.
      */
     public MinigamesPlugin()
@@ -96,7 +103,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // registers the core minigame.
         try
         {
-            this.register(new PluginProviderInterface() {
+            final MinigamePluginInterface mg2 = this.register(new PluginProviderInterface() {
                 
                 @Override
                 public String getName()
@@ -144,7 +151,12 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                     result.add(CommonConfig.class);
                     return result;
                 }
-            }).init();
+            });
+            
+            // context provider
+            mg2.registerContextHandler(ArenaPlayerInterface.class, new ArenaPlayerInterfaceProvider());
+            
+            mg2.init();
         }
         catch (MinigameException ex)
         {
@@ -242,7 +254,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 throw new MinigameException(CommonErrors.DuplicateMinigame, name);
             }
             
-            impl = new MinigamePluginImpl(name, provider);
+            impl = new MinigamePluginImpl(this, name, provider);
             
             // register commands
             final Map<String, CommandHandlerInterface> mgCommands = provider.getBukkitCommands();
@@ -333,7 +345,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         return null;
     }
     
-    @Override 
+    @Override
     public ArenaPlayerInterface getPlayer(Player player)
     {
         return this.players.getPlayer(player);
@@ -418,28 +430,25 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         return null;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getContext(java.lang.Class)
+    /**
+     * Returns the global context implementation.
+     * @return global context implementation.
      */
+    public MinigameContextImpl getApiContext()
+    {
+        return this.contextImpl;
+    }
+    
     @Override
     public <T> T getContext(Class<T> clazz)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.contextImpl.getContext(clazz);
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#resolveContextVar(java.lang.String)
-     */
     @Override
     public String resolveContextVar(String src)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.contextImpl.resolveContextVar(src);
     }
     
     /*
