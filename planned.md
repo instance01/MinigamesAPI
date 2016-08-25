@@ -18,21 +18,6 @@
 * 
 
 #### Game Requests
-* Tetris
-* 4 Gewinnt
-* Schiffe versenken
-* Master Builder
-* Jump Down
-* Hunger Games
-* Cake Klicker
-* Minesweeper
-* Hide & Seek
-* Lucky Blocks
-* Capture The Flag
-* Paintball
-* Mariokart
-* Death Cube
-* TicTacToe
-* Mobarena
 * Undersea battle (Uboot-Kampf)
+* 
 
