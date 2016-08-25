@@ -1169,11 +1169,14 @@ public class Arena
                 {
                     p.setAllowFlight(false);
                 }
-                p.setGameMode(ap.getOriginalGamemode());
-                p.setLevel(ap.getOriginalXplvl());
-                p.getInventory().setContents(ap.getInventory());
-                p.getInventory().setArmorContents(ap.getArmorInventory());
-                p.updateInventory();
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_GAMEMMODE)) p.setGameMode(ap.getOriginalGamemode());
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_XP)) p.setLevel(ap.getOriginalXplvl());
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_INVENTORY))
+                {
+                    p.getInventory().setContents(ap.getInventory());
+                    p.getInventory().setArmorContents(ap.getArmorInventory());
+                    p.updateInventory();
+                }
                 
                 p.setWalkSpeed(0.2F);
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 20 * 2, 50));

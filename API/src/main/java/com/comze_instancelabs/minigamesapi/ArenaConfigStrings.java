@@ -265,4 +265,19 @@ public interface ArenaConfigStrings
     /** TODO: describe config option. */
     String CONFIG_MYSQL_DATABASE = "mysql.database"; //$NON-NLS-1$
     
+    /**
+     * Activation of inventory reset on leave.
+     */
+    String RESET_INVENTORY = "config.reset_on_leave.inventory"; //$NON-NLS-1$
+
+    /**
+     * Activation of xp reset on leave.
+     */
+    String RESET_XP = "config.reset_on_leave.xp"; //$NON-NLS-1$
+
+    /**
+     * Activation of gamemode reset on leave.
+     */
+    String RESET_GAMEMMODE = "config.reset_on_leave.gamemode"; //$NON-NLS-1$
+    
 }
