@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.impl.cmd;
 
+import java.util.List;
+
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
@@ -52,6 +54,16 @@ public class PartyKickCommandHandler implements SubCommandHandlerInterface
      */
     @Override
     public LocalizedMessageInterface getDescription(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#onTabComplete(com.github.mce.minigames.api.cmd.CommandInterface)
+     */
+    @Override
+    public List<String> onTabComplete(CommandInterface command) throws MinigameException
     {
         // TODO Auto-generated method stub
         return null;

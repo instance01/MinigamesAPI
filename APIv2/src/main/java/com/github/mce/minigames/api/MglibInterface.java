@@ -15,6 +15,7 @@
 
 package com.github.mce.minigames.api;
 
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -80,6 +81,13 @@ public interface MglibInterface extends MinigameContext
      * @return logger instance.
      */
     Logger getLogger();
+    
+    /**
+     * Returns the default locale used in minigame lib.
+     * 
+     * @return default locale
+     */
+    Locale getDefaultLocale();
     
     // initialization
     

@@ -19,6 +19,8 @@ import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
 import static com.github.mce.minigames.api.player.ArenaPlayerInterface.hasPerm;
 import static com.github.mce.minigames.api.player.ArenaPlayerInterface.isInArena;
 
+import java.util.List;
+
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
@@ -78,6 +80,12 @@ public class StartCommandHandler implements SubCommandHandlerInterface
     public LocalizedMessageInterface getDescription(CommandInterface command)
     {
         return CommonMessages.StartCommandDescription;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    {
+        return null;
     }
     
 }

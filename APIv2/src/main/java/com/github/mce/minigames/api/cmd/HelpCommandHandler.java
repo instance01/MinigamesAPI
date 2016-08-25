@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mce.minigames.api.CommonMessages;
+import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
 /**
@@ -111,6 +112,12 @@ public class HelpCommandHandler extends AbstractPagableCommandHandler implements
             return result.toArray(new Serializable[result.size()]);
         }
         return this.subCommand.getDescription(command).toListArg(start, count, new Serializable[]{command.getCommandPath()}).apply(command.getLocale(), command.isOp());
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    {
+        return null;
     }
     
 }

@@ -184,7 +184,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
             catch (MinigameException ex)
             {
                 // TODO Logging
-                final Locale locale = Locale.ENGLISH; // TODO
+                final Locale locale = this.getDefaultLocale();
                 final boolean isAdmin = sender.isOp();
                 final String msg = isAdmin ? (ex.getCode().toAdminMessage(locale, ex.getArgs())) : (ex.getCode().toUserMessage(locale, ex.getArgs()));
                 switch (ex.getCode().getSeverity())
@@ -218,8 +218,20 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
     {
-        // TODO Auto-generated method stub
-        return super.onTabComplete(sender, command, alias, args);
+        final CommandHandlerInterface handler = this.commands.get(command.getName().toLowerCase());
+        if (handler != null)
+        {
+            try
+            {
+                final CommandInterface cmd = new CommandImpl(sender, this, command, null, args, '/' + command.getName());
+                return handler.onTabComplete(cmd);
+            }
+            catch (MinigameException ex)
+            {
+                // TODO Logging
+            }
+        }
+        return null;
     }
     
     // api methods
@@ -418,16 +430,11 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         return null;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromCfg(com.github.mce.minigames.api.config.ConfigurationValueInterface)
-     */
     @Override
     public MinigameInterface getMinigameFromCfg(ConfigurationValueInterface item)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final String name = this.optionsToMinigame.get(item);
+        return name == null ? null : this.minigames.get(name);
     }
     
     /**
@@ -518,6 +525,16 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
      */
     @Override
     public Iterable<SignInterface> getSigns(MinigameInterface minigame)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getDefaultLocale()
+     */
+    @Override
+    public Locale getDefaultLocale()
     {
         // TODO Auto-generated method stub
         return null;

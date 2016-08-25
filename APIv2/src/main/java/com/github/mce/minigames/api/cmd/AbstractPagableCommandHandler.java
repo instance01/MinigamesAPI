@@ -16,6 +16,7 @@
 package com.github.mce.minigames.api.cmd;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MinigameException;
@@ -147,6 +148,12 @@ public abstract class AbstractPagableCommandHandler implements CommandHandlerInt
     private void sendUsage(CommandInterface command)
     {
         command.send(CommonMessages.PageUsage, command.getCommandPath());
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    {
+        return null;
     }
     
 }
