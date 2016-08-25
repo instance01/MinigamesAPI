@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.MCE-Plugins</groupId>
 	<artifactId>MinigamesLib</artifactId>
-	<version>1.14.12-SNAPSHOT</version>
+	<version>1.14.11</version>
 	<packaging>jar</packaging>
 	<name>MinigamesLib-API</name>
 	<description>Rich Minigames API</description>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>com.github.MCE-Plugins</groupId>
 		<artifactId>MinigamesLib-parent</artifactId>
-		<version>1.14.12-SNAPSHOT</version>
+		<version>1.14.11</version>
 	</parent>
 
 	<dependencies>
