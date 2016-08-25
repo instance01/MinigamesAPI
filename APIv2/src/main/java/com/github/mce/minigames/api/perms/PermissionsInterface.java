@@ -33,7 +33,7 @@ public interface PermissionsInterface
         try
         {
             final Permissions permissions = this.getClass().getAnnotation(Permissions.class);
-            final Permission perm = this.getClass().getField(((Enum<?>) this).name()).getAnnotation(Permission.class);
+            final Permission perm = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(Permission.class);
             if (permissions == null || perm == null)
             {
                 throw new IllegalStateException("Invalid permission class."); //$NON-NLS-1$

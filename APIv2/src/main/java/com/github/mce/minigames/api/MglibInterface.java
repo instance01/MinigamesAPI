@@ -15,6 +15,7 @@
 
 package com.github.mce.minigames.api;
 
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ import com.github.mce.minigames.api.zones.ZoneInterface;
  * 
  * @author mepeisen
  */
-public interface MglibInterface
+public interface MglibInterface extends MinigameContext
 {
     
     /**
@@ -80,6 +81,13 @@ public interface MglibInterface
      * @return logger instance.
      */
     Logger getLogger();
+    
+    /**
+     * Returns the default locale used in minigame lib.
+     * 
+     * @return default locale
+     */
+    Locale getDefaultLocale();
     
     // initialization
     
@@ -275,45 +283,6 @@ public interface MglibInterface
      * @return the arenas of given type.
      */
     Iterable<ArenaInterface> getArenas(ArenaTypeInterface type);
-    
-    // context
-    
-    /**
-     * Returns a session variable.
-     * 
-     * @param clazz
-     *            the class of the variable to be returned.
-     * @return Context variable or {@code null} if the variable was not set.
-     */
-    <T> T getContext(Class<T> clazz);
-    
-    /**
-     * Returns the current player.
-     * 
-     * @return current player.
-     */
-    default ArenaPlayerInterface getCurrentPlayer()
-    {
-        return this.getContext(ArenaPlayerInterface.class);
-    }
-    
-    /**
-     * Returns the current arena.
-     * 
-     * @return current arena.
-     */
-    default ArenaInterface getCurrentArena()
-    {
-        return this.getContext(ArenaInterface.class);
-    }
-    
-    /**
-     * Resolves a context variable.
-     * 
-     * @param src
-     * @return result
-     */
-    String resolveContextVar(String src);
     
     // common singleton getter
     

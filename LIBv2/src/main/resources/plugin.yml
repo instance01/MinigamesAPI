@@ -4,14 +4,6 @@ version: ${minigames.releaseversion}-${minigames.timestamp}
 author: [InstanceLabs, MysticCity, MasteroftheHell, TheMrQuake, mepeisen]
 softdepend: [Vault]
 commands:
-   mapi:
-      description: Main command
-      usage: /mapi [action]
-      aliases: [mgapi, mglib]
-   party:
-      description: Main Party command
-      usage: /party [action]
-   start:
-      description: Start shortcut
-      usage: /start [action]
-      aliases: [startmg, startminigame]
+   mg2:
+      description: Main command for minigames lib version 2
+      usage: /mg2 [action]

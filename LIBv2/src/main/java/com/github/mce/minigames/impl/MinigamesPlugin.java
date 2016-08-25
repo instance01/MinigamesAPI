@@ -33,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.LibState;
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinecraftVersionsType;
@@ -44,14 +45,21 @@ import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.config.CommonConfig;
 import com.github.mce.minigames.api.config.ConfigurationValueInterface;
+import com.github.mce.minigames.api.config.ConfigurationValues;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.perms.CommonPermissions;
 import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.sign.SignInterface;
 import com.github.mce.minigames.api.zones.ZoneInterface;
+import com.github.mce.minigames.impl.cmd.Mg2CommandHandler;
 import com.github.mce.minigames.impl.cmd.PartyCommandHandler;
 import com.github.mce.minigames.impl.cmd.StartCommandHandler;
+import com.github.mce.minigames.impl.context.ArenaPlayerInterfaceProvider;
+import com.github.mce.minigames.impl.context.MinigameContextImpl;
+import com.github.mce.minigames.impl.player.PlayerRegistry;
 
 /**
  * A plugin for minigames.
@@ -63,13 +71,29 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
 {
     
     /** the well known minigames. */
-    private final Map<String, MinigamePluginImpl> minigames = new ConcurrentHashMap<>();
+    private final Map<String, MinigamePluginImpl>          minigames          = new ConcurrentHashMap<>();
     
     /** Current library state. */
-    private LibState state = LibState.Initializing;
+    private LibState                                       state              = LibState.Initializing;
     
     /** known command handlers by name. */
-    private final Map<String, CommandHandlerInterface> commands = new HashMap<>();
+    private final Map<String, CommandHandlerInterface>     commands           = new HashMap<>();
+    
+    /** messages to minigames. */
+    private final Map<LocalizedMessageInterface, String>   messagesToMinigame = new HashMap<>();
+    
+    /** options to minigames. */
+    private final Map<ConfigurationValueInterface, String> optionsToMinigame  = new HashMap<>();
+    
+    /**
+     * the players registry.
+     */
+    private final PlayerRegistry                           players            = new PlayerRegistry();
+    
+    /**
+     * the minigame context implementation.
+     */
+    private MinigameContextImpl                            contextImpl        = new MinigameContextImpl();
     
     /**
      * Constructor to create the plugin.
@@ -79,7 +103,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // registers the core minigame.
         try
         {
-            this.register(new PluginProviderInterface() {
+            final MinigamePluginInterface mg2 = this.register(new PluginProviderInterface() {
                 
                 @Override
                 public String getName()
@@ -92,6 +116,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 {
                     final List<Class<? extends Enum<?>>> result = new ArrayList<>();
                     result.add(CommonErrors.class);
+                    result.add(CommonMessages.class);
                     return result;
                 }
                 
@@ -100,31 +125,38 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 {
                     return MinigamesPlugin.this;
                 }
-
+                
                 @Override
                 public Map<String, CommandHandlerInterface> getBukkitCommands()
                 {
                     final Map<String, CommandHandlerInterface> result = new HashMap<>();
                     result.put("start", new StartCommandHandler()); //$NON-NLS-1$
                     result.put("party", new PartyCommandHandler()); //$NON-NLS-1$
-                    // TODO
+                    result.put("mg2", new Mg2CommandHandler()); //$NON-NLS-1$
                     return result;
                 }
-
+                
                 @Override
                 public Iterable<Class<? extends Enum<?>>> getPermissions()
                 {
-                    // TODO Auto-generated method stub
-                    return null;
+                    final List<Class<? extends Enum<?>>> result = new ArrayList<>();
+                    result.add(CommonPermissions.class);
+                    return result;
                 }
-
+                
                 @Override
                 public Iterable<Class<? extends Enum<?>>> getConfigurations()
                 {
-                    // TODO Auto-generated method stub
-                    return null;
+                    final List<Class<? extends Enum<?>>> result = new ArrayList<>();
+                    result.add(CommonConfig.class);
+                    return result;
                 }
-            }).init();
+            });
+            
+            // context provider
+            mg2.registerContextHandler(ArenaPlayerInterface.class, new ArenaPlayerInterfaceProvider());
+            
+            mg2.init();
         }
         catch (MinigameException ex)
         {
@@ -136,7 +168,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         }
     }
     
-    // event handlers
+    // event handlersEventHandler
     
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -146,14 +178,14 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         {
             try
             {
-                final CommandInterface cmd = null; // TODO
+                final CommandInterface cmd = new CommandImpl(sender, this, command, label, args, '/' + command.getName());
                 handler.handle(cmd);
             }
             catch (MinigameException ex)
             {
                 // TODO Logging
-                final Locale locale = Locale.ENGLISH; // TODO
-                final boolean isAdmin = true; // TODO
+                final Locale locale = this.getDefaultLocale();
+                final boolean isAdmin = sender.isOp();
                 final String msg = isAdmin ? (ex.getCode().toAdminMessage(locale, ex.getArgs())) : (ex.getCode().toUserMessage(locale, ex.getArgs()));
                 switch (ex.getCode().getSeverity())
                 {
@@ -182,22 +214,34 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         }
         return false;
     }
-
+    
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
     {
-        // TODO Auto-generated method stub
-        return super.onTabComplete(sender, command, alias, args);
+        final CommandHandlerInterface handler = this.commands.get(command.getName().toLowerCase());
+        if (handler != null)
+        {
+            try
+            {
+                final CommandInterface cmd = new CommandImpl(sender, this, command, null, args, '/' + command.getName());
+                return handler.onTabComplete(cmd);
+            }
+            catch (MinigameException ex)
+            {
+                // TODO Logging
+            }
+        }
+        return null;
     }
     
     // api methods
-
+    
     @Override
     public LibState getState()
     {
         return this.state;
     }
-
+    
     @Override
     public MinecraftVersionsType getMinecraftVersion()
     {
@@ -213,7 +257,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         
         synchronized (this.minigames)
         {
-            if (this.state != LibState.Initializing || this.state != LibState.Sleeping)
+            if (this.state != LibState.Initializing && this.state != LibState.Sleeping)
             {
                 throw new MinigameException(CommonErrors.Cannot_Create_Game_Wrong_State, name, this.state.name());
             }
@@ -222,21 +266,76 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 throw new MinigameException(CommonErrors.DuplicateMinigame, name);
             }
             
-            impl = new MinigamePluginImpl(name, provider);
+            impl = new MinigamePluginImpl(this, name, provider);
+            
+            // register commands
+            final Map<String, CommandHandlerInterface> mgCommands = provider.getBukkitCommands();
+            if (mgCommands != null)
+            {
+                this.commands.putAll(mgCommands);
+                // TODO warn for conflicts.
+            }
+            
+            // register messages
+            final List<LocalizedMessageInterface> messages = new ArrayList<>();
+            final Iterable<Class<? extends Enum<?>>> messageClasses = provider.getMessageClasses();
+            if (messageClasses != null)
+            {
+                for (final Class<? extends Enum<?>> msgClazz : messageClasses)
+                {
+                    for (final Enum<?> value : msgClazz.getEnumConstants())
+                    {
+                        if (!(value instanceof LocalizedMessageInterface))
+                        {
+                            // TODO log and warn
+                            break; // TODO throw exception, invalid messages
+                        }
+                        final LocalizedMessageInterface msg = (LocalizedMessageInterface) value;
+                        this.messagesToMinigame.put(msg, name);
+                        messages.add(msg);
+                    }
+                }
+            }
+            impl.initMessage(messages);
+            
+            // register configurations
+            final Map<String, List<ConfigurationValueInterface>> configs = new HashMap<>();
+            final Iterable<Class<? extends Enum<?>>> configClasses = provider.getConfigurations();
+            if (configClasses != null)
+            {
+                for (final Class<? extends Enum<?>> cfgClazz : configClasses)
+                {
+                    for (final Enum<?> value : cfgClazz.getEnumConstants())
+                    {
+                        if (!(value instanceof ConfigurationValueInterface))
+                        {
+                            // TODO log and warn
+                            break; // TODO throw exception, invalid options
+                        }
+                        final ConfigurationValueInterface cfg = (ConfigurationValueInterface) value;
+                        this.optionsToMinigame.put(cfg, name);
+                        configs.computeIfAbsent(cfgClazz.getAnnotation(ConfigurationValues.class).file(), (key) -> new ArrayList<>()).add(cfg);
+                    }
+                }
+            }
+            impl.initConfgurations(configs);
+            
             this.minigames.put(name, impl);
         }
         
         return impl;
     }
-
+    
     @Override
     public MinigameInterface getMinigame(String minigame)
     {
         final MinigamePluginImpl impl = this.minigames.get(minigame);
         return impl == null ? null : new MinigameWrapper(impl);
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#findZone(org.bukkit.Location)
      */
     @Override
@@ -245,8 +344,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#findZones(org.bukkit.Location)
      */
     @Override
@@ -255,38 +356,28 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#getPlayer(org.bukkit.entity.Player)
-     */
+    
     @Override
     public ArenaPlayerInterface getPlayer(Player player)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.players.getPlayer(player);
     }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#getPlayer(org.bukkit.OfflinePlayer)
-     */
+    
     @Override
     public ArenaPlayerInterface getPlayer(OfflinePlayer player)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.players.getPlayer(player);
     }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#getPlayer(java.util.UUID)
-     */
+    
     @Override
     public ArenaPlayerInterface getPlayer(UUID uuid)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.players.getPlayer(uuid);
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getArenaTypes()
      */
     @Override
@@ -295,8 +386,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getArenas()
      */
     @Override
@@ -305,8 +398,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getArenas(com.github.mce.minigames.api.arena.ArenaTypeInterface)
      */
     @Override
@@ -315,18 +410,17 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromMsg(com.github.mce.minigames.api.locale.LocalizedMessageInterface)
-     */
+    
     @Override
     public MinigameInterface getMinigameFromMsg(LocalizedMessageInterface item)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final String name = this.messagesToMinigame.get(item);
+        return name == null ? null : this.minigames.get(name);
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromPerm(com.github.mce.minigames.api.perms.PermissionsInterface)
      */
     @Override
@@ -335,48 +429,50 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromCfg(com.github.mce.minigames.api.config.ConfigurationValueInterface)
-     */
+    
     @Override
     public MinigameInterface getMinigameFromCfg(ConfigurationValueInterface item)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final String name = this.optionsToMinigame.get(item);
+        return name == null ? null : this.minigames.get(name);
     }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#getContext(java.lang.Class)
+    
+    /**
+     * Returns the global context implementation.
+     * @return global context implementation.
      */
+    public MinigameContextImpl getApiContext()
+    {
+        return this.contextImpl;
+    }
+    
     @Override
     public <T> T getContext(Class<T> clazz)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.contextImpl.getContext(clazz);
     }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#resolveContextVar(java.lang.String)
-     */
+    
     @Override
     public String resolveContextVar(String src)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.contextImpl.resolveContextVar(src);
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#debug()
      */
     @Override
     public boolean debug()
     {
         // TODO Auto-generated method stub
-        return false;
+        return true;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getSigns()
      */
     @Override
@@ -385,8 +481,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getSignForLocation(org.bukkit.Location)
      */
     @Override
@@ -395,8 +493,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getSigns(com.github.mce.minigames.api.arena.ArenaTypeInterface)
      */
     @Override
@@ -405,8 +505,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getSigns(com.github.mce.minigames.api.arena.ArenaInterface)
      */
     @Override
@@ -415,8 +517,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-
-    /* (non-Javadoc)
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.github.mce.minigames.api.MglibInterface#getSigns(com.github.mce.minigames.api.MinigameInterface)
      */
     @Override
@@ -425,7 +529,15 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         // TODO Auto-generated method stub
         return null;
     }
-    
-    
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getDefaultLocale()
+     */
+    @Override
+    public Locale getDefaultLocale()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

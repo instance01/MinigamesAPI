@@ -141,6 +141,10 @@ public class DefaultConfig
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_USER, "root");
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_PW, "root");
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_DATABASE, "mcminigames");
+            
+            config.addDefault(ArenaConfigStrings.RESET_GAMEMMODE, true);
+            config.addDefault(ArenaConfigStrings.RESET_INVENTORY, true);
+            config.addDefault(ArenaConfigStrings.RESET_XP, true);
         }
         config.options().copyDefaults(true);
         plugin.saveConfig();

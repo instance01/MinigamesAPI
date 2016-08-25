@@ -298,25 +298,23 @@ public interface ConfigurationValueInterface
     }
     
     /**
-     * Checks if this configuration value is set.
-     * 
-     * @return {@code true} if this configuraiton value is set.
+     * Returns the configuration path of this option
+     * @return configuration path
      */
-    default boolean isset()
+    default String path()
     {
         try
         {
-            final Field field = this.getClass().getField(((Enum<?>) this).name());
+            final Field field = this.getClass().getDeclaredField(((Enum<?>) this).name());
             final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
             final MglibInterface lib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = lib.getMinigameFromCfg(this);
             
             {
                 final ConfigurationBool config = field.getAnnotation(ConfigurationBool.class);
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -324,7 +322,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -332,7 +330,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -340,7 +338,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -348,7 +346,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -356,7 +354,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -364,7 +362,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -372,7 +370,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -380,7 +378,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -388,7 +386,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -396,7 +394,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -404,7 +402,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -412,7 +410,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -420,7 +418,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -428,7 +426,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -436,7 +434,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -444,7 +442,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -452,7 +450,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -460,7 +458,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -468,7 +466,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -476,7 +474,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -484,7 +482,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -492,7 +490,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.value().length() == 0 ? ((Enum<?>) this).name() : config.value()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -500,7 +498,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -508,7 +506,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -516,7 +514,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -524,7 +522,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -532,7 +530,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             {
@@ -540,7 +538,7 @@ public interface ConfigurationValueInterface
                 if (config != null)
                 {
                     final String path = lib.resolveContextVar(configs.path() + '.' + (config.name().length() == 0 ? ((Enum<?>) this).name() : config.name()));
-                    return minigame.getConfig(configs.file()).isSet(path);
+                    return path;
                 }
             }
             throw new IllegalStateException("Invalid configuration option"); //$NON-NLS-1$
@@ -554,6 +552,20 @@ public interface ConfigurationValueInterface
     /**
      * Checks if this configuration value is set.
      * 
+     * @return {@code true} if this configuraiton value is set.
+     */
+    default boolean isset()
+    {
+        final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
+        final MglibInterface lib = MglibInterface.INSTANCE.get();
+        final MinigameInterface minigame = lib.getMinigameFromCfg(this);
+        
+        return minigame.getConfig(configs.file()).isSet(this.path());
+    }
+    
+    /**
+     * Checks if this configuration value is set.
+     * 
      * @param path
      *            sub path of configuration section
      * @return {@code true} if this configuraiton value is set.
@@ -562,7 +574,7 @@ public interface ConfigurationValueInterface
     {
         try
         {
-            final Field field = this.getClass().getField(((Enum<?>) this).name());
+            final Field field = this.getClass().getDeclaredField(((Enum<?>) this).name());
             final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
             final MglibInterface lib = MglibInterface.INSTANCE.get();
             final MinigameInterface minigame = lib.getMinigameFromCfg(this);
@@ -1870,7 +1882,7 @@ public interface ConfigurationValueInterface
         try
         {
             final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
-            final ConfigurationSection config = this.getClass().getField(((Enum<?>) this).name()).getAnnotation(ConfigurationSection.class);
+            final ConfigurationSection config = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(ConfigurationSection.class);
             if (configs == null || config == null)
             {
                 throw new IllegalStateException("Invalid configuration class."); //$NON-NLS-1$
@@ -2369,6 +2381,17 @@ public interface ConfigurationValueInterface
                 (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getStringList(spath));
         if (list.size() == 0) return defaultValue;
         return list.toArray(new String[list.size()]);
+    }
+    
+    /**
+     * Saves the configuration file this option belongs to
+     */
+    default void saveConfig()
+    {
+        final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
+        final MglibInterface lib = MglibInterface.INSTANCE.get();
+        final MinigameInterface minigame = lib.getMinigameFromCfg(this);
+        minigame.saveConfig(configs.file());
     }
     
 }

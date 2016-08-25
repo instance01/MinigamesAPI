@@ -15,15 +15,18 @@
 
 package com.github.mce.minigames.impl.cmd;
 
+import java.util.List;
+
 import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
 /**
  * @author mepeisen
  *
  */
-public class PartyAcceptCommandHandler implements CommandHandlerInterface
+public class PartyAcceptCommandHandler implements SubCommandHandlerInterface
 {
     
     /* (non-Javadoc)
@@ -34,6 +37,36 @@ public class PartyAcceptCommandHandler implements CommandHandlerInterface
     {
         // TODO Auto-generated method stub
         
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription()
+     */
+    @Override
+    public LocalizedMessageInterface getShortDescription(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription()
+     */
+    @Override
+    public LocalizedMessageInterface getDescription(CommandInterface command)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#onTabComplete(com.github.mce.minigames.api.cmd.CommandInterface)
+     */
+    @Override
+    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

@@ -235,6 +235,9 @@
 - [ ] String CONFIG\_MYSQL\_USER
 - [ ] String CONFIG\_MYSQL\_PW
 - [ ] String CONFIG\_MYSQL\_DATABASE
+- [ ] String RESET\_INVENTORY
+- [ ] String RESET\_XP
+- [ ] String RESET\_GAMEMODE
 
 ## ArenaListener.java
 

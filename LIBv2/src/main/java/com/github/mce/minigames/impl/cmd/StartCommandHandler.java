@@ -19,13 +19,16 @@ import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
 import static com.github.mce.minigames.api.player.ArenaPlayerInterface.hasPerm;
 import static com.github.mce.minigames.api.player.ArenaPlayerInterface.isInArena;
 
+import java.util.List;
+
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.CommonPermissions;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
@@ -34,12 +37,19 @@ import com.github.mce.minigames.api.player.ArenaPlayerInterface;
  * 
  * @author mepeisen
  */
-public class StartCommandHandler implements CommandHandlerInterface
+public class StartCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
     public void handle(CommandInterface command) throws MinigameException
     {
+        if (command.getArgs().length > 0)
+        {
+            command.send(CommonMessages.TooManyArguments);
+            command.send(CommonMessages.StartCommandUsage, command.getCommandPath());
+            return;
+        }
+        
         // only in-game
         command.when(isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
 
@@ -58,6 +68,24 @@ public class StartCommandHandler implements CommandHandlerInterface
         MglibInterface.INSTANCE.get().getLogger().info("Arena " + arena.getInternalName() + " started because of start command from player " + player.getName()); //$NON-NLS-1$//$NON-NLS-2$
         arena.start();
         player.sendMessage(CommonMessages.ArenaStartedByCommand, arena.getDisplayName(), player.getName());
+    }
+
+    @Override
+    public LocalizedMessageInterface getShortDescription(CommandInterface command)
+    {
+        return CommonMessages.StartCommandShortDescription;
+    }
+
+    @Override
+    public LocalizedMessageInterface getDescription(CommandInterface command)
+    {
+        return CommonMessages.StartCommandDescription;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    {
+        return null;
     }
     
 }

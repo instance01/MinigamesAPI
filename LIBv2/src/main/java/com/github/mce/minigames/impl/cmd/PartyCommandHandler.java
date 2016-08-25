@@ -16,18 +16,20 @@
 package com.github.mce.minigames.impl.cmd;
 
 import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.cmd.AbstractSubCommandHandler;
+import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
 /**
  * A handler for the /party command.
  * 
  * @author mepeisen
  */
-public class PartyCommandHandler extends AbstractSubCommandHandler
+public class PartyCommandHandler extends AbstractCompositeCommandHandler implements SubCommandHandlerInterface
 {
     
     /**
@@ -55,10 +57,21 @@ public class PartyCommandHandler extends AbstractSubCommandHandler
     }
 
     @Override
-    protected void sendUsage(ArenaPlayerInterface player)
+    protected void sendUsage(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        
+        command.send(CommonMessages.PartyCommandUsage, command.getCommandPath());
+    }
+
+    @Override
+    public LocalizedMessageInterface getShortDescription(CommandInterface command)
+    {
+        return CommonMessages.PartyCommandShortDescription;
+    }
+
+    @Override
+    public LocalizedMessageInterface getDescription(CommandInterface command)
+    {
+        return CommonMessages.PartyCommandDescription;
     }
     
 }

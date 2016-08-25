@@ -14,6 +14,7 @@
 * Effects.playOutTitle fixed (https://github.com/MysticCity/MinigamesAPI/issues/112)
 * Feature for displaying arena states in MOTD. See config.yml of Minigames-LIB, enable at config.motd.enabled (https://github.com/MysticCity/MinigamesAPI/issues/54)
 * Players in vehicles can not longer leave arena bounds (https://github.com/MysticCity/MinigamesAPI/issues/78)
+* Config options to disable xp/inventory/gamemode reset on leave (https://github.com/MysticCity/MinigamesAPI/issues/97)
 
 ###### BedWars
 
@@ -26,7 +27,8 @@
 
 ###### HorseRacingPlus
 
-* Spawning horses inside HroseRacingPlus arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
+* Spawning horses inside HorseRacingPlus arena is allowed (https://github.com/MysticCity/MinigamesAPI/issues/79)
+* Started migration to MinigamesLib (https://github.com/MysticCity/MinigamesAPI/issues/12)
 
 ###### MobEscape
 

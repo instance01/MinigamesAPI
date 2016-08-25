@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.api.cmd;
 
+import java.util.List;
+
 import com.github.mce.minigames.api.MinigameException;
 
 /**
@@ -35,5 +37,17 @@ public interface CommandHandlerInterface
      *             thrown if there are any problems during command handling.
      */
     void handle(CommandInterface command) throws MinigameException;
+    
+    /**
+     * On Tab complete handler.
+     * 
+     * @param command
+     *            the command to handle.
+     * @return list of possible command completions.
+     * 
+     * @throws MinigameException
+     *             thrown if there are any problems during command handling.
+     */
+    List<String> onTabComplete(CommandInterface command) throws MinigameException;
     
 }

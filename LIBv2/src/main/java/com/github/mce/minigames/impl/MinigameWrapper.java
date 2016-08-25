@@ -21,7 +21,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 
 /**
@@ -59,7 +59,7 @@ class MinigameWrapper implements MinigameInterface
     }
 
     @Override
-    public Iterable<ArenaTypeInterface> getDeclaredTypes()
+    public Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes()
     {
         // TODO Auto-generated method stub
         return null;
@@ -97,6 +97,16 @@ class MinigameWrapper implements MinigameInterface
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MinigameInterface#saveConfig(java.lang.String)
+     */
+    @Override
+    public void saveConfig(String file)
+    {
+        // TODO Auto-generated method stub
+        
     }
     
 }

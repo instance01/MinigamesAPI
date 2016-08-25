@@ -32,7 +32,7 @@ public interface ArenaTypeInterface
     {
         try
         {
-            final ArenaTypes types = this.getClass().getField(((Enum<?>) this).name()).getAnnotation(ArenaTypes.class);
+            final ArenaTypes types = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(ArenaTypes.class);
             return types.minigame();
         }
         catch (NoSuchFieldException ex)

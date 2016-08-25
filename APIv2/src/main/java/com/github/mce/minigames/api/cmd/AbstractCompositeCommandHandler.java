@@ -17,30 +17,27 @@ package com.github.mce.minigames.api.cmd;
 
 import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
+import java.util.TreeMap;
 
 import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
-import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
-import com.github.mce.minigames.api.util.function.MgPredicate;
 
 /**
  * A handler for enabling sub commands.
  * 
  * @author mepeisen
  */
-public abstract class AbstractSubCommandHandler implements CommandHandlerInterface
+public abstract class AbstractCompositeCommandHandler implements CommandHandlerInterface
 {
     
     /**
-     * the configured sub commands.
+     * the configured sub commands (ordered).
      */
-    protected Map<String, CommandHandlerInterface> subCommands = new HashMap<>();
+    protected Map<String, SubCommandHandlerInterface> subCommands = new TreeMap<>();
     
     /**
      * pre parse the command.
@@ -70,7 +67,7 @@ public abstract class AbstractSubCommandHandler implements CommandHandlerInterfa
         // check for sub command
         if (command.getArgs().length == 0)
         {
-            sendUsage(command.getPlayer());
+            sendUsage(command);
             return;
         }
         
@@ -78,58 +75,56 @@ public abstract class AbstractSubCommandHandler implements CommandHandlerInterfa
         final CommandHandlerInterface handler = this.subCommands.get(name);
         if (handler == null)
         {
-            sendUsage(command.getPlayer());
+            command.send(CommonMessages.CompositeUnknownSubCommand, command.getCommandPath(), command.getArgs()[0]);
+            sendUsage(command);
             return;
         }
         
-        handler.handle(new CommandInterface() {
-            
-            @Override
-            public MgOutgoingStubbing<CommandInterface> when(MgPredicate<CommandInterface> test) throws MinigameException
-            {
-                // TODO Auto-generated method stub
-                return null;
-            }
-            
-            @Override
-            public CommandSender getSender()
-            {
-                return command.getSender();
-            }
-            
-            @Override
-            public ArenaPlayerInterface getPlayer()
-            {
-                return command.getPlayer();
-            }
-            
-            @Override
-            public String getLabel()
-            {
-                return command.getLabel();
-            }
-            
-            @Override
-            public Command getCommand()
-            {
-                return command.getCommand();
-            }
-            
-            @Override
-            public String[] getArgs()
-            {
-                // TODO Auto-generated method stub
-                return null;
-            }
-        });
+        handler.handle(command.consumeArgs(1));
+    }
+    
+    /**
+     * Injects a new sub command.
+     * 
+     * @param name
+     *            sub command name
+     * @param handler
+     *            handler
+     * @return {@code true} if the sub command was added, {@code false} if it already exists.
+     */
+    public boolean injectSubCommand(String name, SubCommandHandlerInterface handler)
+    {
+        if (this.subCommands.containsKey(name.toLowerCase()))
+        {
+            // TODO logging
+            return false;
+        }
+        this.subCommands.put(name.toLowerCase(), handler);
+        return true;
     }
     
     /**
      * Sends usage information.
      * 
-     * @param player
-     *            the player to send the usage strings to
+     * @param command
+     *            the command to be used.
      */
-    protected abstract void sendUsage(ArenaPlayerInterface player);
+    protected abstract void sendUsage(CommandInterface command);
+
+    @Override
+    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    {
+        if (command.getArgs().length > 0)
+        {
+            final String name = command.getArgs()[0].toLowerCase();
+            final CommandHandlerInterface handler = this.subCommands.get(name);
+            if (handler == null)
+            {
+                return null;
+            }
+            return handler.onTabComplete(command.consumeArgs(1));
+        }
+        return new ArrayList<>(this.subCommands.keySet());
+    }
     
 }
