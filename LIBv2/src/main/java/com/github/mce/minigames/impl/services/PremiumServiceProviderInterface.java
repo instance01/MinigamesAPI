@@ -13,33 +13,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.config;
+package com.github.mce.minigames.impl.services;
+
+import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 
 /**
- * Common permissions within minigames lib.
+ * A special extension to provide premium services.
  * 
  * @author mepeisen
  */
-@ConfigurationValues(path = "config")
-public enum CommonConfig implements ConfigurationValueInterface
+public interface PremiumServiceProviderInterface extends MinigameExtensionProviderInterface
 {
     
-    /**
-     * Is party command enabled?
-     */
-    @ConfigurationBool(name = "party_command_enabled", defaultValue = true)
-    PartyCommandEnabled,
-    
-    /**
-     * Is debug mode enabled?
-     */
-    @ConfigurationBool(name = "debug", defaultValue = false)
-    DebugEnabled,
-    
-    /**
-     * Default locale
-     */
-    @ConfigurationString(name = "locale", defaultValue = "en")
-    DefaultLocale,
+    // marker interface for the premium support
+    // there can only be one premium extension
     
 }

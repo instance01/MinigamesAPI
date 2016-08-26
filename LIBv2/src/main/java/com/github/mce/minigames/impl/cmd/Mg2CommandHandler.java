@@ -39,11 +39,11 @@ public class Mg2CommandHandler extends AbstractCompositeCommandHandler
         this.injectSubCommand("help", new HelpCommandHandler(this)); //$NON-NLS-1$
         this.injectSubCommand("info", new InfoCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("list", new ListCommandHandler()); //$NON-NLS-1$
-        this.injectSubCommand("debug", new DebugCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("join", new JoinCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("leave", new LeaveCommandHandler()); //$NON-NLS-1$
         
         // admin commands
+        this.injectSubCommand("debug", new DebugCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("test", new TestCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("admin", new AdminCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("create", new CreateCommandHandler()); //$NON-NLS-1$

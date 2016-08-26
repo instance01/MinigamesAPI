@@ -25,7 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
@@ -558,7 +557,7 @@ public interface ConfigurationValueInterface
     {
         final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
         final MglibInterface lib = MglibInterface.INSTANCE.get();
-        final MinigameInterface minigame = lib.getMinigameFromCfg(this);
+        final ConfigInterface minigame = lib.getConfigFromCfg(this);
         
         return minigame.getConfig(configs.file()).isSet(this.path());
     }
@@ -577,7 +576,7 @@ public interface ConfigurationValueInterface
             final Field field = this.getClass().getDeclaredField(((Enum<?>) this).name());
             final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
             final MglibInterface lib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = lib.getMinigameFromCfg(this);
+            final ConfigInterface minigame = lib.getConfigFromCfg(this);
             final ConfigurationSection config = field.getAnnotation(ConfigurationSection.class);
             if (config != null)
             {
@@ -1888,7 +1887,7 @@ public interface ConfigurationValueInterface
                 throw new IllegalStateException("Invalid configuration class."); //$NON-NLS-1$
             }
             final MglibInterface lib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = lib.getMinigameFromCfg(this);
+            final ConfigInterface minigame = lib.getConfigFromCfg(this);
             final String path = lib.resolveContextVar(configs.path() + '.' + (config.value().length() == 0 ? ((Enum<?>) this).name() : config.value()));
             final Set<String> result = minigame.getConfig(configs.file()).getConfigurationSection(path).getKeys(deep);
             return result.toArray(new String[result.size()]);
@@ -2390,7 +2389,7 @@ public interface ConfigurationValueInterface
     {
         final ConfigurationValues configs = this.getClass().getAnnotation(ConfigurationValues.class);
         final MglibInterface lib = MglibInterface.INSTANCE.get();
-        final MinigameInterface minigame = lib.getMinigameFromCfg(this);
+        final ConfigInterface minigame = lib.getConfigFromCfg(this);
         minigame.saveConfig(configs.file());
     }
     

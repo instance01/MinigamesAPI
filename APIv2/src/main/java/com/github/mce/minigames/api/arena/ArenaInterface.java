@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
 
@@ -80,6 +81,39 @@ public interface ArenaInterface
      * @return logger instance.
      */
     Logger getLogger();
+
+    /**
+     * Returns the declaring minigame
+     * @return minigame
+     */
+    MinigameInterface getMinigame();
+
+    /**
+     * Returns the arena state.
+     * 
+     * <p>
+     * WARNING: You should not use this method to query the arena state.
+     * Instead either use the predicates or use the {@link #getRealState()} method.
+     * </p>
+     * 
+     * @return arena state
+     */
+    ArenaState getState();
+
+    /**
+     * Returns the real arena state.
+     * 
+     * <p>
+     * While {@link #getState()} will return the public visible state this method
+     * returns the real state for gaming rules etc. While the arena state being MAINTENANCE
+     * the administrator is still able to start a single match to test the arena.
+     * Thus the real state may be {@link ArenaState#InGame} during tests while
+     * the arena state still shows up {@link ArenaState#Maintenance}.
+     * </p>
+     * 
+     * @return arena state
+     */
+    ArenaState getRealState();
     
     // stubbing
     

@@ -15,31 +15,31 @@
 
 package com.github.mce.minigames.api.config;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 /**
- * Common permissions within minigames lib.
+ * Common configuration interface.
  * 
  * @author mepeisen
  */
-@ConfigurationValues(path = "config")
-public enum CommonConfig implements ConfigurationValueInterface
+public interface ConfigInterface
 {
     
     /**
-     * Is party command enabled?
+     * Returns the bukkit configuration for given file.
+     * 
+     * @param file
+     *            configuration file name.
+     * @return the configuration file.
      */
-    @ConfigurationBool(name = "party_command_enabled", defaultValue = true)
-    PartyCommandEnabled,
+    ConfigurationSection getConfig(String file);
     
     /**
-     * Is debug mode enabled?
+     * Saves the configuration for given file.
+     * 
+     * @param file
+     *            configuration file name.
      */
-    @ConfigurationBool(name = "debug", defaultValue = false)
-    DebugEnabled,
-    
-    /**
-     * Default locale
-     */
-    @ConfigurationString(name = "locale", defaultValue = "en")
-    DefaultLocale,
+    void saveConfig(String file);
     
 }

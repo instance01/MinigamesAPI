@@ -15,6 +15,7 @@
 
 package com.github.mce.minigames.api;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -28,10 +29,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.api.config.ConfigInterface;
 import com.github.mce.minigames.api.config.ConfigurationValueInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.services.MinigameExtensionInterface;
+import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 import com.github.mce.minigames.api.sign.SignInterface;
 import com.github.mce.minigames.api.zones.ZoneInterface;
 
@@ -76,6 +81,13 @@ public interface MglibInterface extends MinigameContext
     MinecraftVersionsType getMinecraftVersion();
     
     /**
+     * Returns the library version string.
+     * 
+     * @return library version string.
+     */
+    Serializable getLibVersionString();
+    
+    /**
      * Returns a logger for the library.
      * 
      * @return logger instance.
@@ -90,6 +102,17 @@ public interface MglibInterface extends MinigameContext
     Locale getDefaultLocale();
     
     // initialization
+    
+    /**
+     * Registers a new extension.
+     * 
+     * @param extension
+     *            minigame extension to register.
+     * @return the minigame extension
+     * @throws MinigameException
+     *             thrown if the minigame with given name is already registered.
+     */
+    MinigameExtensionInterface register(MinigameExtensionProviderInterface extension) throws MinigameException;
     
     /**
      * Registers a new minigame; should be called in {@link JavaPlugin#onEnable()}.
@@ -110,24 +133,14 @@ public interface MglibInterface extends MinigameContext
     // main api
     
     /**
-     * Returns the minigame with given name.
-     * 
-     * @param minigame
-     *            the minigames name
-     * 
-     * @return the minigame or {@code null} if is not available.
-     */
-    MinigameInterface getMinigame(String minigame);
-    
-    /**
-     * Returns the minigame declaring the given enumeration class.
+     * Returns the message api declaring the given message.
      * 
      * @param item
-     *            the enumeration value; only works on classes that are returned by a plugin provider during initialization.
+     *            the enumeration value; only works on classes that are returned by a plugin or extension provider during initialization.
      * 
-     * @return minigame or {@code null} if the class was not declared by any minigame.
+     * @return message api or {@code null} if the class was not declared by any minigame or extension.
      */
-    MinigameInterface getMinigameFromMsg(LocalizedMessageInterface item);
+    MessagesConfigInterface getMessagesFromMsg(LocalizedMessageInterface item);
     
     /**
      * Returns the minigame declaring the given enumeration class.
@@ -140,14 +153,52 @@ public interface MglibInterface extends MinigameContext
     MinigameInterface getMinigameFromPerm(PermissionsInterface item);
     
     /**
-     * Returns the minigame declaring the given configuration value.
+     * Returns the configuration declaring the given configuration value.
      * 
      * @param item
-     *            the configuration value; only works on classes that are returned by a plugin provider during initialization.
+     *            the configuration value; only works on classes that are returned by a plugin or extension provider during initialization.
      * 
-     * @return minigame or {@code null} if the class was not declared by any minigame.
+     * @return config provider or {@code null} if the class was not declared by any minigame or extension.
      */
-    MinigameInterface getMinigameFromCfg(ConfigurationValueInterface item);
+    ConfigInterface getConfigFromCfg(ConfigurationValueInterface item);
+    
+    /**
+     * Return the amount of installed extensions.
+     * 
+     * @return extensions count.
+     */
+    int getExtensionsCount();
+    
+    /**
+     * Return the installed extensions.
+     * 
+     * @return extensions.
+     */
+    Iterable<MinigameExtensionInterface> getExtensions();
+    
+    /**
+     * Return the amount of installed minigames.
+     * 
+     * @return minigames count.
+     */
+    int getMinigamesCount();
+    
+    /**
+     * Return the installed minigames.
+     * 
+     * @return minigames.
+     */
+    Iterable<MinigameInterface> getMinigames();
+    
+    /**
+     * Returns the minigame with given name.
+     * 
+     * @param minigame
+     *            the minigames name
+     * 
+     * @return the minigame or {@code null} if is not available.
+     */
+    MinigameInterface getMinigame(String minigame);
     
     // zone api
     
@@ -274,6 +325,13 @@ public interface MglibInterface extends MinigameContext
      * @return declared arenas.
      */
     Iterable<ArenaInterface> getArenas();
+    
+    /**
+     * Return the amount of arenas.
+     * 
+     * @return amount of arenas.
+     */
+    int getArenaCount();
     
     /**
      * Returns all arenas of given type.

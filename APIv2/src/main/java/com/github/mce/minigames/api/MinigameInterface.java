@@ -15,12 +15,12 @@
 
 package com.github.mce.minigames.api;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
-
-import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
+import com.github.mce.minigames.api.config.ConfigInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 
 /**
@@ -28,7 +28,7 @@ import com.github.mce.minigames.api.locale.MessagesConfigInterface;
  * 
  * @author mepeisen
  */
-public interface MinigameInterface
+public interface MinigameInterface extends ConfigInterface
 {
     
     /**
@@ -79,20 +79,17 @@ public interface MinigameInterface
     Logger getLogger();
     
     /**
-     * Returns the bukkit configuration for given file.
+     * Returns the short description of the minigame
      * 
-     * @param file
-     *            configuration file name.
-     * @return the configuration file.
+     * @return minigame short description
      */
-    ConfigurationSection getConfig(String file);
+    Serializable getShortDescription();
     
     /**
-     * Saves the configuration for given file.
+     * Returns the long description of the minigame
      * 
-     * @param file
-     *            configuration file name.
+     * @return minigame long description (multi line)
      */
-    void saveConfig(String file);
+    Serializable getLongDescription();
     
 }

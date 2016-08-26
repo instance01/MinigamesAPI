@@ -42,6 +42,43 @@ public enum CommonErrors implements MinigameErrorCode
     Cannot_Create_Game_Wrong_State,
     
     /**
+     * Extension cannot be initialized because minigames-lib has wrong state.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: extension name</li>
+     * <li>String: current plugin lib state</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create extension %1$s because of wrong MinigamesLib plugin state: %2$s.", severity = MessageSeverityType.Error)
+    Cannot_Create_Extension_Wrong_State,
+    
+    /**
+     * Game cannot be initialized because of internal errors.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: minigame name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create minigame %1$s because of internal errors, see previous log output.", severity = MessageSeverityType.Error)
+    MinigameRegistrationError,
+    
+    /**
+     * Extension cannot be initialized because of internal errors.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: extension name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create extension %1$s because of internal errors, see previous log output.", severity = MessageSeverityType.Error)
+    ExtensionRegistrationError,
+    
+    /**
      * Game cannot be initialized because it already exists.
      * 
      * <p>Arguments:</p>
@@ -52,6 +89,18 @@ public enum CommonErrors implements MinigameErrorCode
      */
     @LocalizedMessage(defaultMessage = "Unable to create minigame %1$s because it already exists.", severity = MessageSeverityType.Error)
     DuplicateMinigame,
+    
+    /**
+     * Extension cannot be initialized because it already exists.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: extension name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create extension %1$s because it already exists.", severity = MessageSeverityType.Error)
+    DuplicateExtension,
     
     /**
      * Command must be executed in game.

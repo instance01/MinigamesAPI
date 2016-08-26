@@ -13,33 +13,44 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.config;
+package com.github.mce.minigames.api.arena;
 
 /**
- * Common permissions within minigames lib.
+ * Common arena states.
  * 
  * @author mepeisen
  */
-@ConfigurationValues(path = "config")
-public enum CommonConfig implements ConfigurationValueInterface
+public enum ArenaState
 {
     
     /**
-     * Is party command enabled?
+     * Players can join the arena.
      */
-    @ConfigurationBool(name = "party_command_enabled", defaultValue = true)
-    PartyCommandEnabled,
+    Join,
     
     /**
-     * Is debug mode enabled?
+     * Arena is starting a match.
      */
-    @ConfigurationBool(name = "debug", defaultValue = false)
-    DebugEnabled,
+    Starting,
     
     /**
-     * Default locale
+     * A match is running.
      */
-    @ConfigurationString(name = "locale", defaultValue = "en")
-    DefaultLocale,
+    InGame,
+    
+    /**
+     * The arena is restarting.
+     */
+    Restarting,
+    
+    /**
+     * The arena is disabled.
+     */
+    Disabled,
+    
+    /**
+     * The arena is under maintenance.
+     */
+    Maintenance
     
 }

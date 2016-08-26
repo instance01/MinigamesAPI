@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -93,13 +94,41 @@ public class ArenaPlayerImpl implements ArenaPlayerInterface
         final Player player = this.getBukkitPlayer();
         if (player != null)
         {
-            if (player.isOp())
+
+            String[] msgs = null;
+            if (msg.isSingleLine())
             {
-                player.sendMessage(msg.toAdminMessage(this.getPreferredLocale(), args));
+                msgs = new String[]{player.isOp() ? (msg.toAdminMessage(this.getPreferredLocale(), args)) : (msg.toUserMessage(this.getPreferredLocale(), args))};
             }
             else
             {
-                player.sendMessage(msg.toUserMessage(this.getPreferredLocale(), args));
+                msgs = player.isOp() ? (msg.toAdminMessageLine(this.getPreferredLocale(), args)) : (msg.toUserMessageLine(this.getPreferredLocale(), args));
+            }
+
+            for (final String smsg : msgs)
+            {
+                switch (msg.getSeverity())
+                {
+                    default:
+                    case Error:
+                        player.sendMessage(ChatColor.DARK_RED + smsg);
+                        break;
+                    case Information:
+                        player.sendMessage(ChatColor.WHITE + smsg);
+                        break;
+                    case Loser:
+                        player.sendMessage(ChatColor.RED + smsg);
+                        break;
+                    case Success:
+                        player.sendMessage(ChatColor.GREEN + smsg);
+                        break;
+                    case Warning:
+                        player.sendMessage(ChatColor.YELLOW + smsg);
+                        break;
+                    case Winner:
+                        player.sendMessage(ChatColor.GOLD + smsg);
+                        break;
+                }
             }
         }
     }

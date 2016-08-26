@@ -15,6 +15,7 @@
 
 package com.github.mce.minigames.impl;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -79,34 +80,34 @@ class MinigameWrapper implements MinigameInterface
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MinigameInterface#getLogger()
-     */
     @Override
     public Logger getLogger()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getLogger();
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MinigameInterface#getConfig(java.lang.String)
-     */
     @Override
     public ConfigurationSection getConfig(String file)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getConfig(file);
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MinigameInterface#saveConfig(java.lang.String)
-     */
     @Override
     public void saveConfig(String file)
     {
-        // TODO Auto-generated method stub
-        
+        this.delegate.saveConfig(file);
+    }
+
+    @Override
+    public Serializable getShortDescription()
+    {
+        return this.delegate.getShortDescription();
+    }
+
+    @Override
+    public Serializable getLongDescription()
+    {
+        return this.delegate.getLongDescription();
     }
     
 }

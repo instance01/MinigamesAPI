@@ -42,6 +42,74 @@ public enum CommonMessages implements LocalizedMessageInterface
      */
     @LocalizedMessage(defaultMessage = "Arena %1$s was started by player: %2$s.", severity = MessageSeverityType.Success)
     ArenaStartedByCommand,
+
+    /**
+     * arena join state
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GREEN + "Join")
+    AraneStateJoin,
+
+    /**
+     * arena join state
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.YELLOW + "Starting")
+    AraneStateStarting,
+
+    /**
+     * arena ingame state
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.YELLOW + "InGame")
+    AraneStateInGame,
+
+    /**
+     * arena restarting state
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.YELLOW + "Restarting")
+    AraneStateRestarting,
+
+    /**
+     * arena disabled state
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.RED + "Disabled")
+    AraneStateDisabled,
+
+    /**
+     * arena meintenance state
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.RED + "Maintenance")
+    AraneStateMeintenance,
+    
+    /**
+     * The core minigame description
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = "CORE (MinigamesLib)")
+    CoreMinigameDescription,
+    
+    /**
+     * The core minigame description
+     * 
+     * <p>no arguments.</p>
+     */
+    @LocalizedMessageList({
+        "The CORE minigame does not provide any game.",
+        "It is part of the library itself.",
+        "You cannot create arenas for minigame CORE."
+    })
+    CoreMinigameLongDescription,
     
     // ***** commands, usages etc.
 
@@ -54,7 +122,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>String: current command path</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "§7Usage: §9%1$s [subcommand] §7Call party sub commands.")
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Usage: " + LocalizedMessage.BLUE + "%1$s [subcommand] " + LocalizedMessage.GRAY + "Call party sub commands.")
     PartyCommandUsage,
     
     /**
@@ -87,6 +155,163 @@ public enum CommonMessages implements LocalizedMessageInterface
     PartyCommandDescription,
     
     /**
+     * The command output of /mg2 info.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * <li>String: spigot version</li>
+     * <li>String: minigames version</li>
+     * <li>String: mode</li>
+     * <li>String: debug</li>
+     * </ol>
+     */
+    @LocalizedMessageList({
+        "minigames lib version %3$s (%4$s)",
+        "running on minecraft %2$s",
+        "debugging: %5$s",
+        "----------",
+        "Run for additional information:",
+        "  " + LocalizedMessage.BLUE + "%1$s extensions " + LocalizedMessage.GRAY + " to list the extensions.",
+        "  " + LocalizedMessage.BLUE + "%1$s minigames " + LocalizedMessage.GRAY + " to list the minigames.",
+        "  " + LocalizedMessage.BLUE + "%1$s arenas " + LocalizedMessage.GRAY + " to list the arenas."
+    })
+    InfoCommandOutput,
+    
+    /**
+     * Usage of info command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Usage: " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GRAY + "Information on minigames lib.")
+    InfoCommandUsage,
+    
+    /**
+     * Short description of info command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Information on minigames lib.")
+    InfoCommandShortDescription,
+    
+    /**
+     * Long description of info command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * </ol>
+     */
+    @LocalizedMessageList({
+        "Display some useful information on the minigames library.",
+        "Version information, important options etc.",
+        "This command requires an administrator permission.",
+        "  " + LocalizedMessage.BLUE + "%1$s extensions " + LocalizedMessage.GRAY + " to list the extensions.",
+        "  " + LocalizedMessage.BLUE + "%1$s minigames " + LocalizedMessage.GRAY + " to list the minigames.",
+        "  " + LocalizedMessage.BLUE + "%1$s arenas " + LocalizedMessage.GRAY + " to list the arenas."
+    })
+    InfoCommandDescription,
+    
+    /**
+     * Info with unknown sub command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command line</li>
+     * <li>String: The sub command</li>
+     */
+    @LocalizedMessage(defaultMessage = "Unknown command " + LocalizedMessage.BLUE + "%1$s %2$s", severity = MessageSeverityType.Error)
+    InfoUnknownSubCommand,
+    
+    /**
+     * Info minigames command header.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command that was entered</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "minigames")
+    InfoMinigamesHeader,
+    
+    /**
+     * Info minigames line.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The minigame name</li>
+     * <li>String: The short description</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GRAY + "%2$s")
+    InfoMinigamesLine,
+    
+    /**
+     * Info extensions command header.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command that was entered</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "extensions")
+    InfoExtensionsHeader,
+    
+    /**
+     * Info extensions line.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The extension name</li>
+     * <li>String: The short description</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GRAY + "%2$s")
+    InfoExtensionLine,
+    
+    /**
+     * Info arenas command header.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command that was entered</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "arenas")
+    InfoArenasHeader,
+    
+    /**
+     * Info arenas line.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The minigame name</li>
+     * <li>String: The internal name</li>
+     * <li>String: The arena state</li>
+     * <li>String: The display name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.BLUE + "%1$s %2$s " + LocalizedMessage.GRAY + "[%3$s" + LocalizedMessage.GRAY + "] %4$s")
+    InfoArenaLine,
+    
+    /**
      * Usage of start command.
      * 
      * <p>Arguments:</p>
@@ -95,7 +320,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>String: current command path</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "§7Usage: §9%1$s §7Force the current arena to start.")
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Usage: " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GRAY + "Force the current arena to start.")
     StartCommandUsage,
     
     /**
@@ -139,7 +364,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * 
      * <p>No arguments.</p>
      */
-    @LocalizedMessage(defaultMessage = "§7Type §9/mg2 help §7for detailed help", severity = MessageSeverityType.Success)
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Type " + LocalizedMessage.BLUE + "/mg2 help " + LocalizedMessage.GRAY + "for detailed help", severity = MessageSeverityType.Success)
     Mg2CommandUsage,
     
     /**
@@ -152,7 +377,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>String: current sub command</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "Unknown command §9%1$s %2$s", severity = MessageSeverityType.Error)
+    @LocalizedMessage(defaultMessage = "Unknown command " + LocalizedMessage.BLUE + "%1$s %2$s", severity = MessageSeverityType.Error)
     CompositeUnknownSubCommand,
     
     /**
@@ -166,7 +391,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>Integer: total pages</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "§7=====§9%1$s§7====§9Page §1%2$d §9 from §1%3$d§7=====")
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "=====" + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.GRAY + "====" + LocalizedMessage.BLUE + "Page " + LocalizedMessage.DARK_BLUE + "%2$d " + LocalizedMessage.BLUE + " from " + LocalizedMessage.DARK_BLUE + "%3$d" + LocalizedMessage.GRAY + "=====")
     PagedHeader,
     
     /**
@@ -179,7 +404,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>Integer: line number</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = " §7%1$s")
+    @LocalizedMessage(defaultMessage = " " + LocalizedMessage.GRAY + "%1$s")
     PagedLine,
     
     /**
@@ -213,32 +438,8 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>String: The command that was entered</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "§7Usage: §9%1$s [page] §7Display the given page.")
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Usage: " + LocalizedMessage.BLUE + "%1$s [page] " + LocalizedMessage.GRAY + "Display the given page.")
     PageUsage,
-    
-    /**
-     * Help command usage.
-     * 
-     * <p>Arguments:</p>
-     * 
-     * <ol>
-     * <li>String: The command that was entered</li>
-     * </ol>
-     */
-    @LocalizedMessage(defaultMessage = "§9%1$s help [page] Display help with given page number.")
-    HelpPagedUsage,
-    
-    /**
-     * Help command usage.
-     * 
-     * <p>Arguments:</p>
-     * 
-     * <ol>
-     * <li>String: The command that was entered</li>
-     * </ol>
-     */
-    @LocalizedMessage(defaultMessage = "§9%1$s help [page] Display the help with given page number.")
-    HelpCommandUsage,
     
     /**
      * Help command header.
@@ -262,7 +463,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <li>String: The short description</li>
      * </ol>
      */
-    @LocalizedMessage(defaultMessage = "§9%1$s §7%2$s")
+    @LocalizedMessage(defaultMessage = LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GRAY + "%2$s")
     HelpLineUsage,
     
     /**
@@ -270,8 +471,20 @@ public enum CommonMessages implements LocalizedMessageInterface
      * 
      * <p>No arguments.</p>
      */
-    @LocalizedMessage(defaultMessage = "§7Display command help")
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Display command help")
     HelpShortDescription,
+    
+    /**
+     * Help on unknown sub command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: The command line</li>
+     * <li>String: The sub command</li>
+     */
+    @LocalizedMessage(defaultMessage = "Unknown command " + LocalizedMessage.BLUE + "%1$s %2$s", severity = MessageSeverityType.Error)
+    HelpUnknownSubCommand,
     
     /**
      * Help command long description.
@@ -284,11 +497,12 @@ public enum CommonMessages implements LocalizedMessageInterface
      * </ol>
      */
     @LocalizedMessageList({
-        "§7Displays command help for command §9%1$s",
-        "§7Usage: §9%1$s [page] §7Display the given help page.",
-        "§7The argument §9page is optional. If not entered it",
-        "§7will always display the first help page.",
+        LocalizedMessageList.GRAY + "Displays command help for command " + LocalizedMessageList.BLUE + "%1$s",
+        LocalizedMessageList.GRAY + "Usage: " + LocalizedMessageList.BLUE + "%1$s [command] [page] " + LocalizedMessageList.GRAY + "Display the given help page.",
+        LocalizedMessageList.GRAY + "The argument " + LocalizedMessageList.BLUE + "page is optional. If not entered it",
+        LocalizedMessageList.GRAY + "will always display the first help page.",
+        LocalizedMessageList.GRAY + "If a command name is given it will display help on that command.",
     })
-    HelpLongDescription,
+    HelpLongDescription;
     
 }

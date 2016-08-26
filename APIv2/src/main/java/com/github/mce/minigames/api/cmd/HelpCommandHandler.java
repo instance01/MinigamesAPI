@@ -19,10 +19,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import com.github.mce.minigames.api.CommonMessages;
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface.DynamicArg;
 
 /**
  * Prints help based on single sub command handlers.
@@ -38,6 +42,42 @@ public class HelpCommandHandler extends AbstractPagableCommandHandler implements
     
     /** help on composite command. */
     private AbstractCompositeCommandHandler compositeCommand;
+    
+    @Override
+    public void handle(CommandInterface command) throws MinigameException
+    {
+        if (command.getArgs().length >= 1 && this.compositeCommand != null)
+        {
+            try
+            {
+                Integer.parseInt(command.getArgs()[0]);
+            }
+            catch (@SuppressWarnings("unused") NumberFormatException ex)
+            {
+                // assume we have a command name given to us.
+                final String name = command.getArgs()[0].toLowerCase();
+                final SubCommandHandlerInterface sub = this.compositeCommand.subCommands.get(name);
+                if (sub == null)
+                {
+                    command.send(CommonMessages.HelpUnknownSubCommand, command.getCommandPath(), name);
+                    return;
+                }
+                new HelpCommandHandler(sub).handle(command.consumeArgs(1));
+            }
+        }
+        super.handle(command);
+        return;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
+    {
+        if (command.getArgs().length > 0 || this.compositeCommand == null)
+        {
+            return Collections.emptyList();
+        }
+        return new ArrayList<>(this.compositeCommand.subCommands.keySet()).stream().filter(elm -> elm.startsWith(lastArg)).collect(Collectors.toList());
+    }
 
     /**
      * Constructor.
@@ -73,16 +113,6 @@ public class HelpCommandHandler extends AbstractPagableCommandHandler implements
         return CommonMessages.HelpLongDescription;
     }
 
-//    @Override
-//    public LocalizedMessageInterface getUsage(CommandInterface command)
-//    {
-//        if (this.compositeCommand != null)
-//        {
-//            return CommonMessages.HelpPagedUsage;
-//        }
-//        return CommonMessages.HelpCommandUsage;
-//    }
-
     @Override
     protected int getLineCount(CommandInterface command)
     {
@@ -108,17 +138,21 @@ public class HelpCommandHandler extends AbstractPagableCommandHandler implements
             final List<Serializable> result = new ArrayList<>();
             for (final String key : keys.subList(start, start + count))
             {
-                result.add(CommonMessages.HelpLineUsage.toArg(key, this.compositeCommand.subCommands.get(key).getShortDescription(command).toArg(command.getCommandPath())));
+                DynamicArg shortDesc = null;
+                final SubCommandHandlerInterface sch = this.compositeCommand.subCommands.get(key);
+                try
+                {
+                    shortDesc = sch.getShortDescription(command).toArg(command.getCommandPath());
+                }
+                catch (Throwable t)
+                {
+                    MglibInterface.INSTANCE.get().getLogger().log(Level.WARNING, "Exception fetching short description on command " + sch, t); //$NON-NLS-1$
+                }
+                result.add(CommonMessages.HelpLineUsage.toArg(key, shortDesc));
             }
             return result.toArray(new Serializable[result.size()]);
         }
         return this.subCommand.getDescription(command).toListArg(start, count, new Serializable[]{command.getCommandPath()}).apply(command.getLocale(), command.isOp());
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
-    {
-        return Collections.emptyList();
     }
     
 }

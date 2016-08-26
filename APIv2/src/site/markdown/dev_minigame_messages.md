@@ -159,12 +159,12 @@ This will result in following entries in messages.yml
           default_locale: en
           user:
             en:
-              0: 'Welcome to this adventure, player %1$s!'
-              1: 'Can you find the Yeti?'
-              2: 'Sam and Max are absent.'
-              3: 'HELP!'
+              - 'Welcome to this adventure, player %1$s!'
+              - 'Can you find the Yeti?'
+              - 'Sam and Max are absent.'
+              - 'HELP!'
 
-As you see the lines are enumerated. If you have a language only containing three lines this can be done by changing
+As you see the lines are a yaml list. If you have a language only containing three lines this can be done by changing
 it to the following:
 
     myplugin:
@@ -173,14 +173,36 @@ it to the following:
           default_locale: en
           user:
             en:
-              0: 'Welcome to this adventure, player %1$s!'
-              1: 'Can you find the Yeti?'
-              2: 'Sam and Max are absent.'
-              3: 'HELP!'
+              - 'Welcome to this adventure, player %1$s!'
+              - 'Can you find the Yeti?'
+              - 'Sam and Max are absent.'
+              - 'HELP!'
             de:
-              0: 'Willkommen bei deinem Abenteuer, Spieler %1$s!'
-              1: 'Findest du den Yeti?'
-              2: 'Sam und Max sind verschwunden. HILFE!'
+              - 'Willkommen bei deinem Abenteuer, Spieler %1$s!'
+              - 'Findest du den Yeti?'
+              - 'Sam und Max sind verschwunden. HILFE!'
+
+## Text format and colors
+
+Minigames lib uss some default colors based on message severity.
+
+* error: Dark red
+* information: white
+* loser: red
+* success: green
+* warning: yellow
+* winner: gold
+
+You can override it by using either the literals (f.e. "§7" for gray) or by using the string constants in the
+LocalizedMessage and LocalizedMessageList annotations.
+
+Example:
+    
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "some gray text")
+
+### formatting conventions
+
+TODO
 
 ## Special message type: Message sets
 

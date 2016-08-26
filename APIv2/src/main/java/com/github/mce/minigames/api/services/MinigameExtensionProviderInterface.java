@@ -13,41 +13,42 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api;
+package com.github.mce.minigames.api.services;
 
 import java.io.Serializable;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
+import com.github.mce.minigames.api.CommonProviderInterface;
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
 /**
- * An interface that should be implemented by the {@link JavaPlugin} of a specific minigame.
+ * A special extension for the minigames library.
+ * 
+ * <p>
+ * Extensions can be installed through {@link MglibInterface#register(MinigameExtensionProviderInterface)}.
+ * They behave different from minigames. Mainly they are responsible to add additional features to
+ * the library. They do not install any arena type nor do they provide any game.
+ * </p>
  * 
  * @author mepeisen
  */
-public interface PluginProviderInterface extends CommonProviderInterface
+public interface MinigameExtensionProviderInterface extends CommonProviderInterface
 {
-    
+
     /**
-     * Returns the technical name of the minigame.
+     * Returns the name of the extension.
      * 
-     * @return minigame name.
+     * @return extension name.
      */
     String getName();
 
     /**
-     * Returns the short description of the minigame.
+     * Returns the short description of the extension.
      * 
      * @return A short description; use method {@link LocalizedMessageInterface#toArg(Serializable...)} on the message.
      */
     Serializable getShortDescription();
-
-    /**
-     * Returns the long multi line description of the minigame.
-     * 
-     * @return A long multi line description; use method {@link LocalizedMessageInterface#toListArg(Serializable...)} on the message.
-     */
-    Serializable getDescription();
+    
+    // TODO
     
 }

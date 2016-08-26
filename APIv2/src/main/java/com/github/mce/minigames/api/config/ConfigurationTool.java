@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameInterface;
 
 /**
  * Helper class for configuration variables.
@@ -51,7 +50,7 @@ class ConfigurationTool
                 throw new IllegalStateException("Invalid configuration class."); //$NON-NLS-1$
             }
             final MglibInterface lib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = lib.getMinigameFromCfg(val);
+            final ConfigInterface minigame = lib.getConfigFromCfg(val);
             return calculator.supply(val, configs, config, lib, minigame);
         }
         catch (Exception ex)
@@ -156,7 +155,7 @@ class ConfigurationTool
                 throw new IllegalStateException("Invalid configuration class."); //$NON-NLS-1$
             }
             final MglibInterface lib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = lib.getMinigameFromCfg(val);
+            final ConfigInterface minigame = lib.getConfigFromCfg(val);
             consumer.apply(val, configs, config, lib, minigame);
         }
         catch (Exception ex)
@@ -204,7 +203,7 @@ class ConfigurationTool
      */
     static <T, Annot extends Annotation> void consumeList(ConfigurationValueInterface val, Class<Annot> clazz, PathCalculator<Annot> path, T[] value, ArrayValueConsumer<T, Annot> consumer)
     {
-        final ValueConsumer<Annot> vconsumer = (ConfigurationValueInterface val2, ConfigurationValues configs, Annot config, MglibInterface lib, MinigameInterface minigame, String spath) -> {
+        final ValueConsumer<Annot> vconsumer = (ConfigurationValueInterface val2, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame, String spath) -> {
             final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
             for (final String key : section.getKeys(false))
             {
@@ -231,7 +230,7 @@ class ConfigurationTool
      */
     static <T> void consumeList(ConfigurationValueInterface val, String subpath, T[] value, ArrayValueConsumer<T, ConfigurationSection> consumer)
     {
-        final ValueConsumer<ConfigurationSection> vconsumer = (ConfigurationValueInterface val2, ConfigurationValues configs, ConfigurationSection config, MglibInterface lib, MinigameInterface minigame, String spath) -> {
+        final ValueConsumer<ConfigurationSection> vconsumer = (ConfigurationValueInterface val2, ConfigurationValues configs, ConfigurationSection config, MglibInterface lib, ConfigInterface minigame, String spath) -> {
             final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
             for (final String key : section.getKeys(false))
             {
@@ -581,7 +580,7 @@ class ConfigurationTool
          * @return return value
          * @throws Exception
          */
-        Ret supply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, MinigameInterface minigame) throws Exception;
+        Ret supply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame) throws Exception;
         
     }
     
@@ -609,7 +608,7 @@ class ConfigurationTool
          * @return return value
          * @throws Exception
          */
-        Ret supply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, MinigameInterface minigame, String path) throws Exception;
+        Ret supply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame, String path) throws Exception;
         
     }
     
@@ -638,7 +637,7 @@ class ConfigurationTool
          * @return return value
          * @throws Exception
          */
-        Ret supply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, MinigameInterface minigame, org.bukkit.configuration.ConfigurationSection section, String key) throws Exception;
+        Ret supply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame, org.bukkit.configuration.ConfigurationSection section, String key) throws Exception;
         
     }
     
@@ -686,7 +685,7 @@ class ConfigurationTool
          * @param minigame
          * @throws Exception
          */
-        void apply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, MinigameInterface minigame) throws Exception;
+        void apply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame) throws Exception;
         
     }
     
@@ -711,7 +710,7 @@ class ConfigurationTool
          * @param path
          * @throws Exception
          */
-        void apply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, MinigameInterface minigame, String path) throws Exception;
+        void apply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame, String path) throws Exception;
         
     }
     
@@ -740,7 +739,7 @@ class ConfigurationTool
          * @param element
          * @throws Exception
          */
-        void apply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, MinigameInterface minigame, org.bukkit.configuration.ConfigurationSection section, String path, T element)
+        void apply(ConfigurationValueInterface val, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame, org.bukkit.configuration.ConfigurationSection section, String path, T element)
                 throws Exception;
         
     }
