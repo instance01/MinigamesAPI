@@ -23,11 +23,13 @@ import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
 /**
+ * Command to display useful information.
+ * 
  * @author mepeisen
- *
  */
-public class PartyAcceptCommandHandler implements SubCommandHandlerInterface
+public class TestCommandHandler implements SubCommandHandlerInterface
 {
+    
     
     /* (non-Javadoc)
      * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#handle(com.github.mce.minigames.api.cmd.CommandInterface)
@@ -36,11 +38,20 @@ public class PartyAcceptCommandHandler implements SubCommandHandlerInterface
     public void handle(CommandInterface command) throws MinigameException
     {
         // TODO Auto-generated method stub
-        
     }
-
+    
     /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription()
+     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#onTabComplete(com.github.mce.minigames.api.cmd.CommandInterface, java.lang.String)
+     */
+    @Override
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription(com.github.mce.minigames.api.cmd.CommandInterface)
      */
     @Override
     public LocalizedMessageInterface getShortDescription(CommandInterface command)
@@ -48,22 +59,12 @@ public class PartyAcceptCommandHandler implements SubCommandHandlerInterface
         // TODO Auto-generated method stub
         return null;
     }
-
+    
     /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription()
+     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription(com.github.mce.minigames.api.cmd.CommandInterface)
      */
     @Override
     public LocalizedMessageInterface getDescription(CommandInterface command)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#onTabComplete(com.github.mce.minigames.api.cmd.CommandInterface)
-     */
-    @Override
-    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
     {
         // TODO Auto-generated method stub
         return null;

@@ -43,11 +43,13 @@ public interface CommandHandlerInterface
      * 
      * @param command
      *            the command to handle.
+     * @param lastArg
+     *            the last argument to be completed.
      * @return list of possible command completions.
      * 
      * @throws MinigameException
      *             thrown if there are any problems during command handling.
      */
-    List<String> onTabComplete(CommandInterface command) throws MinigameException;
+    List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException;
     
 }

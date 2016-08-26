@@ -19,6 +19,7 @@ import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
 import static com.github.mce.minigames.api.player.ArenaPlayerInterface.hasPerm;
 import static com.github.mce.minigames.api.player.ArenaPlayerInterface.isInArena;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.github.mce.minigames.api.CommonErrors;
@@ -83,9 +84,9 @@ public class StartCommandHandler implements SubCommandHandlerInterface
     }
 
     @Override
-    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
     {
-        return null;
+        return Collections.emptyList();
     }
     
 }

@@ -163,7 +163,7 @@ public class MinigameContextImpl implements MinigameContext
     public String resolveContextVar(String src)
     {
         // TODO Auto-generated method stub
-        return null;
+        return src;
     }
     
     /**

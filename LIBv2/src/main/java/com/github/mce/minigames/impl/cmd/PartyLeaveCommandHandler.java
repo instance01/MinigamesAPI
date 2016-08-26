@@ -63,7 +63,7 @@ public class PartyLeaveCommandHandler implements SubCommandHandlerInterface
      * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#onTabComplete(com.github.mce.minigames.api.cmd.CommandInterface)
      */
     @Override
-    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
     {
         // TODO Auto-generated method stub
         return null;

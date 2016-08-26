@@ -33,14 +33,26 @@ public class Mg2CommandHandler extends AbstractCompositeCommandHandler
      */
     public Mg2CommandHandler()
     {
+        // user commands
         this.injectSubCommand("party", new PartyCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("start", new StartCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("help", new HelpCommandHandler(this)); //$NON-NLS-1$
-//        info
-//        debug
-//        list
-//        test
-        // TODO additional commands
+        this.injectSubCommand("info", new InfoCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("list", new ListCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("debug", new DebugCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("join", new JoinCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("leave", new LeaveCommandHandler()); //$NON-NLS-1$
+        
+        // admin commands
+        this.injectSubCommand("test", new TestCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("admin", new AdminCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("create", new CreateCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("add", new AddCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("edit", new EditCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("remove", new RemoveCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("setopt", new SetOptCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("getopt", new GetOptCommandHandler()); //$NON-NLS-1$
+        this.injectSubCommand("save", new SaveCommandHandler()); //$NON-NLS-1$
     }
     
     @Override

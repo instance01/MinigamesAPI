@@ -16,6 +16,7 @@
 package com.github.mce.minigames.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -218,13 +219,20 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
     {
+        String lastArg = null;
+        String[] newArgs = null;
+        if (args.length > 0)
+        {
+            lastArg = args[args.length - 1].toLowerCase();
+            newArgs = Arrays.copyOf(args, args.length - 1);
+        }
         final CommandHandlerInterface handler = this.commands.get(command.getName().toLowerCase());
         if (handler != null)
         {
             try
             {
-                final CommandInterface cmd = new CommandImpl(sender, this, command, null, args, '/' + command.getName());
-                return handler.onTabComplete(cmd);
+                final CommandInterface cmd = new CommandImpl(sender, this, command, null, newArgs, '/' + command.getName());
+                return handler.onTabComplete(cmd, lastArg);
             }
             catch (MinigameException ex)
             {

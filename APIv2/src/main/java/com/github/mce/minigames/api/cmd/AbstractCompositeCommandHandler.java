@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
@@ -112,7 +113,7 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
     protected abstract void sendUsage(CommandInterface command);
 
     @Override
-    public List<String> onTabComplete(CommandInterface command) throws MinigameException
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
     {
         if (command.getArgs().length > 0)
         {
@@ -122,9 +123,9 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
             {
                 return null;
             }
-            return handler.onTabComplete(command.consumeArgs(1));
+            return handler.onTabComplete(command.consumeArgs(1), lastArg);
         }
-        return new ArrayList<>(this.subCommands.keySet());
+        return new ArrayList<>(this.subCommands.keySet()).stream().filter(elm -> elm.startsWith(lastArg)).collect(Collectors.toList());
     }
     
 }
