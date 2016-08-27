@@ -15,7 +15,6 @@
 
 package com.github.mce.minigames.api.arena;
 
-import java.util.Locale;
 import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.MinigameException;
@@ -48,23 +47,13 @@ public interface ArenaInterface
     String getDisplayName();
     
     /**
-     * Returns the display name for given locale.
-     * 
-     * @param locale
-     * @return arena display name; defaults to {@link #getDisplayName()}
-     */
-    String getDisplayName(Locale locale);
-    
-    /**
      * Changes the display name
      * 
      * @param name
-     * @param locale
-     *            the locale to be used or {@code null} to change the default display name.
      * @throws MinigameException
      *             thrown if save failed.
      */
-    void setDisplayName(String name, Locale locale) throws MinigameException;
+    void setDisplayName(String name) throws MinigameException;
     
     // states
     
@@ -81,39 +70,64 @@ public interface ArenaInterface
      * @return logger instance.
      */
     Logger getLogger();
-
+    
     /**
      * Returns the declaring minigame
+     * 
      * @return minigame
      */
     MinigameInterface getMinigame();
-
+    
     /**
      * Returns the arena state.
      * 
      * <p>
-     * WARNING: You should not use this method to query the arena state.
-     * Instead either use the predicates or use the {@link #getRealState()} method.
+     * WARNING: You should not use this method to query the arena state. Instead either use the predicates or use the {@link #getRealState()} method.
      * </p>
      * 
      * @return arena state
      */
     ArenaState getState();
-
+    
     /**
      * Returns the real arena state.
      * 
      * <p>
-     * While {@link #getState()} will return the public visible state this method
-     * returns the real state for gaming rules etc. While the arena state being MAINTENANCE
-     * the administrator is still able to start a single match to test the arena.
-     * Thus the real state may be {@link ArenaState#InGame} during tests while
-     * the arena state still shows up {@link ArenaState#Maintenance}.
+     * While {@link #getState()} will return the public visible state this method returns the real state for gaming rules etc. While the arena state being MAINTENANCE the administrator is still able
+     * to start a single match to test the arena. Thus the real state may be {@link ArenaState#InGame} during tests while the arena state still shows up {@link ArenaState#Maintenance}.
      * </p>
      * 
      * @return arena state
      */
     ArenaState getRealState();
+    
+    /**
+     * Returns the arena type for this arena.
+     * 
+     * @return arena type.
+     */
+    ArenaTypeInterface getArenaType();
+    
+    /**
+     * Checks if the arena is enabled.
+     * 
+     * @return {@code true} if the arena is enabled.
+     */
+    boolean isEnabled();
+
+    /**
+     * Checks if the arena is in maintenance mode.
+     * 
+     * @return {@code true} if the arena is under maintenance.
+     */
+    boolean isMaintenance();
+    
+    /**
+     * Checks if the arena can be started by command; checks the gaming rules.
+     * 
+     * @return {@code true} if the arena can be started.
+     */
+    boolean canStart();
     
     // stubbing
     
@@ -133,12 +147,5 @@ public interface ArenaInterface
      *             will be thrown if either the test function or then/else consumers throw the exception.
      */
     MgOutgoingStubbing<ArenaInterface> when(MgPredicate<ArenaInterface> test) throws MinigameException;
-    
-    /**
-     * Returns a test function to check if the arena can be started by command; checks the gaming rules.
-     * 
-     * @return predicate to return {@code true} if the arena can be started.
-     */
-    MgPredicate<ArenaInterface> canStart();
     
 }

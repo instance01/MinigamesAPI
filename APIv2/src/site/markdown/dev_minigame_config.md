@@ -114,3 +114,7 @@ This helps administrators to manipulate your configuration options.
 
 TODO
 
+## fixed config vs. non-fixed config
+
+TODO
+

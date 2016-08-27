@@ -41,6 +41,7 @@ public class Mg2CommandHandler extends AbstractCompositeCommandHandler
         this.injectSubCommand("list", new ListCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("join", new JoinCommandHandler()); //$NON-NLS-1$
         this.injectSubCommand("leave", new LeaveCommandHandler()); //$NON-NLS-1$
+        // TODO preferred locale command
         
         // admin commands
         this.injectSubCommand("debug", new DebugCommandHandler()); //$NON-NLS-1$

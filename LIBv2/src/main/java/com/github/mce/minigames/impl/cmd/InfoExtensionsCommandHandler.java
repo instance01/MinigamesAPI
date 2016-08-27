@@ -22,8 +22,10 @@ import java.util.List;
 
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.perms.CommonPermissions;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 
 /**
@@ -33,6 +35,14 @@ import com.github.mce.minigames.api.services.MinigameExtensionInterface;
  */
 public class InfoExtensionsCommandHandler extends AbstractPagableCommandHandler
 {
+    
+    @Override
+    public void handle(CommandInterface command) throws MinigameException
+    {
+        command.permThrowException(CommonPermissions.InfoExtensions, command.getCommandPath() + " extensions"); //$NON-NLS-1$
+        super.handle(command);
+    }
+
     @Override
     protected int getLineCount(CommandInterface command)
     {

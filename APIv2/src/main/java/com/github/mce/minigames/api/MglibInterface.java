@@ -31,9 +31,9 @@ import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.config.ConfigInterface;
 import com.github.mce.minigames.api.config.ConfigurationValueInterface;
+import com.github.mce.minigames.api.context.MinigameContext;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
-import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
@@ -141,16 +141,6 @@ public interface MglibInterface extends MinigameContext
      * @return message api or {@code null} if the class was not declared by any minigame or extension.
      */
     MessagesConfigInterface getMessagesFromMsg(LocalizedMessageInterface item);
-    
-    /**
-     * Returns the minigame declaring the given enumeration class.
-     * 
-     * @param item
-     *            the enumeration value; only works on classes that are returned by a plugin provider during initialization.
-     * 
-     * @return minigame or {@code null} if the class was not declared by any minigame.
-     */
-    MinigameInterface getMinigameFromPerm(PermissionsInterface item);
     
     /**
      * Returns the configuration declaring the given configuration value.

@@ -24,6 +24,7 @@ import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.perms.CommonPermissions;
 import com.github.mce.minigames.impl.MinigamesPlugin;
 
 /**
@@ -37,8 +38,6 @@ public class InfoCommandHandler implements SubCommandHandlerInterface
     @Override
     public void handle(CommandInterface command) throws MinigameException
     {
-        // TODO Check permission
-        
         if (command.getArgs().length > 0)
         {
             final String name = command.getArgs()[0].toLowerCase();
@@ -59,6 +58,8 @@ public class InfoCommandHandler implements SubCommandHandlerInterface
             }
         }
         
+        command.permThrowException(CommonPermissions.Info, command.getCommandPath());
+        
         final MglibInterface lib = MglibInterface.INSTANCE.get();
         final String mode = ((MinigamesPlugin)lib).getModeString();
         final String debug = lib.debug() ? "TRUE" : "FALSE"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -69,6 +70,9 @@ public class InfoCommandHandler implements SubCommandHandlerInterface
                 mode,
                 debug
                 );
+        // TODO Info: Where Am I (which arena)
+        // TODO Info: Which waiting queues
+        // TODO Info on partys
     }
     
     @Override

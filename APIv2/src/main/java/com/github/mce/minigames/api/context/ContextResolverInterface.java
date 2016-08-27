@@ -13,32 +13,27 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena;
-
-import com.github.mce.minigames.api.MinigameException;
+package com.github.mce.minigames.api.context;
 
 /**
- * Interface for arena type declarations.
+ * An interface being able to resolve variables with contexts.
  * 
  * @author mepeisen
  */
-public interface ArenaTypeDeclarationInterface
+public interface ContextResolverInterface
 {
     
-    ArenaTypeInterface getType();
-    
-    boolean isDefault();
-
     /**
-     * Creates a new arena
-     * @param arenaName
-     * @return 
+     * Tries to resolve given variable name.
+     * 
+     * @param varName
+     *            variable name to resolve.
+     * @param args
+     *            arguments for resolve
+     * @param context
+     *            the context
+     * @return the resolved string or {@code null} if the variable cannot be resolved.
      */
-    ArenaInterface createArena(String arenaName) throws MinigameException;
-
-    /**
-     * @return
-     */
-    String getName();
+    String resolve(String varName, String[] args, MinigameContext context);
     
 }

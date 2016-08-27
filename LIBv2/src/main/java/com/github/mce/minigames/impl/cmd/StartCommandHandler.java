@@ -16,7 +16,6 @@
 package com.github.mce.minigames.impl.cmd;
 
 import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
-import static com.github.mce.minigames.api.player.ArenaPlayerInterface.hasPerm;
 import static com.github.mce.minigames.api.player.ArenaPlayerInterface.isInArena;
 
 import java.util.Collections;
@@ -54,16 +53,17 @@ public class StartCommandHandler implements SubCommandHandlerInterface
         // only in-game
         command.when(isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
 
-        // check permission
         final ArenaPlayerInterface player = command.getPlayer();
-        player.when(hasPerm(CommonPermissions.start).negate()).thenThrow(CommonErrors.NoPermissionForStart);
+
+        // check permission
+        command.permThrowException(CommonPermissions.Start, command.getCommandPath());
         
         // only inside arena
         player.when(isInArena().negate()).thenThrow(CommonErrors.StartNotWithinArena);
         
         // check if the arena can be started directly
         final ArenaInterface arena = player.getArena();
-        arena.when(arena.canStart().negate()).thenThrow(CommonErrors.CannotStart);
+        arena.when(ArenaInterface::canStart).thenThrow(CommonErrors.CannotStart);
         
         // start it, log and send success message
         MglibInterface.INSTANCE.get().getLogger().info("Arena " + arena.getInternalName() + " started because of start command from player " + player.getName()); //$NON-NLS-1$//$NON-NLS-2$

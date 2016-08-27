@@ -34,15 +34,6 @@ public @interface ConfigurationValues
     /**
      * The default path used as a prefix for the configuration values.
      * 
-     * <p>
-     * Within path the following variables can be used:
-     * </p>
-     * 
-     * <ul>
-     * <li>"$MINIGAME$" : will be replaced by the current minigame name.</li>
-     * <li>"$ARENA$" : will be replaced by the current arena name.</li>
-     * </ul>
-     * 
      * @return default path used as a prefix.
      */
     String path();
@@ -53,5 +44,11 @@ public @interface ConfigurationValues
      * @return configuration file name.
      */
     String file() default "config.yml";
+    
+    /**
+     * {@code true} for fixed configuration variable calculated from declaring plugin; {@code false} for fetching minigame from context
+     * @return fixed configuration flag
+     */
+    boolean fixed() default false;
     
 }

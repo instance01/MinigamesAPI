@@ -171,8 +171,8 @@ public class ArenaPlayerImpl implements ArenaPlayerInterface
     @Override
     public boolean checkPermission(PermissionsInterface perm)
     {
-        // TODO Auto-generated method stub
-        return true;
+        final Player player = this.getBukkitPlayer();
+        return player == null ? false : player.hasPermission(perm.resolveName());
     }
     
     @Override

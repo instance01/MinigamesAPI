@@ -15,59 +15,128 @@
 
 package com.github.mce.minigames.impl.cmd;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.github.mce.minigames.api.CommonMessages;
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.MinigameInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.perms.CommonPermissions;
 
 /**
- * Command to display useful information.
+ * Command to create a new arena.
  * 
  * @author mepeisen
  */
 public class CreateCommandHandler implements SubCommandHandlerInterface
 {
     
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#handle(com.github.mce.minigames.api.cmd.CommandInterface)
-     */
     @Override
     public void handle(CommandInterface command) throws MinigameException
     {
-        // TODO Auto-generated method stub
+        command.permThrowException(CommonPermissions.Create, command.getCommandPath());
         
+        if (command.getArgs().length < 2)
+        {
+            command.send(CommonMessages.CreateCommandUsage, command.getCommandPath());
+            return;
+        }
+        
+        final MglibInterface lib = MglibInterface.INSTANCE.get();
+        final MinigameInterface minigame = lib.getMinigame(command.getArgs()[0]);
+        if (minigame == null)
+        {
+            command.send(CommonMessages.MinigameNotFound, command.getArgs()[0]);
+            command.send(CommonMessages.CreateCommandUsage, command.getCommandPath());
+            return;
+        }
+        
+        ArenaTypeDeclarationInterface type = null;
+        String arenaName = null;
+        if (command.getArgs().length == 2)
+        {
+            type = minigame.getDefaultType();
+            if (type == null)
+            {
+                command.send(CommonMessages.DefaultArenaTypeNotFound, command.getArgs()[0]);
+                command.send(CommonMessages.CreateCommandUsage, command.getCommandPath());
+                return;
+            }
+            arenaName = command.getArgs()[1];
+        }
+        else
+        {
+            type = minigame.getType(command.getArgs()[1]);
+            if (type == null)
+            {
+                command.send(CommonMessages.ArenaTypeNotFound, command.getArgs()[0], command.getArgs()[1]);
+                command.send(CommonMessages.CreateCommandUsage, command.getCommandPath());
+                return;
+            }
+            arenaName = command.getArgs()[2];
+        }
+        
+        type.createArena(arenaName);
     }
     
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#onTabComplete(com.github.mce.minigames.api.cmd.CommandInterface, java.lang.String)
-     */
     @Override
     public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
     {
-        // TODO Auto-generated method stub
+        final MglibInterface lib = MglibInterface.INSTANCE.get();
+        if (command.getArgs().length == 0)
+        {
+            final List<String> result = new ArrayList<>();
+            for (final MinigameInterface mg : lib.getMinigames())
+            {
+                if (lastArg == null)
+                {
+                    result.add(mg.getName());
+                }
+                else if (mg.getName().startsWith(lastArg))
+                {
+                    result.add(mg.getName());
+                }
+            }
+            return result;
+        }
+        else if (command.getArgs().length == 1)
+        {
+            final List<String> result = new ArrayList<>();
+            final MinigameInterface mg = lib.getMinigame(command.getArgs()[0]);
+            if (mg != null)
+            {
+                for (final ArenaTypeDeclarationInterface type : mg.getDeclaredTypes())
+                {
+                    if (lastArg == null)
+                    {
+                        result.add(type.getName());
+                    }
+                    else if (type.getName().startsWith(lastArg))
+                    {
+                        result.add(type.getName());
+                    }
+                }
+            }
+            return result;
+        }
         return null;
     }
     
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getShortDescription(com.github.mce.minigames.api.cmd.CommandInterface)
-     */
     @Override
     public LocalizedMessageInterface getShortDescription(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.InfoCommandShortDescription;
     }
     
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.cmd.SubCommandHandlerInterface#getDescription(com.github.mce.minigames.api.cmd.CommandInterface)
-     */
     @Override
     public LocalizedMessageInterface getDescription(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return CommonMessages.InfoCommandDescription;
     }
     
 }

@@ -15,32 +15,35 @@
 
 package com.github.mce.minigames.impl.context;
 
+import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.context.ContextHandlerInterface;
 import com.github.mce.minigames.api.context.MinigameContext;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
- * Provider to calculate arena players for context.
+ * Provider to calculate minigame for context.
  * 
  * @author mepeisen
  */
-public class ArenaPlayerInterfaceProvider implements ContextHandlerInterface<ArenaPlayerInterface>
+public class MinigameInterfaceProvider implements ContextHandlerInterface<MinigameInterface>
 {
     
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.ContextHandlerInterface#calculateFromCommand(com.github.mce.minigames.api.cmd.CommandInterface, com.github.mce.minigames.api.MinigameContext)
+     */
     @Override
-    public ArenaPlayerInterface calculateFromCommand(CommandInterface command, MinigameContext context)
+    public MinigameInterface calculateFromCommand(CommandInterface command, MinigameContext context)
     {
-        // simply return the command sender
-        return command.getPlayer();
+        // TODO Auto-generated method stub
+        return null;
     }
     
     /* (non-Javadoc)
      * @see com.github.mce.minigames.api.ContextHandlerInterface#calculateFromEvent(com.github.mce.minigames.api.arena.rules.MinigameEvent, com.github.mce.minigames.api.MinigameContext)
      */
     @Override
-    public ArenaPlayerInterface calculateFromEvent(MinigameEvent<?> event, MinigameContext context)
+    public MinigameInterface calculateFromEvent(MinigameEvent<?> event, MinigameContext context)
     {
         // TODO Auto-generated method stub
         return null;

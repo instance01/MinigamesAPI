@@ -13,7 +13,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api;
+package com.github.mce.minigames.api.context;
 
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.cmd.CommandInterface;

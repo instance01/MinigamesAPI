@@ -22,9 +22,11 @@ import java.util.List;
 
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.perms.CommonPermissions;
 
 /**
  * Command to display useful information.
@@ -33,6 +35,13 @@ import com.github.mce.minigames.api.cmd.CommandInterface;
  */
 public class InfoMinigamesCommandHandler extends AbstractPagableCommandHandler
 {
+    
+    @Override
+    public void handle(CommandInterface command) throws MinigameException
+    {
+        command.permThrowException(CommonPermissions.InfoMinigames, command.getCommandPath() + " minigames"); //$NON-NLS-1$
+        super.handle(command);
+    }
 
     @Override
     protected int getLineCount(CommandInterface command)

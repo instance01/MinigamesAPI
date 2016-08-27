@@ -155,6 +155,87 @@ public enum CommonMessages implements LocalizedMessageInterface
     PartyCommandDescription,
     
     /**
+     * Minigame was not found.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: minigame name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Minigame %1$s not found.", severity = MessageSeverityType.Error)
+    MinigameNotFound,
+    
+    /**
+     * Default arena type was not found.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: minigame name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Minigame %1$s does not declare a default arena type.", severity = MessageSeverityType.Error)
+    DefaultArenaTypeNotFound,
+    
+    /**
+     * Default arena type was not found.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: minigame name</li>
+     * <li>String: arena type name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Minigame %1$s does not declare arena type %2$s.", severity = MessageSeverityType.Error)
+    ArenaTypeNotFound,
+    
+    /**
+     * Usage of create command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Usage: " + LocalizedMessage.BLUE + "%1$s [minigame] [type] [name] " + LocalizedMessage.GRAY + "Create a new arena.")
+    CreateCommandUsage,
+    
+    /**
+     * Short description of create command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Create a new arena.")
+    CreateCommandShortDescription,
+    
+    /**
+     * Long description of create command.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: current command path</li>
+     * </ol>
+     */
+    @LocalizedMessageList({
+        "Creates a new arena.",
+        "As first argument give the internal name of the minigame.",
+        "As second argument give the arena type name.",
+        "As third argument give the unique name of the arena.",
+        "The arena type is optional. If it is missing the default type is used.",
+        "  Example: " + LocalizedMessage.BLUE + "%1$s Snake Sheeps Snake1",
+        "The new arena will automatically be in maintenance mode."
+    })
+    CreateCommandDescription,
+    
+    /**
      * The command output of /mg2 info.
      * 
      * <p>Arguments:</p>

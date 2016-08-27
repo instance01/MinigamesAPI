@@ -13,7 +13,7 @@ To declare a permission simply create an enumeration.
      *
      * @author mepeisen
      */
-    @Permissions("$MINIGAME:myplugin$.common")
+    @Permissions("$PERM:MINIGAME:myplugin$.common")
     public enum MyPermissions implements PermissionsInterface
     {
     

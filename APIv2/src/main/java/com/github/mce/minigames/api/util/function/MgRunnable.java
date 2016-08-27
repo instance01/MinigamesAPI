@@ -13,32 +13,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena;
+package com.github.mce.minigames.api.util.function;
 
 import com.github.mce.minigames.api.MinigameException;
 
 /**
- * Interface for arena type declarations.
+ * A {@link Runnable} that is aware of throwing minigame exceptions.
  * 
  * @author mepeisen
  */
-public interface ArenaTypeDeclarationInterface
+@FunctionalInterface
+public interface MgRunnable
 {
     
-    ArenaTypeInterface getType();
-    
-    boolean isDefault();
-
     /**
-     * Creates a new arena
-     * @param arenaName
-     * @return 
+     * method to execute.
+     * 
+     * @throws MinigameException thrown on errors.
      */
-    ArenaInterface createArena(String arenaName) throws MinigameException;
-
-    /**
-     * @return
-     */
-    String getName();
+    void run() throws MinigameException;
     
 }

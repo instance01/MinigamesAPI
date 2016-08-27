@@ -55,6 +55,41 @@ public enum CommonErrors implements MinigameErrorCode
     Cannot_Create_Extension_Wrong_State,
     
     /**
+     * Arena type cannot be initialized because minigames has wrong state.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: arena type name</li>
+     * <li>String: minigame name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create arena type %1$s for minigame %2$s because of wrong state.", severity = MessageSeverityType.Error)
+    Cannot_Create_ArenaType_Wrong_State,
+    
+    /**
+     * Arena cannot be creeated because of invalid characters.
+     * 
+     * <p>No arguments.</p>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create arena  because name contains invalid characters.", severity = MessageSeverityType.Error)
+    Cannot_Create_Arena_Invalid_Name,
+    
+    /**
+     * Arena cannot be loaded because of invalid arena type.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: arena type name</li>
+     * <li>String: minigame name</li>
+     * <li>String: arena name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to load arena %3$s for minigame %2$s because of missing arena type %1$s.", severity = MessageSeverityType.Error)
+    Cannot_Load_Arena_Unknown_Type,
+    
+    /**
      * Game cannot be initialized because of internal errors.
      * 
      * <p>Arguments:</p>
@@ -103,6 +138,31 @@ public enum CommonErrors implements MinigameErrorCode
     DuplicateExtension,
     
     /**
+     * Arena cannot be created because it already exists.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: arena name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create arena %1$s because it already exists.", severity = MessageSeverityType.Error)
+    DuplicateArena,
+    
+    /**
+     * Arena type cannot be initialized because it already exists.
+     * 
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: type name</li>
+     * <li>String: minigame name</li>
+     * </ol>
+     */
+    @LocalizedMessage(defaultMessage = "Unable to create arena type %1$s for minigame %2$s because it already exists.", severity = MessageSeverityType.Error)
+    DuplicateArenaType,
+    
+    /**
      * Command must be executed in game.
      * 
      * <p>No Arguments</p>
@@ -111,12 +171,16 @@ public enum CommonErrors implements MinigameErrorCode
     InvokeIngame,
     
     /**
-     * No permissions for start command.
+     * No permissions for a command.
      * 
-     * <p>No Arguments</p>
+     * <p>Arguments:</p>
+     * 
+     * <ol>
+     * <li>String: command name</li>
+     * </ol>
      */
-    @LocalizedMessage(defaultMessage = "No permission for /start command.", severity = MessageSeverityType.Error)
-    NoPermissionForStart,
+    @LocalizedMessage(defaultMessage = "No permission for %1$s command.", severity = MessageSeverityType.Error)
+    NoPermissionForCommand,
     
     /**
      * Start command outside arena.

@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.api.perms;
 
+import com.github.mce.minigames.api.MglibInterface;
+
 /**
  * An interface for enumerations that represent list of permissions.
  * 
@@ -44,6 +46,17 @@ public interface PermissionsInterface
         {
             throw new IllegalStateException(ex);
         }
+    }
+    
+    /**
+     * Returns the resolved permission name.
+     * 
+     * @return resolved permission name.
+     */
+    default String resolveName()
+    {
+        final String srcName = this.fullPath();
+        return MglibInterface.INSTANCE.get().resolveContextVar(srcName);
     }
     
 }

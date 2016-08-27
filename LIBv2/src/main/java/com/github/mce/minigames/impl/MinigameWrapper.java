@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.mce.minigames.api.MinigameInterface;
+import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
@@ -31,18 +32,18 @@ import com.github.mce.minigames.api.locale.MessagesConfigInterface;
  * @author mepeisen
  *
  */
-class MinigameWrapper implements MinigameInterface
+public class MinigameWrapper implements MinigameInterface
 {
     
     /**
      * The underlying minigame plugin impl.
      */
-    private MinigamePluginImpl delegate;
+    private MinigamePluginInterface delegate;
     
     /**
      * @param delegate The underlying minigame plugin impl.
      */
-    public MinigameWrapper(MinigamePluginImpl delegate)
+    public MinigameWrapper(MinigamePluginInterface delegate)
     {
         this.delegate = delegate;
     }
@@ -62,22 +63,19 @@ class MinigameWrapper implements MinigameInterface
     @Override
     public Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getDeclaredTypes();
     }
 
     @Override
     public Iterable<ArenaInterface> getArenas()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getArenas();
     }
 
     @Override
-    public ArenaInterface getArenas(String name)
+    public ArenaInterface getArena(String name)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getArena(name);
     }
 
     @Override
@@ -108,6 +106,24 @@ class MinigameWrapper implements MinigameInterface
     public Serializable getLongDescription()
     {
         return this.delegate.getLongDescription();
+    }
+
+    @Override
+    public int getArenaCount()
+    {
+        return this.delegate.getArenaCount();
+    }
+
+    @Override
+    public ArenaTypeDeclarationInterface getDefaultType()
+    {
+        return this.delegate.getDefaultType();
+    }
+
+    @Override
+    public ArenaTypeDeclarationInterface getType(String name)
+    {
+        return this.delegate.getType(name);
     }
     
 }

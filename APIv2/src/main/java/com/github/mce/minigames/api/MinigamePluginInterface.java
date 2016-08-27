@@ -17,6 +17,8 @@ package com.github.mce.minigames.api;
 
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.api.context.ContextHandlerInterface;
+import com.github.mce.minigames.api.context.ContextResolverInterface;
 
 /**
  * The minigame plugin interface; administrational backend for the given minigame.
@@ -35,6 +37,8 @@ public interface MinigamePluginInterface extends MinigameInterface
     /**
      * Creates a new arena type.
      * 
+     * @param name
+     *            internal name of the arena type.
      * @param type
      *            arena type.
      * @param isDefault
@@ -43,7 +47,7 @@ public interface MinigamePluginInterface extends MinigameInterface
      * @throws MinigameException
      *             thrown if the arena type is invalid or if the name is already taken or if you try to create two default arena types..
      */
-    ArenaTypeBuilderInterface createArenaType(ArenaTypeInterface type, boolean isDefault) throws MinigameException;
+    ArenaTypeBuilderInterface createArenaType(String name, ArenaTypeInterface type, boolean isDefault) throws MinigameException;
     
     /**
      * Registers a context handler to calculate context variables.
@@ -58,6 +62,14 @@ public interface MinigamePluginInterface extends MinigameInterface
      *            context class to register
      */
     <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws MinigameException;
+    
+    /**
+     * Registers a helper to resolve context variables.
+     * 
+     * @param resolver
+     * @throws MinigameException
+     */
+    void registerContextResolver(ContextResolverInterface resolver) throws MinigameException;
     
     /**
      * Initialize this minigame.

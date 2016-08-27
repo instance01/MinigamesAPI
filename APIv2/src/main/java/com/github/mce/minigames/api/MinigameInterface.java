@@ -57,6 +57,22 @@ public interface MinigameInterface extends ConfigInterface
     Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes();
     
     /**
+     * Returns the default arena type.
+     * 
+     * @return default arena type or {@code null} if it was not found.
+     */
+    ArenaTypeDeclarationInterface getDefaultType();
+    
+    /**
+     * Returns the arena type with given name.
+     * 
+     * @param name
+     *            arena type name.
+     * @return arena type or {@code null} if it was not found.
+     */
+    ArenaTypeDeclarationInterface getType(String name);
+    
+    /**
      * Returns all declared arenas within this minigame.
      * 
      * @return all minigame arenas.
@@ -64,12 +80,19 @@ public interface MinigameInterface extends ConfigInterface
     Iterable<ArenaInterface> getArenas();
     
     /**
+     * Return the amount of arenas.
+     * 
+     * @return amount of arenas.
+     */
+    int getArenaCount();
+    
+    /**
      * Returns the minigame arena with given internal name.
      * 
      * @param name
      * @return arena or {@code null} if the arena does not exist.
      */
-    ArenaInterface getArenas(String name);
+    ArenaInterface getArena(String name);
     
     /**
      * Returns a logger for the library.

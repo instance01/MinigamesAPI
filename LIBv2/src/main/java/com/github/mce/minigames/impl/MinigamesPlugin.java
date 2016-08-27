@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -45,6 +46,7 @@ import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
@@ -54,14 +56,19 @@ import com.github.mce.minigames.api.config.ConfigurationValueInterface;
 import com.github.mce.minigames.api.config.ConfigurationValues;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
-import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 import com.github.mce.minigames.api.sign.SignInterface;
+import com.github.mce.minigames.api.util.function.MgRunnable;
+import com.github.mce.minigames.api.util.function.MgSupplier;
 import com.github.mce.minigames.api.zones.ZoneInterface;
+import com.github.mce.minigames.impl.component.ComponentRegistry;
+import com.github.mce.minigames.impl.context.ArenaInterfaceProvider;
 import com.github.mce.minigames.impl.context.ArenaPlayerInterfaceProvider;
+import com.github.mce.minigames.impl.context.DefaultResolver;
 import com.github.mce.minigames.impl.context.MinigameContextImpl;
+import com.github.mce.minigames.impl.context.MinigameInterfaceProvider;
 import com.github.mce.minigames.impl.player.PlayerRegistry;
 import com.github.mce.minigames.impl.services.PremiumServiceProviderInterface;
 
@@ -75,7 +82,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
 {
     
     /** the overall minecraft server versioon. */
-    public static final MinecraftVersionsType         SERVER_VERSION        = MinigamesPlugin.getServerVersion();
+    public static final MinecraftVersionsType              SERVER_VERSION      = MinigamesPlugin.getServerVersion();
     
     /** the well known minigames. */
     private final Map<String, MinigamePluginImpl>          minigames           = new TreeMap<>();
@@ -117,6 +124,11 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     private PremiumServiceProviderInterface                premium;
     
     /**
+     * The component registry.
+     */
+    private final ComponentRegistry                        components          = new ComponentRegistry();
+    
+    /**
      * Constructor to create the plugin.
      */
     public MinigamesPlugin()
@@ -128,6 +140,11 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
             
             // context provider
             mg2.registerContextHandler(ArenaPlayerInterface.class, new ArenaPlayerInterfaceProvider());
+            mg2.registerContextHandler(MinigameInterface.class, new MinigameInterfaceProvider());
+            mg2.registerContextHandler(ArenaInterface.class, new ArenaInterfaceProvider());
+            
+            // resolver
+            mg2.registerContextResolver(new DefaultResolver());
             
             mg2.init();
             
@@ -208,58 +225,61 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         final CommandHandlerInterface handler = this.commands.get(command.getName().toLowerCase());
         if (handler != null)
         {
-            try
+            if (this.debug())
             {
-                if (this.debug())
-                {
-                    this.getLogger().log(Level.FINE, sender + " calls command " + command.getName() + " - " + Arrays.toString(args));  //$NON-NLS-1$//$NON-NLS-2$
-                }
-                final CommandInterface cmd = new CommandImpl(sender, this, command, label, args, '/' + command.getName());
-                handler.handle(cmd);
+                this.getLogger().log(Level.FINE, sender + " calls command " + command.getName() + " - " + Arrays.toString(args)); //$NON-NLS-1$//$NON-NLS-2$
             }
-            catch (MinigameException ex)
-            {
-                if (this.debug())
+            final CommandInterface cmd = new CommandImpl(sender, this, command, label, args, '/' + command.getName());
+
+            this.contextImpl.runInContext(cmd, () -> {
+                try
                 {
-                    this.getLogger().log(Level.FINE, "Caught minigame exception during command execution: " + command.getName() + " - " + Arrays.toString(args), ex);  //$NON-NLS-1$//$NON-NLS-2$
+                    handler.handle(cmd);
                 }
-                final Locale locale = this.getDefaultLocale();
-                final boolean isAdmin = sender.isOp();
-                String[] msgs = null;
-                if (ex.getCode().isSingleLine())
+                catch (MinigameException ex)
                 {
-                    msgs = new String[]{isAdmin ? (ex.getCode().toAdminMessage(locale, ex.getArgs())) : (ex.getCode().toUserMessage(locale, ex.getArgs()))};
-                }
-                else
-                {
-                    msgs = isAdmin ? (ex.getCode().toAdminMessageLine(locale, ex.getArgs())) : (ex.getCode().toUserMessageLine(locale, ex.getArgs()));
-                }
-                for (final String msg : msgs)
-                {
-                    switch (ex.getCode().getSeverity())
+                    if (this.debug())
                     {
-                        default:
-                        case Error:
-                            sender.sendMessage(ChatColor.DARK_RED + msg);
-                            break;
-                        case Information:
-                            sender.sendMessage(ChatColor.WHITE + msg);
-                            break;
-                        case Loser:
-                            sender.sendMessage(ChatColor.RED + msg);
-                            break;
-                        case Success:
-                            sender.sendMessage(ChatColor.GREEN + msg);
-                            break;
-                        case Warning:
-                            sender.sendMessage(ChatColor.YELLOW + msg);
-                            break;
-                        case Winner:
-                            sender.sendMessage(ChatColor.GOLD + msg);
-                            break;
+                        this.getLogger().log(Level.FINE, "Caught minigame exception during command execution: " + command.getName() + " - " + Arrays.toString(args), ex); //$NON-NLS-1$//$NON-NLS-2$
+                    }
+                    final Locale locale = this.getDefaultLocale();
+                    final boolean isAdmin = sender.isOp();
+                    String[] msgs = null;
+                    if (ex.getCode().isSingleLine())
+                    {
+                        msgs = new String[] { isAdmin ? (ex.getCode().toAdminMessage(locale, ex.getArgs())) : (ex.getCode().toUserMessage(locale, ex.getArgs())) };
+                    }
+                    else
+                    {
+                        msgs = isAdmin ? (ex.getCode().toAdminMessageLine(locale, ex.getArgs())) : (ex.getCode().toUserMessageLine(locale, ex.getArgs()));
+                    }
+                    for (final String msg : msgs)
+                    {
+                        switch (ex.getCode().getSeverity())
+                        {
+                            default:
+                            case Error:
+                                sender.sendMessage(ChatColor.DARK_RED + msg);
+                                break;
+                            case Information:
+                                sender.sendMessage(ChatColor.WHITE + msg);
+                                break;
+                            case Loser:
+                                sender.sendMessage(ChatColor.RED + msg);
+                                break;
+                            case Success:
+                                sender.sendMessage(ChatColor.GREEN + msg);
+                                break;
+                            case Warning:
+                                sender.sendMessage(ChatColor.YELLOW + msg);
+                                break;
+                            case Winner:
+                                sender.sendMessage(ChatColor.GOLD + msg);
+                                break;
+                        }
                     }
                 }
-            }
+            });
             return true;
         }
         return false;
@@ -278,18 +298,23 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         final CommandHandlerInterface handler = this.commands.get(command.getName().toLowerCase());
         if (handler != null)
         {
-            try
-            {
-                final CommandInterface cmd = new CommandImpl(sender, this, command, null, newArgs, '/' + command.getName());
-                return handler.onTabComplete(cmd, lastArg);
-            }
-            catch (MinigameException ex)
-            {
-                if (this.debug())
+            final CommandInterface cmd = new CommandImpl(sender, this, command, null, newArgs, '/' + command.getName());
+            final AtomicReference<List<String>> ref = new AtomicReference<>();
+            final String la = lastArg;
+            this.contextImpl.runInContext(cmd, () -> {
+                try
                 {
-                    this.getLogger().log(Level.FINE, "Caught minigame exception during tab completion: " + command.getName() + " " + lastArg + " - " + Arrays.toString(args), ex);  //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+                    ref.set(handler.onTabComplete(cmd, la));
                 }
-            }
+                catch (MinigameException ex)
+                {
+                    if (this.debug())
+                    {
+                        this.getLogger().log(Level.FINE, "Caught minigame exception during tab completion: " + command.getName() + " " + la + " - " + Arrays.toString(args), ex); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+                    }
+                }
+            });
+            return ref.get();
         }
         return null;
     }
@@ -321,12 +346,12 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
             {
                 throw new MinigameException(CommonErrors.Cannot_Create_Game_Wrong_State, name, this.state.name());
             }
-            if (this.minigames.containsKey(name))
+            if (this.minigames.containsKey(name.toLowerCase()))
             {
                 throw new MinigameException(CommonErrors.DuplicateMinigame, name);
             }
             
-            impl = new MinigamePluginImpl(this, name, provider);
+            impl = new MinigamePluginImpl(this, name, provider, this.components);
             
             // register commands
             final Map<String, CommandHandlerInterface> mgCommands = provider.getBukkitCommands();
@@ -336,7 +361,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 {
                     if (this.commands.containsKey(entry.getKey()))
                     {
-                        this.getLogger().warning("Duplicate command registration for command \"" + entry.getKey() + "\". Ignoring command from minigame \"" + name + "\"");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+                        this.getLogger().warning("Duplicate command registration for command \"" + entry.getKey() + "\". Ignoring command from minigame \"" + name + "\""); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
                     }
                     else
                     {
@@ -356,7 +381,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                     {
                         if (!(value instanceof LocalizedMessageInterface))
                         {
-                            this.getLogger().warning("Message class \"" + msgClazz.getName() + "\" does not implement LocalizedMessageInterface");   //$NON-NLS-1$//$NON-NLS-2$
+                            this.getLogger().warning("Message class \"" + msgClazz.getName() + "\" does not implement LocalizedMessageInterface"); //$NON-NLS-1$//$NON-NLS-2$
                             throw new MinigameException(CommonErrors.MinigameRegistrationError, name);
                         }
                         final LocalizedMessageInterface msg = (LocalizedMessageInterface) value;
@@ -378,7 +403,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                     {
                         if (!(value instanceof ConfigurationValueInterface))
                         {
-                            this.getLogger().warning("Configuration class \"" + cfgClazz.getName() + "\" does not implement ConfigurationValueInterface");   //$NON-NLS-1$//$NON-NLS-2$
+                            this.getLogger().warning("Configuration class \"" + cfgClazz.getName() + "\" does not implement ConfigurationValueInterface"); //$NON-NLS-1$//$NON-NLS-2$
                             throw new MinigameException(CommonErrors.MinigameRegistrationError, name);
                         }
                         final ConfigurationValueInterface cfg = (ConfigurationValueInterface) value;
@@ -390,7 +415,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
             impl.initConfgurations(configs);
             
             // finally register it
-            this.minigames.put(name, impl);
+            this.minigames.put(name.toLowerCase(), impl);
         }
         
         return impl;
@@ -399,7 +424,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     @Override
     public MinigameInterface getMinigame(String minigame)
     {
-        final MinigamePluginImpl impl = this.minigames.get(minigame);
+        final MinigamePluginImpl impl = this.minigames.get(minigame.toLowerCase());
         return impl == null ? null : new MinigameWrapper(impl);
     }
     
@@ -450,28 +475,22 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         return name == null ? null : this.extensions.get(name).getMessages();
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getMinigameFromPerm(com.github.mce.minigames.api.perms.PermissionsInterface)
-     */
-    @Override
-    public MinigameInterface getMinigameFromPerm(PermissionsInterface item)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
     @Override
     public ConfigInterface getConfigFromCfg(ConfigurationValueInterface item)
     {
-        String name = this.optionsToMinigame.get(item);
-        if (name != null)
+        final ConfigurationValues values = item.getClass().getAnnotation(ConfigurationValues.class);
+        if (values.fixed())
         {
-            return this.minigames.get(name);
+            String name = this.optionsToMinigame.get(item);
+            if (name != null)
+            {
+                return this.minigames.get(name);
+            }
+            name = this.optionsToExtension.get(item);
+            return name == null ? null : this.extensions.get(name);
         }
-        name = this.optionsToExtension.get(item);
-        return name == null ? null : this.extensions.get(name);
+        final MinigameInterface minigame = this.getContext(MinigameInterface.class);
+        return minigame;
     }
     
     /**
@@ -494,6 +513,36 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     public String resolveContextVar(String src)
     {
         return this.contextImpl.resolveContextVar(src);
+    }
+
+    @Override
+    public <T> void setContext(Class<T> clazz, T value)
+    {
+        this.contextImpl.setContext(clazz, value);
+    }
+    
+    @Override
+    public void runInNewContext(MgRunnable runnable) throws MinigameException
+    {
+        this.contextImpl.runInNewContext(runnable);
+    }
+
+    @Override
+    public void runInCopiedContext(MgRunnable runnable) throws MinigameException
+    {
+        this.contextImpl.runInCopiedContext(runnable);
+    }
+
+    @Override
+    public <T> T calculateInNewContext(MgSupplier<T> runnable) throws MinigameException
+    {
+        return this.contextImpl.calculateInNewContext(runnable);
+    }
+
+    @Override
+    public <T> T calculateInCopiedContext(MgSupplier<T> runnable) throws MinigameException
+    {
+        return this.contextImpl.calculateInCopiedContext(runnable);
     }
     
     @Override
@@ -564,7 +613,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                 {
                     if (this.commands.containsKey(entry.getKey()))
                     {
-                        this.getLogger().warning("Duplicate command registration for command \"" + entry.getKey() + "\". Ignoring command from extension \"" + name + "\"");   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+                        this.getLogger().warning("Duplicate command registration for command \"" + entry.getKey() + "\". Ignoring command from extension \"" + name + "\""); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
                     }
                     else
                     {
@@ -584,7 +633,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                     {
                         if (!(value instanceof LocalizedMessageInterface))
                         {
-                            this.getLogger().warning("Message class \"" + msgClazz.getName() + "\" does not implement LocalizedMessageInterface");   //$NON-NLS-1$//$NON-NLS-2$
+                            this.getLogger().warning("Message class \"" + msgClazz.getName() + "\" does not implement LocalizedMessageInterface"); //$NON-NLS-1$//$NON-NLS-2$
                             throw new MinigameException(CommonErrors.ExtensionRegistrationError, name);
                         }
                         final LocalizedMessageInterface msg = (LocalizedMessageInterface) value;
@@ -606,7 +655,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
                     {
                         if (!(value instanceof ConfigurationValueInterface))
                         {
-                            this.getLogger().warning("Configuration class \"" + cfgClazz.getName() + "\" does not implement ConfigurationValueInterface");   //$NON-NLS-1$//$NON-NLS-2$
+                            this.getLogger().warning("Configuration class \"" + cfgClazz.getName() + "\" does not implement ConfigurationValueInterface"); //$NON-NLS-1$//$NON-NLS-2$
                             throw new MinigameException(CommonErrors.ExtensionRegistrationError, name);
                         }
                         final ConfigurationValueInterface cfg = (ConfigurationValueInterface) value;
@@ -653,40 +702,63 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
         return null;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getArenaTypes()
-     */
     @Override
     public Iterable<ArenaTypeInterface> getArenaTypes()
     {
-        // TODO Auto-generated method stub
-        return null;
+        final List<ArenaTypeInterface> result = new ArrayList<>();
+        for (final MinigamePluginImpl mg : this.minigames.values())
+        {
+            for (final ArenaTypeDeclarationInterface atdi : mg.getDeclaredTypes())
+            {
+                result.add(atdi.getType());
+            }
+        }
+        return result;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getArenas()
-     */
     @Override
     public Iterable<ArenaInterface> getArenas()
     {
-        // TODO Auto-generated method stub
-        return Collections.emptyList();
+        final List<ArenaInterface> result = new ArrayList<>();
+        for (final MinigamePluginImpl mg : this.minigames.values())
+        {
+            for (final ArenaInterface arena : mg.getArenas())
+            {
+                result.add(arena);
+            }
+        }
+        return result;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getArenas(com.github.mce.minigames.api.arena.ArenaTypeInterface)
-     */
     @Override
     public Iterable<ArenaInterface> getArenas(ArenaTypeInterface type)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final String minigame = type.getMinigame();
+        final MinigamePluginImpl impl = this.minigames.get(minigame);
+        if (impl != null)
+        {
+            final List<ArenaInterface> arenas = new ArrayList<>();
+            for (final ArenaInterface arena : impl.getArenas())
+            {
+                if (arena.getArenaType() == type)
+                {
+                    arenas.add(arena);
+                }
+            }
+            return arenas;
+        }
+        return Collections.emptyList();
+    }
+    
+    @Override
+    public int getArenaCount()
+    {
+        int count = 0;
+        for (final MinigamePluginImpl mg : this.minigames.values())
+        {
+            count += mg.getArenaCount();
+        }
+        return count;
     }
     
     /*
@@ -747,18 +819,6 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface
     {
         // TODO Auto-generated method stub
         return null;
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#getArenaCount()
-     */
-    @Override
-    public int getArenaCount()
-    {
-        // TODO Auto-generated method stub
-        return 0;
     }
     
 }
