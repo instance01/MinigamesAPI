@@ -15,18 +15,33 @@
 
 package com.github.mce.minigames.api.arena.rules.bevents;
 
-import org.bukkit.event.entity.FoodLevelChangeEvent;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.github.mce.minigames.api.arena.rules.MinigameEvent;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import com.github.mce.minigames.api.MinecraftVersionsType;
 
 /**
- * Block break event.
- * 
+ * Annotation to indicate a version range for minecraft events.
  * @author mepeisen
  */
-public interface MinigameFloodLevelChangedEvent extends MinigameEvent<FoodLevelChangeEvent>
+@Retention(RUNTIME)
+@Target(TYPE)
+public @interface MinecraftVersionRange
 {
     
-    // TODO default stubbings
+    /**
+     * Minimum version for minecraft servers.
+     * @return minimum versions.
+     */
+    MinecraftVersionsType min() default MinecraftVersionsType.Unknown;
+    
+    /**
+     * maximum version for minecraft servers.
+     * @return maximum version.
+     */
+    MinecraftVersionsType max() default MinecraftVersionsType.Unknown;
     
 }

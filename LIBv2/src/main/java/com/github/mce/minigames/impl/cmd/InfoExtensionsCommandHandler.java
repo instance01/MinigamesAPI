@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.perms.CommonPermissions;
-import com.github.mce.minigames.api.services.MinigameExtensionInterface;
+import com.github.mce.minigames.api.services.ExtensionInterface;
 
 /**
  * Command to display useful information.
@@ -58,7 +58,7 @@ public class InfoExtensionsCommandHandler extends AbstractPagableCommandHandler
     @Override
     protected Serializable[] getLines(CommandInterface command, int start, int count)
     {
-        final Iterator<MinigameExtensionInterface> extensions = MglibInterface.INSTANCE.get().getExtensions().iterator();
+        final Iterator<ExtensionInterface> extensions = MglibInterface.INSTANCE.get().getExtensions().iterator();
         int i = 0;
         while (i < start && extensions.hasNext())
         {
@@ -70,7 +70,7 @@ public class InfoExtensionsCommandHandler extends AbstractPagableCommandHandler
         {
             if (extensions.hasNext())
             {
-                final MinigameExtensionInterface extension = extensions.next();
+                final ExtensionInterface extension = extensions.next();
                 result.add(CommonMessages.InfoExtensionLine.toArg(extension.getName(), extension.getShortDescription()));
             }
         }

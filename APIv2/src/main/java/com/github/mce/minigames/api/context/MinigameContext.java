@@ -16,6 +16,7 @@
 package com.github.mce.minigames.api.context;
 
 import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.util.function.MgRunnable;
@@ -121,6 +122,16 @@ public interface MinigameContext
     default ArenaInterface getCurrentArena()
     {
         return this.getContext(ArenaInterface.class);
+    }
+    
+    /**
+     * Returns the current minigame.
+     * 
+     * @return current minigame.
+     */
+    default MinigameInterface getCurrentMinigame()
+    {
+        return this.getContext(MinigameInterface.class);
     }
     
 }

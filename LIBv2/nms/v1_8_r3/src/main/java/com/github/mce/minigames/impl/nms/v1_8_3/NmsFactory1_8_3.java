@@ -13,20 +13,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena.rules.bevents;
+package com.github.mce.minigames.impl.nms.v1_8_3;
 
-import org.bukkit.event.entity.EntityUnleashEvent;
-
-import com.github.mce.minigames.api.arena.rules.MinigameEvent;
+import com.github.mce.minigames.impl.nms.NmsFactory;
 
 /**
- * Block break event.
+ * Factory to create NMS relevant classes.
  * 
  * @author mepeisen
  */
-public interface MinigameEntityUnleasEvent extends MinigameEvent<EntityUnleashEvent>
+public class NmsFactory1_8_3 implements NmsFactory
 {
     
-    // TODO default stubbings
+    @Override
+    public <T> T create(Class<T> clazz)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

@@ -29,7 +29,10 @@ import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
+import com.github.mce.minigames.api.config.ConfigurationValueInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.CommonPermissions;
+import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.impl.cmd.Mg2CommandHandler;
 import com.github.mce.minigames.impl.cmd.PartyCommandHandler;
 import com.github.mce.minigames.impl.cmd.StartCommandHandler;
@@ -60,9 +63,9 @@ final class CoreMinigame implements PluginProviderInterface
     }
     
     @Override
-    public Iterable<Class<? extends Enum<?>>> getMessageClasses()
+    public Iterable<Class<? extends LocalizedMessageInterface>> getMessageClasses()
     {
-        final List<Class<? extends Enum<?>>> result = new ArrayList<>();
+        final List<Class<? extends LocalizedMessageInterface>> result = new ArrayList<>();
         result.add(CommonErrors.class);
         result.add(CommonMessages.class);
         return result;
@@ -85,17 +88,17 @@ final class CoreMinigame implements PluginProviderInterface
     }
     
     @Override
-    public Iterable<Class<? extends Enum<?>>> getPermissions()
+    public Iterable<Class<? extends PermissionsInterface>> getPermissions()
     {
-        final List<Class<? extends Enum<?>>> result = new ArrayList<>();
+        final List<Class<? extends PermissionsInterface>> result = new ArrayList<>();
         result.add(CommonPermissions.class);
         return result;
     }
     
     @Override
-    public Iterable<Class<? extends Enum<?>>> getConfigurations()
+    public Iterable<Class<? extends ConfigurationValueInterface>> getConfigurations()
     {
-        final List<Class<? extends Enum<?>>> result = new ArrayList<>();
+        final List<Class<? extends ConfigurationValueInterface>> result = new ArrayList<>();
         result.add(CommonConfig.class);
         return result;
     }

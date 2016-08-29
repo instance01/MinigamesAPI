@@ -83,4 +83,12 @@ public interface MinigamePluginInterface extends MinigameInterface
      */
     void init() throws MinigameException;
     
+    /**
+     * Will be called from plugin as soon as the plugin is disabled.
+     * 
+     * @throws MinigameException
+     *             thrown if there are problems disabling the plugin.
+     */
+    void disable() throws MinigameException;
+    
 }

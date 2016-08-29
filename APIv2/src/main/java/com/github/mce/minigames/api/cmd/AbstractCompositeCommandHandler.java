@@ -127,5 +127,15 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
         }
         return new ArrayList<>(this.subCommands.keySet()).stream().filter(elm -> elm.startsWith(lastArg)).collect(Collectors.toList());
     }
+
+    /**
+     * Returns the sub command by name.
+     * @param key name of the sub command
+     * @return the sub command.
+     */
+    public SubCommandHandlerInterface getSubCommand(String key)
+    {
+        return this.subCommands.get(key);
+    }
     
 }

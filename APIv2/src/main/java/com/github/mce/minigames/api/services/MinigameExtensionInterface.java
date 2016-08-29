@@ -15,11 +15,8 @@
 
 package com.github.mce.minigames.api.services;
 
-import java.io.Serializable;
-
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.config.ConfigInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.MinigameException;
 
 /**
  * A special extension for the minigames library.
@@ -32,22 +29,16 @@ import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
  * 
  * @author mepeisen
  */
-public interface MinigameExtensionInterface extends ConfigInterface
+public interface MinigameExtensionInterface extends ExtensionInterface
 {
 
     /**
-     * Returns the name of the extension.
+     * Will be called from plugin as soon as the plugin is disabled.
      * 
-     * @return extension name.
+     * @throws MinigameException
+     *             thrown if there are problems disabling the extension.
      */
-    String getName();
-
-    /**
-     * Returns the short description of the extension.
-     * 
-     * @return A short description; use method {@link LocalizedMessageInterface#toArg(Serializable...)} on the message.
-     */
-    Serializable getShortDescription();
+    void disable() throws MinigameException;
     
     // TODO
     

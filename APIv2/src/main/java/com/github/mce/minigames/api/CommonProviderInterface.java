@@ -20,6 +20,10 @@ import java.util.Map;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
+import com.github.mce.minigames.api.config.ConfigurationValueInterface;
+import com.github.mce.minigames.api.gui.ClickGuiId;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.perms.PermissionsInterface;
 
 /**
  * Basic interface for providers, either minigame plugins or extensions.
@@ -45,7 +49,10 @@ public interface CommonProviderInterface
      * 
      * @return message classes for predefined messages.
      */
-    Iterable<Class<? extends Enum<?>>> getMessageClasses();
+    default Iterable<Class<? extends LocalizedMessageInterface>> getMessageClasses()
+    {
+        return null;
+    }
     
     /**
      * Returns the permission classes.
@@ -56,7 +63,10 @@ public interface CommonProviderInterface
      * 
      * @return permission classes for predefined permissions.
      */
-    Iterable<Class<? extends Enum<?>>> getPermissions();
+    default Iterable<Class<? extends PermissionsInterface>> getPermissions()
+    {
+        return null;
+    }
     
     /**
      * Returns the bukkit (main) commands registered by this minigame.
@@ -67,7 +77,10 @@ public interface CommonProviderInterface
      * 
      * @return bukkit (main) commands.
      */
-    Map<String, CommandHandlerInterface> getBukkitCommands();
+    default Map<String, CommandHandlerInterface> getBukkitCommands()
+    {
+        return null;
+    }
     
     /**
      * Returns the configuration classes.
@@ -78,6 +91,19 @@ public interface CommonProviderInterface
      * 
      * @return configuration classes for predefined configurations.
      */
-    Iterable<Class<? extends Enum<?>>> getConfigurations();
+    default Iterable<Class<? extends ConfigurationValueInterface>> getConfigurations()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the additional gui ids for this provider.
+     * 
+     * @return additional gui ids.
+     */
+    default Iterable<Class<? extends ClickGuiId>> getGuiIds()
+    {
+        return null;
+    }
     
 }

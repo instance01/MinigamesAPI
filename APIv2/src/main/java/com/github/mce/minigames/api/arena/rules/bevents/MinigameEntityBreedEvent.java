@@ -17,6 +17,7 @@ package com.github.mce.minigames.api.arena.rules.bevents;
 
 import org.bukkit.event.entity.EntityBreedEvent;
 
+import com.github.mce.minigames.api.MinecraftVersionsType;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
@@ -24,6 +25,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
+@MinecraftVersionRange(min = MinecraftVersionsType.V1_10_R1)
 public interface MinigameEntityBreedEvent extends MinigameEvent<EntityBreedEvent>
 {
     

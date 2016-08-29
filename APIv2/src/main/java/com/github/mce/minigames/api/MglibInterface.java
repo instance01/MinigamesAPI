@@ -35,6 +35,7 @@ import com.github.mce.minigames.api.context.MinigameContext;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.services.ExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 import com.github.mce.minigames.api.sign.SignInterface;
@@ -164,7 +165,7 @@ public interface MglibInterface extends MinigameContext
      * 
      * @return extensions.
      */
-    Iterable<MinigameExtensionInterface> getExtensions();
+    Iterable<ExtensionInterface> getExtensions();
     
     /**
      * Return the amount of installed minigames.

@@ -253,5 +253,15 @@ public class MinigamePluginImpl extends BaseImpl implements MinigamePluginInterf
         final ArenaTypeInterface type = this.arenaTypesByName.get(typename.toLowerCase());
         return type == null ? null : this.arenaTypes.get(type);
     }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MinigamePluginInterface#disable()
+     */
+    @Override
+    public void disable() throws MinigameException
+    {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

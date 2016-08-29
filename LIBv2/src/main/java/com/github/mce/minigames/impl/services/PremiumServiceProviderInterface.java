@@ -15,17 +15,23 @@
 
 package com.github.mce.minigames.impl.services;
 
+import java.util.Map;
+
+import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 
 /**
- * A special extension to provide premium services.
+ * A special extension to provide premium services; there can only be one premium extension.
  * 
  * @author mepeisen
  */
 public interface PremiumServiceProviderInterface extends MinigameExtensionProviderInterface
 {
     
-    // marker interface for the premium support
-    // there can only be one premium extension
+    /**
+     * Returns additional commands being present in the mg2 commands.
+     * @return map containing additional mg2 commands; key is the command path and value is the sub command handler.
+     */
+    Map<String, SubCommandHandlerInterface> getAdditionalCommands();
     
 }

@@ -25,6 +25,9 @@ import org.bukkit.entity.Player;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.WaitQueue;
+import com.github.mce.minigames.api.context.MinigameStorage;
+import com.github.mce.minigames.api.gui.ClickGuiInterface;
+import com.github.mce.minigames.api.gui.GuiSessionInterface;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
@@ -130,6 +133,61 @@ public interface ArenaPlayerInterface
      * @return {@code true} if the user has a permission.
      */
     boolean checkPermission(PermissionsInterface perm);
+    
+    // storage
+    
+    /**
+     * Returns a storage only available within the current execution context.
+     * 
+     * <p>
+     * This storage can be useful to temporary add data, for example across multiple events.
+     * </p>
+     * 
+     * @return context storage.
+     */
+    MinigameStorage getContextStorage();
+    
+    /**
+     * Returns a session storage only hold in memory.
+     * 
+     * <p>
+     * This storage can be useful to temporary add data till the server stops or the user logs out.
+     * </p>
+     * 
+     * @return session storage.
+     */
+    MinigameStorage getSessionStorage();
+    
+    /**
+     * Returns a persistent storage written to disc.
+     * 
+     * <p>
+     * This storage can be useful to persistent data on the disc.
+     * </p>
+     * 
+     * @return context storage.
+     */
+    MinigameStorage getPersistentStorage();
+    
+    // gui
+    
+    /**
+     * Returns the current gui session (if any)
+     * 
+     * @return gui session or {@code null} if the user has no opened gui.
+     */
+    GuiSessionInterface getGuiSession();
+    
+    /**
+     * Lets the player opening a new gui session.
+     * 
+     * @param gui
+     *            gui to display
+     * @return gui session
+     * @throws MinigameException
+     *             thrown if the player is not online.
+     */
+    GuiSessionInterface openGui(ClickGuiInterface gui) throws MinigameException;
     
     // stubbing
     

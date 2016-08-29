@@ -17,6 +17,7 @@ package com.github.mce.minigames.api.arena.rules.bevents;
 
 import org.bukkit.event.block.BlockExplodeEvent;
 
+import com.github.mce.minigames.api.MinecraftVersionsType;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
@@ -24,6 +25,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
+@MinecraftVersionRange(min = MinecraftVersionsType.V1_8_R2)
 public interface MinigameBlockExplodeEvent extends MinigameEvent<BlockExplodeEvent>
 {
     

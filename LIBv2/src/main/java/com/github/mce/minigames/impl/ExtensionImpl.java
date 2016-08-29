@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl;
 
 import java.io.Serializable;
 
+import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 
@@ -57,6 +58,16 @@ class ExtensionImpl extends BaseImpl implements MinigameExtensionInterface
     public Serializable getShortDescription()
     {
         return this.description;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.services.MinigameExtensionInterface#disable()
+     */
+    @Override
+    public void disable() throws MinigameException
+    {
+        // TODO Auto-generated method stub
+        
     }
     
 }
