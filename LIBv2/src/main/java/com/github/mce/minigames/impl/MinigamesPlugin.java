@@ -37,6 +37,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -146,7 +149,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     
     private final EventSystemInterface                     events;
     
-    private final NmsFactory                     nmsFactory;
+    private final NmsFactory                               nmsFactory;
     
     /**
      * Constructor to create the plugin.
@@ -223,7 +226,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
         this.state = LibState.Terminating;
         // TODO Auto-generated method stub
     }
-
+    
     @Override
     public void onEnable()
     {
@@ -240,7 +243,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
             }, 1L);
         }
     }
-
+    
     /**
      * Calculates the minecraft server version.
      * 
@@ -317,7 +320,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
                 this.getLogger().log(Level.FINE, sender + " calls command " + command.getName() + " - " + Arrays.toString(args)); //$NON-NLS-1$//$NON-NLS-2$
             }
             final CommandInterface cmd = new CommandImpl(sender, this, command, label, args, '/' + command.getName());
-
+            
             this.contextImpl.runInContext(cmd, () -> {
                 try
                 {
@@ -593,7 +596,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     {
         return this.contextImpl.resolveContextVar(src);
     }
-
+    
     @Override
     public <T> void setContext(Class<T> clazz, T value)
     {
@@ -605,19 +608,19 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     {
         this.contextImpl.runInNewContext(runnable);
     }
-
+    
     @Override
     public void runInCopiedContext(MgRunnable runnable) throws MinigameException
     {
         this.contextImpl.runInCopiedContext(runnable);
     }
-
+    
     @Override
     public <T> T calculateInNewContext(MgSupplier<T> runnable) throws MinigameException
     {
         return this.contextImpl.calculateInNewContext(runnable);
     }
-
+    
     @Override
     public <T> T calculateInCopiedContext(MgSupplier<T> runnable) throws MinigameException
     {
@@ -903,7 +906,9 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     
     /**
      * Player online event.
-     * @param evt player online event.
+     * 
+     * @param evt
+     *            player online event.
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent evt)
@@ -913,12 +918,50 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     
     /**
      * Player online event.
-     * @param evt player online event.
+     * 
+     * @param evt
+     *            player online event.
      */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent evt)
     {
         this.players.onPlayerQuit(evt);
+        // TODO hard close gui
+    }
+    
+    /**
+     * Inventory close event
+     * 
+     * @param evt
+     *            inventory close event
+     */
+    public void onInventoryClose(InventoryCloseEvent evt)
+    {
+        // TODO
+    }
+    
+    /**
+     * Inventory click event
+     * 
+     * @param evt
+     *            inventory click event
+     */
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent evt)
+    {
+        // TODO
+    }
+    
+    /**
+     * Inventory drag event
+     * 
+     * @param evt
+     *            inventory drag event
+     */
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent evt)
+    {
+        // TODO
     }
     
 }
