@@ -39,7 +39,7 @@ public interface ClickGuiInterface
     
     /**
      * Returns the line count of this gui.
-     * @return line count; must be a value between 1 and (TODO)
+     * @return line count; must be a value between 1 and 6
      */
     int getLineCount();
     
