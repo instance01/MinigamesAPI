@@ -32,7 +32,7 @@ public interface MinigameStorage
      *            the class of the variable to be returned.
      * @return Storage variable or {@code null} if the variable was not set.
      */
-    <T extends Configurable> T getContext(Class<T> clazz);
+    <T extends Configurable> T get(Class<T> clazz);
     
     /**
      * Sets a storage variable.
@@ -42,6 +42,6 @@ public interface MinigameStorage
      * @param value
      *            the new value
      */
-    <T extends Configurable> void setContext(Class<T> clazz, T value);
+    <T extends Configurable> void set(Class<T> clazz, T value);
     
 }

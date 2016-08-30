@@ -21,6 +21,7 @@ import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.util.function.MgRunnable;
 import com.github.mce.minigames.api.util.function.MgSupplier;
+import com.github.mce.minigames.api.zones.ZoneInterface;
 
 /**
  * The minigame execution context.
@@ -131,6 +132,27 @@ public interface MinigameContext
      */
     default MinigameInterface getCurrentMinigame()
     {
+        return this.getContext(MinigameInterface.class);
+    }
+    
+    /**
+     * Returns the current zone.
+     * 
+     * @return current zone.
+     */
+    default ZoneInterface getCurrentZone()
+    {
+        return this.getContext(ZoneInterface.class);
+    }
+    
+    /**
+     * Returns the current component.
+     * 
+     * @return current component.
+     */
+    default MinigameInterface getCurrentComponent()
+    {
+        // TODO
         return this.getContext(MinigameInterface.class);
     }
     

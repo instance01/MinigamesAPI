@@ -13,30 +13,31 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.gui;
+package com.github.mce.minigames.api.event;
 
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 /**
- * A single gui page.
- * 
  * @author mepeisen
  *
  */
-public interface ClickGuiPageInterface
+public class PlayerGuiClickEvent extends Event
 {
     
-    /**
-     * Returns the name of the inventory.
-     * 
-     * @return inventory name.
-     */
-    LocalizedMessageInterface getPageName();
-    
-    /**
-     * Returns the click items.
-     * @return click items; first array dimension is the line; second the column.
-     */
-    ClickGuiItem[][] getItems();
+    private static final HandlerList handlers = new HandlerList();
+
+    public PlayerGuiClickEvent() {
+        super();
+        // TODO
+    }
+
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
     
 }

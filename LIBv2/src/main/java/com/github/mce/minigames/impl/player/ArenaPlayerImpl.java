@@ -265,13 +265,13 @@ public class ArenaPlayerImpl implements ArenaPlayerInterface
         }
         
         @Override
-        public <T extends Configurable> T getContext(Class<T> clazz)
+        public <T extends Configurable> T get(Class<T> clazz)
         {
             return clazz.cast(this.data.get(clazz));
         }
         
         @Override
-        public <T extends Configurable> void setContext(Class<T> clazz, T value)
+        public <T extends Configurable> void set(Class<T> clazz, T value)
         {
             this.data.put(clazz, value);
         }
@@ -305,7 +305,7 @@ public class ArenaPlayerImpl implements ArenaPlayerInterface
     @Override
     public GuiSessionInterface getGuiSession()
     {
-        return this.getSessionStorage().getContext(GuiSessionInterface.class);
+        return this.getSessionStorage().get(GuiSessionInterface.class);
     }
 
     /* (non-Javadoc)

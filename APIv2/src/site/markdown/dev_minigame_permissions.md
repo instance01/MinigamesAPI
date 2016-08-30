@@ -45,7 +45,13 @@ minigames lib some configuration option may be added and you will get into troub
 
 ## String substitution
 
-TODO
+The CommonPermissions enumeration in the API uses the following annotation:
+
+    @Permissions("$PERM:MGLIB$")
+    
+As you can see, the path is somehow cryptic. It contains a so called variable substitution.
+
+Details on variable substitution are explained in chapter [Variable substitution](dev_advanced_variable_substitution.html).
 
 ## Permission name
 
@@ -66,3 +72,6 @@ The configuration sets are predefined configuration options used within typical 
 
 TODO
 
+## Revisions and migration
+
+TODO

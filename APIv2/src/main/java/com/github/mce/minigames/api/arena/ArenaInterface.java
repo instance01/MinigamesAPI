@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigameInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
 
@@ -45,6 +46,24 @@ public interface ArenaInterface
      * @return arena display name; defaults to internal name.
      */
     String getDisplayName();
+    
+    /**
+     * Returns the author of this arena.
+     * @return author or {@code null} if no author was set.
+     */
+    String getAuthor();
+    
+    /**
+     * Returns a short description (single line) of the arena.
+     * @return short description or {@code null} if no short description was set.
+     */
+    LocalizedMessageInterface getShortDescription();
+    
+    /**
+     * Returns a description (multi line) of the arena.
+     * @return multi line description or {@code null} if no description was set.
+     */
+    LocalizedMessageInterface getDescription();
     
     /**
      * Changes the display name
@@ -128,6 +147,8 @@ public interface ArenaInterface
      * @return {@code true} if the arena can be started.
      */
     boolean canStart();
+    
+    void delete() throws MinigameException;
     
     // stubbing
     

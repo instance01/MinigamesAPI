@@ -27,6 +27,7 @@ import com.github.mce.minigames.api.arena.ArenaState;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.arena.ArenasConfig;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
 import com.github.mce.minigames.impl.MinigameWrapper;
@@ -232,6 +233,46 @@ public class ArenaImpl implements ArenaInterface
      * Try to restart the arena asynchronous (safe restart)
      */
     public void tryRestart()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaInterface#getAuthor()
+     */
+    @Override
+    public String getAuthor()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaInterface#getShortDescription()
+     */
+    @Override
+    public LocalizedMessageInterface getShortDescription()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaInterface#getDescription()
+     */
+    @Override
+    public LocalizedMessageInterface getDescription()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaInterface#delete()
+     */
+    @Override
+    public void delete() throws MinigameException
     {
         // TODO Auto-generated method stub
         

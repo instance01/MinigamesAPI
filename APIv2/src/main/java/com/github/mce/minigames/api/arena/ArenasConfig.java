@@ -16,9 +16,12 @@
 package com.github.mce.minigames.api.arena;
 
 import com.github.mce.minigames.api.config.ConfigurationBool;
+import com.github.mce.minigames.api.config.ConfigurationObject;
 import com.github.mce.minigames.api.config.ConfigurationString;
 import com.github.mce.minigames.api.config.ConfigurationValueInterface;
 import com.github.mce.minigames.api.config.ConfigurationValues;
+import com.github.mce.minigames.api.locale.LocalizedConfigLine;
+import com.github.mce.minigames.api.locale.LocalizedConfigString;
 
 /**
  * The common arenas config file.
@@ -52,5 +55,23 @@ public enum ArenasConfig implements ConfigurationValueInterface
      */
     @ConfigurationBool(defaultValue = false)
     Maintenance,
+    
+    /**
+     * Author information of this arena.
+     */
+    @ConfigurationString(defaultValue = "")
+    Author,
+    
+    /**
+     * Short description of this arena.
+     */
+    @ConfigurationObject(clazz = LocalizedConfigString.class)
+    ShortDescription,
+    
+    /**
+     * Long (multi line) description of this arena.
+     */
+    @ConfigurationObject(clazz = LocalizedConfigLine.class)
+    Description
     
 }

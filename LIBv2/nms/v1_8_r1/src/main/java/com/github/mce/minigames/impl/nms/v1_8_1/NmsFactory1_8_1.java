@@ -15,6 +15,11 @@
 
 package com.github.mce.minigames.impl.nms.v1_8_1;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+import com.github.mce.minigames.impl.nms.EventSystemInterface;
 import com.github.mce.minigames.impl.nms.NmsFactory;
 
 /**
@@ -25,10 +30,25 @@ import com.github.mce.minigames.impl.nms.NmsFactory;
 public class NmsFactory1_8_1 implements NmsFactory
 {
     
+    /** the implementation classes. */
+    private final Map<Class<?>, Supplier<?>> impls = new HashMap<>();
+    
+    /**
+     * Constructor.
+     */
+    public NmsFactory1_8_1()
+    {
+        this.impls.put(EventSystemInterface.class, () -> new EventSystem1_8_1());
+    }
+    
     @Override
     public <T> T create(Class<T> clazz)
     {
-        // TODO Auto-generated method stub
+        final Supplier<?> supplier = this.impls.get(clazz);
+        if (supplier != null)
+        {
+            return clazz.cast(supplier.get());
+        }
         return null;
     }
     

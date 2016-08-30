@@ -224,5 +224,25 @@ TODO
 
 ## Referencing user defined messages
 
-TODO for example the arena description
+Messages may be defined outside the messages.yml within regular configuration variables.
 
+We explain it on the `ArenasConfig.Description` option value. This represents an optional
+description that administrators can set for users. This text is localized thus the users may
+get a translation in their preferred language.
+
+We declare this configuration option to be a localized message by using ConfigurationObject annotation.
+    
+    @ConfigurationObject(clazz = LocalizedConfigLine.class)
+    Description
+
+Using is it fairly simple:
+
+    final LocalizedConfigLine description = ArenasConfig.Description.getObject()
+
+If you want to use a single line message use the class `LocalizedConfigString`.
+
+Details on how to declare and use configuration values are explained in the article [Configuration options](dev_minigame_config.html).
+
+## Revisions and migration
+
+TODO
