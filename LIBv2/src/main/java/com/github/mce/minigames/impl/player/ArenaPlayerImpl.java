@@ -44,6 +44,7 @@ import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
+import com.github.mce.minigames.impl.gui.GuiSessionImpl;
 import com.github.mce.minigames.impl.stubs.FalseStub;
 import com.github.mce.minigames.impl.stubs.TrueStub;
 
@@ -308,14 +309,36 @@ public class ArenaPlayerImpl implements ArenaPlayerInterface
         return this.getSessionStorage().get(GuiSessionInterface.class);
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.player.ArenaPlayerInterface#openGui(com.github.mce.minigames.api.gui.ClickGuiInterface)
-     */
     @Override
     public GuiSessionInterface openGui(ClickGuiInterface gui) throws MinigameException
     {
-        // TODO Auto-generated method stub
-        return null;
+        final MinigameStorage storage = this.getSessionStorage();
+        final GuiSessionInterface oldSession = storage.get(GuiSessionInterface.class);
+        if (oldSession != null)
+        {
+            oldSession.close();
+        }
+        final GuiSessionInterface newSession = new GuiSessionImpl(gui, this);
+        storage.set(GuiSessionInterface.class, newSession);
+        return newSession;
+    }
+
+    /**
+     * Player quit event
+     */
+    public void onPlayerQuit()
+    {
+        // clear session storage
+        this.sessionStorage = new StorageImpl();
+    }
+
+    /**
+     * Player join event
+     */
+    public void onPlayerJoin()
+    {
+        // clear session storage
+        this.sessionStorage = new StorageImpl();
     }
     
 }

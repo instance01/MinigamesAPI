@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import com.github.mce.minigames.impl.nms.EventSystemInterface;
+import com.github.mce.minigames.impl.nms.InventoryManagerInterface;
 import com.github.mce.minigames.impl.nms.NmsFactory;
 
 /**
@@ -39,6 +40,7 @@ public class NmsFactory1_10_1 implements NmsFactory
     public NmsFactory1_10_1()
     {
         this.impls.put(EventSystemInterface.class, () -> new EventSystem1_10_1());
+        this.impls.put(InventoryManagerInterface.class, () -> new InventoryManager1_10_1());
     }
     
     @Override

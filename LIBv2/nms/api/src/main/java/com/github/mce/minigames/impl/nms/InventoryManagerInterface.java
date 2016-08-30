@@ -13,20 +13,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena.rules.bevents;
+package com.github.mce.minigames.impl.nms;
 
-import org.bukkit.event.block.BlockPistonEvent;
-
-import com.github.mce.minigames.api.arena.rules.MinigameEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 /**
- * Block break event.
+ * An nms inventory manager.
  * 
  * @author mepeisen
  */
-public interface MinigameBlockPistonEvent extends MinigameEvent<BlockPistonEvent>
+public interface InventoryManagerInterface
 {
     
-    // TODO default stubbings
+    /**
+     * Opens an inventory.
+     * 
+     * @param player the player that is opening the inventory
+     * @param name the name of the inventory
+     * @param items the items within the inventory
+     * @return inventory reference.
+     */
+    Inventory openInventory(Player player, String name, ItemStack[] items);
     
 }

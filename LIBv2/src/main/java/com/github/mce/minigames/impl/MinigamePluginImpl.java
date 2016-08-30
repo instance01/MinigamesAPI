@@ -143,27 +143,30 @@ public class MinigamePluginImpl extends BaseImpl implements MinigamePluginInterf
         
         // load arenas from config.
         final ConfigurationSection arenasSection = this.getConfig("arenas.yml").getConfigurationSection("arenas"); //$NON-NLS-1$ //$NON-NLS-2$
-        for (final String key : arenasSection.getKeys(false))
+        if (arenasSection != null)
         {
-            this.plugin.getLogger().log(Level.INFO, "Reloading arena " + key + " from config."); //$NON-NLS-1$ //$NON-NLS-2$
-            try
+            for (final String key : arenasSection.getKeys(false))
             {
-                final ArenaImpl arena = new ArenaImpl(key, this, this.components);
-                this.arenas.put(key.toLowerCase(), arena);
-                if (arena.isEnabled())
+                this.plugin.getLogger().log(Level.INFO, "Reloading arena " + key + " from config."); //$NON-NLS-1$ //$NON-NLS-2$
+                try
                 {
-                    synchronized (this)
+                    final ArenaImpl arena = new ArenaImpl(key, this, this.components);
+                    this.arenas.put(key.toLowerCase(), arena);
+                    if (arena.isEnabled())
                     {
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
-                            arena.tryRestart();
-                        }, 10L * restartArenaTaskCount);
-                        restartArenaTaskCount++;
+                        synchronized (this)
+                        {
+                            Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
+                                arena.tryRestart();
+                            }, 10L * restartArenaTaskCount);
+                            restartArenaTaskCount++;
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                this.plugin.getLogger().log(Level.SEVERE, "Failed loading arena " + key + " from config.", ex); //$NON-NLS-1$ //$NON-NLS-2$
+                catch (Exception ex)
+                {
+                    this.plugin.getLogger().log(Level.SEVERE, "Failed loading arena " + key + " from config.", ex); //$NON-NLS-1$ //$NON-NLS-2$
+                }
             }
         }
         

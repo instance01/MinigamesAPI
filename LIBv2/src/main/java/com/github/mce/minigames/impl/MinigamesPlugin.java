@@ -147,8 +147,10 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
      */
     private final ComponentRegistry                        components          = new ComponentRegistry();
     
+    /** the event system. */
     private final EventSystemInterface                     events;
     
+    /** Access to nms specific classes. */
     private final NmsFactory                               nmsFactory;
     
     /**
@@ -218,6 +220,16 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
         }
         
         this.events = this.nmsFactory == null ? null : this.nmsFactory.create(EventSystemInterface.class);
+    }
+    
+    /**
+     * Returns the nms factory.
+     * 
+     * @return nms factory
+     */
+    public static NmsFactory nms()
+    {
+        return ((MinigamesPlugin) MglibInterface.INSTANCE.get()).nmsFactory;
     }
     
     @Override

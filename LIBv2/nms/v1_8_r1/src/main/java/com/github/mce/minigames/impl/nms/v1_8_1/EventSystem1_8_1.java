@@ -21,7 +21,6 @@ import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockCanBuildEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
-import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockExpEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFormEvent;
@@ -30,7 +29,6 @@ import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockMultiPlaceEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.block.BlockPistonEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -54,7 +52,6 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.EntityPortalEnterEvent;
@@ -86,7 +83,6 @@ import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -108,7 +104,6 @@ import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerChannelEvent;
@@ -118,7 +113,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEditBookEvent;
 import org.bukkit.event.player.PlayerEggThrowEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -149,13 +143,11 @@ import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.event.player.PlayerUnregisterChannelEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.event.vehicle.VehicleBlockCollisionEvent;
-import org.bukkit.event.vehicle.VehicleCollisionEvent;
 import org.bukkit.event.vehicle.VehicleCreateEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
-import org.bukkit.event.vehicle.VehicleEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
@@ -232,17 +224,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
      */
     @EventHandler
     public void onBlockDispenseEvent(BlockDispenseEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
-     * Event handler for MinigameBlockEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onBlockEvent(BlockEvent evt)
     {
         // TODO
     }
@@ -331,17 +312,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
      */
     @EventHandler
     public void onBlockPhysicsEvent(BlockPhysicsEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
-     * Event handler for MinigameBlockPistonEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onBlockPistonEvent(BlockPistonEvent evt)
     {
         // TODO
     }
@@ -579,17 +549,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
 
 
     /**
-     * Event handler for MinigameEntityEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onEntityEvent(EntityEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
      * Event handler for MinigameEntityExplodeEvent event.
      * @param evt the event to be passed.
      */
@@ -804,17 +763,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
      */
     @EventHandler
     public void onHangingBreakEvent(HangingBreakEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
-     * Event handler for MinigameHangingEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onHangingEvent(HangingEvent evt)
     {
         // TODO
     }
@@ -1052,17 +1000,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
 
 
     /**
-     * Event handler for MinigamePlayerBucketEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onPlayerBucketEvent(PlayerBucketEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
      * Event handler for MinigamePlayerBucketFillEvent event.
      * @param evt the event to be passed.
      */
@@ -1167,17 +1104,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
      */
     @EventHandler
     public void onPlayerEggThrowEvent(PlayerEggThrowEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
-     * Event handler for MinigamePlayerEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onPlayerEvent(PlayerEvent evt)
     {
         // TODO
     }
@@ -1646,17 +1572,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
 
 
     /**
-     * Event handler for MinigameVehicleCollisionEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onVehicleCollisionEvent(VehicleCollisionEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
      * Event handler for MinigameVehicleCreateEvent event.
      * @param evt the event to be passed.
      */
@@ -1706,17 +1621,6 @@ public class EventSystem1_8_1 implements EventSystemInterface
      */
     @EventHandler
     public void onVehicleEntityCollisionEvent(VehicleEntityCollisionEvent evt)
-    {
-        // TODO
-    }
-
-
-    /**
-     * Event handler for MinigameVehicleEvent event.
-     * @param evt the event to be passed.
-     */
-    @EventHandler
-    public void onVehicleEvent(VehicleEvent evt)
     {
         // TODO
     }

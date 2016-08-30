@@ -71,21 +71,35 @@ public class PlayerRegistry
     }
 
     /**
+     * Player join event
      * @param evt
      */
     public void onPlayerJoin(PlayerJoinEvent evt)
     {
-        // TODO Auto-generated method stub
-        
+        if (evt.getPlayer() != null)
+        {
+            final ArenaPlayerImpl impl = this.players.get(evt.getPlayer().getUniqueId());
+            if (impl != null)
+            {
+                impl.onPlayerJoin();
+            }
+        }
     }
 
     /**
+     * Player quit event.
      * @param evt
      */
     public void onPlayerQuit(PlayerQuitEvent evt)
     {
-        // TODO Auto-generated method stub
-        
+        if (evt.getPlayer() != null)
+        {
+            final ArenaPlayerImpl impl = this.players.get(evt.getPlayer().getUniqueId());
+            if (impl != null)
+            {
+                impl.onPlayerQuit();
+            }
+        }
     }
     
 }
