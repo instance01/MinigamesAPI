@@ -168,1826 +168,1673 @@ import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
-import com.github.mce.minigames.impl.nms.EventSystemInterface;
+import com.github.mce.minigames.impl.nms.AbstractEventSystem;
 
 /**
  * The event system implementation.
  * 
  * @author mepeisen
  */
-public class EventSystem1_9_1 implements EventSystemInterface
+public class EventSystem1_9_1 extends AbstractEventSystem
 {
     
     /**
      * Event handler for AreaEffectCloudApplyEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onAreaEffectCloudApplyEvent(AreaEffectCloudApplyEvent evt)
     {
-        // TODO
+        this.getHandler(AreaEffectCloudApplyEvent.class).handle(evt);
     }
-    
+
     /**
      * Event handler for MinigameAsyncPlayerChatEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent evt)
     {
-        // TODO
+        this.getHandler(AsyncPlayerChatEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockBreakEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent evt)
     {
-        // TODO
+        this.getHandler(BlockBreakEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockBurnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockBurnEvent(BlockBurnEvent evt)
     {
-        // TODO
+        this.getHandler(BlockBurnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockCanBuildEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockCanBuildEvent(BlockCanBuildEvent evt)
     {
-        // TODO
+        this.getHandler(BlockCanBuildEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockDamageEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockDamageEvent(BlockDamageEvent evt)
     {
-        // TODO
+        this.getHandler(BlockDamageEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockDispenseEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockDispenseEvent(BlockDispenseEvent evt)
     {
-        // TODO
+        this.getHandler(BlockDispenseEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockExpEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockExpEvent(BlockExpEvent evt)
     {
-        // TODO
+        this.getHandler(BlockExpEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockExplodeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockExplodeEvent(BlockExplodeEvent evt)
     {
-        // TODO
+        this.getHandler(BlockExplodeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockFadeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockFadeEvent(BlockFadeEvent evt)
     {
-        // TODO
+        this.getHandler(BlockFadeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockFormEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockFormEvent(BlockFormEvent evt)
     {
-        // TODO
+        this.getHandler(BlockFormEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockFromToEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockFromToEvent(BlockFromToEvent evt)
     {
-        // TODO
+        this.getHandler(BlockFromToEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockGrowEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockGrowEvent(BlockGrowEvent evt)
     {
-        // TODO
+        this.getHandler(BlockGrowEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockIgniteEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockIgniteEvent(BlockIgniteEvent evt)
     {
-        // TODO
+        this.getHandler(BlockIgniteEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockMultiPlaceEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockMultiPlaceEvent(BlockMultiPlaceEvent evt)
     {
-        // TODO
+        this.getHandler(BlockMultiPlaceEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockPhysicsEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockPhysicsEvent(BlockPhysicsEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPhysicsEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockPistonExtendEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockPistonExtendEvent(BlockPistonExtendEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPistonExtendEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockPistonRetractEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockPistonRetractEvent(BlockPistonRetractEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPistonRetractEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockPlaceEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPlaceEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockRedstoneEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockRedstoneEvent(BlockRedstoneEvent evt)
     {
-        // TODO
+        this.getHandler(BlockRedstoneEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBlockSpreadEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBlockSpreadEvent(BlockSpreadEvent evt)
     {
-        // TODO
+        this.getHandler(BlockSpreadEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameBrewEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onBrewEvent(BrewEvent evt)
     {
-        // TODO
+        this.getHandler(BrewEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameCauldronLevelChangeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onCauldronLevelChangeEvent(CauldronLevelChangeEvent evt)
     {
-        // TODO
+        this.getHandler(CauldronLevelChangeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameCraftItemEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onCraftItemEvent(CraftItemEvent evt)
     {
-        // TODO
+        this.getHandler(CraftItemEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameCreatureSpawnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent evt)
     {
-        // TODO
+        this.getHandler(CreatureSpawnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameCreeperPowerEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onCreeperPowerEvent(CreeperPowerEvent evt)
     {
-        // TODO
+        this.getHandler(CreeperPowerEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEnchantItemEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEnchantItemEvent(EnchantItemEvent evt)
     {
-        // TODO
+        this.getHandler(EnchantItemEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEnderDragonChangePhaseEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEnderDragonChangePhaseEvent(EnderDragonChangePhaseEvent evt)
     {
-        // TODO
+        this.getHandler(EnderDragonChangePhaseEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityBlockFormEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityBlockFormEvent(EntityBlockFormEvent evt)
     {
-        // TODO
+        this.getHandler(EntityBlockFormEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityBreakDoorEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityBreakDoorEvent(EntityBreakDoorEvent evt)
     {
-        // TODO
+        this.getHandler(EntityBreakDoorEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityChangeBlockEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityChangeBlockEvent(EntityChangeBlockEvent evt)
     {
-        // TODO
+        this.getHandler(EntityChangeBlockEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityCombustByBlockEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityCombustByBlockEvent(EntityCombustByBlockEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCombustByBlockEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityCombustByEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCombustByEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityCombustEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityCombustEvent(EntityCombustEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCombustEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityCreatePortalEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityCreatePortalEvent(EntityCreatePortalEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCreatePortalEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityDamageByBlockEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityDamageByBlockEvent(EntityDamageByBlockEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDamageByBlockEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityDamageByEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDamageByEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityDamageEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityDamageEvent(EntityDamageEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDamageEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityDeathEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDeathEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityExplodeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityExplodeEvent(EntityExplodeEvent evt)
     {
-        // TODO
+        this.getHandler(EntityExplodeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityInteractEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityInteractEvent(EntityInteractEvent evt)
     {
-        // TODO
+        this.getHandler(EntityInteractEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityPortalEnterEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityPortalEnterEvent(EntityPortalEnterEvent evt)
     {
-        // TODO
+        this.getHandler(EntityPortalEnterEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityPortalEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityPortalEvent(EntityPortalEvent evt)
     {
-        // TODO
+        this.getHandler(EntityPortalEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityPortalExitEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityPortalExitEvent(EntityPortalExitEvent evt)
     {
-        // TODO
+        this.getHandler(EntityPortalExitEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityRegainHealthEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityRegainHealthEvent(EntityRegainHealthEvent evt)
     {
-        // TODO
+        this.getHandler(EntityRegainHealthEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityShootBowEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityShootBowEvent(EntityShootBowEvent evt)
     {
-        // TODO
+        this.getHandler(EntityShootBowEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntitySpawnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntitySpawnEvent(EntitySpawnEvent evt)
     {
-        // TODO
+        this.getHandler(EntitySpawnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityTameEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityTameEvent(EntityTameEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTameEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityTargetEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityTargetEvent(EntityTargetEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTargetEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityTargetLivingEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityTargetLivingEntityEvent(EntityTargetLivingEntityEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTargetLivingEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityTeleportEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityTeleportEvent(EntityTeleportEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTeleportEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityToggleGlideEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityToggleGlideEvent(EntityToggleGlideEvent evt)
     {
-        // TODO
+        this.getHandler(EntityToggleGlideEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameEntityUnleashEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onEntityUnleashEvent(EntityUnleashEvent evt)
     {
-        // TODO
+        this.getHandler(EntityUnleashEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameExpBottleEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onExpBottleEvent(ExpBottleEvent evt)
     {
-        // TODO
+        this.getHandler(ExpBottleEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameExplosionPrimeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onExplosionPrimeEvent(ExplosionPrimeEvent evt)
     {
-        // TODO
+        this.getHandler(ExplosionPrimeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameFireworkExplodeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onFireworkExplodeEvent(FireworkExplodeEvent evt)
     {
-        // TODO
+        this.getHandler(FireworkExplodeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameFoodLevelChangeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onFoodLevelChangeEvent(FoodLevelChangeEvent evt)
     {
-        // TODO
+        this.getHandler(FoodLevelChangeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameFurnaceBurnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onFurnaceBurnEvent(FurnaceBurnEvent evt)
     {
-        // TODO
+        this.getHandler(FurnaceBurnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameFurnaceSmeltEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent evt)
     {
-        // TODO
+        this.getHandler(FurnaceSmeltEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameHangingBreakByEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent evt)
     {
-        // TODO
+        this.getHandler(HangingBreakByEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameHangingBreakEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onHangingBreakEvent(HangingBreakEvent evt)
     {
-        // TODO
+        this.getHandler(HangingBreakEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameHangingPlaceEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onHangingPlaceEvent(HangingPlaceEvent evt)
     {
-        // TODO
+        this.getHandler(HangingPlaceEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameHorseJumpEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onHorseJumpEvent(HorseJumpEvent evt)
     {
-        // TODO
+        this.getHandler(HorseJumpEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryClickEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryClickEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryCloseEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryCloseEvent(InventoryCloseEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryCloseEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryCreativeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryCreativeEvent(InventoryCreativeEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryCreativeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryDragEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryDragEvent(InventoryDragEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryDragEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryEvent(InventoryEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryInteractEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryInteractEvent(InventoryInteractEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryInteractEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryMoveItemEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryMoveItemEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryOpenEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryOpenEvent(InventoryOpenEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryOpenEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameInventoryPickupItemEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onInventoryPickupItemEvent(InventoryPickupItemEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryPickupItemEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameItemDespawnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onItemDespawnEvent(ItemDespawnEvent evt)
     {
-        // TODO
+        this.getHandler(ItemDespawnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameItemMergeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onItemMergeEvent(ItemMergeEvent evt)
     {
-        // TODO
+        this.getHandler(ItemMergeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameItemSpawnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onItemSpawnEvent(ItemSpawnEvent evt)
     {
-        // TODO
+        this.getHandler(ItemSpawnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameLeavesDecayEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onLeavesDecayEvent(LeavesDecayEvent evt)
     {
-        // TODO
+        this.getHandler(LeavesDecayEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameLingeringPotionSplashEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onLingeringPotionSplashEvent(LingeringPotionSplashEvent evt)
     {
-        // TODO
+        this.getHandler(LingeringPotionSplashEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameNotePlayEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onNotePlayEvent(NotePlayEvent evt)
     {
-        // TODO
+        this.getHandler(NotePlayEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePigZapEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPigZapEvent(PigZapEvent evt)
     {
-        // TODO
+        this.getHandler(PigZapEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerAchievementAwardedEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerAchievementAwardedEvent(PlayerAchievementAwardedEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerAchievementAwardedEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerAnimationEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerAnimationEvent(PlayerAnimationEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerAnimationEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerArmorStandManipulateEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerArmorStandManipulateEvent(PlayerArmorStandManipulateEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerArmorStandManipulateEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerBedEnterEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerBedEnterEvent(PlayerBedEnterEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBedEnterEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerBedLeaveEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerBedLeaveEvent(PlayerBedLeaveEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBedLeaveEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerBucketEmptyEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerBucketEmptyEvent(PlayerBucketEmptyEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBucketEmptyEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerBucketFillEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerBucketFillEvent(PlayerBucketFillEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBucketFillEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerChangedWorldEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChangedWorldEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerChannelEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerChannelEvent(PlayerChannelEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChannelEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerChatEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerChatEvent(PlayerChatEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChatEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerChatTabCompleteEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerChatTabCompleteEvent(PlayerChatTabCompleteEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChatTabCompleteEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerCommandPreprocessEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerCommandPreprocessEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerDeathEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerDeathEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerDropItemEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerDropItemEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerEditBookEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerEditBookEvent(PlayerEditBookEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerEditBookEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerEggThrowEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerEggThrowEvent(PlayerEggThrowEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerEggThrowEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerExpChangeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerExpChangeEvent(PlayerExpChangeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerExpChangeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerFishEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerFishEvent(PlayerFishEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerFishEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerGameModeChangeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerGameModeChangeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerInteractAtEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInteractAtEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerInteractEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInteractEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerInteractEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInteractEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerInventoryEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerInventoryEvent(PlayerInventoryEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInventoryEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerItemBreakEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerItemBreakEvent(PlayerItemBreakEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemBreakEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerItemConsumeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerItemConsumeEvent(PlayerItemConsumeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemConsumeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerItemDamageEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerItemDamageEvent(PlayerItemDamageEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemDamageEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerItemHeldEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerItemHeldEvent(PlayerItemHeldEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemHeldEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerJoinEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerJoinEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerKickEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerKickEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerLeashEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerLeashEntityEvent(PlayerLeashEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerLeashEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerLevelChangeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerLevelChangeEvent(PlayerLevelChangeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerLevelChangeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerLoginEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerLoginEvent(PlayerLoginEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerLoginEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerMoveEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerMoveEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerPickupArrowEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerPickupArrowEvent(PlayerPickupArrowEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerPickupArrowEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerPickupItemEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerPickupItemEvent(PlayerPickupItemEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerPickupItemEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerPortalEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerPortalEvent(PlayerPortalEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerPortalEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerQuitEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerQuitEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerRegisterChannelEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerRegisterChannelEvent(PlayerRegisterChannelEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerRegisterChannelEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerResourcePackStatusEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerResourcePackStatusEvent(PlayerResourcePackStatusEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerResourcePackStatusEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerRespawnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerRespawnEvent(PlayerRespawnEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerRespawnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerShearEntityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerShearEntityEvent(PlayerShearEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerShearEntityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerSpawnLocationEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerSpawnLocationEvent(PlayerSpawnLocationEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerSpawnLocationEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerStatisticIncrementEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerStatisticIncrementEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerSwapHandItemsEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerSwapHandItemsEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerTeleportEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerTeleportEvent(PlayerTeleportEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerTeleportEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerToggleFlightEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerToggleFlightEvent(PlayerToggleFlightEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerToggleFlightEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerToggleSneakEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerToggleSneakEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerToggleSprintEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerToggleSprintEvent(PlayerToggleSprintEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerToggleSprintEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerUnregisterChannelEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerUnregisterChannelEvent(PlayerUnregisterChannelEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerUnregisterChannelEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePlayerVelocityEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPlayerVelocityEvent(PlayerVelocityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerVelocityEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePotionSplashEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPotionSplashEvent(PotionSplashEvent evt)
     {
-        // TODO
+        this.getHandler(PotionSplashEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePrepareAnvilEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPrepareAnvilEvent(PrepareAnvilEvent evt)
     {
-        // TODO
+        this.getHandler(PrepareAnvilEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePrepareItemCraftEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPrepareItemCraftEvent(PrepareItemCraftEvent evt)
     {
-        // TODO
+        this.getHandler(PrepareItemCraftEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigamePrepareItemEnchantEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onPrepareItemEnchantEvent(PrepareItemEnchantEvent evt)
     {
-        // TODO
+        this.getHandler(PrepareItemEnchantEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameProjectileHitEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onProjectileHitEvent(ProjectileHitEvent evt)
     {
-        // TODO
+        this.getHandler(ProjectileHitEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameProjectileLaunchEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent evt)
     {
-        // TODO
+        this.getHandler(ProjectileLaunchEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameSheepDyeWoolEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onSheepDyeWoolEvent(SheepDyeWoolEvent evt)
     {
-        // TODO
+        this.getHandler(SheepDyeWoolEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameSheepRegrowWoolEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onSheepRegrowWoolEvent(SheepRegrowWoolEvent evt)
     {
-        // TODO
+        this.getHandler(SheepRegrowWoolEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameSignChangeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onSignChangeEvent(SignChangeEvent evt)
     {
-        // TODO
+        this.getHandler(SignChangeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameSlimeSplitEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onSlimeSplitEvent(SlimeSplitEvent evt)
     {
-        // TODO
+        this.getHandler(SlimeSplitEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameSpawnerSpawnEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onSpawnerSpawnEvent(SpawnerSpawnEvent evt)
     {
-        // TODO
+        this.getHandler(SpawnerSpawnEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleBlockCollisionEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleBlockCollisionEvent(VehicleBlockCollisionEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleBlockCollisionEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleCreateEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleCreateEvent(VehicleCreateEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleCreateEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleDamageEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleDamageEvent(VehicleDamageEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleDamageEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleDestroyEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleDestroyEvent(VehicleDestroyEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleDestroyEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleEnterEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleEnterEvent(VehicleEnterEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleEnterEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleEntityCollisionEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleEntityCollisionEvent(VehicleEntityCollisionEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleEntityCollisionEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleExitEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleExitEvent(VehicleExitEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleExitEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleMoveEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleMoveEvent(VehicleMoveEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleMoveEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVehicleUpdateEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVehicleUpdateEvent(VehicleUpdateEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleUpdateEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVillagerAcquireTradeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVillagerAcquireTradeEvent(VillagerAcquireTradeEvent evt)
     {
-        // TODO
+        this.getHandler(VillagerAcquireTradeEvent.class).handle(evt);
     }
-    
+
+
     /**
      * Event handler for MinigameVillagerReplenishTradeEvent event.
-     * 
-     * @param evt
-     *            the event to be passed.
+     * @param evt the event to be passed.
      */
     @EventHandler
     public void onVillagerReplenishTradeEvent(VillagerReplenishTradeEvent evt)
     {
-        // TODO
+        this.getHandler(VillagerReplenishTradeEvent.class).handle(evt);
     }
     
 }

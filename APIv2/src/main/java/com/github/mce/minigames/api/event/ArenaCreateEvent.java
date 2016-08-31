@@ -15,28 +15,63 @@
 
 package com.github.mce.minigames.api.event;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.arena.ArenaInterface;
+
 /**
+ * An event fired before a new arena is created.
+ * 
  * @author mepeisen
- *
  */
-public class ArenaCreateEvent extends Event
+public class ArenaCreateEvent extends AbstractVetoEvent
 {
     
+    /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
-
-    public ArenaCreateEvent() {
-        super();
-        // TODO
+    
+    /** the arena we created. */
+    private final ArenaInterface     arena;
+    
+    /**
+     * Constructor.
+     * 
+     * @param arena
+     *            the created arena.
+     */
+    public ArenaCreateEvent(ArenaInterface arena)
+    {
+        this.arena = arena;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the arena that will be created
+     * 
+     * @return the created arena
+     */
+    public ArenaInterface getArena()
+    {
+        return this.arena;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

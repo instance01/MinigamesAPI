@@ -107,6 +107,8 @@ public class ArenaTypeDeclarationImpl implements ArenaTypeDeclarationInterface
         {
             throw new MinigameException(CommonErrors.DuplicateArena, arenaName);
         }
+        // TODO Check for illegal names: ArenaInterface.ILLEGAL_NAMES
+        // TODO Check for illegal characters
         final ArenaImpl arena = new ArenaImpl(arenaName, this.plugin, this.registry);
         this.arenas.put(arenaName.toLowerCase(), arena);
         return arena;

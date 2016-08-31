@@ -31,6 +31,8 @@ import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 public interface MinigameInterface extends ConfigInterface
 {
     
+    // TODO Add support for default main lobby
+    
     /**
      * Returns the technical name of the minigame.
      * 

@@ -18,25 +18,62 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.arena.ArenaInterface;
+
 /**
+ * An event showing up that an arena was deleted.
+ * 
  * @author mepeisen
  *
  */
 public class ArenaDeletedEvent extends Event
 {
     
+    /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
-
-    public ArenaDeletedEvent() {
-        super();
-        // TODO
+    
+    /** the arena we deleted. */
+    private final ArenaInterface     arena;
+    
+    /**
+     * Constructor.
+     * 
+     * @param arena
+     *            the deleted arena.
+     */
+    public ArenaDeletedEvent(ArenaInterface arena)
+    {
+        this.arena = arena;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the arena that was deleted
+     * 
+     * @return the deleted arena
+     */
+    public ArenaInterface getArena()
+    {
+        return this.arena;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

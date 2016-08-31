@@ -18,25 +18,61 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.arena.ArenaInterface;
+
 /**
+ * Arena is going in maintenance mode.
+ * 
  * @author mepeisen
- *
  */
 public class ArenaMaintenanceEvent extends Event
 {
     
+    /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
-
-    public ArenaMaintenanceEvent() {
-        super();
-        // TODO
+    
+    /** the arena is under maintenance. */
+    private final ArenaInterface     arena;
+    
+    /**
+     * Constructor.
+     * 
+     * @param arena
+     *            the arena.
+     */
+    public ArenaMaintenanceEvent(ArenaInterface arena)
+    {
+        this.arena = arena;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the arena that is under maintenance
+     * 
+     * @return the arena
+     */
+    public ArenaInterface getArena()
+    {
+        return this.arena;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

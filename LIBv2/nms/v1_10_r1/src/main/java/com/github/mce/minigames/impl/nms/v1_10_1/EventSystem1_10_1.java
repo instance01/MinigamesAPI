@@ -170,14 +170,14 @@ import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
-import com.github.mce.minigames.impl.nms.EventSystemInterface;
+import com.github.mce.minigames.impl.nms.AbstractEventSystem;
 
 /**
  * The event system implementation.
  * 
  * @author mepeisen
  */
-public class EventSystem1_10_1 implements EventSystemInterface
+public class EventSystem1_10_1 extends AbstractEventSystem
 {
     
     /**
@@ -187,7 +187,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onAreaEffectCloudApplyEvent(AreaEffectCloudApplyEvent evt)
     {
-        // TODO
+        this.getHandler(AreaEffectCloudApplyEvent.class).handle(evt);
     }
 
     /**
@@ -197,7 +197,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent evt)
     {
-        // TODO
+        this.getHandler(AsyncPlayerChatEvent.class).handle(evt);
     }
 
 
@@ -208,7 +208,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent evt)
     {
-        // TODO
+        this.getHandler(BlockBreakEvent.class).handle(evt);
     }
 
 
@@ -219,7 +219,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockBurnEvent(BlockBurnEvent evt)
     {
-        // TODO
+        this.getHandler(BlockBurnEvent.class).handle(evt);
     }
 
 
@@ -230,7 +230,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockCanBuildEvent(BlockCanBuildEvent evt)
     {
-        // TODO
+        this.getHandler(BlockCanBuildEvent.class).handle(evt);
     }
 
 
@@ -241,7 +241,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockDamageEvent(BlockDamageEvent evt)
     {
-        // TODO
+        this.getHandler(BlockDamageEvent.class).handle(evt);
     }
 
 
@@ -252,7 +252,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockDispenseEvent(BlockDispenseEvent evt)
     {
-        // TODO
+        this.getHandler(BlockDispenseEvent.class).handle(evt);
     }
 
 
@@ -263,7 +263,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockExpEvent(BlockExpEvent evt)
     {
-        // TODO
+        this.getHandler(BlockExpEvent.class).handle(evt);
     }
 
 
@@ -274,7 +274,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockExplodeEvent(BlockExplodeEvent evt)
     {
-        // TODO
+        this.getHandler(BlockExplodeEvent.class).handle(evt);
     }
 
 
@@ -285,7 +285,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockFadeEvent(BlockFadeEvent evt)
     {
-        // TODO
+        this.getHandler(BlockFadeEvent.class).handle(evt);
     }
 
 
@@ -296,7 +296,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockFormEvent(BlockFormEvent evt)
     {
-        // TODO
+        this.getHandler(BlockFormEvent.class).handle(evt);
     }
 
 
@@ -307,7 +307,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockFromToEvent(BlockFromToEvent evt)
     {
-        // TODO
+        this.getHandler(BlockFromToEvent.class).handle(evt);
     }
 
 
@@ -318,7 +318,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockGrowEvent(BlockGrowEvent evt)
     {
-        // TODO
+        this.getHandler(BlockGrowEvent.class).handle(evt);
     }
 
 
@@ -329,7 +329,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockIgniteEvent(BlockIgniteEvent evt)
     {
-        // TODO
+        this.getHandler(BlockIgniteEvent.class).handle(evt);
     }
 
 
@@ -340,7 +340,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockMultiPlaceEvent(BlockMultiPlaceEvent evt)
     {
-        // TODO
+        this.getHandler(BlockMultiPlaceEvent.class).handle(evt);
     }
 
 
@@ -351,7 +351,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockPhysicsEvent(BlockPhysicsEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPhysicsEvent.class).handle(evt);
     }
 
 
@@ -362,7 +362,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockPistonExtendEvent(BlockPistonExtendEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPistonExtendEvent.class).handle(evt);
     }
 
 
@@ -373,7 +373,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockPistonRetractEvent(BlockPistonRetractEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPistonRetractEvent.class).handle(evt);
     }
 
 
@@ -384,7 +384,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent evt)
     {
-        // TODO
+        this.getHandler(BlockPlaceEvent.class).handle(evt);
     }
 
 
@@ -395,7 +395,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockRedstoneEvent(BlockRedstoneEvent evt)
     {
-        // TODO
+        this.getHandler(BlockRedstoneEvent.class).handle(evt);
     }
 
 
@@ -406,7 +406,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBlockSpreadEvent(BlockSpreadEvent evt)
     {
-        // TODO
+        this.getHandler(BlockSpreadEvent.class).handle(evt);
     }
 
 
@@ -417,7 +417,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onBrewEvent(BrewEvent evt)
     {
-        // TODO
+        this.getHandler(BrewEvent.class).handle(evt);
     }
 
 
@@ -428,7 +428,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onCauldronLevelChangeEvent(CauldronLevelChangeEvent evt)
     {
-        // TODO
+        this.getHandler(CauldronLevelChangeEvent.class).handle(evt);
     }
 
 
@@ -439,7 +439,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onCraftItemEvent(CraftItemEvent evt)
     {
-        // TODO
+        this.getHandler(CraftItemEvent.class).handle(evt);
     }
 
 
@@ -450,7 +450,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent evt)
     {
-        // TODO
+        this.getHandler(CreatureSpawnEvent.class).handle(evt);
     }
 
 
@@ -461,7 +461,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onCreeperPowerEvent(CreeperPowerEvent evt)
     {
-        // TODO
+        this.getHandler(CreeperPowerEvent.class).handle(evt);
     }
 
 
@@ -472,7 +472,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEnchantItemEvent(EnchantItemEvent evt)
     {
-        // TODO
+        this.getHandler(EnchantItemEvent.class).handle(evt);
     }
 
 
@@ -483,7 +483,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEnderDragonChangePhaseEvent(EnderDragonChangePhaseEvent evt)
     {
-        // TODO
+        this.getHandler(EnderDragonChangePhaseEvent.class).handle(evt);
     }
 
 
@@ -494,7 +494,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityBlockFormEvent(EntityBlockFormEvent evt)
     {
-        // TODO
+        this.getHandler(EntityBlockFormEvent.class).handle(evt);
     }
 
 
@@ -505,7 +505,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityBreakDoorEvent(EntityBreakDoorEvent evt)
     {
-        // TODO
+        this.getHandler(EntityBreakDoorEvent.class).handle(evt);
     }
 
 
@@ -516,7 +516,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityBreedEvent(EntityBreedEvent evt)
     {
-        // TODO
+        this.getHandler(EntityBreedEvent.class).handle(evt);
     }
 
 
@@ -527,7 +527,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityChangeBlockEvent(EntityChangeBlockEvent evt)
     {
-        // TODO
+        this.getHandler(EntityChangeBlockEvent.class).handle(evt);
     }
 
 
@@ -538,7 +538,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityCombustByBlockEvent(EntityCombustByBlockEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCombustByBlockEvent.class).handle(evt);
     }
 
 
@@ -549,7 +549,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCombustByEntityEvent.class).handle(evt);
     }
 
 
@@ -560,7 +560,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityCombustEvent(EntityCombustEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCombustEvent.class).handle(evt);
     }
 
 
@@ -571,7 +571,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityCreatePortalEvent(EntityCreatePortalEvent evt)
     {
-        // TODO
+        this.getHandler(EntityCreatePortalEvent.class).handle(evt);
     }
 
 
@@ -582,7 +582,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityDamageByBlockEvent(EntityDamageByBlockEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDamageByBlockEvent.class).handle(evt);
     }
 
 
@@ -593,7 +593,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDamageByEntityEvent.class).handle(evt);
     }
 
 
@@ -604,7 +604,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityDamageEvent(EntityDamageEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDamageEvent.class).handle(evt);
     }
 
 
@@ -615,7 +615,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent evt)
     {
-        // TODO
+        this.getHandler(EntityDeathEvent.class).handle(evt);
     }
 
 
@@ -626,7 +626,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityExplodeEvent(EntityExplodeEvent evt)
     {
-        // TODO
+        this.getHandler(EntityExplodeEvent.class).handle(evt);
     }
 
 
@@ -637,7 +637,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityInteractEvent(EntityInteractEvent evt)
     {
-        // TODO
+        this.getHandler(EntityInteractEvent.class).handle(evt);
     }
 
 
@@ -648,7 +648,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityPortalEnterEvent(EntityPortalEnterEvent evt)
     {
-        // TODO
+        this.getHandler(EntityPortalEnterEvent.class).handle(evt);
     }
 
 
@@ -659,7 +659,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityPortalEvent(EntityPortalEvent evt)
     {
-        // TODO
+        this.getHandler(EntityPortalEvent.class).handle(evt);
     }
 
 
@@ -670,7 +670,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityPortalExitEvent(EntityPortalExitEvent evt)
     {
-        // TODO
+        this.getHandler(EntityPortalExitEvent.class).handle(evt);
     }
 
 
@@ -681,7 +681,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityRegainHealthEvent(EntityRegainHealthEvent evt)
     {
-        // TODO
+        this.getHandler(EntityRegainHealthEvent.class).handle(evt);
     }
 
 
@@ -692,7 +692,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityShootBowEvent(EntityShootBowEvent evt)
     {
-        // TODO
+        this.getHandler(EntityShootBowEvent.class).handle(evt);
     }
 
 
@@ -703,7 +703,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntitySpawnEvent(EntitySpawnEvent evt)
     {
-        // TODO
+        this.getHandler(EntitySpawnEvent.class).handle(evt);
     }
 
 
@@ -714,7 +714,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityTameEvent(EntityTameEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTameEvent.class).handle(evt);
     }
 
 
@@ -725,7 +725,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityTargetEvent(EntityTargetEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTargetEvent.class).handle(evt);
     }
 
 
@@ -736,7 +736,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityTargetLivingEntityEvent(EntityTargetLivingEntityEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTargetLivingEntityEvent.class).handle(evt);
     }
 
 
@@ -747,7 +747,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityTeleportEvent(EntityTeleportEvent evt)
     {
-        // TODO
+        this.getHandler(EntityTeleportEvent.class).handle(evt);
     }
 
 
@@ -758,7 +758,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityToggleGlideEvent(EntityToggleGlideEvent evt)
     {
-        // TODO
+        this.getHandler(EntityToggleGlideEvent.class).handle(evt);
     }
 
 
@@ -769,7 +769,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onEntityUnleashEvent(EntityUnleashEvent evt)
     {
-        // TODO
+        this.getHandler(EntityUnleashEvent.class).handle(evt);
     }
 
 
@@ -780,7 +780,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onExpBottleEvent(ExpBottleEvent evt)
     {
-        // TODO
+        this.getHandler(ExpBottleEvent.class).handle(evt);
     }
 
 
@@ -791,7 +791,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onExplosionPrimeEvent(ExplosionPrimeEvent evt)
     {
-        // TODO
+        this.getHandler(ExplosionPrimeEvent.class).handle(evt);
     }
 
 
@@ -802,7 +802,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onFireworkExplodeEvent(FireworkExplodeEvent evt)
     {
-        // TODO
+        this.getHandler(FireworkExplodeEvent.class).handle(evt);
     }
 
 
@@ -813,7 +813,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onFoodLevelChangeEvent(FoodLevelChangeEvent evt)
     {
-        // TODO
+        this.getHandler(FoodLevelChangeEvent.class).handle(evt);
     }
 
 
@@ -824,7 +824,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onFurnaceBurnEvent(FurnaceBurnEvent evt)
     {
-        // TODO
+        this.getHandler(FurnaceBurnEvent.class).handle(evt);
     }
 
 
@@ -835,7 +835,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent evt)
     {
-        // TODO
+        this.getHandler(FurnaceSmeltEvent.class).handle(evt);
     }
 
 
@@ -846,7 +846,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent evt)
     {
-        // TODO
+        this.getHandler(HangingBreakByEntityEvent.class).handle(evt);
     }
 
 
@@ -857,7 +857,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onHangingBreakEvent(HangingBreakEvent evt)
     {
-        // TODO
+        this.getHandler(HangingBreakEvent.class).handle(evt);
     }
 
 
@@ -868,7 +868,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onHangingPlaceEvent(HangingPlaceEvent evt)
     {
-        // TODO
+        this.getHandler(HangingPlaceEvent.class).handle(evt);
     }
 
 
@@ -879,7 +879,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onHorseJumpEvent(HorseJumpEvent evt)
     {
-        // TODO
+        this.getHandler(HorseJumpEvent.class).handle(evt);
     }
 
 
@@ -890,7 +890,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryClickEvent.class).handle(evt);
     }
 
 
@@ -901,7 +901,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryCloseEvent(InventoryCloseEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryCloseEvent.class).handle(evt);
     }
 
 
@@ -912,7 +912,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryCreativeEvent(InventoryCreativeEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryCreativeEvent.class).handle(evt);
     }
 
 
@@ -923,7 +923,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryDragEvent(InventoryDragEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryDragEvent.class).handle(evt);
     }
 
 
@@ -934,7 +934,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryEvent(InventoryEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryEvent.class).handle(evt);
     }
 
 
@@ -945,7 +945,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryInteractEvent(InventoryInteractEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryInteractEvent.class).handle(evt);
     }
 
 
@@ -956,7 +956,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryMoveItemEvent.class).handle(evt);
     }
 
 
@@ -967,7 +967,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryOpenEvent(InventoryOpenEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryOpenEvent.class).handle(evt);
     }
 
 
@@ -978,7 +978,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onInventoryPickupItemEvent(InventoryPickupItemEvent evt)
     {
-        // TODO
+        this.getHandler(InventoryPickupItemEvent.class).handle(evt);
     }
 
 
@@ -989,7 +989,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onItemDespawnEvent(ItemDespawnEvent evt)
     {
-        // TODO
+        this.getHandler(ItemDespawnEvent.class).handle(evt);
     }
 
 
@@ -1000,7 +1000,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onItemMergeEvent(ItemMergeEvent evt)
     {
-        // TODO
+        this.getHandler(ItemMergeEvent.class).handle(evt);
     }
 
 
@@ -1011,7 +1011,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onItemSpawnEvent(ItemSpawnEvent evt)
     {
-        // TODO
+        this.getHandler(ItemSpawnEvent.class).handle(evt);
     }
 
 
@@ -1022,7 +1022,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onLeavesDecayEvent(LeavesDecayEvent evt)
     {
-        // TODO
+        this.getHandler(LeavesDecayEvent.class).handle(evt);
     }
 
 
@@ -1033,7 +1033,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onLingeringPotionSplashEvent(LingeringPotionSplashEvent evt)
     {
-        // TODO
+        this.getHandler(LingeringPotionSplashEvent.class).handle(evt);
     }
 
 
@@ -1044,7 +1044,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onNotePlayEvent(NotePlayEvent evt)
     {
-        // TODO
+        this.getHandler(NotePlayEvent.class).handle(evt);
     }
 
 
@@ -1055,7 +1055,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPigZapEvent(PigZapEvent evt)
     {
-        // TODO
+        this.getHandler(PigZapEvent.class).handle(evt);
     }
 
 
@@ -1066,7 +1066,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerAchievementAwardedEvent(PlayerAchievementAwardedEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerAchievementAwardedEvent.class).handle(evt);
     }
 
 
@@ -1077,7 +1077,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerAnimationEvent(PlayerAnimationEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerAnimationEvent.class).handle(evt);
     }
 
 
@@ -1088,7 +1088,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerArmorStandManipulateEvent(PlayerArmorStandManipulateEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerArmorStandManipulateEvent.class).handle(evt);
     }
 
 
@@ -1099,7 +1099,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerBedEnterEvent(PlayerBedEnterEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBedEnterEvent.class).handle(evt);
     }
 
 
@@ -1110,7 +1110,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerBedLeaveEvent(PlayerBedLeaveEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBedLeaveEvent.class).handle(evt);
     }
 
 
@@ -1121,7 +1121,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerBucketEmptyEvent(PlayerBucketEmptyEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBucketEmptyEvent.class).handle(evt);
     }
 
 
@@ -1132,7 +1132,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerBucketFillEvent(PlayerBucketFillEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerBucketFillEvent.class).handle(evt);
     }
 
 
@@ -1143,7 +1143,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerChangedMainHandEvent(PlayerChangedMainHandEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChangedMainHandEvent.class).handle(evt);
     }
 
 
@@ -1154,7 +1154,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChangedWorldEvent.class).handle(evt);
     }
 
 
@@ -1165,7 +1165,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerChannelEvent(PlayerChannelEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChannelEvent.class).handle(evt);
     }
 
 
@@ -1176,7 +1176,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerChatEvent(PlayerChatEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChatEvent.class).handle(evt);
     }
 
 
@@ -1187,7 +1187,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerChatTabCompleteEvent(PlayerChatTabCompleteEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerChatTabCompleteEvent.class).handle(evt);
     }
 
 
@@ -1198,7 +1198,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerCommandPreprocessEvent.class).handle(evt);
     }
 
 
@@ -1209,7 +1209,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerDeathEvent.class).handle(evt);
     }
 
 
@@ -1220,7 +1220,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerDropItemEvent(PlayerDropItemEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerDropItemEvent.class).handle(evt);
     }
 
 
@@ -1231,7 +1231,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerEditBookEvent(PlayerEditBookEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerEditBookEvent.class).handle(evt);
     }
 
 
@@ -1242,7 +1242,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerEggThrowEvent(PlayerEggThrowEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerEggThrowEvent.class).handle(evt);
     }
 
 
@@ -1253,7 +1253,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerExpChangeEvent(PlayerExpChangeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerExpChangeEvent.class).handle(evt);
     }
 
 
@@ -1264,7 +1264,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerFishEvent(PlayerFishEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerFishEvent.class).handle(evt);
     }
 
 
@@ -1275,7 +1275,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerGameModeChangeEvent.class).handle(evt);
     }
 
 
@@ -1286,7 +1286,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInteractAtEntityEvent.class).handle(evt);
     }
 
 
@@ -1297,7 +1297,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInteractEntityEvent.class).handle(evt);
     }
 
 
@@ -1308,7 +1308,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInteractEvent.class).handle(evt);
     }
 
 
@@ -1319,7 +1319,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerInventoryEvent(PlayerInventoryEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerInventoryEvent.class).handle(evt);
     }
 
 
@@ -1330,7 +1330,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerItemBreakEvent(PlayerItemBreakEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemBreakEvent.class).handle(evt);
     }
 
 
@@ -1341,7 +1341,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerItemConsumeEvent(PlayerItemConsumeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemConsumeEvent.class).handle(evt);
     }
 
 
@@ -1352,7 +1352,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerItemDamageEvent(PlayerItemDamageEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemDamageEvent.class).handle(evt);
     }
 
 
@@ -1363,7 +1363,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerItemHeldEvent(PlayerItemHeldEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerItemHeldEvent.class).handle(evt);
     }
 
 
@@ -1374,7 +1374,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerJoinEvent.class).handle(evt);
     }
 
 
@@ -1385,7 +1385,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerKickEvent.class).handle(evt);
     }
 
 
@@ -1396,7 +1396,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerLeashEntityEvent(PlayerLeashEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerLeashEntityEvent.class).handle(evt);
     }
 
 
@@ -1407,7 +1407,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerLevelChangeEvent(PlayerLevelChangeEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerLevelChangeEvent.class).handle(evt);
     }
 
 
@@ -1418,7 +1418,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerLoginEvent(PlayerLoginEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerLoginEvent.class).handle(evt);
     }
 
 
@@ -1429,7 +1429,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerMoveEvent.class).handle(evt);
     }
 
 
@@ -1440,7 +1440,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerPickupArrowEvent(PlayerPickupArrowEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerPickupArrowEvent.class).handle(evt);
     }
 
 
@@ -1451,7 +1451,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerPickupItemEvent(PlayerPickupItemEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerPickupItemEvent.class).handle(evt);
     }
 
 
@@ -1462,7 +1462,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerPortalEvent(PlayerPortalEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerPortalEvent.class).handle(evt);
     }
 
 
@@ -1473,7 +1473,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerQuitEvent.class).handle(evt);
     }
 
 
@@ -1484,7 +1484,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerRegisterChannelEvent(PlayerRegisterChannelEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerRegisterChannelEvent.class).handle(evt);
     }
 
 
@@ -1495,7 +1495,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerResourcePackStatusEvent(PlayerResourcePackStatusEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerResourcePackStatusEvent.class).handle(evt);
     }
 
 
@@ -1506,7 +1506,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerRespawnEvent(PlayerRespawnEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerRespawnEvent.class).handle(evt);
     }
 
 
@@ -1517,7 +1517,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerShearEntityEvent(PlayerShearEntityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerShearEntityEvent.class).handle(evt);
     }
 
 
@@ -1528,7 +1528,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerSpawnLocationEvent(PlayerSpawnLocationEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerSpawnLocationEvent.class).handle(evt);
     }
 
 
@@ -1539,7 +1539,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerStatisticIncrementEvent.class).handle(evt);
     }
 
 
@@ -1550,7 +1550,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerSwapHandItemsEvent.class).handle(evt);
     }
 
 
@@ -1561,7 +1561,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerTeleportEvent(PlayerTeleportEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerTeleportEvent.class).handle(evt);
     }
 
 
@@ -1572,7 +1572,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerToggleFlightEvent(PlayerToggleFlightEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerToggleFlightEvent.class).handle(evt);
     }
 
 
@@ -1583,7 +1583,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerToggleSneakEvent.class).handle(evt);
     }
 
 
@@ -1594,7 +1594,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerToggleSprintEvent(PlayerToggleSprintEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerToggleSprintEvent.class).handle(evt);
     }
 
 
@@ -1605,7 +1605,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerUnregisterChannelEvent(PlayerUnregisterChannelEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerUnregisterChannelEvent.class).handle(evt);
     }
 
 
@@ -1616,7 +1616,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPlayerVelocityEvent(PlayerVelocityEvent evt)
     {
-        // TODO
+        this.getHandler(PlayerVelocityEvent.class).handle(evt);
     }
 
 
@@ -1627,7 +1627,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPotionSplashEvent(PotionSplashEvent evt)
     {
-        // TODO
+        this.getHandler(PotionSplashEvent.class).handle(evt);
     }
 
 
@@ -1638,7 +1638,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPrepareAnvilEvent(PrepareAnvilEvent evt)
     {
-        // TODO
+        this.getHandler(PrepareAnvilEvent.class).handle(evt);
     }
 
 
@@ -1649,7 +1649,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPrepareItemCraftEvent(PrepareItemCraftEvent evt)
     {
-        // TODO
+        this.getHandler(PrepareItemCraftEvent.class).handle(evt);
     }
 
 
@@ -1660,7 +1660,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onPrepareItemEnchantEvent(PrepareItemEnchantEvent evt)
     {
-        // TODO
+        this.getHandler(PrepareItemEnchantEvent.class).handle(evt);
     }
 
 
@@ -1671,7 +1671,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onProjectileHitEvent(ProjectileHitEvent evt)
     {
-        // TODO
+        this.getHandler(ProjectileHitEvent.class).handle(evt);
     }
 
 
@@ -1682,7 +1682,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent evt)
     {
-        // TODO
+        this.getHandler(ProjectileLaunchEvent.class).handle(evt);
     }
 
 
@@ -1693,7 +1693,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onSheepDyeWoolEvent(SheepDyeWoolEvent evt)
     {
-        // TODO
+        this.getHandler(SheepDyeWoolEvent.class).handle(evt);
     }
 
 
@@ -1704,7 +1704,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onSheepRegrowWoolEvent(SheepRegrowWoolEvent evt)
     {
-        // TODO
+        this.getHandler(SheepRegrowWoolEvent.class).handle(evt);
     }
 
 
@@ -1715,7 +1715,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onSignChangeEvent(SignChangeEvent evt)
     {
-        // TODO
+        this.getHandler(SignChangeEvent.class).handle(evt);
     }
 
 
@@ -1726,7 +1726,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onSlimeSplitEvent(SlimeSplitEvent evt)
     {
-        // TODO
+        this.getHandler(SlimeSplitEvent.class).handle(evt);
     }
 
 
@@ -1737,7 +1737,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onSpawnerSpawnEvent(SpawnerSpawnEvent evt)
     {
-        // TODO
+        this.getHandler(SpawnerSpawnEvent.class).handle(evt);
     }
 
 
@@ -1748,7 +1748,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleBlockCollisionEvent(VehicleBlockCollisionEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleBlockCollisionEvent.class).handle(evt);
     }
 
 
@@ -1759,7 +1759,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleCreateEvent(VehicleCreateEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleCreateEvent.class).handle(evt);
     }
 
 
@@ -1770,7 +1770,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleDamageEvent(VehicleDamageEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleDamageEvent.class).handle(evt);
     }
 
 
@@ -1781,7 +1781,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleDestroyEvent(VehicleDestroyEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleDestroyEvent.class).handle(evt);
     }
 
 
@@ -1792,7 +1792,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleEnterEvent(VehicleEnterEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleEnterEvent.class).handle(evt);
     }
 
 
@@ -1803,7 +1803,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleEntityCollisionEvent(VehicleEntityCollisionEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleEntityCollisionEvent.class).handle(evt);
     }
 
 
@@ -1814,7 +1814,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleExitEvent(VehicleExitEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleExitEvent.class).handle(evt);
     }
 
 
@@ -1825,7 +1825,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleMoveEvent(VehicleMoveEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleMoveEvent.class).handle(evt);
     }
 
 
@@ -1836,7 +1836,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVehicleUpdateEvent(VehicleUpdateEvent evt)
     {
-        // TODO
+        this.getHandler(VehicleUpdateEvent.class).handle(evt);
     }
 
 
@@ -1847,7 +1847,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVillagerAcquireTradeEvent(VillagerAcquireTradeEvent evt)
     {
-        // TODO
+        this.getHandler(VillagerAcquireTradeEvent.class).handle(evt);
     }
 
 
@@ -1858,7 +1858,7 @@ public class EventSystem1_10_1 implements EventSystemInterface
     @EventHandler
     public void onVillagerReplenishTradeEvent(VillagerReplenishTradeEvent evt)
     {
-        // TODO
+        this.getHandler(VillagerReplenishTradeEvent.class).handle(evt);
     }
 
 }

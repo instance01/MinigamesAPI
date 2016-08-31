@@ -31,6 +31,11 @@ import com.github.mce.minigames.api.util.function.MgPredicate;
 public interface ArenaInterface
 {
     
+    /**
+     * List of illegal arena names; names starting with on of these strings are disallowed.
+     */
+    String[] ILLEGAL_NAMES = {"core", "join", "leave", "mg"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    
     // arena information
     
     /**

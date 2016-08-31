@@ -15,28 +15,63 @@
 
 package com.github.mce.minigames.api.event;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.arena.ArenaInterface;
+
 /**
+ * An event fired before an existing arena is deleted.
+ * 
  * @author mepeisen
- *
  */
-public class ArenaDeleteEvent extends Event
+public class ArenaDeleteEvent extends AbstractVetoEvent
 {
     
+    /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
-
-    public ArenaDeleteEvent() {
-        super();
-        // TODO
+    
+    /** the arena we deleted. */
+    private final ArenaInterface     arena;
+    
+    /**
+     * Constructor.
+     * 
+     * @param arena
+     *            the deleted arena.
+     */
+    public ArenaDeleteEvent(ArenaInterface arena)
+    {
+        this.arena = arena;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the arena that will be deleted
+     * 
+     * @return the deleted arena
+     */
+    public ArenaInterface getArena()
+    {
+        return this.arena;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

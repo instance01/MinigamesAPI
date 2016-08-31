@@ -153,7 +153,15 @@ public class DefaultResolver implements ContextResolverInterface
                         case "ARENA": //$NON-NLS-1$
                             return resolveVar(context.getContext(ArenaInterface.class), args[1]);
                         default:
-                            // failed
+                            try
+                            {
+                                final Class<?> clazz = Class.forName(args[0]);
+                                return resolveVar(context.getContext(clazz), args[1]);
+                            }
+                            catch (@SuppressWarnings("unused") Exception ex)
+                            {
+                                // ignore silently and let us return null (failed); maybe another resolver knows how to handle it
+                            }
                             return null;
                     }
                 }
