@@ -1,5 +1,11 @@
 # Changelog
 
+#### 1.14.12/1.14.13
+
+##### Sudoku
+
+* new game sudoku/ migrated to minigames lib
+
 #### 1.14.11
 
 ###### All
