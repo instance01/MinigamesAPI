@@ -81,4 +81,26 @@ public class ComponentRegistry
         return result == null ? Collections.emptySet() : result;
     }
     
+    /**
+     * Fetches components within a world chunk and filters by given class
+     * 
+     * @param clazz
+     *            the class filter
+     * @param chunk
+     *            world chunk
+     * @return components being in this world chunk.
+     */
+    public <T extends AbstractComponent> Set<T> fetch(Class<T> clazz, WorldChunk chunk)
+    {
+        final Set<T> result = new HashSet<>();
+        for (final AbstractComponent c : this.fetch(chunk))
+        {
+            if (clazz.isInstance(c))
+            {
+                result.add(clazz.cast(c));
+            }
+        }
+        return result;
+    }
+    
 }

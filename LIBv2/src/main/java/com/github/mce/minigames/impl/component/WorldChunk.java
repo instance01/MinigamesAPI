@@ -94,6 +94,38 @@ public class WorldChunk
         return this.hash;
     }
     
+    /**
+     * @return the serverName
+     */
+    public String getServerName()
+    {
+        return this.serverName;
+    }
+
+    /**
+     * @return the worldName
+     */
+    public String getWorldName()
+    {
+        return this.worldName;
+    }
+
+    /**
+     * @return the x
+     */
+    public int getX()
+    {
+        return this.x;
+    }
+
+    /**
+     * @return the z
+     */
+    public int getZ()
+    {
+        return this.z;
+    }
+
     @Override
     public boolean equals(Object obj)
     {

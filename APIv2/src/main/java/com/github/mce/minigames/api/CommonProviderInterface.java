@@ -19,11 +19,20 @@ import java.util.Map;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.github.mce.minigames.api.arena.MatchPhaseId;
+import com.github.mce.minigames.api.arena.rules.AdminRuleId;
+import com.github.mce.minigames.api.arena.rules.ArenaRuleId;
+import com.github.mce.minigames.api.arena.rules.MatchRuleId;
+import com.github.mce.minigames.api.arena.rules.PlayerRuleId;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
+import com.github.mce.minigames.api.component.ComponentId;
+import com.github.mce.minigames.api.component.ComponentRuleId;
 import com.github.mce.minigames.api.config.ConfigurationValueInterface;
 import com.github.mce.minigames.api.gui.ClickGuiId;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.PermissionsInterface;
+import com.github.mce.minigames.api.team.TeamId;
+import com.github.mce.minigames.api.team.TeamRuleId;
 
 /**
  * Basic interface for providers, either minigame plugins or extensions.
@@ -102,6 +111,96 @@ public interface CommonProviderInterface
      * @return additional gui ids.
      */
     default Iterable<Class<? extends ClickGuiId>> getGuiIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the additional gui ids for this provider.
+     * 
+     * @return additional gui ids.
+     */
+    default Iterable<Class<? extends ArenaRuleId>> getArenaRuleIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the additional gui ids for this provider.
+     * 
+     * @return additional gui ids.
+     */
+    default Iterable<Class<? extends MatchRuleId>> getMatchRuleIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the additional gui ids for this provider.
+     * 
+     * @return additional gui ids.
+     */
+    default Iterable<Class<? extends PlayerRuleId>> getPlayerRuleIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the administration rules for this provider.
+     * 
+     * @return administration rule ids.
+     */
+    default Iterable<Class<? extends AdminRuleId>> getAdminRuleIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the team rules for this provider.
+     * 
+     * @return team rule ids.
+     */
+    default Iterable<Class<? extends TeamRuleId>> getTeamRuleIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the components rules for this provider.
+     * 
+     * @return component rule ids.
+     */
+    default Iterable<Class<? extends ComponentRuleId>> getComponentRuleIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the components for this provider.
+     * 
+     * @return component ids.
+     */
+    default Iterable<Class<? extends ComponentId>> getComponentIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the teams for this provider.
+     * 
+     * @return teams.
+     */
+    default Iterable<Class<? extends TeamId>> getTeamIds()
+    {
+        return null;
+    }
+    
+    /**
+     * Returns the match phases for this provider.
+     * 
+     * @return match phases.
+     */
+    default Iterable<Class<? extends MatchPhaseId>> getMatchPhaseIds()
     {
         return null;
     }

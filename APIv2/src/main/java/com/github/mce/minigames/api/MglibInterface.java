@@ -29,6 +29,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeProvider;
+import com.github.mce.minigames.api.arena.MatchPhaseId;
+import com.github.mce.minigames.api.component.ComponentId;
+import com.github.mce.minigames.api.component.Cuboid;
 import com.github.mce.minigames.api.config.ConfigInterface;
 import com.github.mce.minigames.api.config.ConfigurationValueInterface;
 import com.github.mce.minigames.api.context.MinigameContext;
@@ -39,6 +43,7 @@ import com.github.mce.minigames.api.services.ExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 import com.github.mce.minigames.api.sign.SignInterface;
+import com.github.mce.minigames.api.team.TeamId;
 import com.github.mce.minigames.api.zones.ZoneInterface;
 
 /**
@@ -154,6 +159,51 @@ public interface MglibInterface extends MinigameContext
     ConfigInterface getConfigFromCfg(ConfigurationValueInterface item);
     
     /**
+     * Returns the arena type provider for given arena type.
+     * 
+     * @param type
+     *            the arena type
+     * @return type provider or {@code null} if it was not defined.
+     */
+    ArenaTypeProvider getProviderFromArenaType(ArenaTypeInterface type);
+    
+    /**
+     * Returns the arena type provider for given rule.
+     * 
+     * @param rule
+     *            the rule
+     * @return type provider or {@code null} if it was not defined.
+     */
+    ArenaTypeProvider getProviderFromRule(RuleId rule);
+    
+    /**
+     * Returns the arena type provider for given team.
+     * 
+     * @param team
+     *            the team
+     * @return type provider or {@code null} if it was not defined.
+     */
+    ArenaTypeProvider getProviderFromTeam(TeamId team);
+    
+    /**
+     * Returns the arena type provider for given component.
+     * 
+     * @param component
+     *            the component
+     * @return type provider or {@code null} if it was not defined.
+     */
+    ArenaTypeProvider getProviderFromComponent(ComponentId component);
+    
+    /**
+     * Returns the arena type provider for given phase.
+     * 
+     * @param phase
+     *            the phase
+     * @return type provider or {@code null} if it was not defined.
+     */
+    ArenaTypeProvider getProviderFromMatch(MatchPhaseId phase);
+    
+    /**
      * Return the amount of installed extensions.
      * 
      * @return extensions count.
@@ -207,6 +257,8 @@ public interface MglibInterface extends MinigameContext
      * @param location
      * 
      * @return Zone or {@code null} if no zone was found.
+     * 
+     * @see Cuboid#containsLoc(Location)
      */
     ZoneInterface findZone(Location location);
     
@@ -224,8 +276,86 @@ public interface MglibInterface extends MinigameContext
      * @param location
      * 
      * @return Zone or {@code null} if no zone was found.
+     * 
+     * @see Cuboid#containsLoc(Location)
      */
     Iterable<ZoneInterface> findZones(Location location);
+    
+    /**
+     * Finds a zone by location.
+     * 
+     * <p>
+     * Zones are parts of a minigame arena having bounds. If the given location is inside the bounds (inclusive) this method will return the zone.
+     * </p>
+     * 
+     * <p>
+     * The method will return the first zone it finds.
+     * </p>
+     * 
+     * @param location
+     * 
+     * @return Zone or {@code null} if no zone was found.
+     * 
+     * @see Cuboid#containsLocWithoutY(Location)
+     */
+    ZoneInterface findZoneWithoutY(Location location);
+    
+    /**
+     * Finds all zones by location.
+     * 
+     * <p>
+     * Zones are parts of a minigame arena having bounds. If the given location is inside the bounds (inclusive) this method will return the zone.
+     * </p>
+     * 
+     * <p>
+     * The method will return every zone that contains given location. Even if multiple zones are overlapping.
+     * </p>
+     * 
+     * @param location
+     * 
+     * @return Zone or {@code null} if no zone was found.
+     * 
+     * @see Cuboid#containsLocWithoutY(Location)
+     */
+    Iterable<ZoneInterface> findZonesWithoutY(Location location);
+    
+    /**
+     * Finds a zone by location.
+     * 
+     * <p>
+     * Zones are parts of a minigame arena having bounds. If the given location is inside the bounds (inclusive) this method will return the zone.
+     * </p>
+     * 
+     * <p>
+     * The method will return the first zone it finds.
+     * </p>
+     * 
+     * @param location
+     * 
+     * @return Zone or {@code null} if no zone was found.
+     * 
+     * @see Cuboid#containsLocWithoutYD(Location)
+     */
+    ZoneInterface findZoneWithoutYD(Location location);
+    
+    /**
+     * Finds all zones by location.
+     * 
+     * <p>
+     * Zones are parts of a minigame arena having bounds. If the given location is inside the bounds (inclusive) this method will return the zone.
+     * </p>
+     * 
+     * <p>
+     * The method will return every zone that contains given location. Even if multiple zones are overlapping.
+     * </p>
+     * 
+     * @param location
+     * 
+     * @return Zone or {@code null} if no zone was found.
+     * 
+     * @see Cuboid#containsLocWithoutYD(Location)
+     */
+    Iterable<ZoneInterface> findZonesWithoutYD(Location location);
     
     // player api
     
@@ -341,6 +471,9 @@ public interface MglibInterface extends MinigameContext
     public final class INSTANCE
     {
         
+        /** cached instance. */
+        private static MglibInterface CACHED;
+        
         /**
          * hidden constructor.
          */
@@ -356,13 +489,17 @@ public interface MglibInterface extends MinigameContext
          */
         public static MglibInterface get()
         {
-            final Plugin mgplugin = Bukkit.getServer().getPluginManager().getPlugin("MinigamesLib2"); //$NON-NLS-1$
-            if (!(mgplugin instanceof MglibInterface))
+            if (CACHED == null)
             {
-                throw new IllegalStateException("Invalid minigames lib or inactive plugin."); //$NON-NLS-1$
+                final Plugin mgplugin = Bukkit.getServer().getPluginManager().getPlugin("MinigamesLib2"); //$NON-NLS-1$
+                if (!(mgplugin instanceof MglibInterface))
+                {
+                    throw new IllegalStateException("Invalid minigames lib or inactive plugin."); //$NON-NLS-1$
+                }
+                final MglibInterface mglib = (MglibInterface) mgplugin;
+                CACHED = mglib;
             }
-            final MglibInterface mglib = (MglibInterface) mgplugin;
-            return mglib;
+            return CACHED;
         }
     }
     

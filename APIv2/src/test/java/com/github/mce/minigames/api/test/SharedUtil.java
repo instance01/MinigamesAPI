@@ -13,26 +13,36 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena;
-
-import com.github.mce.minigames.api.MglibInterface;
+package com.github.mce.minigames.api.test;
 
 /**
- * An interface for enumerations that represent arena types.
+ * Some shared test utility.
  * 
  * @author mepeisen
  */
-public interface ArenaTypeInterface
+public class SharedUtil
 {
     
     /**
-     * Returns the declaring provider.
+     * tests some things on enumerations to satisfy code coverage.
      * 
-     * @return provider.
+     * @param clazz
+     *            enum class to test
      */
-    default ArenaTypeProvider getProvider()
+    public static void testEnumClass(Class<? extends Enum<?>> clazz)
     {
-        return MglibInterface.INSTANCE.get().getProviderFromArenaType(this);
+        try
+        {
+            for (Object o : (Object[]) clazz.getMethod("values").invoke(null)) //$NON-NLS-1$
+            {
+                clazz.getMethod("valueOf", String.class).invoke(null, o.toString()); //$NON-NLS-1$
+            }
+        }
+        catch (Throwable e)
+        {
+            throw new RuntimeException(e);
+        }
+        
     }
     
 }

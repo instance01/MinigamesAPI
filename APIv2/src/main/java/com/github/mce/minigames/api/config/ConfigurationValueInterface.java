@@ -17,9 +17,11 @@ package com.github.mce.minigames.api.config;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -1548,7 +1550,10 @@ public interface ConfigurationValueInterface
     {
         return ConfigurationTool.calculate(
                 this, ConfigurationItemStack.class, ConfigurationTool.itemStackPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getItemStack(path).clone());
+                (val, configs, config, lib, minigame, path) -> {
+                    final ItemStack stack = minigame.getConfig(configs.file()).getItemStack(path);
+                    return stack == null ? null : stack.clone();
+                });
     }
     
     /**
@@ -1608,7 +1613,9 @@ public interface ConfigurationValueInterface
     {
         final List<Boolean> list = ConfigurationTool.calculate(
                 this, ConfigurationBoolList.class, ConfigurationTool.boolListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getBooleanList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getBooleanList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final boolean[] result = new boolean[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1623,7 +1630,9 @@ public interface ConfigurationValueInterface
     {
         final List<Byte> list = ConfigurationTool.calculate(
                 this, ConfigurationByteList.class, ConfigurationTool.byteListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getByteList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getByteList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final byte[] result = new byte[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1638,7 +1647,9 @@ public interface ConfigurationValueInterface
     {
         final List<Character> list = ConfigurationTool.calculate(
                 this, ConfigurationCharacterList.class, ConfigurationTool.charListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getCharacterList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getCharacterList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final char[] result = new char[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1677,7 +1688,9 @@ public interface ConfigurationValueInterface
     {
         final List<Double> list = ConfigurationTool.calculate(
                 this, ConfigurationDoubleList.class, ConfigurationTool.doubleListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getDoubleList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getDoubleList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final double[] result = new double[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1692,7 +1705,9 @@ public interface ConfigurationValueInterface
     {
         final List<Float> list = ConfigurationTool.calculate(
                 this, ConfigurationFloatList.class, ConfigurationTool.floatListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getFloatList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getFloatList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final float[] result = new float[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1731,7 +1746,9 @@ public interface ConfigurationValueInterface
     {
         final List<Integer> list = ConfigurationTool.calculate(
                 this, ConfigurationIntList.class, ConfigurationTool.intListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getIntegerList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getIntegerList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final int[] result = new int[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1758,7 +1775,9 @@ public interface ConfigurationValueInterface
     {
         final List<Long> list = ConfigurationTool.calculate(
                 this, ConfigurationLongList.class, ConfigurationTool.longListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getLongList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getLongList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final long[] result = new long[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1773,7 +1792,9 @@ public interface ConfigurationValueInterface
     {
         final List<Short> list = ConfigurationTool.calculate(
                 this, ConfigurationShortList.class, ConfigurationTool.shortListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getShortList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getShortList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
+                );
         final short[] result = new short[list.size()];
         for (int i = 0; i < result.length; i++) result[i] = list.get(i);
         return result;
@@ -1800,7 +1821,9 @@ public interface ConfigurationValueInterface
     {
         final List<String> list = ConfigurationTool.calculate(
                 this, ConfigurationStringList.class, ConfigurationTool.stringListPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getStringList(path));
+                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getStringList(path),
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(config.defaultValue())
+                );
         return list.toArray(new String[list.size()]);
     }
     

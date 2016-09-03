@@ -24,7 +24,16 @@ import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
+import com.github.mce.minigames.api.arena.MatchPhaseId;
+import com.github.mce.minigames.api.arena.rules.AdminRuleId;
+import com.github.mce.minigames.api.arena.rules.ArenaRuleId;
+import com.github.mce.minigames.api.arena.rules.MatchRuleId;
+import com.github.mce.minigames.api.arena.rules.PlayerRuleId;
+import com.github.mce.minigames.api.component.ComponentId;
+import com.github.mce.minigames.api.component.ComponentRuleId;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
+import com.github.mce.minigames.api.team.TeamId;
+import com.github.mce.minigames.api.team.TeamRuleId;
 
 /**
  * A read-only wrapper around minigame plugin impl
@@ -124,6 +133,96 @@ public class MinigameWrapper implements MinigameInterface
     public ArenaTypeDeclarationInterface getType(String name)
     {
         return this.delegate.getType(name);
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getAdminRules()
+     */
+    @Override
+    public Iterable<AdminRuleId> getAdminRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getMatchRules()
+     */
+    @Override
+    public Iterable<MatchRuleId> getMatchRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getPlayerRules()
+     */
+    @Override
+    public Iterable<PlayerRuleId> getPlayerRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getTeamRules()
+     */
+    @Override
+    public Iterable<TeamRuleId> getTeamRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getComponentRules()
+     */
+    @Override
+    public Iterable<ComponentRuleId> getComponentRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getArenaRules()
+     */
+    @Override
+    public Iterable<ArenaRuleId> getArenaRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getComponents()
+     */
+    @Override
+    public Iterable<ComponentId> getComponents()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getMatchPhases()
+     */
+    @Override
+    public Iterable<MatchPhaseId> getMatchPhases()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getTeams()
+     */
+    @Override
+    public Iterable<TeamId> getTeams()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

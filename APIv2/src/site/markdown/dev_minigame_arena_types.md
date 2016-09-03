@@ -51,4 +51,6 @@ cause existing arenas to be corrupt. They cannot be loaded any more. The strings
 
 ### Inherit an existing arena type
 
+To inherit and override an existing arena type you need to inherit the rules and match phases.
+
 

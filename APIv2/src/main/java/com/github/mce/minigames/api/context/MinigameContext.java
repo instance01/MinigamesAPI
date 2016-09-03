@@ -18,6 +18,7 @@ package com.github.mce.minigames.api.context;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
+import com.github.mce.minigames.api.component.ComponentInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.util.function.MgRunnable;
 import com.github.mce.minigames.api.util.function.MgSupplier;
@@ -150,10 +151,9 @@ public interface MinigameContext
      * 
      * @return current component.
      */
-    default MinigameInterface getCurrentComponent()
+    default ComponentInterface getCurrentComponent()
     {
-        // TODO
-        return this.getContext(MinigameInterface.class);
+        return this.getContext(ComponentInterface.class);
     }
     
 }

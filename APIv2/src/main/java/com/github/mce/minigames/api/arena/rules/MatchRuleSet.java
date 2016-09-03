@@ -13,26 +13,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena;
-
-import com.github.mce.minigames.api.MglibInterface;
+package com.github.mce.minigames.api.arena.rules;
 
 /**
- * An interface for enumerations that represent arena types.
+ * Base interface for match rule sets.
  * 
  * @author mepeisen
  */
-public interface ArenaTypeInterface
+public interface MatchRuleSet
 {
     
-    /**
-     * Returns the declaring provider.
-     * 
-     * @return provider.
-     */
-    default ArenaTypeProvider getProvider()
-    {
-        return MglibInterface.INSTANCE.get().getProviderFromArenaType(this);
-    }
+    // TODO
     
 }

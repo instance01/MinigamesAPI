@@ -15,24 +15,18 @@
 
 package com.github.mce.minigames.api.arena;
 
-import com.github.mce.minigames.api.MglibInterface;
-
 /**
- * An interface for enumerations that represent arena types.
+ * An interface used in enumerations to identify the match phases.
+ * 
+ * <p>
+ * Inherit this interface in your enumeration classes.
+ * </p>
  * 
  * @author mepeisen
  */
-public interface ArenaTypeInterface
+public interface MatchPhaseId
 {
     
-    /**
-     * Returns the declaring provider.
-     * 
-     * @return provider.
-     */
-    default ArenaTypeProvider getProvider()
-    {
-        return MglibInterface.INSTANCE.get().getProviderFromArenaType(this);
-    }
+    // marker interface
     
 }

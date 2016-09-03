@@ -15,13 +15,56 @@
 
 package com.github.mce.minigames.api.zones;
 
+import org.bukkit.Location;
+
+import com.github.mce.minigames.api.component.Cuboid;
+
 /**
+ * A zone/ cuboid component.
+ * 
  * @author mepeisen
  *
  */
 public interface ZoneInterface
 {
+
+    /**
+     * Returns the cuboid.
+     * @return cuboid of this component.
+     */
+    Cuboid getCuboid();
     
-    // TODO
+    /**
+     * Sets the cuboid
+     * @param cub cuboid of the component.
+     */
+    void setCuboid(Cuboid cub);
+    
+    /**
+     * Determines whether the this cuboid contains the passed location.
+     * 
+     * @param loc
+     *            the location to check
+     * @return true if the location is within this cuboid, otherwise false
+     */
+    boolean containsLoc(final Location loc);
+    
+    /**
+     * Determines whether the this cuboid contains the passed location without y coord.
+     * 
+     * @param loc
+     *            the location to check
+     * @return true if the location is within this cuboid without y coord, otherwise false
+     */
+    boolean containsLocWithoutY(final Location loc);
+    
+    /**
+     * Determines whether the this cuboid contains the passed location without y coord and by including the 2 blocks beyond the location.
+     * 
+     * @param loc
+     *            the location to check
+     * @return true if the location is within this cuboid without y coord, otherwise false
+     */
+    boolean containsLocWithoutYD(final Location loc);
     
 }

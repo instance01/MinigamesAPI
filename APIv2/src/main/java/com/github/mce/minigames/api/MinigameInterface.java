@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeProvider;
 import com.github.mce.minigames.api.config.ConfigInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 
@@ -28,7 +28,7 @@ import com.github.mce.minigames.api.locale.MessagesConfigInterface;
  * 
  * @author mepeisen
  */
-public interface MinigameInterface extends ConfigInterface
+public interface MinigameInterface extends ConfigInterface, ArenaTypeProvider
 {
     
     // TODO Add support for default main lobby
@@ -50,29 +50,6 @@ public interface MinigameInterface extends ConfigInterface
      * @return file configuration for messages.
      */
     MessagesConfigInterface getMessages();
-    
-    /**
-     * Returns the type of arenas declared for this minigame
-     * 
-     * @return arena types.
-     */
-    Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes();
-    
-    /**
-     * Returns the default arena type.
-     * 
-     * @return default arena type or {@code null} if it was not found.
-     */
-    ArenaTypeDeclarationInterface getDefaultType();
-    
-    /**
-     * Returns the arena type with given name.
-     * 
-     * @param name
-     *            arena type name.
-     * @return arena type or {@code null} if it was not found.
-     */
-    ArenaTypeDeclarationInterface getType(String name);
     
     /**
      * Returns all declared arenas within this minigame.

@@ -13,26 +13,27 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena;
+package com.github.mce.minigames.api.test;
 
-import com.github.mce.minigames.api.MglibInterface;
+import org.junit.Test;
+
+import com.github.mce.minigames.api.config.CommonConfig;
 
 /**
- * An interface for enumerations that represent arena types.
+ * test case for {@link CommonConfig}
  * 
  * @author mepeisen
  */
-public interface ArenaTypeInterface
+public class CommonConfigTest
 {
     
     /**
-     * Returns the declaring provider.
-     * 
-     * @return provider.
+     * Tests the enum
      */
-    default ArenaTypeProvider getProvider()
+    @Test
+    public void enumTest()
     {
-        return MglibInterface.INSTANCE.get().getProviderFromArenaType(this);
+        SharedUtil.testEnumClass(CommonConfig.class);
     }
     
 }

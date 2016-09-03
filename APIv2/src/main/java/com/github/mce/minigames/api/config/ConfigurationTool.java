@@ -78,6 +78,30 @@ class ConfigurationTool
      * Calculates a value by using a calculator func.
      * 
      * @param val
+     * @param clazz
+     * @param path
+     * @param calculator
+     * @param defaultValue
+     * @return calculator func.
+     */
+    static <Ret, Annot extends Annotation> Ret calculate(ConfigurationValueInterface val, Class<Annot> clazz, PathCalculator<Annot> path, ValueCalculator<Ret, Annot> calculator, ValueCalculator<Ret, Annot> defaultValue)
+    {
+        final Calculator<Ret, Annot> calc = (val2, configs, config, lib, minigame) -> {
+            final String spath = path.supply(val, configs, config, lib);
+            Ret res = minigame.getConfig(configs.file()).isSet(spath) ? calculator.supply(val, configs, config, lib, minigame, spath) : null;
+            if (res == null)
+            {
+                res = defaultValue.supply(val, configs, config, lib, minigame, spath);
+            }
+            return res;
+        };
+        return calculate(val, clazz, calc);
+    }
+    
+    /**
+     * Calculates a value by using a calculator func.
+     * 
+     * @param val
      * @param subpath
      * @param calculator
      * @return calculator func.
@@ -104,9 +128,12 @@ class ConfigurationTool
         final Calculator<Ret[], Annot> calc = (val2, configs, config, lib, minigame) -> {
             final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path.supply(val, configs, config, lib));
             final List<Ret> list = new ArrayList<>();
-            for (final String key : section.getKeys(false))
+            if (section != null)
             {
-                list.add(calculator.supply(val, configs, config, lib, minigame, section, key));
+                for (final String key : section.getKeys(false))
+                {
+                    list.add(calculator.supply(val, configs, config, lib, minigame, section, key));
+                }
             }
             return list.toArray((Ret[]) Array.newInstance(retClazz, list.size()));
         };
@@ -204,7 +231,11 @@ class ConfigurationTool
     static <T, Annot extends Annotation> void consumeList(ConfigurationValueInterface val, Class<Annot> clazz, PathCalculator<Annot> path, T[] value, ArrayValueConsumer<T, Annot> consumer)
     {
         final ValueConsumer<Annot> vconsumer = (ConfigurationValueInterface val2, ConfigurationValues configs, Annot config, MglibInterface lib, ConfigInterface minigame, String spath) -> {
-            final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
+            org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
+            if (section == null)
+            {
+                section = minigame.getConfig(configs.file()).createSection(spath);
+            }
             for (final String key : section.getKeys(false))
             {
                 section.set(key, null);

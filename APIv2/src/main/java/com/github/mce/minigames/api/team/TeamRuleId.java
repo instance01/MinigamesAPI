@@ -13,26 +13,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena;
+package com.github.mce.minigames.api.team;
 
-import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.RuleId;
 
 /**
- * An interface for enumerations that represent arena types.
+ * 
+ * An interface used in enumerations to identify the team rules.
+ * 
+ * <p>
+ * Inherit this interface in your enumeration classes.
+ * </p>
+ * 
  * 
  * @author mepeisen
+ *
  */
-public interface ArenaTypeInterface
+public interface TeamRuleId extends RuleId
 {
     
-    /**
-     * Returns the declaring provider.
-     * 
-     * @return provider.
-     */
-    default ArenaTypeProvider getProvider()
-    {
-        return MglibInterface.INSTANCE.get().getProviderFromArenaType(this);
-    }
+    // marker only
     
 }

@@ -13,26 +13,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena;
+package com.github.mce.minigames.api.test;
 
-import com.github.mce.minigames.api.MglibInterface;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.MinigameErrorCode;
 
 /**
- * An interface for enumerations that represent arena types.
+ * test case for {@link MinigameErrorCode}
  * 
  * @author mepeisen
  */
-public interface ArenaTypeInterface
+public class MinigameErrorCodeTest
 {
     
     /**
-     * Returns the declaring provider.
-     * 
-     * @return provider.
+     * Tests {@link MinigameErrorCode#toName()}
      */
-    default ArenaTypeProvider getProvider()
+    @Test
+    public void toNameTest()
     {
-        return MglibInterface.INSTANCE.get().getProviderFromArenaType(this);
+        assertEquals(CommonErrors.class.getName() + ".CannotStart", CommonErrors.CannotStart.toName()); //$NON-NLS-1$
     }
     
 }

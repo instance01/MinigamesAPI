@@ -18,7 +18,6 @@ package com.github.mce.minigames.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +44,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.CommonProviderInterface;
 import com.github.mce.minigames.api.LibState;
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinecraftVersionsType;
@@ -52,13 +52,22 @@ import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
+import com.github.mce.minigames.api.RuleId;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeProvider;
+import com.github.mce.minigames.api.arena.MatchPhaseId;
+import com.github.mce.minigames.api.arena.rules.AdminRuleId;
+import com.github.mce.minigames.api.arena.rules.ArenaRuleId;
+import com.github.mce.minigames.api.arena.rules.MatchRuleId;
+import com.github.mce.minigames.api.arena.rules.PlayerRuleId;
 import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
+import com.github.mce.minigames.api.component.ComponentId;
+import com.github.mce.minigames.api.component.ComponentRuleId;
 import com.github.mce.minigames.api.config.CommonConfig;
 import com.github.mce.minigames.api.config.ConfigInterface;
 import com.github.mce.minigames.api.config.ConfigurationValueInterface;
@@ -70,10 +79,14 @@ import com.github.mce.minigames.api.services.ExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 import com.github.mce.minigames.api.sign.SignInterface;
+import com.github.mce.minigames.api.team.TeamId;
+import com.github.mce.minigames.api.team.TeamRuleId;
 import com.github.mce.minigames.api.util.function.MgRunnable;
 import com.github.mce.minigames.api.util.function.MgSupplier;
 import com.github.mce.minigames.api.zones.ZoneInterface;
+import com.github.mce.minigames.impl.component.AbstractCuboidComponent;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
+import com.github.mce.minigames.impl.component.WorldChunk;
 import com.github.mce.minigames.impl.context.ArenaInterfaceProvider;
 import com.github.mce.minigames.impl.context.ArenaPlayerInterfaceProvider;
 import com.github.mce.minigames.impl.context.DefaultResolver;
@@ -95,47 +108,66 @@ import com.github.mce.minigames.impl.services.PremiumServiceProviderInterface;
  * A plugin for minigames.
  * 
  * @author mepeisen
- *
  */
 public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Listener
 {
     
     /** the overall minecraft server versioon. */
-    public static final MinecraftVersionsType              SERVER_VERSION      = MinigamesPlugin.getServerVersion();
+    public static final MinecraftVersionsType              SERVER_VERSION        = MinigamesPlugin.getServerVersion();
     
     /** the well known minigames. */
-    private final Map<String, MinigamePluginImpl>          minigames           = new TreeMap<>();
+    private final Map<String, MinigamePluginImpl>          minigames             = new TreeMap<>();
     
     /** the well known extensions. */
-    private final Map<String, ExtensionImpl>               extensions          = new TreeMap<>();
+    private final Map<String, ExtensionImpl>               extensions            = new TreeMap<>();
     
     /** Current library state. */
-    private LibState                                       state               = LibState.Initializing;
+    private LibState                                       state                 = LibState.Initializing;
     
     /** known command handlers by name. */
-    private final Map<String, CommandHandlerInterface>     commands            = new HashMap<>();
+    private final Map<String, CommandHandlerInterface>     commands              = new HashMap<>();
     
     /** messages to minigames. */
-    private final Map<LocalizedMessageInterface, String>   messagesToMinigame  = new HashMap<>();
+    private final Map<LocalizedMessageInterface, String>   messagesToMinigame    = new HashMap<>();
     
     /** options to minigames. */
-    private final Map<ConfigurationValueInterface, String> optionsToMinigame   = new HashMap<>();
+    private final Map<ConfigurationValueInterface, String> optionsToMinigame     = new HashMap<>();
     
     /** messages to extensions. */
-    private final Map<LocalizedMessageInterface, String>   messagesToExtension = new HashMap<>();
+    private final Map<LocalizedMessageInterface, String>   messagesToExtension   = new HashMap<>();
     
     /** options to extensions. */
-    private final Map<ConfigurationValueInterface, String> optionsToExtension  = new HashMap<>();
+    private final Map<ConfigurationValueInterface, String> optionsToExtension    = new HashMap<>();
+    
+    private final Map<RuleId, String>                      rulesToMinigame       = new HashMap<>();
+    
+    private final Map<RuleId, String>                      rulesToExtension      = new HashMap<>();
+    
+    private final Map<ArenaTypeInterface, String>          typesToMinigame       = new HashMap<>();
+    
+    private final Map<ArenaTypeInterface, String>          typesToExtension      = new HashMap<>();
+    
+    private final Map<TeamId, String>                      teamsToMinigame       = new HashMap<>();
+    
+    private final Map<TeamId, String>                      teamsToExtension      = new HashMap<>();
+    
+    private final Map<ComponentId, String>                 componentsToMinigame  = new HashMap<>();
+    
+    private final Map<ComponentId, String>                 componentsToExtension = new HashMap<>();
+    
+    private final Map<MatchPhaseId, String>                phasesToMinigame      = new HashMap<>();
+    
+    private final Map<MatchPhaseId, String>                phasesToExtension     = new HashMap<>();
     
     /**
      * the players registry.
      */
-    private final PlayerRegistry                           players             = new PlayerRegistry();
+    private final PlayerRegistry                           players               = new PlayerRegistry();
     
     /**
      * the minigame context implementation.
      */
-    private MinigameContextImpl                            contextImpl         = new MinigameContextImpl();
+    private MinigameContextImpl                            contextImpl           = new MinigameContextImpl();
     
     /**
      * the premium extension (if available)
@@ -145,7 +177,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     /**
      * The component registry.
      */
-    private final ComponentRegistry                        components          = new ComponentRegistry();
+    private final ComponentRegistry                        components            = new ComponentRegistry();
     
     /** the event system. */
     private final EventSystemInterface                     events;
@@ -460,53 +492,25 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
             impl = new MinigamePluginImpl(this, name, provider, this.components);
             
             // register commands
-            final Map<String, CommandHandlerInterface> mgCommands = provider.getBukkitCommands();
-            if (mgCommands != null)
-            {
-                for (final Map.Entry<String, CommandHandlerInterface> entry : mgCommands.entrySet())
-                {
-                    if (this.commands.containsKey(entry.getKey()))
-                    {
-                        this.getLogger().warning("Duplicate command registration for command \"" + entry.getKey() + "\". Ignoring command from minigame \"" + name + "\""); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-                    }
-                    else
-                    {
-                        this.commands.put(entry.getKey(), entry.getValue());
-                    }
-                }
-            }
+            registerCommands(name, "minigame", provider.getBukkitCommands()); //$NON-NLS-1$
             
             // register messages
-            final List<LocalizedMessageInterface> messages = new ArrayList<>();
-            final Iterable<Class<? extends LocalizedMessageInterface>> messageClasses = provider.getMessageClasses();
-            if (messageClasses != null)
-            {
-                for (final Class<? extends LocalizedMessageInterface> msgClazz : messageClasses)
-                {
-                    for (final LocalizedMessageInterface msg : msgClazz.getEnumConstants())
-                    {
-                        this.messagesToMinigame.put(msg, name);
-                        messages.add(msg);
-                    }
-                }
-            }
-            impl.initMessage(messages);
+            this.registerMessages(provider, name, impl, this.messagesToMinigame);
             
             // register configurations
-            final Map<String, List<ConfigurationValueInterface>> configs = new HashMap<>();
-            final Iterable<Class<? extends ConfigurationValueInterface>> configClasses = provider.getConfigurations();
-            if (configClasses != null)
-            {
-                for (final Class<? extends ConfigurationValueInterface> cfgClazz : configClasses)
-                {
-                    for (final ConfigurationValueInterface cfg : cfgClazz.getEnumConstants())
-                    {
-                        this.optionsToMinigame.put(cfg, name);
-                        configs.computeIfAbsent(cfgClazz.getAnnotation(ConfigurationValues.class).file(), (key) -> new ArrayList<>()).add(cfg);
-                    }
-                }
-            }
-            impl.initConfgurations(configs);
+            this.registerOptions(provider, name, impl, this.optionsToMinigame);
+            
+            // rules
+            this.registerRules(provider, name, impl, this.rulesToMinigame);
+            
+            // components
+            this.registerComponents(provider, name, impl, this.componentsToMinigame);
+            
+            // teams
+            this.registerTeams(provider, name, impl, this.teamsToMinigame);
+            
+            // match phases
+            this.registerMatchPhases(provider, name, impl, this.phasesToMinigame);
             
             // finally register it
             this.minigames.put(name.toLowerCase(), impl);
@@ -700,54 +704,27 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
             impl = new ExtensionImpl(this, name, provider);
             
             // register commands
-            final Map<String, CommandHandlerInterface> mgCommands = provider.getBukkitCommands();
-            if (mgCommands != null)
-            {
-                for (final Map.Entry<String, CommandHandlerInterface> entry : mgCommands.entrySet())
-                {
-                    if (this.commands.containsKey(entry.getKey()))
-                    {
-                        this.getLogger().warning("Duplicate command registration for command \"" + entry.getKey() + "\". Ignoring command from extension \"" + name + "\""); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-                    }
-                    else
-                    {
-                        this.commands.put(entry.getKey(), entry.getValue());
-                    }
-                }
-            }
+            registerCommands(name, "extension", provider.getBukkitCommands()); //$NON-NLS-1$
             
             // register messages
-            final List<LocalizedMessageInterface> messages = new ArrayList<>();
-            final Iterable<Class<? extends LocalizedMessageInterface>> messageClasses = provider.getMessageClasses();
-            if (messageClasses != null)
-            {
-                for (final Class<? extends LocalizedMessageInterface> msgClazz : messageClasses)
-                {
-                    for (final LocalizedMessageInterface msg : msgClazz.getEnumConstants())
-                    {
-                        this.messagesToExtension.put(msg, name);
-                        messages.add(msg);
-                    }
-                }
-            }
-            impl.initMessage(messages);
+            registerMessages(provider, name, impl, this.messagesToExtension);
             
             // register configurations
-            final Map<String, List<ConfigurationValueInterface>> configs = new HashMap<>();
-            final Iterable<Class<? extends ConfigurationValueInterface>> configClasses = provider.getConfigurations();
-            if (configClasses != null)
-            {
-                for (final Class<? extends ConfigurationValueInterface> cfgClazz : configClasses)
-                {
-                    for (final ConfigurationValueInterface cfg : cfgClazz.getEnumConstants())
-                    {
-                        this.optionsToExtension.put(cfg, name);
-                        configs.computeIfAbsent(cfgClazz.getAnnotation(ConfigurationValues.class).file(), (key) -> new ArrayList<>()).add(cfg);
-                    }
-                }
-            }
-            impl.initConfgurations(configs);
+            registerOptions(provider, name, impl, this.optionsToExtension);
             
+            // register rules
+            registerRules(provider, name, impl, this.rulesToExtension);
+            
+            // components
+            this.registerComponents(provider, name, impl, this.componentsToExtension);
+            
+            // teams
+            this.registerTeams(provider, name, impl, this.teamsToExtension);
+            
+            // match phases
+            this.registerMatchPhases(provider, name, impl, this.phasesToExtension);
+            
+            // premium support
             if (provider instanceof PremiumServiceProviderInterface)
             {
                 this.premium = (PremiumServiceProviderInterface) provider;
@@ -770,29 +747,330 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
         
         return impl;
     }
+
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#findZone(org.bukkit.Location)
+    /**
+     * Registers the team ids.
+     * @param provider
+     * @param name
+     * @param impl
+     * @param teamMap
      */
+    private void registerTeams(CommonProviderInterface provider, final String name, BaseImpl impl, Map<TeamId, String> teamMap)
+    {
+        final List<TeamId> tlist = new ArrayList<>();
+        
+        final Iterable<Class<? extends TeamId>> teamIds = provider.getTeamIds();
+        if (teamIds != null)
+        {
+            for (final Class<? extends TeamId> idClazz : teamIds)
+            {
+                for (final TeamId id : idClazz.getEnumConstants())
+                {
+                    teamMap.put(id, name);
+                    tlist.add(id);
+                }
+            }
+        }
+        
+        impl.initTeams(tlist);
+    }
+
+    
+    /**
+     * Registers the component ids.
+     * @param provider
+     * @param name
+     * @param impl
+     * @param componentMap
+     */
+    private void registerComponents(CommonProviderInterface provider, final String name, BaseImpl impl, Map<ComponentId, String> componentMap)
+    {
+        final List<ComponentId> clist = new ArrayList<>();
+        
+        final Iterable<Class<? extends ComponentId>> compIds = provider.getComponentIds();
+        if (compIds != null)
+        {
+            for (final Class<? extends ComponentId> idClazz : compIds)
+            {
+                for (final ComponentId id : idClazz.getEnumConstants())
+                {
+                    componentMap.put(id, name);
+                    clist.add(id);
+                }
+            }
+        }
+        
+        impl.initComponents(clist);
+    }
+
+    
+    /**
+     * Registers the match phase ids.
+     * @param provider
+     * @param name
+     * @param impl
+     * @param phasesMap
+     */
+    private void registerMatchPhases(CommonProviderInterface provider, final String name, BaseImpl impl, Map<MatchPhaseId, String> phasesMap)
+    {
+        final List<MatchPhaseId> plist = new ArrayList<>();
+        
+        final Iterable<Class<? extends MatchPhaseId>> phasesIds = provider.getMatchPhaseIds();
+        if (phasesIds != null)
+        {
+            for (final Class<? extends MatchPhaseId> idClazz : phasesIds)
+            {
+                for (final MatchPhaseId id : idClazz.getEnumConstants())
+                {
+                    phasesMap.put(id, name);
+                    plist.add(id);
+                }
+            }
+        }
+        
+        impl.initPhases(plist);
+    }
+    
+    /**
+     * Registers the rule ids.
+     * @param provider
+     * @param name
+     * @param impl
+     * @param ruleMap
+     */
+    private void registerRules(CommonProviderInterface provider, final String name, BaseImpl impl, Map<RuleId, String> ruleMap)
+    {
+        final List<RuleId> rules = new ArrayList<>();
+        
+        final Iterable<Class<? extends AdminRuleId>> adminRuleIds = provider.getAdminRuleIds();
+        if (adminRuleIds != null)
+        {
+            for (final Class<? extends AdminRuleId> idClazz : adminRuleIds)
+            {
+                for (final AdminRuleId id : idClazz.getEnumConstants())
+                {
+                    ruleMap.put(id, name);
+                    rules.add(id);
+                }
+            }
+        }
+        
+        final Iterable<Class<? extends ArenaRuleId>> arenaRuleIds = provider.getArenaRuleIds();
+        if (arenaRuleIds != null)
+        {
+            for (final Class<? extends ArenaRuleId> idClazz : arenaRuleIds)
+            {
+                for (final ArenaRuleId id : idClazz.getEnumConstants())
+                {
+                    ruleMap.put(id, name);
+                    rules.add(id);
+                }
+            }
+        }
+        
+        final Iterable<Class<? extends ComponentRuleId>> componentRuleIds = provider.getComponentRuleIds();
+        if (componentRuleIds != null)
+        {
+            for (final Class<? extends ComponentRuleId> idClazz : componentRuleIds)
+            {
+                for (final ComponentRuleId id : idClazz.getEnumConstants())
+                {
+                    ruleMap.put(id, name);
+                    rules.add(id);
+                }
+            }
+        }
+        
+        final Iterable<Class<? extends MatchRuleId>> matchRuleIds = provider.getMatchRuleIds();
+        if (matchRuleIds != null)
+        {
+            for (final Class<? extends MatchRuleId> idClazz : matchRuleIds)
+            {
+                for (final MatchRuleId id : idClazz.getEnumConstants())
+                {
+                    ruleMap.put(id, name);
+                    rules.add(id);
+                }
+            }
+        }
+        
+        final Iterable<Class<? extends PlayerRuleId>> playerRuleIds = provider.getPlayerRuleIds();
+        if (playerRuleIds != null)
+        {
+            for (final Class<? extends PlayerRuleId> idClazz : playerRuleIds)
+            {
+                for (final PlayerRuleId id : idClazz.getEnumConstants())
+                {
+                    ruleMap.put(id, name);
+                    rules.add(id);
+                }
+            }
+        }
+        
+        final Iterable<Class<? extends TeamRuleId>> teamRuleIds = provider.getTeamRuleIds();
+        if (teamRuleIds != null)
+        {
+            for (final Class<? extends TeamRuleId> idClazz : teamRuleIds)
+            {
+                for (final TeamRuleId id : idClazz.getEnumConstants())
+                {
+                    ruleMap.put(id, name);
+                    rules.add(id);
+                }
+            }
+        }
+        
+        impl.initRules(rules);
+    }
+
+    /**
+     * Registers options
+     * @param provider
+     * @param name
+     * @param impl
+     * @param optMap
+     */
+    private void registerOptions(CommonProviderInterface provider, final String name, BaseImpl impl, Map<ConfigurationValueInterface, String> optMap)
+    {
+        final Map<String, List<ConfigurationValueInterface>> configs = new HashMap<>();
+        final Iterable<Class<? extends ConfigurationValueInterface>> configClasses = provider.getConfigurations();
+        if (configClasses != null)
+        {
+            for (final Class<? extends ConfigurationValueInterface> cfgClazz : configClasses)
+            {
+                for (final ConfigurationValueInterface cfg : cfgClazz.getEnumConstants())
+                {
+                    optMap.put(cfg, name);
+                    configs.computeIfAbsent(cfgClazz.getAnnotation(ConfigurationValues.class).file(), (key) -> new ArrayList<>()).add(cfg);
+                }
+            }
+        }
+        impl.initConfgurations(configs);
+    }
+
+    /**
+     * Register the messages.
+     * @param provider
+     * @param name
+     * @param impl
+     * @param msgMap
+     */
+    private void registerMessages(CommonProviderInterface provider, final String name, BaseImpl impl, final Map<LocalizedMessageInterface, String> msgMap)
+    {
+        final List<LocalizedMessageInterface> messages = new ArrayList<>();
+        final Iterable<Class<? extends LocalizedMessageInterface>> messageClasses = provider.getMessageClasses();
+        if (messageClasses != null)
+        {
+            for (final Class<? extends LocalizedMessageInterface> msgClazz : messageClasses)
+            {
+                for (final LocalizedMessageInterface msg : msgClazz.getEnumConstants())
+                {
+                    msgMap.put(msg, name);
+                    messages.add(msg);
+                }
+            }
+        }
+        impl.initMessage(messages);
+    }
+
+    /**
+     * Register the commands
+     * @param name 
+     * @param type
+     * @param mgCommands
+     */
+    private void registerCommands(final String name, final String type, final Map<String, CommandHandlerInterface> mgCommands)
+    {
+        if (mgCommands != null)
+        {
+            for (final Map.Entry<String, CommandHandlerInterface> entry : mgCommands.entrySet())
+            {
+                if (this.commands.containsKey(entry.getKey()))
+                {
+                    this.getLogger().warning("Duplicate command registration for command \"" + entry.getKey() + "\". Ignoring command from " + type + " \"" + name + "\""); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+                }
+                else
+                {
+                    this.commands.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+    }
+    
     @Override
     public ZoneInterface findZone(Location location)
     {
-        // TODO Auto-generated method stub
+        for (final ZoneInterface zone : this.components.fetch(AbstractCuboidComponent.class, new WorldChunk(location)))
+        {
+            if (zone.containsLoc(location))
+                return zone;
+        }
         return null;
     }
     
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.MglibInterface#findZones(org.bukkit.Location)
-     */
     @Override
     public Iterable<ZoneInterface> findZones(Location location)
     {
-        // TODO Auto-generated method stub
+        final List<ZoneInterface> result = new ArrayList<>();
+        for (final ZoneInterface zone : this.components.fetch(AbstractCuboidComponent.class, new WorldChunk(location)))
+        {
+            if (zone.containsLoc(location))
+            {
+                result.add(zone);
+            }
+        }
+        return result;
+    }
+    
+    @Override
+    public ZoneInterface findZoneWithoutY(Location location)
+    {
+        for (final ZoneInterface zone : this.components.fetch(AbstractCuboidComponent.class, new WorldChunk(location)))
+        {
+            if (zone.containsLocWithoutY(location))
+                return zone;
+        }
         return null;
+    }
+    
+    @Override
+    public Iterable<ZoneInterface> findZonesWithoutY(Location location)
+    {
+        final List<ZoneInterface> result = new ArrayList<>();
+        for (final ZoneInterface zone : this.components.fetch(AbstractCuboidComponent.class, new WorldChunk(location)))
+        {
+            if (zone.containsLocWithoutY(location))
+            {
+                result.add(zone);
+            }
+        }
+        return result;
+    }
+    
+    @Override
+    public ZoneInterface findZoneWithoutYD(Location location)
+    {
+        for (final ZoneInterface zone : this.components.fetch(AbstractCuboidComponent.class, new WorldChunk(location)))
+        {
+            if (zone.containsLocWithoutYD(location))
+                return zone;
+        }
+        return null;
+    }
+    
+    @Override
+    public Iterable<ZoneInterface> findZonesWithoutYD(Location location)
+    {
+        final List<ZoneInterface> result = new ArrayList<>();
+        for (final ZoneInterface zone : this.components.fetch(AbstractCuboidComponent.class, new WorldChunk(location)))
+        {
+            if (zone.containsLocWithoutYD(location))
+            {
+                result.add(zone);
+            }
+        }
+        return result;
     }
     
     @Override
@@ -826,21 +1104,15 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     @Override
     public Iterable<ArenaInterface> getArenas(ArenaTypeInterface type)
     {
-        final String minigame = type.getMinigame();
-        final MinigamePluginImpl impl = this.minigames.get(minigame);
-        if (impl != null)
+        final List<ArenaInterface> arenas = new ArrayList<>();
+        for (final ArenaInterface arena : this.getArenas())
         {
-            final List<ArenaInterface> arenas = new ArrayList<>();
-            for (final ArenaInterface arena : impl.getArenas())
+            if (arena.getArenaType() == type)
             {
-                if (arena.getArenaType() == type)
-                {
-                    arenas.add(arena);
-                }
+                arenas.add(arena);
             }
-            return arenas;
         }
-        return Collections.emptyList();
+        return arenas;
     }
     
     @Override
@@ -974,6 +1246,86 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     public void onInventoryDrag(InventoryDragEvent evt)
     {
         // TODO
+    }
+    
+    @Override
+    public ArenaTypeProvider getProviderFromArenaType(ArenaTypeInterface type)
+    {
+        String name = this.typesToMinigame.get(type);
+        if (name != null)
+        {
+            return this.minigames.get(name);
+        }
+        name = this.typesToExtension.get(type);
+        if (name != null)
+        {
+            return this.extensions.get(name);
+        }
+        return null;
+    }
+    
+    @Override
+    public ArenaTypeProvider getProviderFromRule(RuleId rule)
+    {
+        String name = this.rulesToMinigame.get(rule);
+        if (name != null)
+        {
+            return this.minigames.get(name);
+        }
+        name = this.rulesToExtension.get(rule);
+        if (name != null)
+        {
+            return this.extensions.get(name);
+        }
+        return null;
+    }
+
+    @Override
+    public ArenaTypeProvider getProviderFromTeam(TeamId team)
+    {
+        String name = this.teamsToMinigame.get(team);
+        if (name != null)
+        {
+            return this.minigames.get(name);
+        }
+        name = this.teamsToExtension.get(team);
+        if (name != null)
+        {
+            return this.extensions.get(name);
+        }
+        return null;
+    }
+
+    @Override
+    public ArenaTypeProvider getProviderFromComponent(ComponentId component)
+    {
+        String name = this.componentsToMinigame.get(component);
+        if (name != null)
+        {
+            return this.minigames.get(name);
+        }
+        name = this.componentsToExtension.get(component);
+        if (name != null)
+        {
+            return this.extensions.get(name);
+        }
+        return null;
+    }
+
+    @Override
+    public ArenaTypeProvider getProviderFromMatch(MatchPhaseId phase)
+    {
+        String name = this.phasesToMinigame.get(phase);
+        if (name != null)
+        {
+            return this.minigames.get(name);
+        }
+        name = this.phasesToExtension.get(phase);
+        if (name != null)
+        {
+            return this.extensions.get(name);
+        }
+        return null;
     }
     
 }
