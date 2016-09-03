@@ -2,7 +2,11 @@
 
 #### 1.14.12/1.14.13
 
-##### Sudoku
+###### BedWars
+
+* Added command "setupbeds" to help page
+
+###### Sudoku
 
 * new game sudoku/ migrated to minigames lib
 
