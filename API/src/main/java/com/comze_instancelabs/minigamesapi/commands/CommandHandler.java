@@ -46,6 +46,14 @@ public class CommandHandler
 {
     
     /**
+     * Constructor.
+     */
+    public CommandHandler()
+    {
+        this.initCmdDesc();
+    }
+    
+    /**
      * Handles the default commands needed for arena management.
      * 
      * @param uber_permission
@@ -202,7 +210,7 @@ public class CommandHandler
             }
             else if (action.equalsIgnoreCase(CommandStrings.GAME_HELP))
             {
-                CommandHandler.sendHelp(cmd, sender);
+                return this.sendHelp(cmd, sender);
             }
             else if (action.equalsIgnoreCase(CommandStrings.GAME_LIST))
             {
@@ -246,7 +254,7 @@ public class CommandHandler
             {
                 boolean cont = false;
                 final ArrayList<String> cmds = new ArrayList<>();
-                for (final String cmd_ : CommandHandler.cmddesc.keySet())
+                for (final String cmd_ : this.cmddesc.keySet())
                 {
                     if (cmd_.toLowerCase().contains(action.toLowerCase()))
                     {
@@ -256,7 +264,7 @@ public class CommandHandler
                 }
                 if (cont)
                 {
-                    CommandHandler.sendHelp(cmd, sender);
+                    this.sendHelp(cmd, sender);
                     for (final String cmd_ : cmds)
                     {
                         sender.sendMessage(ChatColor.RED + "Did you mean " + ChatColor.DARK_RED + cmd + " " + cmd_ + ChatColor.RED + "?");
@@ -266,59 +274,60 @@ public class CommandHandler
         }
         else
         {
-            CommandHandler.sendHelp(cmd, sender);
+            return this.sendHelp(cmd, sender);
         }
         return true;
     }
     
-    public static LinkedHashMap<String, String> cmddesc;
-    static
+    protected final LinkedHashMap<String, String> cmddesc = new LinkedHashMap<>();
+    
+    protected void initCmdDesc()
     {
-        CommandHandler.cmddesc = new LinkedHashMap<>();
-        CommandHandler.cmddesc.put("", null);
-        CommandHandler.cmddesc.put("setspawn <arena>", "Sets the spawn point.");
-        CommandHandler.cmddesc.put("setlobby <arena>", "Sets the lobby point.");
-        CommandHandler.cmddesc.put("setmainlobby", "Sets the main lobby point.");
-        CommandHandler.cmddesc.put("setbounds <arena> <low/high>", "Sets the low or high boundary point for later arena regeneration.");
-        CommandHandler.cmddesc.put("savearena <arena>", "Saves the arena.");
-        CommandHandler.cmddesc.put("", null);
-        CommandHandler.cmddesc.put("setmaxplayers <arena> <count>", "Sets the max players allowed to join to given count.");
-        CommandHandler.cmddesc.put("setminplayers <arena> <count>", "Sets the min players needed to start to given count.");
-        CommandHandler.cmddesc.put("setarenavip <arena> <true/false>", "Sets whether arena needs permission to join.");
-        CommandHandler.cmddesc.put("removearena <arena>", "Deletes an arena from config.");
-        CommandHandler.cmddesc.put("removespawn <arena> <count>", "Deletes a spawn from config.");
-        CommandHandler.cmddesc.put("setenabled", "Enables/Disables the arena.");
-        CommandHandler.cmddesc.put("", null);
-        CommandHandler.cmddesc.put("join <arena>", "Joins the arena.");
-        CommandHandler.cmddesc.put("leave", "Leaves the arena.");
-        CommandHandler.cmddesc.put("", "");
-        CommandHandler.cmddesc.put("start <arena>", "Forces the arena to start.");
-        CommandHandler.cmddesc.put("stop <arena>", "Forces the arena to stop.");
-        CommandHandler.cmddesc.put("list", "Lists all arenas.");
-        CommandHandler.cmddesc.put("reload", "Reloads the config.");
-        CommandHandler.cmddesc.put("reset <arena>", "Forces the arena to reset.");
-        CommandHandler.cmddesc.put("", null);
-        CommandHandler.cmddesc.put("setlobbybounds <arena> <low/high>", "Optional: Set lobby boundaries.");
-        CommandHandler.cmddesc.put("setspecbounds <arena> <low/high>", "Optional: Set extra spectator boundaries.");
-        CommandHandler.cmddesc.put("setauthor <arena> <author>", "Will always display the author of the map at join.");
-        CommandHandler.cmddesc.put("setdescription <arena> <description>", "Will always display a description of the map at join.");
-        CommandHandler.cmddesc.put("setdisplayname <arena> <displayname>", "Allows changing displayname of an arena (whitespaces and colors).");
-        CommandHandler.cmddesc.put("", null);
+        this.cmddesc.put("", null);
+        this.cmddesc.put("setspawn <arena>", "Sets the spawn point.");
+        this.cmddesc.put("setlobby <arena>", "Sets the lobby point.");
+        this.cmddesc.put("setmainlobby", "Sets the main lobby point.");
+        this.cmddesc.put("setbounds <arena> <low/high>", "Sets the low or high boundary point for later arena regeneration.");
+        this.cmddesc.put("savearena <arena>", "Saves the arena.");
+        this.cmddesc.put("", null);
+        this.cmddesc.put("setmaxplayers <arena> <count>", "Sets the max players allowed to join to given count.");
+        this.cmddesc.put("setminplayers <arena> <count>", "Sets the min players needed to start to given count.");
+        this.cmddesc.put("setarenavip <arena> <true/false>", "Sets whether arena needs permission to join.");
+        this.cmddesc.put("removearena <arena>", "Deletes an arena from config.");
+        this.cmddesc.put("removespawn <arena> <count>", "Deletes a spawn from config.");
+        this.cmddesc.put("setenabled", "Enables/Disables the arena.");
+        this.cmddesc.put("", null);
+        this.cmddesc.put("join <arena>", "Joins the arena.");
+        this.cmddesc.put("leave", "Leaves the arena.");
+        this.cmddesc.put("", "");
+        this.cmddesc.put("start <arena>", "Forces the arena to start.");
+        this.cmddesc.put("stop <arena>", "Forces the arena to stop.");
+        this.cmddesc.put("list", "Lists all arenas.");
+        this.cmddesc.put("reload", "Reloads the config.");
+        this.cmddesc.put("reset <arena>", "Forces the arena to reset.");
+        this.cmddesc.put("", null);
+        this.cmddesc.put("setlobbybounds <arena> <low/high>", "Optional: Set lobby boundaries.");
+        this.cmddesc.put("setspecbounds <arena> <low/high>", "Optional: Set extra spectator boundaries.");
+        this.cmddesc.put("setauthor <arena> <author>", "Will always display the author of the map at join.");
+        this.cmddesc.put("setdescription <arena> <description>", "Will always display a description of the map at join.");
+        this.cmddesc.put("setdisplayname <arena> <displayname>", "Allows changing displayname of an arena (whitespaces and colors).");
+        this.cmddesc.put("", null);
     }
     
-    public static void sendHelp(final String cmd, final CommandSender sender)
+    public boolean sendHelp(final String cmd, final CommandSender sender)
     {
         sender.sendMessage(ChatColor.DARK_GRAY + "------- " + ChatColor.BLUE + "Help" + ChatColor.DARK_GRAY + " -------");
-        for (final String k : CommandHandler.cmddesc.keySet())
+        for (final String k : this.cmddesc.keySet())
         {
             if (k.length() < 3)
             {
                 sender.sendMessage("");
                 continue;
             }
-            final String v = CommandHandler.cmddesc.get(k);
+            final String v = this.cmddesc.get(k);
             sender.sendMessage(ChatColor.YELLOW + cmd + " " + k + ChatColor.DARK_GRAY + " - " + ChatColor.GRAY + v);
         }
+        return true;
     }
     
     public static LinkedHashMap<String, String> cmdpartydesc;

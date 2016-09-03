@@ -30,6 +30,116 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 public @interface LocalizedMessage
 {
+
+    /**
+     * Represents black
+     */
+    String BLACK = "§0"; //$NON-NLS-1$
+    
+    /**
+     * Represents dark blue
+     */
+    String DARK_BLUE = "§1"; //$NON-NLS-1$
+    
+    /**
+     * Represents dark green
+     */
+    String DARK_GREEN = "§2"; //$NON-NLS-1$
+    
+    /**
+     * Represents dark blue (aqua)
+     */
+    String DARK_AQUA = "§3"; //$NON-NLS-1$
+    
+    /**
+     * Represents dark red
+     */
+    String DARK_RED = "§4"; //$NON-NLS-1$
+    
+    /**
+     * Represents dark purple
+     */
+    String DARK_PURPLE = "§5"; //$NON-NLS-1$
+    
+    /**
+     * Represents gold
+     */
+    String GOLD = "§6"; //$NON-NLS-1$
+    
+    /**
+     * Represents gray
+     */
+    String GRAY = "§7"; //$NON-NLS-1$
+    
+    /**
+     * Represents dark gray
+     */
+    String DARK_GRAY = "§8"; //$NON-NLS-1$
+    
+    /**
+     * Represents blue
+     */
+    String BLUE = "§9"; //$NON-NLS-1$
+    
+    /**
+     * Represents green
+     */
+    String GREEN = "§a"; //$NON-NLS-1$
+    
+    /**
+     * Represents aqua
+     */
+    String AQUA = "§b"; //$NON-NLS-1$
+    
+    /**
+     * Represents red
+     */
+    String RED = "§c"; //$NON-NLS-1$
+    
+    /**
+     * Represents light purple
+     */
+    String LIGHT_PURPLE = "§d"; //$NON-NLS-1$
+    
+    /**
+     * Represents yellow
+     */
+    String YELLOW = "§e"; //$NON-NLS-1$
+    
+    /**
+     * Represents white
+     */
+    String WHITE = "§f"; //$NON-NLS-1$
+    
+    /**
+     * Represents magical characters that change around randomly
+     */
+    String MAGIC = "§k"; //$NON-NLS-1$
+    
+    /**
+     * Makes the text bold.
+     */
+    String BOLD = "§l"; //$NON-NLS-1$
+    
+    /**
+     * Makes a line appear through the text.
+     */
+    String STRIKETHROUGH = "§m"; //$NON-NLS-1$
+    
+    /**
+     * Makes the text appear underlined.
+     */
+    String UNDERLINE = "§n"; //$NON-NLS-1$
+    
+    /**
+     * Makes the text italic.
+     */
+    String ITALIC = "§o"; //$NON-NLS-1$
+    
+    /**
+     * Resets all previous chat colors or formats.
+     */
+    String RESET = "§r"; //$NON-NLS-1$
     
     /**
      * Returns the default user message used as fallback; must be in locale returned by {@link LocalizedMessages#defaultLocale()}.

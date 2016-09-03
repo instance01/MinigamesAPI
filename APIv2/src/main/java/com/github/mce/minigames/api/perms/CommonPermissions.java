@@ -20,14 +20,44 @@ package com.github.mce.minigames.api.perms;
  * 
  * @author mepeisen
  */
-@Permissions("$MGLIB$.core")
+@Permissions("$PERM:MGLIB$")
 public enum CommonPermissions implements PermissionsInterface
 {
     
     /**
      * Permission to perform the start command.
      */
-    @Permission
-    start,
+    @Permission("command.start")
+    Start,
+    
+    /**
+     * Permission to perform the info command.
+     */
+    @Permission("command.info.common")
+    Info,
+    
+    /**
+     * Permission to perform the info command.
+     */
+    @Permission("command.info.extensions")
+    InfoExtensions,
+    
+    /**
+     * Permission to perform the info command.
+     */
+    @Permission("command.info.minigames")
+    InfoMinigames,
+    
+    /**
+     * Permission to perform the info command.
+     */
+    @Permission("command.info.arenas")
+    InfoArenas,
+    
+    /**
+     * Permission to perform the create command.
+     */
+    @Permission("command.create")
+    Create,
     
 }

@@ -20,7 +20,6 @@ import java.util.Locale;
 import java.util.function.BiFunction;
 
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameInterface;
 
 /**
  * An interface for enumerations that represent localized messages.
@@ -29,6 +28,42 @@ import com.github.mce.minigames.api.MinigameInterface;
  */
 public interface LocalizedMessageInterface extends Serializable
 {
+    
+    /**
+     * Checks if this is a single line message.
+     * 
+     * @return {@code true} for single line messages.
+     */
+    default boolean isSingleLine()
+    {
+        try
+        {
+            final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessage.class);
+            return msg != null;
+        }
+        catch (NoSuchFieldException ex)
+        {
+            throw new IllegalStateException(ex);
+        }
+    }
+    
+    /**
+     * Checks if this is a multi line message.
+     * 
+     * @return {@code true} for multi line messages.
+     */
+    default boolean isMultiLine()
+    {
+        try
+        {
+            final LocalizedMessageList msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessageList.class);
+            return msg != null;
+        }
+        catch (NoSuchFieldException ex)
+        {
+            throw new IllegalStateException(ex);
+        }
+    }
     
     /**
      * Returns the message severity type.
@@ -40,7 +75,7 @@ public interface LocalizedMessageInterface extends Serializable
         try
         {
             final LocalizedMessage msg = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(LocalizedMessage.class);
-            return msg.severity();
+            return msg == null ? MessageSeverityType.Information : msg.severity();
         }
         catch (NoSuchFieldException ex)
         {
@@ -68,13 +103,13 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
             }
             final MglibInterface mglib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
-            if (minigame == null)
+            final MessagesConfigInterface messages = mglib.getMessagesFromMsg(this);
+            if (messages == null)
             {
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            final String smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
+            final String smsg = messages.getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
             return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
         }
         catch (NoSuchFieldException ex)
@@ -103,13 +138,13 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
             }
             final MglibInterface mglib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
-            if (minigame == null)
+            final MessagesConfigInterface messages = mglib.getMessagesFromMsg(this);
+            if (messages == null)
             {
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            final String[] smsg = minigame.getMessages().getStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.value()); //$NON-NLS-1$
+            final String[] smsg = messages.getStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.value()); //$NON-NLS-1$
             final String[] result = new String[smsg.length];
             int i = 0;
             for (final String lmsg : smsg)
@@ -145,16 +180,16 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
             }
             final MglibInterface mglib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
-            if (minigame == null)
+            final MessagesConfigInterface messages = mglib.getMessagesFromMsg(this);
+            if (messages == null)
             {
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            String smsg = minigame.getMessages().getAdminString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
+            String smsg = messages.getAdminString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultAdminMessage()); //$NON-NLS-1$
             if (smsg.length() == 0)
             {
-                smsg = minigame.getMessages().getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
+                smsg = messages.getString(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.defaultMessage()); //$NON-NLS-1$
             }
             return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
         }
@@ -184,16 +219,16 @@ public interface LocalizedMessageInterface extends Serializable
                 throw new IllegalStateException("Invalid message class."); //$NON-NLS-1$
             }
             final MglibInterface mglib = MglibInterface.INSTANCE.get();
-            final MinigameInterface minigame = mglib.getMinigameFromMsg(this);
-            if (minigame == null)
+            final MessagesConfigInterface messages = mglib.getMessagesFromMsg(this);
+            if (messages == null)
             {
                 throw new IllegalStateException("minigame not found or inactive."); //$NON-NLS-1$
             }
             
-            String[] smsg = minigame.getMessages().getAdminStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.adminMessages().length == 0 ? null : msg.adminMessages()); //$NON-NLS-1$
-            if (smsg == null)
+            String[] smsg = messages.getAdminStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.adminMessages().length == 0 ? null : msg.adminMessages()); //$NON-NLS-1$
+            if (smsg == null || smsg.length == 0)
             {
-                smsg = minigame.getMessages().getStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.value()); //$NON-NLS-1$
+                smsg = messages.getStringList(locale, msgs.value() + "." + ((Enum<?>) this).name(), msg.value()); //$NON-NLS-1$
             }
             final String[] result = new String[smsg.length];
             int i = 0;

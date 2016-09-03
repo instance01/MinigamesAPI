@@ -24,7 +24,7 @@ import org.junit.Test;
 import com.github.mce.minigames.api.MinecraftVersionsType;
 
 /**
- * Test for the version types.
+ * Test for {@link MinecraftVersionsType}.
  * 
  * @author mepeisen
  * @see MinecraftVersionsType

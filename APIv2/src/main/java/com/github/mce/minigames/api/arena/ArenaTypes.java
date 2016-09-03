@@ -31,11 +31,6 @@ import java.lang.annotation.Target;
 public @interface ArenaTypes
 {
     
-    /**
-     * Returns the minigame declaring the arena types.
-     * 
-     * @return the minigame declaring the arena types.
-     */
-    String minigame();
+    // marker only
     
 }

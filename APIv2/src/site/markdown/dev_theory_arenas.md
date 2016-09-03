@@ -8,9 +8,9 @@ And that is excatly what an arena is for Minigames-API.
 
 It is up to the administrator to build some nice building or similar things for the arena. For example he can create a colosseum.
 
-The library will identify the arena by name. There are some arena names that are preserved. You will find them in the following class:
+The library will identify the arena by name. There are some arena names that are preserved. You will find them in the following constant:
 
-    TODO
+    ArenaInterface.ILLEGAL_NAMES
 
 Beside this preserved names you can choose any name. The name must be unique per minigame. It is possible to use the same name (f.e. "default") for different game.
 However this is not recommended. The minigames lib won't be confused if the same name is used twiced across multiple minigames.
@@ -18,10 +18,9 @@ However this is not recommended. The minigames lib won't be confused if the same
 ## The display name and some additional information
 
 Arenas have a display name. That's a human readable name used within messages or on signs. You may not want to let users see the technical name 'pvp1'.
-Bu8t you may want to display the name 'Ice-Battlefield'. The display name is localized so you can even display a different name for different player
-languages.
+But you may want to display the name 'Ice-Battlefield'. The display name is not localized.
 
-There is some additional data, such as authors and descriptions. You may fill them or simply let them empty.
+There is some additional data, such as authors and descriptions. You may fill them or simply leave them empty.
 
 ## The arena state
 
@@ -85,7 +84,7 @@ Originally there was only one waiting lobby per arena. It was meant to be a smal
 run away and where he can wait for other players to join.
 
 In v2 the join concept is different. It allows you to declare waiting queues and arena groups. The player may join a waiting queue even if a match
-is being processed. The administrator may choose to port them into "lobby #1" to represent the waiting queue. And he may choose to port payers
+is being processed. The administrator may choose to port them into "lobby #1" to represent the waiting queue. And he may choose to port players
 waiting for a new match to "lobby #2" right before the game starts.
 
 In v2 the game can have multiple waiting lobbies for different situations based on game rules. A game developer may decide that the match
@@ -95,7 +94,7 @@ has multiple rounds. Between each round the user is taken into a new waiting lob
 
 The spawns are associated with players or teams. Nothing changed on this concept.
 
-However v1 did not have support for team spawns or shared/ random spawns. In v2 it is up to a game rule to choose the correct spawn for players.
+However v1 did not have direct support for team spawns or shared/ random spawns. In v2 it is up to a game rule to choose the correct spawn for players.
 The classic rule says "associate the spawn to a player during startup".
 
 ### Teams

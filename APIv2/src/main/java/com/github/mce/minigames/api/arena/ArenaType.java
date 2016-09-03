@@ -31,11 +31,6 @@ import java.lang.annotation.Target;
 public @interface ArenaType
 {
     
-    /**
-     * Unique name of the arena type.
-     * 
-     * @return Unique name of the arena type.
-     */
-    String name();
+    // marker only
     
 }

@@ -20,6 +20,7 @@ import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.cmd.HelpCommandHandler;
 import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
@@ -43,6 +44,7 @@ public class PartyCommandHandler extends AbstractCompositeCommandHandler impleme
         this.subCommands.put("list", new PartyListCommandHandler()); //$NON-NLS-1$
         this.subCommands.put("disband", new PartyDisbandCommandHandler()); //$NON-NLS-1$
         this.subCommands.put("leave", new PartyLeaveCommandHandler()); //$NON-NLS-1$
+        this.subCommands.put("help", new HelpCommandHandler((AbstractCompositeCommandHandler) this)); //$NON-NLS-1$
     }
     
     @Override

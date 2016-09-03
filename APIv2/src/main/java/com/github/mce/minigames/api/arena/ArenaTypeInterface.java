@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.api.arena;
 
+import com.github.mce.minigames.api.MglibInterface;
+
 /**
  * An interface for enumerations that represent arena types.
  * 
@@ -24,21 +26,13 @@ public interface ArenaTypeInterface
 {
     
     /**
-     * Returns the minigame name declaring the arena type.
+     * Returns the declaring provider.
      * 
-     * @return minigame name.
+     * @return provider.
      */
-    default String getMinigame()
+    default ArenaTypeProvider getProvider()
     {
-        try
-        {
-            final ArenaTypes types = this.getClass().getDeclaredField(((Enum<?>) this).name()).getAnnotation(ArenaTypes.class);
-            return types.minigame();
-        }
-        catch (NoSuchFieldException ex)
-        {
-            throw new IllegalStateException(ex);
-        }
+        return MglibInterface.INSTANCE.get().getProviderFromArenaType(this);
     }
     
 }

@@ -13,6 +13,13 @@
 		<jar destfile="${jar.file}">
 			<fileset dir="${basedir}/../../target/classes"></fileset>
 			<fileset dir="${basedir}/../../../APIv2/target/classes"></fileset>
+			<fileset dir="${basedir}/../../nms/api/target/classes"></fileset>
+			<fileset dir="${basedir}/../../nms/v1_8_r1/target/classes"></fileset>
+			<fileset dir="${basedir}/../../nms/v1_8_r2/target/classes"></fileset>
+			<fileset dir="${basedir}/../../nms/v1_8_r3/target/classes"></fileset>
+			<fileset dir="${basedir}/../../nms/v1_9_r1/target/classes"></fileset>
+			<fileset dir="${basedir}/../../nms/v1_9_r2/target/classes"></fileset>
+			<fileset dir="${basedir}/../../nms/v1_10_r1/target/classes"></fileset>
 		</jar>
 		<ant antfile="${minecraft.install.servers}" inheritAll="true" />
 	</target>

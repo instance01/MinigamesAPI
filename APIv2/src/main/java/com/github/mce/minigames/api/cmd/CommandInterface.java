@@ -23,8 +23,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
@@ -169,6 +171,17 @@ public interface CommandInterface
     static MgPredicate<CommandInterface> isPlayer()
     {
         return (cmd) -> cmd.getSender() instanceof Player;
+    }
+    
+    /**
+     * Checks for given permission and if player does not have permission throws a MinigameException. 
+     * @param perm
+     * @param command
+     * @throws MinigameException
+     */
+    default void permThrowException(PermissionsInterface perm, String command) throws MinigameException
+    {
+        getPlayer().when(ArenaPlayerInterface.hasPerm(perm).negate()).thenThrow(CommonErrors.NoPermissionForCommand, (e) -> new Serializable[]{command});
     }
     
 }

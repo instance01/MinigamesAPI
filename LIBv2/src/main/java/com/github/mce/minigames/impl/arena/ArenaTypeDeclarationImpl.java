@@ -15,8 +15,15 @@
 
 package com.github.mce.minigames.impl.arena;
 
+import java.util.Map;
+
+import com.github.mce.minigames.api.CommonErrors;
+import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+import com.github.mce.minigames.impl.MinigamePluginImpl;
+import com.github.mce.minigames.impl.component.ComponentRegistry;
 
 /**
  * Internal representation of an arena type.
@@ -37,29 +44,74 @@ public class ArenaTypeDeclarationImpl implements ArenaTypeDeclarationInterface
     private boolean            isDefault;
     
     /**
+     * The name of the arena type.
+     */
+    private String             typename;
+
+    /** the arenas. */
+    private Map<String, ArenaImpl> arenas;
+
+    /** the registry. */
+    private ComponentRegistry registry;
+
+    /** the minigames plugin. */
+    private MinigamePluginImpl plugin;
+    
+    /**
      * Constructor to create arena type.
      * 
+     * @param typename
+     *            name of the type.
      * @param enumType
      *            Underlying arena type (enum)
      * @param isDefault
      *            {@code true} for default arena type.
+     * @param arenas
+     *            the minigame arenas
+     * @param registry
+     *            the component registry
+     * @param plugin 
      */
-    public ArenaTypeDeclarationImpl(ArenaTypeInterface enumType, boolean isDefault)
+    public ArenaTypeDeclarationImpl(String typename, ArenaTypeInterface enumType, boolean isDefault, Map<String, ArenaImpl> arenas, ComponentRegistry registry, MinigamePluginImpl plugin)
     {
+        this.typename = typename;
         this.enumType = enumType;
         this.isDefault = isDefault;
+        this.arenas = arenas;
+        this.registry = registry;
+        this.plugin = plugin;
     }
-
+    
     @Override
     public ArenaTypeInterface getType()
     {
         return this.enumType;
     }
-
+    
     @Override
     public boolean isDefault()
     {
         return this.isDefault;
+    }
+    
+    @Override
+    public String getName()
+    {
+        return this.typename;
+    }
+    
+    @Override
+    public ArenaInterface createArena(String arenaName) throws MinigameException
+    {
+        if (this.arenas.containsKey(arenaName.toLowerCase()))
+        {
+            throw new MinigameException(CommonErrors.DuplicateArena, arenaName);
+        }
+        // TODO Check for illegal names: ArenaInterface.ILLEGAL_NAMES
+        // TODO Check for illegal characters
+        final ArenaImpl arena = new ArenaImpl(arenaName, this.plugin, this.registry);
+        this.arenas.put(arenaName.toLowerCase(), arena);
+        return arena;
     }
     
 }

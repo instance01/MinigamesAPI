@@ -15,14 +15,25 @@
 
 package com.github.mce.minigames.impl;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.mce.minigames.api.MinigameInterface;
+import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
+import com.github.mce.minigames.api.arena.MatchPhaseId;
+import com.github.mce.minigames.api.arena.rules.AdminRuleId;
+import com.github.mce.minigames.api.arena.rules.ArenaRuleId;
+import com.github.mce.minigames.api.arena.rules.MatchRuleId;
+import com.github.mce.minigames.api.arena.rules.PlayerRuleId;
+import com.github.mce.minigames.api.component.ComponentId;
+import com.github.mce.minigames.api.component.ComponentRuleId;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
+import com.github.mce.minigames.api.team.TeamId;
+import com.github.mce.minigames.api.team.TeamRuleId;
 
 /**
  * A read-only wrapper around minigame plugin impl
@@ -30,18 +41,18 @@ import com.github.mce.minigames.api.locale.MessagesConfigInterface;
  * @author mepeisen
  *
  */
-class MinigameWrapper implements MinigameInterface
+public class MinigameWrapper implements MinigameInterface
 {
     
     /**
      * The underlying minigame plugin impl.
      */
-    private MinigamePluginImpl delegate;
+    private MinigamePluginInterface delegate;
     
     /**
      * @param delegate The underlying minigame plugin impl.
      */
-    public MinigameWrapper(MinigamePluginImpl delegate)
+    public MinigameWrapper(MinigamePluginInterface delegate)
     {
         this.delegate = delegate;
     }
@@ -61,52 +72,157 @@ class MinigameWrapper implements MinigameInterface
     @Override
     public Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getDeclaredTypes();
     }
 
     @Override
     public Iterable<ArenaInterface> getArenas()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getArenas();
     }
 
     @Override
-    public ArenaInterface getArenas(String name)
+    public ArenaInterface getArena(String name)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getArena(name);
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MinigameInterface#getLogger()
-     */
     @Override
     public Logger getLogger()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.delegate.getLogger();
     }
 
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MinigameInterface#getConfig(java.lang.String)
-     */
     @Override
     public ConfigurationSection getConfig(String file)
     {
+        return this.delegate.getConfig(file);
+    }
+
+    @Override
+    public void saveConfig(String file)
+    {
+        this.delegate.saveConfig(file);
+    }
+
+    @Override
+    public Serializable getShortDescription()
+    {
+        return this.delegate.getShortDescription();
+    }
+
+    @Override
+    public Serializable getLongDescription()
+    {
+        return this.delegate.getLongDescription();
+    }
+
+    @Override
+    public int getArenaCount()
+    {
+        return this.delegate.getArenaCount();
+    }
+
+    @Override
+    public ArenaTypeDeclarationInterface getDefaultType()
+    {
+        return this.delegate.getDefaultType();
+    }
+
+    @Override
+    public ArenaTypeDeclarationInterface getType(String name)
+    {
+        return this.delegate.getType(name);
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getAdminRules()
+     */
+    @Override
+    public Iterable<AdminRuleId> getAdminRules()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
     /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MinigameInterface#saveConfig(java.lang.String)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getMatchRules()
      */
     @Override
-    public void saveConfig(String file)
+    public Iterable<MatchRuleId> getMatchRules()
     {
         // TODO Auto-generated method stub
-        
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getPlayerRules()
+     */
+    @Override
+    public Iterable<PlayerRuleId> getPlayerRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getTeamRules()
+     */
+    @Override
+    public Iterable<TeamRuleId> getTeamRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getComponentRules()
+     */
+    @Override
+    public Iterable<ComponentRuleId> getComponentRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getArenaRules()
+     */
+    @Override
+    public Iterable<ArenaRuleId> getArenaRules()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getComponents()
+     */
+    @Override
+    public Iterable<ComponentId> getComponents()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getMatchPhases()
+     */
+    @Override
+    public Iterable<MatchPhaseId> getMatchPhases()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.arena.ArenaTypeProvider#getTeams()
+     */
+    @Override
+    public Iterable<TeamId> getTeams()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

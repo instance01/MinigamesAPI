@@ -15,26 +15,19 @@
 
 package com.github.mce.minigames.api;
 
-import java.util.Map;
+import java.io.Serializable;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
+import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 
 /**
  * An interface that should be implemented by the {@link JavaPlugin} of a specific minigame.
  * 
  * @author mepeisen
  */
-public interface PluginProviderInterface
+public interface PluginProviderInterface extends CommonProviderInterface
 {
-    
-    /**
-     * Returns the java plugin that creates this minigame.
-     * 
-     * @return java plugin.
-     */
-    JavaPlugin getJavaPlugin();
     
     /**
      * Returns the technical name of the minigame.
@@ -42,49 +35,19 @@ public interface PluginProviderInterface
      * @return minigame name.
      */
     String getName();
-    
+
     /**
-     * Returns the messages classes for predefined messages.
+     * Returns the short description of the minigame.
      * 
-     * <p>
-     * Simple return {@code null} if you only use the default messages from minigames library.
-     * </p>
-     * 
-     * @return message classes for predefined messages.
+     * @return A short description; use method {@link LocalizedMessageInterface#toArg(Serializable...)} on the message.
      */
-    Iterable<Class<? extends Enum<?>>> getMessageClasses();
-    
+    Serializable getShortDescription();
+
     /**
-     * Returns the permission classes.
+     * Returns the long multi line description of the minigame.
      * 
-     * <p>
-     * Simple return {@code null} if you only use the default permissions from minigames library.
-     * </p>
-     * 
-     * @return permission classes for predefined permissions.
+     * @return A long multi line description; use method {@link LocalizedMessageInterface#toListArg(Serializable...)} on the message.
      */
-    Iterable<Class<? extends Enum<?>>> getPermissions();
-    
-    /**
-     * Returns the bukkit (main) commands registered by this minigame.
-     * 
-     * <p>
-     * Simply return {@code null} if there are no additional bukkit commands to register.
-     * </p>
-     * 
-     * @return bukkit (main) commands.
-     */
-    Map<String, CommandHandlerInterface> getBukkitCommands();
-    
-    /**
-     * Returns the configuration classes.
-     * 
-     * <p>
-     * Simple return {@code null} if you only use the default configuration options from minigames library.
-     * </p>
-     * 
-     * @return configuration classes for predefined configurations.
-     */
-    Iterable<Class<? extends Enum<?>>> getConfigurations();
+    Serializable getDescription();
     
 }

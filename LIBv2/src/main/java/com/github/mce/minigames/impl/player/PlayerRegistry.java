@@ -21,6 +21,8 @@ import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  * A helper class to register player interfaces.
@@ -66,6 +68,38 @@ public class PlayerRegistry
     public ArenaPlayerImpl getPlayer(UUID uuid)
     {
         return this.players.computeIfAbsent(uuid, (key) -> new ArenaPlayerImpl(uuid));
+    }
+
+    /**
+     * Player join event
+     * @param evt
+     */
+    public void onPlayerJoin(PlayerJoinEvent evt)
+    {
+        if (evt.getPlayer() != null)
+        {
+            final ArenaPlayerImpl impl = this.players.get(evt.getPlayer().getUniqueId());
+            if (impl != null)
+            {
+                impl.onPlayerJoin();
+            }
+        }
+    }
+
+    /**
+     * Player quit event.
+     * @param evt
+     */
+    public void onPlayerQuit(PlayerQuitEvent evt)
+    {
+        if (evt.getPlayer() != null)
+        {
+            final ArenaPlayerImpl impl = this.players.get(evt.getPlayer().getUniqueId());
+            if (impl != null)
+            {
+                impl.onPlayerQuit();
+            }
+        }
     }
     
 }

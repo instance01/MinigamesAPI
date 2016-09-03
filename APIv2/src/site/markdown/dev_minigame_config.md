@@ -13,7 +13,7 @@ To declare an option simply create an enumeration.
      *
      * @author mepeisen
      */
-    @ConfigurationValues(path = "myplugin.config")
+    @ConfigurationValues(path = "myplugin.config", fixed = true)
     public enum MyConfig implements ConfigurationValueInterface
     {
     
@@ -114,3 +114,39 @@ This helps administrators to manipulate your configuration options.
 
 TODO
 
+## fixed config vs. non-fixed config
+
+In @ConfigurationValues annotation there is a boolean, called `fixed`. We did not explain it but in our example above we simply set it to true.
+So all of our configuration variables became "FIXED". But what does it mean?
+
+A fixed configuration option will always be connected to the minigame/ plugin that declared this option.
+
+While a non-fixed configuration option will be resolved against the CONTEXT. The context is able to resolve the player, minigame or arena depending
+on the original call. For example during a command call the context will contain the player that typed the command in their clients chat console
+and the context will contain the arena the player is located in. Querying a non-fixed arena option will always be read from the minigames arena.yml and
+from the arenas section of the current arena.
+
+In other words: A non-fixed option value can be present in any minigame.
+
+### When to use fixed configuration options
+
+You will always use fixed configuration options when reading options from your (and only your) minigame.
+
+### When to use non-fixed configuration options
+
+You will always use non-fixed configuration options when reading options from any minigame. Typically when writing some kind of library or tool
+that provides rule sets and other things so that other plugins can use them for their minigame. 
+
+## path variable substitution
+
+The ArenasConfig enumeration in the API uses the following annotation:
+
+    @ConfigurationValues(path = "arenas.$CTX:ARENA:internalName$", file = "arenas.yml")
+    
+As you can see, the path is somehow cryptic. It contains a so called variable substitution.
+
+Details on variable substitution are explained in chapter [Variable substitution](dev_advanced_variable_substitution.html).
+
+## Revisions and migration
+
+TODO

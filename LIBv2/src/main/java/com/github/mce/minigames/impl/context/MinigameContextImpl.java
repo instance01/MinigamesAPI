@@ -16,17 +16,21 @@
 package com.github.mce.minigames.impl.context;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.github.mce.minigames.api.ContextHandlerInterface;
-import com.github.mce.minigames.api.MinigameContext;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.cmd.CommandInterface;
+import com.github.mce.minigames.api.context.ContextHandlerInterface;
+import com.github.mce.minigames.api.context.ContextResolverInterface;
+import com.github.mce.minigames.api.context.MinigameContext;
+import com.github.mce.minigames.api.util.function.MgRunnable;
+import com.github.mce.minigames.api.util.function.MgSupplier;
 
 /**
  * Implementation of minigame context.
@@ -41,6 +45,9 @@ public class MinigameContextImpl implements MinigameContext
     
     /** the thread local storage. */
     private final ThreadLocal<TLD> tls = ThreadLocal.withInitial(() -> new TLD());
+    
+    /** context resolve helper. */
+    private final List<ContextResolverInterface> resolvers = new ArrayList<>();
     
     /**
      * Registers a context handler to calculate context variables.
@@ -57,6 +64,15 @@ public class MinigameContextImpl implements MinigameContext
     public <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws MinigameException
     {
         this.handlers.computeIfAbsent(clazz, (key) -> new ArrayList<>()).add(handler);
+    }
+
+    /**
+     * 
+     * @param resolver
+     */
+    public void registerContextResolver(ContextResolverInterface resolver)
+    {
+        this.resolvers.add(resolver);
     }
     
     /**
@@ -155,15 +171,134 @@ public class MinigameContextImpl implements MinigameContext
             data.computeStack.remove(clazz);
         }
     }
+
+    @Override
+    public <T> void setContext(Class<T> clazz, T value)
+    {
+        final TLD data = this.tls.get();
+        data.put(clazz, value);
+    }
     
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MinigameContext#resolveContextVar(java.lang.String)
-     */
     @Override
     public String resolveContextVar(String src)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (!src.contains("$")) return src; //$NON-NLS-1$
+        final StringBuilder builder = new StringBuilder();
+        int start = src.indexOf('$');
+        if (start > 0) builder.append(src, 0, start);
+        int end = src.indexOf('$', start + 1);
+        final String varWithArgs = src.substring(start + 1, end - 1);
+        final String[] splitted = varWithArgs.split(":"); //$NON-NLS-1$
+        builder.append(resolve(splitted));
+        builder.append(this.resolveContextVar(src.substring(end + 1)));
+        return builder.toString();
+    }
+
+    /**
+     * Resolve context var
+     * @param splitted
+     * @return resolved var
+     */
+    private String resolve(String[] splitted)
+    {
+        final String varName = splitted[0];
+        final String[] args = splitted.length == 1 ? new String[0] : Arrays.copyOfRange(splitted, 1, splitted.length);
+        for (final ContextResolverInterface resolver : this.resolvers)
+        {
+            final String result = resolver.resolve(varName, args, this);
+            if (result != null) return result;
+        }
+        return "?"; //$NON-NLS-1$
+    }
+
+    @Override
+    public void runInNewContext(MgRunnable runnable) throws MinigameException
+    {
+        final TLD old = this.tls.get();
+        final TLD tld = new TLD();
+        this.tls.set(tld);
+        try
+        {
+            tld.clear();
+            tld.command = old.command;
+            tld.event = old.event;
+            runnable.run();
+        }
+        finally
+        {
+            this.tls.set(old);
+            tld.clear();
+            tld.command = null;
+            tld.event = null;
+        }
+    }
+
+    @Override
+    public void runInCopiedContext(MgRunnable runnable) throws MinigameException
+    {
+        final TLD old = this.tls.get();
+        final TLD tld = new TLD();
+        this.tls.set(tld);
+        try
+        {
+            tld.clear();
+            tld.putAll(old);
+            tld.command = old.command;
+            tld.event = old.event;
+            runnable.run();
+        }
+        finally
+        {
+            this.tls.set(old);
+            tld.clear();
+            tld.command = null;
+            tld.event = null;
+        }
+    }
+
+    @Override
+    public <T> T calculateInNewContext(MgSupplier<T> runnable) throws MinigameException
+    {
+        final TLD old = this.tls.get();
+        final TLD tld = new TLD();
+        this.tls.set(tld);
+        try
+        {
+            tld.clear();
+            tld.command = old.command;
+            tld.event = old.event;
+            return runnable.get();
+        }
+        finally
+        {
+            this.tls.set(old);
+            tld.clear();
+            tld.command = null;
+            tld.event = null;
+        }
+    }
+
+    @Override
+    public <T> T calculateInCopiedContext(MgSupplier<T> runnable) throws MinigameException
+    {
+        final TLD old = this.tls.get();
+        final TLD tld = new TLD();
+        this.tls.set(tld);
+        try
+        {
+            tld.clear();
+            tld.putAll(old);
+            tld.command = old.command;
+            tld.event = old.event;
+            return runnable.get();
+        }
+        finally
+        {
+            this.tls.set(old);
+            tld.clear();
+            tld.command = null;
+            tld.event = null;
+        }
     }
     
     /**

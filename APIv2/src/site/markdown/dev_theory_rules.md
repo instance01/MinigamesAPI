@@ -18,7 +18,8 @@ The predicates of a rule are typically executed in following order:
 * global/core predicate
 * arena related predicate (inherited from arena types)
 * arena state related predicate
-* match state related predicate
+* match related predicate
+* match phase related predicate
 * player state related predicate
 * player related predicate
 
@@ -38,23 +39,13 @@ Minigame predicates can return the following states:
 
 * TRUE (-> test the next predicate of this rule in order)
 * FALSE (-> abort the execution)
-* CHAIN (-> invoke a special predicate chain)
+* FORCE (-> skip all other predicates)
 
-#### Predicate chains
-
-Predicate chains are a way to have more than one path within predicates and actions to be invoked. As soon as a predicate
-returns to invoke a chain the execution will continue with this chain and not with the normal execution path.
-
-Another word for chains can be "sub rules". A rule may not only be something that can be tested for true and then an action
-gets executed. Rules may be more complex.
-
-Some example:
-
-TODO
+So it is important for us to have some ordering in minigame predicates.
 
 ### Type of fetched events
 
-TODO
+Rules can manage all relevant bukkit events and minigame events.
 
 ### Common predicates
 

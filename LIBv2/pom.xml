@@ -5,7 +5,7 @@
 	<artifactId>MinigamesPlugin</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>MinigamesAPI</name>
+	<name>MinigamesAPI Plugin</name>
 	<description>Rich Minigames API V2</description>
 	
 	<properties>
@@ -25,11 +25,6 @@
   			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.MCE-Plugins</groupId>
-  			<artifactId>MinigamesLib</artifactId>
-  			<version>1.14.9-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.spigotmc</groupId>
   			<artifactId>spigot</artifactId>
 		</dependency>
@@ -45,6 +40,84 @@
         <dependency>
         	<groupId>org.powermock</groupId>
         	<artifactId>powermock-api-mockito</artifactId>
+        </dependency>
+        
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesPlugin_nmsapi</artifactId>
+        	<version>${project.version}</version>
+        	<exclusions>
+        		<exclusion>
+        		    <groupId>org.spigotmc</groupId>
+        			<artifactId>spigotmc</artifactId>
+        		</exclusion>
+        	</exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesPlugin_nms1_10_r1</artifactId>
+        	<version>${project.version}</version>
+        	<exclusions>
+        		<exclusion>
+        		    <groupId>org.spigotmc</groupId>
+        			<artifactId>spigotmc</artifactId>
+        		</exclusion>
+        	</exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesPlugin_nms1_9_r2</artifactId>
+        	<version>${project.version}</version>
+        	<exclusions>
+        		<exclusion>
+        		    <groupId>org.spigotmc</groupId>
+        			<artifactId>spigotmc</artifactId>
+        		</exclusion>
+        	</exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesPlugin_nms1_9_r1</artifactId>
+        	<version>${project.version}</version>
+        	<exclusions>
+        		<exclusion>
+        		    <groupId>org.spigotmc</groupId>
+        			<artifactId>spigotmc</artifactId>
+        		</exclusion>
+        	</exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesPlugin_nms1_8_r3</artifactId>
+        	<version>${project.version}</version>
+        	<exclusions>
+        		<exclusion>
+        		    <groupId>org.spigotmc</groupId>
+        			<artifactId>spigotmc</artifactId>
+        		</exclusion>
+        	</exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesPlugin_nms1_8_r2</artifactId>
+        	<version>${project.version}</version>
+        	<exclusions>
+        		<exclusion>
+        		    <groupId>org.spigotmc</groupId>
+        			<artifactId>spigotmc</artifactId>
+        		</exclusion>
+        	</exclusions>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.MCE-Plugins</groupId>
+        	<artifactId>MinigamesPlugin_nms1_8_r1</artifactId>
+        	<version>${project.version}</version>
+        	<exclusions>
+        		<exclusion>
+        		    <groupId>org.spigotmc</groupId>
+        			<artifactId>spigotmc</artifactId>
+        		</exclusion>
+        	</exclusions>
         </dependency>
 	</dependencies>
 
@@ -118,6 +191,27 @@
 				<configuration>
 					<argLine>${surefireArgLine}</argLine>
 				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>com.github.MCE-Plugins:*</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

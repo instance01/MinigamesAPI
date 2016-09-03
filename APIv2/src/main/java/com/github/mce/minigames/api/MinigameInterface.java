@@ -15,12 +15,12 @@
 
 package com.github.mce.minigames.api;
 
+import java.io.Serializable;
 import java.util.logging.Logger;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
+import com.github.mce.minigames.api.arena.ArenaTypeProvider;
+import com.github.mce.minigames.api.config.ConfigInterface;
 import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 
 /**
@@ -28,8 +28,10 @@ import com.github.mce.minigames.api.locale.MessagesConfigInterface;
  * 
  * @author mepeisen
  */
-public interface MinigameInterface
+public interface MinigameInterface extends ConfigInterface, ArenaTypeProvider
 {
+    
+    // TODO Add support for default main lobby
     
     /**
      * Returns the technical name of the minigame.
@@ -50,13 +52,6 @@ public interface MinigameInterface
     MessagesConfigInterface getMessages();
     
     /**
-     * Returns the type of arenas declared for this minigame
-     * 
-     * @return arena types.
-     */
-    Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes();
-    
-    /**
      * Returns all declared arenas within this minigame.
      * 
      * @return all minigame arenas.
@@ -64,12 +59,19 @@ public interface MinigameInterface
     Iterable<ArenaInterface> getArenas();
     
     /**
+     * Return the amount of arenas.
+     * 
+     * @return amount of arenas.
+     */
+    int getArenaCount();
+    
+    /**
      * Returns the minigame arena with given internal name.
      * 
      * @param name
      * @return arena or {@code null} if the arena does not exist.
      */
-    ArenaInterface getArenas(String name);
+    ArenaInterface getArena(String name);
     
     /**
      * Returns a logger for the library.
@@ -79,20 +81,17 @@ public interface MinigameInterface
     Logger getLogger();
     
     /**
-     * Returns the bukkit configuration for given file.
+     * Returns the short description of the minigame
      * 
-     * @param file
-     *            configuration file name.
-     * @return the configuration file.
+     * @return minigame short description
      */
-    ConfigurationSection getConfig(String file);
+    Serializable getShortDescription();
     
     /**
-     * Saves the configuration for given file.
+     * Returns the long description of the minigame
      * 
-     * @param file
-     *            configuration file name.
+     * @return minigame long description (multi line)
      */
-    void saveConfig(String file);
+    Serializable getLongDescription();
     
 }

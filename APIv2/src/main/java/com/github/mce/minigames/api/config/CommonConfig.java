@@ -20,14 +20,62 @@ package com.github.mce.minigames.api.config;
  * 
  * @author mepeisen
  */
-@ConfigurationValues(path = "config")
+@ConfigurationValues(path = "config", fixed = true)
 public enum CommonConfig implements ConfigurationValueInterface
 {
     
+    // command options
+    
     /**
-     * Permission to perform the start command.
+     * Is party command enabled?
      */
     @ConfigurationBool(name = "party_command_enabled", defaultValue = true)
     PartyCommandEnabled,
+    
+    // permission prefix
+    
+    /**
+     * Prefix for core permissions.
+     */
+    @ConfigurationString(name = "permissions_prefix", defaultValue = "ancient.core")
+    PermissionPrefix,
+    
+    /**
+     * Prefix for core permissions.
+     */
+    @ConfigurationString(name = "permissions_kits_prefix", defaultValue = "ancient.core.kits")
+    PermissionKitsPrefix,
+    
+    /**
+     * Prefix for core permissions.
+     */
+    @ConfigurationString(name = "permissions_gun_prefix", defaultValue = "ancient.core.guns")
+    PermissionGunsPrefix,
+    
+    /**
+     * Prefix for core permissions.
+     */
+    @ConfigurationString(name = "permissions_shop_prefix", defaultValue = "ancient.core.shop")
+    PermissionShopsPrefix,
+    
+    /**
+     * Prefix for core permissions.
+     */
+    @ConfigurationString(name = "permissions_game_prefix", defaultValue = "ancient")
+    PermissionGamesPrefix,
+    
+    // common options
+    
+    /**
+     * Is debug mode enabled?
+     */
+    @ConfigurationBool(name = "debug", defaultValue = false)
+    DebugEnabled,
+    
+    /**
+     * Default locale
+     */
+    @ConfigurationString(name = "locale", defaultValue = "en")
+    DefaultLocale,
     
 }
