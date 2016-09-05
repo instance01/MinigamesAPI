@@ -21,6 +21,7 @@ import java.util.Map;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 
+import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.event.ArenaCreateEvent;
 import com.github.mce.minigames.api.event.ArenaCreatedEvent;
 import com.github.mce.minigames.api.event.ArenaDeleteEvent;
@@ -40,13 +41,33 @@ import com.github.mce.minigames.api.event.PlayerOpenGuiEvent;
  * 
  * @author mepeisen
  */
-public class AbstractEventSystem implements EventSystemInterface
+public abstract class AbstractEventSystem implements EventSystemInterface
 {
     
     /**
      * The common event handlers per event class.
      */
     private final Map<Class<? extends Event>, MinigameEventHandler<?>> eventHandlers = new HashMap<>();
+    
+    /**
+     * Constructor.
+     */
+    public AbstractEventSystem()
+    {
+        this.registerHandler(ArenaCreateEvent.class, (evt) -> new MgArenaCreateEvent(evt));
+        this.registerHandler(ArenaCreatedEvent.class, (evt) -> new MgArenaCreatedEvent(evt));
+        this.registerHandler(ArenaDeleteEvent.class, (evt) -> new MgArenaDeleteEvent(evt));
+        this.registerHandler(ArenaDeletedEvent.class, (evt) -> new MgArenaDeletedEvent(evt));
+        this.registerHandler(ArenaMaintenanceEvent.class, (evt) -> new MgArenaMaintenanceEvent(evt));
+        this.registerHandler(ArenaPlayerJoinedEvent.class, (evt) -> new MgArenaPlayerJoinedEvent(evt));
+        this.registerHandler(ArenaPlayerJoinedQueueEvent.class, (evt) -> new MgArenaPlayerJoinedQueueEvent(evt));
+        this.registerHandler(ArenaPlayerLeavesQueueEvent.class, (evt) -> new MgArenaPlayerLeavesQueueEvent(evt));
+        this.registerHandler(ArenaStateEvent.class, (evt) -> new MgArenaStateEvent(evt));
+        this.registerHandler(PlayerGuiClickEvent.class, (evt) -> new MgPlayerGuiClickEvent(evt));
+        this.registerHandler(PlayerCloseGuiEvent.class, (evt) -> new MgPlayerCloseGuiEvent(evt));
+        this.registerHandler(PlayerDisplayGuiPageEvent.class, (evt) -> new MgPlayerDisplayGuiPageEvent(evt));
+        this.registerHandler(PlayerOpenGuiEvent.class, (evt) -> new MgPlayerOpenGuiEvent(evt));
+    }
     
     /**
      * Returns the minigame event handler for given class.
@@ -58,12 +79,27 @@ public class AbstractEventSystem implements EventSystemInterface
     @SuppressWarnings("unchecked")
     protected <T extends Event> MinigameEventHandler<T> getHandler(Class<T> clazz)
     {
-        return (MinigameEventHandler<T>) this.eventHandlers.computeIfAbsent(clazz, (c) -> new MinigameEventHandler<>(clazz));
+        return (MinigameEventHandler<T>) this.eventHandlers.get(clazz);
+    }
+    
+    /**
+     * Registers the minigame event handler for given class.
+     * 
+     * @param clazz
+     *            event class.
+     * @param factory
+     *            the factory to create minigame events.
+     */
+    protected <T extends Event> void registerHandler(Class<T> clazz, MinigameEventFactory<T> factory)
+    {
+        this.eventHandlers.put(clazz, new MinigameEventHandler<>(clazz, factory));
     }
     
     /**
      * Event handler for ArenaCreatedEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaCreated(ArenaCreatedEvent evt)
@@ -73,7 +109,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaCreateEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaCreate(ArenaCreateEvent evt)
@@ -83,7 +121,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaDeletedEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaDeleted(ArenaDeletedEvent evt)
@@ -93,7 +133,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaDeleteEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaDelete(ArenaDeleteEvent evt)
@@ -103,7 +145,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaMaintenanceEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaMaintenance(ArenaMaintenanceEvent evt)
@@ -113,7 +157,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaPlayerJoinedEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaPlayerJoined(ArenaPlayerJoinedEvent evt)
@@ -123,7 +169,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaPlayerJoinedQueueEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaPlayerJoinedQueue(ArenaPlayerJoinedQueueEvent evt)
@@ -133,7 +181,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaPlayerLeavesQueueEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaPlayerLeavesQueue(ArenaPlayerLeavesQueueEvent evt)
@@ -143,7 +193,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for ArenaStateEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onArenaState(ArenaStateEvent evt)
@@ -153,7 +205,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for PlayerCloseGuiEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onPlayerCloseGui(PlayerCloseGuiEvent evt)
@@ -163,7 +217,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for PlayerDisplayGuiPageEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onPlayerDisplayGuiPage(PlayerDisplayGuiPageEvent evt)
@@ -173,7 +229,9 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for PlayerGuiClickEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onPlayerClickGui(PlayerGuiClickEvent evt)
@@ -183,12 +241,21 @@ public class AbstractEventSystem implements EventSystemInterface
     
     /**
      * Event handler for PlayerOpenGuiEvent event.
-     * @param evt the event to be passed.
+     * 
+     * @param evt
+     *            the event to be passed.
      */
     @EventHandler
     public void onPlayerOpenGui(PlayerOpenGuiEvent evt)
     {
         this.getHandler(PlayerOpenGuiEvent.class).handle(evt);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public <Evt extends Event> MinigameEvent<Evt> createEvent(Evt bukkitEvent)
+    {
+        return ((MinigameEventHandler<Evt>) this.getHandler(bukkitEvent.getClass())).createMgEvent(bukkitEvent);
     }
     
     /**
@@ -201,19 +268,44 @@ public class AbstractEventSystem implements EventSystemInterface
     protected final class MinigameEventHandler<T extends Event>
     {
         
-        public MinigameEventHandler(Class<T> clazz)
+        public MinigameEventHandler(Class<T> clazz, MinigameEventFactory<T> factory)
         {
             // TODO
         }
-
+        
         /**
          * @param evt
          */
         public void handle(T evt)
         {
             // TODO Auto-generated method stub
-            
         }
+        
+        public MinigameEvent<T> createMgEvent(T evt)
+        {
+            // TODO
+            return null;
+        }
+        
+    }
+    
+    /**
+     * Interface for creating minigame event classes from given bukkit event.
+     *
+     * @param <Evt>
+     */
+    @FunctionalInterface
+    public interface MinigameEventFactory<Evt extends Event>
+    {
+        
+        /**
+         * Creates the minigame event.
+         * 
+         * @param event
+         *            bukkit event.
+         * @return the minigame event object.
+         */
+        MinigameEvent<Evt> create(Evt event);
         
     }
     

@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameInventoryDragEvent;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
 /**
  * @author mepeisen

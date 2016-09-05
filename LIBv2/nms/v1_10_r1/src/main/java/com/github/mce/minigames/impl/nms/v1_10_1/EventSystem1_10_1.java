@@ -181,6 +181,15 @@ public class EventSystem1_10_1 extends AbstractEventSystem
 {
     
     /**
+     * Constructor
+     */
+    public EventSystem1_10_1()
+    {
+        super();
+        // TODO register event classes
+    }
+
+    /**
      * Event handler for AreaEffectCloudApplyEvent event.
      * @param evt the event to be passed.
      */

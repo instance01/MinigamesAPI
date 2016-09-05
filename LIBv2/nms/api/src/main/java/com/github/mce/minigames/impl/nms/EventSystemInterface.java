@@ -15,7 +15,10 @@
 
 package com.github.mce.minigames.impl.nms;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
+
+import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
  * Generic event system.
@@ -25,6 +28,12 @@ import org.bukkit.event.Listener;
 public interface EventSystemInterface extends Listener
 {
     
-    // marker only
+    /**
+     * Creates a minigame event from given bukkit event.
+     * 
+     * @param bukkitEvent
+     * @return minigame event.
+     */
+    <Evt extends Event> MinigameEvent<Evt> createEvent(Evt bukkitEvent);
     
 }
