@@ -92,6 +92,8 @@ import com.github.mce.minigames.impl.context.ArenaPlayerInterfaceProvider;
 import com.github.mce.minigames.impl.context.DefaultResolver;
 import com.github.mce.minigames.impl.context.MinigameContextImpl;
 import com.github.mce.minigames.impl.context.MinigameInterfaceProvider;
+import com.github.mce.minigames.impl.event.MgInventoryClickEvent;
+import com.github.mce.minigames.impl.gui.GuiSessionImpl;
 import com.github.mce.minigames.impl.nms.EventSystemInterface;
 import com.github.mce.minigames.impl.nms.NmsFactory;
 import com.github.mce.minigames.impl.nms.v1_10_1.NmsFactory1_10_1;
@@ -1210,7 +1212,11 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     public void onPlayerQuit(PlayerQuitEvent evt)
     {
         this.players.onPlayerQuit(evt);
-        // TODO hard close gui
+        final ArenaPlayerInterface player = this.getPlayer(evt.getPlayer());
+        if (player.getGuiSession() != null)
+        {
+            ((ArenaPlayerImpl)player).onCloseGui();
+        }
     }
     
     /**
@@ -1221,7 +1227,14 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
      */
     public void onInventoryClose(InventoryCloseEvent evt)
     {
-        // TODO
+        if (evt.getPlayer() instanceof Player)
+        {
+            final ArenaPlayerInterface player = this.getPlayer((Player) evt.getPlayer());
+            if (player.getGuiSession() != null)
+            {
+                ((ArenaPlayerImpl)player).onCloseGui();
+            }
+        }
     }
     
     /**
@@ -1233,7 +1246,18 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     @EventHandler
     public void onInventoryClick(InventoryClickEvent evt)
     {
-        // TODO
+        if (evt.getWhoClicked() instanceof Player)
+        {
+            final ArenaPlayerInterface player = this.getPlayer((Player) evt.getWhoClicked());
+            final GuiSessionImpl session = (GuiSessionImpl) player.getGuiSession();
+            if (session != null)
+            {
+                this.contextImpl.runInContext(new MgInventoryClickEvent(evt, player), () -> {
+                    this.setContext(ArenaPlayerInterface.class, player);
+                    session.onClick(evt);
+                });
+            }
+        }
     }
     
     /**
@@ -1245,7 +1269,14 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent evt)
     {
-        // TODO
+        if (evt.getWhoClicked() instanceof Player)
+        {
+            final ArenaPlayerInterface player = this.getPlayer((Player) evt.getWhoClicked());
+            if (player.getGuiSession() != null)
+            {
+                evt.setCancelled(true);
+            }
+        }
     }
     
     @Override

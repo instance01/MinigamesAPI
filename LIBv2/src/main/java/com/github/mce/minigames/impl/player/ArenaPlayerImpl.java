@@ -340,5 +340,14 @@ public class ArenaPlayerImpl implements ArenaPlayerInterface
         // clear session storage
         this.sessionStorage = new StorageImpl();
     }
+
+    /**
+     * Client closed the gui.
+     */
+    public void onCloseGui()
+    {
+        final MinigameStorage storage = this.getSessionStorage();
+        storage.set(GuiSessionInterface.class, null);
+    }
     
 }

@@ -155,9 +155,12 @@ class ConfigurationTool
         final Calculator<Ret[], ConfigurationSection> calc = (val2, configs, config, lib, minigame) -> {
             final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(sectionPath().supply(val, configs, config, lib) + '.' + subpath);
             final List<Ret> list = new ArrayList<>();
-            for (final String key : section.getKeys(false))
+            if (section != null)
             {
-                list.add(calculator.supply(val, configs, config, lib, minigame, section, key));
+                for (final String key : section.getKeys(false))
+                {
+                    list.add(calculator.supply(val, configs, config, lib, minigame, section, key));
+                }
             }
             return list.toArray((Ret[]) Array.newInstance(retClazz, list.size()));
         };
@@ -262,7 +265,11 @@ class ConfigurationTool
     static <T> void consumeList(ConfigurationValueInterface val, String subpath, T[] value, ArrayValueConsumer<T, ConfigurationSection> consumer)
     {
         final ValueConsumer<ConfigurationSection> vconsumer = (ConfigurationValueInterface val2, ConfigurationValues configs, ConfigurationSection config, MglibInterface lib, ConfigInterface minigame, String spath) -> {
-            final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
+            org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
+            if (section == null)
+            {
+                section = minigame.getConfig(configs.file()).createSection(spath);
+            }
             for (final String key : section.getKeys(false))
             {
                 section.set(key, null);
