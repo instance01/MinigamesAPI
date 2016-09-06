@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerLoginEvent extends MinigameEvent<PlayerLoginEvent>
+public interface MinigamePlayerLoginEvent extends MinigameEvent<PlayerLoginEvent, MinigamePlayerLoginEvent>
 {
     
     // TODO default stubbings

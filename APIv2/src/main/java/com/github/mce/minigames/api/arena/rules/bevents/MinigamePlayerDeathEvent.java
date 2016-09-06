@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerDeathEvent extends MinigameEvent<PlayerDeathEvent>
+public interface MinigamePlayerDeathEvent extends MinigameEvent<PlayerDeathEvent, MinigamePlayerDeathEvent>
 {
     
     // TODO default stubbings

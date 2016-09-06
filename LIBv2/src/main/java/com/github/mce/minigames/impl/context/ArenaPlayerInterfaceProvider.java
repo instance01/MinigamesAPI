@@ -36,14 +36,10 @@ public class ArenaPlayerInterfaceProvider implements ContextHandlerInterface<Are
         return command.getPlayer();
     }
     
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.ContextHandlerInterface#calculateFromEvent(com.github.mce.minigames.api.arena.rules.MinigameEvent, com.github.mce.minigames.api.MinigameContext)
-     */
     @Override
-    public ArenaPlayerInterface calculateFromEvent(MinigameEvent<?> event, MinigameContext context)
+    public ArenaPlayerInterface calculateFromEvent(MinigameEvent<?, ?> event, MinigameContext context)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return event.getPlayer();
     }
     
 }

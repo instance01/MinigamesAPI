@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPigZapEvent extends AbstractMinigameEvent<PigZapEvent> implements MinigamePigZapEvent
+public class MgPigZapEvent extends AbstractMinigameEvent<PigZapEvent, MinigamePigZapEvent> implements MinigamePigZapEvent
 {
 
     /**

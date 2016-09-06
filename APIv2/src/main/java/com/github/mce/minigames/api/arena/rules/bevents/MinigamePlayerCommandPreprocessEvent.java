@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerCommandPreprocessEvent extends MinigameEvent<PlayerCommandPreprocessEvent>
+public interface MinigamePlayerCommandPreprocessEvent extends MinigameEvent<PlayerCommandPreprocessEvent, MinigamePlayerCommandPreprocessEvent>
 {
     
     // TODO default stubbings

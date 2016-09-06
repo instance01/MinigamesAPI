@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameEntityCombustByBlockEvent extends MinigameEvent<EntityCombustByBlockEvent>
+public interface MinigameEntityCombustByBlockEvent extends MinigameEvent<EntityCombustByBlockEvent, MinigameEntityCombustByBlockEvent>
 {
     
     // TODO default stubbings

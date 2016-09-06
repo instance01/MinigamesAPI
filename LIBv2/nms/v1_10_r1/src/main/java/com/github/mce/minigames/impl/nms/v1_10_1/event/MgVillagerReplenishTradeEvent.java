@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgVillagerReplenishTradeEvent extends AbstractMinigameEvent<VillagerReplenishTradeEvent> implements MinigameVillagerReplenishTradeEvent
+public class MgVillagerReplenishTradeEvent extends AbstractMinigameEvent<VillagerReplenishTradeEvent, MinigameVillagerReplenishTradeEvent> implements MinigameVillagerReplenishTradeEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgVillagerReplenishTradeEvent extends AbstractMinigameEvent<Village
      */
     public MgVillagerReplenishTradeEvent(VillagerReplenishTradeEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation()); // TODO how to get the player that trades?
     }
     
 }

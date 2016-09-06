@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameEntityPortalEnterEvent extends MinigameEvent<EntityPortalEnterEvent>
+public interface MinigameEntityPortalEnterEvent extends MinigameEvent<EntityPortalEnterEvent, MinigameEntityPortalEnterEvent>
 {
     
     // TODO default stubbings

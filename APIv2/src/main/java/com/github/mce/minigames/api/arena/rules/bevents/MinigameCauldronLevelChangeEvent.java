@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_9_R1)
-public interface MinigameCauldronLevelChangeEvent extends MinigameEvent<CauldronLevelChangeEvent>
+public interface MinigameCauldronLevelChangeEvent extends MinigameEvent<CauldronLevelChangeEvent, MinigameCauldronLevelChangeEvent>
 {
     
     // TODO default stubbings

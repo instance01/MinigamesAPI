@@ -462,6 +462,13 @@ public interface MglibInterface extends MinigameContext
      * @return the arenas of given type.
      */
     Iterable<ArenaInterface> getArenas(ArenaTypeInterface type);
+
+    /**
+     * Tries to find an arena from location.
+     * @param location
+     * @return arena or {@code null} if the location does not match an arena
+     */
+    ArenaInterface getArenaFromLocation(Location location);
     
     // common singleton getter
     

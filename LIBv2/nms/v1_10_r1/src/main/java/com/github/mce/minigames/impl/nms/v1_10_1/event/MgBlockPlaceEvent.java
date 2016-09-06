@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockPlaceEvent extends AbstractMinigameEvent<BlockPlaceEvent> implements MinigameBlockPlaceEvent
+public class MgBlockPlaceEvent extends AbstractMinigameEvent<BlockPlaceEvent, MinigameBlockPlaceEvent> implements MinigameBlockPlaceEvent
 {
 
     /**

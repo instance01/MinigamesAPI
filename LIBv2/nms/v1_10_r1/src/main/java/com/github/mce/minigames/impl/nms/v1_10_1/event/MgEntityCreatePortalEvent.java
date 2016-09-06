@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityCreatePortalEvent extends AbstractMinigameEvent<EntityCreatePortalEvent> implements MinigameEntityCreatePortalEvent
+public class MgEntityCreatePortalEvent extends AbstractMinigameEvent<EntityCreatePortalEvent, MinigameEntityCreatePortalEvent> implements MinigameEntityCreatePortalEvent
 {
 
     /**

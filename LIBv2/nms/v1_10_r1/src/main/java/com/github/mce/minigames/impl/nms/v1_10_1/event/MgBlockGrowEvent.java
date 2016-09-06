@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockGrowEvent extends AbstractMinigameEvent<BlockGrowEvent> implements MinigameBlockGrowEvent
+public class MgBlockGrowEvent extends AbstractMinigameEvent<BlockGrowEvent, MinigameBlockGrowEvent> implements MinigameBlockGrowEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgBlockGrowEvent extends AbstractMinigameEvent<BlockGrowEvent> impl
      */
     public MgBlockGrowEvent(BlockGrowEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

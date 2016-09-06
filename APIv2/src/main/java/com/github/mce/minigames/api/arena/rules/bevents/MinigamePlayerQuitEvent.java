@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerQuitEvent extends MinigameEvent<PlayerQuitEvent>
+public interface MinigamePlayerQuitEvent extends MinigameEvent<PlayerQuitEvent, MinigamePlayerQuitEvent>
 {
     
     // TODO default stubbings

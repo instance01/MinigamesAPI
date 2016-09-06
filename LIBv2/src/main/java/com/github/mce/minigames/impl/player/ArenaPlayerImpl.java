@@ -296,7 +296,7 @@ public class ArenaPlayerImpl implements ArenaPlayerInterface
             }
             
             @Override
-            public ContextStorage calculateFromEvent(MinigameEvent<?> event, MinigameContext context)
+            public ContextStorage calculateFromEvent(MinigameEvent<?, ?> event, MinigameContext context)
             {
                 return new ContextStorage();
             }

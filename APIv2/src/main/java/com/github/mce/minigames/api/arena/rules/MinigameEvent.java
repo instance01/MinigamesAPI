@@ -18,9 +18,12 @@ package com.github.mce.minigames.api.arena.rules;
 import org.bukkit.event.Event;
 
 import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
+import com.github.mce.minigames.api.util.function.MgPredicate;
 
 /**
  * Minigame event helper.
@@ -28,8 +31,9 @@ import com.github.mce.minigames.api.player.ArenaPlayerInterface;
  * @author mepeisen
  * 
  * @param <Evt> Event class
+ * @param <MgEvt> Minigame event class
  */
-public interface MinigameEvent<Evt extends Event>
+public interface MinigameEvent<Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>>
 {
     
     /**
@@ -62,6 +66,23 @@ public interface MinigameEvent<Evt extends Event>
      */
     ArenaPlayerInterface getPlayer();
     
-    // TODO default stubbings
+    // stubbing
+    
+    /**
+     * Checks this event for given criteria and invokes either then or else statements.
+     * 
+     * <p>
+     * NOTICE: If the test function throws an exception it will be re thrown and no then or else statement will be invoked.
+     * </p>
+     * 
+     * @param test
+     *            test functions for testing the event matching any criteria.
+     * 
+     * @return the outgoing stub to apply then or else consumers.
+     * 
+     * @throws MinigameException
+     *             will be thrown if either the test function or then/else consumers throw the exception.
+     */
+    MgOutgoingStubbing<MgEvt> when(MgPredicate<MgEvt> test) throws MinigameException;
     
 }

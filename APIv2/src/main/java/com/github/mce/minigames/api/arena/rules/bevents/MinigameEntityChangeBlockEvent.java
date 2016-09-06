@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameEntityChangeBlockEvent extends MinigameEvent<EntityChangeBlockEvent>
+public interface MinigameEntityChangeBlockEvent extends MinigameEvent<EntityChangeBlockEvent, MinigameEntityChangeBlockEvent>
 {
     
     // TODO default stubbings

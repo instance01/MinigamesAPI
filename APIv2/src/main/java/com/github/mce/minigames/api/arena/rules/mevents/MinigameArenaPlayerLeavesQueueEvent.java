@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.ArenaPlayerLeavesQueueEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameArenaPlayerLeavesQueueEvent extends MinigameEvent<ArenaPlayerLeavesQueueEvent>
+public interface MinigameArenaPlayerLeavesQueueEvent extends MinigameEvent<ArenaPlayerLeavesQueueEvent, MinigameArenaPlayerLeavesQueueEvent>
 {
     
     // TODO default stubbings

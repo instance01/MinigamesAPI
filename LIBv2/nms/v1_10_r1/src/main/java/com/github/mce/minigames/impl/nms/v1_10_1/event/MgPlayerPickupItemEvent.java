@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerPickupItemEvent extends AbstractMinigameEvent<PlayerPickupItemEvent> implements MinigamePlayerPickupItemEvent
+public class MgPlayerPickupItemEvent extends AbstractMinigameEvent<PlayerPickupItemEvent, MinigamePlayerPickupItemEvent> implements MinigamePlayerPickupItemEvent
 {
 
     /**

@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockFormEvent extends AbstractMinigameEvent<BlockFormEvent> implements MinigameBlockFormEvent
+public class MgBlockFormEvent extends AbstractMinigameEvent<BlockFormEvent, MinigameBlockFormEvent> implements MinigameBlockFormEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgBlockFormEvent extends AbstractMinigameEvent<BlockFormEvent> impl
      */
     public MgBlockFormEvent(BlockFormEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

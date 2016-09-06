@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_10_R1)
-public interface MinigamePlayerChangedMainHandEvent extends MinigameEvent<PlayerChangedMainHandEvent>
+public interface MinigamePlayerChangedMainHandEvent extends MinigameEvent<PlayerChangedMainHandEvent, MinigamePlayerChangedMainHandEvent>
 {
     
     // TODO default stubbings

@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameSignChangeEvent extends MinigameEvent<SignChangeEvent>
+public interface MinigameSignChangeEvent extends MinigameEvent<SignChangeEvent, MinigameSignChangeEvent>
 {
     
     // TODO default stubbings

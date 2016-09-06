@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerToggleSneakEvent extends AbstractMinigameEvent<PlayerToggleSneakEvent> implements MinigamePlayerToggleSneakEvent
+public class MgPlayerToggleSneakEvent extends AbstractMinigameEvent<PlayerToggleSneakEvent, MinigamePlayerToggleSneakEvent> implements MinigamePlayerToggleSneakEvent
 {
 
     /**

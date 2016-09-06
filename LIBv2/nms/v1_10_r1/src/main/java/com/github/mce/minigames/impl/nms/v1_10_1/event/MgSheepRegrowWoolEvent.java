@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgSheepRegrowWoolEvent extends AbstractMinigameEvent<SheepRegrowWoolEvent> implements MinigameSheepRegrowWoolEvent
+public class MgSheepRegrowWoolEvent extends AbstractMinigameEvent<SheepRegrowWoolEvent, MinigameSheepRegrowWoolEvent> implements MinigameSheepRegrowWoolEvent
 {
 
     /**

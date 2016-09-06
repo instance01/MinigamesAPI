@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockPistonRetractEvent extends MinigameEvent<BlockPistonRetractEvent>
+public interface MinigameBlockPistonRetractEvent extends MinigameEvent<BlockPistonRetractEvent, MinigameBlockPistonRetractEvent>
 {
     
     // TODO default stubbings

@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerChatEvent extends AbstractMinigameEvent<PlayerChatEvent> implements MinigamePlayerChatEvent
+public class MgPlayerChatEvent extends AbstractMinigameEvent<PlayerChatEvent, MinigamePlayerChatEvent> implements MinigamePlayerChatEvent
 {
 
     /**

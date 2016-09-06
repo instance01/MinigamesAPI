@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePrepareItemCraftEvent extends MinigameEvent<PrepareItemCraftEvent>
+public interface MinigamePrepareItemCraftEvent extends MinigameEvent<PrepareItemCraftEvent, MinigamePrepareItemCraftEvent>
 {
     
     // TODO default stubbings

@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameInventoryDragEvent extends MinigameEvent<InventoryDragEvent>
+public interface MinigameInventoryDragEvent extends MinigameEvent<InventoryDragEvent, MinigameInventoryDragEvent>
 {
     
     // TODO default stubbings

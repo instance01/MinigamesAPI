@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerToggleFlightEvent extends AbstractMinigameEvent<PlayerToggleFlightEvent> implements MinigamePlayerToggleFlightEvent
+public class MgPlayerToggleFlightEvent extends AbstractMinigameEvent<PlayerToggleFlightEvent, MinigamePlayerToggleFlightEvent> implements MinigamePlayerToggleFlightEvent
 {
 
     /**

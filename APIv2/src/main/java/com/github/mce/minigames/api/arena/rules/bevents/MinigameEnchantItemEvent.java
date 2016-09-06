@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameEnchantItemEvent extends MinigameEvent<EnchantItemEvent>
+public interface MinigameEnchantItemEvent extends MinigameEvent<EnchantItemEvent, MinigameEnchantItemEvent>
 {
     
     // TODO default stubbings

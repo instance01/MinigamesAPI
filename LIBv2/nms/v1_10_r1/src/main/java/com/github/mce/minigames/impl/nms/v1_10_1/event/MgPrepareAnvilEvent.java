@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPrepareAnvilEvent extends AbstractMinigameEvent<PrepareAnvilEvent> implements MinigamePrepareAnvilEvent
+public class MgPrepareAnvilEvent extends AbstractMinigameEvent<PrepareAnvilEvent, MinigamePrepareAnvilEvent> implements MinigamePrepareAnvilEvent
 {
 
     /**

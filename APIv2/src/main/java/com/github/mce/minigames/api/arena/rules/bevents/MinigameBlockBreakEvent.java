@@ -24,9 +24,10 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockBreakEvent extends MinigameEvent<BlockBreakEvent>
+public interface MinigameBlockBreakEvent extends MinigameEvent<BlockBreakEvent, MinigameBlockBreakEvent>
 {
     
-    // TODO default stubbings
+    // TODO player
+    // TODO block
     
 }

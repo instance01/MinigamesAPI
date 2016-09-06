@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockBurnEvent extends AbstractMinigameEvent<BlockBurnEvent> implements MinigameBlockBurnEvent
+public class MgBlockBurnEvent extends AbstractMinigameEvent<BlockBurnEvent, MinigameBlockBurnEvent> implements MinigameBlockBurnEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgBlockBurnEvent extends AbstractMinigameEvent<BlockBurnEvent> impl
      */
     public MgBlockBurnEvent(BlockBurnEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

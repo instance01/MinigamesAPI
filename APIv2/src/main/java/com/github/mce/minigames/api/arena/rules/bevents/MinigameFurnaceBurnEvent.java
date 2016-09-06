@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameFurnaceBurnEvent extends MinigameEvent<FurnaceBurnEvent>
+public interface MinigameFurnaceBurnEvent extends MinigameEvent<FurnaceBurnEvent, MinigameFurnaceBurnEvent>
 {
     
     // TODO default stubbings

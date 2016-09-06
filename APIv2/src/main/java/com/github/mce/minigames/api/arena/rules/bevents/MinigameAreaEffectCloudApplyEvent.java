@@ -26,9 +26,11 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_9_R1)
-public interface MinigameAreaEffectCloudApplyEvent extends MinigameEvent<AreaEffectCloudApplyEvent>
+public interface MinigameAreaEffectCloudApplyEvent extends MinigameEvent<AreaEffectCloudApplyEvent, MinigameAreaEffectCloudApplyEvent>
 {
     
-    // TODO default stubbings
+    // TODO Main Entity (AreaEffectCloud)
+    
+    // TODO Affected Entities
     
 }

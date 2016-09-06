@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEnchantItemEvent extends AbstractMinigameEvent<EnchantItemEvent> implements MinigameEnchantItemEvent
+public class MgEnchantItemEvent extends AbstractMinigameEvent<EnchantItemEvent, MinigameEnchantItemEvent> implements MinigameEnchantItemEvent
 {
 
     /**

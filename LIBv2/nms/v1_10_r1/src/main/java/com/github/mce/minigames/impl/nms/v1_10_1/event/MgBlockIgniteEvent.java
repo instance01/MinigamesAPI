@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockIgniteEvent extends AbstractMinigameEvent<BlockIgniteEvent> implements MinigameBlockIgniteEvent
+public class MgBlockIgniteEvent extends AbstractMinigameEvent<BlockIgniteEvent, MinigameBlockIgniteEvent> implements MinigameBlockIgniteEvent
 {
 
     /**
@@ -34,7 +34,8 @@ public class MgBlockIgniteEvent extends AbstractMinigameEvent<BlockIgniteEvent> 
      */
     public MgBlockIgniteEvent(BlockIgniteEvent event)
     {
-        super(event, null); // TODO
+        // TODO ignite player? ignite block?
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

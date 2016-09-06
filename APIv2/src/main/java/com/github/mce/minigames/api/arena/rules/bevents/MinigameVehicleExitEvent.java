@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameVehicleExitEvent extends MinigameEvent<VehicleExitEvent>
+public interface MinigameVehicleExitEvent extends MinigameEvent<VehicleExitEvent, MinigameVehicleExitEvent>
 {
     
     // TODO default stubbings

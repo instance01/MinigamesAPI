@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameFoodLevelChangeEvent extends MinigameEvent<FoodLevelChangeEvent>
+public interface MinigameFoodLevelChangeEvent extends MinigameEvent<FoodLevelChangeEvent, MinigameFoodLevelChangeEvent>
 {
     
     // TODO default stubbings

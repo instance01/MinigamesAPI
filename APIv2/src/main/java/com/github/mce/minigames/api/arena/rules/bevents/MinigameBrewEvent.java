@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBrewEvent extends MinigameEvent<BrewEvent>
+public interface MinigameBrewEvent extends MinigameEvent<BrewEvent, MinigameBrewEvent>
 {
     
     // TODO default stubbings

@@ -26,9 +26,11 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_8_R2)
-public interface MinigameBlockExplodeEvent extends MinigameEvent<BlockExplodeEvent>
+public interface MinigameBlockExplodeEvent extends MinigameEvent<BlockExplodeEvent, MinigameBlockExplodeEvent>
 {
     
-    // TODO default stubbings
+    // TODO what (exploding blocks)
+    // TODO affected blocks
+    // TODO yield
     
 }

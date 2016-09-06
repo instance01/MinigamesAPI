@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerKickEvent extends AbstractMinigameEvent<PlayerKickEvent> implements MinigamePlayerKickEvent
+public class MgPlayerKickEvent extends AbstractMinigameEvent<PlayerKickEvent, MinigamePlayerKickEvent> implements MinigamePlayerKickEvent
 {
 
     /**

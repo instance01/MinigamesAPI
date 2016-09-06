@@ -24,9 +24,14 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockMultiPlaceEvent extends MinigameEvent<BlockMultiPlaceEvent>
+public interface MinigameBlockMultiPlaceEvent extends MinigameEvent<BlockMultiPlaceEvent, MinigameBlockMultiPlaceEvent>
 {
     
-    // TODO default stubbings
+    // TODO target player
+    // TODO target block
+    // TODO blicked block
+    // TODO affected blocks
+    // TODO item in hand
+    // TODO can build
     
 }

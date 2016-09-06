@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityToggleGlideEvent extends AbstractMinigameEvent<EntityToggleGlideEvent> implements MinigameEntityToggleGlideEvent
+public class MgEntityToggleGlideEvent extends AbstractMinigameEvent<EntityToggleGlideEvent, MinigameEntityToggleGlideEvent> implements MinigameEntityToggleGlideEvent
 {
 
     /**

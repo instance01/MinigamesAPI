@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBrewEvent extends AbstractMinigameEvent<BrewEvent> implements MinigameBrewEvent
+public class MgBrewEvent extends AbstractMinigameEvent<BrewEvent, MinigameBrewEvent> implements MinigameBrewEvent
 {
 
     /**

@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerLeashEntityEvent extends MinigameEvent<PlayerLeashEntityEvent>
+public interface MinigamePlayerLeashEntityEvent extends MinigameEvent<PlayerLeashEntityEvent, MinigamePlayerLeashEntityEvent>
 {
     
     // TODO default stubbings

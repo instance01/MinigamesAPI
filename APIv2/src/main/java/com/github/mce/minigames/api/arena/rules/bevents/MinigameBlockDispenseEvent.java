@@ -24,9 +24,11 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockDispenseEvent extends MinigameEvent<BlockDispenseEvent>
+public interface MinigameBlockDispenseEvent extends MinigameEvent<BlockDispenseEvent, MinigameBlockDispenseEvent>
 {
     
-    // TODO default stubbings
+    // TODO dispenser block
+    // TODO dispensed item
+    // TODO velocity
     
 }

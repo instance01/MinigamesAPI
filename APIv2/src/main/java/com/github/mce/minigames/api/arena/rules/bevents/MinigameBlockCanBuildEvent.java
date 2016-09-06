@@ -24,9 +24,10 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockCanBuildEvent extends MinigameEvent<BlockCanBuildEvent>
+public interface MinigameBlockCanBuildEvent extends MinigameEvent<BlockCanBuildEvent, MinigameBlockCanBuildEvent>
 {
     
-    // TODO default stubbings
+    // TODO block we are trying to place on top of
+    // TODO material
     
 }

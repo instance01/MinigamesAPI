@@ -47,7 +47,7 @@ public abstract class AbstractEventSystem implements EventSystemInterface
     /**
      * The common event handlers per event class.
      */
-    private final Map<Class<? extends Event>, MinigameEventHandler<?>> eventHandlers = new HashMap<>();
+    private final Map<Class<? extends Event>, MinigameEventHandler<?, ?>> eventHandlers = new HashMap<>();
     
     /**
      * Constructor.
@@ -77,9 +77,9 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      * @return event handler.
      */
     @SuppressWarnings("unchecked")
-    protected <T extends Event> MinigameEventHandler<T> getHandler(Class<T> clazz)
+    protected <T extends Event, MgEvt extends MinigameEvent<T, MgEvt>> MinigameEventHandler<T, MgEvt> getHandler(Class<T> clazz)
     {
-        return (MinigameEventHandler<T>) this.eventHandlers.get(clazz);
+        return (MinigameEventHandler<T, MgEvt>) this.eventHandlers.get(clazz);
     }
     
     /**
@@ -90,7 +90,7 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      * @param factory
      *            the factory to create minigame events.
      */
-    protected <T extends Event> void registerHandler(Class<T> clazz, MinigameEventFactory<T> factory)
+    protected <T extends Event, MgEvt extends MinigameEvent<T, MgEvt>> void registerHandler(Class<T> clazz, MinigameEventFactory<T, MgEvt> factory)
     {
         this.eventHandlers.put(clazz, new MinigameEventHandler<>(clazz, factory));
     }
@@ -253,9 +253,9 @@ public abstract class AbstractEventSystem implements EventSystemInterface
     
     @SuppressWarnings("unchecked")
     @Override
-    public <Evt extends Event> MinigameEvent<Evt> createEvent(Evt bukkitEvent)
+    public <Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>> MgEvt createEvent(Evt bukkitEvent)
     {
-        return ((MinigameEventHandler<Evt>) this.getHandler(bukkitEvent.getClass())).createMgEvent(bukkitEvent);
+        return ((MinigameEventHandler<Evt, MgEvt>) this.getHandler(bukkitEvent.getClass())).createMgEvent(bukkitEvent);
     }
     
     /**
@@ -265,10 +265,10 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      * @param <T>
      *            event clazz for handling the events.
      */
-    protected final class MinigameEventHandler<T extends Event>
+    protected final class MinigameEventHandler<T extends Event, MgEvt extends MinigameEvent<T, MgEvt>>
     {
         
-        public MinigameEventHandler(Class<T> clazz, MinigameEventFactory<T> factory)
+        public MinigameEventHandler(Class<T> clazz, MinigameEventFactory<T, MgEvt> factory)
         {
             // TODO
         }
@@ -281,7 +281,7 @@ public abstract class AbstractEventSystem implements EventSystemInterface
             // TODO Auto-generated method stub
         }
         
-        public MinigameEvent<T> createMgEvent(T evt)
+        public MgEvt createMgEvent(T evt)
         {
             // TODO
             return null;
@@ -293,9 +293,10 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      * Interface for creating minigame event classes from given bukkit event.
      *
      * @param <Evt>
+     * @param <MgEvt> 
      */
     @FunctionalInterface
-    public interface MinigameEventFactory<Evt extends Event>
+    public interface MinigameEventFactory<Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>>
     {
         
         /**
@@ -305,7 +306,7 @@ public abstract class AbstractEventSystem implements EventSystemInterface
          *            bukkit event.
          * @return the minigame event object.
          */
-        MinigameEvent<Evt> create(Evt event);
+        MgEvt create(Evt event);
         
     }
     

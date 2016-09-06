@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.PlayerCloseGuiEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerCloseGuiEvent extends AbstractMinigameEvent<PlayerCloseGuiEvent> implements MinigamePlayerCloseGuiEvent
+public class MgPlayerCloseGuiEvent extends AbstractMinigameEvent<PlayerCloseGuiEvent, MinigamePlayerCloseGuiEvent> implements MinigamePlayerCloseGuiEvent
 {
 
     /**

@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerGameModeChangeEvent extends AbstractMinigameEvent<PlayerGameModeChangeEvent> implements MinigamePlayerGameModeChangeEvent
+public class MgPlayerGameModeChangeEvent extends AbstractMinigameEvent<PlayerGameModeChangeEvent, MinigamePlayerGameModeChangeEvent> implements MinigamePlayerGameModeChangeEvent
 {
 
     /**

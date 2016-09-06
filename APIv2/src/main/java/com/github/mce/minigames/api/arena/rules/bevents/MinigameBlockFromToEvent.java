@@ -24,9 +24,10 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockFromToEvent extends MinigameEvent<BlockFromToEvent>
+public interface MinigameBlockFromToEvent extends MinigameEvent<BlockFromToEvent, MinigameBlockFromToEvent>
 {
     
-    // TODO default stubbings
+    // TODO source block
+    // TODO target block (block face)
     
 }

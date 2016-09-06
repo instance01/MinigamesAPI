@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.ArenaDeleteEvent;
  * 
  * @author mepeisen
  */
-public class MgArenaDeleteEvent extends AbstractMinigameEvent<ArenaDeleteEvent> implements MinigameArenaDeleteEvent
+public class MgArenaDeleteEvent extends AbstractMinigameEvent<ArenaDeleteEvent, MinigameArenaDeleteEvent> implements MinigameArenaDeleteEvent
 {
 
     /**

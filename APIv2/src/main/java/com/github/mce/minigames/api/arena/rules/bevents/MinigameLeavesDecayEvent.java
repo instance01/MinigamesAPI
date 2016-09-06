@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameLeavesDecayEvent extends MinigameEvent<LeavesDecayEvent>
+public interface MinigameLeavesDecayEvent extends MinigameEvent<LeavesDecayEvent, MinigameLeavesDecayEvent>
 {
     
     // TODO default stubbings

@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerUnregisterChannelEvent extends AbstractMinigameEvent<PlayerUnregisterChannelEvent> implements MinigamePlayerUnregisterChannelEvent
+public class MgPlayerUnregisterChannelEvent extends AbstractMinigameEvent<PlayerUnregisterChannelEvent, MinigamePlayerUnregisterChannelEvent> implements MinigamePlayerUnregisterChannelEvent
 {
 
     /**

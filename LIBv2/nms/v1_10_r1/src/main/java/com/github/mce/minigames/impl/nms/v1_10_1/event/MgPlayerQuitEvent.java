@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerQuitEvent extends AbstractMinigameEvent<PlayerQuitEvent> implements MinigamePlayerQuitEvent
+public class MgPlayerQuitEvent extends AbstractMinigameEvent<PlayerQuitEvent, MinigamePlayerQuitEvent> implements MinigamePlayerQuitEvent
 {
 
     /**

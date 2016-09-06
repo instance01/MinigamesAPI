@@ -24,9 +24,12 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockDamageEvent extends MinigameEvent<BlockDamageEvent>
+public interface MinigameBlockDamageEvent extends MinigameEvent<BlockDamageEvent, MinigameBlockDamageEvent>
 {
     
-    // TODO default stubbings
+    // TODO player that causes the damage
+    // TODO damaged block
+    // TODO item in hand
+    // TODO insta break flag
     
 }

@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerToggleSneakEvent extends MinigameEvent<PlayerToggleSneakEvent>
+public interface MinigamePlayerToggleSneakEvent extends MinigameEvent<PlayerToggleSneakEvent, MinigamePlayerToggleSneakEvent>
 {
     
     // TODO default stubbings

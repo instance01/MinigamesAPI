@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerArmorStandManipulateEvent extends AbstractMinigameEvent<PlayerArmorStandManipulateEvent> implements MinigamePlayerArmorStandManipulateEvent
+public class MgPlayerArmorStandManipulateEvent extends AbstractMinigameEvent<PlayerArmorStandManipulateEvent, MinigamePlayerArmorStandManipulateEvent> implements MinigamePlayerArmorStandManipulateEvent
 {
 
     /**

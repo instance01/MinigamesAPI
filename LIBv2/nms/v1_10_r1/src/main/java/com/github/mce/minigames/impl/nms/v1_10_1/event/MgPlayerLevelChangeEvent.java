@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerLevelChangeEvent extends AbstractMinigameEvent<PlayerLevelChangeEvent> implements MinigamePlayerLevelChangeEvent
+public class MgPlayerLevelChangeEvent extends AbstractMinigameEvent<PlayerLevelChangeEvent, MinigamePlayerLevelChangeEvent> implements MinigamePlayerLevelChangeEvent
 {
 
     /**

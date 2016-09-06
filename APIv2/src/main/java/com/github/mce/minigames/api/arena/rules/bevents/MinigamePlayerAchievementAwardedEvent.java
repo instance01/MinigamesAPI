@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerAchievementAwardedEvent extends MinigameEvent<PlayerAchievementAwardedEvent>
+public interface MinigamePlayerAchievementAwardedEvent extends MinigameEvent<PlayerAchievementAwardedEvent, MinigamePlayerAchievementAwardedEvent>
 {
     
     // TODO default stubbings

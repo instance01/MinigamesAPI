@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerToggleFlightEvent extends MinigameEvent<PlayerToggleFlightEvent>
+public interface MinigamePlayerToggleFlightEvent extends MinigameEvent<PlayerToggleFlightEvent, MinigamePlayerToggleFlightEvent>
 {
     
     // TODO default stubbings

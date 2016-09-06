@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerBucketEmptyEvent extends AbstractMinigameEvent<PlayerBucketEmptyEvent> implements MinigamePlayerBucketEmptyEvent
+public class MgPlayerBucketEmptyEvent extends AbstractMinigameEvent<PlayerBucketEmptyEvent, MinigamePlayerBucketEmptyEvent> implements MinigamePlayerBucketEmptyEvent
 {
 
     /**

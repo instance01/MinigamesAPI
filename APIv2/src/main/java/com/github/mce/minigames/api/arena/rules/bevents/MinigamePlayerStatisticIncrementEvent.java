@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerStatisticIncrementEvent extends MinigameEvent<PlayerStatisticIncrementEvent>
+public interface MinigamePlayerStatisticIncrementEvent extends MinigameEvent<PlayerStatisticIncrementEvent, MinigamePlayerStatisticIncrementEvent>
 {
     
     // TODO default stubbings

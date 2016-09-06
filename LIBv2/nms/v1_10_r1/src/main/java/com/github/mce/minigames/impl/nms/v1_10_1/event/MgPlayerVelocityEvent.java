@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerVelocityEvent extends AbstractMinigameEvent<PlayerVelocityEvent> implements MinigamePlayerVelocityEvent
+public class MgPlayerVelocityEvent extends AbstractMinigameEvent<PlayerVelocityEvent, MinigamePlayerVelocityEvent> implements MinigamePlayerVelocityEvent
 {
 
     /**

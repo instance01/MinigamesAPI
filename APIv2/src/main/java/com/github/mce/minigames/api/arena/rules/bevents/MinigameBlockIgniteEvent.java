@@ -24,9 +24,11 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameBlockIgniteEvent extends MinigameEvent<BlockIgniteEvent>
+public interface MinigameBlockIgniteEvent extends MinigameEvent<BlockIgniteEvent, MinigameBlockIgniteEvent>
 {
     
-    // TODO default stubbings
+    // TODO target block
+    // TODO ignited player/entity/block
+    // TODO ignite cause
     
 }

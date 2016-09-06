@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityBlockFormEvent extends AbstractMinigameEvent<EntityBlockFormEvent> implements MinigameEntityBlockFormEvent
+public class MgEntityBlockFormEvent extends AbstractMinigameEvent<EntityBlockFormEvent, MinigameEntityBlockFormEvent> implements MinigameEntityBlockFormEvent
 {
 
     /**

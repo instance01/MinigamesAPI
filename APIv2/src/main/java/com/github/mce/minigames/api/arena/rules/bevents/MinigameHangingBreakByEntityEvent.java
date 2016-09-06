@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameHangingBreakByEntityEvent extends MinigameEvent<HangingBreakByEntityEvent>
+public interface MinigameHangingBreakByEntityEvent extends MinigameEvent<HangingBreakByEntityEvent, MinigameHangingBreakByEntityEvent>
 {
     
     // TODO default stubbings

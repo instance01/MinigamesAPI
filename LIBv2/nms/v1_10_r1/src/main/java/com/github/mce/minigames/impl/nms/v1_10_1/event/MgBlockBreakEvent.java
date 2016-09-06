@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
 import org.bukkit.event.block.BlockBreakEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameBlockBreakEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -25,7 +26,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockBreakEvent extends AbstractMinigameEvent<BlockBreakEvent> implements MinigameBlockBreakEvent
+public class MgBlockBreakEvent extends AbstractMinigameEvent<BlockBreakEvent, MinigameBlockBreakEvent> implements MinigameBlockBreakEvent
 {
 
     /**
@@ -34,7 +35,7 @@ public class MgBlockBreakEvent extends AbstractMinigameEvent<BlockBreakEvent> im
      */
     public MgBlockBreakEvent(BlockBreakEvent event)
     {
-        super(event, null); // TODO
+        super(event, MglibInterface.INSTANCE.get().getPlayer(event.getPlayer()), event.getBlock().getLocation());
     }
     
 }

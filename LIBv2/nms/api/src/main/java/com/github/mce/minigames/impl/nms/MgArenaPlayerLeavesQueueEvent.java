@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.ArenaPlayerLeavesQueueEvent;
  * 
  * @author mepeisen
  */
-public class MgArenaPlayerLeavesQueueEvent extends AbstractMinigameEvent<ArenaPlayerLeavesQueueEvent> implements MinigameArenaPlayerLeavesQueueEvent
+public class MgArenaPlayerLeavesQueueEvent extends AbstractMinigameEvent<ArenaPlayerLeavesQueueEvent, MinigameArenaPlayerLeavesQueueEvent> implements MinigameArenaPlayerLeavesQueueEvent
 {
 
     /**

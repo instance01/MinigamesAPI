@@ -24,9 +24,11 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameAsyncPlayerChatEvent extends MinigameEvent<AsyncPlayerChatEvent>
+public interface MinigameAsyncPlayerChatEvent extends MinigameEvent<AsyncPlayerChatEvent, MinigameAsyncPlayerChatEvent>
 {
     
-    // TODO default stubbings
+    // TODO who (sender)
+    // TODO whom (receipient)
+    // TODO what (message)
     
 }

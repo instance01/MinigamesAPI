@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.ArenaCreatedEvent;
  * 
  * @author mepeisen
  */
-public class MgArenaCreatedEvent extends AbstractMinigameEvent<ArenaCreatedEvent> implements MinigameArenaCreatedEvent
+public class MgArenaCreatedEvent extends AbstractMinigameEvent<ArenaCreatedEvent, MinigameArenaCreatedEvent> implements MinigameArenaCreatedEvent
 {
 
     /**

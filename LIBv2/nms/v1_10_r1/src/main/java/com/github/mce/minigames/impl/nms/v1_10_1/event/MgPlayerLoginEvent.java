@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerLoginEvent extends AbstractMinigameEvent<PlayerLoginEvent> implements MinigamePlayerLoginEvent
+public class MgPlayerLoginEvent extends AbstractMinigameEvent<PlayerLoginEvent, MinigamePlayerLoginEvent> implements MinigamePlayerLoginEvent
 {
 
     /**
