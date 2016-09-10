@@ -20,11 +20,11 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerSpawnLocationEvent extends MinigameEvent<PlayerSpawnLocationEvent>
+public interface MinigamePlayerSpawnLocationEvent extends MinigameEvent<PlayerSpawnLocationEvent, MinigamePlayerSpawnLocationEvent>
 {
     
     // TODO default stubbings

@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerGameModeChangeEvent extends MinigameEvent<PlayerGameModeChangeEvent>
+public interface MinigamePlayerGameModeChangeEvent extends MinigameEvent<PlayerGameModeChangeEvent, MinigamePlayerGameModeChangeEvent>
 {
     
     // TODO default stubbings

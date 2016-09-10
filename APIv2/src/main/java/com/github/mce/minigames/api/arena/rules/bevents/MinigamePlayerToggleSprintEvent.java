@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerToggleSprintEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerToggleSprintEvent extends MinigameEvent<PlayerToggleSprintEvent>
+public interface MinigamePlayerToggleSprintEvent extends MinigameEvent<PlayerToggleSprintEvent, MinigamePlayerToggleSprintEvent>
 {
     
     // TODO default stubbings

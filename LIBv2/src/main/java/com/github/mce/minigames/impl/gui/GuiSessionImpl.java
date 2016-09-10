@@ -20,9 +20,11 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.context.MinigameStorage;
 import com.github.mce.minigames.api.gui.ClickGuiInterface;
 import com.github.mce.minigames.api.gui.ClickGuiItem;
@@ -253,6 +255,41 @@ public class GuiSessionImpl implements GuiSessionInterface
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /**
+     * @param evt
+     */
+    public void onClick(InventoryClickEvent evt)
+    {
+        final ItemStack stack = evt.getCurrentItem();
+        if (stack.getItemMeta().hasDisplayName())
+        {
+            final String item = stripColoredString(stack.getItemMeta().getDisplayName());
+            final String[] splitted = item.split(":"); //$NON-NLS-1$
+            if (splitted.length == 2)
+            {
+                try
+                {
+                    final int line = Integer.parseInt(splitted[0]);
+                    final int col = Integer.parseInt(splitted[1]);
+                    final ClickGuiItem guiItem = this.currentItems[line][col];
+                    guiItem.handle(this.player, this, this.gui);
+                }
+                catch (MinigameException ex)
+                {
+                    // TODO
+                }
+                catch (IndexOutOfBoundsException | NumberFormatException ex)
+                {
+                    // TODO logging
+                }
+            }
+            else
+            {
+                // TODO Logging
+            }
+        }
     }
     
 }

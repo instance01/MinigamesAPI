@@ -2,6 +2,10 @@
 
 #### 1.14.12/1.14.13
 
+###### All
+
+* No more kill rewards for self-kills
+
 ###### BedWars
 
 * Added command "setupbeds" to help page

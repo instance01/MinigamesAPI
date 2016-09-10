@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerBedLeaveEvent extends MinigameEvent<PlayerBedLeaveEvent>
+public interface MinigamePlayerBedLeaveEvent extends MinigameEvent<PlayerBedLeaveEvent, MinigamePlayerBedLeaveEvent>
 {
     
     // TODO default stubbings

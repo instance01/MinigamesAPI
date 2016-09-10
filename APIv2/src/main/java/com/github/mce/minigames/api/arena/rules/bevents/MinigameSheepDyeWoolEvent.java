@@ -20,11 +20,11 @@ import org.bukkit.event.entity.SheepDyeWoolEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameSheepDyeWoolEvent extends MinigameEvent<SheepDyeWoolEvent>
+public interface MinigameSheepDyeWoolEvent extends MinigameEvent<SheepDyeWoolEvent, MinigameSheepDyeWoolEvent>
 {
     
     // TODO default stubbings

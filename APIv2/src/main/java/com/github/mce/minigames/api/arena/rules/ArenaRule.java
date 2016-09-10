@@ -27,7 +27,7 @@ import com.github.mce.minigames.api.MinigameException;
  * @param <Evt> Bukkit Event class
  * @param <MgEvt> Minigame event class
  */
-public interface ArenaRule<Evt extends Event, MgEvt extends MinigameEvent<Evt>>
+public interface ArenaRule<Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>>
 {
     
     void passEvent(MgEvt event) throws MinigameException;

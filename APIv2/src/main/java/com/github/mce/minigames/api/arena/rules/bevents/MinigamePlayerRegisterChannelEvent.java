@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerRegisterChannelEvent extends MinigameEvent<PlayerRegisterChannelEvent>
+public interface MinigamePlayerRegisterChannelEvent extends MinigameEvent<PlayerRegisterChannelEvent, MinigamePlayerRegisterChannelEvent>
 {
     
     // TODO default stubbings

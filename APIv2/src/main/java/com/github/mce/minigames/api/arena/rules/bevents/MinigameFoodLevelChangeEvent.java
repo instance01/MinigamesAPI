@@ -20,11 +20,11 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameFoodLevelChangeEvent extends MinigameEvent<FoodLevelChangeEvent>
+public interface MinigameFoodLevelChangeEvent extends MinigameEvent<FoodLevelChangeEvent, MinigameFoodLevelChangeEvent>
 {
     
     // TODO default stubbings

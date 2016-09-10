@@ -95,7 +95,7 @@ public class SmartReset implements Runnable
         {
             if (MinigamesAPI.debug)
             {
-                MinigamesAPI.getAPI().getLogger().fine("(1) adding changed block for location " + b.getLocation());
+                MinigamesAPI.getAPI().getLogger().info("(1) adding changed block for location " + b.getLocation());
             }
             final SmartArenaBlock sablock = new SmartArenaBlock(b, b.getType() == Material.CHEST, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
             this.changed.putBlock(b.getLocation(), sablock);
@@ -148,7 +148,7 @@ public class SmartReset implements Runnable
         {
             if (MinigamesAPI.debug)
             {
-                MinigamesAPI.getAPI().getLogger().fine("(2) adding changed block for location " + b.getLocation());
+                MinigamesAPI.getAPI().getLogger().info("(2) adding changed block for location " + b.getLocation());
             }
             final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
             this.changed.putBlock(b.getLocation(), sablock);
@@ -174,7 +174,7 @@ public class SmartReset implements Runnable
         {
             if (MinigamesAPI.debug)
             {
-                MinigamesAPI.getAPI().getLogger().fine("(3) adding changed block for location " + b.getLocation());
+                MinigamesAPI.getAPI().getLogger().info("(3) adding changed block for location " + b.getLocation());
             }
             final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
             this.changed.putBlock(b.getLocation(), sablock);
@@ -197,7 +197,7 @@ public class SmartReset implements Runnable
         {
             if (MinigamesAPI.debug)
             {
-                MinigamesAPI.getAPI().getLogger().fine("(4) adding changed block for location " + l);
+                MinigamesAPI.getAPI().getLogger().info("(4) adding changed block for location " + l);
             }
             this.changed.putBlock(l, new SmartArenaBlock(l, Material.AIR, (byte) 0));
         }
@@ -220,7 +220,7 @@ public class SmartReset implements Runnable
         {
             if (MinigamesAPI.debug)
             {
-                MinigamesAPI.getAPI().getLogger().fine("(5) adding changed block for location " + l);
+                MinigamesAPI.getAPI().getLogger().info("(5) adding changed block for location " + l);
             }
             final SmartArenaBlock sab = new SmartArenaBlock(l, m, data);
             this.changed.putBlock(l, sab);
@@ -242,7 +242,7 @@ public class SmartReset implements Runnable
             
             try
             {
-                MinigamesAPI.getAPI().getLogger().fine("resetting block " + ablock.getBlock().getLocation());
+                MinigamesAPI.getAPI().getLogger().info("resetting block " + ablock.getBlock().getLocation());
                 this.resetSmartResetBlock(ablock);
                 it.remove();
             }
@@ -250,7 +250,7 @@ public class SmartReset implements Runnable
             {
                 if (MinigamesAPI.debug)
                 {
-                    MinigamesAPI.getAPI().getLogger().log(Level.FINE, "failed block " + ablock.getBlock().getLocation(), e);
+                    MinigamesAPI.getAPI().getLogger().log(Level.INFO, "failed block " + ablock.getBlock().getLocation(), e);
                 }
                 this.failedblocks.add(ablock);
             }
@@ -273,7 +273,7 @@ public class SmartReset implements Runnable
             SmartReset.this.changed.clear();
             for (final SmartArenaBlock ablock : SmartReset.this.failedblocks)
             {
-                MinigamesAPI.getAPI().getLogger().fine("retrying failed block " + ablock.getBlock().getLocation());
+                MinigamesAPI.getAPI().getLogger().info("retrying failed block " + ablock.getBlock().getLocation());
                 final Block b_ = ablock.getBlock().getWorld().getBlockAt(ablock.getBlock().getLocation());
                 if (!b_.getType().toString().equalsIgnoreCase(ablock.getMaterial().toString()))
                 {
@@ -332,53 +332,53 @@ public class SmartReset implements Runnable
         if (b_.getType() == Material.FURNACE)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back furnace inventory");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back furnace inventory");
             ((Furnace) b_.getState()).getInventory().clear();
             ((Furnace) b_.getState()).update();
         }
         if (b_.getType() == Material.CHEST)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back chest inventory");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back chest inventory");
             ((Chest) b_.getState()).getBlockInventory().clear();
             ((Chest) b_.getState()).update();
         }
         if (b_.getType() == Material.DISPENSER)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back dispenser inventory");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back dispenser inventory");
             ((Dispenser) b_.getState()).getInventory().clear();
             ((Dispenser) b_.getState()).update();
         }
         if (b_.getType() == Material.DROPPER)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back dropper inventory");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back dropper inventory");
             ((Dropper) b_.getState()).getInventory().clear();
             ((Dropper) b_.getState()).update();
         }
         if (b_.getType() == Material.BREWING_STAND)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back brewing stand inventory");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back brewing stand inventory");
             ((BrewingStand) b_.getState()).getInventory().clear();
             ((BrewingStand) b_.getState()).update();
         }
         if (!b_.getType().equals(ablock.getMaterial()) || b_.getData() != ablock.getData())
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back block material/data to " + ablock.getMaterial() + "/" + ablock.getData());
+                MinigamesAPI.getAPI().getLogger().info("Rolling back block material/data to " + ablock.getMaterial() + "/" + ablock.getData());
             b_.setType(ablock.getMaterial());
             b_.setData(ablock.getData());
         }
         else if (MinigamesAPI.debug)
         {
-            MinigamesAPI.getAPI().getLogger().fine("Skipping block rollback from " + b_.getType() + "/" + b_.getData() + " to " + ablock.getMaterial() + "/" + ablock.getData());
+            MinigamesAPI.getAPI().getLogger().info("Skipping block rollback from " + b_.getType() + "/" + b_.getData() + " to " + ablock.getMaterial() + "/" + ablock.getData());
         }
         if (b_.getType() == Material.CHEST)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back chest");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back chest");
             if (ablock.isDoubleChest())
             {
                 final DoubleChest dc = ablock.getDoubleChest();
@@ -413,7 +413,7 @@ public class SmartReset implements Runnable
         if (b_.getType() == Material.DISPENSER)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back dispenser");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back dispenser");
             final Dispenser d = (Dispenser) b_.getState();
             d.getInventory().clear();
             final HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
@@ -434,7 +434,7 @@ public class SmartReset implements Runnable
         if (b_.getType() == Material.DROPPER)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back dropper");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back dropper");
             final Dropper d = (Dropper) b_.getState();
             d.getInventory().clear();
             final HashMap<Integer, ItemStack> chestinv = ablock.getNewInventory();
@@ -454,7 +454,7 @@ public class SmartReset implements Runnable
         if (b_.getType() == Material.WALL_SIGN || b_.getType() == Material.SIGN_POST)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back sign");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back sign");
             final Sign sign = (Sign) b_.getState();
             if (sign != null)
             {
@@ -474,7 +474,7 @@ public class SmartReset implements Runnable
         if (b_.getType() == Material.SKULL)
         {
             if (MinigamesAPI.debug)
-                MinigamesAPI.getAPI().getLogger().fine("Rolling back skull");
+                MinigamesAPI.getAPI().getLogger().info("Rolling back skull");
             b_.setData((byte) 0x1);
             b_.getState().setType(Material.SKULL);
             if (b_.getState() instanceof Skull)

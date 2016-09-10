@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerShearEntityEvent extends MinigameEvent<PlayerShearEntityEvent>
+public interface MinigamePlayerShearEntityEvent extends MinigameEvent<PlayerShearEntityEvent, MinigamePlayerShearEntityEvent>
 {
     
     // TODO default stubbings

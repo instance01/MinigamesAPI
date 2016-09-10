@@ -20,11 +20,11 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameHangingPlaceEvent extends MinigameEvent<HangingPlaceEvent>
+public interface MinigameHangingPlaceEvent extends MinigameEvent<HangingPlaceEvent, MinigameHangingPlaceEvent>
 {
     
     // TODO default stubbings

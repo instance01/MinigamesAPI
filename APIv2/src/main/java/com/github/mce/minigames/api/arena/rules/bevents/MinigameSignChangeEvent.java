@@ -20,11 +20,11 @@ import org.bukkit.event.block.SignChangeEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameSignChangeEvent extends MinigameEvent<SignChangeEvent>
+public interface MinigameSignChangeEvent extends MinigameEvent<SignChangeEvent, MinigameSignChangeEvent>
 {
     
     // TODO default stubbings

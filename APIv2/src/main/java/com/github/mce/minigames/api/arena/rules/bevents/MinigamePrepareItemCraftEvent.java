@@ -20,11 +20,11 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePrepareItemCraftEvent extends MinigameEvent<PrepareItemCraftEvent>
+public interface MinigamePrepareItemCraftEvent extends MinigameEvent<PrepareItemCraftEvent, MinigamePrepareItemCraftEvent>
 {
     
     // TODO default stubbings

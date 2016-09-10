@@ -20,11 +20,11 @@ import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameInventoryPickupItemEvent extends MinigameEvent<InventoryPickupItemEvent>
+public interface MinigameInventoryPickupItemEvent extends MinigameEvent<InventoryPickupItemEvent, MinigameInventoryPickupItemEvent>
 {
     
     // TODO default stubbings

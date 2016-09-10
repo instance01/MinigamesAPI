@@ -20,11 +20,11 @@ import org.bukkit.event.entity.HorseJumpEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameHorseJumpEvent extends MinigameEvent<HorseJumpEvent>
+public interface MinigameHorseJumpEvent extends MinigameEvent<HorseJumpEvent, MinigameHorseJumpEvent>
 {
     
     // TODO default stubbings

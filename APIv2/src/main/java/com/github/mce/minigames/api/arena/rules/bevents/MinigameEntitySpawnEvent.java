@@ -20,11 +20,11 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameEntitySpawnEvent extends MinigameEvent<EntitySpawnEvent>
+public interface MinigameEntitySpawnEvent extends MinigameEvent<EntitySpawnEvent, MinigameEntitySpawnEvent>
 {
     
     // TODO default stubbings

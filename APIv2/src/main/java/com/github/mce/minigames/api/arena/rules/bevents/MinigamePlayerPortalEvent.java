@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerPortalEvent extends MinigameEvent<PlayerPortalEvent>
+public interface MinigamePlayerPortalEvent extends MinigameEvent<PlayerPortalEvent, MinigamePlayerPortalEvent>
 {
     
     // TODO default stubbings

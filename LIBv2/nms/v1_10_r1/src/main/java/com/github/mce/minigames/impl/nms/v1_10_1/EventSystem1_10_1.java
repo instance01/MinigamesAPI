@@ -171,6 +171,7 @@ import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import com.github.mce.minigames.impl.nms.AbstractEventSystem;
+import com.github.mce.minigames.impl.nms.v1_10_1.event.*;
 
 /**
  * The event system implementation.
@@ -180,6 +181,167 @@ import com.github.mce.minigames.impl.nms.AbstractEventSystem;
 public class EventSystem1_10_1 extends AbstractEventSystem
 {
     
+    /**
+     * Constructor
+     */
+    public EventSystem1_10_1()
+    {
+        super();
+        this.registerHandler(AreaEffectCloudApplyEvent.class, (evt) -> new MgAreaEffectCloudApplyEvent(evt));
+        this.registerHandler(AsyncPlayerChatEvent.class, (evt) -> new MgAsyncPlayerChatEvent(evt));
+        this.registerHandler(BlockBreakEvent.class, (evt) -> new MgBlockBreakEvent(evt));
+        this.registerHandler(BlockBurnEvent.class, (evt) -> new MgBlockBurnEvent(evt));
+        this.registerHandler(BlockCanBuildEvent.class, (evt) -> new MgBlockCanBuildEvent(evt));
+        this.registerHandler(BlockDamageEvent.class, (evt) -> new MgBlockDamageEvent(evt));
+        this.registerHandler(BlockDispenseEvent.class, (evt) -> new MgBlockDispenseEvent(evt));
+        this.registerHandler(BlockExpEvent.class, (evt) -> new MgBlockExpEvent(evt));
+        this.registerHandler(BlockExplodeEvent.class, (evt) -> new MgBlockExplodeEvent(evt));
+        this.registerHandler(BlockFadeEvent.class, (evt) -> new MgBlockFadeEvent(evt));
+        this.registerHandler(BlockFormEvent.class, (evt) -> new MgBlockFormEvent(evt));
+        this.registerHandler(BlockFromToEvent.class, (evt) -> new MgBlockFromToEvent(evt));
+        this.registerHandler(BlockGrowEvent.class, (evt) -> new MgBlockGrowEvent(evt));
+        this.registerHandler(BlockIgniteEvent.class, (evt) -> new MgBlockIgniteEvent(evt));
+        this.registerHandler(BlockMultiPlaceEvent.class, (evt) -> new MgBlockMultiPlaceEvent(evt));
+        this.registerHandler(BlockPhysicsEvent.class, (evt) -> new MgBlockPhysicsEvent(evt));
+        this.registerHandler(BlockPistonExtendEvent.class, (evt) -> new MgBlockPistonExtendEvent(evt));
+        this.registerHandler(BlockPistonRetractEvent.class, (evt) -> new MgBlockPistonRetractEvent(evt));
+        this.registerHandler(BlockPlaceEvent.class, (evt) -> new MgBlockPlaceEvent(evt));
+        this.registerHandler(BlockRedstoneEvent.class, (evt) -> new MgBlockRedstoneEvent(evt));
+        this.registerHandler(BlockSpreadEvent.class, (evt) -> new MgBlockSpreadEvent(evt));
+        this.registerHandler(BrewEvent.class, (evt) -> new MgBrewEvent(evt));
+        this.registerHandler(CauldronLevelChangeEvent.class, (evt) -> new MgCauldronLevelChangeEvent(evt));
+        this.registerHandler(CraftItemEvent.class, (evt) -> new MgCraftItemEvent(evt));
+        this.registerHandler(CreatureSpawnEvent.class, (evt) -> new MgCreatureSpawnEvent(evt));
+        this.registerHandler(CreeperPowerEvent.class, (evt) -> new MgCreeperPowerEvent(evt));
+        this.registerHandler(EnchantItemEvent.class, (evt) -> new MgEnchantItemEvent(evt));
+        this.registerHandler(EnderDragonChangePhaseEvent.class, (evt) -> new MgEnderDragonChangePhaseEvent(evt));
+        this.registerHandler(EntityBlockFormEvent.class, (evt) -> new MgEntityBlockFormEvent(evt));
+        this.registerHandler(EntityBreakDoorEvent.class, (evt) -> new MgEntityBreakDoorEvent(evt));
+        this.registerHandler(EntityBreedEvent.class, (evt) -> new MgEntityBreedEvent(evt));
+        this.registerHandler(EntityChangeBlockEvent.class, (evt) -> new MgEntityChangeBlockEvent(evt));
+        this.registerHandler(EntityCombustByBlockEvent.class, (evt) -> new MgEntityCombustByBlockEvent(evt));
+        this.registerHandler(EntityCombustByEntityEvent.class, (evt) -> new MgEntityCombustByEntityEvent(evt));
+        this.registerHandler(EntityCombustEvent.class, (evt) -> new MgEntityCombustEvent(evt));
+        this.registerHandler(EntityCreatePortalEvent.class, (evt) -> new MgEntityCreatePortalEvent(evt));
+        this.registerHandler(EntityDamageByBlockEvent.class, (evt) -> new MgEntityDamageByBlockEvent(evt));
+        this.registerHandler(EntityDamageByEntityEvent.class, (evt) -> new MgEntityDamageByEntityEvent(evt));
+        this.registerHandler(EntityDamageEvent.class, (evt) -> new MgEntityDamageEvent(evt));
+        this.registerHandler(EntityDeathEvent.class, (evt) -> new MgEntityDeathEvent(evt));
+        this.registerHandler(EntityExplodeEvent.class, (evt) -> new MgEntityExplodeEvent(evt));
+        this.registerHandler(EntityInteractEvent.class, (evt) -> new MgEntityInteractEvent(evt));
+        this.registerHandler(EntityPortalEnterEvent.class, (evt) -> new MgEntityPortalEnterEvent(evt));
+        this.registerHandler(EntityPortalEvent.class, (evt) -> new MgEntityPortalEvent(evt));
+        this.registerHandler(EntityPortalExitEvent.class, (evt) -> new MgEntityPortalExitEvent(evt));
+        this.registerHandler(EntityRegainHealthEvent.class, (evt) -> new MgEntityRegainHealthEvent(evt));
+        this.registerHandler(EntityShootBowEvent.class, (evt) -> new MgEntityShootBowEvent(evt));
+        this.registerHandler(EntitySpawnEvent.class, (evt) -> new MgEntitySpawnEvent(evt));
+        this.registerHandler(EntityTameEvent.class, (evt) -> new MgEntityTameEvent(evt));
+        this.registerHandler(EntityTargetEvent.class, (evt) -> new MgEntityTargetEvent(evt));
+        this.registerHandler(EntityTargetLivingEntityEvent.class, (evt) -> new MgEntityTargetLivingEntityEvent(evt));
+        this.registerHandler(EntityTeleportEvent.class, (evt) -> new MgEntityTeleportEvent(evt));
+        this.registerHandler(EntityToggleGlideEvent.class, (evt) -> new MgEntityToggleGlideEvent(evt));
+        this.registerHandler(EntityUnleashEvent.class, (evt) -> new MgEntityUnleashEvent(evt));
+        this.registerHandler(ExpBottleEvent.class, (evt) -> new MgExpBottleEvent(evt));
+        this.registerHandler(ExplosionPrimeEvent.class, (evt) -> new MgExplosionPrimeEvent(evt));
+        this.registerHandler(FireworkExplodeEvent.class, (evt) -> new MgFireworkExplodeEvent(evt));
+        this.registerHandler(FoodLevelChangeEvent.class, (evt) -> new MgFoodLevelChangeEvent(evt));
+        this.registerHandler(FurnaceBurnEvent.class, (evt) -> new MgFurnaceBurnEvent(evt));
+        this.registerHandler(FurnaceSmeltEvent.class, (evt) -> new MgFurnaceSmeltEvent(evt));
+        this.registerHandler(HangingBreakByEntityEvent.class, (evt) -> new MgHangingBreakByEntityEvent(evt));
+        this.registerHandler(HangingBreakEvent.class, (evt) -> new MgHangingBreakEvent(evt));
+        this.registerHandler(HangingPlaceEvent.class, (evt) -> new MgHangingPlaceEvent(evt));
+        this.registerHandler(HorseJumpEvent.class, (evt) -> new MgHorseJumpEvent(evt));
+        this.registerHandler(InventoryClickEvent.class, (evt) -> new MgInventoryClickEvent(evt));
+        this.registerHandler(InventoryCloseEvent.class, (evt) -> new MgInventoryCloseEvent(evt));
+        this.registerHandler(InventoryCreativeEvent.class, (evt) -> new MgInventoryCreativeEvent(evt));
+        this.registerHandler(InventoryDragEvent.class, (evt) -> new MgInventoryDragEvent(evt));
+        this.registerHandler(InventoryEvent.class, (evt) -> new MgInventoryEvent(evt));
+        this.registerHandler(InventoryInteractEvent.class, (evt) -> new MgInventoryInteractEvent(evt));
+        this.registerHandler(InventoryMoveItemEvent.class, (evt) -> new MgInventoryMoveItemEvent(evt));
+        this.registerHandler(InventoryOpenEvent.class, (evt) -> new MgInventoryOpenEvent(evt));
+        this.registerHandler(InventoryPickupItemEvent.class, (evt) -> new MgInventoryPickupItemEvent(evt));
+        this.registerHandler(ItemDespawnEvent.class, (evt) -> new MgItemDespawnEvent(evt));
+        this.registerHandler(ItemMergeEvent.class, (evt) -> new MgItemMergeEvent(evt));
+        this.registerHandler(ItemSpawnEvent.class, (evt) -> new MgItemSpawnEvent(evt));
+        this.registerHandler(LeavesDecayEvent.class, (evt) -> new MgLeavesDecayEvent(evt));
+        this.registerHandler(LingeringPotionSplashEvent.class, (evt) -> new MgLingeringPotionSplashEvent(evt));
+        this.registerHandler(NotePlayEvent.class, (evt) -> new MgNotePlayEvent(evt));
+        this.registerHandler(PigZapEvent.class, (evt) -> new MgPigZapEvent(evt));
+        this.registerHandler(PlayerAchievementAwardedEvent.class, (evt) -> new MgPlayerAchievementAwardedEvent(evt));
+        this.registerHandler(PlayerAnimationEvent.class, (evt) -> new MgPlayerAnimationEvent(evt));
+        this.registerHandler(PlayerArmorStandManipulateEvent.class, (evt) -> new MgPlayerArmorStandManipulateEvent(evt));
+        this.registerHandler(PlayerBedEnterEvent.class, (evt) -> new MgPlayerBedEnterEvent(evt));
+        this.registerHandler(PlayerBedLeaveEvent.class, (evt) -> new MgPlayerBedLeaveEvent(evt));
+        this.registerHandler(PlayerBucketEmptyEvent.class, (evt) -> new MgPlayerBucketEmptyEvent(evt));
+        this.registerHandler(PlayerBucketFillEvent.class, (evt) -> new MgPlayerBucketFillEvent(evt));
+        this.registerHandler(PlayerChangedMainHandEvent.class, (evt) -> new MgPlayerChangedMainHandEvent(evt));
+        this.registerHandler(PlayerChangedWorldEvent.class, (evt) -> new MgPlayerChangedWorldEvent(evt));
+        this.registerHandler(PlayerChannelEvent.class, (evt) -> new MgPlayerChannelEvent(evt));
+        this.registerHandler(PlayerChatEvent.class, (evt) -> new MgPlayerChatEvent(evt));
+        this.registerHandler(PlayerChatTabCompleteEvent.class, (evt) -> new MgPlayerChatTabCompleteEvent(evt));
+        this.registerHandler(PlayerCommandPreprocessEvent.class, (evt) -> new MgPlayerCommandPreprocessEvent(evt));
+        this.registerHandler(PlayerDeathEvent.class, (evt) -> new MgPlayerDeathEvent(evt));
+        this.registerHandler(PlayerDropItemEvent.class, (evt) -> new MgPlayerDropItemEvent(evt));
+        this.registerHandler(PlayerEditBookEvent.class, (evt) -> new MgPlayerEditBookEvent(evt));
+        this.registerHandler(PlayerEggThrowEvent.class, (evt) -> new MgPlayerEggThrowEvent(evt));
+        this.registerHandler(PlayerExpChangeEvent.class, (evt) -> new MgPlayerExpChangeEvent(evt));
+        this.registerHandler(PlayerFishEvent.class, (evt) -> new MgPlayerFishEvent(evt));
+        this.registerHandler(PlayerGameModeChangeEvent.class, (evt) -> new MgPlayerGameModeChangeEvent(evt));
+        this.registerHandler(PlayerInteractAtEntityEvent.class, (evt) -> new MgPlayerInteractAtEntityEvent(evt));
+        this.registerHandler(PlayerInteractEntityEvent.class, (evt) -> new MgPlayerInteractEntityEvent(evt));
+        this.registerHandler(PlayerInteractEvent.class, (evt) -> new MgPlayerInteractEvent(evt));
+        this.registerHandler(PlayerInventoryEvent.class, (evt) -> new MgPlayerInventoryEvent(evt));
+        this.registerHandler(PlayerItemBreakEvent.class, (evt) -> new MgPlayerItemBreakEvent(evt));
+        this.registerHandler(PlayerItemConsumeEvent.class, (evt) -> new MgPlayerItemConsumeEvent(evt));
+        this.registerHandler(PlayerItemDamageEvent.class, (evt) -> new MgPlayerItemDamageEvent(evt));
+        this.registerHandler(PlayerItemHeldEvent.class, (evt) -> new MgPlayerItemHeldEvent(evt));
+        this.registerHandler(PlayerJoinEvent.class, (evt) -> new MgPlayerJoinEvent(evt));
+        this.registerHandler(PlayerKickEvent.class, (evt) -> new MgPlayerKickEvent(evt));
+        this.registerHandler(PlayerLeashEntityEvent.class, (evt) -> new MgPlayerLeashEntityEvent(evt));
+        this.registerHandler(PlayerLevelChangeEvent.class, (evt) -> new MgPlayerLevelChangeEvent(evt));
+        this.registerHandler(PlayerLoginEvent.class, (evt) -> new MgPlayerLoginEvent(evt));
+        this.registerHandler(PlayerMoveEvent.class, (evt) -> new MgPlayerMoveEvent(evt));
+        this.registerHandler(PlayerPickupArrowEvent.class, (evt) -> new MgPlayerPickupArrowEvent(evt));
+        this.registerHandler(PlayerPickupItemEvent.class, (evt) -> new MgPlayerPickupItemEvent(evt));
+        this.registerHandler(PlayerPortalEvent.class, (evt) -> new MgPlayerPortalEvent(evt));
+        this.registerHandler(PlayerQuitEvent.class, (evt) -> new MgPlayerQuitEvent(evt));
+        this.registerHandler(PlayerRegisterChannelEvent.class, (evt) -> new MgPlayerRegisterChannelEvent(evt));
+        this.registerHandler(PlayerResourcePackStatusEvent.class, (evt) -> new MgPlayerResourcePackStatusEvent(evt));
+        this.registerHandler(PlayerRespawnEvent.class, (evt) -> new MgPlayerRespawnEvent(evt));
+        this.registerHandler(PlayerShearEntityEvent.class, (evt) -> new MgPlayerShearEntityEvent(evt));
+        this.registerHandler(PlayerSpawnLocationEvent.class, (evt) -> new MgPlayerSpawnLocationEvent(evt));
+        this.registerHandler(PlayerStatisticIncrementEvent.class, (evt) -> new MgPlayerStatisticIncrementEvent(evt));
+        this.registerHandler(PlayerSwapHandItemsEvent.class, (evt) -> new MgPlayerSwapHandItemsEvent(evt));
+        this.registerHandler(PlayerTeleportEvent.class, (evt) -> new MgPlayerTeleportEvent(evt));
+        this.registerHandler(PlayerToggleFlightEvent.class, (evt) -> new MgPlayerToggleFlightEvent(evt));
+        this.registerHandler(PlayerToggleSneakEvent.class, (evt) -> new MgPlayerToggleSneakEvent(evt));
+        this.registerHandler(PlayerToggleSprintEvent.class, (evt) -> new MgPlayerToggleSprintEvent(evt));
+        this.registerHandler(PlayerUnregisterChannelEvent.class, (evt) -> new MgPlayerUnregisterChannelEvent(evt));
+        this.registerHandler(PlayerVelocityEvent.class, (evt) -> new MgPlayerVelocityEvent(evt));
+        this.registerHandler(PotionSplashEvent.class, (evt) -> new MgPotionSplashEvent(evt));
+        this.registerHandler(PrepareAnvilEvent.class, (evt) -> new MgPrepareAnvilEvent(evt));
+        this.registerHandler(PrepareItemCraftEvent.class, (evt) -> new MgPrepareItemCraftEvent(evt));
+        this.registerHandler(PrepareItemEnchantEvent.class, (evt) -> new MgPrepareItemEnchantEvent(evt));
+        this.registerHandler(ProjectileHitEvent.class, (evt) -> new MgProjectileHitEvent(evt));
+        this.registerHandler(ProjectileLaunchEvent.class, (evt) -> new MgProjectileLaunchEvent(evt));
+        this.registerHandler(SheepDyeWoolEvent.class, (evt) -> new MgSheepDyeWoolEvent(evt));
+        this.registerHandler(SheepRegrowWoolEvent.class, (evt) -> new MgSheepRegrowWoolEvent(evt));
+        this.registerHandler(SignChangeEvent.class, (evt) -> new MgSignChangeEvent(evt));
+        this.registerHandler(SlimeSplitEvent.class, (evt) -> new MgSlimeSplitEvent(evt));
+        this.registerHandler(SpawnerSpawnEvent.class, (evt) -> new MgSpawnerSpawnEvent(evt));
+        this.registerHandler(VehicleBlockCollisionEvent.class, (evt) -> new MgVehicleBlockCollisionEvent(evt));
+        this.registerHandler(VehicleCreateEvent.class, (evt) -> new MgVehicleCreateEvent(evt));
+        this.registerHandler(VehicleDamageEvent.class, (evt) -> new MgVehicleDamageEvent(evt));
+        this.registerHandler(VehicleDestroyEvent.class, (evt) -> new MgVehicleDestroyEvent(evt));
+        this.registerHandler(VehicleEnterEvent.class, (evt) -> new MgVehicleEnterEvent(evt));
+        this.registerHandler(VehicleEntityCollisionEvent.class, (evt) -> new MgVehicleEntityCollisionEvent(evt));
+        this.registerHandler(VehicleExitEvent.class, (evt) -> new MgVehicleExitEvent(evt));
+        this.registerHandler(VehicleMoveEvent.class, (evt) -> new MgVehicleMoveEvent(evt));
+        this.registerHandler(VehicleUpdateEvent.class, (evt) -> new MgVehicleUpdateEvent(evt));
+        this.registerHandler(VillagerAcquireTradeEvent.class, (evt) -> new MgVillagerAcquireTradeEvent(evt));
+        this.registerHandler(VillagerReplenishTradeEvent.class, (evt) -> new MgVillagerReplenishTradeEvent(evt));
+    }
+
     /**
      * Event handler for AreaEffectCloudApplyEvent event.
      * @param evt the event to be passed.

@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerFishEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerFishEvent extends MinigameEvent<PlayerFishEvent>
+public interface MinigamePlayerFishEvent extends MinigameEvent<PlayerFishEvent, MinigamePlayerFishEvent>
 {
     
     // TODO default stubbings

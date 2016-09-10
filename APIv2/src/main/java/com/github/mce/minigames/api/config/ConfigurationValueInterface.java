@@ -605,7 +605,11 @@ public interface ConfigurationValueInterface
         ConfigurationTool.consume(
                 this, subpath,
                 (val, configs, config, lib, minigame, path) -> {
-                    final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+                    org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+                    if (section == null)
+                    {
+                        section = minigame.getConfig(configs.file()).createSection(path);
+                    }
                     value.writeToConfig(section);
                 });
     }
@@ -622,7 +626,12 @@ public interface ConfigurationValueInterface
         ConfigurationTool.consumeList(
                 this, subpath, value,
                 (val, configs, config, lib, minigame, section, path, element) -> {
-                    element.writeToConfig(section.getConfigurationSection(path));
+                    org.bukkit.configuration.ConfigurationSection section2 = section.getConfigurationSection(path);
+                    if (section2 == null)
+                    {
+                        section2 = section.createSection(path);
+                    }
+                    element.writeToConfig(section2);
                 });
     }
     
@@ -1071,7 +1080,11 @@ public interface ConfigurationValueInterface
         ConfigurationTool.consume(
                 this, ConfigurationObject.class, ConfigurationTool.objectPath(),
                 (val, configs, config, lib, minigame, path) -> {
-                    final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+                    org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+                    if (section == null)
+                    {
+                        section = minigame.getConfig(configs.file()).createSection(path);
+                    }
                     value.writeToConfig(section);
                 });
     }
@@ -1087,7 +1100,12 @@ public interface ConfigurationValueInterface
         ConfigurationTool.consumeList(
                 this, ConfigurationObjectList.class, ConfigurationTool.objectListPath(), value,
                 (val, configs, config, lib, minigame, section, path, element) -> {
-                    element.writeToConfig(section.getConfigurationSection(path));
+                    org.bukkit.configuration.ConfigurationSection configurationSection = section.getConfigurationSection(path);
+                    if (configurationSection == null)
+                    {
+                        configurationSection = section.createSection(path);
+                    }
+                    element.writeToConfig(configurationSection);
                 });
     }
     
@@ -1493,7 +1511,7 @@ public interface ConfigurationValueInterface
     default void setVectorList(Vector[] value)
     {
         ConfigurationTool.consumeList(
-                this, ConfigurationVector.class, ConfigurationTool.vectorPath(), value,
+                this, ConfigurationVectorList.class, ConfigurationTool.vectorListPath(), value,
                 (val, configs, config, lib, minigame, section, path, element) -> {
                     section.set(path, element.clone());
                 });
@@ -1510,7 +1528,11 @@ public interface ConfigurationValueInterface
         return (T) ConfigurationTool.calculate(
                 this, ConfigurationObject.class, ConfigurationTool.objectPath(),
                 (val, configs, config, lib, minigame, path) -> {
-                    final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+                    org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+                    if (section == null)
+                    {
+                        return null;
+                    }
                     final Configurable result = config.clazz().newInstance();
                     result.readFromConfig(section);
                     return result;
@@ -1565,7 +1587,10 @@ public interface ConfigurationValueInterface
     {
         return ConfigurationTool.calculate(
                 this, ConfigurationVector.class, ConfigurationTool.vectorPath(),
-                (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getVector(path).clone());
+                (val, configs, config, lib, minigame, path) -> {
+                    final Vector vector = minigame.getConfig(configs.file()).getVector(path);
+                    return vector == null ? null : vector.clone();
+                });
     }
     
     /**
@@ -1936,9 +1961,13 @@ public interface ConfigurationValueInterface
                 this, path,
                 (val, configs, config, lib, minigame, spath) -> {
                     final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
-                    final Configurable result = clazz.newInstance();
-                    result.readFromConfig(section);
-                    return result;
+                    if (section != null)
+                    {
+                        final Configurable result = clazz.newInstance();
+                        result.readFromConfig(section);
+                        return result;
+                    }
+                    return null;
                 });
     }
     
@@ -2259,7 +2288,10 @@ public interface ConfigurationValueInterface
     {
         return ConfigurationTool.calculate(
                 this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getColor(spath));
+                (val, configs, config, lib, minigame, spath) -> {
+                    final Color col = minigame.getConfig(configs.file()).getColor(spath);
+                    return col == null ? defaultValue : col;
+                });
     }
     
     /**
@@ -2274,7 +2306,10 @@ public interface ConfigurationValueInterface
     {
         return ConfigurationTool.calculate(
                 this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getItemStack(spath).clone());
+                (val, configs, config, lib, minigame, spath) -> {
+                    final ItemStack stack = minigame.getConfig(configs.file()).getItemStack(spath);
+                    return stack == null ? null : stack.clone();
+                });
     }
     
     /**
@@ -2289,7 +2324,10 @@ public interface ConfigurationValueInterface
     {
         return ConfigurationTool.calculate(
                 this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getVector(spath).clone());
+                (val, configs, config, lib, minigame, spath) -> {
+                    final Vector result = minigame.getConfig(configs.file()).getVector(spath);
+                    return result == null ? null : result.clone();
+                });
     }
     
     /**

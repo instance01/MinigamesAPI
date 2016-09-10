@@ -20,11 +20,11 @@ import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameVehicleDestroyEvent extends MinigameEvent<VehicleDestroyEvent>
+public interface MinigameVehicleDestroyEvent extends MinigameEvent<VehicleDestroyEvent, MinigameVehicleDestroyEvent>
 {
     
     // TODO default stubbings

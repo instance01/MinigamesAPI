@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerChatTabCompleteEvent extends MinigameEvent<PlayerChatTabCompleteEvent>
+public interface MinigamePlayerChatTabCompleteEvent extends MinigameEvent<PlayerChatTabCompleteEvent, MinigamePlayerChatTabCompleteEvent>
 {
     
     // TODO default stubbings

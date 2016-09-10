@@ -20,11 +20,11 @@ import org.bukkit.event.entity.SlimeSplitEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameSlimeSplitEvent extends MinigameEvent<SlimeSplitEvent>
+public interface MinigameSlimeSplitEvent extends MinigameEvent<SlimeSplitEvent, MinigameSlimeSplitEvent>
 {
     
     // TODO default stubbings

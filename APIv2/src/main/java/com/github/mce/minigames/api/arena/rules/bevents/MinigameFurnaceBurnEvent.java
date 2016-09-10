@@ -20,11 +20,11 @@ import org.bukkit.event.inventory.FurnaceBurnEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameFurnaceBurnEvent extends MinigameEvent<FurnaceBurnEvent>
+public interface MinigameFurnaceBurnEvent extends MinigameEvent<FurnaceBurnEvent, MinigameFurnaceBurnEvent>
 {
     
     // TODO default stubbings

@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerQuitEvent extends MinigameEvent<PlayerQuitEvent>
+public interface MinigamePlayerQuitEvent extends MinigameEvent<PlayerQuitEvent, MinigamePlayerQuitEvent>
 {
     
     // TODO default stubbings

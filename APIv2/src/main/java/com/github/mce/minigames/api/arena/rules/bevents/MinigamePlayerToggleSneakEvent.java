@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerToggleSneakEvent extends MinigameEvent<PlayerToggleSneakEvent>
+public interface MinigamePlayerToggleSneakEvent extends MinigameEvent<PlayerToggleSneakEvent, MinigamePlayerToggleSneakEvent>
 {
     
     // TODO default stubbings

@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerLevelChangeEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerLevelChangeEvent extends MinigameEvent<PlayerLevelChangeEvent>
+public interface MinigamePlayerLevelChangeEvent extends MinigameEvent<PlayerLevelChangeEvent, MinigamePlayerLevelChangeEvent>
 {
     
     // TODO default stubbings

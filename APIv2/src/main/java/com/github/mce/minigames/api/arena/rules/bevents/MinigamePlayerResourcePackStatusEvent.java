@@ -21,12 +21,12 @@ import com.github.mce.minigames.api.MinecraftVersionsType;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_8_R3)
-public interface MinigamePlayerResourcePackStatusEvent extends MinigameEvent<PlayerResourcePackStatusEvent>
+public interface MinigamePlayerResourcePackStatusEvent extends MinigameEvent<PlayerResourcePackStatusEvent, MinigamePlayerResourcePackStatusEvent>
 {
     
     // TODO default stubbings

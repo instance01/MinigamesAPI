@@ -21,12 +21,12 @@ import com.github.mce.minigames.api.MinecraftVersionsType;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_9_R1)
-public interface MinigameEntityToggleGlideEvent extends MinigameEvent<EntityToggleGlideEvent>
+public interface MinigameEntityToggleGlideEvent extends MinigameEvent<EntityToggleGlideEvent, MinigameEntityToggleGlideEvent>
 {
     
     // TODO default stubbings

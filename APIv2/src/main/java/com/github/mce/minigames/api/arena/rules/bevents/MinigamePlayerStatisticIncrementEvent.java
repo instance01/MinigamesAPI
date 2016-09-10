@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerStatisticIncrementEvent extends MinigameEvent<PlayerStatisticIncrementEvent>
+public interface MinigamePlayerStatisticIncrementEvent extends MinigameEvent<PlayerStatisticIncrementEvent, MinigamePlayerStatisticIncrementEvent>
 {
     
     // TODO default stubbings

@@ -21,14 +21,27 @@ import com.github.mce.minigames.api.MinecraftVersionsType;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
+ * 
+ * <h3>Using this event as a rule</h3>
+ * 
+ * <dl>
+ * <dt>Player-Rule</dt>
+ * <dd>Not supported.</dd>
+ * <dt>Arena-Rule</dt>
+ * <dd>Passed to the arena calculated from exploding blocks location</dd>
+ * <dt>Minigame-Rule</dt>
+ * <dd>Passed to the minigame calculated from arena</dd>
+ * </dl>
  * 
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_8_R2)
-public interface MinigameBlockExplodeEvent extends MinigameEvent<BlockExplodeEvent>
+public interface MinigameBlockExplodeEvent extends MinigameEvent<BlockExplodeEvent, MinigameBlockExplodeEvent>
 {
     
-    // TODO default stubbings
+    // TODO what (exploding blocks)
+    // TODO affected blocks
+    // TODO yield
     
 }

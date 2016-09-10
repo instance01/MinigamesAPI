@@ -20,11 +20,11 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigameEnchantItemEvent extends MinigameEvent<EnchantItemEvent>
+public interface MinigameEnchantItemEvent extends MinigameEvent<EnchantItemEvent, MinigameEnchantItemEvent>
 {
     
     // TODO default stubbings

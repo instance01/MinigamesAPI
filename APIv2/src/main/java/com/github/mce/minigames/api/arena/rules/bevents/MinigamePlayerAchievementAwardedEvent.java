@@ -20,11 +20,11 @@ import org.bukkit.event.player.PlayerAchievementAwardedEvent;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Block break event.
+ * Minigame event representation of corresponding bukkit event.
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerAchievementAwardedEvent extends MinigameEvent<PlayerAchievementAwardedEvent>
+public interface MinigamePlayerAchievementAwardedEvent extends MinigameEvent<PlayerAchievementAwardedEvent, MinigamePlayerAchievementAwardedEvent>
 {
     
     // TODO default stubbings
