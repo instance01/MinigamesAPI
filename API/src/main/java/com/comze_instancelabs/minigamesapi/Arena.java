@@ -2089,7 +2089,7 @@ public class Arena
         if (this.lastdamager.containsKey(playername))
         {
             final Player killer = Bukkit.getPlayer(this.lastdamager.get(playername));
-            if (killer != null)
+            if (killer != null && !playername.equals(killer.getName()))
             {
                 this.pli.getStatsInstance().addDeath(playername);
                 this.temp_kill_count.put(killer.getName(), this.temp_kill_count.containsKey(killer.getName()) ? this.temp_kill_count.get(killer.getName()) + 1 : 1);
