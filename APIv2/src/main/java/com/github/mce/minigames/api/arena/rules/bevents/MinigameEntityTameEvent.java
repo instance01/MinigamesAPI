@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameEntityTameEvent extends MinigameEvent<EntityTameEvent>
+public interface MinigameEntityTameEvent extends MinigameEvent<EntityTameEvent, MinigameEntityTameEvent>
 {
     
     // TODO default stubbings

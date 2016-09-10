@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgNotePlayEvent extends AbstractMinigameEvent<NotePlayEvent> implements MinigameNotePlayEvent
+public class MgNotePlayEvent extends AbstractMinigameEvent<NotePlayEvent, MinigameNotePlayEvent> implements MinigameNotePlayEvent
 {
 
     /**

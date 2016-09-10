@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameVehicleBlockCollisionEvent extends MinigameEvent<VehicleBlockCollisionEvent>
+public interface MinigameVehicleBlockCollisionEvent extends MinigameEvent<VehicleBlockCollisionEvent, MinigameVehicleBlockCollisionEvent>
 {
     
     // TODO default stubbings

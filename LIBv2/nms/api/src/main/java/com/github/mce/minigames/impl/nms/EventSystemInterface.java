@@ -34,6 +34,6 @@ public interface EventSystemInterface extends Listener
      * @param bukkitEvent
      * @return minigame event.
      */
-    <Evt extends Event> MinigameEvent<Evt> createEvent(Evt bukkitEvent);
+    <Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>> MgEvt createEvent(Evt bukkitEvent);
     
 }

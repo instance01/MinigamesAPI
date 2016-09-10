@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerRespawnEvent extends AbstractMinigameEvent<PlayerRespawnEvent> implements MinigamePlayerRespawnEvent
+public class MgPlayerRespawnEvent extends AbstractMinigameEvent<PlayerRespawnEvent, MinigamePlayerRespawnEvent> implements MinigamePlayerRespawnEvent
 {
 
     /**

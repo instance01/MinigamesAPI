@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_9_R1)
-public interface MinigameVillagerReplenishTradeEvent extends MinigameEvent<VillagerReplenishTradeEvent>
+public interface MinigameVillagerReplenishTradeEvent extends MinigameEvent<VillagerReplenishTradeEvent, MinigameVillagerReplenishTradeEvent>
 {
     
     // TODO default stubbings

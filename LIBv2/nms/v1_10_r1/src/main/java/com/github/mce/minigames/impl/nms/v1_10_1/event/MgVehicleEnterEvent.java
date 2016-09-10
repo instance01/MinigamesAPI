@@ -15,8 +15,10 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameVehicleEnterEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -25,7 +27,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgVehicleEnterEvent extends AbstractMinigameEvent<VehicleEnterEvent> implements MinigameVehicleEnterEvent
+public class MgVehicleEnterEvent extends AbstractMinigameEvent<VehicleEnterEvent, MinigameVehicleEnterEvent> implements MinigameVehicleEnterEvent
 {
 
     /**
@@ -34,7 +36,7 @@ public class MgVehicleEnterEvent extends AbstractMinigameEvent<VehicleEnterEvent
      */
     public MgVehicleEnterEvent(VehicleEnterEvent event)
     {
-        super(event, null); // TODO
+        super(event, (event.getEntered() instanceof Player) ? MglibInterface.INSTANCE.get().getPlayer((Player) event.getEntered()) : null, event.getVehicle().getLocation());
     }
     
 }

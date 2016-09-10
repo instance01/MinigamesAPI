@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockRedstoneEvent extends AbstractMinigameEvent<BlockRedstoneEvent> implements MinigameBlockRedstoneEvent
+public class MgBlockRedstoneEvent extends AbstractMinigameEvent<BlockRedstoneEvent, MinigameBlockRedstoneEvent> implements MinigameBlockRedstoneEvent
 {
 
     /**

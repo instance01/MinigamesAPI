@@ -15,21 +15,28 @@
 
 package com.github.mce.minigames.impl.nms;
 
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
+import com.github.mce.minigames.api.util.function.MgPredicate;
+import com.github.mce.minigames.impl.stubs.FalseStub;
+import com.github.mce.minigames.impl.stubs.TrueStub;
 
 /**
  * Base Implementation for minigame events.
  * 
  * @author mepeisen
  * @param <Evt> event class
+ * @param <MgEvt> minigame event class
  */
-public abstract class AbstractMinigameEvent<Evt extends Event> implements MinigameEvent<Evt>
+public abstract class AbstractMinigameEvent<Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>> implements MinigameEvent<Evt, MgEvt>
 {
     
     /** the bukkit event object. */
@@ -37,6 +44,9 @@ public abstract class AbstractMinigameEvent<Evt extends Event> implements Miniga
     
     /** the player for this event. */
     private ArenaPlayerInterface player;
+    
+    /** the arena interface. */
+    private ArenaInterface arena;
 
     /**
      * Abstract minigame event.
@@ -47,6 +57,48 @@ public abstract class AbstractMinigameEvent<Evt extends Event> implements Miniga
     {
         this.event = event;
         this.player = player;
+        this.arena = player == null ? null : this.player.getArena();
+    }
+
+    /**
+     * Abstract minigame event.
+     * @param event the event.
+     * @param player
+     * @param arena
+     */
+    public AbstractMinigameEvent(Evt event, ArenaPlayerInterface player, ArenaInterface arena)
+    {
+        this.event = event;
+        this.player = player;
+        this.arena = arena;
+    }
+
+    /**
+     * Abstract minigame event.
+     * @param event the event.
+     * @param player
+     * @param location
+     */
+    public AbstractMinigameEvent(Evt event, ArenaPlayerInterface player, Location location)
+    {
+        this.event = event;
+        this.player = player;
+        this.arena = this.getLib().getArenaFromLocation(location);
+    }
+
+    /**
+     * Abstract minigame event.
+     * @param event the event.
+     * @param player
+     * @param location
+     * @param affectedLocations
+     */
+    public AbstractMinigameEvent(Evt event, ArenaPlayerInterface player, Location location, Location[] affectedLocations)
+    {
+        this.event = event;
+        this.player = player;
+        this.arena = this.getLib().getArenaFromLocation(location);
+        // TODO
     }
 
     @Override
@@ -64,8 +116,7 @@ public abstract class AbstractMinigameEvent<Evt extends Event> implements Miniga
     @Override
     public MinigameInterface getMinigame()
     {
-        final ArenaInterface arena = this.player.getArena();
-        return arena == null ? null : arena.getMinigame();
+        return this.arena == null ? null : this.arena.getMinigame();
     }
 
     @Override
@@ -78,6 +129,17 @@ public abstract class AbstractMinigameEvent<Evt extends Event> implements Miniga
     public ArenaPlayerInterface getPlayer()
     {
         return this.player;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public MgOutgoingStubbing<MgEvt> when(MgPredicate<MgEvt> test) throws MinigameException
+    {
+        if (test.test((MgEvt) this))
+        {
+            return new TrueStub<>((MgEvt) this);
+        }
+        return new FalseStub<>((MgEvt) this);
     }
     
 }

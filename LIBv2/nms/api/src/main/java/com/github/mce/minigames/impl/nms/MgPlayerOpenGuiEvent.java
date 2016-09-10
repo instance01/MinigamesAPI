@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.PlayerOpenGuiEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerOpenGuiEvent extends AbstractMinigameEvent<PlayerOpenGuiEvent> implements MinigamePlayerOpenGuiEvent
+public class MgPlayerOpenGuiEvent extends AbstractMinigameEvent<PlayerOpenGuiEvent, MinigamePlayerOpenGuiEvent> implements MinigamePlayerOpenGuiEvent
 {
 
     /**

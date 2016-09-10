@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameEntityRegainHealthEvent extends MinigameEvent<EntityRegainHealthEvent>
+public interface MinigameEntityRegainHealthEvent extends MinigameEvent<EntityRegainHealthEvent, MinigameEntityRegainHealthEvent>
 {
     
     // TODO default stubbings

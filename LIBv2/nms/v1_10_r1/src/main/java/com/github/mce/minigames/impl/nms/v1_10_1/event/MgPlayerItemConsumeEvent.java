@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerItemConsumeEvent extends AbstractMinigameEvent<PlayerItemConsumeEvent> implements MinigamePlayerItemConsumeEvent
+public class MgPlayerItemConsumeEvent extends AbstractMinigameEvent<PlayerItemConsumeEvent, MinigamePlayerItemConsumeEvent> implements MinigamePlayerItemConsumeEvent
 {
 
     /**

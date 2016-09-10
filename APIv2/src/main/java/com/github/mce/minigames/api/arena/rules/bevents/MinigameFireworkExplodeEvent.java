@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_8_R3)
-public interface MinigameFireworkExplodeEvent extends MinigameEvent<FireworkExplodeEvent>
+public interface MinigameFireworkExplodeEvent extends MinigameEvent<FireworkExplodeEvent, MinigameFireworkExplodeEvent>
 {
     
     // TODO default stubbings

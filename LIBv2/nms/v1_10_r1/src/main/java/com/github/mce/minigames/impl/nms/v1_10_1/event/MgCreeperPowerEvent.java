@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgCreeperPowerEvent extends AbstractMinigameEvent<CreeperPowerEvent> implements MinigameCreeperPowerEvent
+public class MgCreeperPowerEvent extends AbstractMinigameEvent<CreeperPowerEvent, MinigameCreeperPowerEvent> implements MinigameCreeperPowerEvent
 {
 
     /**

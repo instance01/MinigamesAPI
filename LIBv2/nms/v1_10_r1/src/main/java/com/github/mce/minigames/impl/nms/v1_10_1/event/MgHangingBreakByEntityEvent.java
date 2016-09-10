@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgHangingBreakByEntityEvent extends AbstractMinigameEvent<HangingBreakByEntityEvent> implements MinigameHangingBreakByEntityEvent
+public class MgHangingBreakByEntityEvent extends AbstractMinigameEvent<HangingBreakByEntityEvent, MinigameHangingBreakByEntityEvent> implements MinigameHangingBreakByEntityEvent
 {
 
     /**

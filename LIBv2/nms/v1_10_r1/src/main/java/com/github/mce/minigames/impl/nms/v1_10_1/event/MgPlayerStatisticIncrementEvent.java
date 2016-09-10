@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerStatisticIncrementEvent extends AbstractMinigameEvent<PlayerStatisticIncrementEvent> implements MinigamePlayerStatisticIncrementEvent
+public class MgPlayerStatisticIncrementEvent extends AbstractMinigameEvent<PlayerStatisticIncrementEvent, MinigamePlayerStatisticIncrementEvent> implements MinigamePlayerStatisticIncrementEvent
 {
 
     /**

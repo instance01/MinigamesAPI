@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameExplosionPrimeEvent extends MinigameEvent<ExplosionPrimeEvent>
+public interface MinigameExplosionPrimeEvent extends MinigameEvent<ExplosionPrimeEvent, MinigameExplosionPrimeEvent>
 {
     
     // TODO default stubbings

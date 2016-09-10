@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_9_R1)
-public interface MinigameEnderDragonChangePhaseEvent extends MinigameEvent<EnderDragonChangePhaseEvent>
+public interface MinigameEnderDragonChangePhaseEvent extends MinigameEvent<EnderDragonChangePhaseEvent, MinigameEnderDragonChangePhaseEvent>
 {
     
     // TODO default stubbings

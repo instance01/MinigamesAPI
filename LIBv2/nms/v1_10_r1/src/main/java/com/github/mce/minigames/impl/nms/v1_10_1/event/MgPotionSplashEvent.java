@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPotionSplashEvent extends AbstractMinigameEvent<PotionSplashEvent> implements MinigamePotionSplashEvent
+public class MgPotionSplashEvent extends AbstractMinigameEvent<PotionSplashEvent, MinigamePotionSplashEvent> implements MinigamePotionSplashEvent
 {
 
     /**

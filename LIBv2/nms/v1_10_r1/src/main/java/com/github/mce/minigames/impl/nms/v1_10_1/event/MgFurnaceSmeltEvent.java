@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgFurnaceSmeltEvent extends AbstractMinigameEvent<FurnaceSmeltEvent> implements MinigameFurnaceSmeltEvent
+public class MgFurnaceSmeltEvent extends AbstractMinigameEvent<FurnaceSmeltEvent, MinigameFurnaceSmeltEvent> implements MinigameFurnaceSmeltEvent
 {
 
     /**

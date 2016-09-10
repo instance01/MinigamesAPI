@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgAreaEffectCloudApplyEvent extends AbstractMinigameEvent<AreaEffectCloudApplyEvent> implements MinigameAreaEffectCloudApplyEvent
+public class MgAreaEffectCloudApplyEvent extends AbstractMinigameEvent<AreaEffectCloudApplyEvent, MinigameAreaEffectCloudApplyEvent> implements MinigameAreaEffectCloudApplyEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgAreaEffectCloudApplyEvent extends AbstractMinigameEvent<AreaEffec
      */
     public MgAreaEffectCloudApplyEvent(AreaEffectCloudApplyEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

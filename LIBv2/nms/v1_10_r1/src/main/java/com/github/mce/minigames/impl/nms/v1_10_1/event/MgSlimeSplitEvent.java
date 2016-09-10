@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgSlimeSplitEvent extends AbstractMinigameEvent<SlimeSplitEvent> implements MinigameSlimeSplitEvent
+public class MgSlimeSplitEvent extends AbstractMinigameEvent<SlimeSplitEvent, MinigameSlimeSplitEvent> implements MinigameSlimeSplitEvent
 {
 
     /**

@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgCraftItemEvent extends AbstractMinigameEvent<CraftItemEvent> implements MinigameCraftItemEvent
+public class MgCraftItemEvent extends AbstractMinigameEvent<CraftItemEvent, MinigameCraftItemEvent> implements MinigameCraftItemEvent
 {
 
     /**

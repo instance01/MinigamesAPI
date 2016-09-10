@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameInventoryClickEvent extends MinigameEvent<InventoryClickEvent>
+public interface MinigameInventoryClickEvent extends MinigameEvent<InventoryClickEvent, MinigameInventoryClickEvent>
 {
     
     // TODO default stubbings

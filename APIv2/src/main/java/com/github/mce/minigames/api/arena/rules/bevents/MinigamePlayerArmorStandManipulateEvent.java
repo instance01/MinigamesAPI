@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_8_R2)
-public interface MinigamePlayerArmorStandManipulateEvent extends MinigameEvent<PlayerArmorStandManipulateEvent>
+public interface MinigamePlayerArmorStandManipulateEvent extends MinigameEvent<PlayerArmorStandManipulateEvent, MinigamePlayerArmorStandManipulateEvent>
 {
     
     // TODO default stubbings

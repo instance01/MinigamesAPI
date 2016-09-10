@@ -39,14 +39,10 @@ public class MinigameInterfaceProvider implements ContextHandlerInterface<Miniga
         return null;
     }
     
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.ContextHandlerInterface#calculateFromEvent(com.github.mce.minigames.api.arena.rules.MinigameEvent, com.github.mce.minigames.api.MinigameContext)
-     */
     @Override
-    public MinigameInterface calculateFromEvent(MinigameEvent<?> event, MinigameContext context)
+    public MinigameInterface calculateFromEvent(MinigameEvent<?, ?> event, MinigameContext context)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return event.getMinigame();
     }
     
 }

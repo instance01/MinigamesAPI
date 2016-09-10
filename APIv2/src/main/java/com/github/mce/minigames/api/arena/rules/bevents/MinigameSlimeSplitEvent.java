@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameSlimeSplitEvent extends MinigameEvent<SlimeSplitEvent>
+public interface MinigameSlimeSplitEvent extends MinigameEvent<SlimeSplitEvent, MinigameSlimeSplitEvent>
 {
     
     // TODO default stubbings

@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_10_R1)
-public interface MinigameEntityBreedEvent extends MinigameEvent<EntityBreedEvent>
+public interface MinigameEntityBreedEvent extends MinigameEvent<EntityBreedEvent, MinigameEntityBreedEvent>
 {
     
     // TODO default stubbings

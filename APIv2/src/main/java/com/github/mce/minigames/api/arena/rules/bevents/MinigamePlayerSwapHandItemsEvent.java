@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_9_R1)
-public interface MinigamePlayerSwapHandItemsEvent extends MinigameEvent<PlayerSwapHandItemsEvent>
+public interface MinigamePlayerSwapHandItemsEvent extends MinigameEvent<PlayerSwapHandItemsEvent, MinigamePlayerSwapHandItemsEvent>
 {
     
     // TODO default stubbings

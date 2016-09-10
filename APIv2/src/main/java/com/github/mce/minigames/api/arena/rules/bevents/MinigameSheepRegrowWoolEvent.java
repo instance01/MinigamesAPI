@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameSheepRegrowWoolEvent extends MinigameEvent<SheepRegrowWoolEvent>
+public interface MinigameSheepRegrowWoolEvent extends MinigameEvent<SheepRegrowWoolEvent, MinigameSheepRegrowWoolEvent>
 {
     
     // TODO default stubbings

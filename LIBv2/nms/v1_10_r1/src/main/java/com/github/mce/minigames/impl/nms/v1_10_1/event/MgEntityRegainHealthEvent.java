@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityRegainHealthEvent extends AbstractMinigameEvent<EntityRegainHealthEvent> implements MinigameEntityRegainHealthEvent
+public class MgEntityRegainHealthEvent extends AbstractMinigameEvent<EntityRegainHealthEvent, MinigameEntityRegainHealthEvent> implements MinigameEntityRegainHealthEvent
 {
 
     /**

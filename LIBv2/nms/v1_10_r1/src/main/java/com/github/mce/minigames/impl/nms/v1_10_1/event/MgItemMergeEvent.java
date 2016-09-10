@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgItemMergeEvent extends AbstractMinigameEvent<ItemMergeEvent> implements MinigameItemMergeEvent
+public class MgItemMergeEvent extends AbstractMinigameEvent<ItemMergeEvent, MinigameItemMergeEvent> implements MinigameItemMergeEvent
 {
 
     /**

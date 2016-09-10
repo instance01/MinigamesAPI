@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * @author mepeisen
  */
 @MinecraftVersionRange(min = MinecraftVersionsType.V1_8_R3)
-public interface MinigamePlayerResourcePackStatusEvent extends MinigameEvent<PlayerResourcePackStatusEvent>
+public interface MinigamePlayerResourcePackStatusEvent extends MinigameEvent<PlayerResourcePackStatusEvent, MinigamePlayerResourcePackStatusEvent>
 {
     
     // TODO default stubbings

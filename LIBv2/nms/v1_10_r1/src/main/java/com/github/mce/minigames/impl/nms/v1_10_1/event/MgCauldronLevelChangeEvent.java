@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgCauldronLevelChangeEvent extends AbstractMinigameEvent<CauldronLevelChangeEvent> implements MinigameCauldronLevelChangeEvent
+public class MgCauldronLevelChangeEvent extends AbstractMinigameEvent<CauldronLevelChangeEvent, MinigameCauldronLevelChangeEvent> implements MinigameCauldronLevelChangeEvent
 {
 
     /**

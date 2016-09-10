@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgVehicleDestroyEvent extends AbstractMinigameEvent<VehicleDestroyEvent> implements MinigameVehicleDestroyEvent
+public class MgVehicleDestroyEvent extends AbstractMinigameEvent<VehicleDestroyEvent, MinigameVehicleDestroyEvent> implements MinigameVehicleDestroyEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgVehicleDestroyEvent extends AbstractMinigameEvent<VehicleDestroyE
      */
     public MgVehicleDestroyEvent(VehicleDestroyEvent event)
     {
-        super(event, null); // TODO
+        super(event, null); // TODO Attacker
     }
     
 }

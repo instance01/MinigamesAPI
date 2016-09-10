@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerSpawnLocationEvent extends AbstractMinigameEvent<PlayerSpawnLocationEvent> implements MinigamePlayerSpawnLocationEvent
+public class MgPlayerSpawnLocationEvent extends AbstractMinigameEvent<PlayerSpawnLocationEvent, MinigamePlayerSpawnLocationEvent> implements MinigamePlayerSpawnLocationEvent
 {
 
     /**

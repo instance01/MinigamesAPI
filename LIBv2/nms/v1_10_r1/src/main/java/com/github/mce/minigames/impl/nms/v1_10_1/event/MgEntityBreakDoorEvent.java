@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityBreakDoorEvent extends AbstractMinigameEvent<EntityBreakDoorEvent> implements MinigameEntityBreakDoorEvent
+public class MgEntityBreakDoorEvent extends AbstractMinigameEvent<EntityBreakDoorEvent, MinigameEntityBreakDoorEvent> implements MinigameEntityBreakDoorEvent
 {
 
     /**

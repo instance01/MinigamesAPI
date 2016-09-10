@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameEntityBreakDoorEvent extends MinigameEvent<EntityBreakDoorEvent>
+public interface MinigameEntityBreakDoorEvent extends MinigameEvent<EntityBreakDoorEvent, MinigameEntityBreakDoorEvent>
 {
     
     // TODO default stubbings

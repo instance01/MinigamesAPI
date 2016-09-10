@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgLeavesDecayEvent extends AbstractMinigameEvent<LeavesDecayEvent> implements MinigameLeavesDecayEvent
+public class MgLeavesDecayEvent extends AbstractMinigameEvent<LeavesDecayEvent, MinigameLeavesDecayEvent> implements MinigameLeavesDecayEvent
 {
 
     /**

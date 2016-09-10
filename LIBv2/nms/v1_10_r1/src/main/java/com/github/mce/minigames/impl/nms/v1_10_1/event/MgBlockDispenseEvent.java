@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockDispenseEvent extends AbstractMinigameEvent<BlockDispenseEvent> implements MinigameBlockDispenseEvent
+public class MgBlockDispenseEvent extends AbstractMinigameEvent<BlockDispenseEvent, MinigameBlockDispenseEvent> implements MinigameBlockDispenseEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgBlockDispenseEvent extends AbstractMinigameEvent<BlockDispenseEve
      */
     public MgBlockDispenseEvent(BlockDispenseEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

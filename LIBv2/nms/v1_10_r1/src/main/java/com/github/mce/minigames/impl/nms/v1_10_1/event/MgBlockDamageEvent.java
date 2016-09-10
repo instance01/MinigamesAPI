@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
 import org.bukkit.event.block.BlockDamageEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameBlockDamageEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -25,7 +26,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockDamageEvent extends AbstractMinigameEvent<BlockDamageEvent> implements MinigameBlockDamageEvent
+public class MgBlockDamageEvent extends AbstractMinigameEvent<BlockDamageEvent, MinigameBlockDamageEvent> implements MinigameBlockDamageEvent
 {
 
     /**
@@ -34,7 +35,7 @@ public class MgBlockDamageEvent extends AbstractMinigameEvent<BlockDamageEvent> 
      */
     public MgBlockDamageEvent(BlockDamageEvent event)
     {
-        super(event, null); // TODO
+        super(event, MglibInterface.INSTANCE.get().getPlayer(event.getPlayer()), event.getBlock().getLocation());
     }
     
 }

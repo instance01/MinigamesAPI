@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerCommandPreprocessEvent extends AbstractMinigameEvent<PlayerCommandPreprocessEvent> implements MinigamePlayerCommandPreprocessEvent
+public class MgPlayerCommandPreprocessEvent extends AbstractMinigameEvent<PlayerCommandPreprocessEvent, MinigamePlayerCommandPreprocessEvent> implements MinigamePlayerCommandPreprocessEvent
 {
 
     /**

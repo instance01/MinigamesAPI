@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockFadeEvent extends AbstractMinigameEvent<BlockFadeEvent> implements MinigameBlockFadeEvent
+public class MgBlockFadeEvent extends AbstractMinigameEvent<BlockFadeEvent, MinigameBlockFadeEvent> implements MinigameBlockFadeEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgBlockFadeEvent extends AbstractMinigameEvent<BlockFadeEvent> impl
      */
     public MgBlockFadeEvent(BlockFadeEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

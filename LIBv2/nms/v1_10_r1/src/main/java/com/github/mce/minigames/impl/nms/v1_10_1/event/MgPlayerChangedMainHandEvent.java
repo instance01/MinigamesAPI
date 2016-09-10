@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerChangedMainHandEvent extends AbstractMinigameEvent<PlayerChangedMainHandEvent> implements MinigamePlayerChangedMainHandEvent
+public class MgPlayerChangedMainHandEvent extends AbstractMinigameEvent<PlayerChangedMainHandEvent, MinigamePlayerChangedMainHandEvent> implements MinigamePlayerChangedMainHandEvent
 {
 
     /**

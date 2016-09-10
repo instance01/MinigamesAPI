@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePigZapEvent extends MinigameEvent<PigZapEvent>
+public interface MinigamePigZapEvent extends MinigameEvent<PigZapEvent, MinigamePigZapEvent>
 {
     
     // TODO default stubbings

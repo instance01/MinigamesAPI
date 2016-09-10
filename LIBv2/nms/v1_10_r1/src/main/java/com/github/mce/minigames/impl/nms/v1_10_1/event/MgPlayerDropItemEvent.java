@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerDropItemEvent extends AbstractMinigameEvent<PlayerDropItemEvent> implements MinigamePlayerDropItemEvent
+public class MgPlayerDropItemEvent extends AbstractMinigameEvent<PlayerDropItemEvent, MinigamePlayerDropItemEvent> implements MinigamePlayerDropItemEvent
 {
 
     /**

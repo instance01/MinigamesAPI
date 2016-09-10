@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameHorseJumpEvent extends MinigameEvent<HorseJumpEvent>
+public interface MinigameHorseJumpEvent extends MinigameEvent<HorseJumpEvent, MinigameHorseJumpEvent>
 {
     
     // TODO default stubbings

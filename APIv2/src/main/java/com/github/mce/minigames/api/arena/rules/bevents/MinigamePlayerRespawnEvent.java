@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerRespawnEvent extends MinigameEvent<PlayerRespawnEvent>
+public interface MinigamePlayerRespawnEvent extends MinigameEvent<PlayerRespawnEvent, MinigamePlayerRespawnEvent>
 {
     
     // TODO default stubbings

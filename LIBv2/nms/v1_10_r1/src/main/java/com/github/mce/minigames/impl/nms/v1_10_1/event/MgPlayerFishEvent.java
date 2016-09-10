@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerFishEvent extends AbstractMinigameEvent<PlayerFishEvent> implements MinigamePlayerFishEvent
+public class MgPlayerFishEvent extends AbstractMinigameEvent<PlayerFishEvent, MinigamePlayerFishEvent> implements MinigamePlayerFishEvent
 {
 
     /**

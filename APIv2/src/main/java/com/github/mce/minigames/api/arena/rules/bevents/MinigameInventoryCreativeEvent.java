@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameInventoryCreativeEvent extends MinigameEvent<InventoryCreativeEvent>
+public interface MinigameInventoryCreativeEvent extends MinigameEvent<InventoryCreativeEvent, MinigameInventoryCreativeEvent>
 {
     
     // TODO default stubbings

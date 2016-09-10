@@ -15,8 +15,10 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameVehicleEntityCollisionEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -25,7 +27,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgVehicleEntityCollisionEvent extends AbstractMinigameEvent<VehicleEntityCollisionEvent> implements MinigameVehicleEntityCollisionEvent
+public class MgVehicleEntityCollisionEvent extends AbstractMinigameEvent<VehicleEntityCollisionEvent, MinigameVehicleEntityCollisionEvent> implements MinigameVehicleEntityCollisionEvent
 {
 
     /**
@@ -34,7 +36,7 @@ public class MgVehicleEntityCollisionEvent extends AbstractMinigameEvent<Vehicle
      */
     public MgVehicleEntityCollisionEvent(VehicleEntityCollisionEvent event)
     {
-        super(event, null); // TODO
+        super(event, (event.getVehicle().getPassenger() instanceof Player) ? MglibInterface.INSTANCE.get().getPlayer((Player) event.getVehicle().getPassenger()) : null, event.getVehicle().getLocation());
     }
     
 }

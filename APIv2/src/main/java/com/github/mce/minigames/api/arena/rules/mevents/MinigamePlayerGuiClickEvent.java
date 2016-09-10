@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.PlayerGuiClickEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerGuiClickEvent extends MinigameEvent<PlayerGuiClickEvent>
+public interface MinigamePlayerGuiClickEvent extends MinigameEvent<PlayerGuiClickEvent, MinigamePlayerGuiClickEvent>
 {
     
     // TODO default stubbings

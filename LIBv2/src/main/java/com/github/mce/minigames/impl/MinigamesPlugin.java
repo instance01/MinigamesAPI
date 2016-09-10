@@ -61,6 +61,7 @@ import com.github.mce.minigames.api.arena.MatchPhaseId;
 import com.github.mce.minigames.api.arena.rules.AdminRuleId;
 import com.github.mce.minigames.api.arena.rules.ArenaRuleId;
 import com.github.mce.minigames.api.arena.rules.MatchRuleId;
+import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.arena.rules.PlayerRuleId;
 import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
 import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
@@ -92,7 +93,6 @@ import com.github.mce.minigames.impl.context.ArenaPlayerInterfaceProvider;
 import com.github.mce.minigames.impl.context.DefaultResolver;
 import com.github.mce.minigames.impl.context.MinigameContextImpl;
 import com.github.mce.minigames.impl.context.MinigameInterfaceProvider;
-import com.github.mce.minigames.impl.event.MgInventoryClickEvent;
 import com.github.mce.minigames.impl.gui.GuiSessionImpl;
 import com.github.mce.minigames.impl.nms.EventSystemInterface;
 import com.github.mce.minigames.impl.nms.NmsFactory;
@@ -1243,6 +1243,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
      * @param evt
      *            inventory click event
      */
+    @SuppressWarnings("cast")
     @EventHandler
     public void onInventoryClick(InventoryClickEvent evt)
     {
@@ -1252,8 +1253,7 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
             final GuiSessionImpl session = (GuiSessionImpl) player.getGuiSession();
             if (session != null)
             {
-                this.contextImpl.runInContext(new MgInventoryClickEvent(evt, player), () -> {
-                    this.setContext(ArenaPlayerInterface.class, player);
+                this.contextImpl.runInContext((MinigameEvent<?, ?>) this.events.createEvent(evt), () -> {
                     session.onClick(evt);
                 });
             }
@@ -1356,6 +1356,16 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
         {
             return this.extensions.get(name);
         }
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see com.github.mce.minigames.api.MglibInterface#getArenaFromLocation(org.bukkit.Location)
+     */
+    @Override
+    public ArenaInterface getArenaFromLocation(Location location)
+    {
+        // TODO Auto-generated method stub
         return null;
     }
     

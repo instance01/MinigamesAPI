@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockPhysicsEvent extends AbstractMinigameEvent<BlockPhysicsEvent> implements MinigameBlockPhysicsEvent
+public class MgBlockPhysicsEvent extends AbstractMinigameEvent<BlockPhysicsEvent, MinigameBlockPhysicsEvent> implements MinigameBlockPhysicsEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgBlockPhysicsEvent extends AbstractMinigameEvent<BlockPhysicsEvent
      */
     public MgBlockPhysicsEvent(BlockPhysicsEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

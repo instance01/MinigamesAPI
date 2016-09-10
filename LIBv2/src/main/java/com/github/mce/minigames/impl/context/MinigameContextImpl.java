@@ -106,7 +106,7 @@ public class MinigameContextImpl implements MinigameContext
      * @param event
      * @param runnable
      */
-    public void runInContext(MinigameEvent<?> event, Runnable runnable)
+    public void runInContext(MinigameEvent<?, ?> event, Runnable runnable)
     {
         final TLD old = this.tls.get();
         final TLD tld = new TLD();
@@ -315,7 +315,7 @@ public class MinigameContextImpl implements MinigameContext
         /** the underlying command being executed. */
         public CommandInterface command;
         /** the underlying event being executed. */
-        public MinigameEvent<?> event;
+        public MinigameEvent<?, ?> event;
         
         /** stack of computes to detect endless loops. */
         public Set<Class<?>> computeStack = new HashSet<>();

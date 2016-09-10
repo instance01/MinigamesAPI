@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEnderDragonChangePhaseEvent extends AbstractMinigameEvent<EnderDragonChangePhaseEvent> implements MinigameEnderDragonChangePhaseEvent
+public class MgEnderDragonChangePhaseEvent extends AbstractMinigameEvent<EnderDragonChangePhaseEvent, MinigameEnderDragonChangePhaseEvent> implements MinigameEnderDragonChangePhaseEvent
 {
 
     /**

@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityCombustByEntityEvent extends AbstractMinigameEvent<EntityCombustByEntityEvent> implements MinigameEntityCombustByEntityEvent
+public class MgEntityCombustByEntityEvent extends AbstractMinigameEvent<EntityCombustByEntityEvent, MinigameEntityCombustByEntityEvent> implements MinigameEntityCombustByEntityEvent
 {
 
     /**

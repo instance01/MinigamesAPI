@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePotionSplashEvent extends MinigameEvent<PotionSplashEvent>
+public interface MinigamePotionSplashEvent extends MinigameEvent<PotionSplashEvent, MinigamePotionSplashEvent>
 {
     
     // TODO default stubbings

@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerDropItemEvent extends MinigameEvent<PlayerDropItemEvent>
+public interface MinigamePlayerDropItemEvent extends MinigameEvent<PlayerDropItemEvent, MinigamePlayerDropItemEvent>
 {
     
     // TODO default stubbings

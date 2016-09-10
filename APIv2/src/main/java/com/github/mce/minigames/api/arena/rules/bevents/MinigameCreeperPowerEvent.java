@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameCreeperPowerEvent extends MinigameEvent<CreeperPowerEvent>
+public interface MinigameCreeperPowerEvent extends MinigameEvent<CreeperPowerEvent, MinigameCreeperPowerEvent>
 {
     
     // TODO default stubbings

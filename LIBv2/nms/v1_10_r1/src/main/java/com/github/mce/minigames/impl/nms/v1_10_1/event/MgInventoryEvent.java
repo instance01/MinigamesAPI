@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgInventoryEvent extends AbstractMinigameEvent<InventoryEvent> implements MinigameInventoryEvent
+public class MgInventoryEvent extends AbstractMinigameEvent<InventoryEvent, MinigameInventoryEvent> implements MinigameInventoryEvent
 {
 
     /**

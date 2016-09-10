@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityInteractEvent extends AbstractMinigameEvent<EntityInteractEvent> implements MinigameEntityInteractEvent
+public class MgEntityInteractEvent extends AbstractMinigameEvent<EntityInteractEvent, MinigameEntityInteractEvent> implements MinigameEntityInteractEvent
 {
 
     /**

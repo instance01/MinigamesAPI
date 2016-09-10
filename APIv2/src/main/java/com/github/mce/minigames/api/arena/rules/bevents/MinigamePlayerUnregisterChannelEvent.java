@@ -24,7 +24,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerUnregisterChannelEvent extends MinigameEvent<PlayerUnregisterChannelEvent>
+public interface MinigamePlayerUnregisterChannelEvent extends MinigameEvent<PlayerUnregisterChannelEvent, MinigamePlayerUnregisterChannelEvent>
 {
     
     // TODO default stubbings

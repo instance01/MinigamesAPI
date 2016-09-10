@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityDeathEvent extends AbstractMinigameEvent<EntityDeathEvent> implements MinigameEntityDeathEvent
+public class MgEntityDeathEvent extends AbstractMinigameEvent<EntityDeathEvent, MinigameEntityDeathEvent> implements MinigameEntityDeathEvent
 {
 
     /**

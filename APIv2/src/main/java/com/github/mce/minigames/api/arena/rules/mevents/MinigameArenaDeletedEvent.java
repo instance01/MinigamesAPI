@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.ArenaDeletedEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameArenaDeletedEvent extends MinigameEvent<ArenaDeletedEvent>
+public interface MinigameArenaDeletedEvent extends MinigameEvent<ArenaDeletedEvent, MinigameArenaDeletedEvent>
 {
     
     // TODO default stubbings

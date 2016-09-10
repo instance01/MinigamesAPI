@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerTeleportEvent extends AbstractMinigameEvent<PlayerTeleportEvent> implements MinigamePlayerTeleportEvent
+public class MgPlayerTeleportEvent extends AbstractMinigameEvent<PlayerTeleportEvent, MinigamePlayerTeleportEvent> implements MinigamePlayerTeleportEvent
 {
 
     /**

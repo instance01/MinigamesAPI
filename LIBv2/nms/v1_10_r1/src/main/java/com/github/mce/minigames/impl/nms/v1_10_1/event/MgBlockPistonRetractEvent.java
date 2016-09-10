@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgBlockPistonRetractEvent extends AbstractMinigameEvent<BlockPistonRetractEvent> implements MinigameBlockPistonRetractEvent
+public class MgBlockPistonRetractEvent extends AbstractMinigameEvent<BlockPistonRetractEvent, MinigameBlockPistonRetractEvent> implements MinigameBlockPistonRetractEvent
 {
 
     /**
@@ -34,7 +34,7 @@ public class MgBlockPistonRetractEvent extends AbstractMinigameEvent<BlockPiston
      */
     public MgBlockPistonRetractEvent(BlockPistonRetractEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation()); // TODO affected blocks
     }
     
 }

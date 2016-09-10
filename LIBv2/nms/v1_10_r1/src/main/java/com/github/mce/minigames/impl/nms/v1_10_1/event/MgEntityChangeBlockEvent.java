@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgEntityChangeBlockEvent extends AbstractMinigameEvent<EntityChangeBlockEvent> implements MinigameEntityChangeBlockEvent
+public class MgEntityChangeBlockEvent extends AbstractMinigameEvent<EntityChangeBlockEvent, MinigameEntityChangeBlockEvent> implements MinigameEntityChangeBlockEvent
 {
 
     /**

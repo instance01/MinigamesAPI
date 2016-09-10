@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgVehicleCreateEvent extends AbstractMinigameEvent<VehicleCreateEvent> implements MinigameVehicleCreateEvent
+public class MgVehicleCreateEvent extends AbstractMinigameEvent<VehicleCreateEvent, MinigameVehicleCreateEvent> implements MinigameVehicleCreateEvent
 {
 
     /**

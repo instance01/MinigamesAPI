@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgProjectileLaunchEvent extends AbstractMinigameEvent<ProjectileLaunchEvent> implements MinigameProjectileLaunchEvent
+public class MgProjectileLaunchEvent extends AbstractMinigameEvent<ProjectileLaunchEvent, MinigameProjectileLaunchEvent> implements MinigameProjectileLaunchEvent
 {
 
     /**

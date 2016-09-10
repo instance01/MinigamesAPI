@@ -48,6 +48,6 @@ public interface ContextHandlerInterface<T>
      *            current minigame context
      * @return context object or {@code null} if it cannot be calculated
      */
-    T calculateFromEvent(MinigameEvent<?> event, MinigameContext context);
+    T calculateFromEvent(MinigameEvent<?, ?> event, MinigameContext context);
     
 }

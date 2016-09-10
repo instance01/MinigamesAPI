@@ -25,7 +25,7 @@ import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
  * 
  * @author mepeisen
  */
-public class MgPlayerResourcePackStatusEvent extends AbstractMinigameEvent<PlayerResourcePackStatusEvent> implements MinigamePlayerResourcePackStatusEvent
+public class MgPlayerResourcePackStatusEvent extends AbstractMinigameEvent<PlayerResourcePackStatusEvent, MinigamePlayerResourcePackStatusEvent> implements MinigamePlayerResourcePackStatusEvent
 {
 
     /**

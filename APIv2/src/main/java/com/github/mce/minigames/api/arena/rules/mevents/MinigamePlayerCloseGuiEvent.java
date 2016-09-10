@@ -23,7 +23,7 @@ import com.github.mce.minigames.api.event.PlayerCloseGuiEvent;
  * 
  * @author mepeisen
  */
-public interface MinigamePlayerCloseGuiEvent extends MinigameEvent<PlayerCloseGuiEvent>
+public interface MinigamePlayerCloseGuiEvent extends MinigameEvent<PlayerCloseGuiEvent, MinigamePlayerCloseGuiEvent>
 {
     
     // TODO default stubbings
