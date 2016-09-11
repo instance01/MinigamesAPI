@@ -544,7 +544,7 @@ public interface ConfigurationValueInterface
             }
             throw new IllegalStateException("Invalid configuration option"); //$NON-NLS-1$
         }
-        catch (NoSuchFieldException ex)
+        catch (Exception ex)
         {
             throw new IllegalStateException(ex);
         }
@@ -587,7 +587,7 @@ public interface ConfigurationValueInterface
             }
             throw new IllegalStateException("Invalid configuration option"); //$NON-NLS-1$
         }
-        catch (NoSuchFieldException ex)
+        catch (Exception ex)
         {
             throw new IllegalStateException(ex);
         }
@@ -1940,7 +1940,7 @@ public interface ConfigurationValueInterface
             final Set<String> result = minigame.getConfig(configs.file()).getConfigurationSection(path).getKeys(deep);
             return result.toArray(new String[result.size()]);
         }
-        catch (NoSuchFieldException ex)
+        catch (Exception ex)
         {
             throw new IllegalStateException(ex);
         }

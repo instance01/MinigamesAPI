@@ -13,28 +13,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.util.function;
+package com.github.mce.minigames.api.test.arena;
 
-import com.github.mce.minigames.api.MinigameException;
+import org.junit.Test;
+
+import com.github.mce.minigames.api.arena.ArenaState;
+import com.github.mce.minigames.api.test.SharedUtil;
 
 /**
- * Similar to {@link java.util.function.LongToDoubleFunction} but is able to throw MinigameExceptions.
+ * test case for {@link ArenaState}
  * 
  * @author mepeisen
- *
  */
-@FunctionalInterface
-public interface MgLongToDoubleFunction
+public class ArenaStateTest
 {
-
+    
     /**
-     * Applies this function to the given argument.
-     *
-     * @param value the function argument
-     * @return the function result
-     * @throws MinigameException
-     *             thrown on problems, f.e. networking errors.
+     * Tests the enum
      */
-    double applyAsDouble(long value) throws MinigameException;
+    @Test
+    public void enumTest()
+    {
+        SharedUtil.testEnumClass(ArenaState.class);
+    }
     
 }

@@ -13,28 +13,34 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.util.function;
+package com.github.mce.minigames.api.test.util.function;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import com.github.mce.minigames.api.MinigameException;
+import com.github.mce.minigames.api.util.function.MgUnaryOperator;
 
 /**
- * Similar to {@link java.util.function.LongToDoubleFunction} but is able to throw MinigameExceptions.
+ * Tests case for {@link MgUnaryOperator}
  * 
  * @author mepeisen
- *
  */
-@FunctionalInterface
-public interface MgLongToDoubleFunction
+public class MgUnaryOperatorTest
 {
-
+    
     /**
-     * Applies this function to the given argument.
-     *
-     * @param value the function argument
-     * @return the function result
+     * Tests method {@link MgUnaryOperator#identity()}
+     * 
      * @throws MinigameException
-     *             thrown on problems, f.e. networking errors.
+     *             thrown on errors.
      */
-    double applyAsDouble(long value) throws MinigameException;
+    @Test
+    public void testIdentity() throws MinigameException
+    {
+        final MgUnaryOperator<Integer> func = MgUnaryOperator.identity();
+        assertEquals(Integer.valueOf(10), func.apply(Integer.valueOf(10)));
+    }
     
 }
