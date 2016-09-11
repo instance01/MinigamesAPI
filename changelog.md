@@ -4,7 +4,8 @@
 
 ###### All
 
-* No more kill rewards for self-kills
+* No more kill rewards for self-kills (https://github.com/MysticCity/MinigamesAPI/issues/11)
+* Fixed NPE using spectator sign outside of arena (https://github.com/MysticCity/MinigamesAPI/issues/154)
 
 ###### BedWars
 
