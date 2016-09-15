@@ -18,6 +18,9 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.arena.ArenaInterface;
+import com.github.mce.minigames.api.arena.ArenaState;
+
 /**
  * @author mepeisen
  *
@@ -25,18 +28,80 @@ import org.bukkit.event.HandlerList;
 public class ArenaStateEvent extends Event
 {
     
+    /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
-
-    public ArenaStateEvent() {
-        super();
-        // TODO
+    
+    /** the arena that changes the state. */
+    private final ArenaInterface     arena;
+    
+    /** the previous state. */
+    private final ArenaState         oldState;
+    
+    /** the next state. */
+    private final ArenaState         newState;
+    
+    /**
+     * Constructor.
+     * 
+     * @param arena
+     * @param oldState
+     * @param newState
+     */
+    public ArenaStateEvent(ArenaInterface arena, ArenaState oldState, ArenaState newState)
+    {
+        this.arena = arena;
+        this.oldState = oldState;
+        this.newState = newState;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the arena that changes the state.
+     * 
+     * @return the arena
+     */
+    public ArenaInterface getArena()
+    {
+        return this.arena;
+    }
+    
+    /**
+     * Returns the previous state.
+     * 
+     * @return the oldState
+     */
+    public ArenaState getOldState()
+    {
+        return this.oldState;
+    }
+    
+    /**
+     * Returns the new state.
+     * 
+     * @return the newState
+     */
+    public ArenaState getNewState()
+    {
+        return this.newState;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

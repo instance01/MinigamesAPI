@@ -27,6 +27,7 @@ import com.github.mce.minigames.api.event.ArenaCreatedEvent;
 import com.github.mce.minigames.api.event.ArenaDeleteEvent;
 import com.github.mce.minigames.api.event.ArenaDeletedEvent;
 import com.github.mce.minigames.api.event.ArenaMaintenanceEvent;
+import com.github.mce.minigames.api.event.ArenaPlayerJoinEvent;
 import com.github.mce.minigames.api.event.ArenaPlayerJoinedEvent;
 import com.github.mce.minigames.api.event.ArenaPlayerJoinedQueueEvent;
 import com.github.mce.minigames.api.event.ArenaPlayerLeavesQueueEvent;
@@ -60,6 +61,7 @@ public abstract class AbstractEventSystem implements EventSystemInterface
         this.registerHandler(ArenaDeletedEvent.class, (evt) -> new MgArenaDeletedEvent(evt));
         this.registerHandler(ArenaMaintenanceEvent.class, (evt) -> new MgArenaMaintenanceEvent(evt));
         this.registerHandler(ArenaPlayerJoinedEvent.class, (evt) -> new MgArenaPlayerJoinedEvent(evt));
+        this.registerHandler(ArenaPlayerJoinEvent.class, (evt) -> new MgArenaPlayerJoinEvent(evt));
         this.registerHandler(ArenaPlayerJoinedQueueEvent.class, (evt) -> new MgArenaPlayerJoinedQueueEvent(evt));
         this.registerHandler(ArenaPlayerLeavesQueueEvent.class, (evt) -> new MgArenaPlayerLeavesQueueEvent(evt));
         this.registerHandler(ArenaStateEvent.class, (evt) -> new MgArenaStateEvent(evt));

@@ -21,6 +21,17 @@ import com.github.mce.minigames.api.event.ArenaPlayerLeavesQueueEvent;
 /**
  * Minigame event representation of corresponding minigame event.
  * 
+ * <h3>Using this event as a rule</h3>
+ * 
+ * <dl>
+ * <dt>Player-Rule</dt>
+ * <dd>Passed to the affected player</dd>
+ * <dt>Arena-Rule</dt>
+ * <dd>not supported</dd>
+ * <dt>Minigame-Rule</dt>
+ * <dd>not supported</dd>
+ * </dl>
+ * 
  * @author mepeisen
  */
 public interface MinigameArenaPlayerLeavesQueueEvent extends MinigameEvent<ArenaPlayerLeavesQueueEvent, MinigameArenaPlayerLeavesQueueEvent>

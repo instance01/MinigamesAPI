@@ -18,44 +18,58 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.HandlerList;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
- * An event fired before a new arena is created.
+ * An event fired before a player joins an arena.
  * 
  * <p>
- * This event can be cancelled. If cancelled the arena will not be created.
+ * This event can be cancelled. If cancelled the player is unable to join the arena.
  * </p>
  * 
  * @author mepeisen
  */
-public class ArenaCreateEvent extends AbstractVetoEvent
+public class ArenaPlayerJoinEvent extends AbstractVetoEvent
 {
     
     /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
     
-    /** the arena we created. */
+    /** the arena the player joined. */
     private final ArenaInterface     arena;
-    
+
+    /** the player that joined the arena. */
+    private final ArenaPlayerInterface player;
+
     /**
      * Constructor.
-     * 
      * @param arena
-     *            the created arena.
+     * @param player
      */
-    public ArenaCreateEvent(ArenaInterface arena)
+    public ArenaPlayerJoinEvent(ArenaInterface arena, ArenaPlayerInterface player)
     {
         this.arena = arena;
+        this.player = player;
     }
     
     /**
-     * Returns the arena that will be created
+     * Returns the arena that the player joined
      * 
-     * @return the created arena
+     * @return the arenaa the player joined.
      */
     public ArenaInterface getArena()
     {
         return this.arena;
+    }
+    
+    /**
+     * Returns the joining player
+     * 
+     * @return the player
+     */
+    public ArenaPlayerInterface getPlayer()
+    {
+        return this.player;
     }
     
     /**

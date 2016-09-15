@@ -22,6 +22,17 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 /**
  * Minigame event representation of corresponding bukkit event.
  * 
+ * <h3>Using this event as a rule</h3>
+ * 
+ * <dl>
+ * <dt>Player-Rule</dt>
+ * <dd>Passed to the target player</dd>
+ * <dt>Arena-Rule</dt>
+ * <dd>Passed to the arena calculated from the player</dd>
+ * <dt>Minigame-Rule</dt>
+ * <dd>Passed to the minigame calculated from arena</dd>
+ * </dl>
+ * 
  * @author mepeisen
  */
 public interface MinigamePlayerChangedWorldEvent extends MinigameEvent<PlayerChangedWorldEvent, MinigamePlayerChangedWorldEvent>

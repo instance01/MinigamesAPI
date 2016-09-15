@@ -52,6 +52,40 @@ public class LocalizedConfigString implements Configurable, LocalizedMessageInte
      */
     private Map<Locale, String> adminStrings     = new HashMap<>();
     
+    /**
+     * Sets the user message.
+     * @param locale locale to use
+     * @param message message to be used.
+     */
+    public void setUserMessage(Locale locale, String message)
+    {
+        if (message == null)
+        {
+            this.userStrings.remove(locale);
+        }
+        else
+        {
+            this.userStrings.put(locale, message);
+        }
+    }
+    
+    /**
+     * Sets the admin message.
+     * @param locale locale to use
+     * @param message message array to be used.
+     */
+    public void setAdminMessage(Locale locale, String message)
+    {
+        if (message == null)
+        {
+            this.adminStrings.remove(locale);
+        }
+        else
+        {
+            this.adminStrings.put(locale, message);
+        }
+    }
+    
     @Override
     public void readFromConfig(ConfigurationSection section)
     {
@@ -119,6 +153,10 @@ public class LocalizedConfigString implements Configurable, LocalizedMessageInte
         {
             smsg = this.userStrings.get(this.defaultLocale);
         }
+        if (smsg == null)
+        {
+            return null;
+        }
         return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, false, args));
     }
     
@@ -143,6 +181,10 @@ public class LocalizedConfigString implements Configurable, LocalizedMessageInte
         if (smsg == null || smsg.length() == 0)
         {
             smsg = this.userStrings.get(this.defaultLocale);
+        }
+        if (smsg == null)
+        {
+            return null;
         }
         return String.format(locale, smsg, (Object[]) MessageTool.convertArgs(locale, true, args));
     }

@@ -18,6 +18,9 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.gui.ClickGuiInterface;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
 /**
  * @author mepeisen
  *
@@ -25,18 +28,65 @@ import org.bukkit.event.HandlerList;
 public class PlayerCloseGuiEvent extends Event
 {
     
+    /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
-
-    public PlayerCloseGuiEvent() {
-        super();
-        // TODO
+    
+    /** the gui the player closed. */
+    private final ClickGuiInterface    gui;
+    
+    /** the player. */
+    private final ArenaPlayerInterface player;
+    
+    /**
+     * Constructor.
+     * 
+     * @param gui
+     * @param player
+     */
+    public PlayerCloseGuiEvent(ClickGuiInterface gui, ArenaPlayerInterface player)
+    {
+        this.gui = gui;
+        this.player = player;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the gui that the player closed
+     * 
+     * @return the gui the player closed.
+     */
+    public ClickGuiInterface getGui()
+    {
+        return this.gui;
+    }
+    
+    /**
+     * Returns the player
+     * 
+     * @return the player
+     */
+    public ArenaPlayerInterface getPlayer()
+    {
+        return this.player;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

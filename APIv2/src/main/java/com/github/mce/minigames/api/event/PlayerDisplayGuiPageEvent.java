@@ -18,25 +18,97 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.gui.ClickGuiInterface;
+import com.github.mce.minigames.api.gui.ClickGuiPageInterface;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
 /**
+ * Fires before a page is opened.
+ * 
+ * <p>
+ * Will fire directly after opening the gui to show up the initial page.
+ * </p>
+ * 
  * @author mepeisen
  *
  */
 public class PlayerDisplayGuiPageEvent extends Event
 {
     
+    /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
+    
+    /** the gui the player opened. */
+    private final ClickGuiInterface    gui;
+    
+    /** the player. */
+    private final ArenaPlayerInterface player;
 
-    public PlayerDisplayGuiPageEvent() {
-        super();
-        // TODO
+    /** the opened page. */
+    private final ClickGuiPageInterface page;
+    
+    /**
+     * Constructor.
+     * 
+     * @param gui
+     * @param player
+     * @param page
+     */
+    public PlayerDisplayGuiPageEvent(ClickGuiInterface gui, ArenaPlayerInterface player, ClickGuiPageInterface page)
+    {
+        this.gui = gui;
+        this.player = player;
+        this.page = page;
+    }
+    
+    /**
+     * Returns the gui that the player opened
+     * 
+     * @return the gui the player opened.
+     */
+    public ClickGuiInterface getGui()
+    {
+        return this.gui;
+    }
+    
+    /**
+     * Returns the player
+     * 
+     * @return the player
+     */
+    public ArenaPlayerInterface getPlayer()
+    {
+        return this.player;
+    }
+    
+    /**
+     * Returns the opened page
+     * 
+     * @return the page
+     */
+    public ClickGuiPageInterface getPage()
+    {
+        return this.page;
     }
 
-    public HandlerList getHandlers() {
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

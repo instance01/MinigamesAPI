@@ -22,6 +22,10 @@ import com.github.mce.minigames.api.arena.ArenaInterface;
 /**
  * An event fired before an existing arena is deleted.
  * 
+ * <p>
+ * This event can be cancelled. If cancelled the arena will not be deleted.
+ * </p>
+ * 
  * @author mepeisen
  */
 public class ArenaDeleteEvent extends AbstractVetoEvent

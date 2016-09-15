@@ -13,31 +13,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.arena.rules.bevents;
+package com.github.mce.minigames.api.test.locale;
 
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.junit.Test;
 
-import com.github.mce.minigames.api.arena.rules.MinigameEvent;
+import com.github.mce.minigames.api.locale.MessageSeverityType;
+import com.github.mce.minigames.api.test.SharedUtil;
 
 /**
- * Minigame event representation of corresponding bukkit event.
- * 
- * <h3>Using this event as a rule</h3>
- * 
- * <dl>
- * <dt>Player-Rule</dt>
- * <dd>Passed to the player crafting the items</dd>
- * <dt>Arena-Rule</dt>
- * <dd>Passed to the arena calculated from the player</dd>
- * <dt>Minigame-Rule</dt>
- * <dd>Passed to the minigame calculated from arena</dd>
- * </dl>
+ * test case for {@link MessageSeverityType}
  * 
  * @author mepeisen
  */
-public interface MinigamePrepareItemCraftEvent extends MinigameEvent<PrepareItemCraftEvent, MinigamePrepareItemCraftEvent>
+public class MessageSeverityTypeTest
 {
     
-    // TODO default stubbings
+    /**
+     * Tests the enum.
+     */
+    @Test
+    public void testMe()
+    {
+        SharedUtil.testEnumClass(MessageSeverityType.class);
+    }
     
 }
