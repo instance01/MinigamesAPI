@@ -5,11 +5,11 @@
 - [ ] ArcadeInstance ai
 - [ ] boolean isArcadeMain
 - [ ] boolean isSuccessfullyInitialized
-- [ ] ArrayList<Location> spawns
-- [ ] HashMap<String, Location> pspawnloc
-- [ ] HashMap<String, String> lastdamager
-- [ ] HashMap<String, Integer> temp\_kill\_count
-- [ ] HashMap<String, Integer> temp\_death\_count
+- [ ] ArrayList&lt;Location> spawns
+- [ ] HashMap&lt;String, Location> pspawnloc
+- [ ] HashMap&lt;String, String> lastdamager
+- [ ] HashMap&lt;String, Integer> temp\_kill\_count
+- [ ] HashMap&lt;String, Integer> temp\_death\_count
 - [ ] Location mainlobby
 - [ ] Location waitinglobby
 - [ ] Location specspawn
@@ -17,8 +17,8 @@
 - [ ] int max\_players
 - [ ] int min\_players
 - [ ] boolean viparena
-- [ ] ArrayList<String> players
-- [ ] ArrayList<String> temp\_players
+- [ ] ArrayList&lt;String> players
+- [ ] ArrayList&lt;String> temp\_players
 - [ ] ArenaType type
 - [ ] ArenaState currentstate
 - [X] String name
@@ -39,7 +39,7 @@
 - [ ] int currentspawn
 - [ ] int global\_coin\_multiplier
 - [ ] BukkitTask maximum\_game\_time
-- [ ] ArrayList<ItemStack> global\_drops
+- [ ] ArrayList&lt;ItemStack> global\_drops
 - [ ] int currentlobbycount
 - [ ] int currentingamecount
 - [ ] int currenttaskid
@@ -47,8 +47,8 @@
 - [ ] ArenaLogger logger
 - [ ] Arena(final JavaPlugin plugin, final String name)
 - [ ] Arena(final JavaPlugin plugin, final String name, final ArenaType type)
-- [ ] public void init(final Location signloc, final ArrayList<Location> spawns, final Location mainlobby, final Location waitinglobby, final int max\_players, final int min\_players, final boolean viparena)
-- [ ] Arena initArena(final Location signloc, final ArrayList<Location> spawn, final Location mainlobby, final Location waitinglobby, final int max\_players, final int min\_players, final boolean viparena)
+- [ ] public void init(final Location signloc, final ArrayList&lt;Location> spawns, final Location mainlobby, final Location waitinglobby, final int max\_players, final int min\_players, final boolean viparena)
+- [ ] Arena initArena(final Location signloc, final ArrayList&lt;Location> spawn, final Location mainlobby, final Location waitinglobby, final int max\_players, final int min\_players, final boolean viparena)
 - [X] Arena getArena()
     > removed (does not make sense)
 - [ ] SmartReset getSmartReset()
@@ -57,7 +57,7 @@
 - [ ] void setAlwaysPvP(final boolean t)
 - [ ] Location getSignLocation()
 - [ ] void setSignLocation(final Location l)
-- [ ] ArrayList<Location> getSpawns()
+- [ ] ArrayList&lt;Location> getSpawns()
 - [ ] Cuboid getBoundaries()
 - [ ] Cuboid getLobbyBoundaries()
 - [ ] Cuboid getSpecBoundaries()
@@ -74,7 +74,7 @@
 - [ ] void setMaxPlayers(final int i)
 - [ ] boolean isVIPArena()
 - [ ] void setVIPArena(final boolean t)
-- [ ] ArrayList<String> getAllPlayers()
+- [ ] ArrayList&lt;String> getAllPlayers()
 - [ ] boolean containsPlayer(final String playername)
 - [ ] boolean addPlayer(final String playername)
 - [ ] boolean removePlayer(final String playername)
@@ -101,14 +101,14 @@
     > com.github.mce.minigames.api.arena.ArenaInterface.start()
 - [ ] void startRaw()
 - [ ] void stopArena()
-- [ ] List<Entity> getResetEntitiesOnPlayerLeave(String player)
+- [ ] List&lt;Entity> getResetEntitiesOnPlayerLeave(String player)
 - [ ] boolean isEntityResetOnPlayerLeave(String player, Entity e)
-- [ ] List<Entity> getResetEntities(String player)
+- [ ] List&lt;Entity> getResetEntities(String player)
 - [ ] boolean isEntityReset(String player, Entity e)
 - [ ] void stop()
 - [ ] void reset()
 - [ ] void onEliminated(final String playername)
-- [ ] void nextArenaOnMapRotation(final ArrayList<String> players)
+- [ ] void nextArenaOnMapRotation(final ArrayList&lt;String> players)
 - [ ] String getPlayerCount()
 - [ ] int getPlayerAlive()
 - [ ] Location getWaitingLobbyTemp()
@@ -118,7 +118,7 @@
 - [ ] ArcadeInstance getArcadeInstance()
 - [ ] boolean isArcadeMain()
 - [ ] void setArcadeMain(final boolean t)
-- [ ] HashMap<String, Location> getPSpawnLocs()
+- [ ] HashMap&lt;String, Location> getPSpawnLocs()
 - [ ] JavaPlugin getPlugin()
 - [ ] PluginInstance getPluginInstance()
 - [ ] int getCurrentIngameCountdownTime()
@@ -241,11 +241,11 @@
 
 ## ArenaListener.java
 
-- [ ] ArrayList<String> cmds
+- [ ] ArrayList&lt;String> cmds
 - [ ] String leave\_cmd
 - [ ] int loseY
 - [ ] ArenaListener(final JavaPlugin plugin, final PluginInstance pinstance, final String minigame)
-- [ ] ArenaListener(final JavaPlugin plugin, final PluginInstance pinstance, final String minigame, final ArrayList<String> cmds)
+- [ ] ArenaListener(final JavaPlugin plugin, final PluginInstance pinstance, final String minigame, final ArrayList&lt;String> cmds)
 - [ ] void onExplode(final EntityExplodeEvent event)
 - [ ] void onExplode2(final BlockExplodeEvent event)
 - [ ] void onBlockFromTo(final BlockFromToEvent event)
@@ -284,10 +284,10 @@
 - [ ] void onMobSpawn(CreatureSpawnEvent evt)
 - [ ] void onMobTarget(EntityTargetEvent evt)
 - [ ] boolean isSpectating(final Player p)
-- [ ] List<Entity> getEntitiesByLocation(final Location loc, final double d)
+- [ ] List&lt;Entity> getEntitiesByLocation(final Location loc, final double d)
 - [ ] boolean checkLocationMatchesSign(final Location l, final Sign s)
-- [ ] void updateEntities(final List<Player> players, final boolean visible)
-- [ ] List<Player> getPlayersWithin(final Player player, final int distance)
+- [ ] void updateEntities(final List&lt;Player> players, final boolean visible)
+- [ ] List&lt;Player> getPlayersWithin(final Player player, final int distance)
 - [ ] String getName()
 - [ ] void setName(final String minigame)
 
@@ -323,7 +323,7 @@
 - [ ] boolean noreward
 - [ ] Arena currentArena
 - [ ] AClass currentClass
-- [X] HashMap<String, ArenaPlayer> players
+- [X] HashMap&lt;String, ArenaPlayer> players
     > no direct replacement, see com.github.mce.minigames.api.MglibInterface.getPlayer(OfflinePlayer)
 - [X] ArenaPlayer getPlayerInstance(final String playername)
     > no direct replacement, see com.github.mce.minigames.api.MglibInterface.getPlayer(OfflinePlayer)
@@ -388,7 +388,7 @@
 
 ## Classes.java
 
-- [ ] public HashMap<String, IconMenu> lasticonm = new HashMap<>();
+- [ ] public HashMap&lt;String, IconMenu> lasticonm = new HashMap&lt;>();
 - [ ] Classes(final JavaPlugin plugin)
 - [ ] public Classes(final PluginInstance pli, final JavaPlugin plugin)
 - [ ] public void openGUI(final String p)
@@ -480,9 +480,9 @@
 - [ ] void setValue(final Object instance, final String fieldName, final Object value) throws Exception
 - [ ] void playRespawn(final Player p, final JavaPlugin plugin)
 - [ ] void playTitle(final Player player, final String title, int eindex)
-- [ ] HashMap<Integer, Integer> effectlocd
-- [ ] HashMap<Integer, Integer> effectlocd\_taskid
-- [ ] ArrayList<Integer> playHologram(final Player p, final Location l, final String text, final boolean moveDown, final boolean removeAfterCooldown)
+- [ ] HashMap&lt;Integer, Integer> effectlocd
+- [ ] HashMap&lt;Integer, Integer> effectlocd\_taskid
+- [ ] ArrayList&lt;Integer> playHologram(final Player p, final Location l, final String text, final boolean moveDown, final boolean removeAfterCooldown)
 - [ ] void sendGameModeChange(final Player p, final int gamemode)
 
 ## Messages.java
@@ -507,9 +507,9 @@
 - [X] boolean debug
     > com.github.mce.minigames.api.MglibInterface.debug()
 - [ ] int updatetime
-- [ ] HashMap<String, Party> global\_party
-- [ ] HashMap<String, ArrayList<Party>> global\_party\_invites
-- [ ] HashMap<JavaPlugin, PluginInstance> pinstances
+- [ ] HashMap&lt;String, Party> global\_party
+- [ ] HashMap&lt;String, ArrayList&lt;Party>> global\_party\_invites
+- [ ] HashMap&lt;JavaPlugin, PluginInstance> pinstances
 - [ ] PartyMessagesConfig partymessages
 - [ ] StatsGlobalConfig statsglobal
 - [ ] String internalServerVersion = "";
@@ -529,11 +529,11 @@
 - [X] MinecraftVersionsType getServerVersion()
     > com.github.mce.minigames.api.MglibInterface.getMinecraftVersion()
 - [ ] void onDisable()
-- [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame, final Class<?> arenaclass, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig, final DefaultConfig defaultconfig, final boolean customlistener)
+- [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame, final Class&lt;?> arenaclass, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig, final DefaultConfig defaultconfig, final boolean customlistener)
 - [ ] void registerArenaListenerLater(final JavaPlugin plugin\_, final ArenaListener arenalistener)
 - [ ] void registerArenaSetup(final JavaPlugin plugin\_, final ArenaSetup arenasetup)
 - [ ] void registerScoreboard(final JavaPlugin plugin\_, final ArenaScoreboard board)
-- [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame, final Class<?> arenaclass)
+- [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame, final Class&lt;?> arenaclass)
 - [ ] MinigamesAPI setupAPI(final JavaPlugin plugin\_, final String minigame)
 - [ ] PluginInstance setupRaw(final JavaPlugin plugin\_, final String minigame)
 - [X] MinigamesAPI getAPI()
@@ -569,10 +569,10 @@
 ## Party.java
 
 - [ ] String            owner;
-- [ ] ArrayList<String> players = new ArrayList<>();
+- [ ] ArrayList&lt;String> players = new ArrayList&lt;>();
 - [ ] Party(final String owner)
 - [ ] String getOwner()
-- [ ] ArrayList<String> getPlayers()
+- [ ] ArrayList&lt;String> getPlayers()
 - [ ] void addPlayer(final String p)
 - [ ] boolean removePlayer(final String p)
 - [ ] containsPlayer(final String p)
@@ -607,9 +607,9 @@
 
 ## PluginInstance.java
 
-- [ ] HashMap<String, Arena> global\_players
-- [ ] HashMap<String, Arena> global\_lost
-- [ ] HashMap<String, Arena> global\_arcade\_spectator
+- [ ] HashMap&lt;String, Arena> global\_players
+- [ ] HashMap&lt;String, Arena> global\_lost
+- [ ] HashMap&lt;String, Arena> global\_arcade\_spectator
 - [ ] ArenaListener arenalistener
 - [ ] ArenasConfig arenasconfig
 - [ ] ClassesConfig classesconfig
@@ -620,10 +620,10 @@
 - [ ] ShopConfig shopconfig
 - [ ] HologramsConfig hologramsconfig
 - [ ] JavaPlugin plugin
-- [ ] ArrayList<Arena> arenas
-- [ ] HashMap<String, AClass> pclass
-- [ ] LinkedHashMap<String, AClass> aclasses
-- [ ] HashMap<String, Gun> guns
+- [ ] ArrayList&lt;Arena> arenas
+- [ ] HashMap&lt;String, AClass> pclass
+- [ ] LinkedHashMap&lt;String, AClass> aclasses
+- [ ] HashMap&lt;String, Gun> guns
 - [ ] Rewards rew
 - [ ] MainSQL sql
 - [ ] Stats stats
@@ -649,17 +649,17 @@
 - [ ] boolean old\_reset
 - [ ] boolean show\_classes\_without\_usage\_permission
 - [ ] boolean chat\_enabled
-- [ ] HashMap<String, ArrayList<String>> cached\_sign\_states
-- [ ] PluginInstance(final JavaPlugin plugin, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig, final ArrayList<Arena> arenas)
+- [ ] HashMap&lt;String, ArrayList&lt;String>> cached\_sign\_states
+- [ ] PluginInstance(final JavaPlugin plugin, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig, final ArrayList&lt;Arena> arenas)
 - [ ] PluginInstance(final JavaPlugin plugin, final ArenasConfig arenasconfig, final MessagesConfig messagesconfig, final ClassesConfig classesconfig, final StatsConfig statsconfig)
 - [ ] void reloadVariables()
 - [X] JavaPlugin getPlugin()
     > com.github.mce.minigames.api.PluginProviderInterface.getJavaPlugin()
-- [ ] HashMap<String, AClass> getAClasses()
-- [ ] HashMap<String, AClass> getPClasses()
+- [ ] HashMap&lt;String, AClass> getAClasses()
+- [ ] HashMap&lt;String, AClass> getPClasses()
 - [ ] addAClass(final String name, final AClass a)
 - [ ] setPClass(final String player, final AClass a)
-- [ ] HashMap<String, Gun> getAllGuns()
+- [ ] HashMap&lt;String, Gun> getAllGuns()
 - [ ] void addGun(final String name, final Gun g)
 - [ ] ArenasConfig getArenasConfig()
 - [ ] MessagesConfig getMessagesConfig()
@@ -685,16 +685,16 @@
 - [ ] Holograms getHologramsHandler()
 - [ ] int getIngameCountdown()
 - [ ] int getLobbyCountdown()
-- [ ] ArrayList<Arena> getArenas()
+- [ ] ArrayList&lt;Arena> getArenas()
 - [ ] void clearArenas()
-- [ ] ArrayList<Arena> addArena(final Arena arena)
+- [ ] ArrayList&lt;Arena> addArena(final Arena arena)
 - [ ] Arena getArenaByName(final String arenaname)
 - [ ] Arena removeArenaByName(final String arenaname)
 - [ ] boolean removeArena(final Arena arena)
-- [ ] void addLoadedArenas(final ArrayList<Arena> arenas)
-- [ ] void addArenas(final Iterable<Arena> arenaList)
+- [ ] void addLoadedArenas(final ArrayList&lt;Arena> arenas)
+- [ ] void addArenas(final Iterable&lt;Arena> arenaList)
 - [ ] void addArenas(final Arena... arenaList)
-- [ ] void setArenas(final Iterable<Arena> arenaList)
+- [ ] void setArenas(final Iterable&lt;Arena> arenaList)
 - [ ] void setArenas(final Arena... arenaList)
 - [ ] boolean isAchievementGuiEnabled()
 - [ ] void setAchievementGuiEnabled(final boolean achievement\_gui\_enabled)
@@ -734,14 +734,14 @@
 - [ ] void giveAchievementReward(final String p\_, final boolean econ, final boolean isCommand, final int money\_reward, final String cmd)
 - [ ] void giveWinReward(final String p\_, final Arena a)
 - [ ] void giveWinReward(final String p\_, final Arena a, final int global\_multiplier)
-- [ ] void giveWinReward(final String p\_, final Arena a, final ArrayList<String> players, final int global\_multiplier)
+- [ ] void giveWinReward(final String p\_, final Arena a, final ArrayList&lt;String> players, final int global\_multiplier)
 
 ## Shop.java
 
 - [ ] JavaPlugin                             plugin
 - [ ] PluginInstance                         pli
-- [ ] HashMap<String, IconMenu>       lasticonm
-- [ ] LinkedHashMap<String, ShopItem> shopitems
+- [ ] HashMap&lt;String, IconMenu>       lasticonm
+- [ ] LinkedHashMap&lt;String, ShopItem> shopitems
 - [ ] Shop(final PluginInstance pli, final JavaPlugin plugin)
 - [ ] void openGUI(final String p)
 - [ ] void loadShopItems()
@@ -756,7 +756,7 @@
 
 - [ ] SmartBlockMap              changed
 - [ ] Arena                            a
-- [ ] ArrayList<SmartArenaBlock> failedblocks
+- [ ] ArrayList&lt;SmartArenaBlock> failedblocks
 - [ ] long                             time
 - [ ] SmartReset(final Arena a)
 - [ ] SmartArenaBlock addChanged(final Block b)
@@ -772,25 +772,25 @@
 - [ ] void resetSmartResetBlock(final SmartArenaBlock ablock)
 - [ ] void saveSmartBlocksToFile()
 - [ ] void loadSmartBlocksFromFile()
-- [ ] final class SmartBlockMap extends TreeMap<Integer, Map<Location, SmartArenaBlock>>
+- [ ] final class SmartBlockMap extends TreeMap&lt;Integer, Map&lt;Location, SmartArenaBlock>>
 - [ ] void putBlock(Location l, SmartArenaBlock block)
 - [ ] boolean hasBlock(Location l)
-- [ ] Iterable<SmartArenaBlock> getBlocks()
-- [ ] NestedIterator<K, T>
+- [ ] Iterable&lt;SmartArenaBlock> getBlocks()
+- [ ] NestedIterator&lt;K, T>
 
 ## SpectatorManager.java
 
 - [ ] JavaPlugin                              plugin
-- [ ] HashMap<String, IconMenu> lasticonm
+- [ ] HashMap&lt;String, IconMenu> lasticonm
 - [ ] SpectatorManager(final JavaPlugin plugin)
 - [ ] void setup()
 - [ ] void setSpectate(final Player p, final boolean spectate)
 - [ ] boolean isSpectating(final Player p)
 - [ ] void clear()
 - [ ] void openSpectatorGUI(final Player p, final Arena a)
-- [ ] HashMap<String, ArrayList<String>> pspecs
-- [ ] HashMap<String, ArrayList<String>> splayers
-- [ ] void hideSpectator(final Player spec, final ArrayList<String> players)
+- [ ] HashMap&lt;String, ArrayList&lt;String>> pspecs
+- [ ] HashMap&lt;String, ArrayList&lt;String>> splayers
+- [ ] void hideSpectator(final Player spec, final ArrayList&lt;String> players)
 - [ ] void showSpectator(final Player spec)
 - [ ] void showSpectators(final Player p)
 
@@ -798,7 +798,7 @@
 
 - [ ] JavaPlugin       plugin
 - [ ] PluginInstance           pli
-- [ ] ArrayList<String> skullsetup
+- [ ] ArrayList&lt;String> skullsetup
 - [ ] int                      stats\_kill\_points
 - [ ] int                      stats\_win\_points
 - [ ] Stats(final PluginInstance pli, final JavaPlugin plugin)
@@ -819,8 +819,8 @@
 - [ ] int getLoses(final String playername)
 - [ ] int getKills(final String playername)
 - [ ] int getDeaths(final String playername)
-- [ ] TreeMap<String, Double> getTop(final int count, final boolean wins)
-- [ ] TreeMap<String, Double> getTop()
+- [ ] TreeMap&lt;String, Double> getTop(final int count, final boolean wins)
+- [ ] TreeMap&lt;String, Double> getTop()
 - [ ] ItemStack giveSkull(final String name)
 - [ ] void saveSkull(final Location t, final int count)
 - [ ] void updateSkulls()
@@ -839,10 +839,10 @@
 
 - [ ] JavaPlugin                       plugin
 - [ ] PluginInstance                   pli
-- [ ] HashMap<String, IconMenu> lasticonm
+- [ ] HashMap&lt;String, IconMenu> lasticonm
 - [ ] ArenaAchievements(final PluginInstance pli, final JavaPlugin plugin)
 - [ ] void openGUI(final String p, final boolean sql)
-- [ ] ArrayList<AAchievement> loadPlayerAchievements(final String playername, final boolean sql)
+- [ ] ArrayList&lt;AAchievement> loadPlayerAchievements(final String playername, final boolean sql)
 - [ ] void setAchievementDone(final String playername, final String achievement, final boolean sql)
 - [ ] void addDefaultAchievement(final String internalname, final String name, final int default\_money\_reward)
 - [ ] isEnabled()
@@ -850,15 +850,15 @@
 
 ## ArcadeInstance.java
 
-- [ ] ArrayList<PluginInstance> minigames
+- [ ] ArrayList&lt;PluginInstance> minigames
 - [ ] int                              currentindex
-- [ ] ArrayList<String>         players
+- [ ] ArrayList&lt;String>         players
 - [ ] Arena                            arena
 - [ ] JavaPlugin                       plugin
 - [ ] boolean                          in\_a\_game
 - [ ] Arena                            currentarena
 - [ ] boolean                          started
-- [ ] ArcadeInstance(final JavaPlugin plugin, final ArrayList<PluginInstance> minigames, final Arena arena)
+- [ ] ArcadeInstance(final JavaPlugin plugin, final ArrayList&lt;PluginInstance> minigames, final Arena arena)
 - [ ] void joinArcade(final String playername)
 - [ ] void leaveArcade(final String playername)
 - [ ] void leaveArcade(final String playername, final boolean endOfGame)
@@ -875,9 +875,9 @@
 ## CommandHandler.java
 
 - [ ] boolean handleArgs(final JavaPlugin plugin, final String uber_permission, final String cmd, final CommandSender sender, final String args[])
-- [ ] LinkedHashMap<String, String> cmddesc
+- [ ] LinkedHashMap&lt;String, String> cmddesc
 - [ ] void sendHelp(final String cmd, final CommandSender sender)
-- [ ] LinkedHashMap<String, String> cmdpartydesc
+- [ ] LinkedHashMap&lt;String, String> cmdpartydesc
 - [ ] void sendPartyHelp(final String cmd, final CommandSender sender)
 - [ ] boolean setSpawn(final PluginInstance pli, final CommandSender sender, final String[] args, final String uber\_permission, final String cmd, final String action, final JavaPlugin plugin, final Player p)
 - [ ] boolean setSpecSpawn(final PluginInstance pli, final CommandSender sender, final String[] args, final String uber\_permission, final String cmd, final String action, final JavaPlugin plugin, final Player p)
@@ -1079,16 +1079,16 @@
 - [ ] int                         shoot\_amount
 - [ ] int                         max\_durability
 - [ ] int                         durability
-- [ ] Class<? extends Projectile> bullet
+- [ ] Class&lt;? extends Projectile> bullet
 - [ ] JavaPlugin                  plugin
 - [ ] double                      knockback\_multiplier
 - [ ] String                      name
 - [ ] boolean                            canshoot
-- [ ] HashMap<String, Boolean>    canshoot\_
-- [ ] ArrayList<ItemStack>               items
-- [ ] ArrayList<ItemStack>               icon
-- [ ] Gun(final JavaPlugin plugin, final String name, final double speed, final int shoot\_amount, final int durability, final double knockback\_multiplier, final Class<? extends Projectile> bullet, final ArrayList<ItemStack> items, final ArrayList<ItemStack> icon)
-- [ ] Gun(final JavaPlugin plugin, final ArrayList<ItemStack> items, final ArrayList<ItemStack> icon)
+- [ ] HashMap&lt;String, Boolean>    canshoot\_
+- [ ] ArrayList&lt;ItemStack>               items
+- [ ] ArrayList&lt;ItemStack>               icon
+- [ ] Gun(final JavaPlugin plugin, final String name, final double speed, final int shoot\_amount, final int durability, final double knockback\_multiplier, final Class&lt;? extends Projectile> bullet, final ArrayList&lt;ItemStack> items, final ArrayList&lt;ItemStack> icon)
+- [ ] Gun(final JavaPlugin plugin, final ArrayList&lt;ItemStack> items, final ArrayList&lt;ItemStack> icon)
 - [ ] void shoot(final Player p)
 - [ ] void shoot(final Player p, final int shoot\_amount, final int durability, final int speed)
 - [ ] void onHit(final Entity ent, final int knockback\_multiplier)
@@ -1102,10 +1102,10 @@
 - [ ] int                                  durability\_cost
 - [ ] int                                  shoot\_amount\_cost
 - [ ] int                                  knockback\_multiplier\_cost
-- [ ] HashMap<String, IconMenu>            lastmainiconm
-- [ ] HashMap<String, IconMenu>            lastmainediticonm
-- [ ] HashMap<String, IconMenu>            lastupgradeiconm
-- [ ] HashMap<String, HashMap<Gun, int[]>> pgunattributes
+- [ ] HashMap&lt;String, IconMenu>            lastmainiconm
+- [ ] HashMap&lt;String, IconMenu>            lastmainediticonm
+- [ ] HashMap&lt;String, IconMenu>            lastupgradeiconm
+- [ ] HashMap&lt;String, HashMap&lt;Gun, int[]>> pgunattributes
 - [ ] JavaPlugin                           plugin
 - [ ] Guns(final JavaPlugin plugin)
 - [ ] void openGUI(final String p)
@@ -1116,7 +1116,7 @@
 - [ ] void openGunMainEditGUI(final String p, final String g)
 - [ ] void openUpgradeGUI(final String p, final String g, final String attribute, final int level, final double cost)
 - [ ] void loadGuns(final JavaPlugin plugin)
-- [ ] ArrayList<String> getAllMainGuns(final Player p)
+- [ ] ArrayList&lt;String> getAllMainGuns(final Player p)
 - [ ] void giveMainGuns(final Player p)
 
 ## Database.java
@@ -1142,27 +1142,27 @@
 ## Holograms.java
 
 - [ ] PluginInstance              pli
-- [ ] HashMap<Location, Hologram> holo = new HashMap<>()
+- [ ] HashMap&lt;Location, Hologram> holo = new HashMap&lt;>()
 - [ ] Holograms(final PluginInstance pli)
 - [ ] void loadHolograms()
 - [ ] void sendAllHolograms(final Player p)
 - [ ] void addHologram(final Location l)
 - [ ] boolean removeHologram(final Location ploc)
 - [ ] void destroyHologram(final Player p, final Hologram h)
-- [ ] int[] convertIntegers(final ArrayList<Integer> integers)
+- [ ] int[] convertIntegers(final ArrayList&lt;Integer> integers)
 
 ## AClass.java
 
 - [ ] JavaPlugin     plugin
 - [ ] String         name
 - [ ] String         internalname
-- [ ] ArrayList<ItemStack> items
+- [ ] ArrayList&lt;ItemStack> items
 - [ ] ItemStack      icon
 - [ ] boolean              enabled
-- [ ] AClass(final JavaPlugin plugin, final String name, final ArrayList<ItemStack> items)
-- [ ] AClass(final JavaPlugin plugin, final String name, final String internalname, final ArrayList<ItemStack> items)
-- [ ] AClass(final JavaPlugin plugin, final String name, final String internalname, final boolean enabled, final ArrayList<ItemStack> items)
-- [ ] AClass(final JavaPlugin plugin, final String name, final String internalname, final boolean enabled, final ArrayList<ItemStack> items, final ItemStack icon)
+- [ ] AClass(final JavaPlugin plugin, final String name, final ArrayList&lt;ItemStack> items)
+- [ ] AClass(final JavaPlugin plugin, final String name, final String internalname, final ArrayList&lt;ItemStack> items)
+- [ ] AClass(final JavaPlugin plugin, final String name, final String internalname, final boolean enabled, final ArrayList&lt;ItemStack> items)
+- [ ] AClass(final JavaPlugin plugin, final String name, final String internalname, final boolean enabled, final ArrayList&lt;ItemStack> items, final ItemStack icon)
 - [ ] ItemStack[] getItems()
 - [ ] ItemStack getIcon()
 - [ ] String getName()
@@ -1175,11 +1175,11 @@
 - [ ] String        world
 - [ ] Material      m
 - [ ] byte                data
-- [ ] ArrayList<Material> item_mats
-- [ ] ArrayList<Byte>     item_data
-- [ ] ArrayList<Integer>  item_amounts
-- [ ] ArrayList<String>   item_displaynames
-- [ ] ArrayList<Boolean>  item_splash
+- [ ] ArrayList&lt;Material> item_mats
+- [ ] ArrayList&lt;Byte>     item_data
+- [ ] ArrayList&lt;Integer>  item_amounts
+- [ ] ArrayList&lt;String>   item_displaynames
+- [ ] ArrayList&lt;Boolean>  item_splash
 - [ ] ItemStack[]         inv
 - [ ] ArenaBlock(final Block b, final boolean c)
 - [ ] ArenaBlock(final Location l)
@@ -1187,17 +1187,17 @@
 - [ ] Material getMaterial()
 - [ ] Byte getData()
 - [ ] ItemStack[] getInventory()
-- [ ] ArrayList<ItemStack> getNewInventory()
-- [ ] ItemStack getEnchantmentBook(final Map<Enchantment, Integer> t)
+- [ ] ArrayList&lt;ItemStack> getNewInventory()
+- [ ] ItemStack getEnchantmentBook(final Map&lt;Enchantment, Integer> t)
 
 ## ArenaLobbyScoreboard.java
 
-- [ ] HashMap<String, Scoreboard> ascore
-- [ ] HashMap<String, Objective>  aobjective
+- [ ] HashMap&lt;String, Scoreboard> ascore
+- [ ] HashMap&lt;String, Objective>  aobjective
 - [ ] int                         initialized
 - [ ] boolean                     custom
 - [ ] PluginInstance              pli
-- [ ] ArrayList<String>           loaded\_custom\_strings
+- [ ] ArrayList&lt;String>           loaded\_custom\_strings
 - [ ] ArenaLobbyScoreboard(final PluginInstance pli, final JavaPlugin plugin)
 - [ ] void updateScoreboard(final JavaPlugin plugin, final Arena arena)
 - [ ] void removeScoreboard(final String arena, final Player p)
@@ -1205,19 +1205,19 @@
 
 ## ArenaScoreboard.java
 
-- [ ] HashMap<String, Scoreboard> ascore
-- [ ] HashMap<String, Objective>  aobjective
-- [ ] HashMap<String, Integer>    currentscore
+- [ ] HashMap&lt;String, Scoreboard> ascore
+- [ ] HashMap&lt;String, Objective>  aobjective
+- [ ] HashMap&lt;String, Integer>    currentscore
 - [ ] int                         initialized
 - [ ] boolean                     custom
 - [ ] PluginInstance              pli
-- [ ] ArrayList<String>           loaded\_custom\_strings
+- [ ] ArrayList&lt;String>           loaded\_custom\_strings
 - [ ] ArenaScoreboard()
 - [ ] ArenaScoreboard(final PluginInstance pli, final JavaPlugin plugin)
 - [ ] void updateScoreboard(final JavaPlugin plugin, final Arena arena)
 - [ ] void removeScoreboard(final String arena, final Player p)
 - [ ] void clearScoreboard(final String arenaname)
-- [ ] void setCurrentScoreMap(final HashMap<String, Integer> newcurrentscore)
+- [ ] void setCurrentScoreMap(final HashMap&lt;String, Integer> newcurrentscore)
 
 ## BungeeUtil.java
 
@@ -1246,8 +1246,8 @@
 - [ ] Location getHighLoc()
 - [ ] Location getLowLoc()
 - [ ] World getWorld()
-- [ ] Map<String, Object> save()
-- [ ] Cuboid load(final Map<String, Object> root) throws IllegalArgumentException
+- [ ] Map&lt;String, Object> save()
+- [ ] Cuboid load(final Map&lt;String, Object> root) throws IllegalArgumentException
 - [ ] String toString()
 - [ ] String toRaw()
 
@@ -1276,18 +1276,18 @@
 
 ## InventoryManager.java
 
-- [ ] HashMap<String, ItemStack[]> armourContents
-- [ ] HashMap<String, ItemStack[]> inventoryContents
-- [ ] HashMap<String, Location>    locations
-- [ ] HashMap<String, Integer>     xplevel
-- [ ] HashMap<String, GameMode>    gamemode
+- [ ] HashMap&lt;String, ItemStack[]> armourContents
+- [ ] HashMap&lt;String, ItemStack[]> inventoryContents
+- [ ] HashMap&lt;String, Location>    locations
+- [ ] HashMap&lt;String, Integer>     xplevel
+- [ ] HashMap&lt;String, GameMode>    gamemode
 - [ ] void saveInventory(final Player player)
 - [ ] void restoreInventory(final Player player)
 
 ## Leaderboard.java
 
 - [ ] Object convertUUID(final String s)
-- [ ] Map<Integer, String> sortByComparator(final Map<String, Integer> unsortMap, final boolean order)
+- [ ] Map&lt;Integer, String> sortByComparator(final Map&lt;String, Integer> unsortMap, final boolean order)
 - [ ] Leaderboard(final Location firstPlace, final Location secondPlace, final Location thirdPlace, final Material firstBlockType, final Material secondBlockType, final Material thirdBlockType, final BlockFace direction, final FileConfiguration configurationFile, final String configurationFormat)
 
 ## Metrics.java
@@ -1320,15 +1320,15 @@
 
 ## Util.java
 
-- [ ] HashMap<String, ItemStack[]> armourContents
-- [ ] HashMap<String, ItemStack[]> inventoryContents
-- [ ] HashMap<String, Location>    locations
-- [ ] HashMap<String, Integer>     xplevel
-- [ ] HashMap<String, GameMode>    gamemode
+- [ ] HashMap&lt;String, ItemStack[]> armourContents
+- [ ] HashMap&lt;String, ItemStack[]> inventoryContents
+- [ ] HashMap&lt;String, Location>    locations
+- [ ] HashMap&lt;String, Integer>     xplevel
+- [ ] HashMap&lt;String, GameMode>    gamemode
 - [ ] void clearInv(final Player p)
 - [ ] void teleportPlayerFixed(final Player p, final Location l)
-- [ ] void teleportAllPlayers(final ArrayList<String> players, final Location l)
-- [ ] HashMap<String, Location> teleportAllPlayers(final ArrayList<String> players, final ArrayList<Location> locs)
+- [ ] void teleportAllPlayers(final ArrayList&lt;String> players, final Location l)
+- [ ] HashMap&lt;String, Location> teleportAllPlayers(final ArrayList&lt;String> players, final ArrayList&lt;Location> locs)
 - [ ] Location getComponentForArena(final JavaPlugin plugin, final String arenaname, final String component, final String count)
 - [ ] Location getComponentForArena(final JavaPlugin plugin, final String arenaname, final String component)
 - [ ] Location getComponentForArenaRaw(final JavaPlugin plugin, final String arenaname, final String component)
@@ -1337,7 +1337,7 @@
 - [ ] void saveComponentForArena(final JavaPlugin plugin, final String arenaname, final String component, final Location comploc)
 - [ ] void saveMainLobby(final JavaPlugin plugin, final Location comploc)
 - [ ] Location getMainLobby(final JavaPlugin plugin)
-- [ ] ArrayList<Location> getAllSpawns(final JavaPlugin plugin, final String arena)
+- [ ] ArrayList&lt;Location> getAllSpawns(final JavaPlugin plugin, final String arena)
 - [ ] saveArenaToFile(final JavaPlugin plugin, final String arena)
 - [ ] Sign getSignFromArena(final JavaPlugin plugin, final String arena)
 - [ ] Location getSignLocationFromArena(final JavaPlugin plugin, final String arena)
@@ -1345,10 +1345,10 @@
 - [ ] void updateSign(final JavaPlugin plugin, final Arena arena)
 - [ ] void updateSign(final JavaPlugin plugin, final Arena arena, final SignChangeEvent event)
 - [ ] void updateSign(final JavaPlugin plugin, final SignChangeEvent event, final String arenastate)
-- [ ] ArrayList<Arena> loadArenas(final JavaPlugin plugin, final ArenasConfig cf)
+- [ ] ArrayList&lt;Arena> loadArenas(final JavaPlugin plugin, final ArenasConfig cf)
 - [ ] Arena initArena(final JavaPlugin plugin, final String arena)
 - [ ] boolean isNumeric(final String s)
-- [ ] ArrayList<ItemStack> parseItems(final String rawitems)
+- [ ] ArrayList&lt;ItemStack> parseItems(final String rawitems)
 - [ ] void giveLobbyItems(final JavaPlugin plugin, final Player p)
 - [ ] void giveSpectatorItems(final JavaPlugin plugin, final Player p)
 - [ ] void sendMessage(final Player p, final String arenaname, final String msgraw)

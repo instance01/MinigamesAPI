@@ -21,6 +21,17 @@ import com.github.mce.minigames.api.event.PlayerOpenGuiEvent;
 /**
  * Minigame event representation of corresponding minigame event.
  * 
+ * <h3>Using this event as a rule</h3>
+ * 
+ * <dl>
+ * <dt>Player-Rule</dt>
+ * <dd>Passed to the affected player opening the gui</dd>
+ * <dt>Arena-Rule</dt>
+ * <dd>Passed to the arena calculated from player</dd>
+ * <dt>Minigame-Rule</dt>
+ * <dd>Passed to the minigame calculated from arena</dd>
+ * </dl>
+ * 
  * @author mepeisen
  */
 public interface MinigamePlayerOpenGuiEvent extends MinigameEvent<PlayerOpenGuiEvent, MinigamePlayerOpenGuiEvent>

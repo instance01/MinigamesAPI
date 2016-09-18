@@ -18,25 +18,78 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.arena.ArenaInterface;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
 /**
+ * An event fired after a player joins an arena.
+ * 
  * @author mepeisen
- *
  */
 public class ArenaPlayerJoinedEvent extends Event
 {
     
-    private static final HandlerList handlers = new HandlerList();
-
-    public ArenaPlayerJoinedEvent() {
-        super();
-        // TODO
+    /** handlers list. */
+    private static final HandlerList   handlers = new HandlerList();
+    
+    /** the arena the player joined. */
+    private final ArenaInterface       arena;
+    
+    /** the player that joined the arena. */
+    private final ArenaPlayerInterface player;
+    
+    /**
+     * Constructor.
+     * 
+     * @param arena
+     *            Target arena
+     * @param player
+     *            Player joining the arena
+     */
+    public ArenaPlayerJoinedEvent(ArenaInterface arena, ArenaPlayerInterface player)
+    {
+        this.arena = arena;
+        this.player = player;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the arena that the player joined
+     * 
+     * @return the arenaa the player joined.
+     */
+    public ArenaInterface getArena()
+    {
+        return this.arena;
+    }
+    
+    /**
+     * Returns the joining player
+     * 
+     * @return the player
+     */
+    public ArenaPlayerInterface getPlayer()
+    {
+        return this.player;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

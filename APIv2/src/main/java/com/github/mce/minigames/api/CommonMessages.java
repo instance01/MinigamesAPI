@@ -311,6 +311,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <ol>
      * <li>String: The command line</li>
      * <li>String: The sub command</li>
+     * </ol>
      */
     @LocalizedMessage(defaultMessage = "Unknown command " + LocalizedMessage.BLUE + "%1$s %2$s", severity = MessageSeverityType.Error)
     InfoUnknownSubCommand,
@@ -563,6 +564,7 @@ public enum CommonMessages implements LocalizedMessageInterface
      * <ol>
      * <li>String: The command line</li>
      * <li>String: The sub command</li>
+     * </ol>
      */
     @LocalizedMessage(defaultMessage = "Unknown command " + LocalizedMessage.BLUE + "%1$s %2$s", severity = MessageSeverityType.Error)
     HelpUnknownSubCommand,

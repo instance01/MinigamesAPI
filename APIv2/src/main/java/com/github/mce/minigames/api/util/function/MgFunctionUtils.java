@@ -71,8 +71,14 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
+     * @param <U>
+     *            class param
      */
     public static <T, U> BiConsumer<T, U> wrap(MgBiConsumer<T, U> orig)
     {
@@ -90,8 +96,16 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
+     * @param <U>
+     *            class param
+     * @param <R>
+     *            class param
      */
     public static <T, U, R> BiFunction<T, U, R> wrap(MgBiFunction<T, U, R> orig)
     {
@@ -109,8 +123,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> MgBinaryOperator<T> wrap(MgBinaryOperator<T> orig)
     {
@@ -128,8 +146,14 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
+     * @param <U>
+     *            class param
      */
     public static <T, U> BiPredicate<T, U> wrap(MgBiPredicate<T, U> orig)
     {
@@ -147,7 +171,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static BooleanSupplier wrap(MgBooleanSupplier orig)
@@ -166,8 +192,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> Comparator<T> wrap(MgComparator<T> orig)
     {
@@ -185,8 +215,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> Consumer<T> wrap(MgConsumer<T> orig)
     {
@@ -204,7 +238,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static DoubleConsumer wrap(MgDoubleConsumer orig)
@@ -223,7 +259,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static IntConsumer wrap(MgIntConsumer orig)
@@ -242,7 +280,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static LongConsumer wrap(MgLongConsumer orig)
@@ -261,8 +301,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> DoubleFunction<T> wrap(MgDoubleFunction<T> orig)
     {
@@ -280,7 +324,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static DoubleSupplier wrap(MgDoubleSupplier orig)
@@ -299,7 +345,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static DoublePredicate wrap(MgDoublePredicate orig)
@@ -318,7 +366,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static DoubleToIntFunction wrap(MgDoubleToIntFunction orig)
@@ -337,7 +387,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static DoubleToLongFunction wrap(MgDoubleToLongFunction orig)
@@ -356,7 +408,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static DoubleUnaryOperator wrap(MgDoubleUnaryOperator orig)
@@ -375,7 +429,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static DoubleBinaryOperator wrap(MgDoubleBinaryOperator orig)
@@ -394,8 +450,14 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
+     * @param <R>
+     *            class param
      */
     public static <T, R> Function<T, R> wrap(MgFunction<T, R> orig)
     {
@@ -413,8 +475,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> IntFunction<T> wrap(MgIntFunction<T> orig)
     {
@@ -432,7 +498,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static IntSupplier wrap(MgIntSupplier orig)
@@ -451,7 +519,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static IntPredicate wrap(MgIntPredicate orig)
@@ -470,7 +540,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static IntToDoubleFunction wrap(MgIntToDoubleFunction orig)
@@ -489,7 +561,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static IntToLongFunction wrap(MgIntToLongFunction orig)
@@ -508,7 +582,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static IntUnaryOperator wrap(MgIntUnaryOperator orig)
@@ -527,7 +603,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static IntBinaryOperator wrap(MgIntBinaryOperator orig)
@@ -543,12 +621,15 @@ public class MgFunctionUtils
             }
         };
     }
-
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> LongFunction<T> wrap(MgLongFunction<T> orig)
     {
@@ -566,7 +647,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static LongSupplier wrap(MgLongSupplier orig)
@@ -585,7 +668,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static LongPredicate wrap(MgLongPredicate orig)
@@ -604,7 +689,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static LongToIntFunction wrap(MgLongToIntFunction orig)
@@ -623,7 +710,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static LongToDoubleFunction wrap(MgLongToDoubleFunction orig)
@@ -642,7 +731,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static LongUnaryOperator wrap(MgLongUnaryOperator orig)
@@ -661,7 +752,9 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
      */
     public static LongBinaryOperator wrap(MgLongBinaryOperator orig)
@@ -680,8 +773,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> ObjDoubleConsumer<T> wrap(MgObjDoubleConsumer<T> orig)
     {
@@ -699,8 +796,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> ObjIntConsumer<T> wrap(MgObjIntConsumer<T> orig)
     {
@@ -718,8 +819,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> ObjLongConsumer<T> wrap(MgObjLongConsumer<T> orig)
     {
@@ -737,8 +842,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> Predicate<T> wrap(MgPredicate<T> orig)
     {
@@ -756,8 +865,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> Supplier<T> wrap(MgSupplier<T> orig)
     {
@@ -775,8 +888,14 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
+     * @param <U>
+     *            class param
      */
     public static <T, U> ToDoubleBiFunction<T, U> wrap(MgToDoubleBiFunction<T, U> orig)
     {
@@ -794,8 +913,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> ToDoubleFunction<T> wrap(MgToDoubleFunction<T> orig)
     {
@@ -813,8 +936,14 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
+     * @param <U>
+     *            class param
      */
     public static <T, U> ToIntBiFunction<T, U> wrap(MgToIntBiFunction<T, U> orig)
     {
@@ -832,8 +961,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> ToIntFunction<T> wrap(MgToIntFunction<T> orig)
     {
@@ -851,8 +984,14 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
+     * @param <U>
+     *            class param
      */
     public static <T, U> ToLongBiFunction<T, U> wrap(MgToLongBiFunction<T, U> orig)
     {
@@ -870,8 +1009,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> ToLongFunction<T> wrap(MgToLongFunction<T> orig)
     {
@@ -889,8 +1032,12 @@ public class MgFunctionUtils
     
     /**
      * Creates a wrapper to use a mg lambda as a java util lambda.
-     * @param orig original.
+     * 
+     * @param orig
+     *            original.
      * @return java util variant.
+     * @param <T>
+     *            class param
      */
     public static <T> UnaryOperator<T> wrap(MgUnaryOperator<T> orig)
     {
@@ -906,22 +1053,24 @@ public class MgFunctionUtils
         };
     }
     
-    
     /**
      * Exception wrapping.
+     * 
      * @author mepeisen
      */
     public static final class WrappedException extends RuntimeException
     {
-
+        
         /**
          * serial version uid.
          */
         private static final long serialVersionUID = -809099844875692391L;
-
+        
         /**
          * Constructor for wrapping.
-         * @param cause mg exception.
+         * 
+         * @param cause
+         *            mg exception.
          */
         public WrappedException(MinigameException cause)
         {
@@ -930,6 +1079,7 @@ public class MgFunctionUtils
         
         /**
          * Unraps this exception.
+         * 
          * @return nested mg exception.
          */
         public MinigameException unwrap()

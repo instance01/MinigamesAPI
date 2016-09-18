@@ -22,6 +22,10 @@ import com.github.mce.minigames.api.arena.ArenaInterface;
 /**
  * An event fired before a new arena is created.
  * 
+ * <p>
+ * This event can be cancelled. If cancelled the arena will not be created.
+ * </p>
+ * 
  * @author mepeisen
  */
 public class ArenaCreateEvent extends AbstractVetoEvent

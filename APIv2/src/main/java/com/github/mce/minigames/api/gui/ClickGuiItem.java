@@ -34,16 +34,19 @@ public class ClickGuiItem
     
     /** the items name/ title. */
     private final LocalizedMessageInterface displayName;
-
+    
     /** the click handler. */
-    private GuiItemHandler handler;
+    private GuiItemHandler                  handler;
     
     /**
      * Constructor to create a click item.
      * 
      * @param itemStack
+     *            the item stack to display the gui item
      * @param displayName
+     *            the display name
      * @param handler
+     *            the action handler
      */
     public ClickGuiItem(ItemStack itemStack, LocalizedMessageInterface displayName, GuiItemHandler handler)
     {
@@ -87,6 +90,7 @@ public class ClickGuiItem
     
     /**
      * Gui item handler.
+     * 
      * @author mepeisen
      */
     @FunctionalInterface

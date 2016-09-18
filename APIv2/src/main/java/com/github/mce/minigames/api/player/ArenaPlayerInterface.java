@@ -119,7 +119,7 @@ public interface ArenaPlayerInterface
     /**
      * Joins a waiting queue for the next match.
      * 
-     * @param queue
+     * @param queue Queue to join
      */
     void join(WaitQueue queue);
     

@@ -35,6 +35,6 @@ public interface MgLongToDoubleFunction
      * @throws MinigameException
      *             thrown on problems, f.e. networking errors.
      */
-    int applyAsDouble(long value) throws MinigameException;
+    double applyAsDouble(long value) throws MinigameException;
     
 }

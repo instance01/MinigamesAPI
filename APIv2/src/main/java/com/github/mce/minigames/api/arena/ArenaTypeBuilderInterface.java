@@ -361,7 +361,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all phases (including start phase) from given arena; this method must be called at first before manipulating the phases.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -371,7 +371,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all phases (excluding start phase) from given arena; this method must be called at first before manipulating the phases.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -381,7 +381,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits the start phase but not the other phases from given arena; this method must be called at first before manipulating the phases.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -391,7 +391,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all arena rules from given arena; this method must be called at first before manipulating the rule sets.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -401,7 +401,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all match rules from given arena; this method must be called at first before manipulating the rule sets.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -411,7 +411,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all player rules from given arena; this method must be called at first before manipulating the rule sets.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -421,7 +421,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all team rules from given arena; this method must be called at first before manipulating the rule sets.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -431,7 +431,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all admin rules from given arena; this method must be called at first before manipulating the rule sets.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -441,7 +441,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all component rules from given arena; this method must be called at first before manipulating the rule sets.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -451,7 +451,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all rules from given arena; this method must be called at first before manipulating the rule sets.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -461,7 +461,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all components from given arena; this method must be called at first before manipulating the components.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -471,7 +471,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits all teams from given arena; this method must be called at first before manipulating the components.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.
@@ -481,7 +481,7 @@ public interface ArenaTypeBuilderInterface
     /**
      * Inherits everything (all phases and all rules) from given arena.
      * 
-     * @param type
+     * @param type the arena type to inherit from
      * @return this object for chaining.
      * @throws MinigameException
      *             thrown if this method is called twice or too late.

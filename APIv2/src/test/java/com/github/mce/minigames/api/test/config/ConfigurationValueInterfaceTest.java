@@ -13,7 +13,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.config;
+package com.github.mce.minigames.api.test.config;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -23,8 +23,11 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -79,7 +82,6 @@ import com.github.mce.minigames.api.config.ConfigurationValues;
 import com.github.mce.minigames.api.config.ConfigurationVector;
 import com.github.mce.minigames.api.config.ConfigurationVectorList;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
-import com.github.mce.minigames.api.test.player.ArenaPlayerInterfaceTest;
 
 /**
  * test case for {@link ConfigurationValueInterface}
@@ -122,6 +124,29 @@ public class ConfigurationValueInterfaceTest
         final ItemFactory itemFactory = mock(ItemFactory.class);
         when(itemFactory.equals(anyObject(), anyObject())).thenReturn(Boolean.TRUE);
         when(this.server.getItemFactory()).thenReturn(itemFactory);
+    }
+    
+    /**
+     * Checks the save config call.
+     */
+    @Test
+    public void saveConfigTest()
+    {
+        TestOptions.SomeByte1.saveConfig();
+        
+        verify(this.config, times(1)).saveConfig("config.yml"); //$NON-NLS-1$
+    }
+    
+    /**
+     * Invoke constructor for code coverage.
+     * @throws Exception thrown on exceptions
+     */
+    @Test
+    public void constructorTest() throws Exception
+    {
+        final Constructor<?> ctor = Class.forName("com.github.mce.minigames.api.config.ConfigurationTool").getDeclaredConstructor(); //$NON-NLS-1$
+        ctor.setAccessible(true);
+        ctor.newInstance();
     }
     
     /**
@@ -524,9 +549,23 @@ public class ConfigurationValueInterfaceTest
         TestOptions.SomeSection.setBooleanList(new boolean[]{true, false}, "BooleanList"); //$NON-NLS-1$
         assertTrue(TestOptions.SomeSection.isset("BooleanList")); //$NON-NLS-1$
         assertArrayEquals(new boolean[]{true, false}, TestOptions.SomeSection.getBooleanList("BooleanList", new boolean[]{true, true})); //$NON-NLS-1$
+
+        assertFalse(TestOptions.SomeOtherSection.getBoolean("Boolean", false)); //$NON-NLS-1$
+        assertFalse(TestOptions.SomeOtherSection.isset("Boolean")); //$NON-NLS-1$
+        TestOptions.SomeOtherSection.setBoolean(true, "Boolean"); //$NON-NLS-1$
+        assertTrue(TestOptions.SomeOtherSection.isset("Boolean")); //$NON-NLS-1$
+        assertTrue(TestOptions.SomeOtherSection.getBoolean("Boolean", false)); //$NON-NLS-1$
+
+        assertNull(TestOptions.SomeOtherSection.getBooleanList("BooleanList", null)); //$NON-NLS-1$
+        assertArrayEquals(new boolean[]{true, true}, TestOptions.SomeOtherSection.getBooleanList("BooleanList", new boolean[]{true, true})); //$NON-NLS-1$
+        assertFalse(TestOptions.SomeOtherSection.isset("BooleanList")); //$NON-NLS-1$
+        TestOptions.SomeOtherSection.setBooleanList(new boolean[]{true, false}, "BooleanList"); //$NON-NLS-1$
+        assertTrue(TestOptions.SomeOtherSection.isset("BooleanList")); //$NON-NLS-1$
+        assertArrayEquals(new boolean[]{true, false}, TestOptions.SomeOtherSection.getBooleanList("BooleanList", new boolean[]{true, true})); //$NON-NLS-1$
         
         //getKeys
         assertArrayEquals(new String[]{"Boolean", "BooleanList"}, TestOptions.SomeSection.getKeys(false)); //$NON-NLS-1$ //$NON-NLS-2$
+        assertArrayEquals(new String[]{"Boolean", "BooleanList"}, TestOptions.SomeOtherSection.getKeys(false)); //$NON-NLS-1$ //$NON-NLS-2$
         
         // byte
         assertEquals(1, TestOptions.SomeSection.getByte("Byte", (byte) 1)); //$NON-NLS-1$
@@ -888,6 +927,169 @@ public class ConfigurationValueInterfaceTest
     }
     
     /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid1()
+    {
+        InvalidConfig.Invalid.getBoolean();
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid2()
+    {
+        InvalidConfig.Dummy.getBoolean();
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid3()
+    {
+        TestOptions.SomeDummy.getBoolean();
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid1b()
+    {
+        InvalidConfig.Invalid.setBoolean(true);
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid2b()
+    {
+        InvalidConfig.Dummy.setBoolean(true);
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid3b()
+    {
+        TestOptions.SomeDummy.setBoolean(true);
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid1c()
+    {
+        InvalidConfig.Invalid.getKeys(false);
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid2c()
+    {
+        InvalidConfig.Dummy.getKeys(false);
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalid3c()
+    {
+        TestOptions.SomeDummy.getKeys(false);
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalidField()
+    {
+        new InvalidConfig2().isBoolean();
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalidField2()
+    {
+        new InvalidConfig2().getKeys(false);
+    }
+    
+    /**
+     * Tests invalid config.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testInvalidField3()
+    {
+        new InvalidConfig2().path();
+    }
+    
+    /**
+     * Tests the list resetting
+     */
+    @Test
+    public void testResettingList()
+    {
+        final ArenaPlayerInterface player1 = createPlayer();
+        final ArenaPlayerInterface player2 = createPlayer();
+        final ArenaPlayerInterface player3 = createPlayer();
+        final ArenaPlayerInterface player4 = createPlayer();
+        
+        TestOptions.SomePlayerList.setPlayerList(new ArenaPlayerInterface[]{player3, player4});
+        assertArrayEquals(new ArenaPlayerInterface[]{player3, player4}, TestOptions.SomePlayerList.getPlayerList());
+        TestOptions.SomePlayerList.setPlayerList(new ArenaPlayerInterface[]{player1, player2});
+        assertArrayEquals(new ArenaPlayerInterface[]{player1, player2}, TestOptions.SomePlayerList.getPlayerList());
+        TestOptions.SomePlayerList.setPlayerList(new ArenaPlayerInterface[]{});
+        assertArrayEquals(new ArenaPlayerInterface[]{}, TestOptions.SomePlayerList.getPlayerList());
+        
+        TestOptions.SomeSection.setPlayerList(new ArenaPlayerInterface[]{player3, player4}, "PlayerList"); //$NON-NLS-1$
+        assertArrayEquals(new ArenaPlayerInterface[]{player3, player4}, TestOptions.SomeSection.getPlayerList("PlayerList")); //$NON-NLS-1$
+        TestOptions.SomeSection.setPlayerList(new ArenaPlayerInterface[]{player1, player2}, "PlayerList"); //$NON-NLS-1$
+        assertArrayEquals(new ArenaPlayerInterface[]{player1, player2}, TestOptions.SomeSection.getPlayerList("PlayerList")); //$NON-NLS-1$
+        TestOptions.SomeSection.setPlayerList(new ArenaPlayerInterface[]{}, "PlayerList"); //$NON-NLS-1$
+        assertArrayEquals(new ArenaPlayerInterface[]{}, TestOptions.SomeSection.getPlayerList("PlayerList")); //$NON-NLS-1$
+        
+        TestOptions.SomeOtherSection.setPlayerList(new ArenaPlayerInterface[]{player3, player4}, "PlayerList"); //$NON-NLS-1$
+        assertArrayEquals(new ArenaPlayerInterface[]{player3, player4}, TestOptions.SomeOtherSection.getPlayerList("PlayerList")); //$NON-NLS-1$
+        TestOptions.SomeOtherSection.setPlayerList(new ArenaPlayerInterface[]{player1, player2}, "PlayerList"); //$NON-NLS-1$
+        assertArrayEquals(new ArenaPlayerInterface[]{player1, player2}, TestOptions.SomeOtherSection.getPlayerList("PlayerList")); //$NON-NLS-1$
+        TestOptions.SomeOtherSection.setPlayerList(new ArenaPlayerInterface[]{}, "PlayerList"); //$NON-NLS-1$
+        assertArrayEquals(new ArenaPlayerInterface[]{}, TestOptions.SomeOtherSection.getPlayerList("PlayerList")); //$NON-NLS-1$
+    }
+    
+    /**
+     * Some invalid config.
+     * @author mepeisen
+     */
+    public static final class InvalidConfig2 implements ConfigurationValueInterface
+    {
+        // empty
+    }
+    
+    /**
+     * Some invalid config.
+     * @author mepeisen
+     */
+    public static enum InvalidConfig implements ConfigurationValueInterface
+    {
+        /** invlid config. */
+        Invalid,
+        /** dummy config. */
+        @ConfigurationBool
+        Dummy
+    }
+    
+    /**
      * Some test options
      */
     @ConfigurationValues(path = "config")
@@ -1133,7 +1335,7 @@ public class ConfigurationValueInterfaceTest
     /**
      * A sample configurable
      */
-    private static final class FooObject implements Configurable
+    public static final class FooObject implements Configurable
     {
 
         /** obj value. */
@@ -1142,14 +1344,13 @@ public class ConfigurationValueInterfaceTest
         /**
          * Constructor.
          */
-        @SuppressWarnings("unused")
         public FooObject()
         {
             // empty
         }
 
         /**
-         * @param i
+         * @param i i
          */
         public FooObject(int i)
         {

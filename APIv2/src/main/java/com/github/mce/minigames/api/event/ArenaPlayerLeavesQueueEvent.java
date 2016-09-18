@@ -18,25 +18,79 @@ package com.github.mce.minigames.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.arena.WaitQueue;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
 /**
+ * An event fired after a player leaves a waiting queue.
+ * 
  * @author mepeisen
  *
  */
 public class ArenaPlayerLeavesQueueEvent extends Event
 {
     
-    private static final HandlerList handlers = new HandlerList();
-
-    public ArenaPlayerLeavesQueueEvent() {
-        super();
-        // TODO
+    /** handlers list. */
+    private static final HandlerList   handlers = new HandlerList();
+    
+    /** the queue the player joined. */
+    private final WaitQueue            queue;
+    
+    /** the player that joined the arena. */
+    private final ArenaPlayerInterface player;
+    
+    /**
+     * Constructor.
+     * 
+     * @param queue
+     *            Target queue
+     * @param player
+     *            Player leaving the queue
+     */
+    public ArenaPlayerLeavesQueueEvent(WaitQueue queue, ArenaPlayerInterface player)
+    {
+        this.queue = queue;
+        this.player = player;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the queue that the player joined
+     * 
+     * @return the queue the player joined.
+     */
+    public WaitQueue getQueue()
+    {
+        return this.queue;
+    }
+    
+    /**
+     * Returns the joining player
+     * 
+     * @return the player
+     */
+    public ArenaPlayerInterface getPlayer()
+    {
+        return this.player;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

@@ -15,28 +15,84 @@
 
 package com.github.mce.minigames.api.event;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.gui.ClickGuiInterface;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
 /**
+ * Fired before the player opens a gui.
+ * 
+ * <p>
+ * Event can be cancelled.
+ * </p>
+ * 
  * @author mepeisen
- *
  */
-public class PlayerOpenGuiEvent extends Event
+public class PlayerOpenGuiEvent extends AbstractVetoEvent
 {
     
-    private static final HandlerList handlers = new HandlerList();
-
-    public PlayerOpenGuiEvent() {
-        super();
-        // TODO
+    /** handlers list. */
+    private static final HandlerList   handlers = new HandlerList();
+    
+    /** the gui the player opened. */
+    private final ClickGuiInterface    gui;
+    
+    /** the player. */
+    private final ArenaPlayerInterface player;
+    
+    /**
+     * Constructor.
+     * 
+     * @param gui
+     *            the opened gui
+     * @param player
+     *            the target player
+     */
+    public PlayerOpenGuiEvent(ClickGuiInterface gui, ArenaPlayerInterface player)
+    {
+        this.gui = gui;
+        this.player = player;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the gui that the player opened
+     * 
+     * @return the gui the player opened.
+     */
+    public ClickGuiInterface getGui()
+    {
+        return this.gui;
+    }
+    
+    /**
+     * Returns the player
+     * 
+     * @return the player
+     */
+    public ArenaPlayerInterface getPlayer()
+    {
+        return this.player;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

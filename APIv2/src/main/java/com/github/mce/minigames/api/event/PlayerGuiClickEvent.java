@@ -15,28 +15,102 @@
 
 package com.github.mce.minigames.api.event;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.github.mce.minigames.api.gui.ClickGuiInterface;
+import com.github.mce.minigames.api.gui.ClickGuiItem;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
 /**
+ * Fired before the click handler is called.
+ * 
+ * <p>
+ * The event can be cancelled.
+ * </p>
+ * 
  * @author mepeisen
  *
  */
-public class PlayerGuiClickEvent extends Event
+public class PlayerGuiClickEvent extends AbstractVetoEvent
 {
     
-    private static final HandlerList handlers = new HandlerList();
-
-    public PlayerGuiClickEvent() {
-        super();
-        // TODO
+    /** handlers list. */
+    private static final HandlerList   handlers = new HandlerList();
+    
+    /** the gui the player opened. */
+    private final ClickGuiInterface    gui;
+    
+    /** the player. */
+    private final ArenaPlayerInterface player;
+    
+    /** the clicked gui item. */
+    private final ClickGuiItem         item;
+    
+    /**
+     * Constructor.
+     * 
+     * @param gui
+     *            the target gui
+     * @param player
+     *            the target player
+     * @param item
+     *            clicked item
+     */
+    public PlayerGuiClickEvent(ClickGuiInterface gui, ArenaPlayerInterface player, ClickGuiItem item)
+    {
+        this.gui = gui;
+        this.player = player;
+        this.item = item;
     }
-
-    public HandlerList getHandlers() {
+    
+    /**
+     * Returns the gui that the player opened
+     * 
+     * @return the gui the player opened.
+     */
+    public ClickGuiInterface getGui()
+    {
+        return this.gui;
+    }
+    
+    /**
+     * Returns the player
+     * 
+     * @return the player
+     */
+    public ArenaPlayerInterface getPlayer()
+    {
+        return this.player;
+    }
+    
+    /**
+     * Returns the clicked item.
+     * 
+     * @return the item
+     */
+    public ClickGuiItem getItem()
+    {
+        return this.item;
+    }
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    @Override
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
-
-    public static HandlerList getHandlerList() {
+    
+    /**
+     * Returns the handlers list
+     * 
+     * @return handlers
+     */
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
     

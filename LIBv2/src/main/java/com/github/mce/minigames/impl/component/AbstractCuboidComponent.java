@@ -47,7 +47,7 @@ public abstract class AbstractCuboidComponent extends AbstractComponent implemen
     public AbstractCuboidComponent(ComponentRegistry registry, Cuboid cuboid)
     {
         super(registry);
-        this.cuboid = cuboid == null ? null : cuboid.normalize();
+        this.cuboid = cuboid == null ? null : cuboid;
         this.changeLocs();
     }
     
@@ -95,7 +95,7 @@ public abstract class AbstractCuboidComponent extends AbstractComponent implemen
     public void setCuboid(Cuboid cub)
     {
         // TODO save to config
-        this.cuboid = cub == null ? null : cub.normalize();
+        this.cuboid = cub == null ? null : cub;
         this.changeLocs();
     }
     

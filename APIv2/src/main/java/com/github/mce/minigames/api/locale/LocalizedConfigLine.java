@@ -16,6 +16,7 @@
 package com.github.mce.minigames.api.locale;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -52,6 +53,50 @@ public class LocalizedConfigLine implements Configurable, LocalizedMessageInterf
      * The admin strings per locale.
      */
     private Map<Locale, List<String>> adminStrings     = new HashMap<>();
+    
+    /**
+     * Sets the user messages.
+     * @param locale locale to use
+     * @param message message array to be used.
+     */
+    public void setUserMessages(Locale locale, String[] message)
+    {
+        if (message == null)
+        {
+            this.userStrings.remove(locale);
+        }
+        else
+        {
+            final List<String> list = this.userStrings.computeIfAbsent(locale, (key) -> new ArrayList<>());
+            list.clear();
+            for (final String msg : message)
+            {
+                list.add(msg);
+            }
+        }
+    }
+    
+    /**
+     * Sets the admin messages.
+     * @param locale locale to use
+     * @param message message array to be used.
+     */
+    public void setAdminMessages(Locale locale, String[] message)
+    {
+        if (message == null)
+        {
+            this.adminStrings.remove(locale);
+        }
+        else
+        {
+            final List<String> list = this.adminStrings.computeIfAbsent(locale, (key) -> new ArrayList<>());
+            list.clear();
+            for (final String msg : message)
+            {
+                list.add(msg);
+            }
+        }
+    }
     
     @Override
     public void readFromConfig(ConfigurationSection section)
@@ -126,6 +171,10 @@ public class LocalizedConfigLine implements Configurable, LocalizedMessageInterf
         {
             smsg = this.userStrings.get(this.defaultLocale);
         }
+        if (smsg == null)
+        {
+            return new String[0];
+        }
         final String[] result = new String[smsg.size()];
         int i = 0;
         for (final String lmsg : smsg)
@@ -157,6 +206,10 @@ public class LocalizedConfigLine implements Configurable, LocalizedMessageInterf
         if (smsg == null || smsg.size() == 0)
         {
             smsg = this.userStrings.get(this.defaultLocale);
+        }
+        if (smsg == null)
+        {
+            return new String[0];
         }
         final String[] result = new String[smsg.size()];
         int i = 0;
