@@ -44,8 +44,11 @@ public class ArenaStateEvent extends Event
      * Constructor.
      * 
      * @param arena
+     *            Target arena
      * @param oldState
+     *            previous state
      * @param newState
+     *            next state
      */
     public ArenaStateEvent(ArenaInterface arena, ArenaState oldState, ArenaState newState)
     {

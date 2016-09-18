@@ -43,7 +43,9 @@ public class ArenaPlayerLeavesQueueEvent extends Event
      * Constructor.
      * 
      * @param queue
+     *            Target queue
      * @param player
+     *            Player leaving the queue
      */
     public ArenaPlayerLeavesQueueEvent(WaitQueue queue, ArenaPlayerInterface player)
     {

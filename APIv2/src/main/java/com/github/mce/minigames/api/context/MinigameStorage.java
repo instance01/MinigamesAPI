@@ -31,6 +31,8 @@ public interface MinigameStorage
      * @param clazz
      *            the class of the variable to be returned.
      * @return Storage variable or {@code null} if the variable was not set.
+     * @param <T>
+     *            Configurable object class
      */
     <T extends Configurable> T get(Class<T> clazz);
     
@@ -41,6 +43,8 @@ public interface MinigameStorage
      *            the class of the variable
      * @param value
      *            the new value
+     * @param <T>
+     *            Configurable object class
      */
     <T extends Configurable> void set(Class<T> clazz, T value);
     

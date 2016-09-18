@@ -34,7 +34,7 @@ public interface ArenaInterface
     /**
      * List of illegal arena names; names starting with on of these strings are disallowed.
      */
-    String[] ILLEGAL_NAMES = {"core", "join", "leave", "mg"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    String[] ILLEGAL_NAMES = { "core", "join", "leave", "mg" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     
     // arena information
     
@@ -54,18 +54,21 @@ public interface ArenaInterface
     
     /**
      * Returns the author of this arena.
+     * 
      * @return author or {@code null} if no author was set.
      */
     String getAuthor();
     
     /**
      * Returns a short description (single line) of the arena.
+     * 
      * @return short description or {@code null} if no short description was set.
      */
     LocalizedMessageInterface getShortDescription();
     
     /**
      * Returns a description (multi line) of the arena.
+     * 
      * @return multi line description or {@code null} if no description was set.
      */
     LocalizedMessageInterface getDescription();
@@ -74,6 +77,7 @@ public interface ArenaInterface
      * Changes the display name
      * 
      * @param name
+     *            new display name of the arena
      * @throws MinigameException
      *             thrown if save failed.
      */
@@ -138,7 +142,7 @@ public interface ArenaInterface
      * @return {@code true} if the arena is enabled.
      */
     boolean isEnabled();
-
+    
     /**
      * Checks if the arena is in maintenance mode.
      * 

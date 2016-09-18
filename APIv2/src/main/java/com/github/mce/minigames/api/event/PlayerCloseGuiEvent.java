@@ -29,7 +29,7 @@ public class PlayerCloseGuiEvent extends Event
 {
     
     /** handlers list. */
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList   handlers = new HandlerList();
     
     /** the gui the player closed. */
     private final ClickGuiInterface    gui;
@@ -41,7 +41,9 @@ public class PlayerCloseGuiEvent extends Event
      * Constructor.
      * 
      * @param gui
+     *            the closed gui
      * @param player
+     *            the target player
      */
     public PlayerCloseGuiEvent(ClickGuiInterface gui, ArenaPlayerInterface player)
     {

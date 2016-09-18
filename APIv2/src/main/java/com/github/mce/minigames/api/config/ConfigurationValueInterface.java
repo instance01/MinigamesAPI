@@ -39,6 +39,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a boolean.
+     * 
      * @return {@code true} if this is a boolean
      */
     default boolean isBoolean()
@@ -48,6 +49,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a boolean list.
+     * 
      * @return {@code true} if this is a boolean list
      */
     default boolean isBooleanList()
@@ -57,6 +59,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a byte.
+     * 
      * @return {@code true} if this is a byte
      */
     default boolean isByte()
@@ -66,6 +69,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a byte list.
+     * 
      * @return {@code true} if this is a byte list
      */
     default boolean isByteList()
@@ -75,6 +79,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a character.
+     * 
      * @return {@code true} if this is a character
      */
     default boolean isCharacter()
@@ -84,6 +89,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a character list.
+     * 
      * @return {@code true} if this is a character list
      */
     default boolean isCharacterList()
@@ -93,6 +99,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a color list.
+     * 
      * @return {@code true} if this is a color list
      */
     default boolean isColorList()
@@ -102,6 +109,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a color.
+     * 
      * @return {@code true} if this is a color
      */
     default boolean isColor()
@@ -111,6 +119,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a double list.
+     * 
      * @return {@code true} if this is a double list
      */
     default boolean isDoubleList()
@@ -120,6 +129,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a double.
+     * 
      * @return {@code true} if this is a double
      */
     default boolean isDouble()
@@ -129,6 +139,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a float list.
+     * 
      * @return {@code true} if this is a float list
      */
     default boolean isFloatList()
@@ -138,6 +149,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a float.
+     * 
      * @return {@code true} if this is a float
      */
     default boolean isFloat()
@@ -147,6 +159,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a int list.
+     * 
      * @return {@code true} if this is a int list
      */
     default boolean isIntList()
@@ -156,6 +169,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a int.
+     * 
      * @return {@code true} if this is a int
      */
     default boolean isInt()
@@ -165,6 +179,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is an item stack list.
+     * 
      * @return {@code true} if this is an item stack list
      */
     default boolean isItemStackList()
@@ -174,6 +189,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is an item stack.
+     * 
      * @return {@code true} if this is an item stack
      */
     default boolean isItemStack()
@@ -183,6 +199,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a section.
+     * 
      * @return {@code true} if this is a section
      */
     default boolean isSection()
@@ -192,6 +209,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a long list.
+     * 
      * @return {@code true} if this is a long list
      */
     default boolean isLongList()
@@ -201,6 +219,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a long.
+     * 
      * @return {@code true} if this is a long
      */
     default boolean isLong()
@@ -210,6 +229,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is an object list.
+     * 
      * @return {@code true} if this is an object list
      */
     default boolean isObjectList()
@@ -219,6 +239,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is an object.
+     * 
      * @return {@code true} if this is an object
      */
     default boolean isObject()
@@ -228,6 +249,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a player list.
+     * 
      * @return {@code true} if this is a player list
      */
     default boolean isPlayerList()
@@ -237,6 +259,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a player.
+     * 
      * @return {@code true} if this is a player
      */
     default boolean isPlayer()
@@ -246,6 +269,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a short list.
+     * 
      * @return {@code true} if this is a short list
      */
     default boolean isShortList()
@@ -255,6 +279,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a short.
+     * 
      * @return {@code true} if this is a short
      */
     default boolean isShort()
@@ -264,6 +289,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a string list.
+     * 
      * @return {@code true} if this is a string list
      */
     default boolean isStringList()
@@ -273,6 +299,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a string.
+     * 
      * @return {@code true} if this is a string
      */
     default boolean isString()
@@ -282,6 +309,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a vector list.
+     * 
      * @return {@code true} if this is a vector list
      */
     default boolean isVectorList()
@@ -291,6 +319,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Checks if this configuration variable is a vector.
+     * 
      * @return {@code true} if this is a vector
      */
     default boolean isVector()
@@ -300,6 +329,7 @@ public interface ConfigurationValueInterface
     
     /**
      * Returns the configuration path of this option
+     * 
      * @return configuration path
      */
     default String path()
@@ -599,19 +629,18 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setObject(Configurable value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
-                    if (section == null)
-                    {
-                        section = minigame.getConfig(configs.file()).createSection(path);
-                    }
-                    value.writeToConfig(section);
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+            if (section == null)
+            {
+                section = minigame.getConfig(configs.file()).createSection(path);
+            }
+            value.writeToConfig(section);
+        });
     }
     
     /**
@@ -620,19 +649,18 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setObjectList(Configurable[] value, String subpath)
     {
-        ConfigurationTool.consumeList(
-                this, subpath, value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    org.bukkit.configuration.ConfigurationSection section2 = section.getConfigurationSection(path);
-                    if (section2 == null)
-                    {
-                        section2 = section.createSection(path);
-                    }
-                    element.writeToConfig(section2);
-                });
+        ConfigurationTool.consumeList(this, subpath, value, (val, configs, config, lib, minigame, section, path, element) -> {
+            org.bukkit.configuration.ConfigurationSection section2 = section.getConfigurationSection(path);
+            if (section2 == null)
+            {
+                section2 = section.createSection(path);
+            }
+            element.writeToConfig(section2);
+        });
     }
     
     /**
@@ -641,14 +669,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setBoolean(boolean value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Boolean.valueOf(value));
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Boolean.valueOf(value));
+        });
     }
     
     /**
@@ -657,16 +684,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setBooleanList(boolean[] value, String subpath)
     {
         final List<Boolean> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -675,14 +702,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setByte(byte value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Byte.valueOf(value));
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Byte.valueOf(value));
+        });
     }
     
     /**
@@ -691,16 +717,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setByteList(byte[] value, String subpath)
     {
         final List<Byte> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -709,14 +735,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setCharacter(char value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, String.valueOf(value));
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, String.valueOf(value));
+        });
     }
     
     /**
@@ -725,16 +750,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setCharacterList(char[] value, String subpath)
     {
         final List<Character> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -743,14 +768,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setColor(Color value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value);
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value);
+        });
     }
     
     /**
@@ -759,14 +783,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setColorList(Color[] value, String subpath)
     {
-        ConfigurationTool.consumeList(
-                this, subpath, value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element);
-                });
+        ConfigurationTool.consumeList(this, subpath, value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element);
+        });
     }
     
     /**
@@ -775,16 +798,14 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setDouble(double value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Double.valueOf(value));
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Double.valueOf(value));
+        });
     }
-
     
     /**
      * Sets the value to this configuration variable.
@@ -792,31 +813,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setDoubleList(double[] value, String subpath)
     {
         final List<Double> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
-    }
-    /**
-     * Sets the value to this configuration variable.
-     * 
-     * @param value
-     *            value to set.
-     * @param subpath
-     */
-    default void setFloat(float value, String subpath)
-    {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Float.valueOf(value));
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -825,16 +831,31 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
+     */
+    default void setFloat(float value, String subpath)
+    {
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Float.valueOf(value));
+        });
+    }
+    
+    /**
+     * Sets the value to this configuration variable.
+     * 
+     * @param value
+     *            value to set.
+     * @param subpath
+     *            the sub path
      */
     default void setFloatList(float[] value, String subpath)
     {
         final List<Float> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -843,14 +864,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setInt(int value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Integer.valueOf(value));
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Integer.valueOf(value));
+        });
     }
     
     /**
@@ -859,16 +879,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setIntList(int[] value, String subpath)
     {
         final List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -877,14 +897,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setItemStack(ItemStack value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value.clone());
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value.clone());
+        });
     }
     
     /**
@@ -893,14 +912,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setItemStackList(ItemStack[] value, String subpath)
     {
-        ConfigurationTool.consumeList(
-                this, subpath, value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element.clone());
-                });
+        ConfigurationTool.consumeList(this, subpath, value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element.clone());
+        });
     }
     
     /**
@@ -909,14 +927,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setLong(long value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Long.valueOf(value));
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Long.valueOf(value));
+        });
     }
     
     /**
@@ -925,16 +942,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setLongList(long[] value, String subpath)
     {
         final List<Long> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -943,14 +960,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setPlayer(ArenaPlayerInterface value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value.getOfflinePlayer());
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value.getOfflinePlayer());
+        });
     }
     
     /**
@@ -959,14 +975,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setPlayerList(ArenaPlayerInterface[] value, String subpath)
     {
-        ConfigurationTool.consumeList(
-                this, subpath, value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element.getOfflinePlayer());
-                });
+        ConfigurationTool.consumeList(this, subpath, value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element.getOfflinePlayer());
+        });
     }
     
     /**
@@ -975,14 +990,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setShort(short value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Short.valueOf(value));
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Short.valueOf(value));
+        });
     }
     
     /**
@@ -991,16 +1005,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setShortList(short[] value, String subpath)
     {
         final List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(Integer.valueOf(value[i]));
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(Integer.valueOf(value[i]));
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1009,14 +1023,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setString(String value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value);
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value);
+        });
     }
     
     /**
@@ -1025,16 +1038,16 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setStringList(String[] value, String subpath)
     {
         final List<String> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1043,14 +1056,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setVector(Vector value, String subpath)
     {
-        ConfigurationTool.consume(
-                this, subpath,
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value.clone());
-                });
+        ConfigurationTool.consume(this, subpath, (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value.clone());
+        });
     }
     
     /**
@@ -1059,14 +1071,13 @@ public interface ConfigurationValueInterface
      * @param value
      *            value to set.
      * @param subpath
+     *            the sub path
      */
     default void setVectorList(Vector[] value, String subpath)
     {
-        ConfigurationTool.consumeList(
-                this, subpath, value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element.clone());
-                });
+        ConfigurationTool.consumeList(this, subpath, value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element.clone());
+        });
     }
     
     /**
@@ -1077,16 +1088,14 @@ public interface ConfigurationValueInterface
      */
     default void setObject(Configurable value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationObject.class, ConfigurationTool.objectPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
-                    if (section == null)
-                    {
-                        section = minigame.getConfig(configs.file()).createSection(path);
-                    }
-                    value.writeToConfig(section);
-                });
+        ConfigurationTool.consume(this, ConfigurationObject.class, ConfigurationTool.objectPath(), (val, configs, config, lib, minigame, path) -> {
+            org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+            if (section == null)
+            {
+                section = minigame.getConfig(configs.file()).createSection(path);
+            }
+            value.writeToConfig(section);
+        });
     }
     
     /**
@@ -1097,16 +1106,14 @@ public interface ConfigurationValueInterface
      */
     default void setObjectList(Configurable[] value)
     {
-        ConfigurationTool.consumeList(
-                this, ConfigurationObjectList.class, ConfigurationTool.objectListPath(), value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    org.bukkit.configuration.ConfigurationSection configurationSection = section.getConfigurationSection(path);
-                    if (configurationSection == null)
-                    {
-                        configurationSection = section.createSection(path);
-                    }
-                    element.writeToConfig(configurationSection);
-                });
+        ConfigurationTool.consumeList(this, ConfigurationObjectList.class, ConfigurationTool.objectListPath(), value, (val, configs, config, lib, minigame, section, path, element) -> {
+            org.bukkit.configuration.ConfigurationSection configurationSection = section.getConfigurationSection(path);
+            if (configurationSection == null)
+            {
+                configurationSection = section.createSection(path);
+            }
+            element.writeToConfig(configurationSection);
+        });
     }
     
     /**
@@ -1117,11 +1124,9 @@ public interface ConfigurationValueInterface
      */
     default void setBoolean(boolean value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationBool.class, ConfigurationTool.boolPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Boolean.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationBool.class, ConfigurationTool.boolPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Boolean.valueOf(value));
+        });
     }
     
     /**
@@ -1133,12 +1138,11 @@ public interface ConfigurationValueInterface
     default void setBooleanList(boolean[] value)
     {
         final List<Boolean> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationBoolList.class, ConfigurationTool.boolListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationBoolList.class, ConfigurationTool.boolListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1149,11 +1153,9 @@ public interface ConfigurationValueInterface
      */
     default void setByte(byte value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationByte.class, ConfigurationTool.bytePath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Byte.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationByte.class, ConfigurationTool.bytePath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Byte.valueOf(value));
+        });
     }
     
     /**
@@ -1165,12 +1167,11 @@ public interface ConfigurationValueInterface
     default void setByteList(byte[] value)
     {
         final List<Byte> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationByteList.class, ConfigurationTool.byteListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationByteList.class, ConfigurationTool.byteListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1181,11 +1182,9 @@ public interface ConfigurationValueInterface
      */
     default void setCharacter(char value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationCharacter.class, ConfigurationTool.charPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, String.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationCharacter.class, ConfigurationTool.charPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, String.valueOf(value));
+        });
     }
     
     /**
@@ -1197,12 +1196,11 @@ public interface ConfigurationValueInterface
     default void setCharacterList(char[] value)
     {
         final List<Character> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationCharacterList.class, ConfigurationTool.charListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationCharacterList.class, ConfigurationTool.charListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1213,11 +1211,9 @@ public interface ConfigurationValueInterface
      */
     default void setColor(Color value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationColor.class, ConfigurationTool.colorPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value);
-                });
+        ConfigurationTool.consume(this, ConfigurationColor.class, ConfigurationTool.colorPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value);
+        });
     }
     
     /**
@@ -1228,11 +1224,9 @@ public interface ConfigurationValueInterface
      */
     default void setColorList(Color[] value)
     {
-        ConfigurationTool.consumeList(
-                this, ConfigurationColorList.class, ConfigurationTool.colorListPath(), value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element);
-                });
+        ConfigurationTool.consumeList(this, ConfigurationColorList.class, ConfigurationTool.colorListPath(), value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element);
+        });
     }
     
     /**
@@ -1243,13 +1237,10 @@ public interface ConfigurationValueInterface
      */
     default void setDouble(double value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationDouble.class, ConfigurationTool.doublePath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Double.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationDouble.class, ConfigurationTool.doublePath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Double.valueOf(value));
+        });
     }
-
     
     /**
      * Sets the value to this configuration variable.
@@ -1260,13 +1251,13 @@ public interface ConfigurationValueInterface
     default void setDoubleList(double[] value)
     {
         final List<Double> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationDoubleList.class, ConfigurationTool.doubleListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationDoubleList.class, ConfigurationTool.doubleListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
+    
     /**
      * Sets the value to this configuration variable.
      * 
@@ -1275,11 +1266,9 @@ public interface ConfigurationValueInterface
      */
     default void setFloat(float value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationFloat.class, ConfigurationTool.floatPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Float.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationFloat.class, ConfigurationTool.floatPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Float.valueOf(value));
+        });
     }
     
     /**
@@ -1291,12 +1280,11 @@ public interface ConfigurationValueInterface
     default void setFloatList(float[] value)
     {
         final List<Float> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationFloatList.class, ConfigurationTool.floatListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationFloatList.class, ConfigurationTool.floatListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1307,11 +1295,9 @@ public interface ConfigurationValueInterface
      */
     default void setInt(int value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationInt.class, ConfigurationTool.intPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Integer.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationInt.class, ConfigurationTool.intPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Integer.valueOf(value));
+        });
     }
     
     /**
@@ -1323,12 +1309,11 @@ public interface ConfigurationValueInterface
     default void setIntList(int[] value)
     {
         final List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationIntList.class, ConfigurationTool.intListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationIntList.class, ConfigurationTool.intListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1339,11 +1324,9 @@ public interface ConfigurationValueInterface
      */
     default void setItemStack(ItemStack value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationItemStack.class, ConfigurationTool.itemStackPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value.clone());
-                });
+        ConfigurationTool.consume(this, ConfigurationItemStack.class, ConfigurationTool.itemStackPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value.clone());
+        });
     }
     
     /**
@@ -1354,11 +1337,9 @@ public interface ConfigurationValueInterface
      */
     default void setItemStackList(ItemStack[] value)
     {
-        ConfigurationTool.consumeList(
-                this, ConfigurationItemStackList.class, ConfigurationTool.itemStackListPath(), value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element.clone());
-                });
+        ConfigurationTool.consumeList(this, ConfigurationItemStackList.class, ConfigurationTool.itemStackListPath(), value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element.clone());
+        });
     }
     
     /**
@@ -1369,11 +1350,9 @@ public interface ConfigurationValueInterface
      */
     default void setLong(long value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationLong.class, ConfigurationTool.longPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Long.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationLong.class, ConfigurationTool.longPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Long.valueOf(value));
+        });
     }
     
     /**
@@ -1385,12 +1364,11 @@ public interface ConfigurationValueInterface
     default void setLongList(long[] value)
     {
         final List<Long> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationLongList.class, ConfigurationTool.longListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationLongList.class, ConfigurationTool.longListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1401,11 +1379,9 @@ public interface ConfigurationValueInterface
      */
     default void setPlayer(ArenaPlayerInterface value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationPlayer.class, ConfigurationTool.playerPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value.getOfflinePlayer());
-                });
+        ConfigurationTool.consume(this, ConfigurationPlayer.class, ConfigurationTool.playerPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value.getOfflinePlayer());
+        });
     }
     
     /**
@@ -1416,11 +1392,9 @@ public interface ConfigurationValueInterface
      */
     default void setPlayerList(ArenaPlayerInterface[] value)
     {
-        ConfigurationTool.consumeList(
-                this, ConfigurationPlayerList.class, ConfigurationTool.playerListPath(), value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element.getOfflinePlayer());
-                });
+        ConfigurationTool.consumeList(this, ConfigurationPlayerList.class, ConfigurationTool.playerListPath(), value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element.getOfflinePlayer());
+        });
     }
     
     /**
@@ -1431,11 +1405,9 @@ public interface ConfigurationValueInterface
      */
     default void setShort(short value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationShort.class, ConfigurationTool.shortPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, Short.valueOf(value));
-                });
+        ConfigurationTool.consume(this, ConfigurationShort.class, ConfigurationTool.shortPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, Short.valueOf(value));
+        });
     }
     
     /**
@@ -1447,12 +1419,11 @@ public interface ConfigurationValueInterface
     default void setShortList(short[] value)
     {
         final List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(Integer.valueOf(value[i]));
-        ConfigurationTool.consume(
-                this, ConfigurationShortList.class, ConfigurationTool.shortListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(Integer.valueOf(value[i]));
+        ConfigurationTool.consume(this, ConfigurationShortList.class, ConfigurationTool.shortListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1463,11 +1434,9 @@ public interface ConfigurationValueInterface
      */
     default void setString(String value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationString.class, ConfigurationTool.stringPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value);
-                });
+        ConfigurationTool.consume(this, ConfigurationString.class, ConfigurationTool.stringPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value);
+        });
     }
     
     /**
@@ -1479,12 +1448,11 @@ public interface ConfigurationValueInterface
     default void setStringList(String[] value)
     {
         final List<String> list = new ArrayList<>();
-        for (int i = 0; i < value.length; i++) list.add(value[i]);
-        ConfigurationTool.consume(
-                this, ConfigurationStringList.class, ConfigurationTool.stringListPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, list);
-                });
+        for (int i = 0; i < value.length; i++)
+            list.add(value[i]);
+        ConfigurationTool.consume(this, ConfigurationStringList.class, ConfigurationTool.stringListPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, list);
+        });
     }
     
     /**
@@ -1495,11 +1463,9 @@ public interface ConfigurationValueInterface
      */
     default void setVector(Vector value)
     {
-        ConfigurationTool.consume(
-                this, ConfigurationVector.class, ConfigurationTool.vectorPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    minigame.getConfig(configs.file()).set(path, value.clone());
-                });
+        ConfigurationTool.consume(this, ConfigurationVector.class, ConfigurationTool.vectorPath(), (val, configs, config, lib, minigame, path) -> {
+            minigame.getConfig(configs.file()).set(path, value.clone());
+        });
     }
     
     /**
@@ -1510,33 +1476,31 @@ public interface ConfigurationValueInterface
      */
     default void setVectorList(Vector[] value)
     {
-        ConfigurationTool.consumeList(
-                this, ConfigurationVectorList.class, ConfigurationTool.vectorListPath(), value,
-                (val, configs, config, lib, minigame, section, path, element) -> {
-                    section.set(path, element.clone());
-                });
+        ConfigurationTool.consumeList(this, ConfigurationVectorList.class, ConfigurationTool.vectorListPath(), value, (val, configs, config, lib, minigame, section, path, element) -> {
+            section.set(path, element.clone());
+        });
     }
     
     /**
      * Returns the value of given configuration value.
      * 
      * @return value.
+     * @param <T>
+     *            Configurable object class
      */
     @SuppressWarnings("unchecked")
     default <T extends Configurable> T getObject()
     {
-        return (T) ConfigurationTool.calculate(
-                this, ConfigurationObject.class, ConfigurationTool.objectPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
-                    if (section == null)
-                    {
-                        return null;
-                    }
-                    final Configurable result = config.clazz().newInstance();
-                    result.readFromConfig(section);
-                    return result;
-                });
+        return (T) ConfigurationTool.calculate(this, ConfigurationObject.class, ConfigurationTool.objectPath(), (val, configs, config, lib, minigame, path) -> {
+            org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(path);
+            if (section == null)
+            {
+                return null;
+            }
+            final Configurable result = config.clazz().newInstance();
+            result.readFromConfig(section);
+            return result;
+        });
     }
     
     /**
@@ -1546,8 +1510,7 @@ public interface ConfigurationValueInterface
      */
     default byte getByte()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationByte.class, ConfigurationTool.bytePath(),
+        return ConfigurationTool.calculate(this, ConfigurationByte.class, ConfigurationTool.bytePath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getInt(path, config.defaultValue())).byteValue();
     }
     
@@ -1558,8 +1521,7 @@ public interface ConfigurationValueInterface
      */
     default Color getColor()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationColor.class, ConfigurationTool.colorPath(),
+        return ConfigurationTool.calculate(this, ConfigurationColor.class, ConfigurationTool.colorPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getColor(path, Color.fromRGB(config.defaultRgb())));
     }
     
@@ -1570,12 +1532,10 @@ public interface ConfigurationValueInterface
      */
     default ItemStack getItemStack()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationItemStack.class, ConfigurationTool.itemStackPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    final ItemStack stack = minigame.getConfig(configs.file()).getItemStack(path);
-                    return stack == null ? null : stack.clone();
-                });
+        return ConfigurationTool.calculate(this, ConfigurationItemStack.class, ConfigurationTool.itemStackPath(), (val, configs, config, lib, minigame, path) -> {
+            final ItemStack stack = minigame.getConfig(configs.file()).getItemStack(path);
+            return stack == null ? null : stack.clone();
+        });
     }
     
     /**
@@ -1585,12 +1545,10 @@ public interface ConfigurationValueInterface
      */
     default Vector getVector()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationVector.class, ConfigurationTool.vectorPath(),
-                (val, configs, config, lib, minigame, path) -> {
-                    final Vector vector = minigame.getConfig(configs.file()).getVector(path);
-                    return vector == null ? null : vector.clone();
-                });
+        return ConfigurationTool.calculate(this, ConfigurationVector.class, ConfigurationTool.vectorPath(), (val, configs, config, lib, minigame, path) -> {
+            final Vector vector = minigame.getConfig(configs.file()).getVector(path);
+            return vector == null ? null : vector.clone();
+        });
     }
     
     /**
@@ -1600,8 +1558,7 @@ public interface ConfigurationValueInterface
      */
     default ArenaPlayerInterface getPlayer()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationPlayer.class, ConfigurationTool.playerPath(),
+        return ConfigurationTool.calculate(this, ConfigurationPlayer.class, ConfigurationTool.playerPath(),
                 (val, configs, config, lib, minigame, path) -> lib.getPlayer(minigame.getConfig(configs.file()).getOfflinePlayer(path)));
     }
     
@@ -1612,8 +1569,7 @@ public interface ConfigurationValueInterface
      */
     default char getCharacter()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationCharacter.class, ConfigurationTool.charPath(),
+        return ConfigurationTool.calculate(this, ConfigurationCharacter.class, ConfigurationTool.charPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getString(path, "" + config.defaultValue())).charAt(0); //$NON-NLS-1$
     }
     
@@ -1624,8 +1580,7 @@ public interface ConfigurationValueInterface
      */
     default boolean getBoolean()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationBool.class, ConfigurationTool.boolPath(),
+        return ConfigurationTool.calculate(this, ConfigurationBool.class, ConfigurationTool.boolPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getBoolean(path, config.defaultValue()));
     }
     
@@ -1636,13 +1591,12 @@ public interface ConfigurationValueInterface
      */
     default boolean[] getBooleanList()
     {
-        final List<Boolean> list = ConfigurationTool.calculate(
-                this, ConfigurationBoolList.class, ConfigurationTool.boolListPath(),
+        final List<Boolean> list = ConfigurationTool.calculate(this, ConfigurationBoolList.class, ConfigurationTool.boolListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getBooleanList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final boolean[] result = new boolean[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1653,13 +1607,12 @@ public interface ConfigurationValueInterface
      */
     default byte[] getByteList()
     {
-        final List<Byte> list = ConfigurationTool.calculate(
-                this, ConfigurationByteList.class, ConfigurationTool.byteListPath(),
+        final List<Byte> list = ConfigurationTool.calculate(this, ConfigurationByteList.class, ConfigurationTool.byteListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getByteList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final byte[] result = new byte[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1670,13 +1623,12 @@ public interface ConfigurationValueInterface
      */
     default char[] getCharacterList()
     {
-        final List<Character> list = ConfigurationTool.calculate(
-                this, ConfigurationCharacterList.class, ConfigurationTool.charListPath(),
+        final List<Character> list = ConfigurationTool.calculate(this, ConfigurationCharacterList.class, ConfigurationTool.charListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getCharacterList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final char[] result = new char[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1687,8 +1639,7 @@ public interface ConfigurationValueInterface
      */
     default double getDouble()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationDouble.class, ConfigurationTool.doublePath(),
+        return ConfigurationTool.calculate(this, ConfigurationDouble.class, ConfigurationTool.doublePath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getDouble(path, config.defaultValue()));
     }
     
@@ -1699,8 +1650,7 @@ public interface ConfigurationValueInterface
      */
     default float getFloat()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationFloat.class, ConfigurationTool.floatPath(),
+        return ConfigurationTool.calculate(this, ConfigurationFloat.class, ConfigurationTool.floatPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getDouble(path, config.defaultValue())).floatValue();
     }
     
@@ -1711,13 +1661,12 @@ public interface ConfigurationValueInterface
      */
     default double[] getDoubleList()
     {
-        final List<Double> list = ConfigurationTool.calculate(
-                this, ConfigurationDoubleList.class, ConfigurationTool.doubleListPath(),
+        final List<Double> list = ConfigurationTool.calculate(this, ConfigurationDoubleList.class, ConfigurationTool.doubleListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getDoubleList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final double[] result = new double[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1728,13 +1677,12 @@ public interface ConfigurationValueInterface
      */
     default float[] getFloatList()
     {
-        final List<Float> list = ConfigurationTool.calculate(
-                this, ConfigurationFloatList.class, ConfigurationTool.floatListPath(),
+        final List<Float> list = ConfigurationTool.calculate(this, ConfigurationFloatList.class, ConfigurationTool.floatListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getFloatList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final float[] result = new float[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1745,8 +1693,7 @@ public interface ConfigurationValueInterface
      */
     default int getInt()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationInt.class, ConfigurationTool.intPath(),
+        return ConfigurationTool.calculate(this, ConfigurationInt.class, ConfigurationTool.intPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getInt(path, config.defaultValue()));
     }
     
@@ -1757,8 +1704,7 @@ public interface ConfigurationValueInterface
      */
     default short getShort()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationShort.class, ConfigurationTool.shortPath(),
+        return ConfigurationTool.calculate(this, ConfigurationShort.class, ConfigurationTool.shortPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getInt(path, config.defaultValue())).shortValue();
     }
     
@@ -1769,13 +1715,12 @@ public interface ConfigurationValueInterface
      */
     default int[] getIntList()
     {
-        final List<Integer> list = ConfigurationTool.calculate(
-                this, ConfigurationIntList.class, ConfigurationTool.intListPath(),
+        final List<Integer> list = ConfigurationTool.calculate(this, ConfigurationIntList.class, ConfigurationTool.intListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getIntegerList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final int[] result = new int[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1786,8 +1731,7 @@ public interface ConfigurationValueInterface
      */
     default long getLong()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationLong.class, ConfigurationTool.longPath(),
+        return ConfigurationTool.calculate(this, ConfigurationLong.class, ConfigurationTool.longPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getLong(path, config.defaultValue()));
     }
     
@@ -1798,13 +1742,12 @@ public interface ConfigurationValueInterface
      */
     default long[] getLongList()
     {
-        final List<Long> list = ConfigurationTool.calculate(
-                this, ConfigurationLongList.class, ConfigurationTool.longListPath(),
+        final List<Long> list = ConfigurationTool.calculate(this, ConfigurationLongList.class, ConfigurationTool.longListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getLongList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final long[] result = new long[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1815,13 +1758,12 @@ public interface ConfigurationValueInterface
      */
     default short[] getShortList()
     {
-        final List<Short> list = ConfigurationTool.calculate(
-                this, ConfigurationShortList.class, ConfigurationTool.shortListPath(),
+        final List<Short> list = ConfigurationTool.calculate(this, ConfigurationShortList.class, ConfigurationTool.shortListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getShortList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue()))
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(ArrayUtils.toObject(config.defaultValue())));
         final short[] result = new short[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -1832,8 +1774,7 @@ public interface ConfigurationValueInterface
      */
     default String getString()
     {
-        return ConfigurationTool.calculate(
-                this, ConfigurationString.class, ConfigurationTool.stringPath(),
+        return ConfigurationTool.calculate(this, ConfigurationString.class, ConfigurationTool.stringPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getString(path, config.defaultValue()));
     }
     
@@ -1844,11 +1785,9 @@ public interface ConfigurationValueInterface
      */
     default String[] getStringList()
     {
-        final List<String> list = ConfigurationTool.calculate(
-                this, ConfigurationStringList.class, ConfigurationTool.stringListPath(),
+        final List<String> list = ConfigurationTool.calculate(this, ConfigurationStringList.class, ConfigurationTool.stringListPath(),
                 (val, configs, config, lib, minigame, path) -> minigame.getConfig(configs.file()).getStringList(path),
-                (val, configs, config, lib, minigame, path) -> Arrays.asList(config.defaultValue())
-                );
+                (val, configs, config, lib, minigame, path) -> Arrays.asList(config.defaultValue()));
         return list.toArray(new String[list.size()]);
     }
     
@@ -1859,8 +1798,7 @@ public interface ConfigurationValueInterface
      */
     default Vector[] getVectorList()
     {
-        return ConfigurationTool.calculateList(
-                this, ConfigurationVectorList.class, Vector.class, ConfigurationTool.vectorListPath(),
+        return ConfigurationTool.calculateList(this, ConfigurationVectorList.class, Vector.class, ConfigurationTool.vectorListPath(),
                 (val, configs, config, lib, minigame, section, key) -> section.getVector(key).clone());
     }
     
@@ -1871,8 +1809,7 @@ public interface ConfigurationValueInterface
      */
     default ItemStack[] getItemStackList()
     {
-        return ConfigurationTool.calculateList(
-                this, ConfigurationItemStackList.class, ItemStack.class, ConfigurationTool.itemStackListPath(),
+        return ConfigurationTool.calculateList(this, ConfigurationItemStackList.class, ItemStack.class, ConfigurationTool.itemStackListPath(),
                 (val, configs, config, lib, minigame, section, key) -> section.getItemStack(key).clone());
     }
     
@@ -1880,17 +1817,18 @@ public interface ConfigurationValueInterface
      * Returns the value of given configuration value.
      * 
      * @param clazz
+     *            Configurable object class
      * @return value.
+     * @param <T>
+     *            Configurable object class
      */
     default <T extends Configurable> T[] getObjectList(Class<T> clazz)
     {
-        return ConfigurationTool.calculateList(
-                this, ConfigurationObjectList.class, clazz, ConfigurationTool.objectListPath(),
-                (val, configs, config, lib, minigame, section, key) -> {
-                    final T ret = clazz.newInstance();
-                    ret.readFromConfig(section.getConfigurationSection(key));
-                    return ret;
-                });
+        return ConfigurationTool.calculateList(this, ConfigurationObjectList.class, clazz, ConfigurationTool.objectListPath(), (val, configs, config, lib, minigame, section, key) -> {
+            final T ret = clazz.newInstance();
+            ret.readFromConfig(section.getConfigurationSection(key));
+            return ret;
+        });
     }
     
     /**
@@ -1900,8 +1838,7 @@ public interface ConfigurationValueInterface
      */
     default Color[] getColorList()
     {
-        return ConfigurationTool.calculateList(
-                this, ConfigurationColorList.class, Color.class, ConfigurationTool.colorListPath(),
+        return ConfigurationTool.calculateList(this, ConfigurationColorList.class, Color.class, ConfigurationTool.colorListPath(),
                 (val, configs, config, lib, minigame, section, key) -> section.getColor(key));
     }
     
@@ -1912,8 +1849,7 @@ public interface ConfigurationValueInterface
      */
     default ArenaPlayerInterface[] getPlayerList()
     {
-        return ConfigurationTool.calculateList(
-                this, ConfigurationPlayerList.class, ArenaPlayerInterface.class, ConfigurationTool.playerListPath(),
+        return ConfigurationTool.calculateList(this, ConfigurationPlayerList.class, ArenaPlayerInterface.class, ConfigurationTool.playerListPath(),
                 (val, configs, config, lib, minigame, section, key) -> lib.getPlayer(section.getOfflinePlayer(key)));
     }
     
@@ -1921,6 +1857,7 @@ public interface ConfigurationValueInterface
      * Returns the keys of given configuration section.
      * 
      * @param deep
+     *            true for deep keys
      * 
      * @return value.
      */
@@ -1950,25 +1887,26 @@ public interface ConfigurationValueInterface
      * Returns the value of given configuration value.
      * 
      * @param clazz
+     *            Configurable object class
      * @param path
      *            sub path of configuration section
      * @return value.
+     * @param <T>
+     *            Configurable object class
      */
     @SuppressWarnings("unchecked")
     default <T extends Configurable> T getObject(Class<T> clazz, String path)
     {
-        return (T) ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> {
-                    final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
-                    if (section != null)
-                    {
-                        final Configurable result = clazz.newInstance();
-                        result.readFromConfig(section);
-                        return result;
-                    }
-                    return null;
-                });
+        return (T) ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> {
+            final org.bukkit.configuration.ConfigurationSection section = minigame.getConfig(configs.file()).getConfigurationSection(spath);
+            if (section != null)
+            {
+                final Configurable result = clazz.newInstance();
+                result.readFromConfig(section);
+                return result;
+            }
+            return null;
+        });
     }
     
     /**
@@ -1977,14 +1915,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default byte getByte(String path, byte defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getInt(spath, defaultValue)).byteValue();
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getInt(spath, defaultValue)).byteValue();
     }
     
     /**
@@ -1993,14 +1930,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default boolean getBoolean(String path, boolean defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getBoolean(spath, defaultValue));
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getBoolean(spath, defaultValue));
     }
     
     /**
@@ -2009,17 +1945,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default boolean[] getBooleanList(String path, boolean[] defaultValue)
     {
-        final List<Boolean> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getBooleanList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Boolean> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getBooleanList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final boolean[] result = new boolean[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2029,17 +1966,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default byte[] getByteList(String path, byte[] defaultValue)
     {
-        final List<Byte> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getByteList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Byte> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getByteList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final byte[] result = new byte[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2049,17 +1987,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default char[] getCharacterList(String path, char[] defaultValue)
     {
-        final List<Character> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getCharacterList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Character> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getCharacterList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final char[] result = new char[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2069,14 +2008,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default double getDouble(String path, double defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getDouble(spath, defaultValue));
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getDouble(spath, defaultValue));
     }
     
     /**
@@ -2085,14 +2023,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default float getFloat(String path, float defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getDouble(spath, defaultValue)).floatValue();
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getDouble(spath, defaultValue)).floatValue();
     }
     
     /**
@@ -2101,17 +2038,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default double[] getDoubleList(String path, double[] defaultValue)
     {
-        final List<Double> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getDoubleList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Double> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getDoubleList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final double[] result = new double[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2121,17 +2059,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default float[] getFloatList(String path, float[] defaultValue)
     {
-        final List<Float> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getFloatList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Float> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getFloatList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final float[] result = new float[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2141,14 +2080,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default int getInt(String path, int defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getInt(spath, defaultValue));
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getInt(spath, defaultValue));
     }
     
     /**
@@ -2157,17 +2095,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default int[] getIntList(String path, int[] defaultValue)
     {
-        final List<Integer> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getIntegerList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Integer> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getIntegerList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final int[] result = new int[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2177,14 +2116,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default long getLong(String path, long defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getLong(spath, defaultValue));
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getLong(spath, defaultValue));
     }
     
     /**
@@ -2193,14 +2131,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default short getShort(String path, short defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getInt(spath, defaultValue)).shortValue();
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getInt(spath, defaultValue)).shortValue();
     }
     
     /**
@@ -2209,17 +2146,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default long[] getLongList(String path, long[] defaultValue)
     {
-        final List<Long> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getLongList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Long> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getLongList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final long[] result = new long[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2229,17 +2167,18 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default short[] getShortList(String path, short[] defaultValue)
     {
-        final List<Short> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getShortList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<Short> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getShortList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         final short[] result = new short[list.size()];
-        for (int i = 0; i < result.length; i++) result[i] = list.get(i);
+        for (int i = 0; i < result.length; i++)
+            result[i] = list.get(i);
         return result;
     }
     
@@ -2249,14 +2188,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default String getString(String path, String defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getString(spath, defaultValue));
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getString(spath, defaultValue));
     }
     
     /**
@@ -2265,14 +2203,13 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default char getCharacter(String path, char defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getString(spath, "" + defaultValue)).charAt(0); //$NON-NLS-1$
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getString(spath, "" + defaultValue)).charAt(0); //$NON-NLS-1$
     }
     
     /**
@@ -2281,17 +2218,16 @@ public interface ConfigurationValueInterface
      * @param path
      *            sub path of configuration section
      * @param defaultValue
+     *            the default value to return
      * 
      * @return value.
      */
     default Color getColor(String path, Color defaultValue)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> {
-                    final Color col = minigame.getConfig(configs.file()).getColor(spath);
-                    return col == null ? defaultValue : col;
-                });
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> {
+            final Color col = minigame.getConfig(configs.file()).getColor(spath);
+            return col == null ? defaultValue : col;
+        });
     }
     
     /**
@@ -2304,12 +2240,10 @@ public interface ConfigurationValueInterface
      */
     default ItemStack getItemStack(String path)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> {
-                    final ItemStack stack = minigame.getConfig(configs.file()).getItemStack(spath);
-                    return stack == null ? null : stack.clone();
-                });
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> {
+            final ItemStack stack = minigame.getConfig(configs.file()).getItemStack(spath);
+            return stack == null ? null : stack.clone();
+        });
     }
     
     /**
@@ -2322,12 +2256,10 @@ public interface ConfigurationValueInterface
      */
     default Vector getVector(String path)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> {
-                    final Vector result = minigame.getConfig(configs.file()).getVector(spath);
-                    return result == null ? null : result.clone();
-                });
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> {
+            final Vector result = minigame.getConfig(configs.file()).getVector(spath);
+            return result == null ? null : result.clone();
+        });
     }
     
     /**
@@ -2340,9 +2272,7 @@ public interface ConfigurationValueInterface
      */
     default Vector[] getVectorList(String path)
     {
-        return ConfigurationTool.calculateList(
-                this, path, Vector.class,
-                (val, configs, config, lib, minigame, section, key) -> section.getVector(key).clone());
+        return ConfigurationTool.calculateList(this, path, Vector.class, (val, configs, config, lib, minigame, section, key) -> section.getVector(key).clone());
     }
     
     /**
@@ -2355,29 +2285,26 @@ public interface ConfigurationValueInterface
      */
     default ItemStack[] getItemStackList(String path)
     {
-        return ConfigurationTool.calculateList(
-                this, path, ItemStack.class,
-                (val, configs, config, lib, minigame, section, key) -> section.getItemStack(key).clone());
+        return ConfigurationTool.calculateList(this, path, ItemStack.class, (val, configs, config, lib, minigame, section, key) -> section.getItemStack(key).clone());
     }
     
     /**
      * Returns the value of given configuration value.
      * 
-     * @param clazz
+     * @param clazz Configurable object class
      * @param path
      *            sub path of configuration section
      * 
      * @return value.
+     * @param <T> Configurable object class
      */
     default <T extends Configurable> T[] getObjectList(Class<T> clazz, String path)
     {
-        return ConfigurationTool.calculateList(
-                this, path, clazz,
-                (val, configs, config, lib, minigame, section, key) -> {
-                    final T result = clazz.newInstance();
-                    result.readFromConfig(section.getConfigurationSection(key));
-                    return result;
-                });
+        return ConfigurationTool.calculateList(this, path, clazz, (val, configs, config, lib, minigame, section, key) -> {
+            final T result = clazz.newInstance();
+            result.readFromConfig(section.getConfigurationSection(key));
+            return result;
+        });
     }
     
     /**
@@ -2390,9 +2317,7 @@ public interface ConfigurationValueInterface
      */
     default Color[] getColorList(String path)
     {
-        return ConfigurationTool.calculateList(
-                this, path, Color.class,
-                (val, configs, config, lib, minigame, section, key) -> section.getColor(key));
+        return ConfigurationTool.calculateList(this, path, Color.class, (val, configs, config, lib, minigame, section, key) -> section.getColor(key));
     }
     
     /**
@@ -2405,9 +2330,7 @@ public interface ConfigurationValueInterface
      */
     default ArenaPlayerInterface[] getPlayerList(String path)
     {
-        return ConfigurationTool.calculateList(
-                this, path, ArenaPlayerInterface.class,
-                (val, configs, config, lib, minigame, section, key) -> lib.getPlayer(section.getOfflinePlayer(key)));
+        return ConfigurationTool.calculateList(this, path, ArenaPlayerInterface.class, (val, configs, config, lib, minigame, section, key) -> lib.getPlayer(section.getOfflinePlayer(key)));
     }
     
     /**
@@ -2420,9 +2343,7 @@ public interface ConfigurationValueInterface
      */
     default ArenaPlayerInterface getPlayer(String path)
     {
-        return ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> lib.getPlayer(minigame.getConfig(configs.file()).getOfflinePlayer(spath)));
+        return ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> lib.getPlayer(minigame.getConfig(configs.file()).getOfflinePlayer(spath)));
     }
     
     /**
@@ -2430,16 +2351,15 @@ public interface ConfigurationValueInterface
      * 
      * @param path
      *            sub path of configuration section
-     * @param defaultValue
+     * @param defaultValue the default value to return
      * 
      * @return value.
      */
     default String[] getStringList(String path, String[] defaultValue)
     {
-        final List<String> list = ConfigurationTool.calculate(
-                this, path,
-                (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getStringList(spath));
-        if (list.size() == 0) return defaultValue;
+        final List<String> list = ConfigurationTool.calculate(this, path, (val, configs, config, lib, minigame, spath) -> minigame.getConfig(configs.file()).getStringList(spath));
+        if (list.size() == 0)
+            return defaultValue;
         return list.toArray(new String[list.size()]);
     }
     

@@ -43,6 +43,8 @@ public interface MinigameContext
      * @param clazz
      *            the class of the variable to be returned.
      * @return Context variable or {@code null} if the variable was not set.
+     * @param <T>
+     *            Type of context value
      */
     <T> T getContext(Class<T> clazz);
     
@@ -53,6 +55,8 @@ public interface MinigameContext
      *            the class of the variable
      * @param value
      *            the new value
+     * @param <T>
+     *            Type of context value
      */
     <T> void setContext(Class<T> clazz, T value);
     
@@ -60,6 +64,7 @@ public interface MinigameContext
      * Resolves a context variable and performs variable substitution.
      * 
      * @param src
+     *            source string
      * @return result
      */
     String resolveContextVar(String src);
@@ -92,6 +97,8 @@ public interface MinigameContext
      * @return result from runnable
      * @throws MinigameException
      *             rethrown from runnable.
+     * @param <T>
+     *            Type of return value
      */
     <T> T calculateInNewContext(MgSupplier<T> runnable) throws MinigameException;
     
@@ -103,6 +110,8 @@ public interface MinigameContext
      * @return result from runnable
      * @throws MinigameException
      *             rethrown from runnable.
+     * @param <T>
+     *            Type of return value
      */
     <T> T calculateInCopiedContext(MgSupplier<T> runnable) throws MinigameException;
     

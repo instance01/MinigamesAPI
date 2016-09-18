@@ -43,7 +43,9 @@ public class ArenaPlayerJoinedQueueEvent extends Event
      * Constructor.
      * 
      * @param queue
+     *            Target queue
      * @param player
+     *            Player joining the queue
      */
     public ArenaPlayerJoinedQueueEvent(WaitQueue queue, ArenaPlayerInterface player)
     {

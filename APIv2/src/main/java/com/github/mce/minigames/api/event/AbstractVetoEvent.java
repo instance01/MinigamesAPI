@@ -15,6 +15,8 @@
 
 package com.github.mce.minigames.api.event;
 
+import java.io.Serializable;
+
 import org.bukkit.event.Event;
 
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
@@ -32,6 +34,9 @@ public abstract class AbstractVetoEvent extends Event
     
     /** the veto reason. */
     private LocalizedMessageInterface vetoReason;
+    
+    /** message arguments. */
+    private Serializable[] vetoReasonArgs;
 
     /**
      * Returns the veto reason
@@ -52,13 +57,24 @@ public abstract class AbstractVetoEvent extends Event
     }
 
     /**
+     * Returns the message arguments to format the veto reason message
+     * @return the vetoReasonArgs
+     */
+    public Serializable[] getVetoReasonArgs()
+    {
+        return this.vetoReasonArgs;
+    }
+
+    /**
      * Sets the event cancelled.
      * @param reason the reason text.
+     * @param args message arguments
      */
-    public void setCancelled(LocalizedMessageInterface reason)
+    public void setCancelled(LocalizedMessageInterface reason, Serializable... args)
     {
         this.cancelled = true;
         this.vetoReason = reason;
+        this.vetoReasonArgs = args;
     }
     
 }

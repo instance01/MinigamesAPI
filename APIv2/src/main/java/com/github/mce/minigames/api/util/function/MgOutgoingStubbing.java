@@ -34,8 +34,10 @@ public interface MgOutgoingStubbing<T>
      * Let the given consumer be invoked if the condition meets the criteria.
      * 
      * @param consumer
+     *            to be invoked if stubbing results to {@code true}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             rethrown from consumer
      */
     MgOutgoingStubbing<T> then(MgConsumer<T> consumer) throws MinigameException;
     
@@ -43,8 +45,10 @@ public interface MgOutgoingStubbing<T>
      * Let us throw an exception if the condition meets the criteria.
      * 
      * @param consumer
+     *            to be invoked if stubbing results to {@code true}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             rethrown from consumer
      */
     MgOutgoingStubbing<T> thenThrow(MgFunction<T, MinigameException> consumer) throws MinigameException;
     
@@ -52,8 +56,10 @@ public interface MgOutgoingStubbing<T>
      * Let us throw an exception if the condition meets the criteria.
      * 
      * @param code
+     *            to be thrown if stubbing results to {@code true}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             thrown with given error code
      */
     MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code) throws MinigameException;
     
@@ -61,9 +67,12 @@ public interface MgOutgoingStubbing<T>
      * Let us throw an exception if the condition meets the criteria.
      * 
      * @param code
+     *            to be thrown if stubbing results to {@code true}
      * @param args
+     *            to be thrown if stubbing results to {@code true}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             thrown with given error code
      */
     MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args) throws MinigameException;
     
@@ -71,8 +80,10 @@ public interface MgOutgoingStubbing<T>
      * Let the given consumer be invoked if the condition does not meet the criteria.
      * 
      * @param consumer
+     *            to be invoked if stubbing results to {@code false}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             rethrown from consumer
      */
     MgOutgoingStubbing<T> _else(MgConsumer<T> consumer) throws MinigameException;
     
@@ -80,8 +91,10 @@ public interface MgOutgoingStubbing<T>
      * Let us throw an exception if the condition does not meet the criteria.
      * 
      * @param consumer
+     *            to be invoked if stubbing results to {@code false}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             rethrown from consumer
      */
     MgOutgoingStubbing<T> _elseThrow(MgFunction<T, MinigameException> consumer) throws MinigameException;
     
@@ -89,8 +102,10 @@ public interface MgOutgoingStubbing<T>
      * Let us throw an exception if the condition does not meet the criteria.
      * 
      * @param code
+     *            to be thrown if stubbing results to {@code false}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             thrown with given error code
      */
     MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code) throws MinigameException;
     
@@ -98,9 +113,12 @@ public interface MgOutgoingStubbing<T>
      * Let us throw an exception if the condition does not meet the criteria.
      * 
      * @param code
+     *            to be thrown if stubbing results to {@code false}
      * @param args
+     *            to be thrown if stubbing results to {@code false}
      * @return this object for chaining additional then or else consumers.
-     * @throws MinigameException 
+     * @throws MinigameException
+     *             thrown with given error code
      */
     MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args) throws MinigameException;
     

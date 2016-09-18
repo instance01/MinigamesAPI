@@ -13,7 +13,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.api.config;
+package com.github.mce.minigames.api.test.config;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -48,6 +48,39 @@ import org.mockito.stubbing.Answer;
 import org.powermock.reflect.Whitebox;
 
 import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.config.ConfigInterface;
+import com.github.mce.minigames.api.config.Configurable;
+import com.github.mce.minigames.api.config.ConfigurationBool;
+import com.github.mce.minigames.api.config.ConfigurationBoolList;
+import com.github.mce.minigames.api.config.ConfigurationByte;
+import com.github.mce.minigames.api.config.ConfigurationByteList;
+import com.github.mce.minigames.api.config.ConfigurationCharacter;
+import com.github.mce.minigames.api.config.ConfigurationCharacterList;
+import com.github.mce.minigames.api.config.ConfigurationColor;
+import com.github.mce.minigames.api.config.ConfigurationColorList;
+import com.github.mce.minigames.api.config.ConfigurationDouble;
+import com.github.mce.minigames.api.config.ConfigurationDoubleList;
+import com.github.mce.minigames.api.config.ConfigurationFloat;
+import com.github.mce.minigames.api.config.ConfigurationFloatList;
+import com.github.mce.minigames.api.config.ConfigurationInt;
+import com.github.mce.minigames.api.config.ConfigurationIntList;
+import com.github.mce.minigames.api.config.ConfigurationItemStack;
+import com.github.mce.minigames.api.config.ConfigurationItemStackList;
+import com.github.mce.minigames.api.config.ConfigurationLong;
+import com.github.mce.minigames.api.config.ConfigurationLongList;
+import com.github.mce.minigames.api.config.ConfigurationObject;
+import com.github.mce.minigames.api.config.ConfigurationObjectList;
+import com.github.mce.minigames.api.config.ConfigurationPlayer;
+import com.github.mce.minigames.api.config.ConfigurationPlayerList;
+import com.github.mce.minigames.api.config.ConfigurationSection;
+import com.github.mce.minigames.api.config.ConfigurationShort;
+import com.github.mce.minigames.api.config.ConfigurationShortList;
+import com.github.mce.minigames.api.config.ConfigurationString;
+import com.github.mce.minigames.api.config.ConfigurationStringList;
+import com.github.mce.minigames.api.config.ConfigurationValueInterface;
+import com.github.mce.minigames.api.config.ConfigurationValues;
+import com.github.mce.minigames.api.config.ConfigurationVector;
+import com.github.mce.minigames.api.config.ConfigurationVectorList;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
@@ -1302,7 +1335,7 @@ public class ConfigurationValueInterfaceTest
     /**
      * A sample configurable
      */
-    private static final class FooObject implements Configurable
+    public static final class FooObject implements Configurable
     {
 
         /** obj value. */
@@ -1311,14 +1344,13 @@ public class ConfigurationValueInterfaceTest
         /**
          * Constructor.
          */
-        @SuppressWarnings("unused")
         public FooObject()
         {
             // empty
         }
 
         /**
-         * @param i
+         * @param i i
          */
         public FooObject(int i)
         {

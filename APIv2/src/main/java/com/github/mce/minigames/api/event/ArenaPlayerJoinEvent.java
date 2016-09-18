@@ -33,18 +33,21 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent
 {
     
     /** handlers list. */
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList   handlers = new HandlerList();
     
     /** the arena the player joined. */
-    private final ArenaInterface     arena;
-
+    private final ArenaInterface       arena;
+    
     /** the player that joined the arena. */
     private final ArenaPlayerInterface player;
-
+    
     /**
      * Constructor.
+     * 
      * @param arena
+     *            Target arena
      * @param player
+     *            Player joining the arena
      */
     public ArenaPlayerJoinEvent(ArenaInterface arena, ArenaPlayerInterface player)
     {

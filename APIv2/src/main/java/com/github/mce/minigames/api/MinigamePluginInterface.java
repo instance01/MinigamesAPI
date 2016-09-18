@@ -67,7 +67,9 @@ public interface MinigamePluginInterface extends MinigameInterface
      * Registers a helper to resolve context variables.
      * 
      * @param resolver
+     *            the context resolver
      * @throws MinigameException
+     *             thrown on errors
      */
     void registerContextResolver(ContextResolverInterface resolver) throws MinigameException;
     

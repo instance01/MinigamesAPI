@@ -50,8 +50,11 @@ public class PlayerGuiClickEvent extends AbstractVetoEvent
      * Constructor.
      * 
      * @param gui
+     *            the target gui
      * @param player
+     *            the target player
      * @param item
+     *            clicked item
      */
     public PlayerGuiClickEvent(ClickGuiInterface gui, ArenaPlayerInterface player, ClickGuiItem item)
     {
@@ -89,7 +92,7 @@ public class PlayerGuiClickEvent extends AbstractVetoEvent
     {
         return this.item;
     }
-
+    
     /**
      * Returns the handlers list
      * 

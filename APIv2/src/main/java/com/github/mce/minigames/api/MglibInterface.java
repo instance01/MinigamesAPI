@@ -254,7 +254,7 @@ public interface MglibInterface extends MinigameContext
      * The method will return the first zone it finds.
      * </p>
      * 
-     * @param location
+     * @param location bukkit location
      * 
      * @return Zone or {@code null} if no zone was found.
      * 
@@ -273,7 +273,7 @@ public interface MglibInterface extends MinigameContext
      * The method will return every zone that contains given location. Even if multiple zones are overlapping.
      * </p>
      * 
-     * @param location
+     * @param location bukkit location
      * 
      * @return Zone or {@code null} if no zone was found.
      * 
@@ -292,7 +292,7 @@ public interface MglibInterface extends MinigameContext
      * The method will return the first zone it finds.
      * </p>
      * 
-     * @param location
+     * @param location bukkit location
      * 
      * @return Zone or {@code null} if no zone was found.
      * 
@@ -311,7 +311,7 @@ public interface MglibInterface extends MinigameContext
      * The method will return every zone that contains given location. Even if multiple zones are overlapping.
      * </p>
      * 
-     * @param location
+     * @param location bukkit location
      * 
      * @return Zone or {@code null} if no zone was found.
      * 
@@ -330,7 +330,7 @@ public interface MglibInterface extends MinigameContext
      * The method will return the first zone it finds.
      * </p>
      * 
-     * @param location
+     * @param location bukkit location
      * 
      * @return Zone or {@code null} if no zone was found.
      * 
@@ -349,7 +349,7 @@ public interface MglibInterface extends MinigameContext
      * The method will return every zone that contains given location. Even if multiple zones are overlapping.
      * </p>
      * 
-     * @param location
+     * @param location bukkit location
      * 
      * @return Zone or {@code null} if no zone was found.
      * 
@@ -362,7 +362,7 @@ public interface MglibInterface extends MinigameContext
     /**
      * Returns the player for given bukkit player.
      * 
-     * @param player
+     * @param player bukkit online player
      * @return arena player.
      */
     ArenaPlayerInterface getPlayer(Player player);
@@ -370,7 +370,7 @@ public interface MglibInterface extends MinigameContext
     /**
      * Returns the player for given bukkit player.
      * 
-     * @param player
+     * @param player bukkit offline player
      * @return arena player.
      */
     ArenaPlayerInterface getPlayer(OfflinePlayer player);
@@ -378,7 +378,7 @@ public interface MglibInterface extends MinigameContext
     /**
      * Returns the player for given bukkit player uuid.
      * 
-     * @param uuid
+     * @param uuid player uuid
      * @return arena player.
      */
     ArenaPlayerInterface getPlayer(UUID uuid);
@@ -462,10 +462,12 @@ public interface MglibInterface extends MinigameContext
      * @return the arenas of given type.
      */
     Iterable<ArenaInterface> getArenas(ArenaTypeInterface type);
-
+    
     /**
      * Tries to find an arena from location.
+     * 
      * @param location
+     *            bukkit location
      * @return arena or {@code null} if the location does not match an arena
      */
     ArenaInterface getArenaFromLocation(Location location);

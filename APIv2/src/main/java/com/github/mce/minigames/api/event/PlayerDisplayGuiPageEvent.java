@@ -36,14 +36,14 @@ public class PlayerDisplayGuiPageEvent extends Event
 {
     
     /** handlers list. */
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList    handlers = new HandlerList();
     
     /** the gui the player opened. */
-    private final ClickGuiInterface    gui;
+    private final ClickGuiInterface     gui;
     
     /** the player. */
-    private final ArenaPlayerInterface player;
-
+    private final ArenaPlayerInterface  player;
+    
     /** the opened page. */
     private final ClickGuiPageInterface page;
     
@@ -51,8 +51,11 @@ public class PlayerDisplayGuiPageEvent extends Event
      * Constructor.
      * 
      * @param gui
+     *            the target gui
      * @param player
+     *            the target player
      * @param page
+     *            the opened page
      */
     public PlayerDisplayGuiPageEvent(ClickGuiInterface gui, ArenaPlayerInterface player, ClickGuiPageInterface page)
     {
@@ -90,7 +93,7 @@ public class PlayerDisplayGuiPageEvent extends Event
     {
         return this.page;
     }
-
+    
     /**
      * Returns the handlers list
      * 

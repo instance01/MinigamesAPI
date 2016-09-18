@@ -69,6 +69,7 @@ public interface MinigameInterface extends ConfigInterface, ArenaTypeProvider
      * Returns the minigame arena with given internal name.
      * 
      * @param name
+     *            internal arena name
      * @return arena or {@code null} if the arena does not exist.
      */
     ArenaInterface getArena(String name);

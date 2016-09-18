@@ -25,19 +25,35 @@ import com.github.mce.minigames.api.MinigameException;
 public interface ArenaTypeDeclarationInterface
 {
     
+    /**
+     * Returns the type of this declaration.
+     * 
+     * @return arena type
+     */
     ArenaTypeInterface getType();
     
+    /**
+     * Checks if this is the default of declaring minigame.
+     * 
+     * @return {@code true} if this is the default type.
+     */
     boolean isDefault();
-
+    
     /**
      * Creates a new arena
+     * 
      * @param arenaName
-     * @return 
+     *            the internal arena name to be created
+     * @return the newly created arena
+     * @throws MinigameException
+     *             thrown if the name is already in use or if the arena type is invalid
      */
     ArenaInterface createArena(String arenaName) throws MinigameException;
-
+    
     /**
-     * @return
+     * Returns the arena type name
+     * 
+     * @return arena type name
      */
     String getName();
     

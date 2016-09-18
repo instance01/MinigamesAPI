@@ -45,7 +45,9 @@ public class PlayerOpenGuiEvent extends AbstractVetoEvent
      * Constructor.
      * 
      * @param gui
+     *            the opened gui
      * @param player
+     *            the target player
      */
     public PlayerOpenGuiEvent(ClickGuiInterface gui, ArenaPlayerInterface player)
     {

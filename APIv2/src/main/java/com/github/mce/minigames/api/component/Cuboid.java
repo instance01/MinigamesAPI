@@ -86,6 +86,7 @@ public final class Cuboid implements Configurable
      * Returns a new cuboid with given low locations.
      * 
      * @param lowPoints
+     *            the new low location
      * @return new cuboid
      */
     public Cuboid setLowLoc(Location lowPoints)
@@ -97,6 +98,7 @@ public final class Cuboid implements Configurable
      * Returns a new cuboid with given high location.
      * 
      * @param highPoints
+     *            the new high location
      * @return new cuboid
      */
     public Cuboid setHighLoc(Location highPoints)
@@ -125,6 +127,10 @@ public final class Cuboid implements Configurable
      */
     public boolean containsLoc(final Location loc)
     {
+        if (this.highPoints == null || this.lowPoints == null)
+        {
+            return false;
+        }
         if (loc == null || !loc.getWorld().equals(this.highPoints.getWorld()))
         {
             return false;
@@ -198,15 +204,19 @@ public final class Cuboid implements Configurable
         final World world = this.getWorld();
         final Random randomGenerator = new Random();
         
-        Location result = new Location(world, this.highPoints.getBlockX(), this.highPoints.getBlockY(), this.highPoints.getZ());
+        Location result;
         
-        if (this.getSize() > 1)
+        if (!this.lowPoints.equals(this.highPoints))
         {
             final double randomX = this.lowPoints.getBlockX() + randomGenerator.nextInt(this.getXSize());
             final double randomY = this.lowPoints.getBlockY() + randomGenerator.nextInt(this.getYSize());
             final double randomZ = this.lowPoints.getBlockZ() + randomGenerator.nextInt(this.getZSize());
             
             result = new Location(world, randomX, randomY, randomZ);
+        }
+        else
+        {
+            result = this.highPoints.clone();
         }
         
         return result;
@@ -221,7 +231,7 @@ public final class Cuboid implements Configurable
     {
         final Location temp = this.getRandomLocation();
         
-        return new Location(temp.getWorld(), temp.getBlockX() + 0.5, temp.getBlockY() + 0.5, temp.getBlockZ() + 0.5);
+        return temp.add(0.5, 0.5, 0.5);
     }
     
     /**
@@ -281,7 +291,7 @@ public final class Cuboid implements Configurable
      */
     public World getWorld()
     {
-        return this.highPoints.getWorld();
+        return this.highPoints == null ? null : this.highPoints.getWorld();
     }
     
     /**
@@ -294,12 +304,12 @@ public final class Cuboid implements Configurable
         final Map<String, Object> root = new LinkedHashMap<>();
         
         root.put("World", this.highPoints.getWorld().getName()); //$NON-NLS-1$
-        root.put("X1", this.highPoints.getBlockX()); //$NON-NLS-1$
-        root.put("Y1", this.highPoints.getBlockY()); //$NON-NLS-1$
-        root.put("Z1", this.highPoints.getBlockZ()); //$NON-NLS-1$
-        root.put("X2", this.lowPoints.getBlockX()); //$NON-NLS-1$
-        root.put("Y2", this.lowPoints.getBlockY()); //$NON-NLS-1$
-        root.put("Z2", this.lowPoints.getBlockZ()); //$NON-NLS-1$
+        root.put("X1", this.lowPoints.getBlockX()); //$NON-NLS-1$
+        root.put("Y1", this.lowPoints.getBlockY()); //$NON-NLS-1$
+        root.put("Z1", this.lowPoints.getBlockZ()); //$NON-NLS-1$
+        root.put("X2", this.highPoints.getBlockX()); //$NON-NLS-1$
+        root.put("Y2", this.highPoints.getBlockY()); //$NON-NLS-1$
+        root.put("Z2", this.highPoints.getBlockZ()); //$NON-NLS-1$
         
         return root;
     }
@@ -313,21 +323,23 @@ public final class Cuboid implements Configurable
      */
     private void load(final Map<String, Object> root) throws IllegalArgumentException
     {
-        if (root == null)
+        try
         {
-            throw new IllegalArgumentException("Invalid root map!"); //$NON-NLS-1$
+            final World world = Bukkit.getServer().getWorld((String) root.get("World")); //$NON-NLS-1$
+            final int x1 = (Integer) root.get("X1"); //$NON-NLS-1$
+            final int y1 = (Integer) root.get("Y1"); //$NON-NLS-1$
+            final int z1 = (Integer) root.get("Z1"); //$NON-NLS-1$
+            final int x2 = (Integer) root.get("X2"); //$NON-NLS-1$
+            final int y2 = (Integer) root.get("Y2"); //$NON-NLS-1$
+            final int z2 = (Integer) root.get("Z2"); //$NON-NLS-1$
+            
+            this.lowPoints = new Location(world, x1, y1, z1);
+            this.highPoints = new Location(world, x2, y2, z2);
         }
-        
-        final World world = Bukkit.getServer().getWorld((String) root.get("World")); //$NON-NLS-1$
-        final int x1 = (Integer) root.get("X1"); //$NON-NLS-1$
-        final int y1 = (Integer) root.get("Y1"); //$NON-NLS-1$
-        final int z1 = (Integer) root.get("Z1"); //$NON-NLS-1$
-        final int x2 = (Integer) root.get("X2"); //$NON-NLS-1$
-        final int y2 = (Integer) root.get("Y2"); //$NON-NLS-1$
-        final int z2 = (Integer) root.get("Z2"); //$NON-NLS-1$
-        
-        this.lowPoints = new Location(world, x1, y1, z1);
-        this.highPoints = new Location(world, x2, y2, z2);
+        catch (NullPointerException | ClassCastException ex)
+        {
+            throw new IllegalArgumentException("Invalid root map!", ex); //$NON-NLS-1$
+        }
     }
     
     @Override
@@ -351,8 +363,9 @@ public final class Cuboid implements Configurable
     @Override
     public String toString()
     {
-        return new StringBuilder("(").append(this.lowPoints.getBlockX()).append(", ").append(this.lowPoints.getBlockY()).append(", ").append(this.lowPoints.getBlockZ()).append(") to (") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                .append(this.highPoints.getBlockX()).append(", ").append(this.highPoints.getBlockY()).append(", ").append(this.highPoints.getBlockZ()).append(")").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return this.lowPoints == null ? "(null) to (null)" //$NON-NLS-1$
+                : new StringBuilder("(").append(this.lowPoints.getBlockX()).append(", ").append(this.lowPoints.getBlockY()).append(", ").append(this.lowPoints.getBlockZ()).append(") to (") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        .append(this.highPoints.getBlockX()).append(", ").append(this.highPoints.getBlockY()).append(", ").append(this.highPoints.getBlockZ()).append(")").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     
     /**
@@ -362,32 +375,11 @@ public final class Cuboid implements Configurable
      */
     public String toRaw()
     {
-        return new StringBuilder(this.getWorld().getName()).append(",").append(this.lowPoints.getBlockX()).append(",").append(this.lowPoints.getBlockY()).append(",").append(this.lowPoints.getBlockZ()) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                .append(",").append(this.highPoints.getBlockX()).append(",").append(this.highPoints.getBlockY()).append(",").append(this.highPoints.getBlockZ()).toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-
-    /**
-     * Normalizes the cuboid. Making the lowLoc really the lowLoc and the highLoc really to highLoc.
-     * 
-     * @return normalized cuboid.
-     */
-    public Cuboid normalize()
-    {
         if (this.lowPoints == null)
-        {
-            return new Cuboid();
-        }
-        final Location low = new Location(
-                this.getWorld(),
-                Math.min(this.lowPoints.getBlockX(), this.highPoints.getBlockX()),
-                Math.min(this.lowPoints.getBlockY(), this.highPoints.getBlockY()),
-                Math.min(this.lowPoints.getBlockZ(), this.highPoints.getBlockZ()));
-        final Location high = new Location(
-                this.getWorld(),
-                Math.max(this.lowPoints.getBlockX(), this.highPoints.getBlockX()),
-                Math.max(this.lowPoints.getBlockY(), this.highPoints.getBlockY()),
-                Math.max(this.lowPoints.getBlockZ(), this.highPoints.getBlockZ()));
-        return new Cuboid(low, high);
+            return "null"; //$NON-NLS-1$
+        return new StringBuilder(this.getWorld() == null ? "null" : this.getWorld().getName()).append(",").append(this.lowPoints.getBlockX()).append(",").append(this.lowPoints.getBlockY()).append(",") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                .append(this.lowPoints.getBlockZ())
+                .append(",").append(this.highPoints.getBlockX()).append(",").append(this.highPoints.getBlockY()).append(",").append(this.highPoints.getBlockZ()).toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     
 }
