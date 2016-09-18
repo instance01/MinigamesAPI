@@ -6,6 +6,7 @@
 
 * No more kill rewards for self-kills (https://github.com/MysticCity/MinigamesAPI/issues/11)
 * Fixed NPE using spectator sign outside of arena (https://github.com/MysticCity/MinigamesAPI/issues/154)
+* Fixed PlayOutFakeBed (https://github.com/MysticCity/MinigamesAPI/issues/161)
 
 ###### BedWars
 

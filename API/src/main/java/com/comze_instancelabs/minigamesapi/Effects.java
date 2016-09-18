@@ -34,6 +34,7 @@ import org.bukkit.scheduler.BukkitTask;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
+import net.minecraft.server.v1_10_R1.BlockPosition;
 import net.minecraft.server.v1_10_R1.ChatComponentText;
 import net.minecraft.server.v1_10_R1.IChatBaseComponent.ChatSerializer;
 
@@ -129,9 +130,16 @@ public class Effects
             
             final Object packet_ = packetPlayOutBedConstr.newInstance();
             Effects.setValue(packet_, "a", id);
-            Effects.setValue(packet_, "b", x);
-            Effects.setValue(packet_, "c", y);
-            Effects.setValue(packet_, "d", z);
+            if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_8_R1))
+            {
+                Effects.setValue(packet_, "b", new BlockPosition(x, y, z));
+            }
+            else
+            {
+                Effects.setValue(packet_, "b", x);
+                Effects.setValue(packet_, "c", y);
+                Effects.setValue(packet_, "d", z);
+            }
             
             for (final String p_ : a.getAllPlayers())
             {
