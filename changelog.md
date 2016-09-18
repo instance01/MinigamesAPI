@@ -11,6 +11,22 @@
 
 * Added command "setupbeds" to help page
 
+###### DeathRun
+
+* Config option "die\_below\_bedrock\_level" can now be numeric to hold the minimum y coordinate the player can reach
+
+###### GunGame
+
+* Config option "die\_below\_bedrock\_level" can now be numeric to hold the minimum y coordinate the player can reach
+
+###### MobEscape
+
+* Config option "die\_below\_bedrock\_level" can now be numeric to hold the minimum y coordinate the player can reach
+
+###### Splegg
+
+* Config option "die\_below\_bedrock\_level" can now be numeric to hold the minimum y coordinate the player can reach
+
 ###### Sudoku
 
 * new game sudoku/ migrated to minigames lib
