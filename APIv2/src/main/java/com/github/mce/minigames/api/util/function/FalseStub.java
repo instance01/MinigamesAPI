@@ -13,22 +13,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.github.mce.minigames.impl.stubs;
+package com.github.mce.minigames.api.util.function;
 
 import java.io.Serializable;
 
 import com.github.mce.minigames.api.MinigameErrorCode;
 import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.util.function.MgConsumer;
-import com.github.mce.minigames.api.util.function.MgFunction;
-import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 
 /**
- * Outgoing stub for true checks of minigames predicates.
+ * Outgoing stub for false checks of minigames predicates.
  * @author mepeisen
  * @param <T> argument class
  */
-public final class TrueStub<T> implements MgOutgoingStubbing<T>
+public final class FalseStub<T> implements MgOutgoingStubbing<T>
 {
 
     /**
@@ -38,61 +35,61 @@ public final class TrueStub<T> implements MgOutgoingStubbing<T>
 
     /**
      * Constructor to create the stub.
-     * @param elm stubbed element.
+     * @param elm stubbed element
      */
-    public TrueStub(T elm)
+    public FalseStub(T elm)
     {
         this.elm = elm;
     }
 
     @Override
-    public MgOutgoingStubbing<T> then(MgConsumer<T> consumer) throws MinigameException
+    public MgOutgoingStubbing<T> _else(MgConsumer<T> consumer) throws MinigameException
     {
         consumer.accept(this.elm);
         return this;
     }
 
     @Override
-    public MgOutgoingStubbing<T> thenThrow(MgFunction<T, MinigameException> consumer) throws MinigameException
+    public MgOutgoingStubbing<T> _elseThrow(MgFunction<T, MinigameException> consumer) throws MinigameException
     {
         throw consumer.apply(this.elm);
     }
 
     @Override
-    public MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code) throws MinigameException
+    public MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code) throws MinigameException
     {
         throw new MinigameException(code);
     }
 
     @Override
-    public MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args2) throws MinigameException
+    public MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args2) throws MinigameException
     {
         throw new MinigameException(code, args2.apply(this.elm));
     }
 
     @Override
-    public MgOutgoingStubbing<T> _else(MgConsumer<T> consumer) throws MinigameException
+    public MgOutgoingStubbing<T> then(MgConsumer<T> consumer) throws MinigameException
     {
         // does nothing
         return this;
     }
 
     @Override
-    public MgOutgoingStubbing<T> _elseThrow(MgFunction<T, MinigameException> consumer) throws MinigameException
+    public MgOutgoingStubbing<T> thenThrow(MgFunction<T, MinigameException> consumer) throws MinigameException
     {
         // does nothing
         return this;
     }
 
     @Override
-    public MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code) throws MinigameException
+    public MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code) throws MinigameException
     {
         // does nothing
         return this;
     }
 
     @Override
-    public MgOutgoingStubbing<T> _elseThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args2) throws MinigameException
+    public MgOutgoingStubbing<T> thenThrow(MinigameErrorCode code, MgFunction<T, Serializable[]> args2) throws MinigameException
     {
         // does nothing
         return this;

@@ -28,12 +28,12 @@ import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.arena.ArenasConfig;
 import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import com.github.mce.minigames.api.util.function.FalseStub;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
+import com.github.mce.minigames.api.util.function.TrueStub;
 import com.github.mce.minigames.impl.MinigameWrapper;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
-import com.github.mce.minigames.impl.stubs.FalseStub;
-import com.github.mce.minigames.impl.stubs.TrueStub;
 
 /**
  * Implementation of arena interface.

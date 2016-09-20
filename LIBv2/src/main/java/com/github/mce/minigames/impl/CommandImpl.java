@@ -25,10 +25,10 @@ import org.bukkit.entity.Player;
 import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.util.function.FalseStub;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
-import com.github.mce.minigames.impl.stubs.FalseStub;
-import com.github.mce.minigames.impl.stubs.TrueStub;
+import com.github.mce.minigames.api.util.function.TrueStub;
 
 /**
  * Implementation of command interface.

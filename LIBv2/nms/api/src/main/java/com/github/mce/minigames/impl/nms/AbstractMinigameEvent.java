@@ -24,10 +24,10 @@ import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+import com.github.mce.minigames.api.util.function.FalseStub;
 import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
 import com.github.mce.minigames.api.util.function.MgPredicate;
-import com.github.mce.minigames.impl.stubs.FalseStub;
-import com.github.mce.minigames.impl.stubs.TrueStub;
+import com.github.mce.minigames.api.util.function.TrueStub;
 
 /**
  * Base Implementation for minigame events.
