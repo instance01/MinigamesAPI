@@ -145,10 +145,17 @@ public class CommandInterfaceTest
     {
         final CommandSender sender = mock(CommandSender.class);
         final Command command = new Command(sender, null, null, null, null);
+        when(this.messages.getString(anyObject(), anyObject(), anyObject())).thenAnswer(new Answer<String>() {
+            @Override
+            public String answer(InvocationOnMock invocation) throws Throwable
+            {
+                return invocation.getArgumentAt(2, String.class);
+            }
+        });
         
         command.send(CommonMessages.HelpHeader);
         
-        verify(sender, times(1)).sendMessage("help");
+        verify(sender, times(1)).sendMessage("§fhelp"); //$NON-NLS-1$
     }
     
     /**

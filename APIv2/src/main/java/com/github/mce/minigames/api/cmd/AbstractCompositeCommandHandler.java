@@ -18,6 +18,7 @@ package com.github.mce.minigames.api.cmd;
 import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -121,7 +122,7 @@ public abstract class AbstractCompositeCommandHandler implements CommandHandlerI
             final CommandHandlerInterface handler = this.subCommands.get(name);
             if (handler == null)
             {
-                return null;
+                return Collections.emptyList();
             }
             return handler.onTabComplete(command.consumeArgs(1), lastArg);
         }

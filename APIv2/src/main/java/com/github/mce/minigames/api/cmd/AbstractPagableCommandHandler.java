@@ -68,7 +68,7 @@ public abstract class AbstractPagableCommandHandler implements CommandHandlerInt
         int page = 1;
         int pageLimit = 10;
         int lineCount = this.getLineCount(command);
-        int pageCount = (int) Math.ceil(lineCount / pageLimit);
+        int pageCount = (int) Math.ceil((double)lineCount / pageLimit);
         if (pageCount == 0)
         {
             pageCount++;
@@ -95,7 +95,7 @@ public abstract class AbstractPagableCommandHandler implements CommandHandlerInt
                     sendWrongPage(command, page, pageCount);
                     return;
                 }
-                start = (page - 1) * pageCount;
+                start = (page - 1) * pageLimit;
             }
             catch (@SuppressWarnings("unused") NumberFormatException ex)
             {
@@ -106,8 +106,8 @@ public abstract class AbstractPagableCommandHandler implements CommandHandlerInt
         }
         
         command.send(CommonMessages.PagedHeader, this.getHeader(command), page, pageCount);
-        int i = 1;
-        for (Serializable line : this.getLines(command, start, lineCount))
+        int i = start + 1;
+        for (Serializable line : this.getLines(command, start, pageLimit))
         {
             command.send(CommonMessages.PagedLine, line, i);
             i++;
