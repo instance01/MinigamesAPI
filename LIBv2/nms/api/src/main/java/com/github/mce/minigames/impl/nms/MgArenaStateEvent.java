@@ -32,7 +32,7 @@ public class MgArenaStateEvent extends AbstractMinigameEvent<ArenaStateEvent, Mi
      */
     public MgArenaStateEvent(ArenaStateEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getArena());
     }
     
 }

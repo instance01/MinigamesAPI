@@ -32,7 +32,7 @@ public class MgArenaDeleteEvent extends AbstractMinigameEvent<ArenaDeleteEvent, 
      */
     public MgArenaDeleteEvent(ArenaDeleteEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getArena());
     }
     
 }

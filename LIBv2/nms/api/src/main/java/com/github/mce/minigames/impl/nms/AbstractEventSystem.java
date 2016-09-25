@@ -15,12 +15,16 @@
 
 package com.github.mce.minigames.impl.nms;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 
+import com.github.mce.minigames.api.MinigameInterface;
+import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.event.ArenaCreateEvent;
 import com.github.mce.minigames.api.event.ArenaCreatedEvent;
@@ -36,6 +40,7 @@ import com.github.mce.minigames.api.event.PlayerCloseGuiEvent;
 import com.github.mce.minigames.api.event.PlayerDisplayGuiPageEvent;
 import com.github.mce.minigames.api.event.PlayerGuiClickEvent;
 import com.github.mce.minigames.api.event.PlayerOpenGuiEvent;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
 /**
  * Abstract base class for event systems.
@@ -49,6 +54,9 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      * The common event handlers per event class.
      */
     private final Map<Class<? extends Event>, MinigameEventHandler<?, ?>> eventHandlers = new HashMap<>();
+    
+    /** common event listeners. */
+    protected final List<MgEventListener> listeners = new ArrayList<>();
     
     /**
      * Constructor.
@@ -71,6 +79,12 @@ public abstract class AbstractEventSystem implements EventSystemInterface
         this.registerHandler(PlayerOpenGuiEvent.class, (evt) -> new MgPlayerOpenGuiEvent(evt));
     }
     
+    @Override
+    public void addEventListener(MgEventListener listener)
+    {
+        this.listeners.add(listener);
+    }
+
     /**
      * Returns the minigame event handler for given class.
      * 
@@ -170,6 +184,18 @@ public abstract class AbstractEventSystem implements EventSystemInterface
     }
     
     /**
+     * Event handler for ArenaPlayerJoinEvent event.
+     * 
+     * @param evt
+     *            the event to be passed.
+     */
+    @EventHandler
+    public void onArenaPlayerJoin(ArenaPlayerJoinEvent evt)
+    {
+        this.getHandler(ArenaPlayerJoinEvent.class).handle(evt);
+    }
+    
+    /**
      * Event handler for ArenaPlayerJoinedQueueEvent event.
      * 
      * @param evt
@@ -236,7 +262,7 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      *            the event to be passed.
      */
     @EventHandler
-    public void onPlayerClickGui(PlayerGuiClickEvent evt)
+    public void onPlayerGuiClick(PlayerGuiClickEvent evt)
     {
         this.getHandler(PlayerGuiClickEvent.class).handle(evt);
     }
@@ -266,27 +292,67 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      * @author mepeisen
      * @param <T>
      *            event clazz for handling the events.
+     * @param <MgEvt>
+     *            event clazz for handling the events.
      */
     protected final class MinigameEventHandler<T extends Event, MgEvt extends MinigameEvent<T, MgEvt>>
     {
         
+        /** the event factory. */
+        private MinigameEventFactory<T, MgEvt> factory;
+        /** event class. */
+        private Class<T> cls;
+
+        /**
+         * Constructor.
+         * @param clazz event class
+         * @param factory mg event factory
+         */
         public MinigameEventHandler(Class<T> clazz, MinigameEventFactory<T, MgEvt> factory)
         {
-            // TODO
+            this.cls = clazz;
+            this.factory = factory;
         }
         
         /**
+         * Handles minigame event.
          * @param evt
          */
         public void handle(T evt)
         {
-            // TODO Auto-generated method stub
+            final MgEvt mgevt = this.createMgEvent(evt);
+            for (MgEventListener listener : AbstractEventSystem.this.listeners)
+            {
+                listener.handle(this.cls, mgevt);
+            }
+            
+            final ArenaPlayerInterface player = mgevt.getPlayer();
+            if (player instanceof MgEventListener)
+            {
+                ((MgEventListener) player).handle(this.cls, mgevt);
+            }
+            
+            final ArenaInterface arena = mgevt.getArena();
+            if (arena instanceof MgEventListener)
+            {
+                ((MgEventListener) arena).handle(this.cls, mgevt);
+            }
+            
+            final MinigameInterface minigame = mgevt.getMinigame();
+            if (minigame instanceof MgEventListener)
+            {
+                ((MgEventListener) minigame).handle(this.cls, mgevt);
+            }
         }
         
+        /**
+         * Creates minigame event.
+         * @param evt bukkit event
+         * @return minigame event.
+         */
         public MgEvt createMgEvent(T evt)
         {
-            // TODO
-            return null;
+            return this.factory.create(evt);
         }
         
     }
@@ -295,7 +361,7 @@ public abstract class AbstractEventSystem implements EventSystemInterface
      * Interface for creating minigame event classes from given bukkit event.
      *
      * @param <Evt>
-     * @param <MgEvt> 
+     * @param <MgEvt>
      */
     @FunctionalInterface
     public interface MinigameEventFactory<Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>>

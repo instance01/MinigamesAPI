@@ -63,6 +63,17 @@ public abstract class AbstractMinigameEvent<Evt extends Event, MgEvt extends Min
     /**
      * Abstract minigame event.
      * @param event the event.
+     * @param arena
+     */
+    public AbstractMinigameEvent(Evt event, ArenaInterface arena)
+    {
+        this.event = event;
+        this.arena = arena;
+    }
+
+    /**
+     * Abstract minigame event.
+     * @param event the event.
      * @param player
      * @param arena
      */
@@ -86,21 +97,6 @@ public abstract class AbstractMinigameEvent<Evt extends Event, MgEvt extends Min
         this.arena = this.getLib().getArenaFromLocation(location);
     }
 
-    /**
-     * Abstract minigame event.
-     * @param event the event.
-     * @param player
-     * @param location
-     * @param affectedLocations
-     */
-    public AbstractMinigameEvent(Evt event, ArenaPlayerInterface player, Location location, Location[] affectedLocations)
-    {
-        this.event = event;
-        this.player = player;
-        this.arena = this.getLib().getArenaFromLocation(location);
-        // TODO
-    }
-
     @Override
     public Evt getBukkitEvent()
     {
@@ -122,7 +118,7 @@ public abstract class AbstractMinigameEvent<Evt extends Event, MgEvt extends Min
     @Override
     public ArenaInterface getArena()
     {
-        return this.player.getArena();
+        return this.arena == null ? this.player.getArena() : this.arena;
     }
 
     @Override

@@ -36,4 +36,10 @@ public interface EventSystemInterface extends Listener
      */
     <Evt extends Event, MgEvt extends MinigameEvent<Evt, MgEvt>> MgEvt createEvent(Evt bukkitEvent);
     
+    /**
+     * Adds a new event listener.
+     * @param listener
+     */
+    void addEventListener(MgEventListener listener);
+    
 }

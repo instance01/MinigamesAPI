@@ -32,7 +32,7 @@ public class MgPlayerGuiClickEvent extends AbstractMinigameEvent<PlayerGuiClickE
      */
     public MgPlayerGuiClickEvent(PlayerGuiClickEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getPlayer());
     }
     
 }

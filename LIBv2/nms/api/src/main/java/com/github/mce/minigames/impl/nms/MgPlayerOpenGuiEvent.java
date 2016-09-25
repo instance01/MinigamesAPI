@@ -32,7 +32,7 @@ public class MgPlayerOpenGuiEvent extends AbstractMinigameEvent<PlayerOpenGuiEve
      */
     public MgPlayerOpenGuiEvent(PlayerOpenGuiEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getPlayer());
     }
     
 }

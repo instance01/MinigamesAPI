@@ -32,7 +32,7 @@ public class MgPlayerCloseGuiEvent extends AbstractMinigameEvent<PlayerCloseGuiE
      */
     public MgPlayerCloseGuiEvent(PlayerCloseGuiEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getPlayer());
     }
     
 }

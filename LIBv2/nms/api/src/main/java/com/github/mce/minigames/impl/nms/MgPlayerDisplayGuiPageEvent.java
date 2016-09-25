@@ -32,7 +32,7 @@ public class MgPlayerDisplayGuiPageEvent extends AbstractMinigameEvent<PlayerDis
      */
     public MgPlayerDisplayGuiPageEvent(PlayerDisplayGuiPageEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getPlayer());
     }
     
 }

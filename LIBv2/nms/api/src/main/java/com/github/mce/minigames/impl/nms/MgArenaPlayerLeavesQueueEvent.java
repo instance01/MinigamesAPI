@@ -32,7 +32,7 @@ public class MgArenaPlayerLeavesQueueEvent extends AbstractMinigameEvent<ArenaPl
      */
     public MgArenaPlayerLeavesQueueEvent(ArenaPlayerLeavesQueueEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getPlayer());
     }
     
 }

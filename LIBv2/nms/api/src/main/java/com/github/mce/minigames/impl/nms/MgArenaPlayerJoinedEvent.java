@@ -32,7 +32,7 @@ public class MgArenaPlayerJoinedEvent extends AbstractMinigameEvent<ArenaPlayerJ
      */
     public MgArenaPlayerJoinedEvent(ArenaPlayerJoinedEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getPlayer(), event.getArena());
     }
     
 }

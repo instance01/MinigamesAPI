@@ -32,7 +32,7 @@ public class MgArenaMaintenanceEvent extends AbstractMinigameEvent<ArenaMaintena
      */
     public MgArenaMaintenanceEvent(ArenaMaintenanceEvent event)
     {
-        super(event, null); // TODO
+        super(event, event.getArena());
     }
     
 }

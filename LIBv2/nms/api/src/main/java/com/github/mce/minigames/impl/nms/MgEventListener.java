@@ -15,24 +15,21 @@
 
 package com.github.mce.minigames.impl.nms;
 
-import com.github.mce.minigames.api.arena.rules.mevents.MinigameArenaPlayerJoinEvent;
-import com.github.mce.minigames.api.event.ArenaPlayerJoinEvent;
+import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 
 /**
- * Minigame event implementation
+ * Helper interface for minigame event listeners.
  * 
  * @author mepeisen
  */
-public class MgArenaPlayerJoinEvent extends AbstractMinigameEvent<ArenaPlayerJoinEvent, MinigameArenaPlayerJoinEvent> implements MinigameArenaPlayerJoinEvent
+public interface MgEventListener
 {
-
+    
     /**
-     * Constructor
+     * Handles given event.
+     * @param eventClass
      * @param event
      */
-    public MgArenaPlayerJoinEvent(ArenaPlayerJoinEvent event)
-    {
-        super(event, event.getPlayer(), event.getArena());
-    }
+    void handle(Class<?> eventClass, MinigameEvent<?, ?> event);
     
 }
