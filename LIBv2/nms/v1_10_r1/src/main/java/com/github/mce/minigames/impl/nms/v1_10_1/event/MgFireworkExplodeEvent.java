@@ -34,7 +34,7 @@ public class MgFireworkExplodeEvent extends AbstractMinigameEvent<FireworkExplod
      */
     public MgFireworkExplodeEvent(FireworkExplodeEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

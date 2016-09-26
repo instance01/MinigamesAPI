@@ -34,7 +34,7 @@ public class MgCauldronLevelChangeEvent extends AbstractMinigameEvent<CauldronLe
      */
     public MgCauldronLevelChangeEvent(CauldronLevelChangeEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

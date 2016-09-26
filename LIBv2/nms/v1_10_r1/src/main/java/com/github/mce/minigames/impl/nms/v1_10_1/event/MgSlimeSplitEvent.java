@@ -34,7 +34,7 @@ public class MgSlimeSplitEvent extends AbstractMinigameEvent<SlimeSplitEvent, Mi
      */
     public MgSlimeSplitEvent(SlimeSplitEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

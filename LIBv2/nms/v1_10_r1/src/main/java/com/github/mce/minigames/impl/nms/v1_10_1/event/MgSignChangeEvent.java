@@ -34,7 +34,7 @@ public class MgSignChangeEvent extends AbstractMinigameEvent<SignChangeEvent, Mi
      */
     public MgSignChangeEvent(SignChangeEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

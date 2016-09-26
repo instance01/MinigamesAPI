@@ -34,7 +34,7 @@ public class MgPigZapEvent extends AbstractMinigameEvent<PigZapEvent, MinigamePi
      */
     public MgPigZapEvent(PigZapEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

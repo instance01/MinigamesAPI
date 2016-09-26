@@ -34,7 +34,7 @@ public class MgBlockSpreadEvent extends AbstractMinigameEvent<BlockSpreadEvent, 
      */
     public MgBlockSpreadEvent(BlockSpreadEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

@@ -34,7 +34,7 @@ public class MgFurnaceBurnEvent extends AbstractMinigameEvent<FurnaceBurnEvent, 
      */
     public MgFurnaceBurnEvent(FurnaceBurnEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

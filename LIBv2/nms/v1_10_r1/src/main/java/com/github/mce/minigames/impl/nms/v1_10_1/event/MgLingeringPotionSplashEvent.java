@@ -34,7 +34,7 @@ public class MgLingeringPotionSplashEvent extends AbstractMinigameEvent<Lingerin
      */
     public MgLingeringPotionSplashEvent(LingeringPotionSplashEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getAreaEffectCloud().getLocation());
     }
     
 }

@@ -34,7 +34,7 @@ public class MgSpawnerSpawnEvent extends AbstractMinigameEvent<SpawnerSpawnEvent
      */
     public MgSpawnerSpawnEvent(SpawnerSpawnEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getSpawner().getLocation());
     }
     
 }

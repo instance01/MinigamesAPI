@@ -34,7 +34,7 @@ public class MgHangingBreakEvent extends AbstractMinigameEvent<HangingBreakEvent
      */
     public MgHangingBreakEvent(HangingBreakEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

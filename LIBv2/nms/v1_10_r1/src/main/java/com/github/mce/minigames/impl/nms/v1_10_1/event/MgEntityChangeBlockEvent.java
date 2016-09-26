@@ -34,7 +34,7 @@ public class MgEntityChangeBlockEvent extends AbstractMinigameEvent<EntityChange
      */
     public MgEntityChangeBlockEvent(EntityChangeBlockEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

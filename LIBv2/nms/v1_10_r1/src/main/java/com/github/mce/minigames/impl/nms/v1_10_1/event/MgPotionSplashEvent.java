@@ -34,7 +34,7 @@ public class MgPotionSplashEvent extends AbstractMinigameEvent<PotionSplashEvent
      */
     public MgPotionSplashEvent(PotionSplashEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

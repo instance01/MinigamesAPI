@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigamePrepareItemEnchantEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -34,7 +35,7 @@ public class MgPrepareItemEnchantEvent extends AbstractMinigameEvent<PrepareItem
      */
     public MgPrepareItemEnchantEvent(PrepareItemEnchantEvent event)
     {
-        super(event, null); // TODO
+        super(event, MglibInterface.INSTANCE.get().getPlayer(event.getEnchanter()));
     }
     
 }

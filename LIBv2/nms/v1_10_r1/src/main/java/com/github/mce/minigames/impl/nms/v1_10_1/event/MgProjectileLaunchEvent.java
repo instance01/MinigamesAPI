@@ -15,9 +15,14 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
+import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameProjectileLaunchEvent;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
 /**
@@ -34,7 +39,31 @@ public class MgProjectileLaunchEvent extends AbstractMinigameEvent<ProjectileLau
      */
     public MgProjectileLaunchEvent(ProjectileLaunchEvent event)
     {
-        super(event, null); // TODO
+        super(event, player(event), location(event));
+    }
+
+    /**
+     * @param event
+     * @return player
+     */
+    private static ArenaPlayerInterface player(ProjectileLaunchEvent event)
+    {
+        final ProjectileSource source = event.getEntity().getShooter();
+        return source instanceof Player ? MglibInterface.INSTANCE.get().getPlayer((Player) source) : null;
+    }
+
+    /**
+     * @param event
+     * @return arena
+     */
+    private static ArenaInterface location(ProjectileLaunchEvent event)
+    {
+        final ProjectileSource source = event.getEntity().getShooter();
+        if (source instanceof Player)
+        {
+            return null; // will force to calculate from player
+        }
+        return MglibInterface.INSTANCE.get().getArenaFromLocation(event.getEntity().getLocation());
     }
     
 }

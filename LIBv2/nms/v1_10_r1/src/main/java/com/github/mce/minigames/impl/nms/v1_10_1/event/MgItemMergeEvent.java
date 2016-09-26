@@ -34,7 +34,7 @@ public class MgItemMergeEvent extends AbstractMinigameEvent<ItemMergeEvent, Mini
      */
     public MgItemMergeEvent(ItemMergeEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

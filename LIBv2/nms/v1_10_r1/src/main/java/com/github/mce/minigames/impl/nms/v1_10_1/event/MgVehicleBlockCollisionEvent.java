@@ -15,9 +15,14 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.vehicle.VehicleBlockCollisionEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameVehicleBlockCollisionEvent;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
 /**
@@ -34,7 +39,31 @@ public class MgVehicleBlockCollisionEvent extends AbstractMinigameEvent<VehicleB
      */
     public MgVehicleBlockCollisionEvent(VehicleBlockCollisionEvent event)
     {
-        super(event, null); // TODO
+        super(event, passenger(event), location(event));
+    }
+
+    /**
+     * @param event
+     * @return passanger
+     */
+    private static ArenaPlayerInterface passenger(VehicleBlockCollisionEvent event)
+    {
+        final Entity passenger = event.getVehicle().getPassenger();
+        return passenger instanceof Player ? MglibInterface.INSTANCE.get().getPlayer((Player) passenger) : null;
+    }
+
+    /**
+     * @param event
+     * @return passanger
+     */
+    private static ArenaInterface location(VehicleBlockCollisionEvent event)
+    {
+        final Entity passenger = event.getVehicle().getPassenger();
+        if (passenger instanceof Player)
+        {
+            return null; // will force to calculate from player
+        }
+        return MglibInterface.INSTANCE.get().getArenaFromLocation(event.getVehicle().getLocation());
     }
     
 }

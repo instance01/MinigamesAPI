@@ -34,7 +34,7 @@ public class MgSheepRegrowWoolEvent extends AbstractMinigameEvent<SheepRegrowWoo
      */
     public MgSheepRegrowWoolEvent(SheepRegrowWoolEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

@@ -34,7 +34,7 @@ public class MgEntityDeathEvent extends AbstractMinigameEvent<EntityDeathEvent, 
      */
     public MgEntityDeathEvent(EntityDeathEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

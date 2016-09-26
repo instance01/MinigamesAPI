@@ -15,7 +15,6 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
-import org.bukkit.Location;
 import org.bukkit.event.block.BlockFromToEvent;
 
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameBlockFromToEvent;
@@ -35,7 +34,7 @@ public class MgBlockFromToEvent extends AbstractMinigameEvent<BlockFromToEvent, 
      */
     public MgBlockFromToEvent(BlockFromToEvent event)
     {
-        super(event, null, event.getBlock().getLocation(), new Location[]{event.getToBlock().getLocation()});
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

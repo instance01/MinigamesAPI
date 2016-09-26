@@ -15,9 +15,12 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameHangingPlaceEvent;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
 /**
@@ -34,7 +37,17 @@ public class MgHangingPlaceEvent extends AbstractMinigameEvent<HangingPlaceEvent
      */
     public MgHangingPlaceEvent(HangingPlaceEvent event)
     {
-        super(event, null); // TODO
+        super(event, player(event));
+    }
+
+    /**
+     * @param event
+     * @return player
+     */
+    private static ArenaPlayerInterface player(HangingPlaceEvent event)
+    {
+        final Player passenger = event.getPlayer();
+        return passenger == null ? null : MglibInterface.INSTANCE.get().getPlayer(passenger);
     }
     
 }

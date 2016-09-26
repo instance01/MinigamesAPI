@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigamePlayerDeathEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -34,7 +35,7 @@ public class MgPlayerDeathEvent extends AbstractMinigameEvent<PlayerDeathEvent, 
      */
     public MgPlayerDeathEvent(PlayerDeathEvent event)
     {
-        super(event, null); // TODO
+        super(event, MglibInterface.INSTANCE.get().getPlayer(event.getEntity()));
     }
     
 }

@@ -34,7 +34,7 @@ public class MgEntityBlockFormEvent extends AbstractMinigameEvent<EntityBlockFor
      */
     public MgEntityBlockFormEvent(EntityBlockFormEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

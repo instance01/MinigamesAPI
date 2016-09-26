@@ -26,7 +26,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * <dl>
  * <dt>Player-Rule</dt>
- * <dd>Passed to the player if the projectile hits a player.</dd>
+ * <dd>Passed to the player if the shooter is a player</dd>
  * <dt>Arena-Rule</dt>
  * <dd>Passed to the arena calculated from the player or projectile location</dd>
  * <dt>Minigame-Rule</dt>

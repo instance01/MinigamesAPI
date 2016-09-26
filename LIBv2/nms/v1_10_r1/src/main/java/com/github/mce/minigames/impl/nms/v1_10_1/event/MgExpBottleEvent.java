@@ -34,7 +34,7 @@ public class MgExpBottleEvent extends AbstractMinigameEvent<ExpBottleEvent, Mini
      */
     public MgExpBottleEvent(ExpBottleEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

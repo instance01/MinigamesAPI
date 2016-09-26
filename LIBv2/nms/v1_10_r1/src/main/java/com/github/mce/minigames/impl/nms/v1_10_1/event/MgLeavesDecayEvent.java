@@ -34,7 +34,7 @@ public class MgLeavesDecayEvent extends AbstractMinigameEvent<LeavesDecayEvent, 
      */
     public MgLeavesDecayEvent(LeavesDecayEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

@@ -34,7 +34,7 @@ public class MgEntityRegainHealthEvent extends AbstractMinigameEvent<EntityRegai
      */
     public MgEntityRegainHealthEvent(EntityRegainHealthEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

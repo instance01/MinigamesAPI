@@ -34,7 +34,7 @@ public class MgCreatureSpawnEvent extends AbstractMinigameEvent<CreatureSpawnEve
      */
     public MgCreatureSpawnEvent(CreatureSpawnEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getLocation());
     }
     
 }

@@ -34,7 +34,7 @@ public class MgEntityPortalEvent extends AbstractMinigameEvent<EntityPortalEvent
      */
     public MgEntityPortalEvent(EntityPortalEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getFrom());
     }
     
 }

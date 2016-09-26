@@ -28,7 +28,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * <dt>Player-Rule</dt>
  * <dd>Passed to the player breaking the door (if it is a player).</dd>
  * <dt>Arena-Rule</dt>
- * <dd>Passed to the arena calculated from door location</dd>
+ * <dd>Passed to the arena calculated from player or door location</dd>
  * <dt>Minigame-Rule</dt>
  * <dd>Passed to the minigame calculated from arena</dd>
  * </dl>

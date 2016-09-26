@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigamePlayerInteractAtEntityEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -35,7 +36,7 @@ public class MgPlayerInteractAtEntityEvent extends AbstractMinigameEvent<PlayerI
      */
     public MgPlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent event)
     {
-        super(event, null); // TODO
+        super(event, MglibInterface.INSTANCE.get().getPlayer(event.getPlayer()));
     }
     
 }

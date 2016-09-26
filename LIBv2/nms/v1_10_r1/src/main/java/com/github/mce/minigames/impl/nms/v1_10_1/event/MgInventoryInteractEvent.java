@@ -15,8 +15,10 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameInventoryInteractEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -34,7 +36,7 @@ public class MgInventoryInteractEvent extends AbstractMinigameEvent<InventoryInt
      */
     public MgInventoryInteractEvent(InventoryInteractEvent event)
     {
-        super(event, null); // TODO
+        super(event, MglibInterface.INSTANCE.get().getPlayer((Player) event.getWhoClicked()));
     }
     
 }

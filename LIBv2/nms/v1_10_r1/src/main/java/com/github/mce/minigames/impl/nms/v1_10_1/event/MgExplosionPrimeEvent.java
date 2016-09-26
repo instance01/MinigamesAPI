@@ -34,7 +34,7 @@ public class MgExplosionPrimeEvent extends AbstractMinigameEvent<ExplosionPrimeE
      */
     public MgExplosionPrimeEvent(ExplosionPrimeEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

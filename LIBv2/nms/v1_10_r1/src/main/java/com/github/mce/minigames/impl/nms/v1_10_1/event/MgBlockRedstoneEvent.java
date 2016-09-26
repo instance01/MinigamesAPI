@@ -34,7 +34,7 @@ public class MgBlockRedstoneEvent extends AbstractMinigameEvent<BlockRedstoneEve
      */
     public MgBlockRedstoneEvent(BlockRedstoneEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

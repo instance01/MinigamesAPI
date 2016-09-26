@@ -27,7 +27,7 @@ import com.github.mce.minigames.api.arena.rules.MinigameEvent;
  * 
  * <dl>
  * <dt>Player-Rule</dt>
- * <dd>Passed to the player if the target entityis a player.</dd>
+ * <dd>Passed to the player if the target entity is a player.</dd>
  * <dt>Arena-Rule</dt>
  * <dd>Passed to the arena calculated from player or entity location.</dd>
  * <dt>Minigame-Rule</dt>

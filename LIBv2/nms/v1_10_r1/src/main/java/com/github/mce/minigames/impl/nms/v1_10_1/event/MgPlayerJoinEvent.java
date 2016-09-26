@@ -17,6 +17,7 @@ package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigamePlayerJoinEvent;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
@@ -34,7 +35,7 @@ public class MgPlayerJoinEvent extends AbstractMinigameEvent<PlayerJoinEvent, Mi
      */
     public MgPlayerJoinEvent(PlayerJoinEvent event)
     {
-        super(event, null); // TODO
+        super(event, MglibInterface.INSTANCE.get().getPlayer(event.getPlayer()));
     }
     
 }

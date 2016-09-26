@@ -34,7 +34,7 @@ public class MgCreeperPowerEvent extends AbstractMinigameEvent<CreeperPowerEvent
      */
     public MgCreeperPowerEvent(CreeperPowerEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

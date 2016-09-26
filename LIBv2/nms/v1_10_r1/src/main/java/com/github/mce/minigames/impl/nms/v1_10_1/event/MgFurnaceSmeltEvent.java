@@ -34,7 +34,7 @@ public class MgFurnaceSmeltEvent extends AbstractMinigameEvent<FurnaceSmeltEvent
      */
     public MgFurnaceSmeltEvent(FurnaceSmeltEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

@@ -15,9 +15,15 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
+import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameEntityShootBowEvent;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
 /**
@@ -34,7 +40,31 @@ public class MgEntityShootBowEvent extends AbstractMinigameEvent<EntityShootBowE
      */
     public MgEntityShootBowEvent(EntityShootBowEvent event)
     {
-        super(event, null); // TODO
+        super(event, player(event), location(event));
+    }
+
+    /**
+     * @param event
+     * @return player
+     */
+    private static ArenaPlayerInterface player(EntityShootBowEvent event)
+    {
+        final ProjectileSource passenger = ((Projectile)event.getProjectile()).getShooter();
+        return passenger instanceof Player ? MglibInterface.INSTANCE.get().getPlayer((Player) passenger) : null;
+    }
+
+    /**
+     * @param event
+     * @return arena
+     */
+    private static ArenaInterface location(EntityShootBowEvent event)
+    {
+        final ProjectileSource passenger = ((Projectile)event.getProjectile()).getShooter();
+        if (passenger instanceof Player)
+        {
+            return null; // will force to calculate from player
+        }
+        return MglibInterface.INSTANCE.get().getArenaFromLocation(event.getEntity().getLocation());
     }
     
 }

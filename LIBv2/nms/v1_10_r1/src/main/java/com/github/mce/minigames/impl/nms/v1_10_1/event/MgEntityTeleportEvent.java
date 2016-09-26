@@ -34,7 +34,7 @@ public class MgEntityTeleportEvent extends AbstractMinigameEvent<EntityTeleportE
      */
     public MgEntityTeleportEvent(EntityTeleportEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getFrom());
     }
     
 }

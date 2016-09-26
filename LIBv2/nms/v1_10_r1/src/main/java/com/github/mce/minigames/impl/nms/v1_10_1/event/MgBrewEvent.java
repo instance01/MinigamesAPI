@@ -34,7 +34,7 @@ public class MgBrewEvent extends AbstractMinigameEvent<BrewEvent, MinigameBrewEv
      */
     public MgBrewEvent(BrewEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

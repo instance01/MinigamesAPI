@@ -34,7 +34,7 @@ public class MgItemDespawnEvent extends AbstractMinigameEvent<ItemDespawnEvent, 
      */
     public MgItemDespawnEvent(ItemDespawnEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getLocation());
     }
     
 }

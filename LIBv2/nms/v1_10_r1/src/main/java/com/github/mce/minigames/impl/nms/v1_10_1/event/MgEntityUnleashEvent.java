@@ -34,7 +34,7 @@ public class MgEntityUnleashEvent extends AbstractMinigameEvent<EntityUnleashEve
      */
     public MgEntityUnleashEvent(EntityUnleashEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

@@ -15,8 +15,6 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockExplodeEvent;
 
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameBlockExplodeEvent;
@@ -37,25 +35,7 @@ public class MgBlockExplodeEvent extends AbstractMinigameEvent<BlockExplodeEvent
      */
     public MgBlockExplodeEvent(BlockExplodeEvent event)
     {
-        super(event, null, event.getBlock().getLocation(), locations(event));
-    }
-    
-    /**
-     * Gets locations from affected blocks.
-     * 
-     * @param event
-     * @return locations.
-     */
-    private static Location[] locations(BlockExplodeEvent event)
-    {
-        final Location[] result = new Location[event.blockList().size()];
-        int i = 0;
-        for (final Block block : event.blockList())
-        {
-            result[i] = block.getLocation();
-            i++;
-        }
-        return result;
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

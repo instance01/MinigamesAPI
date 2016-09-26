@@ -15,9 +15,14 @@
 
 package com.github.mce.minigames.impl.nms.v1_10_1.event;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 
+import com.github.mce.minigames.api.MglibInterface;
+import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.rules.bevents.MinigameEntityCombustByEntityEvent;
+import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.impl.nms.AbstractMinigameEvent;
 
 /**
@@ -34,7 +39,31 @@ public class MgEntityCombustByEntityEvent extends AbstractMinigameEvent<EntityCo
      */
     public MgEntityCombustByEntityEvent(EntityCombustByEntityEvent event)
     {
-        super(event, null); // TODO
+        super(event, player(event), location(event));
+    }
+
+    /**
+     * @param event
+     * @return player
+     */
+    private static ArenaPlayerInterface player(EntityCombustByEntityEvent event)
+    {
+        final Entity passenger = event.getEntity();
+        return passenger instanceof Player ? MglibInterface.INSTANCE.get().getPlayer((Player) passenger) : null;
+    }
+
+    /**
+     * @param event
+     * @return arena
+     */
+    private static ArenaInterface location(EntityCombustByEntityEvent event)
+    {
+        final Entity passenger = event.getEntity();
+        if (passenger instanceof Player)
+        {
+            return null; // will force to calculate from player
+        }
+        return MglibInterface.INSTANCE.get().getArenaFromLocation(event.getEntity().getLocation());
     }
     
 }

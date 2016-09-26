@@ -34,7 +34,7 @@ public class MgSheepDyeWoolEvent extends AbstractMinigameEvent<SheepDyeWoolEvent
      */
     public MgSheepDyeWoolEvent(SheepDyeWoolEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }

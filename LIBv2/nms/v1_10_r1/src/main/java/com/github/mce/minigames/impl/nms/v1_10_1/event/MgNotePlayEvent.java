@@ -34,7 +34,7 @@ public class MgNotePlayEvent extends AbstractMinigameEvent<NotePlayEvent, Miniga
      */
     public MgNotePlayEvent(NotePlayEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

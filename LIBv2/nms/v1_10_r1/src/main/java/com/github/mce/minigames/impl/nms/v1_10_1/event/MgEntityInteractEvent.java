@@ -34,7 +34,7 @@ public class MgEntityInteractEvent extends AbstractMinigameEvent<EntityInteractE
      */
     public MgEntityInteractEvent(EntityInteractEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getBlock().getLocation());
     }
     
 }

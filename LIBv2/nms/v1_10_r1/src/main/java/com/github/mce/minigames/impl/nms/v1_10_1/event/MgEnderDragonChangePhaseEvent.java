@@ -34,7 +34,7 @@ public class MgEnderDragonChangePhaseEvent extends AbstractMinigameEvent<EnderDr
      */
     public MgEnderDragonChangePhaseEvent(EnderDragonChangePhaseEvent event)
     {
-        super(event, null); // TODO
+        super(event, null, event.getEntity().getLocation());
     }
     
 }
