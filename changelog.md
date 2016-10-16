@@ -7,6 +7,7 @@
 * No more kill rewards for self-kills (https://github.com/MysticCity/MinigamesAPI/issues/11)
 * Fixed NPE using spectator sign outside of arena (https://github.com/MysticCity/MinigamesAPI/issues/154)
 * Fixed PlayOutFakeBed (https://github.com/MysticCity/MinigamesAPI/issues/161)
+* Migrated to eclipse-plugin (http://minecraft.xworlds.eu/eclipse/)
 
 ###### BedWars
 
@@ -27,6 +28,10 @@
 ###### Splegg
 
 * Config option "die\_below\_bedrock\_level" can now be numeric to hold the minimum y coordinate the player can reach
+
+###### SkyWars
+
+* Fixed SmartReset logic for user placed blocks (https://github.com/MysticCity/MinigamesAPI/issues/169)
 
 ###### Sudoku
 
