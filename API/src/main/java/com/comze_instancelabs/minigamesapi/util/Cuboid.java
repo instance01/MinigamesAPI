@@ -258,8 +258,6 @@ public final class Cuboid
      * 
      * @param root
      *            the Map
-     * @param world
-     *            the world it should be in
      * @return the cuboid
      * @throws IllegalArgumentException
      */
