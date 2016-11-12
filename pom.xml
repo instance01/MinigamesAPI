@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.MCE-Plugins</groupId>
 	<artifactId>MinigamesLib-parent</artifactId>
-	<version>1.14.13</version>
+	<version>1.14.14-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>MinigamesLib-parent</name>
 	<properties>
@@ -13,7 +13,7 @@
 		<java.version>1.8</java.version>
 		<powermock.version>1.6.5</powermock.version>
 		<junit.version>4.12</junit.version>
-		<minigames.releaseversion>1.14.13</minigames.releaseversion>
+		<minigames.releaseversion>1.14.14</minigames.releaseversion>
 		<minigames.timestamp>${maven.build.timestamp}</minigames.timestamp>
 		<spigot.version>1.10-R0.1-SNAPSHOT</spigot.version>
 		<maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
@@ -57,7 +57,7 @@
 		<dependency>
 			<groupId>com.github.MCE-Plugins</groupId>
   			<artifactId>MinigamesLib</artifactId>
-  			<version>1.14.13</version>
+  			<version>1.14.14-SNAPSHOT</version>
   			<scope>provided</scope>
 		</dependency>
 		<dependency>
