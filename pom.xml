@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.MCE-Plugins</groupId>
 	<artifactId>MinigamesLib-parent</artifactId>
-	<version>1.14.13-SNAPSHOT</version>
+	<version>1.14.13</version>
 	<packaging>pom</packaging>
 	<name>MinigamesLib-parent</name>
 	<properties>
@@ -57,7 +57,7 @@
 		<dependency>
 			<groupId>com.github.MCE-Plugins</groupId>
   			<artifactId>MinigamesLib</artifactId>
-  			<version>1.14.13-SNAPSHOT</version>
+  			<version>1.14.13</version>
   			<scope>provided</scope>
 		</dependency>
 		<dependency>
