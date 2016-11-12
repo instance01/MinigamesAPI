@@ -150,8 +150,6 @@ public class Rewards
      * 
      * @param p_
      *            Playername
-     * @param reward
-     *            Amount of statistics points the player gets
      */
     public void giveKillReward(final String p_)
     {
