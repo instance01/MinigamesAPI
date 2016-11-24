@@ -32,6 +32,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -1381,6 +1382,26 @@ public class DummyWorld implements World
     @Override
     public <T> void spawnParticle(Particle paramParticle, double paramDouble1, double paramDouble2, double paramDouble3, int paramInt, double paramDouble4, double paramDouble5, double paramDouble6,
             double paramDouble7, T paramT)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see org.bukkit.World#playSound(org.bukkit.Location, org.bukkit.Sound, org.bukkit.SoundCategory, float, float)
+     */
+    @Override
+    public void playSound(Location paramLocation, Sound paramSound, SoundCategory paramSoundCategory, float paramFloat1, float paramFloat2)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see org.bukkit.World#playSound(org.bukkit.Location, java.lang.String, org.bukkit.SoundCategory, float, float)
+     */
+    @Override
+    public void playSound(Location paramLocation, String paramString, SoundCategory paramSoundCategory, float paramFloat1, float paramFloat2)
     {
         // TODO Auto-generated method stub
         

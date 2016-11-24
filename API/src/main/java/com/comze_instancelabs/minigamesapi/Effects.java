@@ -34,10 +34,6 @@ import org.bukkit.scheduler.BukkitTask;
 import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Validator;
 
-import net.minecraft.server.v1_10_R1.BlockPosition;
-import net.minecraft.server.v1_10_R1.ChatComponentText;
-import net.minecraft.server.v1_10_R1.IChatBaseComponent.ChatSerializer;
-
 /**
  * Particle/Animation helper.
  * 
@@ -132,7 +128,9 @@ public class Effects
             Effects.setValue(packet_, "a", id);
             if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_8_R1))
             {
-                Effects.setValue(packet_, "b", new BlockPosition(x, y, z));
+                final Class<?> bpClazz = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".BlockPosition");
+                final Constructor<?> ctor = bpClazz.getDeclaredConstructor(Integer.class, Integer.class, Integer.class);
+                Effects.setValue(packet_, "b", ctor.newInstance(x, y, z));
             }
             else
             {

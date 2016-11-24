@@ -15,7 +15,7 @@
 		<junit.version>4.12</junit.version>
 		<minigames.releaseversion>1.14.14</minigames.releaseversion>
 		<minigames.timestamp>${maven.build.timestamp}</minigames.timestamp>
-		<spigot.version>1.10-R0.1-SNAPSHOT</spigot.version>
+		<spigot.version>1.11-R0.1-SNAPSHOT</spigot.version>
 		<maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
 	</properties>
 	<description>Rich Minigames API and base of all of my new minigames.</description>

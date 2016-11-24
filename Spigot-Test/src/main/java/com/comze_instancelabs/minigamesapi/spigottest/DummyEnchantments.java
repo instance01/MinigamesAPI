@@ -1,6 +1,6 @@
 package com.comze_instancelabs.minigamesapi.spigottest;
 
-import net.minecraft.server.v1_10_R1.Enchantments;
+import net.minecraft.server.v1_11_R1.Enchantments;
 
 /**
  * taken from spigot test sources

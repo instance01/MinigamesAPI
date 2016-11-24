@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -25,13 +24,13 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemFactory;
-import org.bukkit.craftbukkit.v1_10_R1.scheduler.CraftScheduler;
-import org.bukkit.craftbukkit.v1_10_R1.scoreboard.CraftScoreboard;
-import org.bukkit.craftbukkit.v1_10_R1.scoreboard.CraftScoreboardManager;
-import org.bukkit.craftbukkit.v1_10_R1.util.Versioning;
+import org.bukkit.craftbukkit.v1_11_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemFactory;
+import org.bukkit.craftbukkit.v1_11_R1.scheduler.CraftScheduler;
+import org.bukkit.craftbukkit.v1_11_R1.scoreboard.CraftScoreboard;
+import org.bukkit.craftbukkit.v1_11_R1.scoreboard.CraftScoreboardManager;
+import org.bukkit.craftbukkit.v1_11_R1.util.Versioning;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
@@ -40,23 +39,22 @@ import org.bukkit.scoreboard.Team;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import net.minecraft.server.v1_10_R1.Chunk;
-import net.minecraft.server.v1_10_R1.DedicatedPlayerList;
-import net.minecraft.server.v1_10_R1.DefinedStructureManager;
-import net.minecraft.server.v1_10_R1.EnumGamemode;
-import net.minecraft.server.v1_10_R1.ExceptionWorldConflict;
-import net.minecraft.server.v1_10_R1.IChunkLoader;
-import net.minecraft.server.v1_10_R1.IDataManager;
-import net.minecraft.server.v1_10_R1.IPlayerFileData;
-import net.minecraft.server.v1_10_R1.MethodProfiler;
-import net.minecraft.server.v1_10_R1.MinecraftServer;
-import net.minecraft.server.v1_10_R1.NBTTagCompound;
-import net.minecraft.server.v1_10_R1.PlayerChunkMap;
-import net.minecraft.server.v1_10_R1.PlayerList;
-import net.minecraft.server.v1_10_R1.WorldData;
-import net.minecraft.server.v1_10_R1.WorldProvider;
-import net.minecraft.server.v1_10_R1.WorldServer;
-import net.minecraft.server.v1_10_R1.WorldSettings;
+import net.minecraft.server.v1_11_R1.Chunk;
+import net.minecraft.server.v1_11_R1.DedicatedPlayerList;
+import net.minecraft.server.v1_11_R1.DefinedStructureManager;
+import net.minecraft.server.v1_11_R1.EnumGamemode;
+import net.minecraft.server.v1_11_R1.ExceptionWorldConflict;
+import net.minecraft.server.v1_11_R1.IChunkLoader;
+import net.minecraft.server.v1_11_R1.IDataManager;
+import net.minecraft.server.v1_11_R1.IPlayerFileData;
+import net.minecraft.server.v1_11_R1.MethodProfiler;
+import net.minecraft.server.v1_11_R1.MinecraftServer;
+import net.minecraft.server.v1_11_R1.NBTTagCompound;
+import net.minecraft.server.v1_11_R1.PlayerChunkMap;
+import net.minecraft.server.v1_11_R1.WorldData;
+import net.minecraft.server.v1_11_R1.WorldProvider;
+import net.minecraft.server.v1_11_R1.WorldServer;
+import net.minecraft.server.v1_11_R1.WorldSettings;
 
 /**
  * originally taken from spigot test sources
@@ -494,27 +492,27 @@ class DummyServer implements InvocationHandler, Answer {
             final UUID uuid = UUID.randomUUID();
             final ChunkGenerator generator = null;
             int dimension = this.worlds.size() + 1;
-            net.minecraft.server.v1_10_R1.WorldType mctype = null;
+            net.minecraft.server.v1_11_R1.WorldType mctype = null;
             switch (type)
             {
                 case AMPLIFIED:
-                    mctype = net.minecraft.server.v1_10_R1.WorldType.AMPLIFIED;
+                    mctype = net.minecraft.server.v1_11_R1.WorldType.AMPLIFIED;
                     break;
                 case CUSTOMIZED:
-                    mctype = net.minecraft.server.v1_10_R1.WorldType.CUSTOMIZED;
+                    mctype = net.minecraft.server.v1_11_R1.WorldType.CUSTOMIZED;
                     break;
                 default:
                 case FLAT:
-                    mctype = net.minecraft.server.v1_10_R1.WorldType.FLAT;
+                    mctype = net.minecraft.server.v1_11_R1.WorldType.FLAT;
                     break;
                 case LARGE_BIOMES:
-                    mctype = net.minecraft.server.v1_10_R1.WorldType.LARGE_BIOMES;
+                    mctype = net.minecraft.server.v1_11_R1.WorldType.LARGE_BIOMES;
                     break;
                 case NORMAL:
-                    mctype = net.minecraft.server.v1_10_R1.WorldType.NORMAL;
+                    mctype = net.minecraft.server.v1_11_R1.WorldType.NORMAL;
                     break;
                 case VERSION_1_1:
-                    mctype = net.minecraft.server.v1_10_R1.WorldType.NORMAL_1_1;
+                    mctype = net.minecraft.server.v1_11_R1.WorldType.NORMAL_1_1;
                     break;
                 
             }
@@ -543,21 +541,21 @@ class DummyServer implements InvocationHandler, Answer {
                 {
                     return new IChunkLoader(){
                         @Override
-                        public Chunk a(net.minecraft.server.v1_10_R1.World arg0, int arg1, int arg2) throws IOException
+                        public Chunk a(net.minecraft.server.v1_11_R1.World arg0, int arg1, int arg2) throws IOException
                         {
                             final Map<Integer, Chunk> map = chunks.get(arg1);
                             return map == null ? null : map.get(arg2);
                         }
 
                         @Override
-                        public void a(net.minecraft.server.v1_10_R1.World arg0, Chunk arg1) throws IOException, ExceptionWorldConflict
+                        public void a(net.minecraft.server.v1_11_R1.World arg0, Chunk arg1) throws IOException, ExceptionWorldConflict
                         {
                             final Map<Integer, Chunk> map = chunks.computeIfAbsent(arg1.locX, (x) -> new HashMap<>());
                             map.put(arg1.locZ, arg1);
                         }
 
                         @Override
-                        public void b(net.minecraft.server.v1_10_R1.World arg0, Chunk arg1) throws IOException
+                        public void b(net.minecraft.server.v1_11_R1.World arg0, Chunk arg1) throws IOException
                         {
                             // ignore
                         }
@@ -572,6 +570,13 @@ class DummyServer implements InvocationHandler, Answer {
                         public void b()
                         {
                             // ignore
+                        }
+
+                        @Override
+                        public boolean a(int paramInt1, int paramInt2)
+                        {
+                            // TODO Auto-generated method stub
+                            return false;
                         }
                     };
                 }
