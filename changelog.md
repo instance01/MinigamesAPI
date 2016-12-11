@@ -1,5 +1,15 @@
 # Changelog
 
+#### 1.14.14
+
+###### All
+
+* support for Minecraft 1.11
+
+###### SeaBattle
+
+* Added config option "die\_below\_bedrock\_level" (fixes arenas where the spawns are over 4 block above the battle sea)
+
 #### 1.14.12/1.14.13
 
 ###### All
