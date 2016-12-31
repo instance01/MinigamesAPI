@@ -139,6 +139,11 @@ public class Classes
             return;
         }
         final AClass c = this.pli.getPClasses().get(player);
+        if (c == null)
+        {
+            ArenaLogger.debug(player + " didn't select any kit and the auto_add_default_kit option might be turned off, thus he won't get any starting items.");
+            return;
+        }
         final Player p = Bukkit.getServer().getPlayer(player);
         Util.clearInv(p);
         final ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(c.getItems()));
