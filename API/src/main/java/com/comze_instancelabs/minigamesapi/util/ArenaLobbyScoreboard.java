@@ -89,7 +89,11 @@ public class ArenaLobbyScoreboard
                     ArenaLobbyScoreboard.this.aobjective.put(playername, ArenaLobbyScoreboard.this.ascore.get(playername).registerNewObjective(playername, "dummy"));
                     ArenaLobbyScoreboard.this.aobjective.get(playername).setDisplaySlot(DisplaySlot.SIDEBAR);
                     ArenaLobbyScoreboard.this.aobjective.get(playername)
-                            .setDisplayName(ArenaLobbyScoreboard.this.pli.getMessagesConfig().scoreboard_lobby_title.replaceAll("<arena>", arena.getInternalName()));
+                            .setDisplayName(ArenaLobbyScoreboard.this.pli.getMessagesConfig().scoreboard_lobby_title.replaceAll("<arena>", arena.getDisplayName()));
+                }
+                else
+                {
+                    ArenaLobbyScoreboard.this.aobjective.get(playername).setDisplayName(ArenaLobbyScoreboard.this.pli.getMessagesConfig().scoreboard_lobby_title.replaceAll("<arena>", arena.getDisplayName()));
                 }
                 
                 try

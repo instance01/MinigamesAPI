@@ -103,7 +103,7 @@ public class ArenaScoreboard
                         ArenaScoreboard.this.aobjective.put(arena.getInternalName(), ArenaScoreboard.this.ascore.get(arena.getInternalName()).registerNewObjective(arena.getInternalName(), "dummy"));
                         ArenaScoreboard.this.aobjective.get(arena.getInternalName()).setDisplaySlot(DisplaySlot.SIDEBAR);
                         ArenaScoreboard.this.aobjective.get(arena.getInternalName())
-                                .setDisplayName(ArenaScoreboard.this.pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getInternalName()));
+                                .setDisplayName(ArenaScoreboard.this.pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getDisplayName()));
                     }
                 }
                 else
@@ -116,7 +116,11 @@ public class ArenaScoreboard
                     {
                         ArenaScoreboard.this.aobjective.put(playername, ArenaScoreboard.this.ascore.get(playername).registerNewObjective(playername, "dummy"));
                         ArenaScoreboard.this.aobjective.get(playername).setDisplaySlot(DisplaySlot.SIDEBAR);
-                        ArenaScoreboard.this.aobjective.get(playername).setDisplayName(ArenaScoreboard.this.pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getInternalName()));
+                        ArenaScoreboard.this.aobjective.get(playername).setDisplayName(ArenaScoreboard.this.pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getDisplayName()));
+                    }
+                    else
+                    {
+                        ArenaScoreboard.this.aobjective.get(playername).setDisplayName(ArenaScoreboard.this.pli.getMessagesConfig().scoreboard_title.replaceAll("<arena>", arena.getDisplayName()));
                     }
                 }
                 
