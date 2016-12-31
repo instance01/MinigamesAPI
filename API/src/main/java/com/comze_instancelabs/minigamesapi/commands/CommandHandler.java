@@ -1078,22 +1078,24 @@ public class CommandHandler
                 {
                     if (!temp.containsPlayer(playername))
                     {
-                        temp.addPlayer(playername); // TODO seems to be a bad hack. Influences the players list; do we really need this? Instead fill a list of spectators.
-                        final ArenaPlayer ap = ArenaPlayer.getPlayerInstance(playername);
-                        ap.setNoReward(true);
-                        ap.setInventories(p.getInventory().getContents(), p.getInventory().getArmorContents());
-                        ap.setOriginalGamemode(p.getGameMode());
-                        ap.setOriginalXplvl(p.getLevel());
-                        pli.global_players.put(playername, temp);
-                        pli.global_lost.put(playername, temp);
-                        temp.spectateGame(playername);
+                        if (!sender.hasPermission(uber_permission + ".spectate"))
+                        {
+                            sender.sendMessage(pli.getMessagesConfig().no_perm);
+                        }
+                        else
+                        {
+                            temp.joinSpectate(p);
+                        }
                     }
                     else
                     {
                         sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
                     }
                 }
-                // TODO else error
+                else
+                {
+                    sender.sendMessage(pli.getMessagesConfig().no_game_started.replaceAll("<arena>", args[1]));
+                }
             }
             else
             {

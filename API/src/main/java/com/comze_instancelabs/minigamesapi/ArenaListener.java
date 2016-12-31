@@ -1497,6 +1497,7 @@ public class ArenaListener implements Listener
                 // people will most likely do strange formats, so let's just try
                 // to get signs by location rather than locally by reading the sign
                 final Arena arena = Util.getArenaBySignLocation(this.plugin, event.getClickedBlock().getLocation());
+                final Arena specarena = Util.getArenaBySpecSignLocation(this.plugin, event.getClickedBlock().getLocation());
                 if (arena != null)
                 {
                     final Player p = event.getPlayer();
@@ -1508,6 +1509,14 @@ public class ArenaListener implements Listener
                     else
                     {
                         Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", arena.getInternalName()));
+                    }
+                }
+                else if (specarena != null)
+                {
+                    if (specarena.getArenaState() == ArenaState.INGAME)
+                    {
+                        final Player p = event.getPlayer();
+                        specarena.joinSpectate(p);
                     }
                 }
                 else
@@ -1760,30 +1769,68 @@ public class ArenaListener implements Listener
                     }
                     else
                     {
-                        if (Validator.isArenaValid(this.plugin, arena))
+                        final String mode = event.getLine(2).equalsIgnoreCase("") ? "join" : "spec";
+                        switch (mode)
                         {
-                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.world", p.getWorld().getName());
-                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
-                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
-                            this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
-                            this.pli.getArenasConfig().saveConfig();
-                            Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
-                        }
-                        else
-                        {
-                            Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
-                            event.getBlock().breakNaturally();
-                        }
-                        
-                        final Arena a = this.pli.getArenaByName(arena);
-                        if (a != null)
-                        {
-                            a.setSignLocation(event.getBlock().getLocation());
-                            Util.updateSign(this.plugin, a, event);
-                        }
-                        else
-                        {
-                            Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().arena_not_initialized);
+                            case "join":
+                            default:
+                                {
+                                    if (Validator.isArenaValid(this.plugin, arena))
+                                    {
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.world", p.getWorld().getName());
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.x", event.getBlock().getLocation().getBlockX());
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.y", event.getBlock().getLocation().getBlockY());
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".sign.loc.z", event.getBlock().getLocation().getBlockZ());
+                                        this.pli.getArenasConfig().saveConfig();
+                                        Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().successfully_set.replaceAll("<component>", "arena sign"));
+                                    }
+                                    else
+                                    {
+                                        Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
+                                        event.getBlock().breakNaturally();
+                                    }
+                                    
+                                    final Arena a = this.pli.getArenaByName(arena);
+                                    if (a != null)
+                                    {
+                                        a.setSignLocation(event.getBlock().getLocation());
+                                        Util.updateSign(this.plugin, a, event);
+                                    }
+                                    else
+                                    {
+                                        Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().arena_not_initialized);
+                                    }
+                                }
+                                break;
+                            case "spec":
+                                {
+                                    if (Validator.isArenaValid(this.plugin, arena))
+                                    {
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".specsign.world", p.getWorld().getName());
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".specsign.loc.x", event.getBlock().getLocation().getBlockX());
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".specsign.loc.y", event.getBlock().getLocation().getBlockY());
+                                        this.pli.getArenasConfig().getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + arena + ".specsign.loc.z", event.getBlock().getLocation().getBlockZ());
+                                        this.pli.getArenasConfig().saveConfig();
+                                        Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().successfully_set.replaceAll("<component>", "spectator sign"));
+                                    }
+                                    else
+                                    {
+                                        Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", arena));
+                                        event.getBlock().breakNaturally();
+                                    }
+                                    
+                                    final Arena a = this.pli.getArenaByName(arena);
+                                    if (a != null)
+                                    {
+                                        a.setSignLocation(event.getBlock().getLocation());
+                                        Util.updateSpecSign(this.plugin, a, event);
+                                    }
+                                    else
+                                    {
+                                        Util.sendMessage(this.plugin, p, this.pli.getMessagesConfig().arena_not_initialized);
+                                    }
+                                }
+                                break;
                         }
                     }
                 }

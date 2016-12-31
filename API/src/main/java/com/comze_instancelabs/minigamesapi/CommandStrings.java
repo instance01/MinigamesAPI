@@ -64,9 +64,9 @@ public interface CommandStrings
     String GAME_SET_LOBBY_BOUNDS = "setlobbybounds"; //$NON-NLS-1$
     
     /**
-     * Command action: &quot;/minigame &lt;setlobbybounds&gt; ...
+     * Command action: &quot;/minigame &lt;setspecbounds&gt; ...
      */
-    String GAME_SET_SPEC_BOUNDS = "setlobbybounds"; //$NON-NLS-1$
+    String GAME_SET_SPEC_BOUNDS = "setspecbounds"; //$NON-NLS-1$
     
     /**
      * Command action: &quot;/minigame &lt;savearena&gt; ...

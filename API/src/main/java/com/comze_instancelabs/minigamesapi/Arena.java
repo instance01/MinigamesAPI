@@ -144,6 +144,11 @@ public class Arena
     private Location                      signloc;
     
     /**
+     * The spectator join sign location.
+     */
+    private Location                      specsignloc;
+    
+    /**
      * Max amount of players for the game.
      */
     private int                           max_players;
@@ -490,6 +495,27 @@ public class Arena
     public void setSignLocation(final Location l)
     {
         this.signloc = l;
+    }
+    
+    /**
+     * Returns the spectator join sign location.
+     * 
+     * @return spectator join sign location; {@code null} if there is no spectator join sign.
+     */
+    public Location getSpecSignLocation()
+    {
+        return this.specsignloc;
+    }
+    
+    /**
+     * Sets the join sign location.
+     * 
+     * @param l
+     *            new location.
+     */
+    public void setSpecSignLocation(final Location l)
+    {
+        this.specsignloc = l;
     }
     
     /**
@@ -2332,6 +2358,20 @@ public class Arena
     public void setLastDamager(final String targetPlayer, final String damager)
     {
         this.lastdamager.put(targetPlayer, damager);
+    }
+    
+    public void joinSpectate(Player p)
+    {
+        final String playername = p.getName();
+        this.addPlayer(playername); // TODO seems to be a bad hack. Influences the players list; do we really need this? Instead fill a list of spectators.
+        final ArenaPlayer ap = ArenaPlayer.getPlayerInstance(playername);
+        ap.setNoReward(true);
+        ap.setInventories(p.getInventory().getContents(), p.getInventory().getArmorContents());
+        ap.setOriginalGamemode(p.getGameMode());
+        ap.setOriginalXplvl(p.getLevel());
+        pli.global_players.put(playername, this);
+        pli.global_lost.put(playername, this);
+        this.spectateGame(playername);
     }
     
 }

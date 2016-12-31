@@ -416,6 +416,10 @@ public class PluginInstance
                             this.messagesconfig.getConfig().getString("signs." + state.toLowerCase() + ".1"), this.messagesconfig.getConfig().getString("signs." + state.toLowerCase() + ".2"),
                             this.messagesconfig.getConfig().getString("signs." + state.toLowerCase() + ".3"))));
         }
+        this.cached_sign_states.put("spec",
+                new ArrayList<>(Arrays.asList(this.messagesconfig.getConfig().getString("signs.spec.0"),
+                        this.messagesconfig.getConfig().getString("signs.spec.1"), this.messagesconfig.getConfig().getString("signs.spec.2"),
+                        this.messagesconfig.getConfig().getString("signs.spec.3"))));
         
     }
     

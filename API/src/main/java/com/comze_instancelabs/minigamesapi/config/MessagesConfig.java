@@ -53,6 +53,10 @@ public class MessagesConfig
             this.getConfig().addDefault("signs." + state.toLowerCase() + ".2", color + "<count>/<maxcount>");
             this.getConfig().addDefault("signs." + state.toLowerCase() + ".3", color + "[]");
         }
+        this.getConfig().addDefault("signs.spec.0", "&cSPECTATE");
+        this.getConfig().addDefault("signs.spec.1", "&c<arena>");
+        this.getConfig().addDefault("signs.spec.2", "<count>/<maxcount>");
+        this.getConfig().addDefault("signs.spec.3", "[]");
         
         // Arcade sign (I think that one is unused)
         this.getConfig().addDefault("signs.arcade.0", "[]");
@@ -134,6 +138,7 @@ public class MessagesConfig
         }
         this.getConfig().addDefault("messages.you_got_the_achievement", this.you_got_the_achievement);
         this.getConfig().addDefault("messages.game_started", this.game_started);
+        this.getConfig().addDefault("messages.no_game_started", this.no_game_started);
         this.getConfig().addDefault("messages.author_of_the_map", this.author_of_the_map);
         this.getConfig().addDefault("messages.description_of_the_map", this.description_of_the_map);
         this.getConfig().addDefault("messages.not_enough_money", this.not_enough_money);
@@ -214,6 +219,7 @@ public class MessagesConfig
         this.powerup_spawned = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages.powerup_spawned"));
         this.you_got_the_achievement = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages.you_got_the_achievement"));
         this.game_started = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages.game_started"));
+        this.no_game_started = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages.no_game_started"));
         this.author_of_the_map = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages.author_of_the_map"));
         this.description_of_the_map = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages.description_of_the_map"));
         this.not_enough_money = ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages.not_enough_money"));
@@ -294,6 +300,7 @@ public class MessagesConfig
     public String powerup_spawned                   = "&2A Powerup spawned!";
     public String you_got_the_achievement           = "&3You got the achievement &b<achievement>&3!";
     public String game_started                      = "&2The game has started!";
+    public String no_game_started                   = "&cThere is no started game!";
     public String author_of_the_map                 = "&3You are playing on the map &b<arena> &3by &b<author>&3!";
     public String description_of_the_map            = "<description>";
     public String not_enough_money                  = "&cYou don't have enough money.";

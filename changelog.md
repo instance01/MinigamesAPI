@@ -4,7 +4,10 @@
 
 ###### All
 
-* support for Minecraft 1.11
+* support for Minecraft 1.11 and 1.11.2
+* incompatible change: Players command "<game> spectate <arena>" is now secured by permissions (https://github.com/MysticCity/MinigamesAPI/wiki/Admin-Spectating)
+* bugfix by setting spectator bounds: (https://github.com/MysticCity/MinigamesAPI/issues/166)
+* improved spectator support (https://github.com/MysticCity/MinigamesAPI/wiki/Admin-Spectating)
 
 ###### SeaBattle
 

@@ -38,6 +38,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -237,6 +238,10 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             this.getConfig().addDefault("signs." + state.name().toLowerCase() + ".2", state.getColorCode() + "<count>/<maxcount>");
             this.getConfig().addDefault("signs." + state.name().toLowerCase() + ".3", state.getColorCode() + "");
         }
+        this.getConfig().addDefault("signs.spec.0", "&aSPECTATE");
+        this.getConfig().addDefault("signs.spec.1", "&a<minigame>");
+        this.getConfig().addDefault("signs.spec.2", "&a<arena>");
+        this.getConfig().addDefault("signs.spec.3", "&a<count>/<maxcount>");
         
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
@@ -1205,6 +1210,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 final String plugin_ = split[0];
                 final String arena = split[1];
                 final String playername = split[2];
+                final String mode = split.length >=4 ? split[3] : "join";
                 
                 if (debug)
                 {
@@ -1228,9 +1234,21 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                         if (a.getArenaState() != ArenaState.INGAME && a.getArenaState() != ArenaState.RESTARTING && !a.containsPlayer(playername))
                         {
                             Bukkit.getScheduler().runTaskLater(this, () -> {
-                                if (!a.containsPlayer(playername))
+                                switch (mode)
                                 {
-                                    a.joinPlayerLobby(playername);
+                                    case "join":
+                                    default:
+                                        if (!a.containsPlayer(playername))
+                                        {
+                                            a.joinPlayerLobby(playername);
+                                        }
+                                        break;
+                                    case "spec":
+                                        if (!a.containsPlayer(playername))
+                                        {
+                                            final ArenaPlayer ap = ArenaPlayer.getPlayerInstance(playername);
+                                            a.joinSpectate(ap.getPlayer());
+                                        }
                                 }
                             }, 20L);
                         }
@@ -1424,16 +1442,36 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 {
                     for (String arena_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + mg_key + ".").getKeys(false))
                     {
-                        Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world")),
-                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
-                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
-                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
-                        if (l.distance(event.getBlock().getLocation()) < 1)
+                        final ConfigurationSection section = getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key);
+                        if (section.contains("world"))
                         {
-                            // getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".server", null);
-                            getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key, null);
-                            saveConfig();
-                            return;
+                            Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world")),
+                                    getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
+                                    getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
+                                    getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
+                            if (l.distance(event.getBlock().getLocation()) < 1)
+                            {
+                                getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".server", null);
+                                getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world", null);
+                                getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc", null);
+                                saveConfig();
+                                return;
+                            }
+                        }
+                        if (section.contains("specworld"))
+                        {
+                            Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specworld")),
+                                    getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specloc.x"),
+                                    getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specloc.y"),
+                                    getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specloc.z"));
+                            if (l.distance(event.getBlock().getLocation()) < 1)
+                            {
+                                getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specserver", null);
+                                getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specworld", null);
+                                getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specloc", null);
+                                saveConfig();
+                                return;
+                            }
                         }
                     }
                 }
@@ -1530,6 +1568,32 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 }
             }
         }
+        else if (event.getLine(0).toLowerCase().equalsIgnoreCase("mglibspec"))
+        {
+            if (event.getPlayer().hasPermission(getPermissionPrefix() + ".sign") || event.getPlayer().isOp())
+            {
+                if (!event.getLine(1).equalsIgnoreCase("") && !event.getLine(2).equalsIgnoreCase("") && !event.getLine(3).equalsIgnoreCase(""))
+                {
+                    String mg = event.getLine(1);
+                    String arena = event.getLine(2);
+                    String server = event.getLine(3);
+                    
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specserver", server);
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specworld", p.getWorld().getName());
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specloc.x", event.getBlock().getLocation().getBlockX());
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specloc.y", event.getBlock().getLocation().getBlockY());
+                    getConfig().set(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specloc.z", event.getBlock().getLocation().getBlockZ());
+                    saveConfig();
+                    
+                    p.sendMessage(ChatColor.GREEN + "Successfully set sign.");
+                    
+                    updateSign(mg, arena, "SPEC", event);
+                    
+                    requestServerSign(mg, arena);
+                    
+                }
+            }
+        }
     }
     
     public void requestServerSign(String mg_key, String arena_key)
@@ -1586,6 +1650,26 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         return null;
     }
 
+    private Sign getSpecSignFromArena(String mg, String arena) {
+        if (!getConfig().isSet(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specworld")) {
+            return null;
+        }
+        Location b_ = new Location(Bukkit.getServer().getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specworld")), getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specloc.x"), getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specloc.y"), getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg + "." + arena + ".specloc.z"));
+        if (b_ != null) {
+            if (b_.getWorld() != null) {
+                if (b_.getBlock().getState() != null) {
+                    BlockState bs = b_.getBlock().getState();
+                    Sign s_ = null;
+                    if (bs instanceof Sign) {
+                        s_ = (Sign) bs;
+                    }
+                    return s_;
+                }
+            }
+        }
+        return null;
+    }
+
     public void updateSign(String mg, String arenaname, String arenastate, int count, int maxcount) {
         Sign s = getSignFromArena(mg, arenaname);
         if (s != null) {
@@ -1594,6 +1678,16 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             s.setLine(1, Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".1").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
             s.setLine(2, Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".2").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
             s.setLine(3, Signs.format(getConfig().getString("signs." + arenastate.toLowerCase() + ".3").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.getBlock().getChunk().load();
+            s.update();
+        }s = getSpecSignFromArena(mg, arenaname);
+        if (s != null) {
+            s.getBlock().getChunk().load();
+            s.setLine(0, Signs.format(getConfig().getString("signs.spec.0").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.setLine(1, Signs.format(getConfig().getString("signs.spec.1").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.setLine(2, Signs.format(getConfig().getString("signs.spec.2").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.setLine(3, Signs.format(getConfig().getString("signs.spec.3").replace("<count>", Integer.toString(count)).replace("<maxcount>", Integer.toString(maxcount)).replace("<arena>", arenaname).replace("<minigame>", mg)));
+            s.getBlock().getChunk().load();
             s.update();
         }
     }
@@ -1688,13 +1782,28 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
             {
                 for (String arena_key : getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + mg_key + ".").getKeys(false))
                 {
-                    Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world")),
-                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
-                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
-                            getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
-                    if (l.distance(sign) < 1)
+                    final ConfigurationSection section = getConfig().getConfigurationSection(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key);
+                    if (section.contains("world"))
                     {
-                        return mg_key + ":" + arena_key;
+                        Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".world")),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.x"),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.y"),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".loc.z"));
+                        if (l.distance(sign) < 1)
+                        {
+                            return mg_key + ":" + arena_key + ":join";
+                        }
+                    }
+                    if (section.contains("specworld"))
+                    {
+                        Location l = new Location(Bukkit.getWorld(getConfig().getString(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specworld")),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specloc.x"),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specloc.y"),
+                                getConfig().getInt(ArenaConfigStrings.ARENAS_PREFIX + mg_key + "." + arena_key + ".specloc.z"));
+                        if (l.distance(sign) < 1)
+                        {
+                            return mg_key + ":" + arena_key + ":spec";
+                        }
                     }
                 }
             }
