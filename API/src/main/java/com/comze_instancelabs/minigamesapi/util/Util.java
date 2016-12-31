@@ -1277,4 +1277,36 @@ public class Util
         Util.armourContents.remove(player.getName());
         Util.inventoryContents.remove(player.getName());
     }
+
+    /**
+     * @param boundaries
+     */
+    public static void clearDrops(Cuboid boundaries)
+    {
+        if (boundaries != null && boundaries.getLowLoc() != null && boundaries.getHighLoc() != null)
+        {
+            // iterate through nearby entities
+            final Chunk lowChunk = boundaries.getLowLoc().getChunk();
+            final Chunk highChunk = boundaries.getHighLoc().getChunk();
+            final World world = boundaries.getWorld();
+            for (int x = lowChunk.getX(); x <= highChunk.getX(); x++)
+            {
+                for (int z = lowChunk.getZ(); z <= highChunk.getZ(); z++)
+                {
+                    final Chunk chunk = world.getChunkAt(x, z);
+                    final Entity[] entities = chunk.getEntities();
+                    if (entities != null)
+                    {
+                        for (final Entity entity : entities)
+                        {
+                            if (entity instanceof Item && boundaries.containsLoc(entity.getLocation()))
+                            {
+                                entity.remove();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

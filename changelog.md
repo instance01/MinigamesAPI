@@ -10,11 +10,13 @@
 * improved spectator support (https://github.com/MysticCity/MinigamesAPI/wiki/Admin-Spectating)
 * Scoreboards now use display names (https://github.com/MysticCity/MinigamesAPI/issues/178)
 * Scoreboards display correct names on multiple arenas of the same game (https://github.com/MysticCity/MinigamesAPI/issues/178)
+* Lib now clears up any item on startup/stop, maybe remaining from crashing servers/ games or player interactions
 
 ###### BedWars
 
 * fixed minor NPE for selecting classes (bedwars has no classes)
 * support for 1.11 (https://github.com/MysticCity/MinigamesAPI/issues/182)
+* fixed small memory leak
 
 ###### HorseRacingPlus
 

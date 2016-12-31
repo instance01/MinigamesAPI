@@ -1559,6 +1559,33 @@ public class Arena
     }
     
     /**
+     * Checks if the items should be removed from lobby bounds during lobby startup
+     * @return clears items during arena startup
+     */
+    protected boolean removeItemsOnLobbyStartup()
+    {
+        return true;
+    }
+    
+    /**
+     * Checks if the items should be removed from arena bounds during game startup
+     * @return clears items during arena startup
+     */
+    protected boolean removeItemsOnGameStartup()
+    {
+        return true;
+    }
+    
+    /**
+     * Checks if the items should be removed from arena bounds during game stop
+     * @return clears items during arena stop
+     */
+    protected boolean removeItemsOnGameStop()
+    {
+        return true;
+    }
+    
+    /**
      * Starts the lobby count down with given amount of seconds.
      * 
      * @param countdown
@@ -1569,6 +1596,12 @@ public class Arena
         if (this.currentstate != ArenaState.JOIN)
         {
             return;
+        }
+        if (this.removeItemsOnLobbyStartup())
+        {
+            Util.clearDrops(this.getLobbyBoundaries());
+            Util.clearDrops(this.getSpecBoundaries());
+            Util.clearDrops(this.getBoundaries());
         }
         this.setArenaState(ArenaState.STARTING);
         Util.updateSign(this.plugin, this);
@@ -1654,6 +1687,11 @@ public class Arena
         catch (@SuppressWarnings("unused") final Exception e)
         {
             // silently ignore
+        }
+        if (this.removeItemsOnGameStartup())
+        {
+            Util.clearDrops(this.getSpecBoundaries());
+            Util.clearDrops(this.getBoundaries());
         }
         this.currentingamecount = this.pli.getIngameCountdown();
         if (tp)
@@ -1959,6 +1997,9 @@ public class Arena
         
         try
         {
+            // TODO: Why setting the drops to air?
+            // the list contains the drops of dying players
+            // but why the list is not cleared at end?
             for (final ItemStack item : this.global_drops)
             {
                 if (item != null)
@@ -2076,6 +2117,11 @@ public class Arena
             {
                 Bukkit.getScheduler().runTaskLater(this.plugin, () -> a.nextArenaOnMapRotation(temp), 35L);
             }
+        }
+        if (this.removeItemsOnGameStop())
+        {
+            Util.clearDrops(this.getSpecBoundaries());
+            Util.clearDrops(this.getBoundaries());
         }
         
     }
