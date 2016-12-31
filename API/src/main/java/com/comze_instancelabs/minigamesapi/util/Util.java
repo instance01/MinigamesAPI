@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -1283,6 +1284,14 @@ public class Util
      */
     public static void clearDrops(Cuboid boundaries)
     {
+        clearEntites(boundaries, e -> e instanceof Item);
+    }
+
+    /**
+     * @param boundaries
+     */
+    public static void clearEntites(Cuboid boundaries, Predicate<Entity> predicate)
+    {
         if (boundaries != null && boundaries.getLowLoc() != null && boundaries.getHighLoc() != null)
         {
             // iterate through nearby entities
@@ -1299,7 +1308,7 @@ public class Util
                     {
                         for (final Entity entity : entities)
                         {
-                            if (entity instanceof Item && boundaries.containsLoc(entity.getLocation()))
+                            if (predicate.test(entity) && boundaries.containsLoc(entity.getLocation()))
                             {
                                 entity.remove();
                             }

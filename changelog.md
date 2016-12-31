@@ -25,6 +25,7 @@
 ###### SeaBattle
 
 * Added config option "die\_below\_bedrock\_level" (fixes arenas where the spawns are over 4 block above the battle sea)
+* Really destroys all boats at end (even through disconnects etc.)
 
 #### 1.14.12/1.14.13
 
