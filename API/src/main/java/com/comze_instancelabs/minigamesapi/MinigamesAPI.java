@@ -1209,8 +1209,8 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 final String[] split = playerData.split(":"); //$NON-NLS-1$
                 final String plugin_ = split[0];
                 final String arena = split[1];
-                final String playername = split[2];
-                final String mode = split.length >=4 ? split[3] : "join";
+                final String playername = split.length >=4 ? split[3] : split[2];
+                final String mode = split.length >=4 ? split[2] : "join";
                 
                 if (debug)
                 {
