@@ -1,5 +1,11 @@
 # Changelog
 
+#### 1.14.15
+
+###### All
+
+* fixed bungeecord signs
+
 #### 1.14.14
 
 ###### All
