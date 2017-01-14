@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
  * An interface that should be implemented by the {@link JavaPlugin} of a specific minigame.

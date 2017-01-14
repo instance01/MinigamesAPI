@@ -15,11 +15,11 @@
 
 package com.github.mce.minigames.api;
 
-import com.github.mce.minigames.api.locale.LocalizedMessage;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageList;
-import com.github.mce.minigames.api.locale.LocalizedMessages;
-import com.github.mce.minigames.api.locale.MessageSeverityType;
+import de.minigameslib.mclib.api.locale.LocalizedMessage;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageList;
+import de.minigameslib.mclib.api.locale.LocalizedMessages;
+import de.minigameslib.mclib.api.locale.MessageSeverityType;
 
 /**
  * Common messages within minigames lib.

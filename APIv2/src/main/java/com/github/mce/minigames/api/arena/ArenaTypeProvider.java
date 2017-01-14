@@ -15,14 +15,10 @@
 
 package com.github.mce.minigames.api.arena;
 
-import com.github.mce.minigames.api.arena.rules.AdminRuleId;
-import com.github.mce.minigames.api.arena.rules.ArenaRuleId;
-import com.github.mce.minigames.api.arena.rules.MatchRuleId;
-import com.github.mce.minigames.api.arena.rules.PlayerRuleId;
-import com.github.mce.minigames.api.component.ComponentId;
-import com.github.mce.minigames.api.component.ComponentRuleId;
 import com.github.mce.minigames.api.team.TeamId;
 import com.github.mce.minigames.api.team.TeamRuleId;
+
+import de.minigameslib.mclib.impl.comp.ComponentId;
 
 /**
  * A base interface for providing arena types.
@@ -32,90 +28,90 @@ import com.github.mce.minigames.api.team.TeamRuleId;
 public interface ArenaTypeProvider
 {
     
-    /**
-     * Returns the type of arenas declared for this minigame
-     * 
-     * @return arena types.
-     */
-    Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes();
-    
-    /**
-     * Returns the default arena type.
-     * 
-     * @return default arena type or {@code null} if it was not found.
-     */
-    ArenaTypeDeclarationInterface getDefaultType();
-    
-    /**
-     * Returns the arena type with given name.
-     * 
-     * @param name
-     *            arena type name.
-     * @return arena type or {@code null} if it was not found.
-     */
-    ArenaTypeDeclarationInterface getType(String name);
-    
-    /**
-     * Returns the ids of declared administration rules.
-     * 
-     * @return arena rules.
-     */
-    Iterable<AdminRuleId> getAdminRules();
-    
-    /**
-     * Returns the ids of declared match rules.
-     * 
-     * @return match rules.
-     */
-    Iterable<MatchRuleId> getMatchRules();
-    
-    /**
-     * Returns the ids of declared player rules.
-     * 
-     * @return player rules.
-     */
-    Iterable<PlayerRuleId> getPlayerRules();
-    
-    /**
-     * Returns the ids of declared team rules.
-     * 
-     * @return team rules.
-     */
-    Iterable<TeamRuleId> getTeamRules();
-    
-    /**
-     * Returns the ids of declared component rules.
-     * 
-     * @return component rules.
-     */
-    Iterable<ComponentRuleId> getComponentRules();
-    
-    /**
-     * Returns the ids of declared arena rules.
-     * 
-     * @return arena rules.
-     */
-    Iterable<ArenaRuleId> getArenaRules();
-    
-    /**
-     * Returns the ids of declared components.
-     * 
-     * @return components.
-     */
-    Iterable<ComponentId> getComponents();
-    
-    /**
-     * Returns the ids of declared phases.
-     * 
-     * @return phases.
-     */
-    Iterable<MatchPhaseId> getMatchPhases();
-    
-    /**
-     * Returns the ids of teams.
-     * 
-     * @return teams.
-     */
-    Iterable<TeamId> getTeams();
+//    /**
+//     * Returns the type of arenas declared for this minigame
+//     * 
+//     * @return arena types.
+//     */
+//    Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes();
+//    
+//    /**
+//     * Returns the default arena type.
+//     * 
+//     * @return default arena type or {@code null} if it was not found.
+//     */
+//    ArenaTypeDeclarationInterface getDefaultType();
+//    
+//    /**
+//     * Returns the arena type with given name.
+//     * 
+//     * @param name
+//     *            arena type name.
+//     * @return arena type or {@code null} if it was not found.
+//     */
+//    ArenaTypeDeclarationInterface getType(String name);
+//    
+//    /**
+//     * Returns the ids of declared administration rules.
+//     * 
+//     * @return arena rules.
+//     */
+//    Iterable<AdminRuleId> getAdminRules();
+//    
+//    /**
+//     * Returns the ids of declared match rules.
+//     * 
+//     * @return match rules.
+//     */
+//    Iterable<MatchRuleId> getMatchRules();
+//    
+//    /**
+//     * Returns the ids of declared player rules.
+//     * 
+//     * @return player rules.
+//     */
+//    Iterable<PlayerRuleId> getPlayerRules();
+//    
+//    /**
+//     * Returns the ids of declared team rules.
+//     * 
+//     * @return team rules.
+//     */
+//    Iterable<TeamRuleId> getTeamRules();
+//    
+//    /**
+//     * Returns the ids of declared component rules.
+//     * 
+//     * @return component rules.
+//     */
+//    Iterable<ComponentRuleId> getComponentRules();
+//    
+//    /**
+//     * Returns the ids of declared arena rules.
+//     * 
+//     * @return arena rules.
+//     */
+//    Iterable<ArenaRuleId> getArenaRules();
+//    
+//    /**
+//     * Returns the ids of declared components.
+//     * 
+//     * @return components.
+//     */
+//    Iterable<ComponentId> getComponents();
+//    
+//    /**
+//     * Returns the ids of declared phases.
+//     * 
+//     * @return phases.
+//     */
+//    Iterable<MatchPhaseId> getMatchPhases();
+//    
+//    /**
+//     * Returns the ids of teams.
+//     * 
+//     * @return teams.
+//     */
+//    Iterable<TeamId> getTeams();
     
 }

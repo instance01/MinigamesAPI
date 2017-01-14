@@ -17,8 +17,10 @@ package com.github.mce.minigames.api;
 
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
-import com.github.mce.minigames.api.context.ContextHandlerInterface;
-import com.github.mce.minigames.api.context.ContextResolverInterface;
+
+import de.minigameslib.mclib.api.McContext.ContextHandlerInterface;
+import de.minigameslib.mclib.api.McContext.ContextResolverInterface;
+import de.minigameslib.mclib.api.McException;
 
 /**
  * The minigame plugin interface; administrational backend for the given minigame.
@@ -44,10 +46,10 @@ public interface MinigamePluginInterface extends MinigameInterface
      * @param isDefault
      *            {@code true} if this is the default arena type for this minigame.
      * @return the type builder.
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the arena type is invalid or if the name is already taken or if you try to create two default arena types..
      */
-    ArenaTypeBuilderInterface createArenaType(String name, ArenaTypeInterface type, boolean isDefault) throws MinigameException;
+    ArenaTypeBuilderInterface createArenaType(String name, ArenaTypeInterface type, boolean isDefault) throws McException;
     
     /**
      * Registers a context handler to calculate context variables.
@@ -56,22 +58,22 @@ public interface MinigamePluginInterface extends MinigameInterface
      *            context class.
      * @param handler
      *            the context handler.
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the class to register is already registered.
      * @param <T>
      *            context class to register
      */
-    <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws MinigameException;
+    <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws McException;
     
     /**
      * Registers a helper to resolve context variables.
      * 
      * @param resolver
      *            the context resolver
-     * @throws MinigameException
+     * @throws McException
      *             thrown on errors
      */
-    void registerContextResolver(ContextResolverInterface resolver) throws MinigameException;
+    void registerContextResolver(ContextResolverInterface resolver) throws McException;
     
     /**
      * Initialize this minigame.
@@ -80,17 +82,17 @@ public interface MinigamePluginInterface extends MinigameInterface
      * This method must be called at the end of the initialization process.
      * </p>
      * 
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the minigame declarations are not valid.
      */
-    void init() throws MinigameException;
+    void init() throws McException;
     
     /**
      * Will be called from plugin as soon as the plugin is disabled.
      * 
-     * @throws MinigameException
+     * @throws McException
      *             thrown if there are problems disabling the plugin.
      */
-    void disable() throws MinigameException;
+    void disable() throws McException;
     
 }

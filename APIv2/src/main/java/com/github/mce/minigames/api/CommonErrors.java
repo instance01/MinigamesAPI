@@ -15,9 +15,10 @@
 
 package com.github.mce.minigames.api;
 
-import com.github.mce.minigames.api.locale.LocalizedMessage;
-import com.github.mce.minigames.api.locale.LocalizedMessages;
-import com.github.mce.minigames.api.locale.MessageSeverityType;
+import de.minigameslib.mclib.api.locale.LocalizedMessage;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessages;
+import de.minigameslib.mclib.api.locale.MessageSeverityType;
 
 /**
  * Common errors within minigames lib.
@@ -25,7 +26,7 @@ import com.github.mce.minigames.api.locale.MessageSeverityType;
  * @author mepeisen
  */
 @LocalizedMessages("errors")
-public enum CommonErrors implements MinigameErrorCode
+public enum CommonErrors implements LocalizedMessageInterface
 {
     
     /**

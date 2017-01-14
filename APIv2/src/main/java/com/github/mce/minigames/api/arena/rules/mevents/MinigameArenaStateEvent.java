@@ -15,8 +15,9 @@
 
 package com.github.mce.minigames.api.arena.rules.mevents;
 
-import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.event.ArenaStateEvent;
+
+import de.minigameslib.mclib.api.event.MinecraftEvent;
 
 /**
  * Minigame event representation of corresponding minigame event.
@@ -34,7 +35,7 @@ import com.github.mce.minigames.api.event.ArenaStateEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameArenaStateEvent extends MinigameEvent<ArenaStateEvent, MinigameArenaStateEvent>
+public interface MinigameArenaStateEvent extends MinecraftEvent<ArenaStateEvent, MinigameArenaStateEvent>
 {
     
     // TODO default stubbings

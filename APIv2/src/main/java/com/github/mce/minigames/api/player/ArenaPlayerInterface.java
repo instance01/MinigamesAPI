@@ -15,23 +15,18 @@
 
 package com.github.mce.minigames.api.player;
 
-import java.io.Serializable;
-import java.util.Locale;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.WaitQueue;
-import com.github.mce.minigames.api.context.MinigameStorage;
-import com.github.mce.minigames.api.gui.ClickGuiInterface;
-import com.github.mce.minigames.api.gui.GuiSessionInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.perms.PermissionsInterface;
-import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
-import com.github.mce.minigames.api.util.function.MgPredicate;
+
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.objects.McPlayerInterface;
+import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
+import de.minigameslib.mclib.api.util.function.McPredicate;
 
 /**
  * Interface representing players, maybe inside arenas.
@@ -48,57 +43,47 @@ public interface ArenaPlayerInterface
      * 
      * @return bukkit player.
      */
-    Player getBukkitPlayer();
+    default Player getBukkitPlayer()
+    {
+        return this.getMcPlayer().getBukkitPlayer();
+    }
     
     /**
      * Returns the name of the player.
      * 
      * @return name of the player.
      */
-    String getName();
+    default String getName()
+    {
+        return this.getMcPlayer().getName();
+    }
     
     /**
      * Returns the bukkit offline player.
      * 
      * @return bukkit offline player.
      */
-    OfflinePlayer getOfflinePlayer();
+    default OfflinePlayer getOfflinePlayer()
+    {
+        return this.getMcPlayer().getOfflinePlayer();
+    }
+    
+    /**
+     * Returns the mclib player.
+     * 
+     * @return mclib player.
+     */
+    McPlayerInterface getMcPlayer();
     
     /**
      * Returns the players uuid.
      * 
      * @return uuid.
      */
-    UUID getPlayerUUID();
-    
-    // localization
-    
-    /**
-     * Sends a message to given player.
-     * 
-     * @param msg
-     *            message to send.
-     * @param args
-     *            arguments to use for this message.
-     */
-    void sendMessage(LocalizedMessageInterface msg, Serializable... args);
-    
-    /**
-     * Returns the preferred locale
-     * 
-     * @return preferred user locale or {@code null} if the player uses server default locale.
-     */
-    Locale getPreferredLocale();
-    
-    /**
-     * Sets the preferred locale for this user.
-     * 
-     * @param locale
-     *            preferred locale
-     * @throws MinigameException
-     *             thrown if there are problems saving the data.
-     */
-    void setPreferredLocale(Locale locale) throws MinigameException;
+    default UUID getPlayerUUID()
+    {
+        return this.getMcPlayer().getPlayerUUID();
+    }
     
     // arena data
     
@@ -123,72 +108,6 @@ public interface ArenaPlayerInterface
      */
     void join(WaitQueue queue);
     
-    // permissions check
-    
-    /**
-     * Checks if the user has a permission.
-     * 
-     * @param perm
-     *            permission to check.
-     * @return {@code true} if the user has a permission.
-     */
-    boolean checkPermission(PermissionsInterface perm);
-    
-    // storage
-    
-    /**
-     * Returns a storage only available within the current execution context.
-     * 
-     * <p>
-     * This storage can be useful to temporary add data, for example across multiple events.
-     * </p>
-     * 
-     * @return context storage.
-     */
-    MinigameStorage getContextStorage();
-    
-    /**
-     * Returns a session storage only hold in memory.
-     * 
-     * <p>
-     * This storage can be useful to temporary add data till the server stops or the user logs out.
-     * </p>
-     * 
-     * @return session storage.
-     */
-    MinigameStorage getSessionStorage();
-    
-    /**
-     * Returns a persistent storage written to disc.
-     * 
-     * <p>
-     * This storage can be useful to persistent data on the disc.
-     * </p>
-     * 
-     * @return context storage.
-     */
-    MinigameStorage getPersistentStorage();
-    
-    // gui
-    
-    /**
-     * Returns the current gui session (if any)
-     * 
-     * @return gui session or {@code null} if the user has no opened gui.
-     */
-    GuiSessionInterface getGuiSession();
-    
-    /**
-     * Lets the player opening a new gui session.
-     * 
-     * @param gui
-     *            gui to display
-     * @return gui session
-     * @throws MinigameException
-     *             thrown if the player is not online.
-     */
-    GuiSessionInterface openGui(ClickGuiInterface gui) throws MinigameException;
-    
     // stubbing
     
     /**
@@ -203,17 +122,17 @@ public interface ArenaPlayerInterface
      * 
      * @return the outgoing stub to apply then or else consumers.
      * 
-     * @throws MinigameException
+     * @throws McException
      *             will be thrown if either the test function or then/else consumers throw the exception.
      */
-    MgOutgoingStubbing<ArenaPlayerInterface> when(MgPredicate<ArenaPlayerInterface> test) throws MinigameException;
+    McOutgoingStubbing<ArenaPlayerInterface> when(McPredicate<ArenaPlayerInterface> test) throws McException;
     
     /**
      * Returns a test function to check if the user is online on the current server.
      * 
      * @return predicate to return {@code true} if the arena player is online.
      */
-    static MgPredicate<ArenaPlayerInterface> isOnline()
+    static McPredicate<ArenaPlayerInterface> isOnline()
     {
         return (pl) -> pl.getBukkitPlayer() != null;
     }
@@ -223,22 +142,9 @@ public interface ArenaPlayerInterface
      * 
      * @return predicate to return {@code true} if the player is inside any arena on the current server.
      */
-    static MgPredicate<ArenaPlayerInterface> isInArena()
+    static McPredicate<ArenaPlayerInterface> isInArena()
     {
         return (pl) -> pl.getArena() != null;
-    }
-    
-    /**
-     * Returns a test function to check if the user has a given permission.
-     * 
-     * @param perm
-     *            the permission to check.
-     * 
-     * @return predicate to return {@code true} if the player has given permission.
-     */
-    static MgPredicate<ArenaPlayerInterface> hasPerm(PermissionsInterface perm)
-    {
-        return (pl) -> pl.checkPermission(perm);
     }
     
 }

@@ -16,9 +16,10 @@
 package com.github.mce.minigames.api.services;
 
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
+
+import de.minigameslib.mclib.api.McException;
 
 /**
  * A special extension for the minigames library.
@@ -44,18 +45,18 @@ public interface MinigameExtensionInterface extends ExtensionInterface
      * @param isDefault
      *            {@code true} if this is the default arena type for this minigame.
      * @return the type builder.
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the arena type is invalid or if the name is already taken or if you try to create two default arena types..
      */
-    ArenaTypeBuilderInterface createArenaType(String name, ArenaTypeInterface type, boolean isDefault) throws MinigameException;
+    ArenaTypeBuilderInterface createArenaType(String name, ArenaTypeInterface type, boolean isDefault) throws McException;
 
     /**
      * Will be called from plugin as soon as the plugin is disabled.
      * 
-     * @throws MinigameException
+     * @throws McException
      *             thrown if there are problems disabling the extension.
      */
-    void disable() throws MinigameException;
+    void disable() throws McException;
     
     /**
      * Initialize this extension.
@@ -64,9 +65,9 @@ public interface MinigameExtensionInterface extends ExtensionInterface
      * This method must be called at the end of the initialization process.
      * </p>
      * 
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the extension declarations are not valid.
      */
-    void init() throws MinigameException;
+    void init() throws McException;
     
 }

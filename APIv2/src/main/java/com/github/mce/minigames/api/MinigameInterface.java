@@ -20,8 +20,9 @@ import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeProvider;
-import com.github.mce.minigames.api.config.ConfigInterface;
-import com.github.mce.minigames.api.locale.MessagesConfigInterface;
+
+import de.minigameslib.mclib.api.config.ConfigInterface;
+import de.minigameslib.mclib.api.locale.MessagesConfigInterface;
 
 /**
  * The plugin to access minigames.

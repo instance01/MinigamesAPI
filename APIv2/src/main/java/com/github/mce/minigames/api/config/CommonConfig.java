@@ -15,12 +15,17 @@
 
 package com.github.mce.minigames.api.config;
 
+import de.minigameslib.mclib.api.config.ConfigurationBool;
+import de.minigameslib.mclib.api.config.ConfigurationString;
+import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
+import de.minigameslib.mclib.api.config.ConfigurationValues;
+
 /**
  * Common permissions within minigames lib.
  * 
  * @author mepeisen
  */
-@ConfigurationValues(path = "config", fixed = true)
+@ConfigurationValues(path = "config")
 public enum CommonConfig implements ConfigurationValueInterface
 {
     
@@ -71,11 +76,5 @@ public enum CommonConfig implements ConfigurationValueInterface
      */
     @ConfigurationBool(name = "debug", defaultValue = false)
     DebugEnabled,
-    
-    /**
-     * Default locale
-     */
-    @ConfigurationString(name = "locale", defaultValue = "en")
-    DefaultLocale,
     
 }

@@ -27,7 +27,8 @@ import org.bukkit.event.HandlerList;
 import org.junit.Test;
 
 import com.github.mce.minigames.api.CommonMessages;
-import com.github.mce.minigames.api.event.AbstractVetoEvent;
+
+import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
 
 /**
  * test case for {@link AbstractVetoEvent}

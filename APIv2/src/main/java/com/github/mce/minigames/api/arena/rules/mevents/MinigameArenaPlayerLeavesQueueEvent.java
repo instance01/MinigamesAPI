@@ -15,8 +15,9 @@
 
 package com.github.mce.minigames.api.arena.rules.mevents;
 
-import com.github.mce.minigames.api.arena.rules.MinigameEvent;
 import com.github.mce.minigames.api.event.ArenaPlayerLeavesQueueEvent;
+
+import de.minigameslib.mclib.api.event.MinecraftEvent;
 
 /**
  * Minigame event representation of corresponding minigame event.
@@ -34,7 +35,7 @@ import com.github.mce.minigames.api.event.ArenaPlayerLeavesQueueEvent;
  * 
  * @author mepeisen
  */
-public interface MinigameArenaPlayerLeavesQueueEvent extends MinigameEvent<ArenaPlayerLeavesQueueEvent, MinigameArenaPlayerLeavesQueueEvent>
+public interface MinigameArenaPlayerLeavesQueueEvent extends MinecraftEvent<ArenaPlayerLeavesQueueEvent, MinigameArenaPlayerLeavesQueueEvent>
 {
     
     // TODO default stubbings

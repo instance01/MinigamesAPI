@@ -19,6 +19,8 @@ import org.bukkit.event.HandlerList;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
 
+import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
+
 /**
  * An event fired before a new arena is created.
  * 

@@ -15,7 +15,7 @@
 
 package com.github.mce.minigames.api.arena;
 
-import com.github.mce.minigames.api.MinigameException;
+import de.minigameslib.mclib.api.McException;
 
 /**
  * Interface for arena type declarations.
@@ -45,10 +45,10 @@ public interface ArenaTypeDeclarationInterface
      * @param arenaName
      *            the internal arena name to be created
      * @return the newly created arena
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the name is already in use or if the arena type is invalid
      */
-    ArenaInterface createArena(String arenaName) throws MinigameException;
+    ArenaInterface createArena(String arenaName) throws McException;
     
     /**
      * Returns the arena type name

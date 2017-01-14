@@ -15,10 +15,7 @@
 
 package com.github.mce.minigames.api;
 
-import java.io.Serializable;
-import java.util.Locale;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,37 +28,29 @@ import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeProvider;
 import com.github.mce.minigames.api.arena.MatchPhaseId;
-import com.github.mce.minigames.api.component.ComponentId;
-import com.github.mce.minigames.api.component.Cuboid;
-import com.github.mce.minigames.api.config.ConfigInterface;
-import com.github.mce.minigames.api.config.ConfigurationValueInterface;
-import com.github.mce.minigames.api.context.MinigameContext;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.locale.MessagesConfigInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.services.ExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
-import com.github.mce.minigames.api.sign.SignInterface;
 import com.github.mce.minigames.api.team.TeamId;
-import com.github.mce.minigames.api.zones.ZoneInterface;
+
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.config.ConfigInterface;
+import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.locale.MessagesConfigInterface;
+import de.minigameslib.mclib.api.objects.Cuboid;
+import de.minigameslib.mclib.api.objects.SignInterface;
+import de.minigameslib.mclib.api.objects.ZoneInterface;
+import de.minigameslib.mclib.impl.comp.ComponentId;
 
 /**
  * Base interface to access the minigames API.
  * 
  * @author mepeisen
  */
-public interface MglibInterface extends MinigameContext
+public interface MglibInterface
 {
-    
-    /**
-     * A pseudo minigame representing the library itself.
-     * 
-     * <p>
-     * The core minigame is referred in various situations, for example in common error messages.
-     * </p>
-     */
-    String CORE_MINIGAME = "core"; //$NON-NLS-1$
     
     // common methods
     
@@ -80,32 +69,15 @@ public interface MglibInterface extends MinigameContext
     LibState getState();
     
     /**
-     * Returns the minecraft version we are running on.
-     * 
-     * @return minecraft server version.
+     * the first api version, all versions up to first release, includes minecraft versions up to 1.11.
      */
-    MinecraftVersionsType getMinecraftVersion();
+    int APIVERSION_1_0_0 = 10000;
     
     /**
-     * Returns the library version string.
-     * 
-     * @return library version string.
+     * Returns the api version of MCLIB.
+     * @return api version.
      */
-    Serializable getLibVersionString();
-    
-    /**
-     * Returns a logger for the library.
-     * 
-     * @return logger instance.
-     */
-    Logger getLogger();
-    
-    /**
-     * Returns the default locale used in minigame lib.
-     * 
-     * @return default locale
-     */
-    Locale getDefaultLocale();
+    int getApiVersion();
     
     // initialization
     
@@ -115,10 +87,10 @@ public interface MglibInterface extends MinigameContext
      * @param extension
      *            minigame extension to register.
      * @return the minigame extension
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the minigame with given name is already registered.
      */
-    MinigameExtensionInterface register(MinigameExtensionProviderInterface extension) throws MinigameException;
+    MinigameExtensionInterface register(MinigameExtensionProviderInterface extension) throws McException;
     
     /**
      * Registers a new minigame; should be called in {@link JavaPlugin#onEnable()}.
@@ -131,32 +103,12 @@ public interface MglibInterface extends MinigameContext
      *            the plugin provider class.
      * @return The minigame plugin interface, some kind of administrational interface.
      * 
-     * @throws MinigameException
+     * @throws McException
      *             thrown if the minigame with given name is already registered.
      */
-    MinigamePluginInterface register(PluginProviderInterface provider) throws MinigameException;
+    MinigamePluginInterface register(PluginProviderInterface provider) throws McException;
     
     // main api
-    
-    /**
-     * Returns the message api declaring the given message.
-     * 
-     * @param item
-     *            the enumeration value; only works on classes that are returned by a plugin or extension provider during initialization.
-     * 
-     * @return message api or {@code null} if the class was not declared by any minigame or extension.
-     */
-    MessagesConfigInterface getMessagesFromMsg(LocalizedMessageInterface item);
-    
-    /**
-     * Returns the configuration declaring the given configuration value.
-     * 
-     * @param item
-     *            the configuration value; only works on classes that are returned by a plugin or extension provider during initialization.
-     * 
-     * @return config provider or {@code null} if the class was not declared by any minigame or extension.
-     */
-    ConfigInterface getConfigFromCfg(ConfigurationValueInterface item);
     
     /**
      * Returns the arena type provider for given arena type.

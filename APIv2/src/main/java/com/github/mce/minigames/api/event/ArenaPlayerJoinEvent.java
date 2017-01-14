@@ -20,6 +20,8 @@ import org.bukkit.event.HandlerList;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 
+import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
+
 /**
  * An event fired before a player joins an arena.
  * 

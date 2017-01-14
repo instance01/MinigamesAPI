@@ -19,7 +19,8 @@ import java.io.Serializable;
 
 import com.github.mce.minigames.api.CommonProviderInterface;
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
  * A special extension for the minigames library.

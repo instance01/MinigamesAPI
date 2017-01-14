@@ -15,6 +15,10 @@
 
 package com.github.mce.minigames.api.perms;
 
+import de.minigameslib.mclib.api.perms.Permission;
+import de.minigameslib.mclib.api.perms.Permissions;
+import de.minigameslib.mclib.api.perms.PermissionsInterface;
+
 /**
  * Common permissions within minigames lib.
  * 
