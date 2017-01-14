@@ -17,13 +17,14 @@ package com.github.mce.minigames.impl.cmd;
 
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
-import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
-import com.github.mce.minigames.api.cmd.CommandInterface;
-import com.github.mce.minigames.api.cmd.HelpCommandHandler;
-import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.cmd.AbstractCompositeCommandHandler;
+import de.minigameslib.mclib.api.cmd.CommandInterface;
+import de.minigameslib.mclib.api.cmd.HelpCommandHandler;
+import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
  * A handler for the /party command.
@@ -48,11 +49,11 @@ public class PartyCommandHandler extends AbstractCompositeCommandHandler impleme
     }
     
     @Override
-    protected boolean pre(CommandInterface command) throws MinigameException
+    protected boolean pre(CommandInterface command) throws McException
     {
         if (!CommonConfig.PartyCommandEnabled.getBoolean())
         {
-            throw new MinigameException(CommonErrors.PartyCommandDisabled);
+            throw new McException(CommonErrors.PartyCommandDisabled);
         }
         
         return super.pre(command);

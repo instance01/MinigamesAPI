@@ -17,10 +17,10 @@ package com.github.mce.minigames.impl.cmd;
 
 import java.util.List;
 
-import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.cmd.CommandInterface;
-import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.cmd.CommandInterface;
+import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
  * Command to display useful information.
@@ -34,7 +34,7 @@ public class DebugCommandHandler implements SubCommandHandlerInterface
      * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#handle(com.github.mce.minigames.api.cmd.CommandInterface)
      */
     @Override
-    public void handle(CommandInterface command) throws MinigameException
+    public void handle(CommandInterface command) throws McException
     {
         // TODO Auto-generated method stub
         
@@ -44,7 +44,7 @@ public class DebugCommandHandler implements SubCommandHandlerInterface
      * @see com.github.mce.minigames.api.cmd.CommandHandlerInterface#onTabComplete(com.github.mce.minigames.api.cmd.CommandInterface, java.lang.String)
      */
     @Override
-    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws McException
     {
         // TODO Auto-generated method stub
         return null;

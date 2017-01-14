@@ -15,22 +15,15 @@
 
 package com.github.mce.minigames.impl.cmd;
 
-import static com.github.mce.minigames.api.cmd.CommandInterface.isPlayer;
-import static com.github.mce.minigames.api.player.ArenaPlayerInterface.isInArena;
-
 import java.util.Collections;
 import java.util.List;
 
-import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
-import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.cmd.CommandInterface;
-import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.perms.CommonPermissions;
-import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.cmd.CommandInterface;
+import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
  * A handler for the /start command.
@@ -41,7 +34,7 @@ public class StartCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
-    public void handle(CommandInterface command) throws MinigameException
+    public void handle(CommandInterface command) throws McException
     {
         if (command.getArgs().length > 0)
         {
@@ -51,24 +44,24 @@ public class StartCommandHandler implements SubCommandHandlerInterface
         }
         
         // only in-game
-        command.when(isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
-
-        final ArenaPlayerInterface player = command.getPlayer();
-
-        // check permission
-        command.permThrowException(CommonPermissions.Start, command.getCommandPath());
-        
-        // only inside arena
-        player.when(isInArena().negate()).thenThrow(CommonErrors.StartNotWithinArena);
-        
-        // check if the arena can be started directly
-        final ArenaInterface arena = player.getArena();
-        arena.when(ArenaInterface::canStart).thenThrow(CommonErrors.CannotStart);
-        
-        // start it, log and send success message
-        MglibInterface.INSTANCE.get().getLogger().info("Arena " + arena.getInternalName() + " started because of start command from player " + player.getName()); //$NON-NLS-1$//$NON-NLS-2$
-        arena.start();
-        player.sendMessage(CommonMessages.ArenaStartedByCommand, arena.getDisplayName(), player.getName());
+//        command.when(isPlayer().negate()).thenThrow(CommonErrors.InvokeIngame);
+//
+//        final ArenaPlayerInterface player = command.getPlayer();
+//
+//        // check permission
+//        command.permThrowException(CommonPermissions.Start, command.getCommandPath());
+//        
+//        // only inside arena
+//        player.when(isInArena().negate()).thenThrow(CommonErrors.StartNotWithinArena);
+//        
+//        // check if the arena can be started directly
+//        final ArenaInterface arena = player.getArena();
+//        arena.when(ArenaInterface::canStart).thenThrow(CommonErrors.CannotStart);
+//        
+//        // start it, log and send success message
+//        MglibInterface.INSTANCE.get().getLogger().info("Arena " + arena.getInternalName() + " started because of start command from player " + player.getName()); //$NON-NLS-1$//$NON-NLS-2$
+//        arena.start();
+//        player.sendMessage(CommonMessages.ArenaStartedByCommand, arena.getDisplayName(), player.getName());
     }
 
     @Override
@@ -84,7 +77,7 @@ public class StartCommandHandler implements SubCommandHandlerInterface
     }
 
     @Override
-    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws McException
     {
         return Collections.emptyList();
     }

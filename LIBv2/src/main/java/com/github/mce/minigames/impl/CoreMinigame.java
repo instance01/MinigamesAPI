@@ -27,15 +27,16 @@ import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
-import com.github.mce.minigames.api.cmd.CommandHandlerInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
-import com.github.mce.minigames.api.config.ConfigurationValueInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.CommonPermissions;
-import com.github.mce.minigames.api.perms.PermissionsInterface;
 import com.github.mce.minigames.impl.cmd.Mg2CommandHandler;
 import com.github.mce.minigames.impl.cmd.PartyCommandHandler;
 import com.github.mce.minigames.impl.cmd.StartCommandHandler;
+
+import de.minigameslib.mclib.api.cmd.CommandHandlerInterface;
+import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.perms.PermissionsInterface;
 
 /**
  * @author mepeisen
@@ -59,7 +60,8 @@ final class CoreMinigame implements PluginProviderInterface
     @Override
     public String getName()
     {
-        return MglibInterface.CORE_MINIGAME;
+//        return MglibInterface.CORE_MINIGAME;
+        return null;
     }
     
     @Override

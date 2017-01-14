@@ -22,9 +22,10 @@ import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
-import com.github.mce.minigames.api.context.ContextResolverInterface;
-import com.github.mce.minigames.api.context.MinigameContext;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
+
+import de.minigameslib.mclib.api.McContext;
+import de.minigameslib.mclib.api.McContext.ContextResolverInterface;
 
 /**
  * Default implementation of context resolve.
@@ -61,7 +62,7 @@ public class DefaultResolver implements ContextResolverInterface
 {
     
     @Override
-    public String resolve(String varName, String[] args, MinigameContext context)
+    public String resolve(String varName, String[] args, McContext context)
     {
         switch (varName)
         {
@@ -204,7 +205,7 @@ public class DefaultResolver implements ContextResolverInterface
                 final MglibInterface lib = MglibInterface.INSTANCE.get();
                 if (lib.debug())
                 {
-                    lib.getLogger().log(Level.FINE, "Problems invoking " + getterName + " on " + cur, ex); //$NON-NLS-1$ //$NON-NLS-2$
+//                    lib.getLogger().log(Level.FINE, "Problems invoking " + getterName + " on " + cur, ex); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 cur = null;
             }

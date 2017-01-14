@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
@@ -27,13 +26,15 @@ import com.github.mce.minigames.api.arena.ArenaState;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.arena.ArenasConfig;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.util.function.FalseStub;
-import com.github.mce.minigames.api.util.function.MgOutgoingStubbing;
-import com.github.mce.minigames.api.util.function.MgPredicate;
-import com.github.mce.minigames.api.util.function.TrueStub;
 import com.github.mce.minigames.impl.MinigameWrapper;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
+
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.util.function.FalseStub;
+import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
+import de.minigameslib.mclib.api.util.function.McPredicate;
+import de.minigameslib.mclib.api.util.function.TrueStub;
 
 /**
  * Implementation of arena interface.
@@ -74,9 +75,9 @@ public class ArenaImpl implements ArenaInterface
      * @param plugin
      * @param registry
      * @param type
-     * @throws MinigameException
+     * @throws McException
      */
-    public ArenaImpl(String arenaName, MinigamePluginInterface plugin, ComponentRegistry registry, ArenaTypeDeclarationInterface type) throws MinigameException
+    public ArenaImpl(String arenaName, MinigamePluginInterface plugin, ComponentRegistry registry, ArenaTypeDeclarationInterface type) throws McException
     {
         this.internalName = arenaName;
         this.plugin = plugin;
@@ -84,17 +85,17 @@ public class ArenaImpl implements ArenaInterface
         this.arenaType = type;
         
         final MglibInterface lib = MglibInterface.INSTANCE.get();
-        lib.runInCopiedContext(() -> {
-            lib.setContext(ArenaInterface.class, this);
-            
-            // init minimal values.
-            ArenasConfig.Enabled.setBoolean(false);
-            ArenasConfig.ArenaType.setString(this.arenaType.getName());
-            ArenasConfig.Maintenance.setBoolean(true);
-            
-            // save the config.
-            ArenasConfig.Maintenance.saveConfig();
-        });
+//        lib.runInCopiedContext(() -> {
+//            lib.setContext(ArenaInterface.class, this);
+//            
+//            // init minimal values.
+//            ArenasConfig.Enabled.setBoolean(false);
+//            ArenasConfig.ArenaType.setString(this.arenaType.getName());
+//            ArenasConfig.Maintenance.setBoolean(true);
+//            
+//            // save the config.
+//            ArenasConfig.Maintenance.saveConfig();
+//        });
         this.maintenance = true;
     }
     
@@ -104,178 +105,178 @@ public class ArenaImpl implements ArenaInterface
      * @param arenaName
      * @param plugin
      * @param registry
-     * @throws MinigameException
+     * @throws McException
      */
-    public ArenaImpl(String arenaName, MinigamePluginInterface plugin, ComponentRegistry registry) throws MinigameException
+    public ArenaImpl(String arenaName, MinigamePluginInterface plugin, ComponentRegistry registry) throws McException
     {
         this.internalName = arenaName;
         this.plugin = plugin;
         this.registry = registry;
         
         final MglibInterface lib = MglibInterface.INSTANCE.get();
-        lib.runInCopiedContext(() -> {
-            lib.setContext(ArenaInterface.class, this);
-            
-            this.enabled = ArenasConfig.Enabled.getBoolean();
-            this.maintenance = ArenasConfig.Maintenance.getBoolean();
-            this.displayName = ArenasConfig.DisplayName.getString();
-            
-            final String typename = ArenasConfig.ArenaType.getString();
-            this.arenaType = this.plugin.getType(typename);
-            if (this.arenaType == null)
-            {
-                throw new MinigameException(CommonErrors.Cannot_Load_Arena_Unknown_Type, typename, this.plugin.getName(), arenaName);
-            }
-            
-            // TODO Load components, options and rules
-        });
+//        lib.runInCopiedContext(() -> {
+//            lib.setContext(ArenaInterface.class, this);
+//            
+//            this.enabled = ArenasConfig.Enabled.getBoolean();
+//            this.maintenance = ArenasConfig.Maintenance.getBoolean();
+//            this.displayName = ArenasConfig.DisplayName.getString();
+//            
+//            final String typename = ArenasConfig.ArenaType.getString();
+//            this.arenaType = this.plugin.getType(typename);
+//            if (this.arenaType == null)
+//            {
+//                throw new McException(CommonErrors.Cannot_Load_Arena_Unknown_Type, typename, this.plugin.getName(), arenaName);
+//            }
+//            
+//            // TODO Load components, options and rules
+//        });
     }
     
-    @Override
-    public String getInternalName()
-    {
-        return this.internalName;
-    }
+//    @Override
+//    public String getInternalName()
+//    {
+//        return this.internalName;
+//    }
+//    
+//    @Override
+//    public String getDisplayName()
+//    {
+//        return this.displayName == null ? this.internalName : this.displayName;
+//    }
     
-    @Override
-    public String getDisplayName()
-    {
-        return this.displayName == null ? this.internalName : this.displayName;
-    }
-    
-    @Override
-    public void setDisplayName(String name) throws MinigameException
-    {
-        final MglibInterface lib = MglibInterface.INSTANCE.get();
-        lib.runInCopiedContext(() -> {
-            lib.setContext(ArenaInterface.class, this);
-            ArenasConfig.DisplayName.setString(name);
-            ArenasConfig.DisplayName.saveConfig();
-        });
-        this.displayName = name;
-    }
-    
-    @Override
-    public Logger getLogger()
-    {
-        // TODO Arena Logger
-        return this.plugin.getLogger();
-    }
-    
-    @Override
-    public MinigameInterface getMinigame()
-    {
-        return new MinigameWrapper(this.plugin);
-    }
-    
-    @Override
-    public ArenaState getState()
-    {
-        return this.maintenance ? ArenaState.Maintenance : this.state;
-    }
-    
-    @Override
-    public ArenaState getRealState()
-    {
-        return this.state;
-    }
-    
-    @Override
-    public boolean isEnabled()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    @Override
-    public boolean isMaintenance()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    @Override
-    public MgOutgoingStubbing<ArenaInterface> when(MgPredicate<ArenaInterface> test) throws MinigameException
-    {
-        if (test.test(this))
-        {
-            return new TrueStub<>(this);
-        }
-        return new FalseStub<>(this);
-    }
-    
-    @Override
-    public boolean canStart()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
-    @Override
-    public ArenaTypeInterface getArenaType()
-    {
-        return this.arenaType.getType();
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.github.mce.minigames.api.arena.ArenaInterface#start()
-     */
-    @Override
-    public void start()
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    /**
-     * Try to restart the arena asynchronous (safe restart)
-     */
-    public void tryRestart()
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.arena.ArenaInterface#getAuthor()
-     */
-    @Override
-    public String getAuthor()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.arena.ArenaInterface#getShortDescription()
-     */
-    @Override
-    public LocalizedMessageInterface getShortDescription()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.arena.ArenaInterface#getDescription()
-     */
-    @Override
-    public LocalizedMessageInterface getDescription()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.arena.ArenaInterface#delete()
-     */
-    @Override
-    public void delete() throws MinigameException
-    {
-        // TODO Auto-generated method stub
-        
-    }
+//    @Override
+//    public void setDisplayName(String name) throws McException
+//    {
+//        final MglibInterface lib = MglibInterface.INSTANCE.get();
+//        lib.runInCopiedContext(() -> {
+//            lib.setContext(ArenaInterface.class, this);
+//            ArenasConfig.DisplayName.setString(name);
+//            ArenasConfig.DisplayName.saveConfig();
+//        });
+//        this.displayName = name;
+//    }
+//    
+//    @Override
+//    public Logger getLogger()
+//    {
+//        // TODO Arena Logger
+//        return this.plugin.getLogger();
+//    }
+//    
+//    @Override
+//    public MinigameInterface getMinigame()
+//    {
+//        return new MinigameWrapper(this.plugin);
+//    }
+//    
+//    @Override
+//    public ArenaState getState()
+//    {
+//        return this.maintenance ? ArenaState.Maintenance : this.state;
+//    }
+//    
+//    @Override
+//    public ArenaState getRealState()
+//    {
+//        return this.state;
+//    }
+//    
+//    @Override
+//    public boolean isEnabled()
+//    {
+//        // TODO Auto-generated method stub
+//        return false;
+//    }
+//    
+//    @Override
+//    public boolean isMaintenance()
+//    {
+//        // TODO Auto-generated method stub
+//        return false;
+//    }
+//    
+//    @Override
+//    public McOutgoingStubbing<ArenaInterface> when(McPredicate<ArenaInterface> test) throws McException
+//    {
+//        if (test.test(this))
+//        {
+//            return new TrueStub<>(this);
+//        }
+//        return new FalseStub<>(this);
+//    }
+//    
+//    @Override
+//    public boolean canStart()
+//    {
+//        // TODO Auto-generated method stub
+//        return false;
+//    }
+//    
+//    @Override
+//    public ArenaTypeInterface getArenaType()
+//    {
+//        return this.arenaType.getType();
+//    }
+//    
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see com.github.mce.minigames.api.arena.ArenaInterface#start()
+//     */
+//    @Override
+//    public void start()
+//    {
+//        // TODO Auto-generated method stub
+//        
+//    }
+//
+//    /**
+//     * Try to restart the arena asynchronous (safe restart)
+//     */
+//    public void tryRestart()
+//    {
+//        // TODO Auto-generated method stub
+//        
+//    }
+//
+//    /* (non-Javadoc)
+//     * @see com.github.mce.minigames.api.arena.ArenaInterface#getAuthor()
+//     */
+//    @Override
+//    public String getAuthor()
+//    {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+//
+//    /* (non-Javadoc)
+//     * @see com.github.mce.minigames.api.arena.ArenaInterface#getShortDescription()
+//     */
+//    @Override
+//    public LocalizedMessageInterface getShortDescription()
+//    {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+//
+//    /* (non-Javadoc)
+//     * @see com.github.mce.minigames.api.arena.ArenaInterface#getDescription()
+//     */
+//    @Override
+//    public LocalizedMessageInterface getDescription()
+//    {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+//
+//    /* (non-Javadoc)
+//     * @see com.github.mce.minigames.api.arena.ArenaInterface#delete()
+//     */
+//    @Override
+//    public void delete() throws McException
+//    {
+//        // TODO Auto-generated method stub
+//        
+//    }
     
 }

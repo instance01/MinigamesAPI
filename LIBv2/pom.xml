@@ -1,37 +1,59 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.MCE-Plugins</groupId>
+	<groupId>de.minigameslib.mglib</groupId>
 	<artifactId>MinigamesPlugin</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>MinigamesAPI Plugin</name>
+	<name>MinigamesAPI</name>
 	<description>Rich Minigames API V2</description>
-	
-	<properties>
-		<minigames.releaseversion>2.0.0</minigames.releaseversion>
+  
+  <properties>
+  		<maven.source.plugin.version>3.0.0</maven.source.plugin.version>
+  		<maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+  		<jacoco.plugin.version>0.7.6.201602180812</jacoco.plugin.version>
+  		<maven.jxr.plugin.version>2.1</maven.jxr.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
-	</properties>
-
-	<parent>
-		<groupId>com.github.MCE-Plugins</groupId>
-		<artifactId>MinigamesLib-parent</artifactId>
-		<version>1.14.15-SNAPSHOT</version>
-	</parent>
+  </properties>
+  
+  <dependencyManagement>
+  	<dependencies>
+	  	<dependency>
+	  		<groupId>de.minigameslib.mclib</groupId>
+	  		<artifactId>spigot-1.11.2-R0.1-api-bom</artifactId>
+	  		<version>0.0.1-SNAPSHOT</version>
+	  		<type>pom</type>
+	  		<scope>import</scope>
+	  	</dependency>
+  	</dependencies>
+  </dependencyManagement>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.MCE-Plugins</groupId>
-  			<artifactId>MinigamesAPI</artifactId>
-  			<version>2.0.0-SNAPSHOT</version>
+			<groupId>de.minigameslib.mclib</groupId>
+			<artifactId>mclib-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.spigotmc</groupId>
-  			<artifactId>spigot</artifactId>
+			<groupId>de.minigameslib.mclib</groupId>
+			<artifactId>mclib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>de.minigameslib.mglib</groupId>
+			<artifactId>MinigamesAPI</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+	
+	    <dependency>
+	      <groupId>org.spigotmc</groupId>
+	      <artifactId>spigot-api</artifactId>
+	    </dependency>
 		
         <dependency>
         	<groupId>junit</groupId>
@@ -44,84 +66,6 @@
         <dependency>
         	<groupId>org.powermock</groupId>
         	<artifactId>powermock-api-mockito</artifactId>
-        </dependency>
-        
-        <dependency>
-        	<groupId>com.github.MCE-Plugins</groupId>
-        	<artifactId>MinigamesPlugin_nmsapi</artifactId>
-        	<version>${project.version}</version>
-        	<exclusions>
-        		<exclusion>
-        		    <groupId>org.spigotmc</groupId>
-        			<artifactId>spigotmc</artifactId>
-        		</exclusion>
-        	</exclusions>
-        </dependency>
-        <dependency>
-        	<groupId>com.github.MCE-Plugins</groupId>
-        	<artifactId>MinigamesPlugin_nms1_10_r1</artifactId>
-        	<version>${project.version}</version>
-        	<exclusions>
-        		<exclusion>
-        		    <groupId>org.spigotmc</groupId>
-        			<artifactId>spigotmc</artifactId>
-        		</exclusion>
-        	</exclusions>
-        </dependency>
-        <dependency>
-        	<groupId>com.github.MCE-Plugins</groupId>
-        	<artifactId>MinigamesPlugin_nms1_9_r2</artifactId>
-        	<version>${project.version}</version>
-        	<exclusions>
-        		<exclusion>
-        		    <groupId>org.spigotmc</groupId>
-        			<artifactId>spigotmc</artifactId>
-        		</exclusion>
-        	</exclusions>
-        </dependency>
-        <dependency>
-        	<groupId>com.github.MCE-Plugins</groupId>
-        	<artifactId>MinigamesPlugin_nms1_9_r1</artifactId>
-        	<version>${project.version}</version>
-        	<exclusions>
-        		<exclusion>
-        		    <groupId>org.spigotmc</groupId>
-        			<artifactId>spigotmc</artifactId>
-        		</exclusion>
-        	</exclusions>
-        </dependency>
-        <dependency>
-        	<groupId>com.github.MCE-Plugins</groupId>
-        	<artifactId>MinigamesPlugin_nms1_8_r3</artifactId>
-        	<version>${project.version}</version>
-        	<exclusions>
-        		<exclusion>
-        		    <groupId>org.spigotmc</groupId>
-        			<artifactId>spigotmc</artifactId>
-        		</exclusion>
-        	</exclusions>
-        </dependency>
-        <dependency>
-        	<groupId>com.github.MCE-Plugins</groupId>
-        	<artifactId>MinigamesPlugin_nms1_8_r2</artifactId>
-        	<version>${project.version}</version>
-        	<exclusions>
-        		<exclusion>
-        		    <groupId>org.spigotmc</groupId>
-        			<artifactId>spigotmc</artifactId>
-        		</exclusion>
-        	</exclusions>
-        </dependency>
-        <dependency>
-        	<groupId>com.github.MCE-Plugins</groupId>
-        	<artifactId>MinigamesPlugin_nms1_8_r1</artifactId>
-        	<version>${project.version}</version>
-        	<exclusions>
-        		<exclusion>
-        		    <groupId>org.spigotmc</groupId>
-        			<artifactId>spigotmc</artifactId>
-        		</exclusion>
-        	</exclusions>
         </dependency>
 	</dependencies>
 
@@ -140,7 +84,68 @@
     	</resources>
 		<plugins>
 			<plugin>
-				<version>3.0.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>de.minigameslib.mglib:*</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+  
+  <profiles>
+  	<profile>
+  		<id>mclib.withjavadocreport</id>
+  		<activation><activeByDefault>true</activeByDefault></activation>
+  		<reporting><plugins>
+  			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+  			</plugin>
+  		</plugins></reporting>
+  	</profile>
+  	<profile>
+  		<id>mclib.withtestreport</id>
+  		<activation><activeByDefault>true</activeByDefault></activation>
+  		<reporting><plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+  		</plugins></reporting>
+  	</profile>
+  	<profile>
+  		<id>mclib.withsourcereport</id>
+  		<activation><activeByDefault>true</activeByDefault></activation>
+  		<reporting><plugins>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-jxr-plugin</artifactId>
+			    <version>${maven.jxr.plugin.version}</version>
+			</plugin>
+  		</plugins></reporting>
+  	</profile>
+  	
+  	<profile>
+  		<id>mclib.withsources</id>
+  		<activation><activeByDefault>true</activeByDefault></activation>
+  		<build>
+  		<plugins>
+			<plugin>
+				<version>${maven.source.plugin.version}</version>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
@@ -152,8 +157,16 @@
 					</execution>
 				</executions>
 			</plugin>
+		</plugins>
+  		</build>
+  	</profile>
+  	<profile>
+  		<id>mclib.withjavadoc</id>
+  		<activation><activeByDefault>true</activeByDefault></activation>
+  		<build>
+  		<plugins>
 			<plugin>
-				<version>2.10.3</version>
+				<version>${maven.javadoc.plugin.version}</version>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<executions>
@@ -165,11 +178,18 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-        	<plugin>
+		</plugins>
+  		</build>
+  	</profile>
+  	<profile>
+  		<id>mclib.withcoverage</id>
+  		<activation><activeByDefault>true</activeByDefault></activation>
+  		<build>
+  		<plugins>
+  			<plugin>
         		<groupId>org.jacoco</groupId>
         		<artifactId>jacoco-maven-plugin</artifactId>
-        		<version>0.7.6.201602180812</version>
+        		<version>${jacoco.plugin.version}</version>
         		<executions>
         			<execution>
         			    <id>default-prepare-agent</id>
@@ -188,36 +208,30 @@
         			</execution>
                 </executions>
         	</plugin>
-			
-			<plugin>
+        	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<argLine>${surefireArgLine}</argLine>
 				</configuration>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<artifactSet>
-								<includes>
-									<include>com.github.MCE-Plugins:*</include>
-								</includes>
-							</artifactSet>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-	</build>
+  		</build>
+  		<reporting><plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+        		<artifactId>jacoco-maven-plugin</artifactId>
+        		<version>${jacoco.plugin.version}</version>
+        		<reportSets>
+        			<reportSet>
+        				<reports>
+        					<report>report</report>
+        				</reports>
+        			</reportSet>
+        		</reportSets>
+			</plugin>
+  		</plugins></reporting>
+  	</profile>
+  </profiles>
 
 </project>

@@ -20,12 +20,13 @@ import java.util.List;
 
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameException;
-import com.github.mce.minigames.api.cmd.CommandInterface;
-import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
 import com.github.mce.minigames.api.perms.CommonPermissions;
 import com.github.mce.minigames.impl.MinigamesPlugin;
+
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.cmd.CommandInterface;
+import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
  * Command to display useful information.
@@ -36,7 +37,7 @@ public class InfoCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
-    public void handle(CommandInterface command) throws MinigameException
+    public void handle(CommandInterface command) throws McException
     {
         if (command.getArgs().length > 0)
         {
@@ -63,20 +64,20 @@ public class InfoCommandHandler implements SubCommandHandlerInterface
         final MglibInterface lib = MglibInterface.INSTANCE.get();
         final String mode = ((MinigamesPlugin)lib).getModeString();
         final String debug = lib.debug() ? "TRUE" : "FALSE"; //$NON-NLS-1$ //$NON-NLS-2$
-        command.send(CommonMessages.InfoCommandOutput,
-                command.getCommandPath(),
-                lib.getMinecraftVersion().name(),
-                lib.getLibVersionString(),
-                mode,
-                debug
-                );
+//        command.send(CommonMessages.InfoCommandOutput,
+//                command.getCommandPath(),
+//                lib.getMinecraftVersion().name(),
+//                lib.getLibVersionString(),
+//                mode,
+//                debug
+//                );
         // TODO Info: Where Am I (which arena)
         // TODO Info: Which waiting queues
         // TODO Info on partys
     }
     
     @Override
-    public List<String> onTabComplete(CommandInterface command, String lastArg) throws MinigameException
+    public List<String> onTabComplete(CommandInterface command, String lastArg) throws McException
     {
         return Collections.emptyList();
     }

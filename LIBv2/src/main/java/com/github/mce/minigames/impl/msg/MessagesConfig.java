@@ -26,11 +26,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.mce.minigames.api.locale.LocalizedMessage;
-import com.github.mce.minigames.api.locale.LocalizedMessageInterface;
-import com.github.mce.minigames.api.locale.LocalizedMessageList;
-import com.github.mce.minigames.api.locale.LocalizedMessages;
-import com.github.mce.minigames.api.locale.MessagesConfigInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessage;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessageList;
+import de.minigameslib.mclib.api.locale.LocalizedMessages;
+import de.minigameslib.mclib.api.locale.MessagesConfigInterface;
 
 /**
  * Implementation of messages configuration

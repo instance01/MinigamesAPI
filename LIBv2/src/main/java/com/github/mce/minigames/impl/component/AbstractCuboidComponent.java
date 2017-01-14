@@ -22,8 +22,8 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import com.github.mce.minigames.api.component.Cuboid;
-import com.github.mce.minigames.api.zones.ZoneInterface;
+import de.minigameslib.mclib.api.objects.Cuboid;
+import de.minigameslib.mclib.api.objects.ZoneInterface;
 
 /**
  * Base class for all cuboid components.

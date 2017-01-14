@@ -18,12 +18,13 @@ package com.github.mce.minigames.impl.arena;
 import java.util.Map;
 
 import com.github.mce.minigames.api.CommonErrors;
-import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.impl.MinigamePluginImpl;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
+
+import de.minigameslib.mclib.api.McException;
 
 /**
  * Internal representation of an arena type.
@@ -101,11 +102,11 @@ public class ArenaTypeDeclarationImpl implements ArenaTypeDeclarationInterface
     }
     
     @Override
-    public ArenaInterface createArena(String arenaName) throws MinigameException
+    public ArenaInterface createArena(String arenaName) throws McException
     {
         if (this.arenas.containsKey(arenaName.toLowerCase()))
         {
-            throw new MinigameException(CommonErrors.DuplicateArena, arenaName);
+            throw new McException(CommonErrors.DuplicateArena, arenaName);
         }
         // TODO Check for illegal names: ArenaInterface.ILLEGAL_NAMES
         // TODO Check for illegal characters

@@ -20,25 +20,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.github.mce.minigames.api.CommonErrors;
-import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeInterface;
-import com.github.mce.minigames.api.context.ContextHandlerInterface;
-import com.github.mce.minigames.api.context.ContextResolverInterface;
 import com.github.mce.minigames.impl.arena.ArenaImpl;
 import com.github.mce.minigames.impl.arena.ArenaTypeBuilderImpl;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
+
+import de.minigameslib.mclib.api.McContext.ContextHandlerInterface;
+import de.minigameslib.mclib.api.McContext.ContextResolverInterface;
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.shared.api.com.DataSection;
 
 /**
  * The minigames plugin impl.
@@ -142,41 +140,35 @@ public class MinigamePluginImpl extends BaseImpl implements MinigamePluginInterf
         this.arenaTypesByName.clear();
         
         // load arenas from config.
-        final ConfigurationSection arenasSection = this.getConfig("arenas.yml").getConfigurationSection("arenas"); //$NON-NLS-1$ //$NON-NLS-2$
-        if (arenasSection != null)
-        {
-            for (final String key : arenasSection.getKeys(false))
-            {
-                this.plugin.getLogger().log(Level.INFO, "Reloading arena " + key + " from config."); //$NON-NLS-1$ //$NON-NLS-2$
-                try
-                {
-                    final ArenaImpl arena = new ArenaImpl(key, this, this.components);
-                    this.arenas.put(key.toLowerCase(), arena);
-                    if (arena.isEnabled())
-                    {
-                        synchronized (this)
-                        {
-                            Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
-                                arena.tryRestart();
-                            }, 10L * restartArenaTaskCount);
-                            restartArenaTaskCount++;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    this.plugin.getLogger().log(Level.SEVERE, "Failed loading arena " + key + " from config.", ex); //$NON-NLS-1$ //$NON-NLS-2$
-                }
-            }
-        }
+//        final ConfigurationSection arenasSection = this.getConfig("arenas.yml").getConfigurationSection("arenas"); //$NON-NLS-1$ //$NON-NLS-2$
+//        if (arenasSection != null)
+//        {
+//            for (final String key : arenasSection.getKeys(false))
+//            {
+//                this.plugin.getLogger().log(Level.INFO, "Reloading arena " + key + " from config."); //$NON-NLS-1$ //$NON-NLS-2$
+//                try
+//                {
+//                    final ArenaImpl arena = new ArenaImpl(key, this, this.components);
+//                    this.arenas.put(key.toLowerCase(), arena);
+//                    if (arena.isEnabled())
+//                    {
+//                        synchronized (this)
+//                        {
+//                            Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
+//                                arena.tryRestart();
+//                            }, 10L * restartArenaTaskCount);
+//                            restartArenaTaskCount++;
+//                        }
+//                    }
+//                }
+//                catch (Exception ex)
+//                {
+//                    this.plugin.getLogger().log(Level.SEVERE, "Failed loading arena " + key + " from config.", ex); //$NON-NLS-1$ //$NON-NLS-2$
+//                }
+//            }
+//        }
         
         this.initialized = true;
-    }
-    
-    @Override
-    public Iterable<ArenaTypeDeclarationInterface> getDeclaredTypes()
-    {
-        return new ArrayList<>(this.arenaTypes.values());
     }
     
     @Override
@@ -198,15 +190,15 @@ public class MinigamePluginImpl extends BaseImpl implements MinigamePluginInterf
     }
     
     @Override
-    public ArenaTypeBuilderInterface createArenaType(String typename, ArenaTypeInterface type, boolean isDefault) throws MinigameException
+    public ArenaTypeBuilderInterface createArenaType(String typename, ArenaTypeInterface type, boolean isDefault) throws McException
     {
         if (this.initialized)
         {
-            throw new MinigameException(CommonErrors.Cannot_Create_ArenaType_Wrong_State, typename, this.name);
+            throw new McException(CommonErrors.Cannot_Create_ArenaType_Wrong_State, typename, this.name);
         }
         if (this.arenaTypeBuildersByName.containsKey(typename.toLowerCase()))
         {
-            throw new MinigameException(CommonErrors.DuplicateArenaType, typename, this.name);
+            throw new McException(CommonErrors.DuplicateArenaType, typename, this.name);
         }
         
         final ArenaTypeBuilderImpl builder = new ArenaTypeBuilderImpl(typename, type, isDefault, this.components, this.arenas, this);
@@ -221,15 +213,15 @@ public class MinigamePluginImpl extends BaseImpl implements MinigamePluginInterf
     }
     
     @Override
-    public <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws MinigameException
+    public <T> void registerContextHandler(Class<T> clazz, ContextHandlerInterface<T> handler) throws McException
     {
-        this.mgplugin.getApiContext().registerContextHandler(clazz, handler);
+//        this.mgplugin.getApiContext().registerContextHandler(clazz, handler);
     }
     
     @Override
-    public void registerContextResolver(ContextResolverInterface resolver) throws MinigameException
+    public void registerContextResolver(ContextResolverInterface resolver) throws McException
     {
-        this.mgplugin.getApiContext().registerContextResolver(resolver);
+//        this.mgplugin.getApiContext().registerContextResolver(resolver);
     }
     
     @Override
@@ -243,25 +235,32 @@ public class MinigamePluginImpl extends BaseImpl implements MinigamePluginInterf
     {
         return this.longDescription;
     }
-    
-    @Override
-    public ArenaTypeDeclarationInterface getDefaultType()
-    {
-        return this.defaultType;
-    }
-    
-    @Override
-    public ArenaTypeDeclarationInterface getType(String typename)
-    {
-        final ArenaTypeInterface type = this.arenaTypesByName.get(typename.toLowerCase());
-        return type == null ? null : this.arenaTypes.get(type);
-    }
 
     /* (non-Javadoc)
      * @see com.github.mce.minigames.api.MinigamePluginInterface#disable()
      */
     @Override
-    public void disable() throws MinigameException
+    public void disable() throws McException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mclib.api.config.ConfigInterface#getConfig(java.lang.String)
+     */
+    @Override
+    public DataSection getConfig(String file)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mclib.api.config.ConfigInterface#saveConfig(java.lang.String)
+     */
+    @Override
+    public void saveConfig(String file)
     {
         // TODO Auto-generated method stub
         

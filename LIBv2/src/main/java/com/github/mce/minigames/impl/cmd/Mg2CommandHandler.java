@@ -16,9 +16,10 @@
 package com.github.mce.minigames.impl.cmd;
 
 import com.github.mce.minigames.api.CommonMessages;
-import com.github.mce.minigames.api.cmd.AbstractCompositeCommandHandler;
-import com.github.mce.minigames.api.cmd.CommandInterface;
-import com.github.mce.minigames.api.cmd.HelpCommandHandler;
+
+import de.minigameslib.mclib.api.cmd.AbstractCompositeCommandHandler;
+import de.minigameslib.mclib.api.cmd.CommandInterface;
+import de.minigameslib.mclib.api.cmd.HelpCommandHandler;
 
 /**
  * A handler for the /mg2 command.

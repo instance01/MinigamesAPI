@@ -17,8 +17,9 @@ package com.github.mce.minigames.impl.services;
 
 import java.util.Map;
 
-import com.github.mce.minigames.api.cmd.SubCommandHandlerInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
+
+import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
 
 /**
  * A special extension to provide premium services; there can only be one premium extension.

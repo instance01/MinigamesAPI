@@ -22,11 +22,12 @@ import java.util.List;
 
 import com.github.mce.minigames.api.CommonMessages;
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameException;
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.cmd.AbstractPagableCommandHandler;
-import com.github.mce.minigames.api.cmd.CommandInterface;
 import com.github.mce.minigames.api.perms.CommonPermissions;
+
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.cmd.AbstractPagableCommandHandler;
+import de.minigameslib.mclib.api.cmd.CommandInterface;
 
 /**
  * Command to display useful information.
@@ -37,7 +38,7 @@ public class InfoArenasCommandHandler extends AbstractPagableCommandHandler
 {
     
     @Override
-    public void handle(CommandInterface command) throws MinigameException
+    public void handle(CommandInterface command) throws McException
     {
         command.permThrowException(CommonPermissions.InfoArenas, command.getCommandPath() + " arenas"); //$NON-NLS-1$
         super.handle(command);
@@ -66,42 +67,42 @@ public class InfoArenasCommandHandler extends AbstractPagableCommandHandler
             i++;
         }
         final List<Serializable> result = new ArrayList<>();
-        for (i = 0; i < count; i++)
-        {
-            if (arenas.hasNext())
-            {
-                final ArenaInterface arena = arenas.next();
-                Serializable state = null;
-                switch (arena.getState())
-                {
-                    case Disabled:
-                    default:
-                        state = CommonMessages.AraneStateDisabled.toArg();
-                        break;
-                    case InGame:
-                        state = CommonMessages.AraneStateInGame.toArg();
-                        break;
-                    case Join:
-                        state = CommonMessages.AraneStateJoin.toArg();
-                        break;
-                    case Maintenance:
-                        state = CommonMessages.AraneStateMeintenance.toArg();
-                        break;
-                    case Restarting:
-                        state = CommonMessages.AraneStateRestarting.toArg();
-                        break;
-                    case Starting:
-                        state = CommonMessages.AraneStateStarting.toArg();
-                        break;
-                }
-                result.add(CommonMessages.InfoArenaLine.toArg(
-                        arena.getMinigame().getName(),
-                        arena.getInternalName(),
-                        state,
-                        arena.getDisplayName()
-                        ));
-            }
-        }
+//        for (i = 0; i < count; i++)
+//        {
+//            if (arenas.hasNext())
+//            {
+//                final ArenaInterface arena = arenas.next();
+//                Serializable state = null;
+//                switch (arena.getState())
+//                {
+//                    case Disabled:
+//                    default:
+//                        state = CommonMessages.AraneStateDisabled.toArg();
+//                        break;
+//                    case InGame:
+//                        state = CommonMessages.AraneStateInGame.toArg();
+//                        break;
+//                    case Join:
+//                        state = CommonMessages.AraneStateJoin.toArg();
+//                        break;
+//                    case Maintenance:
+//                        state = CommonMessages.AraneStateMeintenance.toArg();
+//                        break;
+//                    case Restarting:
+//                        state = CommonMessages.AraneStateRestarting.toArg();
+//                        break;
+//                    case Starting:
+//                        state = CommonMessages.AraneStateStarting.toArg();
+//                        break;
+//                }
+//                result.add(CommonMessages.InfoArenaLine.toArg(
+//                        arena.getMinigame().getName(),
+//                        arena.getInternalName(),
+//                        state,
+//                        arena.getDisplayName()
+//                        ));
+//            }
+//        }
         return result.toArray(new Serializable[result.size()]);
     }
     
