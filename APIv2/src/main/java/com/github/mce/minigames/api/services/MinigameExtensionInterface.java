@@ -17,9 +17,9 @@ package com.github.mce.minigames.api.services;
 
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * A special extension for the minigames library.

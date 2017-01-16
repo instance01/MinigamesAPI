@@ -61,9 +61,9 @@ public class InfoCommandHandler implements SubCommandHandlerInterface
         
         command.permThrowException(CommonPermissions.Info, command.getCommandPath());
         
-        final MglibInterface lib = MglibInterface.INSTANCE.get();
-        final String mode = ((MinigamesPlugin)lib).getModeString();
-        final String debug = lib.debug() ? "TRUE" : "FALSE"; //$NON-NLS-1$ //$NON-NLS-2$
+//        final MglibInterface lib = MglibInterface.INSTANCE.get();
+//        final String mode = ((MinigamesPlugin)lib).getModeString();
+//        final String debug = lib.debug() ? "TRUE" : "FALSE"; //$NON-NLS-1$ //$NON-NLS-2$
 //        command.send(CommonMessages.InfoCommandOutput,
 //                command.getCommandPath(),
 //                lib.getMinecraftVersion().name(),

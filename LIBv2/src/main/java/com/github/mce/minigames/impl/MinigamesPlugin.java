@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +36,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonProviderInterface;
-import com.github.mce.minigames.api.LibState;
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinecraftVersionsType;
 import com.github.mce.minigames.api.MinigameInterface;
@@ -45,9 +43,6 @@ import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
 import com.github.mce.minigames.api.RuleId;
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeProvider;
 import com.github.mce.minigames.api.arena.MatchPhaseId;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.services.ExtensionInterface;
@@ -69,6 +64,9 @@ import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.objects.SignInterface;
 import de.minigameslib.mclib.api.objects.ZoneInterface;
 import de.minigameslib.mclib.impl.comp.ComponentId;
+import de.minigameslib.mgapi.api.LibState;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.arena.ArenaTypeProvider;
 
 /**
  * A plugin for minigames.
@@ -146,30 +144,30 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     public MinigamesPlugin()
     {
         // registers the core minigame.
-        try
-        {
-            final MinigamePluginInterface mg2 = this.register(new CoreMinigame(this));
-            
-            // context provider
-//            mg2.registerContextHandler(ArenaPlayerInterface.class, new ArenaPlayerInterfaceProvider());
-//            mg2.registerContextHandler(MinigameInterface.class, new MinigameInterfaceProvider());
-//            mg2.registerContextHandler(ArenaInterface.class, new ArenaInterfaceProvider());
-//            ArenaPlayerImpl.registerProvider(mg2);
+//        try
+//        {
+//            final MinigamePluginInterface mg2 = this.register(new CoreMinigame(this));
 //            
-//            // resolver
-//            mg2.registerContextResolver(new DefaultResolver());
-//            
-//            mg2.init();
-//            
-//            this.getLogger().log(Level.INFO, "MinigamesLib2 finihes initialization. Minecraft version: " + this.getMinecraftVersion()); //$NON-NLS-1$
-        }
-        catch (McException ex)
-        {
-            // log it, although this should never happen
-            // because in constructor we neither are in wrong state
-            // nor do we already know the 'core' minigame
-            this.getLogger().log(Level.SEVERE, "Error registering core minigame", ex); //$NON-NLS-1$
-        }
+//            // context provider
+////            mg2.registerContextHandler(ArenaPlayerInterface.class, new ArenaPlayerInterfaceProvider());
+////            mg2.registerContextHandler(MinigameInterface.class, new MinigameInterfaceProvider());
+////            mg2.registerContextHandler(ArenaInterface.class, new ArenaInterfaceProvider());
+////            ArenaPlayerImpl.registerProvider(mg2);
+////            
+////            // resolver
+////            mg2.registerContextResolver(new DefaultResolver());
+////            
+////            mg2.init();
+////            
+////            this.getLogger().log(Level.INFO, "MinigamesLib2 finihes initialization. Minecraft version: " + this.getMinecraftVersion()); //$NON-NLS-1$
+//        }
+//        catch (McException ex)
+//        {
+//            // log it, although this should never happen
+//            // because in constructor we neither are in wrong state
+//            // nor do we already know the 'core' minigame
+//            this.getLogger().log(Level.SEVERE, "Error registering core minigame", ex); //$NON-NLS-1$
+//        }
         
 //        this.events = this.nmsFactory == null ? null : this.nmsFactory.create(EventSystemInterface.class);
     }
@@ -378,12 +376,6 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     }
     
     // api methods
-    
-    @Override
-    public LibState getState()
-    {
-        return this.state;
-    }
     
     @Override
     public MinigamePluginInterface register(PluginProviderInterface provider) throws McException
@@ -1119,26 +1111,6 @@ public class MinigamesPlugin extends JavaPlugin implements MglibInterface, Liste
     {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#debug()
-     */
-    @Override
-    public boolean debug()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see com.github.mce.minigames.api.MglibInterface#getApiVersion()
-     */
-    @Override
-    public int getApiVersion()
-    {
-        // TODO Auto-generated method stub
-        return 0;
     }
     
 }

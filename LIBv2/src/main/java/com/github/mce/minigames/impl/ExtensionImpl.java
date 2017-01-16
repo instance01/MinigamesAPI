@@ -18,11 +18,12 @@ package com.github.mce.minigames.impl;
 import java.io.Serializable;
 
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionInterface;
 import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * 
@@ -59,9 +60,9 @@ class ExtensionImpl extends BaseImpl implements MinigameExtensionInterface
     }
     
     @Override
-    public Serializable getShortDescription()
+    public LocalizedMessageInterface getShortDescription()
     {
-        return this.description;
+        return null;
     }
 
     /* (non-Javadoc)

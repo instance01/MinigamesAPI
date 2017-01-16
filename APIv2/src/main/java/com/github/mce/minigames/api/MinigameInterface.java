@@ -19,17 +19,17 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeProvider;
 
 import de.minigameslib.mclib.api.config.ConfigInterface;
 import de.minigameslib.mclib.api.locale.MessagesConfigInterface;
+import de.minigameslib.mgapi.api.arena.ArenaTypeProvider;
 
 /**
  * The plugin to access minigames.
  * 
  * @author mepeisen
  */
-public interface MinigameInterface extends ConfigInterface, ArenaTypeProvider
+public interface MinigameInterface extends ConfigInterface
 {
     
     // TODO Add support for default main lobby

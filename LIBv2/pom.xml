@@ -38,6 +38,7 @@
 									<include>de.minigameslib.mglib:*</include>
 								</includes>
 							</artifactSet>
+							<createSourcesJar>true</createSourcesJar>
 						</configuration>
 					</execution>
 				</executions>

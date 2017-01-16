@@ -25,8 +25,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeProvider;
 import com.github.mce.minigames.api.arena.MatchPhaseId;
 import com.github.mce.minigames.api.player.ArenaPlayerInterface;
 import com.github.mce.minigames.api.services.ExtensionInterface;
@@ -35,14 +33,13 @@ import com.github.mce.minigames.api.services.MinigameExtensionProviderInterface;
 import com.github.mce.minigames.api.team.TeamId;
 
 import de.minigameslib.mclib.api.McException;
-import de.minigameslib.mclib.api.config.ConfigInterface;
-import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
-import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
-import de.minigameslib.mclib.api.locale.MessagesConfigInterface;
 import de.minigameslib.mclib.api.objects.Cuboid;
 import de.minigameslib.mclib.api.objects.SignInterface;
 import de.minigameslib.mclib.api.objects.ZoneInterface;
 import de.minigameslib.mclib.impl.comp.ComponentId;
+import de.minigameslib.mgapi.api.LibState;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.arena.ArenaTypeProvider;
 
 /**
  * Base interface to access the minigames API.
@@ -51,33 +48,6 @@ import de.minigameslib.mclib.impl.comp.ComponentId;
  */
 public interface MglibInterface
 {
-    
-    // common methods
-    
-    /**
-     * Checks for debug flag.
-     * 
-     * @return {@code true} if the library debugging is enabled.
-     */
-    boolean debug();
-    
-    /**
-     * Returns the current library state.
-     * 
-     * @return library state.
-     */
-    LibState getState();
-    
-    /**
-     * the first api version, all versions up to first release, includes minecraft versions up to 1.11.
-     */
-    int APIVERSION_1_0_0 = 10000;
-    
-    /**
-     * Returns the api version of MCLIB.
-     * @return api version.
-     */
-    int getApiVersion();
     
     // initialization
     

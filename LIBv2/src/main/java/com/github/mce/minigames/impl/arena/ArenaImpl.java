@@ -15,26 +15,14 @@
 
 package com.github.mce.minigames.impl.arena;
 
-import java.util.logging.Logger;
-
-import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.MglibInterface;
-import com.github.mce.minigames.api.MinigameInterface;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaState;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
-import com.github.mce.minigames.api.arena.ArenasConfig;
-import com.github.mce.minigames.impl.MinigameWrapper;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
 
 import de.minigameslib.mclib.api.McException;
-import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
-import de.minigameslib.mclib.api.util.function.FalseStub;
-import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
-import de.minigameslib.mclib.api.util.function.McPredicate;
-import de.minigameslib.mclib.api.util.function.TrueStub;
 
 /**
  * Implementation of arena interface.

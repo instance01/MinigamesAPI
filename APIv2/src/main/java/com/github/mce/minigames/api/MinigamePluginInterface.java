@@ -16,11 +16,11 @@
 package com.github.mce.minigames.api;
 
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 
 import de.minigameslib.mclib.api.McContext.ContextHandlerInterface;
 import de.minigameslib.mclib.api.McContext.ContextResolverInterface;
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * The minigame plugin interface; administrational backend for the given minigame.

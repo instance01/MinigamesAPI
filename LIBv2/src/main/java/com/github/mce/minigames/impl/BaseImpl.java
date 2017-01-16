@@ -15,52 +15,19 @@
 
 package com.github.mce.minigames.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Color;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.mce.minigames.api.RuleId;
-import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeProvider;
-import com.github.mce.minigames.api.arena.MatchPhaseId;
-import com.github.mce.minigames.api.team.TeamId;
-import com.github.mce.minigames.api.team.TeamRuleId;
 import com.github.mce.minigames.impl.msg.MessagesConfig;
 
-import de.minigameslib.mclib.api.config.ConfigInterface;
-import de.minigameslib.mclib.api.config.ConfigurationBool;
-import de.minigameslib.mclib.api.config.ConfigurationBoolList;
-import de.minigameslib.mclib.api.config.ConfigurationByte;
-import de.minigameslib.mclib.api.config.ConfigurationByteList;
-import de.minigameslib.mclib.api.config.ConfigurationCharacter;
-import de.minigameslib.mclib.api.config.ConfigurationCharacterList;
-import de.minigameslib.mclib.api.config.ConfigurationColor;
-import de.minigameslib.mclib.api.config.ConfigurationDouble;
-import de.minigameslib.mclib.api.config.ConfigurationDoubleList;
-import de.minigameslib.mclib.api.config.ConfigurationFloat;
-import de.minigameslib.mclib.api.config.ConfigurationFloatList;
-import de.minigameslib.mclib.api.config.ConfigurationInt;
-import de.minigameslib.mclib.api.config.ConfigurationIntList;
-import de.minigameslib.mclib.api.config.ConfigurationLong;
-import de.minigameslib.mclib.api.config.ConfigurationLongList;
-import de.minigameslib.mclib.api.config.ConfigurationShort;
-import de.minigameslib.mclib.api.config.ConfigurationShortList;
-import de.minigameslib.mclib.api.config.ConfigurationString;
-import de.minigameslib.mclib.api.config.ConfigurationStringList;
 import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
-import de.minigameslib.mclib.api.config.ConfigurationValues;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.MessagesConfigInterface;
-import de.minigameslib.mclib.impl.comp.ComponentId;
+import de.minigameslib.mgapi.api.arena.ArenaTypeProvider;
 
 /**
  * Basic support for extensions and minigames.
@@ -116,6 +83,36 @@ class BaseImpl implements ArenaTypeProvider
     public MessagesConfigInterface getMessages()
     {
         return this.messages;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.arena.ArenaTypeProvider#getDisplayName()
+     */
+    @Override
+    public LocalizedMessageInterface getDisplayName()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.arena.ArenaTypeProvider#getShortDescription()
+     */
+    @Override
+    public LocalizedMessageInterface getShortDescription()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.arena.ArenaTypeProvider#getDescription()
+     */
+    @Override
+    public LocalizedMessageInterface getDescription()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 //    @Override

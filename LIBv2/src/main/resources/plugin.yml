@@ -1,8 +1,9 @@
-name: MinigamesLib2
-main: com.github.mce.minigames.impl.MinigamesPlugin
+name: MinigamesLib
+main: de.minigameslib.mgapi.impl.MinigamesPlugin
 version: ${minigames.releaseversion}-${minigames.timestamp}
 author: [InstanceLabs, MysticCity, MasteroftheHell, TheMrQuake, mepeisen]
 softdepend: [Vault]
+depend: [mclib]
 commands:
    mg2:
       description: Main command for minigames lib version 2

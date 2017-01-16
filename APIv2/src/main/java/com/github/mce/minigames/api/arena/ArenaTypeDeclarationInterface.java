@@ -16,6 +16,7 @@
 package com.github.mce.minigames.api.arena;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * Interface for arena type declarations.

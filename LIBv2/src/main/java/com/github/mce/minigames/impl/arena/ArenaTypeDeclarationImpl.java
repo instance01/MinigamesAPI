@@ -20,11 +20,11 @@ import java.util.Map;
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.impl.MinigamePluginImpl;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * Internal representation of an arena type.

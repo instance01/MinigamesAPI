@@ -28,7 +28,6 @@ import com.github.mce.minigames.api.PluginProviderInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.impl.arena.ArenaImpl;
 import com.github.mce.minigames.impl.arena.ArenaTypeBuilderImpl;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
@@ -36,7 +35,9 @@ import com.github.mce.minigames.impl.component.ComponentRegistry;
 import de.minigameslib.mclib.api.McContext.ContextHandlerInterface;
 import de.minigameslib.mclib.api.McContext.ContextResolverInterface;
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.shared.api.com.DataSection;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * The minigames plugin impl.
@@ -225,9 +226,9 @@ public class MinigamePluginImpl extends BaseImpl implements MinigamePluginInterf
     }
     
     @Override
-    public Serializable getShortDescription()
+    public LocalizedMessageInterface getShortDescription()
     {
-        return this.shortDescription;
+        return null;
     }
     
     @Override

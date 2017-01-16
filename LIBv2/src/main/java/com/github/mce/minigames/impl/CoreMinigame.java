@@ -25,7 +25,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.mce.minigames.api.CommonErrors;
 import com.github.mce.minigames.api.CommonMessages;
-import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.PluginProviderInterface;
 import com.github.mce.minigames.api.config.CommonConfig;
 import com.github.mce.minigames.api.perms.CommonPermissions;

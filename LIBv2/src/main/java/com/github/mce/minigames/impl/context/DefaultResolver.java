@@ -202,11 +202,11 @@ public class DefaultResolver implements ContextResolverInterface
             }
             catch (Exception ex)
             {
-                final MglibInterface lib = MglibInterface.INSTANCE.get();
-                if (lib.debug())
-                {
-//                    lib.getLogger().log(Level.FINE, "Problems invoking " + getterName + " on " + cur, ex); //$NON-NLS-1$ //$NON-NLS-2$
-                }
+//                final MglibInterface lib = MglibInterface.INSTANCE.get();
+//                if (lib.debug())
+//                {
+////                    lib.getLogger().log(Level.FINE, "Problems invoking " + getterName + " on " + cur, ex); //$NON-NLS-1$ //$NON-NLS-2$
+//                }
                 cur = null;
             }
             i++;

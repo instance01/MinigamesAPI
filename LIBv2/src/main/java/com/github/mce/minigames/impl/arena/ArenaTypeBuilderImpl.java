@@ -19,9 +19,10 @@ import java.util.Map;
 
 import com.github.mce.minigames.api.arena.ArenaTypeBuilderInterface;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
-import com.github.mce.minigames.api.arena.ArenaTypeInterface;
 import com.github.mce.minigames.impl.MinigamePluginImpl;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
+
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * Implementation of an arena type builder.
