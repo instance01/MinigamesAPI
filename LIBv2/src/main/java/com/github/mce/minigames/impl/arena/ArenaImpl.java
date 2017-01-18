@@ -18,11 +18,11 @@ package com.github.mce.minigames.impl.arena;
 import com.github.mce.minigames.api.MglibInterface;
 import com.github.mce.minigames.api.MinigamePluginInterface;
 import com.github.mce.minigames.api.arena.ArenaInterface;
-import com.github.mce.minigames.api.arena.ArenaState;
 import com.github.mce.minigames.api.arena.ArenaTypeDeclarationInterface;
 import com.github.mce.minigames.impl.component.ComponentRegistry;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.arena.ArenaState;
 
 /**
  * Implementation of arena interface.

@@ -24,6 +24,8 @@
 
 package de.minigameslib.mgapi.api;
 
+import org.bukkit.plugin.Plugin;
+
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
@@ -62,5 +64,11 @@ public interface MinigameInterface
      * @return how-to-play manual
      */
     LocalizedMessageInterface getManual();
+
+    /**
+     * Returns the bukkit plugin owning the minigame.
+     * @return bukkit plugin.
+     */
+    Plugin getPlugin();
     
 }

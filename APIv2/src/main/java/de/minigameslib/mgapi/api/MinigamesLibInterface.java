@@ -28,9 +28,8 @@ import java.util.Collection;
 
 import org.bukkit.plugin.Plugin;
 
-import com.github.mce.minigames.api.arena.ArenaInterface;
-
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**

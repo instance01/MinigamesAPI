@@ -60,8 +60,8 @@ public class InfoCommand extends AbstractCompositeCommandHandler implements SubC
         this.subCommands.put("help", new HelpCommandHandler((AbstractCompositeCommandHandler) (this))); //$NON-NLS-1$
         this.subCommands.put("minigames", new InfoMinigamesCommand()); //$NON-NLS-1$
         this.subCommands.put("extensions", new InfoExtensionsCommand()); //$NON-NLS-1$
-        // TODO command: "minigame <name>" (detailed info about minigame)
-        // TODO command: "extension <name>" (detailed info about extension)
+        this.subCommands.put("minigame", new InfoMinigameCommand()); //$NON-NLS-1$
+        // this.subCommands.put("extension", new InfoExtensionCommand()); //$NON-NLS-1$
     }
 
     @Override

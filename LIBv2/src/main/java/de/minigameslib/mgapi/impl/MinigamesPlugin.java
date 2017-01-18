@@ -24,13 +24,18 @@
 
 package de.minigameslib.mgapi.impl;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -40,8 +45,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.mce.minigames.api.arena.ArenaInterface;
-
+import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.cmd.CommandImpl;
@@ -53,7 +57,10 @@ import de.minigameslib.mgapi.api.LibState;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.MinigameProvider;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
+import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
+import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 import de.minigameslib.mgapi.impl.tasks.InitTask;
 
@@ -92,20 +99,64 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     
     /** the console commands. */
     private Mg2Command mg2Command = new Mg2Command();
+    
+    /** arenas per name. */
+    private Map<String, ArenaImpl> arenasPerName = new TreeMap<>();
+    
+    /** arena name check pattern */
+    private static final Pattern ARENA_NAME_PATTERN = Pattern.compile("[^\\d\\p{L}-]"); //$NON-NLS-1$
 
     @Override
     public void onEnable()
     {
-        // TODO check api version
+        if (McLibInterface.instance().getApiVersion() != McLibInterface.APIVERSION_1_0_0)
+        {
+            throw new IllegalStateException("Cannot enable minigameslib. You installed an incompatible McLib-Version. " + McLibInterface.instance().getApiVersion()); //$NON-NLS-1$
+        }
+        
         EnumServiceInterface.instance().registerEnumClass(this, MglibConfig.class);
         EnumServiceInterface.instance().registerEnumClass(this, MglibMessages.class);
         EnumServiceInterface.instance().registerEnumClass(this, MglibPerms.class);
         
         Bukkit.getServicesManager().register(MinigamesLibInterface.class, this, this, ServicePriority.Highest);
         
+        final String[] arenas = MglibConfig.Arenas.getStringList();
+        for (final String arena : arenas)
+        {
+            try
+            {
+                this.checkArenaName(arena);
+                this.getLogger().log(Level.INFO, "Found arena " + arena); //$NON-NLS-1$
+                final ArenaImpl arenaImpl = new ArenaImpl(new File(this.getDataFolder(), "arenas/" + arena + ".yml"));  //$NON-NLS-1$//$NON-NLS-2$
+                if (!arenaImpl.getInternalName().equals(arena))
+                {
+                    throw new McException(MglibCoreErrors.ArenaNameMismatch, arena);
+                }
+                this.arenasPerName.put(arena, arenaImpl);
+            }
+            catch (McException ex)
+            {
+                this.getLogger().log(Level.WARNING, "Problems loading arena", ex); //$NON-NLS-1$
+            }
+        }
+        this.getLogger().log(Level.INFO, "Enabled mglib. Loaded arenas: " + this.arenasPerName.size()); //$NON-NLS-1$
+        
         new InitTask().runTaskLater(this, 10);
     }
     
+    /**
+     * Checks for valid arena name
+     * @param arena
+     * @throws McException thrown for invalid arena names.
+     */
+    private void checkArenaName(String arena) throws McException
+    {
+        if (ARENA_NAME_PATTERN.matcher(arena).find())
+        {
+            throw new McException(MglibCoreErrors.InvalidArenaName, arena);
+        }
+    }
+
     @Override
     public void onDisable()
     {
@@ -194,15 +245,15 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     {
         if (this.state != LibState.Initializing)
         {
-            throw new McException(MglibMessages.LibInWrongState);
+            throw new McException(MglibCoreErrors.LibInWrongState);
         }
         if (this.minigamesPerPlugin.containsKey(plugin.getName()))
         {
-            throw new McException(MglibMessages.PluginMinigameDuplicate, plugin.getName());
+            throw new McException(MglibCoreErrors.PluginMinigameDuplicate, plugin.getName());
         }
         if (this.minigamesPerName.containsKey(provider.getName()))
         {
-            throw new McException(MglibMessages.MinigameAlreadyRegistered, provider.getName());
+            throw new McException(MglibCoreErrors.MinigameAlreadyRegistered, provider.getName());
         }
         final MinigameImpl minigame = new MinigameImpl(plugin, provider);
         this.minigamesPerPlugin.put(plugin.getName(), minigame);
@@ -238,15 +289,15 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     {
         if (this.state != LibState.Initializing)
         {
-            throw new McException(MglibMessages.LibInWrongState);
+            throw new McException(MglibCoreErrors.LibInWrongState);
         }
         if (this.extensionsPerPlugin.containsKey(plugin.getName()))
         {
-            throw new McException(MglibMessages.PluginExtensionDuplicate, plugin.getName());
+            throw new McException(MglibCoreErrors.PluginExtensionDuplicate, plugin.getName());
         }
         if (this.extensionsPerName.containsKey(provider.getName()))
         {
-            throw new McException(MglibMessages.ExtensionAlreadyRegistered, provider.getName());
+            throw new McException(MglibCoreErrors.ExtensionAlreadyRegistered, provider.getName());
         }
         final ExtensionImpl extension = new ExtensionImpl(plugin, provider);
         this.extensionsPerPlugin.put(plugin.getName(), extension);
@@ -277,164 +328,119 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         return this.extensionsPerName.values().stream().filter(p -> p.getName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getMinigame(java.lang.String)
-     */
     @Override
     public MinigameInterface getMinigame(String name)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.minigamesPerName.get(name);
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getExtension(java.lang.String)
-     */
     @Override
     public ExtensionInterface getExtension(String name)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.extensionsPerName.get(name);
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenaCount()
-     */
     @Override
     public int getArenaCount()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.arenasPerName.size();
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenaCount(java.lang.String)
-     */
     @Override
     public int getArenaCount(String prefix)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return (int) this.arenasPerName.keySet().stream().filter(p -> p.startsWith(prefix)).count();
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenaCount(org.bukkit.plugin.Plugin)
-     */
     @Override
     public int getArenaCount(Plugin plugin)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return (int) this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).count();
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenaCount(org.bukkit.plugin.Plugin, java.lang.String)
-     */
     @Override
     public int getArenaCount(Plugin plugin, String prefix)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return (int) this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).filter(p -> p.getInternalName().startsWith(prefix)).count();
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenaCount(de.minigameslib.mgapi.api.arena.ArenaTypeInterface)
-     */
     @Override
     public int getArenaCount(ArenaTypeInterface type)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return (int) this.arenasPerName.values().stream().filter(p -> p.getType() == type).count();
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenaCount(de.minigameslib.mgapi.api.arena.ArenaTypeInterface, java.lang.String)
-     */
     @Override
     public int getArenaCount(ArenaTypeInterface type, String prefix)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return (int) this.arenasPerName.values().stream().filter(p -> p.getType() == type).filter(p -> p.getInternalName().startsWith(prefix)).count();
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenas(int, int)
-     */
     @Override
     public Collection<ArenaInterface> getArenas(int index, int limit)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenasPerName.values().stream().skip(index).limit(limit).collect(Collectors.toList());
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenas(java.lang.String, int, int)
-     */
     @Override
     public Collection<ArenaInterface> getArenas(String prefix, int index, int limit)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenasPerName.values().stream().filter(p -> p.getInternalName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenas(org.bukkit.plugin.Plugin, int, int)
-     */
     @Override
     public Collection<ArenaInterface> getArenas(Plugin plugin, int index, int limit)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).skip(index).limit(limit).collect(Collectors.toList());
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenas(org.bukkit.plugin.Plugin, java.lang.String, int, int)
-     */
     @Override
     public Collection<ArenaInterface> getArenas(Plugin plugin, String prefix, int index, int limit)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).filter(p -> p.getInternalName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenas(de.minigameslib.mgapi.api.arena.ArenaTypeInterface, int, int)
-     */
     @Override
     public Collection<ArenaInterface> getArenas(ArenaTypeInterface type, int index, int limit)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenasPerName.values().stream().filter(p -> p.getType() == type).skip(index).limit(limit).collect(Collectors.toList());
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArenas(de.minigameslib.mgapi.api.arena.ArenaTypeInterface, java.lang.String, int, int)
-     */
     @Override
     public Collection<ArenaInterface> getArenas(ArenaTypeInterface type, String prefix, int index, int limit)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenasPerName.values().stream().filter(p -> p.getType() == type).filter(p -> p.getInternalName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getArena(java.lang.String)
-     */
     @Override
     public ArenaInterface getArena(String name)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenasPerName.get(name);
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#create(java.lang.String, de.minigameslib.mgapi.api.arena.ArenaTypeInterface)
-     */
     @Override
     public ArenaInterface create(String name, ArenaTypeInterface type) throws McException
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (type == null)
+        {
+            throw new McException(CommonMessages.InternalError, "arena type must not be null"); //$NON-NLS-1$
+        }
+        if (this.arenasPerName.containsKey(name))
+        {
+            throw new McException(MglibCoreErrors.ArenaDuplicate, name);
+        }
+        
+        final ArenaImpl arena = new ArenaImpl(name, type, new File(this.getDataFolder(), "arenas/" + name + ".yml")); //$NON-NLS-1$ //$NON-NLS-2$
+        arena.saveData();
+        
+        final Set<String> arenas = new HashSet<>(this.arenasPerName.keySet());
+        arenas.add(name);
+        MglibConfig.Arenas.setStringList(arenas.toArray(new String[arenas.size()]));
+        MglibConfig.Arenas.saveConfig();
+        
+        // everything ok, now we can add the arena to our internal map.
+        this.arenasPerName.put(name, arena);
+        return arena;
     }
     
 }

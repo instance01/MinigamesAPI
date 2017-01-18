@@ -22,40 +22,17 @@
 
 */
 
-package de.minigameslib.mgapi.api;
-
-import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+package de.minigameslib.mgapi.api.arena;
 
 /**
- * A proider to describe an extension.
- * 
- * @author mepeisen
+ * Check severity.
  */
-public interface ExtensionProvider
+public enum CheckSeverity
 {
-    
-    /**
-     * returns the extensions internal/ technical name.
-     * @return extension name.
-     */
-    String getName();
-    
-    /**
-     * Returns a display name for the extension.
-     * @return extension display name.
-     */
-    LocalizedMessageInterface getDisplayName();
-    
-    /**
-     * Returns a short single-line description of the extension
-     * @return short single-line description
-     */
-    LocalizedMessageInterface getShortDescription();
-    
-    /**
-     * Returns a multi-line description of the extension
-     * @return multi-line description
-     */
-    LocalizedMessageInterface getDescription();
-    
+    /** An error disallowing to use the arena. */
+    Error,
+    /** A warning that may result in game problems; arena can be started. */
+    Warning,
+    /** Some information text. */
+    Info
 }

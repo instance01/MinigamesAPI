@@ -22,47 +22,56 @@
 
 */
 
-package de.minigameslib.mgapi.api;
-
-import org.bukkit.plugin.Plugin;
-
-import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+package de.minigameslib.mgapi.api.arena;
 
 /**
+ * Common arena state.
+ * 
  * @author mepeisen
- *
  */
-public interface ExtensionInterface
+public enum ArenaState
 {
     
     /**
-     * returns the extensions internal/ technical name.
-     * @return extension name.
+     * The arena is disabled. Cannot be used.
      */
-    String getName();
+    Disabled,
     
     /**
-     * Returns a display name for the extension.
-     * @return extension display name.
+     * The arena is starting. Arena is checked. This is the common state if an arena
+     * is enabled or maintenance mode is stopped. Will be the first state after
+     * server restart.
      */
-    LocalizedMessageInterface getDisplayName();
+    Starting,
     
     /**
-     * Returns a short single-line description of the extension
-     * @return short single-line description
+     * Players are ready to join.
      */
-    LocalizedMessageInterface getShortDescription();
+    Join,
     
     /**
-     * Returns a multi-line description of the extension
-     * @return multi-line description
+     * A match is prepared, there are enough players.
      */
-    LocalizedMessageInterface getDescription();
-
+    PreMatch,
+    
     /**
-     * Returns the bukkit plugin owning the minigame.
-     * @return bukkit plugin.
+     * A match is running.
      */
-    Plugin getPlugin();
+    Match,
+    
+    /**
+     * There is a winner; match is stopped
+     */
+    PostMatch,
+    
+    /**
+     * The arena is restarting and will be switching to Join as soon as the reset is finished.
+     */
+    Restarting,
+    
+    /**
+     * The arena is under maintenance. Administrators may change the arena.
+     */
+    Maintenance,
     
 }

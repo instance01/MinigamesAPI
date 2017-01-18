@@ -17,8 +17,9 @@ package com.github.mce.minigames.api.test.arena;
 
 import org.junit.Test;
 
-import com.github.mce.minigames.api.arena.ArenaState;
 import com.github.mce.minigames.api.test.SharedUtil;
+
+import de.minigameslib.mgapi.api.arena.ArenaState;
 
 /**
  * test case for {@link ArenaState}

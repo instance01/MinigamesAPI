@@ -26,6 +26,7 @@ package de.minigameslib.mgapi.impl;
 
 import de.minigameslib.mclib.api.config.ConfigComment;
 import de.minigameslib.mclib.api.config.ConfigurationBool;
+import de.minigameslib.mclib.api.config.ConfigurationStringList;
 import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
 import de.minigameslib.mclib.api.config.ConfigurationValues;
 
@@ -48,5 +49,15 @@ public enum MglibConfig implements ConfigurationValueInterface
         "But be aware that debugging slows down the system."
         })
     Debug,
+    
+    /**
+     * Arena names.
+     */
+    @ConfigurationStringList
+    @ConfigComment({
+        "Contains the internal/ technical names of arenas. Each arena is listed here.",
+        "The arena core data is stored within arenas configuration folder."
+    })
+    Arenas,
     
 }

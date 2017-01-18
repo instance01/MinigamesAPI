@@ -222,5 +222,16 @@
   		</plugins></reporting>
   	</profile>
   </profiles>
+  
+  <repositories>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots</url>
+    </repository>
+    <repository>
+      <id>mce-repo</id>
+      <url>http://nexus.xworlds.eu/nexus/content/groups/mce</url>
+    </repository>
+  </repositories>
 
 </project>

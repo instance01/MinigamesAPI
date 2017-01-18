@@ -78,9 +78,9 @@ class ExtensionImpl implements ExtensionInterface
     }
 
     @Override
-    public LocalizedMessageInterface getManual()
+    public Plugin getPlugin()
     {
-        return this.provider.getManual();
+        return this.plugin;
     }
     
 }

@@ -31,7 +31,10 @@ import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
+import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.cmd.InfoCommand;
+import de.minigameslib.mgapi.impl.cmd.InfoExtensionsCommand;
+import de.minigameslib.mgapi.impl.cmd.InfoMinigameCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigamesCommand;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 
@@ -42,55 +45,18 @@ import de.minigameslib.mgapi.impl.cmd.Mg2Command;
  */
 @LocalizedMessages(value = "core")
 @ChildEnum({
+    MglibCoreErrors.class,
     Mg2Command.Messages.class,
     InfoCommand.Messages.class,
-    InfoMinigamesCommand.Messages.class
+    InfoMinigamesCommand.Messages.class,
+    InfoExtensionsCommand.Messages.class,
+    InfoMinigameCommand.Messages.class,
+    //InfoExtensionCommand.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {
     
-    /**
-     * Library is in wrong state; operation cannot proceed.
-     */
-    @LocalizedMessage(defaultMessage = "Library in wrong state.")
-    @MessageComment({"Library is in wrong state; operation cannot proceed."})
-    LibInWrongState,
-    
-    /**
-     * Plugin tries to register multiple minigames
-     */
-    @LocalizedMessage(defaultMessage = "Plugin %1$s already registered a minigame")
-    @MessageComment(
-        value = {"Plugin tries to register multiple minigames"},
-        args = {@Argument("Plugin name")})
-    PluginMinigameDuplicate,
-    
-    /**
-     * Minigame with given name is already registered
-     */
-    @LocalizedMessage(defaultMessage = "Minigame %1$s already registered")
-    @MessageComment(
-        value = {"Minigame with given name is already registered"},
-        args = {@Argument("Minigame name")})
-    MinigameAlreadyRegistered,
-    
-    /**
-     * Plugin tries to register multiple extensions
-     */
-    @LocalizedMessage(defaultMessage = "Plugin %1$s already registered an extension")
-    @MessageComment(
-        value = {"Plugin tries to register multiple extensions"},
-        args = {@Argument("Plugin name")})
-    PluginExtensionDuplicate,
-    
-    /**
-     * Extension with given name is already registered
-     */
-    @LocalizedMessage(defaultMessage = "Extension %1$s already registered")
-    @MessageComment(
-        value = {"Extension with given name is already registered"},
-        args = {@Argument("Extension name")})
-    ExtensionAlreadyRegistered,
+    // common error messages
     
     /** Library is initializing. */
     @LocalizedMessage(defaultMessage = "INIT", severity = MessageSeverityType.Error)
@@ -134,6 +100,85 @@ public enum MglibMessages implements LocalizedMessageInterface
      */
     @LocalizedMessage(defaultMessage = "premium")
     @MessageComment({"Premium plugin version"})
-    ModePremium,
+    ModePremium;
+    
+    /**
+     * Common error messages
+     */
+    @LocalizedMessages(value = "core.errors")
+    public enum MglibCoreErrors implements LocalizedMessageInterface
+    {
+        
+        /**
+         * Library is in wrong state; operation cannot proceed.
+         */
+        @LocalizedMessage(defaultMessage = "Library in wrong state.", severity = MessageSeverityType.Error)
+        @MessageComment({"Library is in wrong state; operation cannot proceed."})
+        LibInWrongState,
+        
+        /**
+         * Arena name contains illegal characters.
+         */
+        @LocalizedMessage(defaultMessage = "Arena name contains illegal characters.", severity = MessageSeverityType.Error)
+        @MessageComment(
+                value = {"Arena name contains illegal characters."},
+                args = {@Argument("Arena name")})
+        InvalidArenaName,
+        
+        /**
+         * Arena data filename does not correspond to internal name.
+         */
+        @LocalizedMessage(defaultMessage = "Arena data filename (" + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + ") does not correspond to internal name. Did you copy yml files?", severity = MessageSeverityType.Error)
+        @MessageComment(
+                value = {"Arena data filename does not correspond to internal name."},
+                args = {@Argument("Arena name")})
+        ArenaNameMismatch,
+        
+        /**
+         * Arena is duplicate
+         */
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already exists", severity = MessageSeverityType.Error)
+        @MessageComment(
+                value = {"Arena is duplicate"},
+                args = {@Argument("Arena name")})
+        ArenaDuplicate,
+        
+        /**
+         * Plugin tries to register multiple minigames
+         */
+        @LocalizedMessage(defaultMessage = "Plugin " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered a minigame", severity = MessageSeverityType.Error)
+        @MessageComment(
+            value = {"Plugin tries to register multiple minigames"},
+            args = {@Argument("Plugin name")})
+        PluginMinigameDuplicate,
+        
+        /**
+         * Minigame with given name is already registered
+         */
+        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered", severity = MessageSeverityType.Error)
+        @MessageComment(
+            value = {"Minigame with given name is already registered"},
+            args = {@Argument("Minigame name")})
+        MinigameAlreadyRegistered,
+        
+        /**
+         * Plugin tries to register multiple extensions
+         */
+        @LocalizedMessage(defaultMessage = "Plugin " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered an extension", severity = MessageSeverityType.Error)
+        @MessageComment(
+            value = {"Plugin tries to register multiple extensions"},
+            args = {@Argument("Plugin name")})
+        PluginExtensionDuplicate,
+        
+        /**
+         * Extension with given name is already registered
+         */
+        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered", severity = MessageSeverityType.Error)
+        @MessageComment(
+            value = {"Extension with given name is already registered"},
+            args = {@Argument("Extension name")})
+        ExtensionAlreadyRegistered,
+        
+    }
     
 }

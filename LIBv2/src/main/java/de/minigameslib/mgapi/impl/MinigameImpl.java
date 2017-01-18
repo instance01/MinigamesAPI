@@ -82,5 +82,11 @@ class MinigameImpl implements MinigameInterface
     {
         return this.provider.getManual();
     }
+
+    @Override
+    public Plugin getPlugin()
+    {
+        return this.plugin;
+    }
     
 }
