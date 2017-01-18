@@ -84,6 +84,12 @@ class MinigameImpl implements MinigameInterface
     }
 
     @Override
+    public LocalizedMessageInterface getHowToPlay()
+    {
+        return this.provider.getHowToPlay();
+    }
+
+    @Override
     public Plugin getPlugin()
     {
         return this.plugin;

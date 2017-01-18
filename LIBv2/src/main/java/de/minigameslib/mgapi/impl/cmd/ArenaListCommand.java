@@ -38,46 +38,44 @@ import de.minigameslib.mgapi.api.arena.ArenaInterface;
  * 
  * @author mepeisen
  */
-public class MinigameArenaListCommand extends AbstractPagableCommandHandler
+public class ArenaListCommand extends AbstractPagableCommandHandler
 {
     
+    /** supplier for arena count. */
+    private IntSupplier count;
+    /** supplier for arena stream. */
+    private Supplier<Stream<ArenaInterface>> arenas;
+    /** header line. */
+    private Serializable header;
+
     /**
      * @param count
      * @param arenas
+     * @param header 
      */
-    public MinigameArenaListCommand(IntSupplier count, Supplier<Stream<ArenaInterface>> arenas)
+    public ArenaListCommand(IntSupplier count, Supplier<Stream<ArenaInterface>> arenas, Serializable header)
     {
-        // TODO Auto-generated constructor stub
+        this.count = count;
+        this.arenas = arenas;
+        this.header = header;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mclib.api.cmd.AbstractPagableCommandHandler#getLineCount(de.minigameslib.mclib.api.cmd.CommandInterface)
-     */
     @Override
     protected int getLineCount(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.count.getAsInt();
     }
     
-    /* (non-Javadoc)
-     * @see de.minigameslib.mclib.api.cmd.AbstractPagableCommandHandler#getHeader(de.minigameslib.mclib.api.cmd.CommandInterface)
-     */
     @Override
     protected Serializable getHeader(CommandInterface command)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.header;
     }
     
-    /* (non-Javadoc)
-     * @see de.minigameslib.mclib.api.cmd.AbstractPagableCommandHandler#getLines(de.minigameslib.mclib.api.cmd.CommandInterface, int, int)
-     */
     @Override
-    protected Serializable[] getLines(CommandInterface command, int start, int count)
+    protected Serializable[] getLines(CommandInterface command, int start, int limit)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.arenas.get().skip(start).limit(limit).map(p -> p.getDisplayName().toArg()).toArray(Serializable[]::new);
     }
     
 }

@@ -60,10 +60,16 @@ public interface MinigameInterface
     LocalizedMessageInterface getDescription();
     
     /**
-     * Returns a how-to-play manual
-     * @return how-to-play manual
+     * Returns a how-to-use manual, mainly for administrators
+     * @return how-to-use manual, mainly for adminstrators
      */
     LocalizedMessageInterface getManual();
+    
+    /**
+     * Returns a how-to-play manual, default for arenas without customized manual
+     * @return how-to-play manual, default for arenas without customized manual
+     */
+    LocalizedMessageInterface getHowToPlay();
 
     /**
      * Returns the bukkit plugin owning the minigame.

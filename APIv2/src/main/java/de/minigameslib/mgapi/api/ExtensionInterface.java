@@ -58,6 +58,12 @@ public interface ExtensionInterface
      * @return multi-line description
      */
     LocalizedMessageInterface getDescription();
+    
+    /**
+     * Returns a how-to-use manual, mainly for administrators
+     * @return how-to-use manual, mainly for adminstrators
+     */
+    LocalizedMessageInterface getManual();
 
     /**
      * Returns the bukkit plugin owning the minigame.

@@ -32,7 +32,9 @@ import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
+import de.minigameslib.mgapi.impl.cmd.ArenasCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoCommand;
+import de.minigameslib.mgapi.impl.cmd.InfoExtensionCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoExtensionsCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigameCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigamesCommand;
@@ -51,7 +53,8 @@ import de.minigameslib.mgapi.impl.cmd.Mg2Command;
     InfoMinigamesCommand.Messages.class,
     InfoExtensionsCommand.Messages.class,
     InfoMinigameCommand.Messages.class,
-    //InfoExtensionCommand.Messages.class,
+    InfoExtensionCommand.Messages.class,
+    ArenasCommand.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {

@@ -41,14 +41,14 @@ import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
-import de.minigameslib.mgapi.api.MinigameInterface;
+import de.minigameslib.mgapi.api.ExtensionInterface;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 
 /**
  * Handle the minigame command info
  * @author mepeisen
  */
-public class InfoMinigameCommand implements SubCommandHandlerInterface
+public class InfoExtensionCommand implements SubCommandHandlerInterface
 {
 
     @Override
@@ -63,10 +63,10 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
         
         final String name = command.getArgs()[0];
         final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        final MinigameInterface minigame = mglib.getMinigame(name);
-        if (minigame == null)
+        final ExtensionInterface extension = mglib.getExtension(name);
+        if (extension == null)
         {
-            command.send(Messages.MinigameNotFound, name);
+            command.send(Messages.ExtensionNotFound, name);
             return;
         }
         
@@ -80,16 +80,9 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
         {
             switch (command.getArgs()[1])
             {
-                case "arenas": //$NON-NLS-1$
-                    new ArenaListCommand(
-                            () -> mglib.getArenaCount(minigame.getPlugin()),
-                            () -> mglib.getArenas(minigame.getPlugin(), 0, Integer.MAX_VALUE).stream(),
-                            Messages.ArenasPagedHeader.toArg(name)
-                            ).handle(command.consumeArgs(1));
-                    return;
                 case "manual": //$NON-NLS-1$
                     new LocalizedPagableCommand(
-                            minigame.getManual(),
+                            extension.getManual(),
                             Messages.ManualPagedHeader.toArg(name)
                             ).handle(command.consumeArgs(1));
                     return;
@@ -100,12 +93,12 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
         }
         
         // print Info
-        final String version = minigame.getPlugin().getDescription().getVersion();
+        final String version = extension.getPlugin().getDescription().getVersion();
         command.send(Messages.CommandOutput,
-                minigame.getDisplayName().toArg(),
-                minigame.getShortDescription().toArg(),
+                extension.getDisplayName().toArg(),
+                extension.getShortDescription().toArg(),
                 version,
-                minigame.getDescription().toListArg(),
+                extension.getDescription().toListArg(),
                 command.getCommandPath(),
                 name
                 );
@@ -116,11 +109,11 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
     {
         if (command.getArgs().length == 0)
         {
-            return MinigamesLibInterface.instance().getMinigames(lastArg, 0, Integer.MAX_VALUE).stream().map(MinigameInterface::getName).collect(Collectors.toList());
+            return MinigamesLibInterface.instance().getExtensions(lastArg, 0, Integer.MAX_VALUE).stream().map(ExtensionInterface::getName).collect(Collectors.toList());
         }
         if (command.getArgs().length == 1)
         {
-            return Arrays.asList("arenas", "manual").stream().filter(p -> p.startsWith(lastArg)).collect(Collectors.toList());  //$NON-NLS-1$//$NON-NLS-2$
+            return Arrays.asList("manual").stream().filter(p -> p.startsWith(lastArg)).collect(Collectors.toList());  //$NON-NLS-1$
         }
         return Collections.emptyList();
     }
@@ -142,93 +135,79 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_info_minigame")
+    @LocalizedMessages(value = "cmd.mg2_info_extension")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 info minigame
+         * Short description of /mg2 info extension
          */
-        @LocalizedMessage(defaultMessage = "Prints details on given minigame.")
-        @MessageComment({"Short description of /mg2 info minigame"})
+        @LocalizedMessage(defaultMessage = "Prints details on given extension.")
+        @MessageComment({"Short description of /mg2 info extension"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 info minigame
+         * Long description of /mg2 info extension
          */
-        @LocalizedMessage(defaultMessage = "Prints details of given minigame.")
-        @MessageComment({"Long description of /mg2 info minigame"})
+        @LocalizedMessage(defaultMessage = "Prints details of given extension.")
+        @MessageComment({"Long description of /mg2 info extension"})
         Description,
         
         /**
-         * Usage of /mg2 info minigame
+         * Usage of /mg2 info extension
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 info minigame <name>")
-        @MessageComment({"Usage of /mg2 info minigame"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 info extension <name>")
+        @MessageComment({"Usage of /mg2 info extension"})
         Usage,
         
         /**
          * Name argument is missing
          */
-        @LocalizedMessage(defaultMessage = "Missing minigame name", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Missing extension name", severity = MessageSeverityType.Error)
         @MessageComment({"Name argument is missing"})
         NameMissing,
         
         /**
-         * Minigame was not found
+         * Extension was not found
          */
-        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
-        @MessageComment(value = {"Minigame was not found"}, args = @Argument("minigame name"))
-        MinigameNotFound,
+        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"Extension was not found"}, args = @Argument("minigame name"))
+        ExtensionNotFound,
         
         /**
-         * The command output of /mg2 info minigame
+         * The command output of /mg2 info extension
          */
         @LocalizedMessageList({
-            "minigame %1$s (%2$s)",
+            "extension %1$s (%2$s)",
             "version: %3$s",
             "----------",
             "%4$s",
             "----------",
             "Run for additional information:",
-            "  " + LocalizedMessage.BLUE + "%5$s %6$s arenas " + LocalizedMessage.GRAY + " to list the minigame arenas.",
             "  " + LocalizedMessage.BLUE + "%5$s %6$s manual " + LocalizedMessage.GRAY + " to display a manual."
         })
         @MessageComment(value = {
-            "The command output of /mg2 info minigame"
+            "The command output of /mg2 info extension"
         },args = {
                 @Argument("display name"),
                 @Argument("short description"),
                 @Argument("version number"),
                 @Argument("description"),
                 @Argument("command path"),
-                @Argument("minigame name"),
+                @Argument("extension name"),
                 })
         CommandOutput,
         
         /**
-         * Header line for /mg2 minigame ... arenas
+         * Header line for /mg2 extension ... manual
          */
         @LocalizedMessageList({
-            "Arenas for minigame %1$s."
+            "Manual for extension %1$s."
         })
         @MessageComment(value = {
-            "Header line for /mg2 minigame ... arenas"
+            "Header line for /mg2 extension ... manual"
         },args = {
-                @Argument("minigame name"),
-                })
-        ArenasPagedHeader,
-        
-        /**
-         * Header line for /mg2 minigame ... manual
-         */
-        @LocalizedMessageList({
-            "Manual for minigame %1$s."
-        })
-        @MessageComment(value = {
-            "Header line for /mg2 minigame ... manual"
-        },args = {
-                @Argument("minigame name"),
+                @Argument("extension name"),
                 })
         ManualPagedHeader,
         

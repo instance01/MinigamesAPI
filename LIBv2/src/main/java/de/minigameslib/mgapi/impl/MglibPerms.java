@@ -41,6 +41,12 @@ public enum MglibPerms implements PermissionsInterface
      * Permission for info comment.
      */
     @Permission("command.info")
-    CommandInfo
+    CommandInfo,
+    
+    /**
+     * Permission for arenas comment.
+     */
+    @Permission("command.arenas")
+    CommandArenas
     
 }

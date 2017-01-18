@@ -58,4 +58,10 @@ public interface ExtensionProvider
      */
     LocalizedMessageInterface getDescription();
     
+    /**
+     * Returns a how-to-use manual, mainly for administrators
+     * @return how-to-use manual, mainly for adminstrators
+     */
+    LocalizedMessageInterface getManual();
+    
 }
