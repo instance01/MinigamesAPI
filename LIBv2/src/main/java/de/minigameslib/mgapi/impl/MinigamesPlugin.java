@@ -59,9 +59,11 @@ import de.minigameslib.mgapi.api.MinigameProvider;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
+import de.minigameslib.mgapi.impl.internal.TaskManager;
 import de.minigameslib.mgapi.impl.tasks.InitTask;
 
 /**
@@ -103,6 +105,8 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /** arenas per name. */
     private Map<String, ArenaImpl> arenasPerName = new TreeMap<>();
     
+    // TODO Watch for disabled plugins
+    
     /** arena name check pattern */
     private static final Pattern ARENA_NAME_PATTERN = Pattern.compile("[^\\d\\p{L}-]"); //$NON-NLS-1$
 
@@ -119,6 +123,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         EnumServiceInterface.instance().registerEnumClass(this, MglibPerms.class);
         
         Bukkit.getServicesManager().register(MinigamesLibInterface.class, this, this, ServicePriority.Highest);
+        Bukkit.getServicesManager().register(TaskManager.class, new TaskManager(), this, ServicePriority.Highest);
         
         final String[] arenas = MglibConfig.Arenas.getStringList();
         for (final String arena : arenas)
@@ -261,6 +266,18 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     }
 
     @Override
+    public MinigameInterface getMinigame(String name)
+    {
+        return this.minigamesPerName.get(name);
+    }
+
+    @Override
+    public MinigameInterface getMinigame(Plugin plugin)
+    {
+        return this.minigamesPerPlugin.get(plugin.getName());
+    }
+
+    @Override
     public int getMinigameCount()
     {
         return this.minigamesPerName.size();
@@ -326,12 +343,6 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     public Collection<ExtensionInterface> getExtensions(String prefix, int index, int limit)
     {
         return this.extensionsPerName.values().stream().filter(p -> p.getName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
-    }
-
-    @Override
-    public MinigameInterface getMinigame(String name)
-    {
-        return this.minigamesPerName.get(name);
     }
 
     @Override
@@ -441,6 +452,16 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         // everything ok, now we can add the arena to our internal map.
         this.arenasPerName.put(name, arena);
         return arena;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getPlayer(de.minigameslib.mclib.api.objects.McPlayerInterface)
+     */
+    @Override
+    public ArenaPlayerInterface getPlayer(McPlayerInterface player)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

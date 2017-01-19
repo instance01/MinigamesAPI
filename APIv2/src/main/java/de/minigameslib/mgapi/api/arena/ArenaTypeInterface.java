@@ -24,6 +24,12 @@
 
 package de.minigameslib.mgapi.api.arena;
 
+import org.bukkit.plugin.Plugin;
+
+import de.minigameslib.mclib.api.enums.EnumServiceInterface;
+import de.minigameslib.mgapi.api.MinigameInterface;
+import de.minigameslib.mgapi.api.MinigamesLibInterface;
+
 /**
  * Interface implemented by enumerations for building arena types.
  * 
@@ -31,6 +37,12 @@ package de.minigameslib.mgapi.api.arena;
  */
 public interface ArenaTypeInterface
 {
+    
+    /**
+     * Returns the name of the enum
+     * @return enum name
+     */
+    String name();
     
     /**
      * Returns the arena type provider for this type.
@@ -47,6 +59,24 @@ public interface ArenaTypeInterface
         {
             throw new IllegalStateException(ex);
         }
+    }
+    
+    /**
+     * Returns the plugin owning this type.
+     * @return plugin.
+     */
+    default Plugin getPlugin()
+    {
+        return EnumServiceInterface.instance().getPlugin((Enum<?>) this);
+    }
+    
+    /**
+     * Returns the minigame owning this type.
+     * @return minigame.
+     */
+    default MinigameInterface getMinigame()
+    {
+        return MinigamesLibInterface.instance().getMinigame(getPlugin());
     }
     
 }

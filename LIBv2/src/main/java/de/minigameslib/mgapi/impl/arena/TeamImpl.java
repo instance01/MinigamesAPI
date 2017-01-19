@@ -22,43 +22,19 @@
 
 */
 
-package de.minigameslib.mgapi.impl;
+package de.minigameslib.mgapi.impl.arena;
 
-import de.minigameslib.mclib.api.perms.Permission;
-import de.minigameslib.mclib.api.perms.Permissions;
-import de.minigameslib.mclib.api.perms.PermissionsInterface;
+import java.util.UUID;
 
 /**
- * Permissions for minigames library
+ * Basic team implementation.
  * 
  * @author mepeisen
  */
-@Permissions("mg2")
-public enum MglibPerms implements PermissionsInterface
+public class TeamImpl
 {
-    
-    /**
-     * Permission for info command.
-     */
-    @Permission("command.info")
-    CommandInfo,
-    
-    /**
-     * Permission for arenas command.
-     */
-    @Permission("command.arenas")
-    CommandArenas,
-    
-    /**
-     * Permission for arena command.
-     */
-    @Permission("command.arena")
-    CommandArena,
-    
-    /**
-     * Permission for join command.
-     */
-    @Permission("command.join")
-    CommandJoin
+ 
+    /** a generic uuid to identify a team. */
+    private final UUID teamUuid = UUID.randomUUID();
     
 }

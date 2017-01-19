@@ -32,12 +32,15 @@ import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
+import de.minigameslib.mgapi.impl.arena.ArenaImpl;
+import de.minigameslib.mgapi.impl.cmd.ArenaCommand;
 import de.minigameslib.mgapi.impl.cmd.ArenasCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoExtensionCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoExtensionsCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigameCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigamesCommand;
+import de.minigameslib.mgapi.impl.cmd.JoinCommand;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 
 /**
@@ -55,11 +58,52 @@ import de.minigameslib.mgapi.impl.cmd.Mg2Command;
     InfoMinigameCommand.Messages.class,
     InfoExtensionCommand.Messages.class,
     ArenasCommand.Messages.class,
+    ArenaCommand.Messages.class,
+    ArenaImpl.Messages.class,
+    JoinCommand.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {
     
-    // common error messages
+    /** Arena is disabled. */
+    @LocalizedMessage(defaultMessage = "DISABLED", severity = MessageSeverityType.Error)
+    @MessageComment({"Arena is disabled."})
+    ArenaStateDisabled,
+    
+    /** Arena is under maintenance. */
+    @LocalizedMessage(defaultMessage = "MAINTENANCE", severity = MessageSeverityType.Error)
+    @MessageComment({"Arena is under meintenance."})
+    ArenaStateMaintenance,
+    
+    /** Arena is in join state. */
+    @LocalizedMessage(defaultMessage = "JOIN", severity = MessageSeverityType.Success)
+    @MessageComment({"Arena is in join state."})
+    ArenaStateJoin,
+    
+    /** Arena is starting. */
+    @LocalizedMessage(defaultMessage = "START", severity = MessageSeverityType.Warning)
+    @MessageComment({"Arena is starting."})
+    ArenaStateStarting,
+    
+    /** Arena is in PreMatch state. */
+    @LocalizedMessage(defaultMessage = "PRE-MATCH", severity = MessageSeverityType.Winner)
+    @MessageComment({"Arena is in pre-match state."})
+    ArenaStatePreMatch,
+    
+    /** Arena is in Match state. */
+    @LocalizedMessage(defaultMessage = "MATCH", severity = MessageSeverityType.Winner)
+    @MessageComment({"Arena is in match state."})
+    ArenaStateMatch,
+    
+    /** Arena is in PostMatch state. */
+    @LocalizedMessage(defaultMessage = "POST-MATCH", severity = MessageSeverityType.Winner)
+    @MessageComment({"Arena is in post-match state."})
+    ArenaStatePostMatch,
+    
+    /** Arena is resetting. */
+    @LocalizedMessage(defaultMessage = "RESET", severity = MessageSeverityType.Warning)
+    @MessageComment({"Arena is resetting."})
+    ArenaStateRestarting,
     
     /** Library is initializing. */
     @LocalizedMessage(defaultMessage = "INIT", severity = MessageSeverityType.Error)

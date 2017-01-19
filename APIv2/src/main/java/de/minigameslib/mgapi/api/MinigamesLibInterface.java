@@ -29,8 +29,10 @@ import java.util.Collection;
 import org.bukkit.plugin.Plugin;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
  * Base interface to access the minigames API.
@@ -143,6 +145,14 @@ public interface MinigamesLibInterface
      * @return {@code null} if minigame was not found
      */
     MinigameInterface getMinigame(String name);
+    
+    /**
+     * Returns minigame for given plugin.
+     * 
+     * @param plugin
+     * @return {@code null} if minigame was not found
+     */
+    MinigameInterface getMinigame(Plugin plugin);
     
     /**
      * Initializes the given extension.
@@ -366,5 +376,12 @@ public interface MinigamesLibInterface
      *             thrown if there are problems creating the arena.
      */
     ArenaInterface create(String name, ArenaTypeInterface type) throws McException;
+
+    /**
+     * Returns the arena player for given mclib player
+     * @param player
+     * @return arena player
+     */
+    ArenaPlayerInterface getPlayer(McPlayerInterface player);
     
 }

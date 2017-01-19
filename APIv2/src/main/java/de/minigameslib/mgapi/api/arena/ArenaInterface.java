@@ -29,6 +29,7 @@ import java.util.Collection;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedConfigString;
+import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
@@ -136,5 +137,11 @@ public interface ArenaInterface
      * @return list of arena failures.
      */
     Collection<CheckFailure> check();
+
+    /**
+     * The minigame of the arena.
+     * @return arena minigame; may be null for invalid arenas.
+     */
+    MinigameInterface getMinigame();
     
 }

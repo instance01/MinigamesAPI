@@ -22,43 +22,37 @@
 
 */
 
-package de.minigameslib.mgapi.impl;
+package de.minigameslib.mgapi.impl.internal;
 
-import de.minigameslib.mclib.api.perms.Permission;
-import de.minigameslib.mclib.api.perms.Permissions;
-import de.minigameslib.mclib.api.perms.PermissionsInterface;
+import org.bukkit.Bukkit;
+
+import de.minigameslib.mclib.api.util.function.McRunnable;
 
 /**
- * Permissions for minigames library
+ * A task manager to queue periodic work tasks.
  * 
  * @author mepeisen
  */
-@Permissions("mg2")
-public enum MglibPerms implements PermissionsInterface
+public class TaskManager
 {
     
     /**
-     * Permission for info command.
+     * Returns the task manager instance.
+     * @return task manager
      */
-    @Permission("command.info")
-    CommandInfo,
-    
+    public static TaskManager instance()
+    {
+        // TODO caching.
+        return Bukkit.getServicesManager().load(TaskManager.class);
+    }
+
     /**
-     * Permission for arenas command.
+     * Queues a new task to be runned asap.
+     * @param task
      */
-    @Permission("command.arenas")
-    CommandArenas,
-    
-    /**
-     * Permission for arena command.
-     */
-    @Permission("command.arena")
-    CommandArena,
-    
-    /**
-     * Permission for join command.
-     */
-    @Permission("command.join")
-    CommandJoin
+    public void queue(McRunnable task)
+    {
+        // TODO Auto-generated method stub
+    }
     
 }

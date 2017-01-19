@@ -88,6 +88,12 @@ public class ArenaData extends AnnotatedDataFragment
      */
     @PersistentField
     private boolean isMaintenance;
+    
+    /**
+     * True if a match is pending.
+     */
+    @PersistentField
+    private boolean matchPending;
 
     /**
      * @param name
@@ -219,6 +225,22 @@ public class ArenaData extends AnnotatedDataFragment
     public void setMaintenance(boolean isMaintenance)
     {
         this.isMaintenance = isMaintenance;
+    }
+
+    /**
+     * @return the matchPending
+     */
+    public boolean isMatchPending()
+    {
+        return this.matchPending;
+    }
+
+    /**
+     * @param matchPending the matchPending to set
+     */
+    public void setMatchPending(boolean matchPending)
+    {
+        this.matchPending = matchPending;
     }
     
 }

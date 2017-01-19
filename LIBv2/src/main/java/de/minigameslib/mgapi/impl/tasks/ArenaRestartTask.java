@@ -24,40 +24,34 @@
 
 package de.minigameslib.mgapi.impl.tasks;
 
-import org.bukkit.scheduler.BukkitRunnable;
-
-import de.minigameslib.mgapi.api.MinigamesLibInterface;
-import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.util.function.McRunnable;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
-import de.minigameslib.mgapi.impl.internal.TaskManager;
 
 /**
- * Initialization task for minigames.
+ * A task to check and start a arena.
  * 
  * @author mepeisen
  */
-public class InitTask extends BukkitRunnable
+public class ArenaRestartTask implements McRunnable
 {
-
-    @Override
-    public void run()
+    
+    /**
+     * @param arenaImpl
+     */
+    public ArenaRestartTask(ArenaImpl arenaImpl)
     {
-        for (final ArenaInterface arena : MinigamesLibInterface.instance().getArenas(0, Integer.MAX_VALUE))
-        {
-            if (arena.getState() == ArenaState.Starting)
-            {
-                final ArenaImpl impl = (ArenaImpl) arena;
-                if (impl.isMatchPending())
-                {
-                    TaskManager.instance().queue(new ArenaRecoverCrashTask((ArenaImpl) arena));
-                }
-                else
-                {
-                    TaskManager.instance().queue(new ArenaStartTask((ArenaImpl) arena));
-                }
-            }
-        }
+        // TODO Auto-generated constructor stub
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mclib.api.util.function.McRunnable#run()
+     */
+    @Override
+    public void run() throws McException
+    {
+        // TODO Auto-generated method stub
+        
     }
     
 }
