@@ -59,6 +59,18 @@ public enum MglibPerms implements PermissionsInterface
      * Permission for join command.
      */
     @Permission("command.join")
-    CommandJoin
+    CommandJoin,
+    
+    /**
+     * Permission for spectate command.
+     */
+    @Permission("command.spectate")
+    CommandSpectate,
+    
+    /**
+     * Permission for manual command.
+     */
+    @Permission("command.manual")
+    CommandManual
     
 }

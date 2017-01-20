@@ -41,7 +41,9 @@ import de.minigameslib.mgapi.impl.cmd.InfoExtensionsCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigameCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigamesCommand;
 import de.minigameslib.mgapi.impl.cmd.JoinCommand;
+import de.minigameslib.mgapi.impl.cmd.ManualCommand;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
+import de.minigameslib.mgapi.impl.cmd.SpectateCommand;
 
 /**
  * The common messages.
@@ -50,7 +52,10 @@ import de.minigameslib.mgapi.impl.cmd.Mg2Command;
  */
 @LocalizedMessages(value = "core")
 @ChildEnum({
+    // core
     MglibCoreErrors.class,
+    ArenaImpl.Messages.class,
+    // commands
     Mg2Command.Messages.class,
     InfoCommand.Messages.class,
     InfoMinigamesCommand.Messages.class,
@@ -59,8 +64,9 @@ import de.minigameslib.mgapi.impl.cmd.Mg2Command;
     InfoExtensionCommand.Messages.class,
     ArenasCommand.Messages.class,
     ArenaCommand.Messages.class,
-    ArenaImpl.Messages.class,
     JoinCommand.Messages.class,
+    SpectateCommand.Messages.class,
+    ManualCommand.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {

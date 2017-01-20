@@ -51,6 +51,8 @@ public class Mg2Command extends AbstractCompositeCommandHandler
         this.subCommands.put("info", new InfoCommand()); //$NON-NLS-1$
         this.subCommands.put("arenas", new ArenasCommand()); //$NON-NLS-1$
         this.subCommands.put("arena", new ArenaCommand()); //$NON-NLS-1$
+        this.subCommands.put("join", new JoinCommand()); //$NON-NLS-1$
+        this.subCommands.put("spectate", new SpectateCommand()); //$NON-NLS-1$
     }
     
     @Override
