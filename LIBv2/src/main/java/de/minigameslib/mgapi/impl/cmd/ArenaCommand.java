@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
@@ -58,7 +57,7 @@ public class ArenaCommand implements SubCommandHandlerInterface
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOp() || command.isPlayer() && command.getPlayer().checkPermission(MglibPerms.CommandArena);
+        return command.checkOpPermission(MglibPerms.CommandArena);
     }
     
     @Override
@@ -66,39 +65,19 @@ public class ArenaCommand implements SubCommandHandlerInterface
     {
         command.permOpThrowException(MglibPerms.CommandArena, command.getCommandPath());
         
-        if (command.getArgs().length == 0)
-        {
-            command.send(Messages.NameMissing);
-            command.send(Messages.Usage);
-            return;
-        }
-        
-        final String name = command.getArgs()[0];
-        final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        final ArenaInterface arena = mglib.getArena(name);
-        if (arena == null)
-        {
-            command.send(Messages.ArenaNotFound, name);
-            return;
-        }
-        
-        if (command.getArgs().length > 1)
-        {
-            command.send(CommonMessages.TooManyArguments);
-            command.send(Messages.Usage);
-            return;
-        }
+        command.checkMinArgCount(1, Mg2Command.Messages.ArenaNameMissing, Messages.Usage);
+        final ArenaInterface arena = command.fetch(Mg2Command::getArena).get();
         
         // print Info
         final MinigameInterface minigame = arena.getMinigame();
-        final Serializable mgName = minigame == null ? "<invalid>" : arena.getMinigame().getDisplayName().toArg(); //$NON-NLS-1$
+        final Serializable mgName = minigame == null ? "<invalid>" : arena.getMinigame().getDisplayName(); //$NON-NLS-1$
         command.send(Messages.CommandOutput,
                 mgName,
-                arena.getDisplayName().toArg(),
-                arena.getShortDescription().toArg(),
+                arena.getDisplayName(),
+                arena.getShortDescription(),
                 toString(arena.getState()),
-                arena.getDescription().toArg(),
-                name
+                arena.getDescription(),
+                arena.getInternalName()
                 );
     }
 

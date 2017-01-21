@@ -99,11 +99,11 @@ public class InfoCommand extends AbstractCompositeCommandHandler implements SubC
                 cmd.getCommandPath(),
                 mclib.getMinecraftVersion().toString(),
                 minigamesVersion,
-                mode.toArg(),
-                mglib.debug() ? MglibMessages.FlagTrue.toArg() : MglibMessages.FlagFalse.toArg(),
+                mode,
+                mglib.debug() ? MglibMessages.FlagTrue : MglibMessages.FlagFalse,
                 mglib.getApiVersion(),
                 mclib.getApiVersion(),
-                state.toArg(),
+                state,
                 mclibVersion,
                 bukkitVersion
                 );

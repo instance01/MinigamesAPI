@@ -91,14 +91,21 @@ public interface ArenaInterface
     ArenaState getState();
     
     /**
-     * Let the given player join the waiting lobby.
+     * Let the given player leave the arena. Prints a text message to player on success.
+     * @param player
+     * @throws McException thrown if the player is not inside given arena
+     */
+    void leave(ArenaPlayerInterface player) throws McException;
+    
+    /**
+     * Let the given player join the waiting lobby. Prints a text message to player on success.
      * @param player
      * @throws McException thrown if the arena is in any other state except {@link ArenaState#Join}
      */
     void join(ArenaPlayerInterface player) throws McException;
     
     /**
-     * Let the given player join the spectation area.
+     * Let the given player join the spectation area. Prints a text message to player on success.
      * @param player
      * @throws McException thrown if the arena does not run games or is not in state {@link ArenaState#Join}
      */
@@ -131,6 +138,18 @@ public interface ArenaInterface
      * @return {@code true} if setMaintenance was called before or the arena is still in maintenance mode.
      */
     boolean isMaintenance();
+
+    /**
+     * Checks if arena is in disabled state mode or is going to disabled mode as soon as possible.
+     * @return {@code true} if setDisabledState was called before or the arena is still in disabled mode.
+     */
+    boolean isDisabled();
+
+    /**
+     * Checks if arena is running a match.
+     * @return {@code true} if arena is in one of the match states: PRE_MATCH, MATCH, POST_MATCH
+     */
+    boolean isMatch();
     
     /**
      * Checks for administration failures.
@@ -143,5 +162,23 @@ public interface ArenaInterface
      * @return arena minigame; may be null for invalid arenas.
      */
     MinigameInterface getMinigame();
-    
+
+    /**
+     * Delete arena
+     * @throws McException thrown if arena could not be deleted or if arena is not in maintenance state
+     */
+    void delete() throws McException;
+
+    /**
+     * Starts a match
+     * @throws McException thrown if arena is not in join state or if there is no player. 
+     */
+    void start() throws McException;
+
+    /**
+     * Sets test mode for a maintained arena; ensures that arena gets to maintenance mode one the match was finished.
+     * @throws McException thrown if arena is not in maintenance state.
+     */
+    void setTestState() throws McException;
+
 }

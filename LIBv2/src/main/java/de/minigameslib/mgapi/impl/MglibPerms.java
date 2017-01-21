@@ -71,6 +71,90 @@ public enum MglibPerms implements PermissionsInterface
      * Permission for manual command.
      */
     @Permission("command.manual")
-    CommandManual
+    CommandManual,
+    
+    /**
+     * Permission for leave command.
+     */
+    @Permission("command.leave")
+    CommandLeave,
+    
+    /**
+     * Permission for admin command.
+     */
+    @Permission("command.admin")
+    CommandAdmin,
+    
+    /**
+     * Permission for admin create command.
+     */
+    @Permission("command.admin.create")
+    CommandAdminCreate,
+    
+    /**
+     * Permission for admin delete command.
+     */
+    @Permission("command.admin.delete")
+    CommandAdminDelete,
+    
+    /**
+     * Permission for admin enable command.
+     */
+    @Permission("command.admin.enable")
+    CommandAdminEnable,
+    
+    /**
+     * Permission for admin disable command.
+     */
+    @Permission("command.admin.disable")
+    CommandAdminDisable,
+    
+    /**
+     * Permission for admin check command.
+     */
+    @Permission("command.admin.check")
+    CommandAdminCheck,
+    
+    /**
+     * Permission for admin maintain command.
+     */
+    @Permission("command.admin.maintain")
+    CommandAdminMaintain,
+    
+    /**
+     * Permission for admin start command.
+     */
+    @Permission("command.admin.start")
+    CommandAdminStart,
+    
+    /**
+     * Permission for admin stop command.
+     */
+    @Permission("command.admin.stop")
+    CommandAdminStop,
+    
+    /**
+     * Permission for admin test command.
+     */
+    @Permission("command.admin.test")
+    CommandAdminTest,
+    
+    /**
+     * Permission for admin invite command.
+     */
+    @Permission("command.admin.invite")
+    CommandAdminInvite,
+    
+    /**
+     * Permission for admin gui command.
+     */
+    @Permission("command.admin.gui")
+    CommandAdminGui,
+    
+    /**
+     * Permission for admin sgui command.
+     */
+    @Permission("command.admin.sgui")
+    CommandAdminSGui
     
 }

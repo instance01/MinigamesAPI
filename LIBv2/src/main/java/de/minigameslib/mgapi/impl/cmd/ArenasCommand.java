@@ -45,7 +45,7 @@ public class ArenasCommand extends ArenaListCommand implements SubCommandHandler
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOp() || command.isPlayer() && command.getPlayer().checkPermission(MglibPerms.CommandArenas);
+        return command.checkOpPermission(MglibPerms.CommandArenas);
     }
 
     @Override

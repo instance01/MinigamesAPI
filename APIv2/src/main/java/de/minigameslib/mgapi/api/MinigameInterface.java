@@ -24,9 +24,12 @@
 
 package de.minigameslib.mgapi.api;
 
+import java.util.Collection;
+
 import org.bukkit.plugin.Plugin;
 
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * @author mepeisen
@@ -76,5 +79,21 @@ public interface MinigameInterface
      * @return bukkit plugin.
      */
     Plugin getPlugin();
+
+    /**
+     * @param typeName
+     * @return
+     */
+    ArenaTypeInterface getType(String typeName);
+    
+    int getTypeCount();
+
+    /**
+     * @param prefix
+     * @param start
+     * @param limit
+     * @return
+     */
+    Collection<ArenaTypeInterface> getTypes(String prefix, int start, int limit);
     
 }

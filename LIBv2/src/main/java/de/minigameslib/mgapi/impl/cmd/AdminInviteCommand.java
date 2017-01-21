@@ -28,49 +28,46 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
-import de.minigameslib.mclib.api.cmd.LocalizedPagableCommand;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
-import de.minigameslib.mclib.api.locale.LocalizedMessageList;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
+import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.impl.MglibPerms;
 
 /**
- * Prints info on arenas.
- * 
  * @author mepeisen
+ *
  */
-public class ManualCommand implements SubCommandHandlerInterface
+public class AdminInviteCommand implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOp() || command.isPlayer() && command.getPlayer().checkPermission(MglibPerms.CommandManual);
+        return command.checkOpPermission(MglibPerms.CommandAdminInvite);
     }
     
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandManual, command.getCommandPath());
+        command.permOpThrowException(MglibPerms.CommandAdminInvite, command.getCommandPath());
+
+        command.checkMinArgCount(1, Mg2Command.Messages.PlayerNameMissing, Messages.Usage);
+        final ArenaPlayerInterface player = command.fetch(Mg2Command::getPlayer).get();
         
-        command.checkMinArgCount(1, Mg2Command.Messages.ArenaNameMissing, Messages.Usage);
-        final ArenaInterface arena = command.fetch(Mg2Command::getArena).get();
-        command.checkMaxArgCount(0, CommonMessages.TooManyArguments);
+        final ArenaInterface arena = Mg2Command.getArenaFromPlayer(command, Messages.Usage);
         
-        // print manual
-        new LocalizedPagableCommand(
-                arena.getManual() == null ? arena.getMinigame().getHowToPlay() : arena.getManual(),
-                Messages.ManualPagedHeader.toArg(arena.getDisplayName())
-                ).handle(command.consumeArgs(1));
+        arena.join(player);
+        command.send(Messages.PlayerInvited, arena.getInternalName());
     }
     
     @Override
@@ -78,7 +75,11 @@ public class ManualCommand implements SubCommandHandlerInterface
     {
         if (command.getArgs().length == 0)
         {
-            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().map(ArenaInterface::getInternalName).collect(Collectors.toList());
+            return null; // player list
+        }
+        if (command.getArgs().length == 1)
+        {
+            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().filter(a -> a.getState() == ArenaState.Join && a.isMaintenance()).map(ArenaInterface::getInternalName).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
@@ -100,43 +101,37 @@ public class ManualCommand implements SubCommandHandlerInterface
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_manual")
+    @LocalizedMessages(value = "cmd.mg2_admin_invite")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 manual
+         * Short description of /mg2 admin invite
          */
-        @LocalizedMessage(defaultMessage = "Prints how-to-play manual on arenas.")
-        @MessageComment({"Short description of /mg2 manual"})
+        @LocalizedMessage(defaultMessage = "invites an existing arena")
+        @MessageComment({"Short description of /mg2 admin invite"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 manual
+         * Long description of /mg2 admin invite
          */
-        @LocalizedMessage(defaultMessage = "Prints how-to-play manual on arenas.")
-        @MessageComment({"Long description of /mg2 manual"})
+        @LocalizedMessage(defaultMessage = "invites an existing arena")
+        @MessageComment({"Long description of /mg2 admin invite"})
         Description,
         
         /**
-         * Usage of /mg2 manual
+         * Usage of /mg2 admin invite
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 manual <name>")
-        @MessageComment({"Usage of /mg2 manual"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin invite <player> <internal-name>")
+        @MessageComment({"Usage of /mg2 admin invite"})
         Usage,
         
         /**
-         * Header line for /mg2 manual ...
+         * Arena invite succeded
          */
-        @LocalizedMessageList({
-            "How-to-play for arena %1$s."
-        })
-        @MessageComment(value = {
-            "Header line for /mg2 manual ..."
-        },args = {
-                @Argument("arena display name"),
-                })
-        ManualPagedHeader,
+        @LocalizedMessage(defaultMessage = "Player " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " was invited to arena " + LocalizedMessage.BLUE + "%2$s " + LocalizedMessage.GREEN + ".", severity = MessageSeverityType.Success)
+        @MessageComment(value = {"Arena invite succeeded"}, args = {@Argument("player name"), @Argument("arena name")})
+        PlayerInvited,
         
     }
     

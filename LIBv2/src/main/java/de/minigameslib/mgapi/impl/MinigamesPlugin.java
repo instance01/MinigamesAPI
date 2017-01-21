@@ -62,6 +62,8 @@ import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
+import de.minigameslib.mgapi.impl.arena.ArenaPlayerImpl;
+import de.minigameslib.mgapi.impl.arena.ArenaPlayerPersistentData;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
 import de.minigameslib.mgapi.impl.tasks.InitTask;
@@ -454,14 +456,22 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         return arena;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.MinigamesLibInterface#getPlayer(de.minigameslib.mclib.api.objects.McPlayerInterface)
-     */
     @Override
     public ArenaPlayerInterface getPlayer(McPlayerInterface player)
     {
-        // TODO Auto-generated method stub
-        return null;
+        ArenaPlayerImpl impl = player.getSessionStorage().get(ArenaPlayerImpl.class);
+        if (impl == null)
+        {
+            ArenaPlayerPersistentData persistent = player.getPersistentStorage().get(ArenaPlayerPersistentData.class);
+            if (persistent == null)
+            {
+                persistent = new ArenaPlayerPersistentData();
+                player.getPersistentStorage().set(ArenaPlayerPersistentData.class, persistent);
+            }
+            impl = new ArenaPlayerImpl(player, persistent);
+            player.getSessionStorage().set(ArenaPlayerImpl.class, impl);
+        }
+        return impl;
     }
     
 }

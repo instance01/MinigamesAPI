@@ -27,6 +27,7 @@ package de.minigameslib.mgapi.impl.arena;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -50,10 +51,12 @@ import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
 import de.minigameslib.mclib.shared.api.com.DataSection;
 import de.minigameslib.mclib.shared.api.com.MemoryDataSection;
 import de.minigameslib.mgapi.api.MinigameInterface;
+import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.arena.CheckFailure;
+import de.minigameslib.mgapi.api.arena.CheckSeverity;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
 import de.minigameslib.mgapi.impl.tasks.ArenaRestartTask;
@@ -202,21 +205,72 @@ public class ArenaImpl implements ArenaInterface
     }
 
     @Override
+    public void leave(ArenaPlayerInterface player) throws McException
+    {
+        final UUID uuid = player.getPlayerUUID();
+        if (this.players.contains(uuid))
+        {
+            this.leaveMatch(player);
+        }
+        else if (this.spectators.contains(uuid))
+        {
+            this.leaveSpec(player);
+        }
+        else
+        {
+            throw new McException(Messages.CannotLeaveNotInArena, this.getDisplayName());
+        }
+    }
+
+    /**
+     * Leave spectator mode
+     * @param player
+     */
+    private void leaveSpec(ArenaPlayerInterface player)
+    {
+        ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
+        // TODO port to main lobby....
+        this.spectators.remove(player.getPlayerUUID());
+        player.getMcPlayer().sendMessage(Messages.YouLeft, this.getDisplayName());
+    }
+
+    /**
+     * Leaves a running match
+     * @param player
+     */
+    private void leaveMatch(ArenaPlayerInterface player)
+    {
+        ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
+        // TODO port to main lobby....
+        this.players.remove(player.getPlayerUUID());
+        player.getMcPlayer().sendMessage(Messages.YouLeft, this.getDisplayName());
+    }
+
+    @Override
     public void join(ArenaPlayerInterface player) throws McException
     {
+        if (player.inArena())
+        {
+            throw new McException(Messages.AlreadyInArena, player.getArena().getDisplayName());
+        }
         if (this.state != ArenaState.Join)
         {
             throw new McException(Messages.JoinWrongState);
         }
         
         this.players.add(player.getPlayerUUID());
+        ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), false);
         // TODO port to waiting lobby etc.
-        player.getMcPlayer().sendMessage(Messages.JoinedArena, this.getDisplayName().toArg());
+        player.getMcPlayer().sendMessage(Messages.JoinedArena, this.getDisplayName());
     }
 
     @Override
     public void spectate(ArenaPlayerInterface player) throws McException
     {
+        if (player.inArena())
+        {
+            throw new McException(Messages.AlreadyInArena, player.getArena().getDisplayName());
+        }
         switch (this.state)
         {
             case Disabled:
@@ -230,8 +284,9 @@ public class ArenaImpl implements ArenaInterface
             case PostMatch:
             case PreMatch:
                 this.spectators.add(player.getPlayerUUID());
+                ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), true);
                 // TODO port to spectator spawn etc.
-                player.getMcPlayer().sendMessage(Messages.SpectatingArena, this.getDisplayName().toArg());
+                player.getMcPlayer().sendMessage(Messages.SpectatingArena, this.getDisplayName());
                 break;
         }
     }
@@ -267,6 +322,13 @@ public class ArenaImpl implements ArenaInterface
                 this.state = ArenaState.Disabled;
                 break;
             case Join:
+                this.arenaData.setEnabled(false);
+                this.saveData();
+                // abort current game to kick players being in waiting lobby.
+                this.abortGame(Messages.KickReasonDisable);
+                this.state = ArenaState.Restarting;
+                TaskManager.instance().queue(new ArenaRestartTask(this));
+                break;
             case Match:
             case PostMatch:
             case PreMatch:
@@ -311,7 +373,9 @@ public class ArenaImpl implements ArenaInterface
     private void kick(UUID uuid, LocalizedMessageInterface kickReason)
     {
         final McPlayerInterface player = ObjectServiceInterface.instance().getPlayer(uuid);
-        player.sendMessage(Messages.YouWereKicked, kickReason.toArg());
+        // TODO port to main lobby....
+        ((ArenaPlayerImpl)MinigamesLibInterface.instance().getPlayer(player)).switchArenaOrMode(null, false);
+        player.sendMessage(Messages.YouWereKicked, kickReason);
     }
 
     @Override
@@ -348,19 +412,79 @@ public class ArenaImpl implements ArenaInterface
     }
 
     @Override
+    public void start() throws McException
+    {
+        if (this.state != ArenaState.Join)
+        {
+            throw new McException(Messages.StartWrongState);
+        }
+        this.state = ArenaState.PreMatch;
+        // TODO Start pre match phase, teleport to spawns etc.
+    }
+
+    @Override
+    public void setTestState() throws McException
+    {
+        if (this.state != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.TestWrongState);
+        }
+        for (final CheckFailure failure : this.check())
+        {
+            if (failure.getSeverity() == CheckSeverity.Error)
+            {
+                throw new McException(Messages.TestCheckFailure);
+            }
+        }
+        this.state = ArenaState.Join;
+    }
+
+    @Override
     public boolean isMaintenance()
     {
         return this.arenaData.isMaintenance();
     }
 
+    @Override
+    public boolean isDisabled()
+    {
+        return !this.arenaData.isEnabled();
+    }
+
+    @Override
+    public boolean isMatch()
+    {
+        switch (this.state)
+        {
+            case Join:
+            case Disabled:
+            case Maintenance:
+            case Restarting:
+            case Starting:
+            default:
+                return false;
+            case Match:
+            case PostMatch:
+            case PreMatch:
+                return true;
+        }
+    }
+
     /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.arena.ArenaInterface#check()
+     * @see de.minigameslib.mgapi.api.arena.ArenaInterface#delete()
      */
+    @Override
+    public void delete() throws McException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
     @Override
     public Collection<CheckFailure> check()
     {
         // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -444,6 +568,27 @@ public class ArenaImpl implements ArenaInterface
         MaintenanceWrongState,
         
         /**
+         * Cannot start test match because arena is not in maintenance mode
+         */
+        @LocalizedMessage(defaultMessage = "Cannot start test match because arena ist not in maintenance.", severity = MessageSeverityType.Error)
+        @MessageComment({"Cannot start test match because arena is not in maintenance mode"})
+        TestWrongState,
+        
+        /**
+         * Cannot start match because arena is not in join mode
+         */
+        @LocalizedMessage(defaultMessage = "Cannot start match because arena ist not in join mode.", severity = MessageSeverityType.Error)
+        @MessageComment({"Cannot start test match because arena is not in join mode"})
+        StartWrongState,
+        
+        /**
+         * Cannot start test match because arena has errors
+         */
+        @LocalizedMessage(defaultMessage = "Cannot start test match because arena has errors.", severity = MessageSeverityType.Error)
+        @MessageComment({"Cannot start test match because arena has errors"})
+        TestCheckFailure,
+        
+        /**
          * Kick reason: Arena is maintained by admin
          */
         @LocalizedMessage(defaultMessage = "Arena is going into maintenance")
@@ -454,8 +599,29 @@ public class ArenaImpl implements ArenaInterface
          * You were kicked
          */
         @LocalizedMessage(defaultMessage = "You were kicked. Reason: %1$s", severity = MessageSeverityType.Error)
-        @MessageComment({"You were kicked"})
+        @MessageComment(value = {"You were kicked"}, args = @Argument("reason text"))
         YouWereKicked,
+        
+        /**
+         * You cannot leave because not in arena
+         */
+        @LocalizedMessage(defaultMessage = "You cannot leave because you are not within arena %1$s.", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"You cannot leave because not in arena"}, args = @Argument("arena display name"))
+        CannotLeaveNotInArena,
+        
+        /**
+         * You are already in arena
+         */
+        @LocalizedMessage(defaultMessage = "You cannot join because you are in arena %1$s.", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"You are already in arena"}, args = @Argument("arena display name"))
+        AlreadyInArena,
+        
+        /**
+         * You left the arena
+         */
+        @LocalizedMessage(defaultMessage = "You left arena %1$s.", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"You left the arena"}, args = @Argument("arena display name"))
+        YouLeft,
         
     }
     

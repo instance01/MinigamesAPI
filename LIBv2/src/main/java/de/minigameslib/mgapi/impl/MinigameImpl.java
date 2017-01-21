@@ -24,11 +24,16 @@
 
 package de.minigameslib.mgapi.impl;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.bukkit.plugin.Plugin;
 
+import de.minigameslib.mclib.api.enums.EnumServiceInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.MinigameProvider;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * @author mepeisen
@@ -93,6 +98,31 @@ class MinigameImpl implements MinigameInterface
     public Plugin getPlugin()
     {
         return this.plugin;
+    }
+
+    @Override
+    public ArenaTypeInterface getType(String typeName)
+    {
+        for (final ArenaTypeInterface type : EnumServiceInterface.instance().getEnumValues(this.getPlugin(), ArenaTypeInterface.class))
+        {
+            if (type.name().equals(typeName))
+            {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int getTypeCount()
+    {
+        return EnumServiceInterface.instance().getEnumValues(this.getPlugin(), ArenaTypeInterface.class).size();
+    }
+
+    @Override
+    public Collection<ArenaTypeInterface> getTypes(String prefix, int start, int limit)
+    {
+        return EnumServiceInterface.instance().getEnumValues(this.getPlugin(), ArenaTypeInterface.class).stream().filter(t -> t.name().startsWith(prefix)).skip(start).limit(limit).collect(Collectors.toList());
     }
     
 }

@@ -139,4 +139,16 @@ public interface ArenaPlayerInterface
         return this.getArena() != null;
     }
     
+    /**
+     * Checks if player is within arena and if he is spectating
+     * @return {@code true} if player is spectating an arena
+     */
+    boolean isSpectating();
+    
+    /**
+     * Checks if player is within arena and if he is playing a match (or waiting in the lobby)
+     * @return {@code true} if player is playing a match or waiting inside an arena
+     */
+    boolean isPlaying();
+    
 }

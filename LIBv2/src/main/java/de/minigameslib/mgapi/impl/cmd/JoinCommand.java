@@ -36,8 +36,6 @@ import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
-import de.minigameslib.mclib.api.locale.MessageComment.Argument;
-import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.impl.MglibPerms;
@@ -53,39 +51,27 @@ public class JoinCommand implements SubCommandHandlerInterface
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOp() || command.isPlayer() && command.getPlayer().checkPermission(MglibPerms.CommandJoin);
+        return command.isOnline() && command.checkOpPermission(MglibPerms.CommandJoin);
     }
     
     @Override
     public void handle(CommandInterface command) throws McException
     {
         command.permOpThrowException(MglibPerms.CommandJoin, command.getCommandPath());
+        command.checkOnline();
         
-        if (command.getArgs().length == 0)
-        {
-            command.send(Messages.NameMissing);
-            command.send(Messages.Usage);
-            return;
-        }
+        command.checkMinArgCount(1, Mg2Command.Messages.ArenaNameMissing, Messages.Usage);
+        final ArenaInterface arena = command.fetch(Mg2Command::getArena).get();
+        command.checkMaxArgCount(0, CommonMessages.TooManyArguments);
         
-        final String name = command.getArgs()[0];
-        final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        final ArenaInterface arena = mglib.getArena(name);
-        if (arena == null)
+        if (arena.isMaintenance())
         {
-            command.send(Messages.ArenaNotFound, name);
-            return;
-        }
-        
-        if (command.getArgs().length > 1)
-        {
-            command.send(CommonMessages.TooManyArguments);
-            command.send(Messages.Usage);
+            command.send(Messages.ArenaUnderMaintenance, arena.getDisplayName());
             return;
         }
         
         // do the join
-        arena.join(mglib.getPlayer(command.getPlayer()));
+        arena.join(MinigamesLibInterface.instance().getPlayer(command.getPlayer()));
     }
     
     @Override
@@ -141,18 +127,11 @@ public class JoinCommand implements SubCommandHandlerInterface
         Usage,
         
         /**
-         * Name argument is missing
+         * Arena is under maintenance
          */
-        @LocalizedMessage(defaultMessage = "Missing arena name", severity = MessageSeverityType.Error)
-        @MessageComment({"Name argument is missing"})
-        NameMissing,
-        
-        /**
-         * Arena was not found
-         */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
-        @MessageComment(value = {"arena was not found"}, args = @Argument("arena name"))
-        ArenaNotFound,
+        @LocalizedMessage(defaultMessage = "Cannot join. Arena is under maintenance.")
+        @MessageComment({"Arena is under maintenance"})
+        ArenaUnderMaintenance
     }
     
 }

@@ -45,7 +45,7 @@ public class InfoMinigamesCommand extends AbstractPagableCommandHandler implemen
     @Override
     protected Serializable getHeader(CommandInterface cmd)
     {
-        return Messages.Header.toArg();
+        return Messages.Header;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class InfoMinigamesCommand extends AbstractPagableCommandHandler implemen
     protected Serializable[] getLines(CommandInterface cmd, int start, int limit)
     {
         return MinigamesLibInterface.instance().getMinigames(start, limit).stream()
-                .map(mg -> mg.getDisplayName().toArg()).toArray(Serializable[]::new);
+                .map(mg -> mg.getDisplayName()).toArray(Serializable[]::new);
     }
 
     @Override

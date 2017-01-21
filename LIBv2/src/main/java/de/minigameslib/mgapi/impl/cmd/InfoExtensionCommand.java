@@ -40,7 +40,6 @@ import de.minigameslib.mclib.api.locale.LocalizedMessageList;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
-import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.ExtensionInterface;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 
@@ -54,36 +53,18 @@ public class InfoExtensionCommand implements SubCommandHandlerInterface
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        if (command.getArgs().length == 0)
-        {
-            command.send(Messages.NameMissing);
-            command.send(Messages.Usage);
-            return;
-        }
+        command.checkMinArgCount(1, Mg2Command.Messages.ExtensionNameMissing, Messages.Usage);
+        final ExtensionInterface extension = command.fetch(Mg2Command::getExtension).get();
+        command.checkMaxArgCount(1, CommonMessages.TooManyArguments);
         
-        final String name = command.getArgs()[0];
-        final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        final ExtensionInterface extension = mglib.getExtension(name);
-        if (extension == null)
+        if (command.getArgs().length == 1)
         {
-            command.send(Messages.ExtensionNotFound, name);
-            return;
-        }
-        
-        if (command.getArgs().length > 2)
-        {
-            command.send(CommonMessages.TooManyArguments);
-            command.send(Messages.Usage);
-            return;
-        }
-        if (command.getArgs().length == 2)
-        {
-            switch (command.getArgs()[1])
+            switch (command.getArgs()[0])
             {
                 case "manual": //$NON-NLS-1$
                     new LocalizedPagableCommand(
                             extension.getManual(),
-                            Messages.ManualPagedHeader.toArg(name)
+                            Messages.ManualPagedHeader.toArg(extension.getDisplayName())
                             ).handle(command.consumeArgs(1));
                     return;
                 default:
@@ -95,12 +76,12 @@ public class InfoExtensionCommand implements SubCommandHandlerInterface
         // print Info
         final String version = extension.getPlugin().getDescription().getVersion();
         command.send(Messages.CommandOutput,
-                extension.getDisplayName().toArg(),
-                extension.getShortDescription().toArg(),
+                extension.getDisplayName(),
+                extension.getShortDescription(),
                 version,
                 extension.getDescription().toListArg(),
                 command.getCommandPath(),
-                name
+                extension.getName()
                 );
     }
 
@@ -159,20 +140,6 @@ public class InfoExtensionCommand implements SubCommandHandlerInterface
         @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 info extension <name>")
         @MessageComment({"Usage of /mg2 info extension"})
         Usage,
-        
-        /**
-         * Name argument is missing
-         */
-        @LocalizedMessage(defaultMessage = "Missing extension name", severity = MessageSeverityType.Error)
-        @MessageComment({"Name argument is missing"})
-        NameMissing,
-        
-        /**
-         * Extension was not found
-         */
-        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
-        @MessageComment(value = {"Extension was not found"}, args = @Argument("minigame name"))
-        ExtensionNotFound,
         
         /**
          * The command output of /mg2 info extension

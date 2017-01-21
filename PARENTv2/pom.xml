@@ -18,7 +18,7 @@
 		  <maven.compiler.target>1.8</maven.compiler.target>
 		  <java.version>1.8</java.version>
 		  <latest.spigot.version>1.11.2</latest.spigot.version>
-		  <mclib.version>0.0.1-SNAPSHOT</mclib.version>
+		  <mclib.version>0.0.2-SNAPSHOT</mclib.version>
 		  <mglib.version>2.0.0-SNAPSHOT</mglib.version>
   </properties>
   
@@ -35,13 +35,13 @@
 		<dependency>
 			<groupId>de.minigameslib.mclib</groupId>
 			<artifactId>mclib-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${mclib.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.minigameslib.mclib</groupId>
 			<artifactId>mclib</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${mclib.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		

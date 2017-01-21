@@ -33,6 +33,19 @@ import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
+import de.minigameslib.mgapi.impl.cmd.AdminCheckCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminCreateCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminDeleteCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminDisableCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminEnableCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminGuiCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminInviteCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminMaintainCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminSGuiCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminStartCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminStopCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminTestCommand;
 import de.minigameslib.mgapi.impl.cmd.ArenaCommand;
 import de.minigameslib.mgapi.impl.cmd.ArenasCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoCommand;
@@ -41,6 +54,7 @@ import de.minigameslib.mgapi.impl.cmd.InfoExtensionsCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigameCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoMinigamesCommand;
 import de.minigameslib.mgapi.impl.cmd.JoinCommand;
+import de.minigameslib.mgapi.impl.cmd.LeaveCommand;
 import de.minigameslib.mgapi.impl.cmd.ManualCommand;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 import de.minigameslib.mgapi.impl.cmd.SpectateCommand;
@@ -67,6 +81,21 @@ import de.minigameslib.mgapi.impl.cmd.SpectateCommand;
     JoinCommand.Messages.class,
     SpectateCommand.Messages.class,
     ManualCommand.Messages.class,
+    LeaveCommand.Messages.class,
+    // admin commands
+    AdminCommand.Messages.class,
+    AdminCreateCommand.Messages.class,
+    AdminDeleteCommand.Messages.class,
+    AdminEnableCommand.Messages.class,
+    AdminDisableCommand.Messages.class,
+    AdminCheckCommand.Messages.class,
+    AdminMaintainCommand.Messages.class,
+    AdminStartCommand.Messages.class,
+    AdminStopCommand.Messages.class,
+    AdminTestCommand.Messages.class,
+    AdminInviteCommand.Messages.class,
+    AdminGuiCommand.Messages.class,
+    AdminSGuiCommand.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {

@@ -40,7 +40,6 @@ import de.minigameslib.mclib.api.locale.LocalizedMessageList;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
-import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 
@@ -54,43 +53,26 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        if (command.getArgs().length == 0)
-        {
-            command.send(Messages.NameMissing);
-            command.send(Messages.Usage);
-            return;
-        }
+        command.checkMinArgCount(1, Mg2Command.Messages.MinigameNameMissing, Messages.Usage);
+        final MinigameInterface minigame = command.fetch(Mg2Command::getMinigame).get();
+        command.checkMaxArgCount(1, CommonMessages.TooManyArguments);
         
-        final String name = command.getArgs()[0];
-        final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        final MinigameInterface minigame = mglib.getMinigame(name);
-        if (minigame == null)
+        if (command.getArgs().length == 1)
         {
-            command.send(Messages.MinigameNotFound, name);
-            return;
-        }
-        
-        if (command.getArgs().length > 2)
-        {
-            command.send(CommonMessages.TooManyArguments);
-            command.send(Messages.Usage);
-            return;
-        }
-        if (command.getArgs().length == 2)
-        {
-            switch (command.getArgs()[1])
+            final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
+            switch (command.getArgs()[0])
             {
                 case "arenas": //$NON-NLS-1$
                     new ArenaListCommand(
                             () -> mglib.getArenaCount(minigame.getPlugin()),
                             () -> mglib.getArenas(minigame.getPlugin(), 0, Integer.MAX_VALUE).stream(),
-                            Messages.ArenasPagedHeader.toArg(name)
+                            Messages.ArenasPagedHeader.toArg(minigame.getDisplayName())
                             ).handle(command.consumeArgs(1));
                     return;
                 case "manual": //$NON-NLS-1$
                     new LocalizedPagableCommand(
                             minigame.getManual(),
-                            Messages.ManualPagedHeader.toArg(name)
+                            Messages.ManualPagedHeader.toArg(minigame.getDisplayName())
                             ).handle(command.consumeArgs(1));
                     return;
                 default:
@@ -102,12 +84,12 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
         // print Info
         final String version = minigame.getPlugin().getDescription().getVersion();
         command.send(Messages.CommandOutput,
-                minigame.getDisplayName().toArg(),
-                minigame.getShortDescription().toArg(),
+                minigame.getDisplayName(),
+                minigame.getShortDescription(),
                 version,
                 minigame.getDescription().toListArg(),
                 command.getCommandPath(),
-                name
+                minigame.getName()
                 );
     }
 
@@ -166,20 +148,6 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
         @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 info minigame <name>")
         @MessageComment({"Usage of /mg2 info minigame"})
         Usage,
-        
-        /**
-         * Name argument is missing
-         */
-        @LocalizedMessage(defaultMessage = "Missing minigame name", severity = MessageSeverityType.Error)
-        @MessageComment({"Name argument is missing"})
-        NameMissing,
-        
-        /**
-         * Minigame was not found
-         */
-        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
-        @MessageComment(value = {"Minigame was not found"}, args = @Argument("minigame name"))
-        MinigameNotFound,
         
         /**
          * The command output of /mg2 info minigame

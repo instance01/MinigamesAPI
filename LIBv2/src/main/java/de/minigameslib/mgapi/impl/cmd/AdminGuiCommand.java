@@ -26,60 +26,40 @@ package de.minigameslib.mgapi.impl.cmd;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
-import de.minigameslib.mclib.api.cmd.LocalizedPagableCommand;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
-import de.minigameslib.mclib.api.locale.LocalizedMessageList;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
-import de.minigameslib.mclib.api.locale.MessageComment.Argument;
-import de.minigameslib.mgapi.api.MinigamesLibInterface;
-import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.impl.MglibPerms;
 
 /**
- * Prints info on arenas.
- * 
  * @author mepeisen
+ *
  */
-public class ManualCommand implements SubCommandHandlerInterface
+public class AdminGuiCommand implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOp() || command.isPlayer() && command.getPlayer().checkPermission(MglibPerms.CommandManual);
+        return command.isOnline() && command.checkOpPermission(MglibPerms.CommandAdminGui);
     }
     
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandManual, command.getCommandPath());
+        command.permOpThrowException(MglibPerms.CommandAdminGui, command.getCommandPath());
         
-        command.checkMinArgCount(1, Mg2Command.Messages.ArenaNameMissing, Messages.Usage);
-        final ArenaInterface arena = command.fetch(Mg2Command::getArena).get();
-        command.checkMaxArgCount(0, CommonMessages.TooManyArguments);
-        
-        // print manual
-        new LocalizedPagableCommand(
-                arena.getManual() == null ? arena.getMinigame().getHowToPlay() : arena.getManual(),
-                Messages.ManualPagedHeader.toArg(arena.getDisplayName())
-                ).handle(command.consumeArgs(1));
+        // TODO Support gui
     }
     
     @Override
     public List<String> onTabComplete(CommandInterface command, String lastArg) throws McException
     {
-        if (command.getArgs().length == 0)
-        {
-            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().map(ArenaInterface::getInternalName).collect(Collectors.toList());
-        }
         return Collections.emptyList();
     }
     
@@ -100,43 +80,30 @@ public class ManualCommand implements SubCommandHandlerInterface
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_manual")
+    @LocalizedMessages(value = "cmd.mg2_admin_gui")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 manual
+         * Short description of /mg2 admin gui
          */
-        @LocalizedMessage(defaultMessage = "Prints how-to-play manual on arenas.")
-        @MessageComment({"Short description of /mg2 manual"})
+        @LocalizedMessage(defaultMessage = "Display simple admin gui")
+        @MessageComment({"Short description of /mg2 admin gui"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 manual
+         * Long description of /mg2 admin gui
          */
-        @LocalizedMessage(defaultMessage = "Prints how-to-play manual on arenas.")
-        @MessageComment({"Long description of /mg2 manual"})
+        @LocalizedMessage(defaultMessage = "Display simple admin gui")
+        @MessageComment({"Long description of /mg2 admin gui"})
         Description,
         
         /**
-         * Usage of /mg2 manual
+         * Usage of /mg2 admin gui
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 manual <name>")
-        @MessageComment({"Usage of /mg2 manual"})
-        Usage,
-        
-        /**
-         * Header line for /mg2 manual ...
-         */
-        @LocalizedMessageList({
-            "How-to-play for arena %1$s."
-        })
-        @MessageComment(value = {
-            "Header line for /mg2 manual ..."
-        },args = {
-                @Argument("arena display name"),
-                })
-        ManualPagedHeader,
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin gui")
+        @MessageComment({"Usage of /mg2 admin gui"})
+        Usage
         
     }
     
