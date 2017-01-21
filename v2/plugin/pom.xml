@@ -18,6 +18,14 @@
 			<artifactId>MinigamesAPI</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>de.minigameslib.mclib</groupId>
+			<artifactId>mclib-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.minigameslib.mclib</groupId>
+			<artifactId>mclib</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
