@@ -22,6 +22,11 @@
 		  <mglib.version>2.0.0-SNAPSHOT</mglib.version>
   </properties>
   
+  <modules>
+  	<module>api</module>
+  	<module>plugin</module>
+  </modules>
+  
   <dependencyManagement>
   	<dependencies>
 	  	<dependency>
