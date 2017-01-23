@@ -102,7 +102,7 @@ public class InfoMinigameCommand implements SubCommandHandlerInterface
         }
         if (command.getArgs().length == 1)
         {
-            return Arrays.asList("arenas", "manual").stream().filter(p -> p.startsWith(lastArg)).collect(Collectors.toList());  //$NON-NLS-1$//$NON-NLS-2$
+            return Arrays.asList("arenas", "manual").stream().filter(p -> p.startsWith(lastArg.toLowerCase())).collect(Collectors.toList());  //$NON-NLS-1$//$NON-NLS-2$
         }
         return Collections.emptyList();
     }

@@ -27,6 +27,7 @@ package de.minigameslib.mgapi.impl.cmd;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.AbstractCompositeCommandHandler;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
+import de.minigameslib.mclib.api.cmd.HelpCommandHandler;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
@@ -53,6 +54,7 @@ public class AdminCommand extends AbstractCompositeCommandHandler implements Sub
      */
     public AdminCommand()
     {
+        this.subCommands.put("help", new HelpCommandHandler((AbstractCompositeCommandHandler) this)); //$NON-NLS-1$
         this.subCommands.put("create", new AdminCreateCommand()); //$NON-NLS-1$
         this.subCommands.put("delete", new AdminDeleteCommand()); //$NON-NLS-1$
         this.subCommands.put("enable", new AdminEnableCommand()); //$NON-NLS-1$

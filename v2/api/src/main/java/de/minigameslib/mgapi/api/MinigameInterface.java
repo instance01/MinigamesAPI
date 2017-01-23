@@ -81,18 +81,24 @@ public interface MinigameInterface
     Plugin getPlugin();
 
     /**
+     * Returns the arena type per name.
      * @param typeName
-     * @return
+     * @return type instance or {@code null} if the type was not found
      */
     ArenaTypeInterface getType(String typeName);
     
+    /**
+     * Returns the type count.
+     * @return type count
+     */
     int getTypeCount();
 
     /**
-     * @param prefix
-     * @param start
-     * @param limit
-     * @return
+     * Returns the arena types
+     * @param prefix type name prefix
+     * @param start starting index
+     * @param limit maximum countt return
+     * @return collection of arena types.
      */
     Collection<ArenaTypeInterface> getTypes(String prefix, int start, int limit);
     

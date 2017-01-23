@@ -285,35 +285,35 @@ public class Mg2Command extends AbstractCompositeCommandHandler
         /**
          * Arena was not found
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"arena was not found"}, args = @Argument("arena name"))
         ArenaNotFound,
         
         /**
          * Player was not found
          */
-        @LocalizedMessage(defaultMessage = "Player " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Player " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"player was not found"}, args = @Argument("player name"))
         PlayerNotFound,
         
         /**
          * Minigame was not found
          */
-        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"minigame was not found"}, args = @Argument("minigame name"))
         MinigameNotFound,
         
         /**
          * Arena type was not found
          */
-        @LocalizedMessage(defaultMessage = "Arena type " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Arena type " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"arena type was not found"}, args = @Argument("type name"))
         TypeNotFound,
         
         /**
          * Extension was not found
          */
-        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"extension was not found"}, args = @Argument("extension name"))
         ExtensionNotFound,
         

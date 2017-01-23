@@ -288,7 +288,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public int getMinigameCount(String prefix)
     {
-        return (int) this.minigamesPerName.keySet().stream().filter(p -> p.startsWith(prefix)).count();
+        return (int) this.minigamesPerName.keySet().stream().filter(p -> p.toLowerCase().startsWith(prefix.toLowerCase())).count();
     }
 
     @Override
@@ -300,7 +300,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public Collection<MinigameInterface> getMinigames(String prefix, int index, int limit)
     {
-        return this.minigamesPerName.values().stream().filter(p -> p.getName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
+        return this.minigamesPerName.values().stream().filter(p -> p.getName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit).collect(Collectors.toList());
     }
 
     @Override
@@ -332,7 +332,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public int getExtensionCount(String prefix)
     {
-        return (int) this.extensionsPerName.keySet().stream().filter(p -> p.startsWith(prefix)).count();
+        return (int) this.extensionsPerName.keySet().stream().filter(p -> p.toLowerCase().startsWith(prefix.toLowerCase())).count();
     }
 
     @Override
@@ -344,7 +344,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public Collection<ExtensionInterface> getExtensions(String prefix, int index, int limit)
     {
-        return this.extensionsPerName.values().stream().filter(p -> p.getName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
+        return this.extensionsPerName.values().stream().filter(p -> p.getName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit).collect(Collectors.toList());
     }
 
     @Override
@@ -362,7 +362,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public int getArenaCount(String prefix)
     {
-        return (int) this.arenasPerName.keySet().stream().filter(p -> p.startsWith(prefix)).count();
+        return (int) this.arenasPerName.keySet().stream().filter(p -> p.toLowerCase().startsWith(prefix.toLowerCase())).count();
     }
 
     @Override
@@ -374,7 +374,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public int getArenaCount(Plugin plugin, String prefix)
     {
-        return (int) this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).filter(p -> p.getInternalName().startsWith(prefix)).count();
+        return (int) this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).count();
     }
 
     @Override
@@ -386,7 +386,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public int getArenaCount(ArenaTypeInterface type, String prefix)
     {
-        return (int) this.arenasPerName.values().stream().filter(p -> p.getType() == type).filter(p -> p.getInternalName().startsWith(prefix)).count();
+        return (int) this.arenasPerName.values().stream().filter(p -> p.getType() == type).filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).count();
     }
 
     @Override
@@ -398,7 +398,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public Collection<ArenaInterface> getArenas(String prefix, int index, int limit)
     {
-        return this.arenasPerName.values().stream().filter(p -> p.getInternalName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
+        return this.arenasPerName.values().stream().filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit).collect(Collectors.toList());
     }
 
     @Override
@@ -410,7 +410,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public Collection<ArenaInterface> getArenas(Plugin plugin, String prefix, int index, int limit)
     {
-        return this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).filter(p -> p.getInternalName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
+        return this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit).collect(Collectors.toList());
     }
 
     @Override
@@ -422,7 +422,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public Collection<ArenaInterface> getArenas(ArenaTypeInterface type, String prefix, int index, int limit)
     {
-        return this.arenasPerName.values().stream().filter(p -> p.getType() == type).filter(p -> p.getInternalName().startsWith(prefix)).skip(index).limit(limit).collect(Collectors.toList());
+        return this.arenasPerName.values().stream().filter(p -> p.getType() == type).filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit).collect(Collectors.toList());
     }
 
     @Override

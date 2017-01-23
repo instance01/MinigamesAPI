@@ -122,7 +122,7 @@ class MinigameImpl implements MinigameInterface
     @Override
     public Collection<ArenaTypeInterface> getTypes(String prefix, int start, int limit)
     {
-        return EnumServiceInterface.instance().getEnumValues(this.getPlugin(), ArenaTypeInterface.class).stream().filter(t -> t.name().startsWith(prefix)).skip(start).limit(limit).collect(Collectors.toList());
+        return EnumServiceInterface.instance().getEnumValues(this.getPlugin(), ArenaTypeInterface.class).stream().filter(t -> t.name().toLowerCase().startsWith(prefix.toLowerCase())).skip(start).limit(limit).collect(Collectors.toList());
     }
     
 }

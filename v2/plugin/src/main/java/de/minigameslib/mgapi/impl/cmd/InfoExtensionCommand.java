@@ -94,7 +94,7 @@ public class InfoExtensionCommand implements SubCommandHandlerInterface
         }
         if (command.getArgs().length == 1)
         {
-            return Arrays.asList("manual").stream().filter(p -> p.startsWith(lastArg)).collect(Collectors.toList());  //$NON-NLS-1$
+            return Arrays.asList("manual").stream().filter(p -> p.startsWith(lastArg.toLowerCase())).collect(Collectors.toList());  //$NON-NLS-1$
         }
         return Collections.emptyList();
     }
