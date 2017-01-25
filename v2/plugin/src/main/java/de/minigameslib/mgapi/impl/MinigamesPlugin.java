@@ -59,7 +59,14 @@ import de.minigameslib.mgapi.api.MinigameProvider;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.obj.BasicSignTypes;
+import de.minigameslib.mgapi.api.obj.BasicZoneTypes;
+import de.minigameslib.mgapi.api.obj.BasicComponentTypes;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
+import de.minigameslib.mgapi.api.rules.BasicComponentRuleSets;
+import de.minigameslib.mgapi.api.rules.BasicSignRuleSets;
+import de.minigameslib.mgapi.api.rules.BasicZoneRuleSets;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerImpl;
@@ -123,6 +130,14 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         EnumServiceInterface.instance().registerEnumClass(this, MglibConfig.class);
         EnumServiceInterface.instance().registerEnumClass(this, MglibMessages.class);
         EnumServiceInterface.instance().registerEnumClass(this, MglibPerms.class);
+        
+        EnumServiceInterface.instance().registerEnumClass(this, BasicArenaRuleSets.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicComponentRuleSets.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicComponentTypes.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicSignRuleSets.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicSignTypes.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicZoneRuleSets.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicZoneTypes.class);
         
         Bukkit.getServicesManager().register(MinigamesLibInterface.class, this, this, ServicePriority.Highest);
         Bukkit.getServicesManager().register(TaskManager.class, new TaskManager(), this, ServicePriority.Highest);

@@ -58,6 +58,7 @@ import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.arena.CheckFailure;
 import de.minigameslib.mgapi.api.arena.CheckSeverity;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
 import de.minigameslib.mgapi.impl.tasks.ArenaRestartTask;
 import de.minigameslib.mgapi.impl.tasks.ArenaStartTask;
@@ -500,6 +501,66 @@ public class ArenaImpl implements ArenaInterface
     public MinigameInterface getMinigame()
     {
         return this.type.getMinigame();
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#getAppliedRuleSets()
+     */
+    @Override
+    public Collection<ArenaRuleSetType> getAppliedRuleSets()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#getAvailableRuleSets()
+     */
+    @Override
+    public Collection<ArenaRuleSetType> getAvailableRuleSets()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#isFixed(de.minigameslib.mgapi.api.rules.RuleSetType)
+     */
+    @Override
+    public boolean isFixed(ArenaRuleSetType ruleset)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#isAvailable(de.minigameslib.mgapi.api.rules.RuleSetType)
+     */
+    @Override
+    public boolean isAvailable(ArenaRuleSetType ruleset)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#applyRuleSets(de.minigameslib.mgapi.api.rules.RuleSetType[])
+     */
+    @Override
+    public void applyRuleSets(ArenaRuleSetType... rulesets) throws McException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#removeRuleSets(de.minigameslib.mgapi.api.rules.RuleSetType[])
+     */
+    @Override
+    public void removeRuleSets(ArenaRuleSetType... rulesets) throws McException
+    {
+        // TODO Auto-generated method stub
+        
     }
     
     /**

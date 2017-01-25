@@ -53,6 +53,7 @@ public class AdminSGuiCommand implements SubCommandHandlerInterface
     public void handle(CommandInterface command) throws McException
     {
         command.permOpThrowException(MglibPerms.CommandAdminSGui, command.getCommandPath());
+        command.checkOnline();
         
         // TODO Support gui
     }

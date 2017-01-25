@@ -31,13 +31,15 @@ import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedConfigString;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
 
 /**
  * Basic interface for arenas.
  * 
  * @author mepeisen
  */
-public interface ArenaInterface
+public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetType>
 {
     
     /**

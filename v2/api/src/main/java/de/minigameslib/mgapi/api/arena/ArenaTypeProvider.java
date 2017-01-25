@@ -24,7 +24,12 @@
 
 package de.minigameslib.mgapi.api.arena;
 
+import java.util.Collection;
+
+import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 
 /**
  * An interface for arena types.
@@ -51,5 +56,24 @@ public interface ArenaTypeProvider
      * @return multi-line description
      */
     LocalizedMessageInterface getDescription();
+    
+    /**
+     * Returns the fixed arena rule set types.
+     * @return fixed arena rule sets.
+     */
+    Collection<ArenaRuleSetType> getFixedArenaRules();
+    
+    /**
+     * Returns optional arena rule sets
+     * @return optional arena rule sets.
+     */
+    Collection<ArenaRuleSetType> getOptionalArenaRules();
+    
+    /**
+     * Creates a configuration with defaults for given rule set
+     * @param ruleSet
+     * @throws McException thrown for problems.
+     */
+    void configure(ArenaRuleSetInterface ruleSet) throws McException;
     
 }
