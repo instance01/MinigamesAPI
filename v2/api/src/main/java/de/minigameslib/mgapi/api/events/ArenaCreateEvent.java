@@ -29,8 +29,6 @@ import org.bukkit.event.HandlerList;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
 import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
-import de.minigameslib.mclib.api.objects.McPlayerInterface;
-import de.minigameslib.mclib.api.objects.ZoneInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
@@ -105,20 +103,6 @@ public class ArenaCreateEvent extends AbstractVetoEvent implements MinecraftEven
     public ArenaCreateEvent getBukkitEvent()
     {
         return this;
-    }
-
-    @Override
-    public ZoneInterface getZone()
-    {
-        // no zone support
-        return null;
-    }
-
-    @Override
-    public McPlayerInterface getPlayer()
-    {
-        // no player support
-        return null;
     }
 
     @Override

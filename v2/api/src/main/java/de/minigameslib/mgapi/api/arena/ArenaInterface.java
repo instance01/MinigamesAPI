@@ -29,8 +29,10 @@ import java.util.Collection;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedConfigString;
+import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
 
@@ -39,7 +41,7 @@ import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
  * 
  * @author mepeisen
  */
-public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetType>
+public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetType, ArenaRuleSetInterface>
 {
     
     /**
@@ -196,13 +198,21 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
     int getSpectatorCount();
 
     /**
-     * @return
+     * Returns the players being within waiting lobby or within match
+     * @return current player list
      */
     Collection<ArenaPlayerInterface> getPlayers();
 
     /**
-     * @return
+     * Returns the spectators
+     * @return spectators list
      */
     Collection<ArenaPlayerInterface> getSpectators();
+    
+    /**
+     * Returns the internal object representing the arena.
+     * @return arena object
+     */
+    ObjectInterface getObject();
 
 }

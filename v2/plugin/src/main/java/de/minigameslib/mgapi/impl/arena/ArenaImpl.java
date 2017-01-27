@@ -47,6 +47,8 @@ import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
+import de.minigameslib.mclib.api.objects.ObjectHandlerInterface;
+import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
 import de.minigameslib.mclib.shared.api.com.DataSection;
 import de.minigameslib.mclib.shared.api.com.MemoryDataSection;
@@ -58,8 +60,12 @@ import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.arena.CheckFailure;
 import de.minigameslib.mgapi.api.arena.CheckSeverity;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.impl.MglibObjectTypes;
+import de.minigameslib.mgapi.impl.MinigamesPlugin;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
+import de.minigameslib.mgapi.impl.rules.AbstractRuleSetContainer;
 import de.minigameslib.mgapi.impl.tasks.ArenaRestartTask;
 import de.minigameslib.mgapi.impl.tasks.ArenaStartTask;
 
@@ -68,7 +74,7 @@ import de.minigameslib.mgapi.impl.tasks.ArenaStartTask;
  * 
  * @author mepeisen
  */
-public class ArenaImpl implements ArenaInterface
+public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
 {
     
     /**
@@ -92,6 +98,42 @@ public class ArenaImpl implements ArenaInterface
     
     /** the spectators. */
     private final Set<UUID> spectators = new HashSet<>();
+
+    /** the mclib object */
+    ObjectInterface object;
+    
+    /**
+     * rule set container
+     */
+    private AbstractRuleSetContainer<ArenaRuleSetType, ArenaRuleSetInterface> ruleSets = new AbstractRuleSetContainer<ArenaRuleSetType, ArenaRuleSetInterface>() {
+
+        @Override
+        protected void checkModifications() throws McException
+        {
+            if (ArenaImpl.this.getState() != ArenaState.Maintenance)
+            {
+                throw new McException(Messages.ModificationWrongState);
+            }
+        }
+
+        @Override
+        protected void applyListeners(ArenaRuleSetInterface listeners)
+        {
+            ArenaImpl.this.object.registerHandlers(getPlugin(), listeners);
+        }
+
+        @Override
+        protected void removeListeners(ArenaRuleSetInterface listeners)
+        {
+            ArenaImpl.this.object.unregisterHandlers(getPlugin(), listeners);
+        }
+
+        @Override
+        protected ArenaRuleSetInterface create(ArenaRuleSetType ruleset) throws McException
+        {
+            return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, ArenaImpl.this);
+        }
+    };
     
     /**
      * Constructor to create an arena by using given data file.
@@ -115,6 +157,20 @@ public class ArenaImpl implements ArenaInterface
         this.arenaData = new ArenaData(name, type);
         this.arenaData.setMaintenance(true);
         this.state = ArenaState.Maintenance;
+        this.object = ObjectServiceInterface.instance().createObject(MglibObjectTypes.Arena, this, false);
+        try
+        {
+            for (final ArenaRuleSetType ruleset : type.safeCreateProvider().getFixedArenaRules())
+            {
+                this.ruleSets.applyFixedRuleSet(ruleset);
+            }
+        }
+        catch (McException ex)
+        {
+            this.object.delete();
+            this.object = null;
+            throw ex;
+        }
         this.saveData();
     }
     
@@ -128,6 +184,21 @@ public class ArenaImpl implements ArenaInterface
         {
             final DataSection section = McLibInterface.instance().readYmlFile(this.dataFile);
             this.arenaData = section.getFragment(ArenaData.class, "data"); //$NON-NLS-1$
+            this.type = this.arenaData.getArenaType();
+            this.object = ObjectServiceInterface.instance().createObject(MglibObjectTypes.Arena, this, false);
+            try
+            {
+                for (final ArenaRuleSetType ruleset : this.type.safeCreateProvider().getFixedArenaRules())
+                {
+                    this.ruleSets.applyFixedRuleSet(ruleset);
+                }
+            }
+            catch (McException ex)
+            {
+                this.object.delete();
+                this.object = null;
+                throw ex;
+            }
         }
         catch (IOException e)
         {
@@ -489,11 +560,16 @@ public class ArenaImpl implements ArenaInterface
         }
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.arena.ArenaInterface#delete()
-     */
     @Override
     public void delete() throws McException
+    {
+        this.object.delete();
+    }
+
+    /**
+     * Do deletion
+     */
+    private void delete0()
     {
         // TODO Auto-generated method stub
         
@@ -519,66 +595,6 @@ public class ArenaImpl implements ArenaInterface
     public MinigameInterface getMinigame()
     {
         return this.type.getMinigame();
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#getAppliedRuleSets()
-     */
-    @Override
-    public Collection<ArenaRuleSetType> getAppliedRuleSets()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#getAvailableRuleSets()
-     */
-    @Override
-    public Collection<ArenaRuleSetType> getAvailableRuleSets()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#isFixed(de.minigameslib.mgapi.api.rules.RuleSetType)
-     */
-    @Override
-    public boolean isFixed(ArenaRuleSetType ruleset)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#isAvailable(de.minigameslib.mgapi.api.rules.RuleSetType)
-     */
-    @Override
-    public boolean isAvailable(ArenaRuleSetType ruleset)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#applyRuleSets(de.minigameslib.mgapi.api.rules.RuleSetType[])
-     */
-    @Override
-    public void applyRuleSets(ArenaRuleSetType... rulesets) throws McException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.rules.RuleSetContainerInterface#removeRuleSets(de.minigameslib.mgapi.api.rules.RuleSetType[])
-     */
-    @Override
-    public void removeRuleSets(ArenaRuleSetType... rulesets) throws McException
-    {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -607,6 +623,135 @@ public class ArenaImpl implements ArenaInterface
         final ObjectServiceInterface osi = ObjectServiceInterface.instance();
         final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
         return this.spectators.stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
+    }
+
+    @Override
+    public void read(DataSection section)
+    {
+        // not used
+    }
+
+    @Override
+    public void write(DataSection section)
+    {
+        // not used
+    }
+
+    @Override
+    public boolean test(DataSection section)
+    {
+        // not used
+        return false;
+    }
+
+    @Override
+    public void canDelete() throws McException
+    {
+        if (ArenaImpl.this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
+    }
+
+    @Override
+    public void onCreate(ObjectInterface arg0) throws McException
+    {
+        this.object = arg0;
+    }
+
+    @Override
+    public void onDelete()
+    {
+        this.delete0();
+    }
+
+    @Override
+    public void onPause(ObjectInterface arg0)
+    {
+        // not used
+    }
+
+    @Override
+    public void onResume(ObjectInterface arg0) throws McException
+    {
+        // not used
+    }
+
+    @Override
+    public ObjectInterface getObject()
+    {
+        return this.object;
+    }
+
+    @Override
+    public ArenaRuleSetInterface getRuleSet(ArenaRuleSetType t)
+    {
+        return this.ruleSets.getRuleSet(t);
+    }
+
+    @Override
+    public Collection<ArenaRuleSetType> getAppliedRuleSetTypes()
+    {
+        return this.ruleSets.getAppliedRuleSetTypes();
+    }
+
+    @Override
+    public Collection<ArenaRuleSetType> getAvailableRuleSetTypes()
+    {
+        // TODO Auto-generated method stub
+        return Collections.emptyList();
+    }
+
+    @Override
+    public boolean isFixed(ArenaRuleSetType ruleset)
+    {
+        return this.ruleSets.isFixed(ruleset);
+    }
+
+    @Override
+    public boolean isOptional(ArenaRuleSetType ruleset)
+    {
+        return this.ruleSets.isOptional(ruleset);
+    }
+
+    @Override
+    public boolean isApplied(ArenaRuleSetType ruleset)
+    {
+        return this.ruleSets.isApplied(ruleset);
+    }
+
+    @Override
+    public boolean isAvailable(ArenaRuleSetType ruleset)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void reconfigure(ArenaRuleSetType... rulesets) throws McException
+    {
+        for (final ArenaRuleSetType t : rulesets)
+        {
+            this.ruleSets.reapplyRuleSet(t);
+        }
+    }
+
+    @Override
+    public void applyRuleSets(ArenaRuleSetType... rulesets) throws McException
+    {
+        for (final ArenaRuleSetType t : rulesets)
+        {
+            this.ruleSets.applyOptionalRuleSet(t);
+        }
+    }
+
+    @Override
+    public void removeRuleSets(ArenaRuleSetType... rulesets) throws McException
+    {
+        for (final ArenaRuleSetType t : rulesets)
+        {
+            this.ruleSets.removeOptionalRuleSet(t);
+        }
     }
     
     /**
@@ -687,6 +832,13 @@ public class ArenaImpl implements ArenaInterface
         @LocalizedMessage(defaultMessage = "Cannot start test match because arena ist not in maintenance.", severity = MessageSeverityType.Error)
         @MessageComment({"Cannot start test match because arena is not in maintenance mode"})
         TestWrongState,
+        
+        /**
+         * Cannot modify arena because of wrong state
+         */
+        @LocalizedMessage(defaultMessage = "Cannot modify arena because of wrong state.", severity = MessageSeverityType.Error)
+        @MessageComment({"Cannot modify arena because of wrong state"})
+        ModificationWrongState,
         
         /**
          * Cannot start match because arena is not in join mode

@@ -29,8 +29,7 @@ import org.bukkit.event.HandlerList;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
 import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
-import de.minigameslib.mclib.api.objects.McPlayerInterface;
-import de.minigameslib.mclib.api.objects.ZoneInterface;
+import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
@@ -95,17 +94,9 @@ public class ArenaCreatedEvent extends AbstractVetoEvent implements MinecraftEve
     }
 
     @Override
-    public ZoneInterface getZone()
+    public ObjectInterface getObject()
     {
-        // no zone support
-        return null;
-    }
-
-    @Override
-    public McPlayerInterface getPlayer()
-    {
-        // no player support
-        return null;
+        return this.arena.getObject();
     }
 
     @Override

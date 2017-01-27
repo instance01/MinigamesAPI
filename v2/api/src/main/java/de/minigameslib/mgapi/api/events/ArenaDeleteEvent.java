@@ -29,56 +29,53 @@ import org.bukkit.event.HandlerList;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
 import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
-import de.minigameslib.mclib.api.objects.McPlayerInterface;
-import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
-import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
- * Event fired before an arena player joined.
+ * Event fired before an arena is deleted.
  * 
  * @author mepeisen
  */
-public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinEvent, ArenaPlayerJoinEvent>
+public class ArenaDeleteEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaDeleteEvent, ArenaDeleteEvent>
 {
     
     /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
     
-    /** the arena instance. */
-    private final ArenaInterface arena;
+    /** the arena name. */
+    private final String arenaName;
     
-    /** the arena player. */
-    private final ArenaPlayerInterface player;
-
+    /** the arena type. */
+    private final ArenaTypeInterface type;
+    
     /**
-     * @param arena
-     * @param player
+     * @param arenaName
+     * @param type
      */
-    public ArenaPlayerJoinEvent(ArenaInterface arena, ArenaPlayerInterface player)
+    public ArenaDeleteEvent(String arenaName, ArenaTypeInterface type)
     {
-        this.arena = arena;
-        this.player = player;
+        this.arenaName = arenaName;
+        this.type = type;
     }
 
     /**
-     * @return the arena
+     * @return the arenaName
      */
-    public ArenaInterface getArena()
+    public String getArenaName()
     {
-        return this.arena;
+        return this.arenaName;
     }
 
     /**
-     * @return the arena player
+     * @return the type
      */
-    public ArenaPlayerInterface getArenaPlayer()
+    public ArenaTypeInterface getType()
     {
-        return this.player;
+        return this.type;
     }
 
     /**
@@ -103,25 +100,13 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     }
 
     @Override
-    public ArenaPlayerJoinEvent getBukkitEvent()
+    public ArenaDeleteEvent getBukkitEvent()
     {
         return this;
     }
 
     @Override
-    public ObjectInterface getObject()
-    {
-        return this.arena.getObject();
-    }
-
-    @Override
-    public McPlayerInterface getPlayer()
-    {
-        return this.player.getMcPlayer();
-    }
-
-    @Override
-    public McOutgoingStubbing<ArenaPlayerJoinEvent> when(McPredicate<ArenaPlayerJoinEvent> test) throws McException
+    public McOutgoingStubbing<ArenaDeleteEvent> when(McPredicate<ArenaDeleteEvent> test) throws McException
     {
         if (test.test(this))
         {

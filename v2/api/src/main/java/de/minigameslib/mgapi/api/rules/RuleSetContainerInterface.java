@@ -33,9 +33,17 @@ import de.minigameslib.mclib.api.McException;
  * 
  * @author mepeisen
  * @param <T> type of rule sets
+ * @param <Q> rule set interface
  */
-public interface RuleSetContainerInterface<T extends RuleSetType>
+public interface RuleSetContainerInterface<T extends RuleSetType, Q extends RuleSetInterface<T>>
 {
+    
+    /**
+     * Returns rule set from type
+     * @param type
+     * @return rule set or {@code null} if rule set is not applied
+     */
+    Q getRuleSet(T type);
     
     /**
      * Returns the rule sets applied to this element.
@@ -43,13 +51,13 @@ public interface RuleSetContainerInterface<T extends RuleSetType>
      * optional rule sets.
      * @return applied rule sets
      */
-    Collection<T> getAppliedRuleSets();
+    Collection<T> getAppliedRuleSetTypes();
     
     /**
      * Returns the rule sets available to this element.
      * @return available rule sets
      */
-    Collection<T> getAvailableRuleSets();
+    Collection<T> getAvailableRuleSetTypes();
     
     /**
      * Checks if given rule set is fixed and thus cannot be removed
@@ -59,11 +67,32 @@ public interface RuleSetContainerInterface<T extends RuleSetType>
     boolean isFixed(T ruleset);
     
     /**
+     * Checks if given rule set is optional and thus can be removed
+     * @param ruleset
+     * @return true if given ruleset is fixed.
+     */
+    boolean isOptional(T ruleset);
+    
+    /**
+     * Checks if given rule set is applied
+     * @param ruleset
+     * @return true if given ruleset is fixed.
+     */
+    boolean isApplied(T ruleset);
+    
+    /**
      * Checks if given rule set is available
      * @param ruleset
      * @return true if given ruleset is not yet applied and if it is allowed to apply it to this element.
      */
     boolean isAvailable(T ruleset);
+    
+    /**
+     * Reconfigure applied rule sets.
+     * @param rulesets
+     * @throws McException
+     */
+    void reconfigure(@SuppressWarnings("unchecked") T... rulesets) throws McException;
     
     /**
      * Adds rule sets to this element. The rule set can be removed later on.

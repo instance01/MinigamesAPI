@@ -24,7 +24,6 @@
 
 package de.minigameslib.mgapi.impl.rules;
 
-import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitTask;
 
 import de.minigameslib.mclib.api.McException;
@@ -155,7 +154,7 @@ public class BasicMatch implements ArenaRuleSetInterface
      * Invoked once a player successfully joined the arena
      * @param evt
      */
-    @EventHandler
+    @McEventHandler
     public void onPlayerJoined(ArenaPlayerJoinedEvent evt)
     {
         // check min players

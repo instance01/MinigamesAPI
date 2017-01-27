@@ -24,6 +24,8 @@
 
 package de.minigameslib.mgapi.api.arena;
 
+import de.minigameslib.mclib.api.CommonMessages;
+import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
@@ -50,6 +52,22 @@ public interface ArenaTypeInterface extends McUniqueEnumInterface
         catch (NoSuchFieldException ex)
         {
             throw new IllegalStateException(ex);
+        }
+    }
+    /**
+     * Creates arena type provider.
+     * @return arena type provider.
+     * @throws McException
+     */
+    default ArenaTypeProvider safeCreateProvider() throws McException
+    {
+        try
+        {
+            return this.getProvider().newInstance();
+        }
+        catch (InstantiationException | IllegalAccessException | IllegalStateException e)
+        {
+            throw new McException(CommonMessages.InternalError, e, e.getMessage());
         }
     }
     

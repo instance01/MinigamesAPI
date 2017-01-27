@@ -28,6 +28,7 @@ import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.objects.SignHandlerInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
+import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetType;
 
 /**
@@ -35,7 +36,7 @@ import de.minigameslib.mgapi.api.rules.SignRuleSetType;
  * 
  * @author mepeisen
  */
-public interface ArenaSignHandler extends SignHandlerInterface, RuleSetContainerInterface<SignRuleSetType>
+public interface ArenaSignHandler extends SignHandlerInterface, RuleSetContainerInterface<SignRuleSetType, SignRuleSetInterface>
 {
     
     /**

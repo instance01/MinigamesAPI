@@ -27,6 +27,7 @@ package de.minigameslib.mgapi.api.obj;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.objects.ComponentHandlerInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
 import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
 
@@ -35,7 +36,7 @@ import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
  * 
  * @author mepeisen
  */
-public interface ArenaComponentHandler extends ComponentHandlerInterface, RuleSetContainerInterface<ComponentRuleSetType>
+public interface ArenaComponentHandler extends ComponentHandlerInterface, RuleSetContainerInterface<ComponentRuleSetType, ComponentRuleSetInterface>
 {
     
     /**

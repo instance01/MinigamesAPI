@@ -29,21 +29,19 @@ import org.bukkit.event.HandlerList;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
 import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
-import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
- * Event fired before an arena player joined.
+ * Event fired after an arena is deleted.
  * 
  * @author mepeisen
  */
-public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinEvent, ArenaPlayerJoinEvent>
+public class ArenaDeletedEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaDeletedEvent, ArenaDeletedEvent>
 {
     
     /** handlers list. */
@@ -51,18 +49,13 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     
     /** the arena instance. */
     private final ArenaInterface arena;
-    
-    /** the arena player. */
-    private final ArenaPlayerInterface player;
 
     /**
      * @param arena
-     * @param player
      */
-    public ArenaPlayerJoinEvent(ArenaInterface arena, ArenaPlayerInterface player)
+    public ArenaDeletedEvent(ArenaInterface arena)
     {
         this.arena = arena;
-        this.player = player;
     }
 
     /**
@@ -71,14 +64,6 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     public ArenaInterface getArena()
     {
         return this.arena;
-    }
-
-    /**
-     * @return the arena player
-     */
-    public ArenaPlayerInterface getArenaPlayer()
-    {
-        return this.player;
     }
 
     /**
@@ -103,7 +88,7 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     }
 
     @Override
-    public ArenaPlayerJoinEvent getBukkitEvent()
+    public ArenaDeletedEvent getBukkitEvent()
     {
         return this;
     }
@@ -115,13 +100,7 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     }
 
     @Override
-    public McPlayerInterface getPlayer()
-    {
-        return this.player.getMcPlayer();
-    }
-
-    @Override
-    public McOutgoingStubbing<ArenaPlayerJoinEvent> when(McPredicate<ArenaPlayerJoinEvent> test) throws McException
+    public McOutgoingStubbing<ArenaDeletedEvent> when(McPredicate<ArenaDeletedEvent> test) throws McException
     {
         if (test.test(this))
         {
