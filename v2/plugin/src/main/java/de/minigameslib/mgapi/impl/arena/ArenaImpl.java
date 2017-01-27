@@ -31,13 +31,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.plugin.Plugin;
 
 import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.McLibInterface;
-import de.minigameslib.mclib.api.enums.EnumServiceInterface;
 import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedConfigString;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
@@ -85,7 +85,7 @@ public class ArenaImpl implements ArenaInterface
     private ArenaTypeInterface type;
     
     /** current arena state. */
-    private ArenaState state;
+    private ArenaState state = ArenaState.Disabled;
     
     /** the players within this arena. */
     private final Set<UUID> players = new HashSet<>();
@@ -96,14 +96,37 @@ public class ArenaImpl implements ArenaInterface
     /**
      * Constructor to create an arena by using given data file.
      * @param dataFile
-     * @throws McException thrown if data file is invalid.
      */
-    public ArenaImpl(File dataFile) throws McException
+    public ArenaImpl(File dataFile)
     {
         this.dataFile = dataFile;
+    }
+    
+    /**
+     * Constructor to create a new arena.
+     * @param name 
+     * @param type 
+     * @param dataFile 
+     * @throws McException thrown if data file is invalid.
+     */
+    public ArenaImpl(String name, ArenaTypeInterface type, File dataFile) throws McException
+    {
+        this.dataFile = dataFile;
+        this.arenaData = new ArenaData(name, type);
+        this.arenaData.setMaintenance(true);
+        this.state = ArenaState.Maintenance;
+        this.saveData();
+    }
+    
+    /**
+     * Resume the arena and load arena data file.
+     * @throws McException thrown if data file is invalid.
+     */
+    public void resume() throws McException
+    {
         try
         {
-            final DataSection section = McLibInterface.instance().readYmlFile(dataFile);
+            final DataSection section = McLibInterface.instance().readYmlFile(this.dataFile);
             this.arenaData = section.getFragment(ArenaData.class, "data"); //$NON-NLS-1$
         }
         catch (IOException e)
@@ -123,20 +146,6 @@ public class ArenaImpl implements ArenaInterface
         {
             this.state = ArenaState.Starting;
         }
-    }
-    
-    /**
-     * Constructor to create a new arena.
-     * @param name 
-     * @param type 
-     * @param dataFile 
-     * @throws McException thrown if data file is invalid.
-     */
-    public ArenaImpl(String name, ArenaTypeInterface type, File dataFile) throws McException
-    {
-        this.dataFile = dataFile;
-        this.arenaData = new ArenaData(name, EnumServiceInterface.instance().getPlugin((Enum<?>) type).getName(), type.name());
-        this.saveData();
     }
     
     /**
@@ -299,6 +308,10 @@ public class ArenaImpl implements ArenaInterface
         {
             throw new McException(Messages.EnableWrongState);
         }
+        if (this.arenaData.getArenaType() == null)
+        {
+            throw new McException(Messages.InvalidArenaType);
+        }
         
         this.arenaData.setEnabled(true);
         this.saveData();
@@ -388,6 +401,11 @@ public class ArenaImpl implements ArenaInterface
             case Maintenance:
                 throw new McException(Messages.MaintenanceWrongState);
             case Disabled:
+                if (this.arenaData.getArenaType() == null)
+                {
+                    throw new McException(Messages.InvalidArenaType);
+                }
+                //$FALL-THROUGH$
             case Starting:
                 this.arenaData.setMaintenance(true);
                 this.arenaData.setEnabled(true);
@@ -562,6 +580,34 @@ public class ArenaImpl implements ArenaInterface
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    public int getPlayerCount()
+    {
+        return this.players.size();
+    }
+
+    @Override
+    public int getSpectatorCount()
+    {
+        return this.spectators.size();
+    }
+
+    @Override
+    public Collection<ArenaPlayerInterface> getPlayers()
+    {
+        final ObjectServiceInterface osi = ObjectServiceInterface.instance();
+        final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
+        return this.players.stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<ArenaPlayerInterface> getSpectators()
+    {
+        final ObjectServiceInterface osi = ObjectServiceInterface.instance();
+        final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
+        return this.spectators.stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
+    }
     
     /**
      * The arena messages.
@@ -571,6 +617,13 @@ public class ArenaImpl implements ArenaInterface
     @LocalizedMessages(value = "arena")
     public enum Messages implements LocalizedMessageInterface
     {
+        
+        /**
+         * Invalid arena type detected
+         */
+        @LocalizedMessage(defaultMessage = "Invalid arena type detected. Did you uninstall/deactivate the minigame plugin?", severity = MessageSeverityType.Error)
+        @MessageComment({"Invalid arena type detected"})
+        InvalidArenaType,
         
         /**
          * Cannot join because of wrong state

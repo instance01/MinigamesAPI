@@ -58,6 +58,7 @@ import de.minigameslib.mgapi.impl.cmd.LeaveCommand;
 import de.minigameslib.mgapi.impl.cmd.ManualCommand;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 import de.minigameslib.mgapi.impl.cmd.SpectateCommand;
+import de.minigameslib.mgapi.impl.rules.BasicMatch;
 
 /**
  * The common messages.
@@ -96,6 +97,8 @@ import de.minigameslib.mgapi.impl.cmd.SpectateCommand;
     AdminInviteCommand.Messages.class,
     AdminGuiCommand.Messages.class,
     AdminSGuiCommand.Messages.class,
+    // rules
+    BasicMatch.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {
@@ -206,15 +209,6 @@ public enum MglibMessages implements LocalizedMessageInterface
                 value = {"Arena name contains illegal characters."},
                 args = {@Argument("Arena name")})
         InvalidArenaName,
-        
-        /**
-         * Arena data filename does not correspond to internal name.
-         */
-        @LocalizedMessage(defaultMessage = "Arena data filename (" + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + ") does not correspond to internal name. Did you copy yml files?", severity = MessageSeverityType.Error)
-        @MessageComment(
-                value = {"Arena data filename does not correspond to internal name."},
-                args = {@Argument("Arena name")})
-        ArenaNameMismatch,
         
         /**
          * Arena is duplicate

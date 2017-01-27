@@ -51,6 +51,8 @@ import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.cmd.CommandImpl;
 import de.minigameslib.mclib.api.enums.EnumServiceInterface;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
+import de.minigameslib.mclib.api.util.function.McBiFunction;
+import de.minigameslib.mclib.api.util.function.McFunction;
 import de.minigameslib.mgapi.api.ExtensionInterface;
 import de.minigameslib.mgapi.api.ExtensionProvider;
 import de.minigameslib.mgapi.api.LibState;
@@ -59,14 +61,20 @@ import de.minigameslib.mgapi.api.MinigameProvider;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.events.ArenaCreateEvent;
+import de.minigameslib.mgapi.api.events.ArenaCreatedEvent;
 import de.minigameslib.mgapi.api.obj.BasicSignTypes;
 import de.minigameslib.mgapi.api.obj.BasicZoneTypes;
 import de.minigameslib.mgapi.api.obj.BasicComponentTypes;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicComponentRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicSignRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicZoneRuleSets;
+import de.minigameslib.mgapi.api.rules.RuleSetInterface;
+import de.minigameslib.mgapi.api.rules.RuleSetType;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerImpl;
@@ -118,10 +126,14 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     
     /** arena name check pattern */
     private static final Pattern ARENA_NAME_PATTERN = Pattern.compile("[^\\d\\p{L}-]"); //$NON-NLS-1$
+    
+    /** plugin instance. */
+    private static MinigamesPlugin INSTANCE;
 
     @Override
     public void onEnable()
     {
+        INSTANCE = this;
         if (McLibInterface.instance().getApiVersion() != McLibInterface.APIVERSION_1_0_0)
         {
             throw new IllegalStateException("Cannot enable minigameslib. You installed an incompatible McLib-Version. " + McLibInterface.instance().getApiVersion()); //$NON-NLS-1$
@@ -150,10 +162,6 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
                 this.checkArenaName(arena);
                 this.getLogger().log(Level.INFO, "Found arena " + arena); //$NON-NLS-1$
                 final ArenaImpl arenaImpl = new ArenaImpl(new File(this.getDataFolder(), "arenas/" + arena + ".yml"));  //$NON-NLS-1$//$NON-NLS-2$
-                if (!arenaImpl.getInternalName().equals(arena))
-                {
-                    throw new McException(MglibCoreErrors.ArenaNameMismatch, arena);
-                }
                 this.arenasPerName.put(arena, arenaImpl);
             }
             catch (McException ex)
@@ -164,6 +172,15 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         this.getLogger().log(Level.INFO, "Enabled mglib. Loaded arenas: " + this.arenasPerName.size()); //$NON-NLS-1$
         
         new InitTask().runTaskLater(this, 10);
+    }
+    
+    /**
+     * Returns the minigame plugin instance
+     * @return singleton instance
+     */
+    public static MinigamesPlugin instance()
+    {
+        return INSTANCE;
     }
     
     /**
@@ -458,6 +475,12 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
             throw new McException(MglibCoreErrors.ArenaDuplicate, name);
         }
         
+        final ArenaCreateEvent createEvent = new ArenaCreateEvent(name, type);
+        Bukkit.getPluginManager().callEvent(createEvent);
+        if (createEvent.isCancelled())
+        {
+            throw new McException(createEvent.getVetoReason(), createEvent.getVetoReasonArgs());
+        }
         final ArenaImpl arena = new ArenaImpl(name, type, new File(this.getDataFolder(), "arenas/" + name + ".yml")); //$NON-NLS-1$ //$NON-NLS-2$
         arena.saveData();
         
@@ -468,6 +491,9 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         
         // everything ok, now we can add the arena to our internal map.
         this.arenasPerName.put(name, arena);
+        
+        final ArenaCreatedEvent createdEvent = new ArenaCreatedEvent(arena);
+        Bukkit.getPluginManager().callEvent(createdEvent);
         return arena;
     }
 
@@ -487,6 +513,13 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
             player.getSessionStorage().set(ArenaPlayerImpl.class, impl);
         }
         return impl;
+    }
+
+    @Override
+    public void registerRuleset(Plugin plugin, ArenaRuleSetType ruleset, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator)
+    {
+        // TODO Auto-generated method stub
+        
     }
     
 }

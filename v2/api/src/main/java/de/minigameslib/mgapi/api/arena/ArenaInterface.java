@@ -183,4 +183,26 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
      */
     void setTestState() throws McException;
 
+    /**
+     * Returns the players being in the arena (excluding spectators)
+     * @return player count
+     */
+    int getPlayerCount();
+
+    /**
+     * Returns the spectators being in the arena
+     * @return spectators count
+     */
+    int getSpectatorCount();
+
+    /**
+     * @return
+     */
+    Collection<ArenaPlayerInterface> getPlayers();
+
+    /**
+     * @return
+     */
+    Collection<ArenaPlayerInterface> getSpectators();
+
 }

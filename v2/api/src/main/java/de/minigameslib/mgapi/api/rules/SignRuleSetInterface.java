@@ -29,7 +29,7 @@ package de.minigameslib.mgapi.api.rules;
  * 
  * @author mepeisen
  */
-public interface SignRuleSetInterface
+public interface SignRuleSetInterface extends RuleSetInterface<SignRuleSetType>
 {
     
     // TODO

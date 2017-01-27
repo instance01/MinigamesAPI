@@ -24,16 +24,21 @@
 
 package de.minigameslib.mgapi.api.rules;
 
-import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
+import de.minigameslib.mclib.api.event.McListener;
 
 /**
- * Base interface for rule sets
+ * A common base interface for rule sets
  * 
  * @author mepeisen
+ * @param <T> the rule set class.
  */
-public interface RuleSetType extends McUniqueEnumInterface
+public interface RuleSetInterface<T extends RuleSetType> extends McListener
 {
     
-    // marker only
+    /**
+     * Returns the rule set.
+     * @return associated ruleset
+     */
+    T getType();
     
 }

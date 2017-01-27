@@ -28,6 +28,7 @@ import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedConfigString;
 import de.minigameslib.mclib.shared.api.com.AnnotatedDataFragment;
 import de.minigameslib.mclib.shared.api.com.PersistentField;
+import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 
 /**
  * @author mepeisen
@@ -66,16 +67,10 @@ public class ArenaData extends AnnotatedDataFragment
     private LocalizedConfigLine manual = new LocalizedConfigLine();
     
     /**
-     * plugin name
-     */
-    @PersistentField
-    private String pluginName;
-    
-    /**
      * arena type
      */
     @PersistentField
-    private String arenaType;
+    private ArenaTypeInterface arenaType;
     
     /**
      * flag to control if arena is enabled.
@@ -97,13 +92,11 @@ public class ArenaData extends AnnotatedDataFragment
 
     /**
      * @param name
-     * @param pluginName
      * @param arenaType
      */
-    public ArenaData(String name, String pluginName, String arenaType)
+    public ArenaData(String name, ArenaTypeInterface arenaType)
     {
         this.name = name;
-        this.pluginName = pluginName;
         this.arenaType = arenaType;
     }
 
@@ -180,17 +173,9 @@ public class ArenaData extends AnnotatedDataFragment
     }
 
     /**
-     * @return the pluginName
-     */
-    public String getPluginName()
-    {
-        return this.pluginName;
-    }
-
-    /**
      * @return the arenaType
      */
-    public String getArenaType()
+    public ArenaTypeInterface getArenaType()
     {
         return this.arenaType;
     }

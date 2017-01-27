@@ -36,22 +36,23 @@ import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 public class ArenaStartTask implements McRunnable
 {
     
+    /** arena implementation. */
+    private ArenaImpl arena;
+
     /**
+     * Constructor
      * @param arenaImpl
      */
     public ArenaStartTask(ArenaImpl arenaImpl)
     {
-        // TODO Auto-generated constructor stub
+        this.arena = arenaImpl;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mclib.api.util.function.McRunnable#run()
-     */
     @Override
     public void run() throws McException
     {
-        // TODO Auto-generated method stub
-        
+        this.arena.resume();
+        // TODO check arena
     }
     
 }

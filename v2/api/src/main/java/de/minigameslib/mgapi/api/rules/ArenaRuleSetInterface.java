@@ -31,7 +31,7 @@ import de.minigameslib.mgapi.api.arena.ArenaInterface;
  * 
  * @author mepeisen
  */
-public interface ArenaRuleSetInterface
+public interface ArenaRuleSetInterface extends RuleSetInterface<ArenaRuleSetType>
 {
     
     /**
@@ -39,11 +39,5 @@ public interface ArenaRuleSetInterface
      * @return arena
      */
     ArenaInterface getArena();
-    
-    /**
-     * EReturns the underlying type
-     * @return rule set type
-     */
-    ArenaRuleSetType getType();
     
 }

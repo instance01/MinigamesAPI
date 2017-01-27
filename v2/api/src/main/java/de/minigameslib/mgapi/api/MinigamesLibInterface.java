@@ -30,9 +30,12 @@ import org.bukkit.plugin.Plugin;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
+import de.minigameslib.mclib.api.util.function.McBiFunction;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 
 /**
  * Base interface to access the minigames API.
@@ -97,6 +100,15 @@ public interface MinigamesLibInterface
      *             thrown if library is in wrong state
      */
     void initMinigame(Plugin plugin, MinigameProvider provider) throws McException;
+    
+    /**
+     * Registers a new rule set to be used with minigames library; once a rule set is applied or changed the creator is asked to create
+     * a new rule set instance. The instance lives as long as the underlying object lives or as long as it is not removed.
+     * @param plugin
+     * @param ruleset
+     * @param creator
+     */
+    void registerRuleset(Plugin plugin, ArenaRuleSetType ruleset, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator);
     
     /**
      * Returns the number of registered minigames.

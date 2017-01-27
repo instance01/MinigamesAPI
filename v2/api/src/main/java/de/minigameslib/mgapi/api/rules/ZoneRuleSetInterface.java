@@ -29,7 +29,7 @@ package de.minigameslib.mgapi.api.rules;
  * 
  * @author mepeisen
  */
-public interface ZoneRuleSetInterface
+public interface ZoneRuleSetInterface extends RuleSetInterface<ZoneRuleSetType>
 {
     
     // TODO
