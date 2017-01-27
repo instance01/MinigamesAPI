@@ -36,17 +36,19 @@ public enum BasicComponentTypes implements ComponentTypeId
     
     /**
      * A generic spawn block.
-     * @See SpawnInterface
+     * @see SpawnComponentHandler
      */
     Spawn,
     
     /**
      * Some empty component that can be used with new rule sets for minigame developers.
+     * @see EmptyComponentHandler
      */
     Empty,
     
     /**
      * A special generic component used by administrators with individual rule sets.
+     * @see GenericComponentHandler
      */
     Generic,
     

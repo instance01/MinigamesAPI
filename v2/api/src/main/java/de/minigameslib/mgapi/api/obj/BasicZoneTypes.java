@@ -36,41 +36,49 @@ public enum BasicZoneTypes implements ZoneTypeId
     
     /**
      * Main zone for an arena.
+     * @see MainZoneHandler
      */
     Main,
 
     /**
      * Battle zone (where the action goes on).
+     * @see BattleZoneHandler
      */
     Battle,
     
     /**
-     * Join zone to automatically join an arena if possible. 
+     * Join zone to automatically join an arena if possible.
+     * @see JoinZoneHandler 
      */
     Join,
     
     /**
      * Leave zone to automatically leave an arena.
+     * @see LeaveZoneHandler
      */
     Leave,
     
     /**
      * Lobby zone where players can wait for matches.
+     * @see LobbyZoneHandler
      */
     Lobby,
     
     /**
      * Zone allowed for spectators
+     * @see SpectatorZoneHandler
      */
     Spectator,
     
     /**
      * Some empty zone that can be used with new rule sets for minigame developers.
+     * @see EmptyZoneHandler
      */
     Empty,
     
     /**
      * A special generic zone used by administrators with individual rule sets.
+     * @see GenericZoneHandler
      */
     Generic,
     
