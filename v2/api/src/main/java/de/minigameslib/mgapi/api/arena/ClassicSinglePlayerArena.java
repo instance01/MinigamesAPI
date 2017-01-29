@@ -29,9 +29,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 
 /**
  * Basic class for classic arenas behaving similar to minigameslib version 1.
@@ -57,7 +63,43 @@ public abstract class ClassicSinglePlayerArena implements ArenaTypeProvider
     @Override
     public void configure(ArenaRuleSetInterface ruleSet) throws McException
     {
-        // TODO Auto-generated method stub
+        // no configuration
+    }
+
+    @Override
+    public void configure(ComponentRuleSetInterface ruleSet) throws McException
+    {
+        // no configuration
+    }
+
+    @Override
+    public void configure(ZoneRuleSetInterface ruleSet) throws McException
+    {
+        // no configuration
+    }
+
+    @Override
+    public void configure(SignRuleSetInterface ruleSet) throws McException
+    {
+        // no configuration
+    }
+
+    @Override
+    public void configure(ArenaComponentHandler handler) throws McException
+    {
+        // no configuration
+    }
+
+    @Override
+    public void configure(ArenaZoneHandler handler) throws McException
+    {
+        // TODO if (handler.getZone().getChildZones())
+    }
+
+    @Override
+    public void configure(ArenaSignHandler handler) throws McException
+    {
+        // no configuration
     }
     
 }

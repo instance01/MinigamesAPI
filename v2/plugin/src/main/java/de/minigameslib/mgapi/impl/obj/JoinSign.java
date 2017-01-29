@@ -141,5 +141,11 @@ public class JoinSign extends AbstractBaseArenaObjectHandler<SignRuleSetType, Si
     {
         return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
     }
+
+    @Override
+    public SignInterface getSign()
+    {
+        return this.sign;
+    }
     
 }

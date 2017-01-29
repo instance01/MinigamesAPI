@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.api.obj;
 
 import de.minigameslib.mclib.api.objects.SignHandlerInterface;
+import de.minigameslib.mclib.api.objects.SignInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetType;
 
@@ -36,6 +37,10 @@ import de.minigameslib.mgapi.api.rules.SignRuleSetType;
 public interface ArenaSignHandler extends SignHandlerInterface, BaseArenaObjectHandler<SignRuleSetType, SignRuleSetInterface>
 {
     
-    // empty
+    /**
+     * Returns the underlying sign
+     * @return sign
+     */
+    SignInterface getSign();
     
 }

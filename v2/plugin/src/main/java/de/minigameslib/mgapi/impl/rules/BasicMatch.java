@@ -41,10 +41,10 @@ import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
-import de.minigameslib.mgapi.api.obj.BasicMatchConfig;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
+import de.minigameslib.mgapi.api.rules.BasicMatchConfig;
 import de.minigameslib.mgapi.impl.MinigamesPlugin;
 
 /**
@@ -266,7 +266,7 @@ public class BasicMatch implements ArenaRuleSetInterface
         InvalidConfigMinPlayers,
         
         /**
-         * Invalid config value (min players > max players)
+         * Invalid config value (min players &gt; max players)
          */
         @LocalizedMessage(defaultMessage = "Invalid config value (min players > max players): " + LocalizedMessage.BLUE + "%1$d > %2$d", severity = MessageSeverityType.Information)
         @MessageComment(value = {"Invalid config value (min players > max players)"}, args = {@Argument(type = "Numeric", value = "min players config value"), @Argument(type = "Numeric", value = "max players config value")})

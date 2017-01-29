@@ -141,5 +141,11 @@ public class EmptySign extends AbstractBaseArenaObjectHandler<SignRuleSetType, S
     {
         return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
     }
+
+    @Override
+    public SignInterface getSign()
+    {
+        return this.sign;
+    }
     
 }

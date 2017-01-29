@@ -32,13 +32,6 @@ package de.minigameslib.mgapi.api.rules;
 public enum BasicComponentRuleSets implements ComponentRuleSetType
 {
     
-    
-    NoWorldMobs,
-    
-    NoWorldPets,
-    
-    NoEntry,
-    
-    LoseOnLeave,
+    // no default rules yet
     
 }

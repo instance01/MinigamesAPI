@@ -22,27 +22,46 @@
 
 */
 
-package de.minigameslib.mgapi.api.rules;
+package de.minigameslib.mgapi.impl.rules;
 
-import de.minigameslib.mclib.api.enums.ChildEnum;
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
 /**
- * Basic arena rule sets
- * 
  * @author mepeisen
+ *
  */
-@ChildEnum({
-    BasicMatchConfig.class
-})
-public enum BasicArenaRuleSets implements ArenaRuleSetType
+public class NoWorldMobs implements ZoneRuleSetInterface
 {
     
     /**
-     * A basic match rule containing:
-     * - min player handling
-     * - max player handling
+     * the underlying zone.
      */
-    @RuleSetConfigurable(config = BasicMatchConfig.class)
-    BasicMatch,
+    @SuppressWarnings("unused")
+    private final ArenaZoneHandler zone;
+    
+    /**
+     * rule set type.
+     */
+    private final ZoneRuleSetType type;
+    
+    /**
+     * @param type
+     * @param zone
+     * @throws McException thrown if config is invalid
+     */
+    public NoWorldMobs(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
+    {
+        this.type = type;
+        this.zone = zone;
+    }
+
+    @Override
+    public ZoneRuleSetType getType()
+    {
+        return this.type;
+    }
     
 }

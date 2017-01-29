@@ -154,5 +154,11 @@ public class GenericZone extends AbstractBaseArenaObjectHandler<ZoneRuleSetType,
     {
         return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
     }
+
+    @Override
+    public ZoneInterface getZone()
+    {
+        return this.zone;
+    }
     
 }

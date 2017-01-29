@@ -155,5 +155,11 @@ public class GenericComponent extends AbstractBaseArenaObjectHandler<ComponentRu
     {
         return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
     }
+
+    @Override
+    public ComponentInterface getComponent()
+    {
+        return this.component;
+    }
     
 }

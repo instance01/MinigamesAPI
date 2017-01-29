@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.api.obj;
 
 import de.minigameslib.mclib.api.objects.ZoneHandlerInterface;
+import de.minigameslib.mclib.api.objects.ZoneInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
@@ -36,6 +37,10 @@ import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 public interface ArenaZoneHandler extends ZoneHandlerInterface, BaseArenaObjectHandler<ZoneRuleSetType, ZoneRuleSetInterface>
 {
     
-    // empty
+    /**
+     * Returns the underlying zone
+     * @return zone
+     */
+    ZoneInterface getZone();
     
 }

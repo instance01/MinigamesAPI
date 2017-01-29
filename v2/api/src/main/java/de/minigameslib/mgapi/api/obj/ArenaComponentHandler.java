@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.api.obj;
 
 import de.minigameslib.mclib.api.objects.ComponentHandlerInterface;
+import de.minigameslib.mclib.api.objects.ComponentInterface;
 import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
 
@@ -36,6 +37,10 @@ import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
 public interface ArenaComponentHandler extends ComponentHandlerInterface, BaseArenaObjectHandler<ComponentRuleSetType, ComponentRuleSetInterface>
 {
     
-    // empty
+    /**
+     * Returns the underlying component
+     * @return component
+     */
+    ComponentInterface getComponent();
     
 }

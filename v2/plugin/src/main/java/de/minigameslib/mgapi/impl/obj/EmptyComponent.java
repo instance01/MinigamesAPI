@@ -155,5 +155,11 @@ public class EmptyComponent extends AbstractBaseArenaObjectHandler<ComponentRule
     {
         return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
     }
+
+    @Override
+    public ComponentInterface getComponent()
+    {
+        return this.component;
+    }
     
 }

@@ -184,5 +184,11 @@ public class SpawnComponent extends AbstractBaseArenaObjectHandler<ComponentRule
         this.data.setSpawnOrdering(order);
         this.saveData();
     }
+
+    @Override
+    public ComponentInterface getComponent()
+    {
+        return this.component;
+    }
     
 }

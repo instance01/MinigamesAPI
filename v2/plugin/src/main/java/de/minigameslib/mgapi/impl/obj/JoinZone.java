@@ -154,5 +154,11 @@ public class JoinZone extends AbstractBaseArenaObjectHandler<ZoneRuleSetType, Zo
     {
         return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
     }
+
+    @Override
+    public ZoneInterface getZone()
+    {
+        return this.zone;
+    }
     
 }

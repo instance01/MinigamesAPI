@@ -28,8 +28,14 @@ import java.util.Collection;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 
 /**
  * An interface for arena types.
@@ -75,5 +81,47 @@ public interface ArenaTypeProvider
      * @throws McException thrown for problems.
      */
     void configure(ArenaRuleSetInterface ruleSet) throws McException;
+    
+    /**
+     * Creates a configuration with defaults for given rule set
+     * @param ruleSet
+     * @throws McException thrown for problems.
+     */
+    void configure(ComponentRuleSetInterface ruleSet) throws McException;
+    
+    /**
+     * Creates a configuration with defaults for given rule set
+     * @param ruleSet
+     * @throws McException thrown for problems.
+     */
+    void configure(ZoneRuleSetInterface ruleSet) throws McException;
+    
+    /**
+     * Creates a configuration with defaults for given rule set
+     * @param ruleSet
+     * @throws McException thrown for problems.
+     */
+    void configure(SignRuleSetInterface ruleSet) throws McException;
+    
+    /**
+     * Creates a configuration for given component
+     * @param handler
+     * @throws McException thrown for problems.
+     */
+    void configure(ArenaComponentHandler handler) throws McException;
+    
+    /**
+     * Creates a configuration for given zone
+     * @param handler
+     * @throws McException thrown for problems.
+     */
+    void configure(ArenaZoneHandler handler) throws McException;
+    
+    /**
+     * Creates a configuration for given sign
+     * @param handler
+     * @throws McException thrown for problems.
+     */
+    void configure(ArenaSignHandler handler) throws McException;
     
 }

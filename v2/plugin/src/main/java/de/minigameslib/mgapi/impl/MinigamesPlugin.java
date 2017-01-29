@@ -117,6 +117,12 @@ import de.minigameslib.mgapi.impl.obj.MainZone;
 import de.minigameslib.mgapi.impl.obj.SpawnComponent;
 import de.minigameslib.mgapi.impl.obj.SpectatorZone;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
+import de.minigameslib.mgapi.impl.rules.DieOnLeave;
+import de.minigameslib.mgapi.impl.rules.LoseOnLeave;
+import de.minigameslib.mgapi.impl.rules.NoWorldMobs;
+import de.minigameslib.mgapi.impl.rules.NoWorldPets;
+import de.minigameslib.mgapi.impl.rules.PlayerNoEntry;
+import de.minigameslib.mgapi.impl.rules.PvPMode;
 import de.minigameslib.mgapi.impl.tasks.InitTask;
 
 /**
@@ -258,6 +264,12 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         McLibInterface.instance().registerEvent(this, ArenaDeleteEvent.class);
         
         this.registerRuleset(this, BasicArenaRuleSets.BasicMatch, BasicMatch::new);
+        this.registerRuleset(this, BasicZoneRuleSets.DieOnLeave, DieOnLeave::new);
+        this.registerRuleset(this, BasicZoneRuleSets.LoseOnLeave, LoseOnLeave::new);
+        this.registerRuleset(this, BasicZoneRuleSets.NoWorldMobs, NoWorldMobs::new);
+        this.registerRuleset(this, BasicZoneRuleSets.NoWorldPets, NoWorldPets::new);
+        this.registerRuleset(this, BasicZoneRuleSets.PlayerNoEntry, PlayerNoEntry::new);
+        this.registerRuleset(this, BasicZoneRuleSets.PvPMode, PvPMode::new);
         
         this.registerArenaComponent(this, BasicComponentTypes.Empty, EmptyComponent::new);
         this.registerArenaComponent(this, BasicComponentTypes.Generic, GenericComponent::new);

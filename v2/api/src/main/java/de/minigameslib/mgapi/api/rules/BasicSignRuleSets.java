@@ -32,13 +32,6 @@ package de.minigameslib.mgapi.api.rules;
 public enum BasicSignRuleSets implements SignRuleSetType
 {
     
-    
-    NoWorldMobs,
-    
-    NoWorldPets,
-    
-    NoEntry,
-    
-    LoseOnLeave,
+    // no default rules yet
     
 }
