@@ -24,11 +24,19 @@
 
 package de.minigameslib.mgapi.impl.arena;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedConfigString;
+import de.minigameslib.mclib.api.objects.ComponentIdInterface;
+import de.minigameslib.mclib.api.objects.EntityIdInterface;
+import de.minigameslib.mclib.api.objects.SignIdInterface;
+import de.minigameslib.mclib.api.objects.ZoneIdInterface;
 import de.minigameslib.mclib.shared.api.com.AnnotatedDataFragment;
 import de.minigameslib.mclib.shared.api.com.PersistentField;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 
 /**
  * @author mepeisen
@@ -89,6 +97,42 @@ public class ArenaData extends AnnotatedDataFragment
      */
     @PersistentField
     private boolean matchPending;
+    
+    /**
+     * fixed rule set types.
+     */
+    @PersistentField
+    private Set<ArenaRuleSetType> fixedRules = new HashSet<>();
+    
+    /**
+     * optional rule set types.
+     */
+    @PersistentField
+    private Set<ArenaRuleSetType> optionalRules = new HashSet<>();
+    
+    /**
+     * The components of this arena
+     */
+    @PersistentField
+    private Set<ComponentIdInterface> components = new HashSet<>();
+    
+    /**
+     * The zones of this arena
+     */
+    @PersistentField
+    private Set<ZoneIdInterface> zones = new HashSet<>();
+    
+    /**
+     * The signs of this arena
+     */
+    @PersistentField
+    private Set<SignIdInterface> signs = new HashSet<>();
+    
+    /**
+     * The entities of this arena
+     */
+    @PersistentField
+    private Set<EntityIdInterface> entities = new HashSet<>();
 
     /**
      * @param name
@@ -226,6 +270,54 @@ public class ArenaData extends AnnotatedDataFragment
     public void setMatchPending(boolean matchPending)
     {
         this.matchPending = matchPending;
+    }
+
+    /**
+     * @return the fixedRules
+     */
+    public Set<ArenaRuleSetType> getFixedRules()
+    {
+        return this.fixedRules;
+    }
+
+    /**
+     * @return the optionalRules
+     */
+    public Set<ArenaRuleSetType> getOptionalRules()
+    {
+        return this.optionalRules;
+    }
+
+    /**
+     * @return the components
+     */
+    public Set<ComponentIdInterface> getComponents()
+    {
+        return this.components;
+    }
+
+    /**
+     * @return the zones
+     */
+    public Set<ZoneIdInterface> getZones()
+    {
+        return this.zones;
+    }
+
+    /**
+     * @return the signs
+     */
+    public Set<SignIdInterface> getSigns()
+    {
+        return this.signs;
+    }
+
+    /**
+     * @return the entities
+     */
+    public Set<EntityIdInterface> getEntities()
+    {
+        return this.entities;
     }
     
 }

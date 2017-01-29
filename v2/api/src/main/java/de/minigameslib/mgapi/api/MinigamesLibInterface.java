@@ -29,13 +29,26 @@ import java.util.Collection;
 import org.bukkit.plugin.Plugin;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.objects.ComponentTypeId;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
+import de.minigameslib.mclib.api.objects.SignTypeId;
+import de.minigameslib.mclib.api.objects.ZoneTypeId;
 import de.minigameslib.mclib.api.util.function.McBiFunction;
+import de.minigameslib.mclib.api.util.function.McSupplier;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
+import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.SignRuleSetType;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
 /**
  * Base interface to access the minigames API.
@@ -109,6 +122,57 @@ public interface MinigamesLibInterface
      * @param creator
      */
     void registerRuleset(Plugin plugin, ArenaRuleSetType ruleset, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator);
+    
+    /**
+     * Registers a new rule set to be used with minigames library; once a rule set is applied or changed the creator is asked to create
+     * a new rule set instance. The instance lives as long as the underlying object lives or as long as it is not removed.
+     * @param plugin
+     * @param ruleset
+     * @param creator
+     */
+    void registerRuleset(Plugin plugin, ComponentRuleSetType ruleset, McBiFunction<ComponentRuleSetType, ArenaComponentHandler, ComponentRuleSetInterface> creator);
+    
+    /**
+     * Registers a new rule set to be used with minigames library; once a rule set is applied or changed the creator is asked to create
+     * a new rule set instance. The instance lives as long as the underlying object lives or as long as it is not removed.
+     * @param plugin
+     * @param ruleset
+     * @param creator
+     */
+    void registerRuleset(Plugin plugin, SignRuleSetType ruleset, McBiFunction<SignRuleSetType, ArenaSignHandler, SignRuleSetInterface> creator);
+    
+    /**
+     * Registers a new rule set to be used with minigames library; once a rule set is applied or changed the creator is asked to create
+     * a new rule set instance. The instance lives as long as the underlying object lives or as long as it is not removed.
+     * @param plugin
+     * @param ruleset
+     * @param creator
+     */
+    void registerRuleset(Plugin plugin, ZoneRuleSetType ruleset, McBiFunction<ZoneRuleSetType, ArenaZoneHandler, ZoneRuleSetInterface> creator);
+    
+    /**
+     * Registers a new component with arena support.
+     * @param plugin
+     * @param type
+     * @param creator
+     */
+    void registerArenaComponent(Plugin plugin, ComponentTypeId type, McSupplier<ArenaComponentHandler> creator);
+    
+    /**
+     * Registers a new zone with arena support.
+     * @param plugin
+     * @param type
+     * @param creator
+     */
+    void registerArenaZone(Plugin plugin, ZoneTypeId type, McSupplier<ArenaZoneHandler> creator);
+    
+    /**
+     * Registers a new sign with arena support.
+     * @param plugin
+     * @param type
+     * @param creator
+     */
+    void registerArenaSign(Plugin plugin, SignTypeId type, McSupplier<ArenaSignHandler> creator);
     
     /**
      * Returns the number of registered minigames.

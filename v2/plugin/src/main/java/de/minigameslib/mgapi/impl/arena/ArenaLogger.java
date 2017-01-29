@@ -22,16 +22,41 @@
 
 */
 
-package de.minigameslib.mgapi.api.rules;
+package de.minigameslib.mgapi.impl.arena;
+
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
+import de.minigameslib.mgapi.impl.MinigamesPlugin;
 
 /**
- * A rule set for zones identified by enumeration values.
+ * Special logger for arenas.
  * 
  * @author mepeisen
  */
-public interface ZoneRuleSetType extends RuleSetType
+public class ArenaLogger extends Logger
 {
     
- // marker only
+    /** logger prefix */
+    private String prefix;
+    
+    /**
+     * Arena logger
+     * 
+     * @param internalName
+     */
+    protected ArenaLogger(String internalName)
+    {
+        super(ArenaLogger.class.getName(), null);
+        setParent(MinigamesPlugin.instance().getLogger());
+        this.prefix = "[arena:" + internalName + "] "; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    
+    @Override
+    public void log(LogRecord logRecord)
+    {
+        logRecord.setMessage(this.prefix + logRecord.getMessage());
+        super.log(logRecord);
+    }
     
 }

@@ -26,13 +26,17 @@ package de.minigameslib.mgapi.impl.arena;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.bukkit.Location;
+import org.bukkit.block.Sign;
 import org.bukkit.plugin.Plugin;
 
 import de.minigameslib.mclib.api.CommonMessages;
@@ -46,10 +50,23 @@ import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
+import de.minigameslib.mclib.api.objects.ComponentIdInterface;
+import de.minigameslib.mclib.api.objects.ComponentInterface;
+import de.minigameslib.mclib.api.objects.ComponentTypeId;
+import de.minigameslib.mclib.api.objects.Cuboid;
+import de.minigameslib.mclib.api.objects.EntityIdInterface;
+import de.minigameslib.mclib.api.objects.EntityInterface;
+import de.minigameslib.mclib.api.objects.EntityTypeId;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectHandlerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
+import de.minigameslib.mclib.api.objects.SignIdInterface;
+import de.minigameslib.mclib.api.objects.SignInterface;
+import de.minigameslib.mclib.api.objects.SignTypeId;
+import de.minigameslib.mclib.api.objects.ZoneIdInterface;
+import de.minigameslib.mclib.api.objects.ZoneInterface;
+import de.minigameslib.mclib.api.objects.ZoneTypeId;
 import de.minigameslib.mclib.shared.api.com.DataSection;
 import de.minigameslib.mclib.shared.api.com.MemoryDataSection;
 import de.minigameslib.mgapi.api.MinigameInterface;
@@ -59,6 +76,9 @@ import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.arena.CheckFailure;
 import de.minigameslib.mgapi.api.arena.CheckSeverity;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
@@ -101,6 +121,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
 
     /** the mclib object */
     ObjectInterface object;
+    
+    /** arena logger */
+    private ArenaLogger logger;
     
     /**
      * rule set container
@@ -153,6 +176,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
      */
     public ArenaImpl(String name, ArenaTypeInterface type, File dataFile) throws McException
     {
+        this.logger = new ArenaLogger(name);
         this.dataFile = dataFile;
         this.arenaData = new ArenaData(name, type);
         this.arenaData.setMaintenance(true);
@@ -163,6 +187,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             for (final ArenaRuleSetType ruleset : type.safeCreateProvider().getFixedArenaRules())
             {
                 this.ruleSets.applyFixedRuleSet(ruleset);
+                this.arenaData.getFixedRules().add(ruleset);
             }
         }
         catch (McException ex)
@@ -184,14 +209,15 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         {
             final DataSection section = McLibInterface.instance().readYmlFile(this.dataFile);
             this.arenaData = section.getFragment(ArenaData.class, "data"); //$NON-NLS-1$
+            this.logger = new ArenaLogger(this.getInternalName());
             this.type = this.arenaData.getArenaType();
             this.object = ObjectServiceInterface.instance().createObject(MglibObjectTypes.Arena, this, false);
             try
             {
-                for (final ArenaRuleSetType ruleset : this.type.safeCreateProvider().getFixedArenaRules())
-                {
-                    this.ruleSets.applyFixedRuleSet(ruleset);
-                }
+                resumeRuleSets();
+                resumeComponents();
+                resumeSigns();
+                resumeZones();
             }
             catch (McException ex)
             {
@@ -218,7 +244,77 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             this.state = ArenaState.Starting;
         }
     }
+
+    /**
+     * @throws McException
+     */
+    private void resumeComponents() throws McException
+    {
+        for (final ComponentIdInterface id : this.getComponents())
+        {
+            final ArenaComponentHandler handler = (ArenaComponentHandler) ObjectServiceInterface.instance().findComponent(id);
+            handler.initArena(this);
+        }
+    }
+
+    /**
+     * @throws McException
+     */
+    private void resumeSigns() throws McException
+    {
+        for (final SignIdInterface id : this.getSigns())
+        {
+            final ArenaSignHandler handler = (ArenaSignHandler) ObjectServiceInterface.instance().findSign(id);
+            handler.initArena(this);
+        }
+    }
+
+    /**
+     * @throws McException
+     */
+    private void resumeZones() throws McException
+    {
+        for (final ZoneIdInterface id : this.getZones())
+        {
+            final ArenaZoneHandler handler = (ArenaZoneHandler) ObjectServiceInterface.instance().findZone(id);
+            handler.initArena(this);
+        }
+    }
+
+    /**
+     * @throws McException
+     */
+    private void resumeRuleSets() throws McException
+    {
+        final Set<ArenaRuleSetType> oldfixed = new HashSet<>(this.arenaData.getFixedRules());
+        for (final ArenaRuleSetType ruleset : this.type.safeCreateProvider().getFixedArenaRules())
+        {
+            if (!oldfixed.remove(ruleset))
+            {
+                this.arenaData.getOptionalRules().remove(ruleset);
+                this.arenaData.getFixedRules().add(ruleset);
+                this.saveData();
+            }
+            this.ruleSets.applyFixedRuleSet(ruleset);
+        }
+        for (final ArenaRuleSetType ruleset : oldfixed)
+        {
+            this.arenaData.getFixedRules().remove(ruleset);
+            this.arenaData.getOptionalRules().add(ruleset);
+            this.saveData();
+        }
+        for (final ArenaRuleSetType ruleset :  this.arenaData.getOptionalRules())
+        {
+            this.ruleSets.applyOptionalRuleSet(ruleset);
+        }
+    }
     
+    @Override
+    public Logger getLogger()
+    {
+        return this.logger;
+    }
+
     /**
      * Checks if a match is pending; a flag to recover after server crashes.
      * @return {@code true} if a match is pending
@@ -741,7 +837,12 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final ArenaRuleSetType t : rulesets)
         {
-            this.ruleSets.applyOptionalRuleSet(t);
+            if (!this.ruleSets.isApplied(t))
+            {
+                this.ruleSets.applyOptionalRuleSet(t);
+                this.arenaData.getOptionalRules().add(t);
+                this.saveData();
+            }
         }
     }
 
@@ -750,8 +851,134 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final ArenaRuleSetType t : rulesets)
         {
-            this.ruleSets.removeOptionalRuleSet(t);
+            if (this.ruleSets.isOptional(t))
+            {
+                this.ruleSets.removeOptionalRuleSet(t);
+                this.arenaData.getOptionalRules().remove(t);
+                this.saveData();
+            }
         }
+    }
+
+    @Override
+    public Collection<ComponentIdInterface> getComponents()
+    {
+        return new ArrayList<>(this.arenaData.getComponents());
+    }
+
+    @Override
+    public Collection<ZoneIdInterface> getZones()
+    {
+        return new ArrayList<>(this.arenaData.getZones());
+    }
+
+    @Override
+    public Collection<SignIdInterface> getSigns()
+    {
+        return new ArrayList<>(this.arenaData.getSigns());
+    }
+
+    @Override
+    public Collection<EntityIdInterface> getEntities()
+    {
+        return new ArrayList<>(this.arenaData.getEntities());
+    }
+
+    @Override
+    public Collection<ComponentIdInterface> getComponents(ComponentTypeId... types)
+    {
+        final Set<ComponentIdInterface> ids = this.arenaData.getComponents();
+        return ObjectServiceInterface.instance().findComponents(types).stream().map(ComponentInterface::getComponentId).filter(ids::contains).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<ZoneIdInterface> getZones(ZoneTypeId... types)
+    {
+        final Set<ZoneIdInterface> ids = this.arenaData.getZones();
+        return ObjectServiceInterface.instance().findZones(types).stream().map(ZoneInterface::getZoneId).filter(ids::contains).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<SignIdInterface> getSigns(SignTypeId... types)
+    {
+        final Set<SignIdInterface> ids = this.arenaData.getSigns();
+        return ObjectServiceInterface.instance().findSigns(types).stream().map(SignInterface::getSignId).filter(ids::contains).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<EntityIdInterface> getEntities(EntityTypeId... types)
+    {
+        final Set<EntityIdInterface> ids = this.arenaData.getEntities();
+        return ObjectServiceInterface.instance().findEntities(types).stream().map(EntityInterface::getEntityId).filter(ids::contains).collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ArenaComponentHandler> T getHandler(ComponentIdInterface id)
+    {
+        return (T) ObjectServiceInterface.instance().findComponent(id).getHandler();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ArenaSignHandler> T getHandler(SignIdInterface id)
+    {
+        return (T) ObjectServiceInterface.instance().findSign(id).getHandler();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ArenaZoneHandler> T getHandler(ZoneIdInterface id)
+    {
+        return (T) ObjectServiceInterface.instance().findZone(id).getHandler();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ArenaComponentHandler> T createComponent(Location location, ComponentTypeId t) throws McException
+    {
+        if (this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
+        final ArenaComponentHandler handler = MinigamesPlugin.instance().creator(t).get();
+        final ComponentInterface component = ObjectServiceInterface.instance().createComponent(t, location, handler, true);
+        handler.initArena(this);
+        this.arenaData.getComponents().add(component.getComponentId());
+        this.saveData();
+        return (T) handler;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ArenaSignHandler> T createSign(Sign sign, SignTypeId t) throws McException
+    {
+        if (this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
+        final ArenaSignHandler handler = MinigamesPlugin.instance().creator(t).get();
+        final SignInterface mcsign = ObjectServiceInterface.instance().createSign(t, sign, handler, true);
+        handler.initArena(this);
+        this.arenaData.getSigns().add(mcsign.getSignId());
+        this.saveData();
+        return (T) handler;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ArenaZoneHandler> T createZone(Cuboid cuboid, ZoneTypeId t) throws McException
+    {
+        if (this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
+        final ArenaZoneHandler handler = MinigamesPlugin.instance().creator(t).get();
+        final ZoneInterface zone = ObjectServiceInterface.instance().createZone(t, cuboid, handler, true);
+        handler.initArena(this);
+        this.arenaData.getZones().add(zone.getZoneId());
+        this.saveData();
+        return (T) handler;
     }
     
     /**

@@ -25,12 +25,28 @@
 package de.minigameslib.mgapi.api.arena;
 
 import java.util.Collection;
+import java.util.logging.Logger;
+
+import org.bukkit.Location;
+import org.bukkit.block.Sign;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedConfigString;
+import de.minigameslib.mclib.api.objects.ComponentIdInterface;
+import de.minigameslib.mclib.api.objects.ComponentTypeId;
+import de.minigameslib.mclib.api.objects.Cuboid;
+import de.minigameslib.mclib.api.objects.EntityIdInterface;
+import de.minigameslib.mclib.api.objects.EntityTypeId;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
+import de.minigameslib.mclib.api.objects.SignIdInterface;
+import de.minigameslib.mclib.api.objects.SignTypeId;
+import de.minigameslib.mclib.api.objects.ZoneIdInterface;
+import de.minigameslib.mclib.api.objects.ZoneTypeId;
 import de.minigameslib.mgapi.api.MinigameInterface;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
@@ -214,5 +230,143 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
      * @return arena object
      */
     ObjectInterface getObject();
+    
+    /**
+     * Returns a logger to log arena messages
+     * @return logger
+     */
+    Logger getLogger();
+    
+    // components and objects
+        
+    /**
+     * Returns the components used in this arena
+     * 
+     * @return Components of this arena.
+     */
+    Collection<ComponentIdInterface> getComponents();
+    
+    /**
+     * Returns the zones used in this arena
+     * 
+     * @return Zones of this arena.
+     */
+    Collection<ZoneIdInterface> getZones();
+    
+    /**
+     * Returns the signs used in this arena
+     * 
+     * @return Signs of this arena.
+     */
+    Collection<SignIdInterface> getSigns();
+    
+    /**
+     * Returns the entities used in this arena
+     * 
+     * @return entities of this arena.
+     */
+    Collection<EntityIdInterface> getEntities();
+    
+    /**
+     * Returns the components used in this arena
+     * 
+     * @param types component types for filtering
+     * @return Components of this arena.
+     */
+    Collection<ComponentIdInterface> getComponents(ComponentTypeId... types);
+    
+    /**
+     * Returns the zones used in this arena
+     * 
+     * @param types zone types for filtering
+     * @return Zones of this arena.
+     */
+    Collection<ZoneIdInterface> getZones(ZoneTypeId... types);
+    
+    /**
+     * Returns the signs used in this arena
+     * 
+     * @param types sign types for filtering
+     * @return Signs of this arena.
+     */
+    Collection<SignIdInterface> getSigns(SignTypeId... types);
+    
+    /**
+     * Returns the entities used in this arena
+     * 
+     * @param types entity types for filtering
+     * @return entities of this arena.
+     */
+    Collection<EntityIdInterface> getEntities(EntityTypeId... types);
+    
+    /**
+     * Returns handler for given id.
+     * @param id
+     * @return handler for given id
+     */
+    <T extends ArenaComponentHandler> T getHandler(ComponentIdInterface id);
+    
+    /**
+     * Returns handler for given id.
+     * @param id
+     * @return handler for given id
+     */
+    <T extends ArenaSignHandler> T getHandler(SignIdInterface id);
+    
+    /**
+     * Returns handler for given id.
+     * @param id
+     * @return handler for given id
+     */
+    <T extends ArenaZoneHandler> T getHandler(ZoneIdInterface id);
+    
+    /**
+     * Creates a new component.
+     * 
+     * @param location
+     *            the initial location of the component.
+     * @param type component type
+     * @return created component
+     * @throws McException
+     *             thrown if the component could not be created
+     */
+    <T extends ArenaComponentHandler> T createComponent(Location location, ComponentTypeId type) throws McException;
+    
+    /**
+     * Creates a new sign.
+     * 
+     * @param sign
+     *            the initial bukkit sign
+     * @param type sign type
+     * @return created sign
+     * @throws McException
+     *             thrown if the sign could not be created
+     */
+    <T extends ArenaSignHandler> T createSign(Sign sign, SignTypeId type) throws McException;
+    
+    /**
+     * Creates a new zone.
+     * 
+     * @param cuboid
+     *            the initial cuboid of the zone.
+     * @param type the zone type
+     * @return created zone
+     * @throws McException
+     *             thrown if the zone could not be created
+     */
+    <T extends ArenaZoneHandler> T createZone(Cuboid cuboid, ZoneTypeId type) throws McException;
+    
+    // TODO Entity support
+//    /**
+//     * Creates a new entity.
+//     * 
+//     * @param entity
+//     *            the initial bukkit entity
+//     * @param fixedRuleSets the fixed rule sets to apply to this entity
+//     * @return created entity
+//     * @throws McException
+//     *             thrown if the entity could not be created
+//     */
+//    EntityInterface createEntity(Entity entity, EntityRuleSetType... fixedRuleSets) throws McException;
 
 }

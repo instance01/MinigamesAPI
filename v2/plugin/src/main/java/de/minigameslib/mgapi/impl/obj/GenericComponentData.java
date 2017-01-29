@@ -22,16 +22,15 @@
 
 */
 
-package de.minigameslib.mgapi.api.rules;
+package de.minigameslib.mgapi.impl.obj;
+
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
 
 /**
- * A rule set for zones identified by enumeration values.
- * 
  * @author mepeisen
+ *
  */
-public interface ZoneRuleSetType extends RuleSetType
+public class GenericComponentData extends AbstractObjectData<ComponentRuleSetType>
 {
-    
- // marker only
-    
+    // empty
 }

@@ -32,10 +32,6 @@ package de.minigameslib.mgapi.api.rules;
 public interface ComponentRuleSetType extends RuleSetType
 {
     
-    /**
-     * Returns the enumeration value name
-     * @return enumeration value name.
-     */
-    String name();
+ // marker only
     
 }

@@ -22,16 +22,15 @@
 
 */
 
-package de.minigameslib.mgapi.api.rules;
+package de.minigameslib.mgapi.impl.obj;
+
+import de.minigameslib.mgapi.api.rules.SignRuleSetType;
 
 /**
- * A rule set for zones identified by enumeration values.
- * 
  * @author mepeisen
+ *
  */
-public interface ZoneRuleSetType extends RuleSetType
+public class JoinSignData extends AbstractObjectData<SignRuleSetType>
 {
-    
- // marker only
-    
+    // empty
 }

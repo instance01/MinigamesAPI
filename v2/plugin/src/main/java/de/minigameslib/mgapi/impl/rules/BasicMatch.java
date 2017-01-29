@@ -24,6 +24,8 @@
 
 package de.minigameslib.mgapi.impl.rules;
 
+import java.util.logging.Level;
+
 import org.bukkit.scheduler.BukkitTask;
 
 import de.minigameslib.mclib.api.McException;
@@ -204,7 +206,7 @@ public class BasicMatch implements ArenaRuleSetInterface
             catch (McException e)
             {
                 // should never happen because the countdown gets cancelled before all players are left.
-                // TODO Logging
+                this.arena.getLogger().log(Level.WARNING, "Problems starting arena match", e); //$NON-NLS-1$
             }
             this.countdownTask.cancel();
             this.countdownTask = null;

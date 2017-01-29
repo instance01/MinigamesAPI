@@ -24,10 +24,7 @@
 
 package de.minigameslib.mgapi.api.obj;
 
-import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.objects.ZoneHandlerInterface;
-import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
@@ -36,26 +33,9 @@ import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
  * 
  * @author mepeisen
  */
-public interface ArenaZoneHandler extends ZoneHandlerInterface, RuleSetContainerInterface<ZoneRuleSetType, ZoneRuleSetInterface>
+public interface ArenaZoneHandler extends ZoneHandlerInterface, BaseArenaObjectHandler<ZoneRuleSetType, ZoneRuleSetInterface>
 {
     
-    /**
-     * Returns a unique name of the component zone.
-     * @return unique name.
-     */
-    String getName();
-    
-    /**
-     * Sets the unique component name.
-     * @param newName new name
-     * @throws McException thrown if arena is not in maintenance mode or if name is already in use.
-     */
-    void setName(String newName) throws McException;
-    
-    /**
-     * Returns the arena this component belongs to
-     * @return associated arena
-     */
-    ArenaInterface getArena();
+    // empty
     
 }

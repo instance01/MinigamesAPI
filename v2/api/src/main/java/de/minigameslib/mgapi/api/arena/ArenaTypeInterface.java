@@ -54,6 +54,7 @@ public interface ArenaTypeInterface extends McUniqueEnumInterface
             throw new IllegalStateException(ex);
         }
     }
+    
     /**
      * Creates arena type provider.
      * @return arena type provider.

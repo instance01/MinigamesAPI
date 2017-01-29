@@ -50,9 +50,13 @@ import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.cmd.CommandImpl;
 import de.minigameslib.mclib.api.enums.EnumServiceInterface;
+import de.minigameslib.mclib.api.objects.ComponentTypeId;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
+import de.minigameslib.mclib.api.objects.SignTypeId;
+import de.minigameslib.mclib.api.objects.ZoneTypeId;
 import de.minigameslib.mclib.api.util.function.McBiFunction;
+import de.minigameslib.mclib.api.util.function.McSupplier;
 import de.minigameslib.mgapi.api.ExtensionInterface;
 import de.minigameslib.mgapi.api.ExtensionProvider;
 import de.minigameslib.mgapi.api.LibState;
@@ -71,6 +75,9 @@ import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.obj.BasicComponentTypes;
 import de.minigameslib.mgapi.api.obj.BasicSignTypes;
 import de.minigameslib.mgapi.api.obj.BasicZoneTypes;
@@ -81,13 +88,34 @@ import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicComponentRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicSignRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicZoneRuleSets;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
 import de.minigameslib.mgapi.api.rules.RuleSetType;
+import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.SignRuleSetType;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerPersistentData;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
+import de.minigameslib.mgapi.impl.obj.BattleZone;
+import de.minigameslib.mgapi.impl.obj.EmptyComponent;
+import de.minigameslib.mgapi.impl.obj.EmptySign;
+import de.minigameslib.mgapi.impl.obj.EmptyZone;
+import de.minigameslib.mgapi.impl.obj.GenericComponent;
+import de.minigameslib.mgapi.impl.obj.GenericSign;
+import de.minigameslib.mgapi.impl.obj.GenericZone;
+import de.minigameslib.mgapi.impl.obj.JoinSign;
+import de.minigameslib.mgapi.impl.obj.JoinZone;
+import de.minigameslib.mgapi.impl.obj.LeaveSign;
+import de.minigameslib.mgapi.impl.obj.LeaveZone;
+import de.minigameslib.mgapi.impl.obj.LobbyZone;
+import de.minigameslib.mgapi.impl.obj.MainZone;
+import de.minigameslib.mgapi.impl.obj.SpawnComponent;
+import de.minigameslib.mgapi.impl.obj.SpectatorZone;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
 import de.minigameslib.mgapi.impl.tasks.InitTask;
 
@@ -102,51 +130,96 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /**
      * the current library state.
      */
-    private LibState                   state               = LibState.Initializing;
+    private LibState                                                                                                              state                 = LibState.Initializing;
     
     /**
      * the registered minigames per plugin
      */
-    private Map<String, MinigameImpl>  minigamesPerPlugin  = new HashMap<>();
+    private Map<String, MinigameImpl>                                                                                             minigamesPerPlugin    = new HashMap<>();
     
     /**
      * the registered minigames per name
      */
-    private Map<String, MinigameImpl>  minigamesPerName    = new TreeMap<>();
+    private Map<String, MinigameImpl>                                                                                             minigamesPerName      = new TreeMap<>();
     
     /**
      * the registered extensions per plugin
      */
-    private Map<String, ExtensionImpl> extensionsPerPlugin = new HashMap<>();
+    private Map<String, ExtensionImpl>                                                                                            extensionsPerPlugin   = new HashMap<>();
     
     /**
      * the registered extensions per name
      */
-    private Map<String, ExtensionImpl> extensionsPerName   = new TreeMap<>();
+    private Map<String, ExtensionImpl>                                                                                            extensionsPerName     = new TreeMap<>();
     
     /** the console commands. */
-    private Mg2Command                 mg2Command          = new Mg2Command();
+    private Mg2Command                                                                                                            mg2Command            = new Mg2Command();
     
     /** arenas per name. */
-    private Map<String, ArenaImpl>     arenasPerName       = new TreeMap<>();
+    private Map<String, ArenaImpl>                                                                                                arenasPerName         = new TreeMap<>();
     
     /**
      * The rule sets per plugin.
      */
-    private final Map<String, Set<RuleSetType>>                                                                ruleSetsPerPlugin = new HashMap<>();
+    private final Map<String, Set<RuleSetType>>                                                                                   ruleSetsPerPlugin     = new HashMap<>();
     
     /**
      * The creator func by arena rule set type
      */
-    private final Map<ArenaRuleSetType, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface>> arenaRuleSetTypes = new HashMap<>();
+    private final Map<ArenaRuleSetType, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface>>                    arenaRuleSetTypes     = new HashMap<>();
+    
+    /**
+     * The creator func by zone rule set type
+     */
+    private final Map<ZoneRuleSetType, McBiFunction<ZoneRuleSetType, ArenaZoneHandler, ZoneRuleSetInterface>>                     zoneRuleSetTypes      = new HashMap<>();
+    
+    /**
+     * The creator func by component rule set type
+     */
+    private final Map<ComponentRuleSetType, McBiFunction<ComponentRuleSetType, ArenaComponentHandler, ComponentRuleSetInterface>> componentRuleSetTypes = new HashMap<>();
+    
+    /**
+     * The creator func by sign rule set type
+     */
+    private final Map<SignRuleSetType, McBiFunction<SignRuleSetType, ArenaSignHandler, SignRuleSetInterface>>                     signRuleSetTypes      = new HashMap<>();
+    
+    /**
+     * Components per plugin
+     */
+    private final Map<String, Set<ComponentTypeId>>                                                                               componentsPerPlugin   = new HashMap<>();
+    
+    /**
+     * Component creator functions
+     */
+    private final Map<ComponentTypeId, McSupplier<ArenaComponentHandler>>                                         components            = new HashMap<>();
+    
+    /**
+     * Zones per plugin
+     */
+    private final Map<String, Set<ZoneTypeId>>                                                                                    zonesPerPlugin        = new HashMap<>();
+    
+    /**
+     * Zone creator functions
+     */
+    private final Map<ZoneTypeId, McSupplier<ArenaZoneHandler>>                                                   zones                 = new HashMap<>();
+    
+    /**
+     * Signs per plugin
+     */
+    private final Map<String, Set<SignTypeId>>                                                                                    signsPerPlugin        = new HashMap<>();
+    
+    /**
+     * Sign creator functions
+     */
+    private final Map<SignTypeId, McSupplier<ArenaSignHandler>>                                                   signs                 = new HashMap<>();
     
     // TODO Watch for disabled plugins
     
     /** arena name check pattern */
-    private static final Pattern       ARENA_NAME_PATTERN  = Pattern.compile("[^\\d\\p{L}-]"); //$NON-NLS-1$
+    private static final Pattern                                                                                                  ARENA_NAME_PATTERN    = Pattern.compile("[^\\d\\p{L}-]"); //$NON-NLS-1$
     
     /** plugin instance. */
-    private static MinigamesPlugin     INSTANCE;
+    private static MinigamesPlugin                                                                                                INSTANCE;
     
     @Override
     public void onEnable()
@@ -185,6 +258,22 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         McLibInterface.instance().registerEvent(this, ArenaDeleteEvent.class);
         
         this.registerRuleset(this, BasicArenaRuleSets.BasicMatch, BasicMatch::new);
+        
+        this.registerArenaComponent(this, BasicComponentTypes.Empty, EmptyComponent::new);
+        this.registerArenaComponent(this, BasicComponentTypes.Generic, GenericComponent::new);
+        this.registerArenaComponent(this, BasicComponentTypes.Spawn, SpawnComponent::new);
+        this.registerArenaSign(this, BasicSignTypes.Empty, EmptySign::new);
+        this.registerArenaSign(this, BasicSignTypes.Generic, GenericSign::new);
+        this.registerArenaSign(this, BasicSignTypes.Join, JoinSign::new);
+        this.registerArenaSign(this, BasicSignTypes.Leave, LeaveSign::new);
+        this.registerArenaZone(this, BasicZoneTypes.Empty, EmptyZone::new);
+        this.registerArenaZone(this, BasicZoneTypes.Generic, GenericZone::new);
+        this.registerArenaZone(this, BasicZoneTypes.Battle, BattleZone::new);
+        this.registerArenaZone(this, BasicZoneTypes.Join, JoinZone::new);
+        this.registerArenaZone(this, BasicZoneTypes.Leave, LeaveZone::new);
+        this.registerArenaZone(this, BasicZoneTypes.Lobby, LobbyZone::new);
+        this.registerArenaZone(this, BasicZoneTypes.Main, MainZone::new);
+        this.registerArenaZone(this, BasicZoneTypes.Spectator, SpectatorZone::new);
         
         try
         {
@@ -564,7 +653,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     @Override
     public void registerRuleset(Plugin plugin, ArenaRuleSetType ruleset, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator)
     {
-        this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>());
+        this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
         this.arenaRuleSetTypes.put(ruleset, creator);
     }
     
@@ -577,6 +666,114 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     public McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator(ArenaRuleSetType type)
     {
         return this.arenaRuleSetTypes.get(type);
+    }
+    
+    /**
+     * Returns the create function for given rule set type
+     * 
+     * @param type
+     * @return creator function
+     */
+    public McBiFunction<ComponentRuleSetType, ArenaComponentHandler, ComponentRuleSetInterface> creator(ComponentRuleSetType type)
+    {
+        return this.componentRuleSetTypes.get(type);
+    }
+    
+    /**
+     * Returns the create function for given rule set type
+     * 
+     * @param type
+     * @return creator function
+     */
+    public McBiFunction<SignRuleSetType, ArenaSignHandler, SignRuleSetInterface> creator(SignRuleSetType type)
+    {
+        return this.signRuleSetTypes.get(type);
+    }
+    
+    /**
+     * Returns the create function for given rule set type
+     * 
+     * @param type
+     * @return creator function
+     */
+    public McBiFunction<ZoneRuleSetType, ArenaZoneHandler, ZoneRuleSetInterface> creator(ZoneRuleSetType type)
+    {
+        return this.zoneRuleSetTypes.get(type);
+    }
+    
+    /**
+     * Returns the create function for given type
+     * 
+     * @param type
+     * @return creator function
+     */
+    public McSupplier<ArenaComponentHandler> creator(ComponentTypeId type)
+    {
+        return this.components.get(type);
+    }
+    
+    /**
+     * Returns the create function for given type
+     * 
+     * @param type
+     * @return creator function
+     */
+    public McSupplier<ArenaZoneHandler> creator(ZoneTypeId type)
+    {
+        return this.zones.get(type);
+    }
+    
+    /**
+     * Returns the create function for given type
+     * 
+     * @param type
+     * @return creator function
+     */
+    public McSupplier<ArenaSignHandler> creator(SignTypeId type)
+    {
+        return this.signs.get(type);
+    }
+    
+    @Override
+    public void registerRuleset(Plugin plugin, ComponentRuleSetType ruleset, McBiFunction<ComponentRuleSetType, ArenaComponentHandler, ComponentRuleSetInterface> creator)
+    {
+        this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
+        this.componentRuleSetTypes.put(ruleset, creator);
+    }
+    
+    @Override
+    public void registerRuleset(Plugin plugin, SignRuleSetType ruleset, McBiFunction<SignRuleSetType, ArenaSignHandler, SignRuleSetInterface> creator)
+    {
+        this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
+        this.signRuleSetTypes.put(ruleset, creator);
+    }
+    
+    @Override
+    public void registerRuleset(Plugin plugin, ZoneRuleSetType ruleset, McBiFunction<ZoneRuleSetType, ArenaZoneHandler, ZoneRuleSetInterface> creator)
+    {
+        this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
+        this.zoneRuleSetTypes.put(ruleset, creator);
+    }
+    
+    @Override
+    public void registerArenaComponent(Plugin plugin, ComponentTypeId type, McSupplier<ArenaComponentHandler> creator)
+    {
+        this.componentsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(type);
+        this.components.put(type, creator);
+    }
+    
+    @Override
+    public void registerArenaZone(Plugin plugin, ZoneTypeId type, McSupplier<ArenaZoneHandler> creator)
+    {
+        this.zonesPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(type);
+        this.zones.put(type, creator);
+    }
+    
+    @Override
+    public void registerArenaSign(Plugin plugin, SignTypeId type, McSupplier<ArenaSignHandler> creator)
+    {
+        this.signsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(type);
+        this.signs.put(type, creator);
     }
     
 }
