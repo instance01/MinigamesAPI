@@ -38,6 +38,7 @@ import de.minigameslib.mclib.api.objects.ComponentTypeId;
 import de.minigameslib.mclib.api.objects.Cuboid;
 import de.minigameslib.mclib.api.objects.EntityIdInterface;
 import de.minigameslib.mclib.api.objects.EntityTypeId;
+import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.objects.SignIdInterface;
 import de.minigameslib.mclib.api.objects.SignTypeId;
@@ -170,7 +171,35 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
      * @return {@code true} if arena is in one of the match states: PRE_MATCH, MATCH, POST_MATCH
      */
     boolean isMatch();
-    
+
+    /**
+     * Checks if given player is playing a match or waiting for the main game (lobby)
+     * @param player
+     * @return {@code true} if player is playing
+     */
+    boolean isPlaying(McPlayerInterface player);
+
+    /**
+     * Checks if given player is spetating a match
+     * @param player
+     * @return {@code true} if player is spectating
+     */
+    boolean isSpectating(McPlayerInterface player);
+
+    /**
+     * Checks if given player is playing a match or waiting for the main game (lobby)
+     * @param player
+     * @return {@code true} if player is playing
+     */
+    boolean isPlaying(ArenaPlayerInterface player);
+
+    /**
+     * Checks if given player is spetating a match
+     * @param player
+     * @return {@code true} if player is spectating
+     */
+    boolean isSpectating(ArenaPlayerInterface player);
+
     /**
      * Checks for administration failures.
      * @return list of arena failures.

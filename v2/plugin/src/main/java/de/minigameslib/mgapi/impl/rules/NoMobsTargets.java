@@ -24,7 +24,11 @@
 
 package de.minigameslib.mgapi.impl.rules;
 
+import org.bukkit.entity.Player;
+
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEntityTargetEvent;
+import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
@@ -33,7 +37,7 @@ import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
  * @author mepeisen
  *
  */
-public class PlayerNoEntry implements ZoneRuleSetInterface
+public class NoMobsTargets implements ZoneRuleSetInterface
 {
     
     /**
@@ -52,7 +56,7 @@ public class PlayerNoEntry implements ZoneRuleSetInterface
      * @param zone
      * @throws McException thrown if config is invalid
      */
-    public PlayerNoEntry(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
+    public NoMobsTargets(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
     {
         this.type = type;
         this.zone = zone;
@@ -64,6 +68,18 @@ public class PlayerNoEntry implements ZoneRuleSetInterface
         return this.type;
     }
     
-    // TODO
+    /**
+     * Invoked on mob target selection
+     * @param evt
+     */
+    @McEventHandler
+    public void onMobTarget(McEntityTargetEvent evt)
+    {
+        if (evt.getBukkitEvent().getTarget() instanceof Player)
+        {
+            // TODO check for minigames entities
+            evt.getBukkitEvent().setCancelled(true);
+        }
+    }
     
 }

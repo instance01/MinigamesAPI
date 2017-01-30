@@ -29,11 +29,12 @@ import org.bukkit.event.HandlerList;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
 import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
+import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
-import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.arena.ArenaInterface;
 
 /**
  * Event fired before an arena is deleted.
@@ -46,36 +47,23 @@ public class ArenaDeleteEvent extends AbstractVetoEvent implements MinecraftEven
     /** handlers list. */
     private static final HandlerList handlers = new HandlerList();
     
-    /** the arena name. */
-    private final String arenaName;
-    
-    /** the arena type. */
-    private final ArenaTypeInterface type;
+    /** the arena instance. */
+    private final ArenaInterface arena;
     
     /**
-     * @param arenaName
-     * @param type
+     * @param arena
      */
-    public ArenaDeleteEvent(String arenaName, ArenaTypeInterface type)
+    public ArenaDeleteEvent(ArenaInterface arena)
     {
-        this.arenaName = arenaName;
-        this.type = type;
+        this.arena = arena;
     }
 
     /**
-     * @return the arenaName
+     * @return the arena
      */
-    public String getArenaName()
+    public ArenaInterface getArena()
     {
-        return this.arenaName;
-    }
-
-    /**
-     * @return the type
-     */
-    public ArenaTypeInterface getType()
-    {
-        return this.type;
+        return this.arena;
     }
 
     /**
@@ -103,6 +91,12 @@ public class ArenaDeleteEvent extends AbstractVetoEvent implements MinecraftEven
     public ArenaDeleteEvent getBukkitEvent()
     {
         return this;
+    }
+
+    @Override
+    public ObjectInterface getObject()
+    {
+        return this.arena.getObject();
     }
 
     @Override

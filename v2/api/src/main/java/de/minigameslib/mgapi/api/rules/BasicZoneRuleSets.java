@@ -43,6 +43,11 @@ public enum BasicZoneRuleSets implements ZoneRuleSetType
     NoWorldPets,
     
     /**
+     * mobs are not allowed to target players inside the zone 
+     */
+    NoMobTargets,
+    
+    /**
      * Players are not allowed to enter the zone from outside except they join the arena  
      */
     PlayerNoEntry,

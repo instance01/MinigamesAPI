@@ -119,6 +119,7 @@ import de.minigameslib.mgapi.impl.obj.SpectatorZone;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
 import de.minigameslib.mgapi.impl.rules.DieOnLeave;
 import de.minigameslib.mgapi.impl.rules.LoseOnLeave;
+import de.minigameslib.mgapi.impl.rules.NoMobsTargets;
 import de.minigameslib.mgapi.impl.rules.NoWorldMobs;
 import de.minigameslib.mgapi.impl.rules.NoWorldPets;
 import de.minigameslib.mgapi.impl.rules.PlayerNoEntry;
@@ -197,7 +198,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /**
      * Component creator functions
      */
-    private final Map<ComponentTypeId, McSupplier<ArenaComponentHandler>>                                         components            = new HashMap<>();
+    private final Map<ComponentTypeId, McSupplier<ArenaComponentHandler>>                                                         components            = new HashMap<>();
     
     /**
      * Zones per plugin
@@ -207,7 +208,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /**
      * Zone creator functions
      */
-    private final Map<ZoneTypeId, McSupplier<ArenaZoneHandler>>                                                   zones                 = new HashMap<>();
+    private final Map<ZoneTypeId, McSupplier<ArenaZoneHandler>>                                                                   zones                 = new HashMap<>();
     
     /**
      * Signs per plugin
@@ -217,7 +218,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /**
      * Sign creator functions
      */
-    private final Map<SignTypeId, McSupplier<ArenaSignHandler>>                                                   signs                 = new HashMap<>();
+    private final Map<SignTypeId, McSupplier<ArenaSignHandler>>                                                                   signs                 = new HashMap<>();
     
     // TODO Watch for disabled plugins
     
@@ -268,6 +269,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         this.registerRuleset(this, BasicZoneRuleSets.LoseOnLeave, LoseOnLeave::new);
         this.registerRuleset(this, BasicZoneRuleSets.NoWorldMobs, NoWorldMobs::new);
         this.registerRuleset(this, BasicZoneRuleSets.NoWorldPets, NoWorldPets::new);
+        this.registerRuleset(this, BasicZoneRuleSets.NoMobTargets, NoMobsTargets::new);
         this.registerRuleset(this, BasicZoneRuleSets.PlayerNoEntry, PlayerNoEntry::new);
         this.registerRuleset(this, BasicZoneRuleSets.PvPMode, PvPMode::new);
         

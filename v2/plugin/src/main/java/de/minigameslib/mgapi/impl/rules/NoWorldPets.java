@@ -24,7 +24,14 @@
 
 package de.minigameslib.mgapi.impl.rules;
 
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McCreatureSpawnEvent;
+import de.minigameslib.mclib.api.event.McEntityTeleportEvent;
+import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
@@ -39,7 +46,6 @@ public class NoWorldPets implements ZoneRuleSetInterface
     /**
      * the underlying zone.
      */
-    @SuppressWarnings("unused")
     private final ArenaZoneHandler zone;
     
     /**
@@ -62,6 +68,40 @@ public class NoWorldPets implements ZoneRuleSetInterface
     public ZoneRuleSetType getType()
     {
         return this.type;
+    }
+    
+    /**
+     * Invoked on admin spawn events within this zone
+     * @param evt
+     */
+    @McEventHandler
+    public void onPetSpawn(McCreatureSpawnEvent evt)
+    {
+        final LivingEntity entity = evt.getBukkitEvent().getEntity();
+        if (entity instanceof Animals)
+        {
+            // TODO check for minigames forced spawns
+            evt.getBukkitEvent().setCancelled(true);
+        }
+    }
+    
+    /**
+     * Invoked on animal teleports
+     * @param evt
+     */
+    @McEventHandler
+    public void onPetTeleport(McEntityTeleportEvent evt)
+    {
+        final Entity entity = evt.getBukkitEvent().getEntity();
+        if (entity instanceof Animals)
+        {
+            if (this.zone.getZone().containsLoc(evt.getBukkitEvent().getTo()))
+            {
+                // this zone is target zone
+                // TODO check for minigames forced teleports
+                evt.getBukkitEvent().setCancelled(true);
+            }
+        }
     }
     
 }

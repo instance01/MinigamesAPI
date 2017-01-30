@@ -25,6 +25,10 @@
 package de.minigameslib.mgapi.impl.rules;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEventHandler;
+import de.minigameslib.mclib.api.mcevent.PlayerLeftZoneEvent;
+import de.minigameslib.mgapi.api.MinigamesLibInterface;
+import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
@@ -39,7 +43,6 @@ public class LoseOnLeave implements ZoneRuleSetInterface
     /**
      * the underlying zone.
      */
-    @SuppressWarnings("unused")
     private final ArenaZoneHandler zone;
     
     /**
@@ -62,6 +65,23 @@ public class LoseOnLeave implements ZoneRuleSetInterface
     public ZoneRuleSetType getType()
     {
         return this.type;
+    }
+    
+    /**
+     * Event on player zone leave
+     * @param evt
+     */
+    @McEventHandler
+    public void onLeave(PlayerLeftZoneEvent evt)
+    {
+        final ArenaInterface arena = this.zone.getArena();
+        if (arena.isMatch())
+        {
+            if (arena.isPlaying(evt.getPlayer()))
+            {
+                MinigamesLibInterface.instance().getPlayer(evt.getPlayer()).lose();
+            }
+        }
     }
     
 }

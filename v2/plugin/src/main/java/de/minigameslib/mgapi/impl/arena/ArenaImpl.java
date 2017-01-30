@@ -35,6 +35,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.plugin.Plugin;
@@ -76,6 +77,8 @@ import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.arena.CheckFailure;
 import de.minigameslib.mgapi.api.arena.CheckSeverity;
+import de.minigameslib.mgapi.api.events.ArenaDeleteEvent;
+import de.minigameslib.mgapi.api.events.ArenaDeletedEvent;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
@@ -667,8 +670,34 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
      */
     private void delete0()
     {
-        // TODO Auto-generated method stub
+        try
+        {
+            final ObjectServiceInterface osi = ObjectServiceInterface.instance();
+            for (final ComponentIdInterface id : this.getComponents())
+            {
+                osi.findComponent(id).delete();
+            }
+            for (final SignIdInterface id : this.getSigns())
+            {
+                osi.findSign(id).delete();
+            }
+            for (final ZoneIdInterface id : this.getZones())
+            {
+                osi.findZone(id).delete();
+            }
+            for (final EntityIdInterface id : this.getEntities())
+            {
+                osi.findEntity(id).delete();
+            }
+        }
+        catch (McException ex)
+        {
+            // should never happen because we checked deletion in canDelete
+            throw new IllegalStateException(ex);
+        }
         
+        final ArenaDeletedEvent deletedEvent = new ArenaDeletedEvent(this);
+        Bukkit.getPluginManager().callEvent(deletedEvent);
     }
 
     @Override
@@ -722,6 +751,30 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     }
 
     @Override
+    public boolean isPlaying(McPlayerInterface player)
+    {
+        return this.players.contains(player.getPlayerUUID());
+    }
+
+    @Override
+    public boolean isSpectating(McPlayerInterface player)
+    {
+        return this.spectators.contains(player.getPlayerUUID());
+    }
+
+    @Override
+    public boolean isPlaying(ArenaPlayerInterface player)
+    {
+        return this.players.contains(player.getPlayerUUID());
+    }
+
+    @Override
+    public boolean isSpectating(ArenaPlayerInterface player)
+    {
+        return this.spectators.contains(player.getPlayerUUID());
+    }
+
+    @Override
     public void read(DataSection section)
     {
         // not used
@@ -746,6 +799,31 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         if (ArenaImpl.this.getState() != ArenaState.Maintenance)
         {
             throw new McException(Messages.ModificationWrongState);
+        }
+        
+        final ArenaDeleteEvent deleteEvent = new ArenaDeleteEvent(this);
+        Bukkit.getPluginManager().callEvent(deleteEvent);
+        if (deleteEvent.isCancelled())
+        {
+            throw new McException(deleteEvent.getVetoReason(), deleteEvent.getVetoReasonArgs());
+        }
+        
+        final ObjectServiceInterface osi = ObjectServiceInterface.instance();
+        for (final ComponentIdInterface id : this.getComponents())
+        {
+            osi.findComponent(id).getHandler().canDelete();
+        }
+        for (final SignIdInterface id : this.getSigns())
+        {
+            osi.findSign(id).getHandler().canDelete();
+        }
+        for (final ZoneIdInterface id : this.getZones())
+        {
+            osi.findZone(id).getHandler().canDelete();
+        }
+        for (final EntityIdInterface id : this.getEntities())
+        {
+            osi.findEntity(id).getHandler().canDelete();
         }
     }
 

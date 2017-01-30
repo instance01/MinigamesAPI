@@ -148,5 +148,26 @@ public class ArenaPlayerImpl extends AnnotatedDataFragment implements ArenaPlaye
     {
         return this.getData().getArenaName() != null;
     }
+
+    @Override
+    public void die()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void lose()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void win()
+    {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

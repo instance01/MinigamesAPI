@@ -24,7 +24,15 @@
 
 package de.minigameslib.mgapi.impl.rules;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Golem;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
+
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McCreatureSpawnEvent;
+import de.minigameslib.mclib.api.event.McEntityTeleportEvent;
+import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
@@ -39,7 +47,6 @@ public class NoWorldMobs implements ZoneRuleSetInterface
     /**
      * the underlying zone.
      */
-    @SuppressWarnings("unused")
     private final ArenaZoneHandler zone;
     
     /**
@@ -62,6 +69,40 @@ public class NoWorldMobs implements ZoneRuleSetInterface
     public ZoneRuleSetType getType()
     {
         return this.type;
+    }
+    
+    /**
+     * Invoked on mob spawn events within this zone
+     * @param evt
+     */
+    @McEventHandler
+    public void onMobSpawn(McCreatureSpawnEvent evt)
+    {
+        final LivingEntity entity = evt.getBukkitEvent().getEntity();
+        if (entity instanceof Monster || entity instanceof Golem)
+        {
+            // TODO check for minigames forced spawns
+            evt.getBukkitEvent().setCancelled(true);
+        }
+    }
+    
+    /**
+     * Invoked on mob teleports
+     * @param evt
+     */
+    @McEventHandler
+    public void onMobTeleport(McEntityTeleportEvent evt)
+    {
+        final Entity entity = evt.getBukkitEvent().getEntity();
+        if (entity instanceof Monster || entity instanceof Golem)
+        {
+            if (this.zone.getZone().containsLoc(evt.getBukkitEvent().getTo()))
+            {
+                // this zone is target zone
+                // TODO check for minigames forced teleports
+                evt.getBukkitEvent().setCancelled(true);
+            }
+        }
     }
     
 }

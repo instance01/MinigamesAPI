@@ -91,7 +91,7 @@ public interface ArenaPlayerInterface
         return this.getMcPlayer().getPlayerUUID();
     }
     
-    // arena data
+    // arena data and match
     
     /**
      * Returns the arena this player is currently in; within a match or waiting lobby.
@@ -99,6 +99,21 @@ public interface ArenaPlayerInterface
      * @return arena or {@code null} if this player is currently not within any arena.
      */
     ArenaInterface getArena();
+    
+    /**
+     * Let the player die; does nothing if there is no game pending
+     */
+    void die();
+    
+    /**
+     * Let the player lose the game; does nothing if there is no game pending
+     */
+    void lose();
+    
+    /**
+     * Let the player win the game; does nothing if there is no game pending
+     */
+    void win();
     
     // stubbing
     
