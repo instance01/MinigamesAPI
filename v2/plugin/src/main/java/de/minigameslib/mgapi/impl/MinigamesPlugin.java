@@ -86,7 +86,9 @@ import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicComponentRuleSets;
+import de.minigameslib.mgapi.api.rules.BasicLosingRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicSignRuleSets;
+import de.minigameslib.mgapi.api.rules.BasicWinningRuleSets;
 import de.minigameslib.mgapi.api.rules.BasicZoneRuleSets;
 import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
@@ -117,7 +119,11 @@ import de.minigameslib.mgapi.impl.obj.MainZone;
 import de.minigameslib.mgapi.impl.obj.SpawnComponent;
 import de.minigameslib.mgapi.impl.obj.SpectatorZone;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
+import de.minigameslib.mgapi.impl.rules.BasicMatchTime;
+import de.minigameslib.mgapi.impl.rules.BasicSpawns;
 import de.minigameslib.mgapi.impl.rules.DieOnLeave;
+import de.minigameslib.mgapi.impl.rules.LastManStanding;
+import de.minigameslib.mgapi.impl.rules.LoseOnDeath;
 import de.minigameslib.mgapi.impl.rules.LoseOnLeave;
 import de.minigameslib.mgapi.impl.rules.NoMobsTargets;
 import de.minigameslib.mgapi.impl.rules.NoWorldMobs;
@@ -243,6 +249,8 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         EnumServiceInterface.instance().registerEnumClass(this, MglibObjectTypes.class);
         
         EnumServiceInterface.instance().registerEnumClass(this, BasicArenaRuleSets.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicWinningRuleSets.class);
+        EnumServiceInterface.instance().registerEnumClass(this, BasicLosingRuleSets.class);
         EnumServiceInterface.instance().registerEnumClass(this, BasicComponentRuleSets.class);
         EnumServiceInterface.instance().registerEnumClass(this, BasicComponentTypes.class);
         EnumServiceInterface.instance().registerEnumClass(this, BasicSignRuleSets.class);
@@ -265,6 +273,10 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         McLibInterface.instance().registerEvent(this, ArenaDeleteEvent.class);
         
         this.registerRuleset(this, BasicArenaRuleSets.BasicMatch, BasicMatch::new);
+        this.registerRuleset(this, BasicArenaRuleSets.BasicSpawns, BasicSpawns::new);
+        this.registerRuleset(this, BasicArenaRuleSets.BasicMatchTimer, BasicMatchTime::new);
+        this.registerRuleset(this, BasicWinningRuleSets.LastManStanding, LastManStanding::new);
+        this.registerRuleset(this, BasicLosingRuleSets.LoseOnDeath, LoseOnDeath::new);
         this.registerRuleset(this, BasicZoneRuleSets.DieOnLeave, DieOnLeave::new);
         this.registerRuleset(this, BasicZoneRuleSets.LoseOnLeave, LoseOnLeave::new);
         this.registerRuleset(this, BasicZoneRuleSets.NoWorldMobs, NoWorldMobs::new);

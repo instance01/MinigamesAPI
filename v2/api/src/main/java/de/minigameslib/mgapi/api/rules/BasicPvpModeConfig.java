@@ -24,53 +24,49 @@
 
 package de.minigameslib.mgapi.api.rules;
 
-import de.minigameslib.mclib.api.enums.ChildEnum;
+import de.minigameslib.mclib.api.config.ConfigComment;
+import de.minigameslib.mclib.api.config.ConfigurationString;
+import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
+import de.minigameslib.mclib.api.config.ConfigurationValues;
 
 /**
- * Basic zone rule sets
+ * Basic pvp configurations
  * 
  * @author mepeisen
+ * 
+ * @see BasicZoneRuleSets#PvPMode
  */
-@ChildEnum({
-    BasicPvpModeConfig.class
-})
-public enum BasicZoneRuleSets implements ZoneRuleSetType
+@ConfigurationValues(path = "core")
+public enum BasicPvpModeConfig implements ConfigurationValueInterface
 {
     
+    // TODO enumeration value
     /**
-     * No free spawn of mobs; only forced spawns in maintenance mode or from minigames code 
+     * The pvp option
      */
-    NoWorldMobs,
+    @ConfigurationString(defaultValue = "NoPvp")
+    @ConfigComment({"The pvp option"})
+    PvpOption;
     
     /**
-     * No free spawn of pets; only forced spawns in maintenance mode or from minigames code 
+     * Enumeration for type of pvp modes
      */
-    NoWorldPets,
-    
-    /**
-     * mobs are not allowed to target players inside the zone 
-     */
-    NoMobTargets,
-    
-    /**
-     * Players are not allowed to enter the zone from outside except they join the arena  
-     */
-    PlayerNoEntry,
-    
-    /**
-     * Leaving the zone causes to automatically lose the game
-     */
-    LoseOnLeave,
-    
-    /**
-     * Leaving the zone causes to automatically die; can be used for games where players have multiple lives.
-     */
-    DieOnLeave,
-    
-    /**
-     * Pvp-Rules
-     */
-    @RuleSetConfigurable(config = BasicPvpModeConfig.class)
-    PvPMode,
+    public enum PvpModes
+    {
+        /**
+         * No Pvp at all
+         */
+        NoPvp,
+        
+        /**
+         * Pvp only during match but no damage
+         */
+        PvpDuringMatch,
+        
+        /**
+         * Normal pvp with damage
+         */
+        Normal,
+    }
     
 }

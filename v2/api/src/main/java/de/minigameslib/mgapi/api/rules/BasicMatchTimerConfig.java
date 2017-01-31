@@ -24,39 +24,26 @@
 
 package de.minigameslib.mgapi.api.rules;
 
-import de.minigameslib.mclib.api.enums.ChildEnum;
+import de.minigameslib.mclib.api.config.ConfigComment;
+import de.minigameslib.mclib.api.config.ConfigurationInt;
+import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
+import de.minigameslib.mclib.api.config.ConfigurationValues;
 
 /**
- * Basic arena rule sets
+ * Basic match timer configurations
  * 
  * @author mepeisen
+ * 
+ * @see BasicArenaRuleSets#BasicMatchTimer
  */
-@ChildEnum({
-    BasicMatchConfig.class,
-    BasicSpawnsConfig.class,
-    BasicMatchTimerConfig.class
-})
-public enum BasicArenaRuleSets implements ArenaRuleSetType
+@ConfigurationValues(path = "core")
+public enum BasicMatchTimerConfig implements ConfigurationValueInterface
 {
-    
     /**
-     * A basic match rule containing:
-     * - min player handling
-     * - max player handling
+     * The maximum match time in seconds
      */
-    @RuleSetConfigurable(config = BasicMatchConfig.class)
-    BasicMatch,
-    
-    /**
-     * Spawn modes
-     */
-    @RuleSetConfigurable(config = BasicSpawnsConfig.class)
-    BasicSpawns,
-    
-    /**
-     * Maximum timer for matches
-     */
-    @RuleSetConfigurable(config = BasicMatchTimerConfig.class)
-    BasicMatchTimer,
+    @ConfigurationInt(defaultValue = 120)
+    @ConfigComment({"The maximum match time in seconds"})
+    MaxSeconds
     
 }

@@ -24,39 +24,17 @@
 
 package de.minigameslib.mgapi.api.rules;
 
-import de.minigameslib.mclib.api.enums.ChildEnum;
-
 /**
- * Basic arena rule sets
+ * Rule sets for winning
  * 
  * @author mepeisen
  */
-@ChildEnum({
-    BasicMatchConfig.class,
-    BasicSpawnsConfig.class,
-    BasicMatchTimerConfig.class
-})
-public enum BasicArenaRuleSets implements ArenaRuleSetType
+public enum BasicWinningRuleSets implements ArenaRuleSetType
 {
     
     /**
-     * A basic match rule containing:
-     * - min player handling
-     * - max player handling
+     * The last man standing is winning
      */
-    @RuleSetConfigurable(config = BasicMatchConfig.class)
-    BasicMatch,
-    
-    /**
-     * Spawn modes
-     */
-    @RuleSetConfigurable(config = BasicSpawnsConfig.class)
-    BasicSpawns,
-    
-    /**
-     * Maximum timer for matches
-     */
-    @RuleSetConfigurable(config = BasicMatchTimerConfig.class)
-    BasicMatchTimer,
+    LastManStanding
     
 }

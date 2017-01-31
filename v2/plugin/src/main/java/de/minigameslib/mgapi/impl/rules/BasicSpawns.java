@@ -25,55 +25,52 @@
 package de.minigameslib.mgapi.impl.rules;
 
 import de.minigameslib.mclib.api.McException;
-import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
-import de.minigameslib.mgapi.api.rules.BasicPvpModeConfig;
-import de.minigameslib.mgapi.api.rules.BasicPvpModeConfig.PvpModes;
-import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
-import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
+import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
 
 /**
+ * The implementation of BasicSpawns rule set
+ * 
+ * @see BasicArenaRuleSets#BasicSpawns
+ * 
  * @author mepeisen
- *
  */
-public class PvPMode implements ZoneRuleSetInterface
+public class BasicSpawns implements ArenaRuleSetInterface
 {
     
     /**
-     * the underlying zone.
+     * the underlying arena.
      */
-    @SuppressWarnings("unused")
-    private final ArenaZoneHandler zone;
+    private final ArenaInterface arena;
     
     /**
      * rule set type.
      */
-    private final ZoneRuleSetType type;
-    
-    /** 
-     * the current pvp mode.
-     */
-    private PvpModes mode;
+    private final ArenaRuleSetType type;
     
     /**
      * @param type
-     * @param zone
+     * @param arena
      * @throws McException thrown if config is invalid
      */
-    public PvPMode(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
+    public BasicSpawns(ArenaRuleSetType type, ArenaInterface arena) throws McException
     {
         this.type = type;
-        this.zone = zone;
-        this.mode = PvpModes.valueOf(BasicPvpModeConfig.PvpOption.getString());
-        if (this.mode == null)
-        {
-            // TODO
-        }
+        this.arena = arena;
     }
 
     @Override
-    public ZoneRuleSetType getType()
+    public ArenaRuleSetType getType()
     {
         return this.type;
+    }
+
+    @Override
+    public ArenaInterface getArena()
+    {
+        return this.arena;
     }
     
     // TODO
