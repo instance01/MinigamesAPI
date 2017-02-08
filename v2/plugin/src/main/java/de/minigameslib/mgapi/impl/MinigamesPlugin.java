@@ -75,6 +75,9 @@ import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
+import de.minigameslib.mgapi.api.events.ArenaStateChangeEvent;
+import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
+import de.minigameslib.mgapi.api.match.CommonMatchStatistics;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
@@ -97,6 +100,7 @@ import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetType;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
+import de.minigameslib.mgapi.api.team.CommonTeams;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerImpl;
@@ -258,6 +262,9 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         EnumServiceInterface.instance().registerEnumClass(this, BasicZoneRuleSets.class);
         EnumServiceInterface.instance().registerEnumClass(this, BasicZoneTypes.class);
         
+        EnumServiceInterface.instance().registerEnumClass(this, CommonTeams.class);
+        EnumServiceInterface.instance().registerEnumClass(this, CommonMatchStatistics.class);
+        
         Bukkit.getServicesManager().register(MinigamesLibInterface.class, this, this, ServicePriority.Highest);
         Bukkit.getServicesManager().register(TaskManager.class, new TaskManager(), this, ServicePriority.Highest);
         
@@ -271,6 +278,8 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         McLibInterface.instance().registerEvent(this, ArenaPlayerLeftSpectatorsEvent.class);
         McLibInterface.instance().registerEvent(this, ArenaDeletedEvent.class);
         McLibInterface.instance().registerEvent(this, ArenaDeleteEvent.class);
+        McLibInterface.instance().registerEvent(this, ArenaStateChangedEvent.class);
+        McLibInterface.instance().registerEvent(this, ArenaStateChangeEvent.class);
         
         this.registerRuleset(this, BasicArenaRuleSets.BasicMatch, BasicMatch::new);
         this.registerRuleset(this, BasicArenaRuleSets.BasicSpawns, BasicSpawns::new);

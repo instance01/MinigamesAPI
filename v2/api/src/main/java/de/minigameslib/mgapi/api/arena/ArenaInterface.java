@@ -45,6 +45,7 @@ import de.minigameslib.mclib.api.objects.SignTypeId;
 import de.minigameslib.mclib.api.objects.ZoneIdInterface;
 import de.minigameslib.mclib.api.objects.ZoneTypeId;
 import de.minigameslib.mgapi.api.MinigameInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
@@ -265,6 +266,16 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
      * @return logger
      */
     Logger getLogger();
+    
+    // match
+    
+    /**
+     * Returns the current arena match
+     * @return arena match or {@ode null} if arena is not in JOIN or MATCH state.
+     */
+    ArenaMatchInterface getCurrentMatch();
+    
+    // TODO historic matches
     
     // components and objects
         

@@ -29,22 +29,20 @@ import org.bukkit.event.HandlerList;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
 import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
-import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
-import de.minigameslib.mgapi.api.team.TeamIdType;
+import de.minigameslib.mgapi.api.arena.ArenaState;
 
 /**
- * Event fired before an arena player joined.
+ * Event fired before an arena state is changed.
  * 
  * @author mepeisen
  */
-public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinEvent, ArenaPlayerJoinEvent>
+public class ArenaStateChangeEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaStateChangeEvent, ArenaStateChangeEvent>
 {
     
     /** handlers list. */
@@ -53,22 +51,38 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     /** the arena instance. */
     private final ArenaInterface arena;
     
-    /** the arena player. */
-    private final ArenaPlayerInterface player;
+    /** the old state. */
+    private final ArenaState oldState;
     
-    /** the pre-selected team */
-    private TeamIdType preSelectedTeam;
-
+    /** the new state. */
+    private final ArenaState newState;
+    
     /**
      * @param arena
-     * @param player
-     * @param preSelectedTeam
+     * @param oldState the old state
+     * @param newState the new state
      */
-    public ArenaPlayerJoinEvent(ArenaInterface arena, ArenaPlayerInterface player, TeamIdType preSelectedTeam)
+    public ArenaStateChangeEvent(ArenaInterface arena, ArenaState oldState, ArenaState newState)
     {
         this.arena = arena;
-        this.player = player;
-        this.preSelectedTeam = preSelectedTeam;
+        this.oldState = oldState;
+        this.newState = newState;
+    }
+
+    /**
+     * @return the oldState
+     */
+    public ArenaState getOldState()
+    {
+        return this.oldState;
+    }
+
+    /**
+     * @return the newState
+     */
+    public ArenaState getNewState()
+    {
+        return this.newState;
     }
 
     /**
@@ -77,30 +91,6 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     public ArenaInterface getArena()
     {
         return this.arena;
-    }
-
-    /**
-     * @return the arena player
-     */
-    public ArenaPlayerInterface getArenaPlayer()
-    {
-        return this.player;
-    }
-
-    /**
-     * @return the preSelectedTeam
-     */
-    public TeamIdType getPreSelectedTeam()
-    {
-        return this.preSelectedTeam;
-    }
-
-    /**
-     * @param preSelectedTeam the preSelectedTeam to set
-     */
-    public void setPreSelectedTeam(TeamIdType preSelectedTeam)
-    {
-        this.preSelectedTeam = preSelectedTeam;
     }
 
     /**
@@ -125,7 +115,7 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     }
 
     @Override
-    public ArenaPlayerJoinEvent getBukkitEvent()
+    public ArenaStateChangeEvent getBukkitEvent()
     {
         return this;
     }
@@ -137,13 +127,7 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     }
 
     @Override
-    public McPlayerInterface getPlayer()
-    {
-        return this.player.getMcPlayer();
-    }
-
-    @Override
-    public McOutgoingStubbing<ArenaPlayerJoinEvent> when(McPredicate<ArenaPlayerJoinEvent> test) throws McException
+    public McOutgoingStubbing<ArenaStateChangeEvent> when(McPredicate<ArenaStateChangeEvent> test) throws McException
     {
         if (test.test(this))
         {

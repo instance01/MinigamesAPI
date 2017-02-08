@@ -34,6 +34,7 @@ import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 
 /**
  * @author mepeisen
@@ -101,17 +102,30 @@ public interface ArenaPlayerInterface
     ArenaInterface getArena();
     
     /**
-     * Let the player die; does nothing if there is no game pending
+     * Let the player die; does nothing if there is no game pending.
+     * Adds a new kill to kill statistic and performs a kill.
      */
     void die();
     
     /**
-     * Let the player lose the game; does nothing if there is no game pending
+     * Let the player die; does nothing if there is no game pending.
+     * Adds a new kill to kill statistic and performs a kill while the killer gets a statistic bonus
+     * for killing this player.
+     * @param killer the opposite player causing the death
+     */
+    void die(ArenaPlayerInterface killer);
+    
+    /**
+     * Let the player lose the game; does nothing if there is no game pending.
+     * May cause to end the game (depending on gaming rules).
+     * Identical to invoke {@link ArenaMatchInterface#setLoser(UUID...)} with this players uuid.
      */
     void lose();
     
     /**
      * Let the player win the game; does nothing if there is no game pending
+     * May cause to end the game (depending on gaming rules).
+     * Identical to invoke {@link ArenaMatchInterface#setWinner(UUID...)} with this players uuid.
      */
     void win();
     

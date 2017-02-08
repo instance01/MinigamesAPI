@@ -22,18 +22,26 @@
 
 */
 
-package de.minigameslib.mgapi.api.team;
-
-import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
+package de.minigameslib.mgapi.api.match;
 
 /**
- * Use this interface on ernumerations to declare team types.
+ * Common match statistics.
  * 
  * @author mepeisen
  */
-public interface TeamIdType extends McUniqueEnumInterface
+public enum CommonMatchStatistics implements MatchStatisticId
 {
     
-    // marker only
+    /** common points for a single player or a team. */
+    Points,
+    
+    /** Number of player/team deaths. */
+    Deaths,
+    
+    /** Number of player/team kills. */
+    Kills,
+    
+    /** Number of player/team lives. */
+    Lives,
     
 }

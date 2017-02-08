@@ -24,27 +24,25 @@
 
 package de.minigameslib.mgapi.api.events;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
-import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
-import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
-import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
- * Event fired before an arena player joined.
+ * Event right before the match started. Can be used to select player spawns
+ * or to initialize the battle field.
  * 
  * @author mepeisen
  */
-public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinEvent, ArenaPlayerJoinEvent>
+public class MatchStartedEvent extends Event implements MinecraftEvent<MatchStartedEvent, MatchStartedEvent>
 {
     
     /** handlers list. */
@@ -52,23 +50,13 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     
     /** the arena instance. */
     private final ArenaInterface arena;
-    
-    /** the arena player. */
-    private final ArenaPlayerInterface player;
-    
-    /** the pre-selected team */
-    private TeamIdType preSelectedTeam;
 
     /**
      * @param arena
-     * @param player
-     * @param preSelectedTeam
      */
-    public ArenaPlayerJoinEvent(ArenaInterface arena, ArenaPlayerInterface player, TeamIdType preSelectedTeam)
+    public MatchStartedEvent(ArenaInterface arena)
     {
         this.arena = arena;
-        this.player = player;
-        this.preSelectedTeam = preSelectedTeam;
     }
 
     /**
@@ -77,30 +65,6 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     public ArenaInterface getArena()
     {
         return this.arena;
-    }
-
-    /**
-     * @return the arena player
-     */
-    public ArenaPlayerInterface getArenaPlayer()
-    {
-        return this.player;
-    }
-
-    /**
-     * @return the preSelectedTeam
-     */
-    public TeamIdType getPreSelectedTeam()
-    {
-        return this.preSelectedTeam;
-    }
-
-    /**
-     * @param preSelectedTeam the preSelectedTeam to set
-     */
-    public void setPreSelectedTeam(TeamIdType preSelectedTeam)
-    {
-        this.preSelectedTeam = preSelectedTeam;
     }
 
     /**
@@ -125,7 +89,7 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     }
 
     @Override
-    public ArenaPlayerJoinEvent getBukkitEvent()
+    public MatchStartedEvent getBukkitEvent()
     {
         return this;
     }
@@ -137,13 +101,7 @@ public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements Minecraft
     }
 
     @Override
-    public McPlayerInterface getPlayer()
-    {
-        return this.player.getMcPlayer();
-    }
-
-    @Override
-    public McOutgoingStubbing<ArenaPlayerJoinEvent> when(McPredicate<ArenaPlayerJoinEvent> test) throws McException
+    public McOutgoingStubbing<MatchStartedEvent> when(McPredicate<MatchStartedEvent> test) throws McException
     {
         if (test.test(this))
         {

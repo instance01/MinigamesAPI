@@ -79,6 +79,7 @@ import de.minigameslib.mgapi.api.arena.CheckFailure;
 import de.minigameslib.mgapi.api.arena.CheckSeverity;
 import de.minigameslib.mgapi.api.events.ArenaDeleteEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeletedEvent;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
@@ -1194,6 +1195,16 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         @MessageComment(value = {"You left the arena"}, args = @Argument("arena display name"))
         YouLeft,
         
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.arena.ArenaInterface#getCurrentMatch()
+     */
+    @Override
+    public ArenaMatchInterface getCurrentMatch()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

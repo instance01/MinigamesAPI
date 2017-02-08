@@ -169,5 +169,15 @@ public class ArenaPlayerImpl extends AnnotatedDataFragment implements ArenaPlaye
         // TODO Auto-generated method stub
         
     }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.player.ArenaPlayerInterface#die(de.minigameslib.mgapi.api.player.ArenaPlayerInterface)
+     */
+    @Override
+    public void die(ArenaPlayerInterface killer)
+    {
+        // TODO Auto-generated method stub
+        
+    }
     
 }

@@ -22,18 +22,18 @@
 
 */
 
-package de.minigameslib.mgapi.api.team;
+package de.minigameslib.mgapi.api.match;
 
 import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
 
 /**
- * Use this interface on ernumerations to declare team types.
+ * Interface for match statistic enumerations
  * 
  * @author mepeisen
  */
-public interface TeamIdType extends McUniqueEnumInterface
+public interface MatchStatisticId extends McUniqueEnumInterface
 {
     
-    // marker only
+    // marker interface
     
 }
