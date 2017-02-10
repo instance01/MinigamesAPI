@@ -52,7 +52,7 @@ public interface ArenaMatchInterface
     
     /**
      * Returns the match started timestamp
-     * @return match started timestamp; timestamp the match itself was started
+     * @return match started timestamp; {@code null} for non-started matches.
      */
     LocalDateTime getStarted();
     

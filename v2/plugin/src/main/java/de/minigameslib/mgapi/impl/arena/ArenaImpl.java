@@ -129,6 +129,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     /** arena logger */
     private ArenaLogger logger;
     
+    /** the current arena match. */
+    private ArenaMatchImpl match;
+    
     /**
      * rule set container
      */
@@ -1059,6 +1062,16 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         this.saveData();
         return (T) handler;
     }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.arena.ArenaInterface#getCurrentMatch()
+     */
+    @Override
+    public ArenaMatchInterface getCurrentMatch()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
     /**
      * The arena messages.
@@ -1195,16 +1208,6 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         @MessageComment(value = {"You left the arena"}, args = @Argument("arena display name"))
         YouLeft,
         
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.arena.ArenaInterface#getCurrentMatch()
-     */
-    @Override
-    public ArenaMatchInterface getCurrentMatch()
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
     
 }
