@@ -271,7 +271,7 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
     
     /**
      * Returns the current arena match
-     * @return arena match or {@ode null} if arena is not in JOIN or MATCH state.
+     * @return arena match or {@code null} if arena is not in JOIN or MATCH state.
      */
     ArenaMatchInterface getCurrentMatch();
     

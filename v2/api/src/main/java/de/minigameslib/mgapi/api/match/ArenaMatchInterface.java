@@ -64,7 +64,7 @@ public interface ArenaMatchInterface
     
     /**
      * Checks if match was aborted by admins or server crash
-     * @return {@ode true} if match was aborted by admins or server crash
+     * @return {@code true} if match was aborted by admins or server crash
      */
     boolean isAborted();
     
