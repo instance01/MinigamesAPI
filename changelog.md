@@ -11,6 +11,7 @@
 * fixed "console spams"/ checking for debug config option (https://github.com/MysticCity/MinigamesAPI/issues/200)
 * fixed NPE if main lobby is missing (https://github.com/MysticCity/MinigamesAPI/issues/201)
 * some api extension (https://github.com/MysticCity/MinigamesAPI/issues/203)
+* compass tracking fixed (https://github.com/MysticCity/MinigamesAPI/issues/206)
 
 #### 1.14.14
 

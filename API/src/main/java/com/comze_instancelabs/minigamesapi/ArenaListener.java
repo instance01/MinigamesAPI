@@ -1702,7 +1702,7 @@ public class ArenaListener implements Listener
                     if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_COMPASS_TRACKING_ENABLED))
                     {
                         final CompassPlayer temp = Util.getNearestPlayer(p, a);
-                        if (temp.getPlayer() != null)
+                        if (temp != null && temp.getPlayer() != null)
                         {
                             p.sendMessage(this.pli.getMessagesConfig().compass_player_found.replaceAll("<player>", temp.getPlayer().getName()).replaceAll("<distance>",
                                     Integer.toString((int) Math.round(temp.getDistance()))));
