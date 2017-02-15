@@ -744,6 +744,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         Classes.loadClasses(plugin_);
         pli.getShopHandler().loadShopItems();
         Guns.loadGuns(plugin_);
+        new DefaultConfig(plugin_, false); // force initialization of config.yml
         return pli;
     }
     

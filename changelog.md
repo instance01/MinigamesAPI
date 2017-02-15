@@ -5,6 +5,7 @@
 ###### All
 
 * fixed bungeecord signs
+* fixed config.yml generation for "old" setupAPI (https://github.com/MysticCity/MinigamesAPI/issues/212)
 
 #### 1.14.14
 
