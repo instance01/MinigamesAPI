@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -683,6 +684,12 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
             player.getSessionStorage().set(ArenaPlayerImpl.class, impl);
         }
         return impl;
+    }
+    
+    @Override
+    public ArenaPlayerInterface getPlayer(UUID uuid)
+    {
+        return this.getPlayer(ObjectServiceInterface.instance().getPlayer(uuid));
     }
     
     @Override

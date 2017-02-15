@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.api;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.bukkit.plugin.Plugin;
 
@@ -459,5 +460,12 @@ public interface MinigamesLibInterface
      * @return arena player
      */
     ArenaPlayerInterface getPlayer(McPlayerInterface player);
+
+    /**
+     * Returns the arena player for given player uuid
+     * @param uuid
+     * @return arena player
+     */
+    ArenaPlayerInterface getPlayer(UUID uuid);
     
 }
