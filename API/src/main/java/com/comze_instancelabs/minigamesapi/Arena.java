@@ -308,6 +308,7 @@ public class Arena
     {
         // TODO Disallow duplicate init; reloading should create a new arena instance.
         this.signloc = signloc;
+        this.specsignloc = Util.getSpecSignLocationFromArena(this.plugin, this.getInternalName());
         this.spawns.clear();
         if (spawns != null)
         {

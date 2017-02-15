@@ -1822,7 +1822,7 @@ public class ArenaListener implements Listener
                                     final Arena a = this.pli.getArenaByName(arena);
                                     if (a != null)
                                     {
-                                        a.setSignLocation(event.getBlock().getLocation());
+                                        a.setSpecSignLocation(event.getBlock().getLocation());
                                         Util.updateSpecSign(this.plugin, a, event);
                                     }
                                     else

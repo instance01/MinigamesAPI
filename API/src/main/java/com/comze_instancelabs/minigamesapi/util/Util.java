@@ -448,6 +448,19 @@ public class Util
         }
     }
     
+    public static Location getSpecSignLocationFromArena(final JavaPlugin plugin, final String arena)
+    {
+        final Sign s = Util.getSpecSignFromArena(plugin, arena);
+        if (s != null)
+        {
+            return s.getBlock().getLocation();
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
     public static Arena getArenaBySignLocation(final JavaPlugin plugin, final Location sign)
     {
         for (final Arena arena : MinigamesAPI.getAPI().getPluginInstance(plugin).getArenas())
