@@ -537,18 +537,27 @@ public class CommandHandler
         }
         if (args.length > 1)
         {
-            final Arena temp = pli.arenaSetup.saveArena(plugin, args[1]);
-            if (temp != null)
-            {
-                sender.sendMessage(pli.getMessagesConfig().successfully_saved_arena.replaceAll("<arena>", args[1]));
-            }
-            else
+            if (Util.getMainLobby(plugin) == null)
             {
                 sender.sendMessage(pli.getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
                 sender.sendMessage(ChatColor.GRAY + "++ Debug Info ++");
-                sender.sendMessage(ChatColor.GRAY + "LOBBY:" + Util.isComponentForArenaValidRaw(plugin, args[1], "lobby") + ChatColor.RED + ";" + ChatColor.GRAY + " SPAWN0:"
-                        + Util.isComponentForArenaValidRaw(plugin, args[1], "spawns.spawn0") + ChatColor.RED + ";" + ChatColor.GRAY + " BOUNDARIES(possibly needed): low:"
-                        + Util.isComponentForArenaValidRaw(plugin, args[1], ArenaConfigStrings.BOUNDS_LOW) + ", high:" + Util.isComponentForArenaValidRaw(plugin, args[1], ArenaConfigStrings.BOUNDS_HIGH));
+                sender.sendMessage(ChatColor.GRAY + "MAIN LOBBY MISSING");
+            }
+            else
+            {
+                final Arena temp = pli.arenaSetup.saveArena(plugin, args[1]);
+                if (temp != null)
+                {
+                    sender.sendMessage(pli.getMessagesConfig().successfully_saved_arena.replaceAll("<arena>", args[1]));
+                }
+                else
+                {
+                    sender.sendMessage(pli.getMessagesConfig().failed_saving_arena.replaceAll("<arena>", args[1]));
+                    sender.sendMessage(ChatColor.GRAY + "++ Debug Info ++");
+                    sender.sendMessage(ChatColor.GRAY + "LOBBY:" + Util.isComponentForArenaValidRaw(plugin, args[1], "lobby") + ChatColor.RED + ";" + ChatColor.GRAY + " SPAWN0:"
+                            + Util.isComponentForArenaValidRaw(plugin, args[1], "spawns.spawn0") + ChatColor.RED + ";" + ChatColor.GRAY + " BOUNDARIES(possibly needed): low:"
+                            + Util.isComponentForArenaValidRaw(plugin, args[1], ArenaConfigStrings.BOUNDS_LOW) + ", high:" + Util.isComponentForArenaValidRaw(plugin, args[1], ArenaConfigStrings.BOUNDS_HIGH));
+                }
             }
         }
         else

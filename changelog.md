@@ -9,6 +9,7 @@
 * fixed specator signs (https://github.com/MysticCity/MinigamesAPI/issues/188)
 * fixed hologram removal (https://github.com/MysticCity/MinigamesAPI/issues/191)
 * fixed "console spams"/ checking for debug config option (https://github.com/MysticCity/MinigamesAPI/issues/200)
+* fixed NPE if main lobby is missing (https://github.com/MysticCity/MinigamesAPI/issues/201)
 
 #### 1.14.14
 
