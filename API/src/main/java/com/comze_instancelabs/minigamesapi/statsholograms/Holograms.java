@@ -112,6 +112,7 @@ public class Holograms
                         {
                             this.destroyHologram(p, this.holo.get(l));
                         }
+                        this.holo.remove(l);
                     }
                     return true;
                 }

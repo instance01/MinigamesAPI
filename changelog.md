@@ -7,6 +7,7 @@
 * fixed bungeecord signs
 * fixed config.yml generation for "old" setupAPI (https://github.com/MysticCity/MinigamesAPI/issues/212)
 * fixed specator signs (https://github.com/MysticCity/MinigamesAPI/issues/188)
+* fixed hologram removal (https://github.com/MysticCity/MinigamesAPI/issues/191)
 
 #### 1.14.14
 
