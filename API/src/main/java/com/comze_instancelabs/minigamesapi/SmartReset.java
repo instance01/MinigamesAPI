@@ -242,7 +242,7 @@ public class SmartReset implements Runnable
             
             try
             {
-                MinigamesAPI.getAPI().getLogger().info("resetting block " + ablock.getBlock().getLocation());
+                if (MinigamesAPI.debug) MinigamesAPI.getAPI().getLogger().info("resetting block " + ablock.getBlock().getLocation());
                 this.resetSmartResetBlock(ablock);
                 it.remove();
             }
