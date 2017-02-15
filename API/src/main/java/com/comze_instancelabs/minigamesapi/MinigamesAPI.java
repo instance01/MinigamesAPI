@@ -400,6 +400,21 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
     }
     
     /**
+     * Returns the arena for player if already playing
+     * @param playerName players name
+     * @return arena or {@code null} if not inside an arena
+     */
+    public Arena getArenaForPlayer(String playerName)
+    {
+        for (final PluginInstance pli : this.pinstances.values())
+        {
+            final Arena arena = pli.global_players.get(playerName);
+            if (arena != null) return arena;
+        }
+        return null;
+    }
+    
+    /**
      * Checks if crackshot is available.
      * 
      * @return {@code true} if crackshot is available.
