@@ -113,14 +113,14 @@ public class AdminMaintainCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin maintain
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin maintain <internal-name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin maintain <internal-name>")
         @MessageComment({"Usage of /mg2 admin maintain"})
         Usage,
         
         /**
          * Arena is under maintenance
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " is now under maintenance. If a match is in progress it will be finished first.", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " is now under maintenance. If a match is in progress it will be finished first.", severity = MessageSeverityType.Success)
         @MessageComment(value = {"Arena is under maintenance"}, args = @Argument("arena name"))
         ArenaUnderMaintenance,
         

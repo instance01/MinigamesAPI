@@ -314,6 +314,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         try
         {
             ObjectServiceInterface.instance().register(MglibObjectTypes.Arena, ArenaImpl.class);
+            ObjectServiceInterface.instance().resumeObjects(this);
         }
         catch (McException ex)
         {
@@ -327,7 +328,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
             {
                 this.checkArenaName(arena);
                 this.getLogger().log(Level.INFO, "Found arena " + arena); //$NON-NLS-1$
-                final ArenaImpl arenaImpl = new ArenaImpl(new File(this.getDataFolder(), "arenas/" + arena + ".yml")); //$NON-NLS-1$//$NON-NLS-2$
+                final ArenaImpl arenaImpl = new ArenaImpl(arena, new File(this.getDataFolder(), "arenas/" + arena + ".yml")); //$NON-NLS-1$//$NON-NLS-2$
                 this.arenasPerName.put(arena, arenaImpl);
             }
             catch (McException ex)

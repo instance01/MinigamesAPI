@@ -113,14 +113,14 @@ public class AdminEnableCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin enable
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin enable <internal-name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin enable <internal-name>")
         @MessageComment({"Usage of /mg2 admin enable"})
         Usage,
         
         /**
          * Arena enabled
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " was enabled. Players can join after starting was finished.", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " was enabled. Players can join after starting was finished.", severity = MessageSeverityType.Success)
         @MessageComment(value = {"Arena enabled"}, args = @Argument("arena name"))
         ArenaEnabled,
         

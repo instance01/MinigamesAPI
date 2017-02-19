@@ -26,6 +26,8 @@ package de.minigameslib.mgapi.impl.obj;
 
 import java.io.File;
 
+import org.bukkit.Location;
+
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.objects.SignInterface;
 import de.minigameslib.mclib.shared.api.com.DataSection;
@@ -146,6 +148,18 @@ public class GenericSign extends AbstractBaseArenaObjectHandler<SignRuleSetType,
     public SignInterface getSign()
     {
         return this.sign;
+    }
+
+    @Override
+    public void canChangeLocation(Location newValue) throws McException
+    {
+        this.checkModifications();
+    }
+
+    @Override
+    public void onLocationChange(Location newValue)
+    {
+        // do nothing
     }
     
 }

@@ -116,7 +116,7 @@ public class SpectateCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 spectate
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 spectate <name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 spectate <name>")
         @MessageComment({"Usage of /mg2 spectate"})
         Usage,
     }

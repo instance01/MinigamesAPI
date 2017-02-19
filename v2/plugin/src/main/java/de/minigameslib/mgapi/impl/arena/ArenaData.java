@@ -133,6 +133,14 @@ public class ArenaData extends AnnotatedDataFragment
      */
     @PersistentField
     private Set<EntityIdInterface> entities = new HashSet<>();
+    
+    /**
+     * Constructor
+     */
+    public ArenaData()
+    {
+        // constructor for loading from data sections
+    }
 
     /**
      * @param name

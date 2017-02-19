@@ -25,7 +25,6 @@
 package de.minigameslib.mgapi.impl.tasks;
 
 import de.minigameslib.mclib.api.McException;
-import de.minigameslib.mclib.api.util.function.McRunnable;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 
 /**
@@ -33,26 +32,33 @@ import de.minigameslib.mgapi.impl.arena.ArenaImpl;
  * 
  * @author mepeisen
  */
-public class ArenaStartTask implements McRunnable
+public class AsyncArenaRestartTask extends AbstractAsyncArenaTask
 {
     
-    /** arena implementation. */
-    private ArenaImpl arena;
-
     /**
-     * Constructor
      * @param arenaImpl
      */
-    public ArenaStartTask(ArenaImpl arenaImpl)
+    public AsyncArenaRestartTask(ArenaImpl arenaImpl)
     {
-        this.arena = arenaImpl;
+        super(arenaImpl);
     }
 
     @Override
     public void run() throws McException
     {
-        this.arena.resume();
-        // TODO check arena
+        if (this.arena.isDisabled())
+        {
+            this.arena.setDisabled0();
+        }
+        else if (this.arena.isMaintenance())
+        {
+            this.arena.setMaintenance0();
+        }
+        else
+        {
+            this.arena.setJoin0();
+        }
+        // TODO invoke state change event in bukkit
     }
     
 }

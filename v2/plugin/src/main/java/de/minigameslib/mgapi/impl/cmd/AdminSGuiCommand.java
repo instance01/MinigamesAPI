@@ -102,7 +102,7 @@ public class AdminSGuiCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin sgui
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin sgui")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin sgui")
         @MessageComment({"Usage of /mg2 admin sgui"})
         Usage
         

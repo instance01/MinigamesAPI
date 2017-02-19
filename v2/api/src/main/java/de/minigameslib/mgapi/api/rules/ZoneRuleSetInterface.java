@@ -32,6 +32,6 @@ package de.minigameslib.mgapi.api.rules;
 public interface ZoneRuleSetInterface extends RuleSetInterface<ZoneRuleSetType>
 {
     
-    // TODO
+    // TODO api for ZoneRuleSetInterface
     
 }

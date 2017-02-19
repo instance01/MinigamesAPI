@@ -139,14 +139,14 @@ public abstract class AbstractBaseArenaObjectHandler<
     @Override
     public Collection<T> getAvailableRuleSetTypes()
     {
-        // TODO Auto-generated method stub
+        // TODO implement available rule sets
         return Collections.emptyList();
     }
 
     @Override
     public boolean isAvailable(T ruleset)
     {
-        // TODO Auto-generated method stub
+        // TODO implement available rule sets
         return false;
     }
 

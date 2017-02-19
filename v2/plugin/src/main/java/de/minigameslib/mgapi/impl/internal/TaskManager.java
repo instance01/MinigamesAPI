@@ -24,9 +24,15 @@
 
 package de.minigameslib.mgapi.impl.internal;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 
-import de.minigameslib.mclib.api.util.function.McRunnable;
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.impl.tasks.AsyncTaskInterface;
 
 /**
  * A task manager to queue periodic work tasks.
@@ -36,13 +42,19 @@ import de.minigameslib.mclib.api.util.function.McRunnable;
 public class TaskManager
 {
     
+    /** concurrent executors. */
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    
+    /** logger. */
+    private static final Logger LOGGER = Logger.getLogger(TaskManager.class.getName());
+    
     /**
      * Returns the task manager instance.
      * @return task manager
      */
     public static TaskManager instance()
     {
-        // TODO caching.
+        // TODO caching of task manager interface
         return Bukkit.getServicesManager().load(TaskManager.class);
     }
 
@@ -50,9 +62,18 @@ public class TaskManager
      * Queues a new task to be runned asap.
      * @param task
      */
-    public void queue(McRunnable task)
+    public void queue(AsyncTaskInterface task)
     {
-        // TODO Auto-generated method stub
+        this.executor.execute(() -> {
+            try
+            {
+                task.run();
+            }
+            catch (McException ex)
+            {
+                LOGGER.log(Level.WARNING, "Caught exception while executing task: " + task, ex); //$NON-NLS-1$
+            }
+        });
     }
     
 }

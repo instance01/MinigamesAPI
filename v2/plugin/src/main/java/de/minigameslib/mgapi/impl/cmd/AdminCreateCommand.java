@@ -132,21 +132,21 @@ public class AdminCreateCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin create
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin create <internal-name> <minigame> <type>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin create <internal-name> <minigame> <type>")
         @MessageComment({"Usage of /mg2 admin create"})
         Usage,
         
         /**
          * Type was not found
          */
-        @LocalizedMessage(defaultMessage = "Arena type " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Arena type " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.ERROR_COLOR + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"Type was not found"}, args = @Argument("type name"))
         TypeNotFound,
         
         /**
          * Arena created
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " was created.", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " was created.", severity = MessageSeverityType.Success)
         @MessageComment(value = {"Arena created"}, args = @Argument("type name"))
         ArenaCreated,
         

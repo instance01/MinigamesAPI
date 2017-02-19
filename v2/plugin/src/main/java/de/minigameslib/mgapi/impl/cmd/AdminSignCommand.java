@@ -24,11 +24,10 @@
 
 package de.minigameslib.mgapi.impl.cmd;
 
-import java.util.Collections;
-import java.util.List;
-
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.cmd.AbstractCompositeCommandHandler;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
+import de.minigameslib.mclib.api.cmd.HelpCommandHandler;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
@@ -40,27 +39,33 @@ import de.minigameslib.mgapi.impl.MglibPerms;
  * @author mepeisen
  *
  */
-public class AdminGuiCommand implements SubCommandHandlerInterface
+public class AdminSignCommand extends AbstractCompositeCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOnline() && command.checkOpPermission(MglibPerms.CommandAdminGui);
+        return command.checkOpPermission(MglibPerms.CommandAdminSign);
     }
     
     @Override
-    public void handle(CommandInterface command) throws McException
+    protected boolean pre(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandAdminGui, command.getCommandPath());
-        
-        // TODO Support gui
+        command.permOpThrowException(MglibPerms.CommandAdminSign, command.getCommandPath());
+        return true;
     }
-    
-    @Override
-    public List<String> onTabComplete(CommandInterface command, String lastArg) throws McException
+
+    /**
+     * Constructor to register sub commands.
+     */
+    public AdminSignCommand()
     {
-        return Collections.emptyList();
+        this.subCommands.put("help", new HelpCommandHandler((AbstractCompositeCommandHandler) this)); //$NON-NLS-1$
+        this.subCommands.put("list", new AdminSignListCommand()); //$NON-NLS-1$
+        this.subCommands.put("create", new AdminSignCreateCommand()); //$NON-NLS-1$
+//        this.subCommands.put("delete", new AdminSignDeleteCommand()); //$NON-NLS-1$
+//        this.subCommands.put("move", new AdminSignMoveCommand()); //$NON-NLS-1$
+//        this.subCommands.put("tp", new AdminSignTpCommand()); //$NON-NLS-1$
     }
     
     @Override
@@ -75,34 +80,40 @@ public class AdminGuiCommand implements SubCommandHandlerInterface
         return Messages.Description;
     }
     
+    @Override
+    protected void sendUsage(CommandInterface command)
+    {
+        command.send(Messages.Usage);
+    }
+    
     /**
      * The common messages.
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_admin_gui")
+    @LocalizedMessages(value = "cmd.mg2_admin_sign")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 admin gui
+         * Short description of /mg2 admin sign
          */
-        @LocalizedMessage(defaultMessage = "Display simple admin gui")
-        @MessageComment({"Short description of /mg2 admin gui"})
+        @LocalizedMessage(defaultMessage = "Manipulate arena signs")
+        @MessageComment({"Short description of /mg2 admin sign"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 admin gui
+         * Long description of /mg2 admin sign
          */
-        @LocalizedMessage(defaultMessage = "Display simple admin gui")
-        @MessageComment({"Long description of /mg2 admin gui"})
+        @LocalizedMessage(defaultMessage = "Display simple admin sign")
+        @MessageComment({"Long description of /mg2 admin sign"})
         Description,
         
         /**
-         * Usage of /mg2 admin gui
+         * Usage of /mg2 admin sign
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin gui")
-        @MessageComment({"Usage of /mg2 admin gui"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin sign <sub-command>")
+        @MessageComment({"Usage of /mg2 admin sign"})
         Usage
         
     }

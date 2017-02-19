@@ -116,7 +116,7 @@ public class LeaveCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 leave
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 leave")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 leave")
         @MessageComment({"Usage of /mg2 leave"})
         Usage,
         

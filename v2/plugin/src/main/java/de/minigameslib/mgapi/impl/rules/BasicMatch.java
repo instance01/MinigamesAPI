@@ -240,14 +240,14 @@ public class BasicMatch implements ArenaRuleSetInterface
         /**
          * Countdown started
          */
-        @LocalizedMessage(defaultMessage = "Countdown started. Match will start in " + LocalizedMessage.BLUE + "%1$d " + LocalizedMessage.GRAY + "seconds.", severity = MessageSeverityType.Information)
+        @LocalizedMessage(defaultMessage = "Countdown started. Match will start in " + LocalizedMessage.CODE_COLOR + "%1$d " + LocalizedMessage.INFORMATION_COLOR + "seconds.", severity = MessageSeverityType.Information)
         @MessageComment(value = {"Lobby countdown started"}, args = {@Argument(type = "Numeric", value = "countdown seconds")})
         CountdownStarted,
         
         /**
          * Countdown tick
          */
-        @LocalizedMessage(defaultMessage = "Match will start in " + LocalizedMessage.BLUE + "%1$d " + LocalizedMessage.GRAY + "seconds.", severity = MessageSeverityType.Information)
+        @LocalizedMessage(defaultMessage = "Match will start in " + LocalizedMessage.CODE_COLOR + "%1$d " + LocalizedMessage.INFORMATION_COLOR + "seconds.", severity = MessageSeverityType.Information)
         @MessageComment(value = {"countdown tick"}, args = {@Argument(type = "Numeric", value = "countdown seconds")})
         CountdownTick,
         
@@ -261,28 +261,28 @@ public class BasicMatch implements ArenaRuleSetInterface
         /**
          * Invalid config value (min players)
          */
-        @LocalizedMessage(defaultMessage = "Invalid config value (min players): " + LocalizedMessage.BLUE + "%1$d", severity = MessageSeverityType.Information)
+        @LocalizedMessage(defaultMessage = "Invalid config value (min players): " + LocalizedMessage.CODE_COLOR + "%1$d", severity = MessageSeverityType.Information)
         @MessageComment(value = {"Invalid config value (min players)"}, args = {@Argument(type = "Numeric", value = "min players config value")})
         InvalidConfigMinPlayers,
         
         /**
          * Invalid config value (min players &gt; max players)
          */
-        @LocalizedMessage(defaultMessage = "Invalid config value (min players > max players): " + LocalizedMessage.BLUE + "%1$d > %2$d", severity = MessageSeverityType.Information)
+        @LocalizedMessage(defaultMessage = "Invalid config value (min players > max players): " + LocalizedMessage.CODE_COLOR + "%1$d > %2$d", severity = MessageSeverityType.Information)
         @MessageComment(value = {"Invalid config value (min players > max players)"}, args = {@Argument(type = "Numeric", value = "min players config value"), @Argument(type = "Numeric", value = "max players config value")})
         InvalidConfigMinMaxPlayers,
         
         /**
          * Invalid config value (max players)
          */
-        @LocalizedMessage(defaultMessage = "Invalid config value (max players): " + LocalizedMessage.BLUE + "%1$d", severity = MessageSeverityType.Information)
+        @LocalizedMessage(defaultMessage = "Invalid config value (max players): " + LocalizedMessage.CODE_COLOR + "%1$d", severity = MessageSeverityType.Information)
         @MessageComment(value = {"Invalid config value (max players)"}, args = {@Argument(type = "Numeric", value = "max players config value")})
         InvalidConfigMaxPlayers,
         
         /**
          * Invalid config value (lobby countdown)
          */
-        @LocalizedMessage(defaultMessage = "Invalid config value (lobby countdown): " + LocalizedMessage.BLUE + "%1$d", severity = MessageSeverityType.Information)
+        @LocalizedMessage(defaultMessage = "Invalid config value (lobby countdown): " + LocalizedMessage.CODE_COLOR + "%1$d", severity = MessageSeverityType.Information)
         @MessageComment(value = {"Invalid config value (lobby countdown)"}, args = {@Argument(type = "Numeric", value = "lobby countdown config value")})
         InvalidConfigLobbyCountdown
         

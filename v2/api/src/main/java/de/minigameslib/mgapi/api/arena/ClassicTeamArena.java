@@ -48,14 +48,14 @@ public abstract class ClassicTeamArena implements ArenaTypeProvider
     @Override
     public Collection<ArenaRuleSetType> getFixedArenaRules()
     {
-        // TODO Auto-generated method stub
+        // TODO implement oitc team arena
         return Collections.emptyList();
     }
 
     @Override
     public Collection<ArenaRuleSetType> getOptionalArenaRules()
     {
-        // TODO Auto-generated method stub
+        // TODO implement oitc team arena
         return Collections.emptyList();
     }
 

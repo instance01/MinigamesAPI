@@ -152,32 +152,25 @@ public class ArenaPlayerImpl extends AnnotatedDataFragment implements ArenaPlaye
     @Override
     public void die()
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement player die
     }
 
     @Override
     public void lose()
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement player lose
     }
 
     @Override
     public void win()
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement player win
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.player.ArenaPlayerInterface#die(de.minigameslib.mgapi.api.player.ArenaPlayerInterface)
-     */
     @Override
     public void die(ArenaPlayerInterface killer)
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement player die
     }
     
 }

@@ -91,6 +91,8 @@ public class ArenaCommand implements SubCommandHandlerInterface
         switch (state)
         {
             default:
+            case Booting:
+                return MglibMessages.ArenaStateBooting;
             case Disabled:
                 return MglibMessages.ArenaStateDisabled;
             case Join:
@@ -158,7 +160,7 @@ public class ArenaCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 arena
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 arena <name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 arena <name>")
         @MessageComment({"Usage of /mg2 arena"})
         Usage,
         
@@ -172,7 +174,7 @@ public class ArenaCommand implements SubCommandHandlerInterface
         /**
          * Arena was not found
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.ERROR_COLOR + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"arena was not found"}, args = @Argument("arena name"))
         ArenaNotFound,
         
@@ -187,9 +189,9 @@ public class ArenaCommand implements SubCommandHandlerInterface
             "%5$s",
             "----------",
             "Additional commands:",
-            "  " + LocalizedMessage.BLUE + "/mg2 join %6$s " + LocalizedMessage.GRAY + " to join the arena.",
-            "  " + LocalizedMessage.BLUE + "/mg2 spectate %6$s " + LocalizedMessage.GRAY + " to spectate an active match.",
-            "  " + LocalizedMessage.BLUE + "/mg2 manual %6$s " + LocalizedMessage.GRAY + " to display a manual."
+            "  " + LocalizedMessage.CODE_COLOR + "/mg2 join %6$s " + LocalizedMessage.INFORMATION_COLOR + " to join the arena.",
+            "  " + LocalizedMessage.CODE_COLOR + "/mg2 spectate %6$s " + LocalizedMessage.INFORMATION_COLOR + " to spectate an active match.",
+            "  " + LocalizedMessage.CODE_COLOR + "/mg2 manual %6$s " + LocalizedMessage.INFORMATION_COLOR + " to display a manual."
         })
         @MessageComment(value = {
             "The command output of /mg2 arena"

@@ -24,11 +24,14 @@
 
 package de.minigameslib.mgapi.impl.cmd;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.McLibInterface;
+import de.minigameslib.mclib.api.cmd.AbstractPagableCommandHandler;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
@@ -36,34 +39,34 @@ import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
-import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.impl.MglibPerms;
 
 /**
  * @author mepeisen
  *
  */
-public class AdminStartCommand implements SubCommandHandlerInterface
+public class AdminSignListCommand extends AbstractPagableCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.checkOpPermission(MglibPerms.CommandAdminStart);
+        return command.checkOpPermission(MglibPerms.CommandAdminSign);
     }
     
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandAdminStart, command.getCommandPath());
+        command.permOpThrowException(MglibPerms.CommandAdminSign, command.getCommandPath());
         
         final ArenaInterface arena = Mg2Command.getArenaFromPlayer(command, Messages.Usage);
         
-        arena.start();
-        command.send(Messages.ArenaStarted, arena.getInternalName());
+        McLibInterface.instance().setContext(ArenaInterface.class, arena);
+        super.handle(command);
     }
     
     @Override
@@ -71,7 +74,7 @@ public class AdminStartCommand implements SubCommandHandlerInterface
     {
         if (command.getArgs().length == 0)
         {
-            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().filter(a -> a.getState() == ArenaState.Join).map(ArenaInterface::getInternalName).collect(Collectors.toList());
+            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().filter(a -> a.getState() == ArenaState.Maintenance).map(ArenaInterface::getInternalName).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
@@ -87,43 +90,70 @@ public class AdminStartCommand implements SubCommandHandlerInterface
     {
         return Messages.Description;
     }
+
+    @Override
+    protected int getLineCount(CommandInterface command)
+    {
+        final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+        return arena.getSigns().size();
+    }
+
+    @Override
+    protected Serializable getHeader(CommandInterface command)
+    {
+        final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+        return Messages.Header.toArg(arena.getInternalName());
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    protected Serializable[] getLines(CommandInterface command, int start, int count)
+    {
+        final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+        return arena.getSigns().stream().
+                skip(start).
+                limit(count).
+                map(s -> (ArenaSignHandler) arena.getHandler(s)).
+                map(ArenaSignHandler::getName).
+                toArray(Serializable[]::new);
+    }
     
     /**
      * The common messages.
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_admin_start")
+    @LocalizedMessages(value = "cmd.mg2_admin_sign_list")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 admin start
+         * Short description of /mg2 admin sign list
          */
-        @LocalizedMessage(defaultMessage = "starts an existing arena match")
-        @MessageComment({"Short description of /mg2 admin start"})
+        @LocalizedMessage(defaultMessage = "lists arena signs")
+        @MessageComment({"Short description of /mg2 admin sign list"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 admin start
+         * Long description of /mg2 admin sign list
          */
-        @LocalizedMessage(defaultMessage = "starts an existing arena match")
-        @MessageComment({"Long description of /mg2 admin start"})
+        @LocalizedMessage(defaultMessage = "lists arena signs")
+        @MessageComment({"Long description of /mg2 admin sign list"})
         Description,
         
         /**
-         * Usage of /mg2 admin start
+         * Usage of /mg2 admin sign list
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin start <internal-name>")
-        @MessageComment({"Usage of /mg2 admin start"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin sign list <arena-name> [page]")
+        @MessageComment({"Usage of /mg2 admin sign list"})
         Usage,
         
         /**
-         * Arena started
+         * Pageable header line
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " match was started. Players can join after starting was finished.", severity = MessageSeverityType.Success)
-        @MessageComment(value = {"Arena started"}, args = @Argument("arena name"))
-        ArenaStarted,
+        @LocalizedMessage(defaultMessage = "Signs of " + LocalizedMessage.CODE_COLOR + "%1$s")
+        @MessageComment(value = {"Pageable header line of /mg2 admin sign list"}, args=@Argument("arena internal name"))
+        Header
         
     }
     

@@ -73,6 +73,6 @@ public class BasicSpawns implements ArenaRuleSetInterface
         return this.arena;
     }
     
-    // TODO
+    // TODO implement BasicSpawnsRule
     
 }

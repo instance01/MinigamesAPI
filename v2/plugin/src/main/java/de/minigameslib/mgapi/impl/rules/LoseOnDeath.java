@@ -73,6 +73,6 @@ public class LoseOnDeath implements ArenaRuleSetInterface
         return this.arena;
     }
     
-    // TODO
+    // TODO implement lose on death rule
     
 }

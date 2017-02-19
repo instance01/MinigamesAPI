@@ -66,7 +66,7 @@ public class PvPMode implements ZoneRuleSetInterface
         this.mode = PvpModes.valueOf(BasicPvpModeConfig.PvpOption.getString());
         if (this.mode == null)
         {
-            // TODO
+            // TODO implement pvp mode rule
         }
     }
 
@@ -76,6 +76,6 @@ public class PvPMode implements ZoneRuleSetInterface
         return this.type;
     }
     
-    // TODO
+    // TODO implement pvp mode rule
     
 }

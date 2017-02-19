@@ -146,6 +146,24 @@ public enum MglibPerms implements PermissionsInterface
     CommandAdminInvite,
     
     /**
+     * Permission for admin signs.
+     */
+    @Permission("command.admin.sign")
+    CommandAdminSign,
+    
+    /**
+     * Permission for admin zones.
+     */
+    @Permission("command.admin.zone")
+    CommandAdminZone,
+    
+    /**
+     * Permission for admin components.
+     */
+    @Permission("command.admin.comp")
+    CommandAdminComp,
+    
+    /**
      * Permission for admin gui command.
      */
     @Permission("command.admin.gui")

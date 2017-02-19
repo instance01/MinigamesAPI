@@ -32,6 +32,6 @@ package de.minigameslib.mgapi.api.rules;
 public interface ComponentRuleSetInterface extends RuleSetInterface<ComponentRuleSetType>
 {
     
-    // TODO
+    // TODO api for ComponentRuleSetInterface
     
 }

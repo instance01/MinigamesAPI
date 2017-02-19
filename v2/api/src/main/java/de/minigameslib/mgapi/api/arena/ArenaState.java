@@ -33,6 +33,11 @@ public enum ArenaState
 {
     
     /**
+     * The arena is booting. This is only an internal state during server startup.
+     */
+    Booting,
+    
+    /**
      * The arena is disabled. Cannot be used.
      */
     Disabled,

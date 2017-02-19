@@ -18,7 +18,7 @@
 		  <maven.compiler.target>1.8</maven.compiler.target>
 		  <java.version>1.8</java.version>
 		  <latest.spigot.version>1.11.2</latest.spigot.version>
-		  <mclib.version>0.0.2-SNAPSHOT</mclib.version>
+		  <mclib.version>0.0.4-SNAPSHOT</mclib.version>
 		  <mglib.version>2.0.0-SNAPSHOT</mglib.version>
   </properties>
   

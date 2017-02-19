@@ -46,7 +46,14 @@ public class AdminCommand extends AbstractCompositeCommandHandler implements Sub
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOp() || (command.isPlayer() && command.getPlayer().checkPermission(MglibPerms.CommandAdmin));
+        return command.checkOpPermission(MglibPerms.CommandAdmin);
+    }
+    
+    @Override
+    protected boolean pre(CommandInterface command) throws McException
+    {
+        command.permOpThrowException(MglibPerms.CommandAdmin, command.getCommandPath());
+        return true;
     }
 
     /**
@@ -65,16 +72,11 @@ public class AdminCommand extends AbstractCompositeCommandHandler implements Sub
         this.subCommands.put("stop", new AdminStopCommand()); //$NON-NLS-1$
         this.subCommands.put("test", new AdminTestCommand()); //$NON-NLS-1$
         this.subCommands.put("invite", new AdminInviteCommand()); //$NON-NLS-1$
+        this.subCommands.put("sign", new AdminSignCommand()); //$NON-NLS-1$
+//        TODO this.subCommands.put("zone", new AdminZoneCommand()); //$NON-NLS-1$
+//        TODO this.subCommands.put("comp", new AdminCompCommand()); //$NON-NLS-1$
         this.subCommands.put("gui", new AdminGuiCommand()); //$NON-NLS-1$
         this.subCommands.put("sgui", new AdminSGuiCommand()); //$NON-NLS-1$
-    }
-
-    @Override
-    public void handle(CommandInterface command) throws McException
-    {
-        command.permOpThrowException(MglibPerms.CommandAdmin, command.getCommandPath());
-        
-        super.handle(command);
     }
 
     @Override
@@ -121,7 +123,7 @@ public class AdminCommand extends AbstractCompositeCommandHandler implements Sub
         /**
          * Usage of /mg2 admin
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin <sub-command>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin <sub-command>")
         @MessageComment({"Usage of /mg2 admin"})
         Usage,
     }

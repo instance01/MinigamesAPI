@@ -26,44 +26,67 @@ package de.minigameslib.mgapi.impl.cmd;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
+import de.minigameslib.mclib.api.enums.EnumServiceInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
-import de.minigameslib.mclib.api.locale.MessageComment.Argument;
-import de.minigameslib.mclib.api.locale.MessageSeverityType;
+import de.minigameslib.mclib.api.objects.SignTypeId;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.impl.MglibPerms;
+import de.minigameslib.mgapi.impl.arena.ArenaImpl;
+import de.minigameslib.mgapi.impl.cmd.tool.AdminToolHelper;
 
 /**
  * @author mepeisen
  *
  */
-public class AdminTestCommand implements SubCommandHandlerInterface
+public class AdminSignCreateCommand implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.checkOpPermission(MglibPerms.CommandAdminTest);
+        return command.isOnline() && command.checkOpPermission(MglibPerms.CommandAdminSign);
     }
     
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandAdminTest, command.getCommandPath());
+        command.checkOnline();
+        command.permOpThrowException(MglibPerms.CommandAdminSign, command.getCommandPath());
         
         final ArenaInterface arena = Mg2Command.getArenaFromPlayer(command, Messages.Usage);
+        final String name = command.fetchString(Mg2Command.Messages.ComponentNameMissing, Messages.Usage);
+        final String typeName = command.fetchString(Mg2Command.Messages.ComponentTypeNameMissing, Messages.Usage);
         
-        arena.setTestState();
-        command.send(Messages.ArenaTestStarted, arena.getInternalName());
+        @SuppressWarnings("cast")
+        final Optional<ArenaSignHandler> handler = arena.getSigns().stream().
+                map(s -> (ArenaSignHandler) arena.getHandler(s)).
+                filter(s -> s.getName().equals(name)).
+                findFirst();
+        if (handler.isPresent())
+        {
+            throw new McException(Mg2Command.Messages.ComponentAlreadyExists, name);
+        }
+        if (!arena.isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        final SignTypeId type = Mg2Command.getEnum(command, SignTypeId.class, typeName);
+        
+        AdminToolHelper.onCreateSign(command.getPlayer(), arena, name, type, null);
     }
     
     @Override
@@ -72,6 +95,16 @@ public class AdminTestCommand implements SubCommandHandlerInterface
         if (command.getArgs().length == 0)
         {
             return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().filter(a -> a.getState() == ArenaState.Maintenance).map(ArenaInterface::getInternalName).collect(Collectors.toList());
+        }
+        if (command.getArgs().length == 2)
+        {
+            final Set<String> result = new TreeSet<>();
+            for (final SignTypeId signType : EnumServiceInterface.instance().getEnumValues(SignTypeId.class))
+            {
+                result.add(signType.getPluginName() + "/" + signType.name()); //$NON-NLS-1$
+            }
+            System.out.println(lastArg);
+            return result.stream().filter(a -> a.toLowerCase().startsWith(lastArg)).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
@@ -93,37 +126,30 @@ public class AdminTestCommand implements SubCommandHandlerInterface
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_admin_test")
+    @LocalizedMessages(value = "cmd.mg2_admin_delete")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 admin test
+         * Short description of /mg2 admin delete
          */
-        @LocalizedMessage(defaultMessage = "tests an existing arena")
-        @MessageComment({"Short description of /mg2 admin test"})
+        @LocalizedMessage(defaultMessage = "deletes an existing arena")
+        @MessageComment({"Short description of /mg2 admin delete"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 admin test
+         * Long description of /mg2 admin delete
          */
-        @LocalizedMessage(defaultMessage = "tests an existing arena")
-        @MessageComment({"Long description of /mg2 admin test"})
+        @LocalizedMessage(defaultMessage = "deletes an existing arena")
+        @MessageComment({"Long description of /mg2 admin delete"})
         Description,
         
         /**
-         * Usage of /mg2 admin test
+         * Usage of /mg2 admin delete
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin test <internal-name>")
-        @MessageComment({"Usage of /mg2 admin test"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin sign create <arena> <name> <type>")
+        @MessageComment({"Usage of /mg2 admin delete"})
         Usage,
-        
-        /**
-         * Arena test started
-         */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " test match was started. Players can be invited after starting was finished.", severity = MessageSeverityType.Success)
-        @MessageComment(value = {"Arena test started"}, args = @Argument("arena name"))
-        ArenaTestStarted,
         
     }
     

@@ -122,7 +122,7 @@ public class JoinCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 join
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 join <name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 join <name>")
         @MessageComment({"Usage of /mg2 join"})
         Usage,
         

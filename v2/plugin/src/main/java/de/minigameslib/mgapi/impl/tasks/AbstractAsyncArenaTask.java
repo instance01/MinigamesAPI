@@ -22,16 +22,33 @@
 
 */
 
-package de.minigameslib.mgapi.api.rules;
+package de.minigameslib.mgapi.impl.tasks;
+
+import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 
 /**
- * Interface for sign rule sets.
+ * A task to check and start a arena.
  * 
  * @author mepeisen
  */
-public interface SignRuleSetInterface extends RuleSetInterface<SignRuleSetType>
+public abstract class AbstractAsyncArenaTask implements AsyncTaskInterface
 {
     
-    // TODO api for SignRuleSetInterface
+    /** the arena */
+    protected ArenaImpl arena;
+    
+    /**
+     * @param arenaImpl
+     */
+    public AbstractAsyncArenaTask(ArenaImpl arenaImpl)
+    {
+        this.arena = arenaImpl;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.getClass().getSimpleName() + " [arena=" + this.arena.getInternalName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+    }
     
 }

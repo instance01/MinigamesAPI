@@ -64,6 +64,6 @@ public class PlayerNoEntry implements ZoneRuleSetInterface
         return this.type;
     }
     
-    // TODO
+    // TODO implement player no entry rule
     
 }

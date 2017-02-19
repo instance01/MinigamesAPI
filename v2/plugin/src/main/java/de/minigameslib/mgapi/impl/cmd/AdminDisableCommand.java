@@ -113,14 +113,14 @@ public class AdminDisableCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin disable
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin disable <internal-name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin disable <internal-name>")
         @MessageComment({"Usage of /mg2 admin disable"})
         Usage,
         
         /**
          * Arena disabled
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " was disabled. If a match is in progress it will be finished first.", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " was disabled. If a match is in progress it will be finished first.", severity = MessageSeverityType.Success)
         @MessageComment(value = {"Arena disabled"}, args = @Argument("arena name"))
         ArenaDisabled,
         

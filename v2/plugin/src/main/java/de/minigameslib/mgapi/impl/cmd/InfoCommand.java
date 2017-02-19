@@ -63,11 +63,11 @@ public class InfoCommand extends AbstractCompositeCommandHandler implements SubC
         this.subCommands.put("minigame", new InfoMinigameCommand()); //$NON-NLS-1$
         // this.subCommands.put("extension", new InfoExtensionCommand()); //$NON-NLS-1$
     }
-
+    
     @Override
-    public boolean visible(CommandInterface command)
+    protected boolean pre(CommandInterface command) throws McException
     {
-        return command.isOp() || (command.isPlayer() && command.getPlayer().checkPermission(MglibPerms.CommandInfo));
+        return true;
     }
 
     @Override
@@ -210,8 +210,8 @@ public class InfoCommand extends AbstractCompositeCommandHandler implements SubC
             "debugging: %5$s",
             "----------",
             "Run for additional information:",
-            "  " + LocalizedMessage.BLUE + "%1$s extensions " + LocalizedMessage.GRAY + " to list the extensions.",
-            "  " + LocalizedMessage.BLUE + "%1$s minigames " + LocalizedMessage.GRAY + " to list the minigames."
+            "  " + LocalizedMessage.CODE_COLOR + "%1$s extensions " + LocalizedMessage.INFORMATION_COLOR + " to list the extensions.",
+            "  " + LocalizedMessage.CODE_COLOR + "%1$s minigames " + LocalizedMessage.INFORMATION_COLOR + " to list the minigames."
         })
         @MessageComment(value = {
             "The command output of /mg2 info"
@@ -232,7 +232,7 @@ public class InfoCommand extends AbstractCompositeCommandHandler implements SubC
         /**
          * Usage for command /mg2 info
          */
-        @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Enter " + LocalizedMessage.BLUE + "/mg2 info help" + LocalizedMessage.GRAY + " for detailed help")
+        @LocalizedMessage(defaultMessage = "Enter " + LocalizedMessage.CODE_COLOR + "/mg2 info help" + LocalizedMessage.INFORMATION_COLOR + " for detailed help")
         @MessageComment({"Usage for command /mg2 info"})
         Usage
         

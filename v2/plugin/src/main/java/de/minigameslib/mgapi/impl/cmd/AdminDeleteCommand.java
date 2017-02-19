@@ -114,14 +114,14 @@ public class AdminDeleteCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin delete
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin delete <internal-name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin delete <internal-name>")
         @MessageComment({"Usage of /mg2 admin delete"})
         Usage,
         
         /**
          * Arena deleted
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " was deleted.", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " was deleted.", severity = MessageSeverityType.Success)
         @MessageComment(value = {"Arena deleted"}, args = @Argument("arena display name"))
         ArenaDeleted,
         

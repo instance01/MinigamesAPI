@@ -137,7 +137,7 @@ public class InfoExtensionCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 info extension
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 info extension <name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 info extension <name>")
         @MessageComment({"Usage of /mg2 info extension"})
         Usage,
         
@@ -151,7 +151,7 @@ public class InfoExtensionCommand implements SubCommandHandlerInterface
             "%4$s",
             "----------",
             "Run for additional information:",
-            "  " + LocalizedMessage.BLUE + "%5$s %6$s manual " + LocalizedMessage.GRAY + " to display a manual."
+            "  " + LocalizedMessage.CODE_COLOR + "%5$s %6$s manual " + LocalizedMessage.INFORMATION_COLOR + " to display a manual."
         })
         @MessageComment(value = {
             "The command output of /mg2 info extension"

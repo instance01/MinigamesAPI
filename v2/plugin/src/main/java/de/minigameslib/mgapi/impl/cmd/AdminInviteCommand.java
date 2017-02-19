@@ -122,14 +122,14 @@ public class AdminInviteCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin invite
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin invite <player> <internal-name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin invite <player> <internal-name>")
         @MessageComment({"Usage of /mg2 admin invite"})
         Usage,
         
         /**
          * Arena invite succeded
          */
-        @LocalizedMessage(defaultMessage = "Player " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " was invited to arena " + LocalizedMessage.BLUE + "%2$s " + LocalizedMessage.GREEN + ".", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Player " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.GREEN + " was invited to arena " + LocalizedMessage.CODE_COLOR + "%2$s " + LocalizedMessage.SUCCESS_COLOR + ".", severity = MessageSeverityType.Success)
         @MessageComment(value = {"Arena invite succeeded"}, args = {@Argument("player name"), @Argument("arena name")})
         PlayerInvited,
         

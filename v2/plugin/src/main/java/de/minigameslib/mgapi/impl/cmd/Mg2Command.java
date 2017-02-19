@@ -31,6 +31,7 @@ import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.AbstractCompositeCommandHandler;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
 import de.minigameslib.mclib.api.cmd.HelpCommandHandler;
+import de.minigameslib.mclib.api.enums.EnumServiceInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessageList;
@@ -39,6 +40,7 @@ import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
+import de.minigameslib.mclib.shared.api.com.UniqueEnumerationValue;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.ExtensionInterface;
 import de.minigameslib.mgapi.api.MinigameInterface;
@@ -170,6 +172,29 @@ public class Mg2Command extends AbstractCompositeCommandHandler
     }
     
     /**
+     * Maps argument to unique enum value
+     * @param command
+     * @param clazz
+     * @param typeName
+     * @return type enum
+     * @throws McException thrown if type enum was not found
+     */
+    public static <T extends UniqueEnumerationValue> T getEnum(CommandInterface command, Class<T> clazz, String typeName) throws McException
+    {
+        final String[] splitted = typeName.split("\\/", 2); //$NON-NLS-1$
+        if (splitted.length == 1)
+        {
+            throw new McException(Messages.ComponentTypeNotFound, typeName);
+        }
+        final T result = EnumServiceInterface.instance().getEnumValue(clazz, splitted[0], splitted[1]);
+        if (result == null)
+        {
+            throw new McException(Messages.ComponentTypeNotFound, typeName);
+        }
+        return result;
+    }
+    
+    /**
      * Maps argument to arena type interface
      * @param command
      * @param typeName
@@ -278,42 +303,42 @@ public class Mg2Command extends AbstractCompositeCommandHandler
         /**
          * Usage for command /mg2
          */
-        @LocalizedMessage(defaultMessage = LocalizedMessage.GRAY + "Enter " + LocalizedMessage.BLUE + "/mg2 help" + LocalizedMessage.GRAY + " for detailed help")
+        @LocalizedMessage(defaultMessage = "Enter " + LocalizedMessage.CODE_COLOR + "/mg2 help" + LocalizedMessage.INFORMATION_COLOR + " for detailed help")
         @MessageComment({"Usage for command /mg2"})
         Usage,
         
         /**
          * Arena was not found
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.ERROR_COLOR + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"arena was not found"}, args = @Argument("arena name"))
         ArenaNotFound,
         
         /**
          * Player was not found
          */
-        @LocalizedMessage(defaultMessage = "Player " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Player " + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.ERROR_COLOR + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"player was not found"}, args = @Argument("player name"))
         PlayerNotFound,
         
         /**
          * Minigame was not found
          */
-        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.ERROR_COLOR + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"minigame was not found"}, args = @Argument("minigame name"))
         MinigameNotFound,
         
         /**
          * Arena type was not found
          */
-        @LocalizedMessage(defaultMessage = "Arena type " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Arena type " + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.ERROR_COLOR + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"arena type was not found"}, args = @Argument("type name"))
         TypeNotFound,
         
         /**
          * Extension was not found
          */
-        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + " not found", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.ERROR_COLOR + " not found", severity = MessageSeverityType.Error)
         @MessageComment(value = {"extension was not found"}, args = @Argument("extension name"))
         ExtensionNotFound,
         
@@ -323,6 +348,41 @@ public class Mg2Command extends AbstractCompositeCommandHandler
         @LocalizedMessageList(value = {"Missing player name", "%1$s"}, severity = MessageSeverityType.Error)
         @MessageComment(value = {"Name argument is missing"}, args = @Argument("command usage"))
         PlayerNameMissing,
+        
+        /**
+         * Component argument is missing
+         */
+        @LocalizedMessageList(value = {"Missing component name", "%1$s"}, severity = MessageSeverityType.Error)
+        @MessageComment(value = {"Component argument is missing"}, args = @Argument("command usage"))
+        ComponentNameMissing,
+        
+        /**
+         * Component already exists
+         */
+        @LocalizedMessage(defaultMessage = "Component " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.ERROR_COLOR + "already exists", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"Component already exists"}, args = @Argument("component name"))
+        ComponentAlreadyExists,
+        
+        /**
+         * Component not found
+         */
+        @LocalizedMessage(defaultMessage = "Component " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.ERROR_COLOR + "not found", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"Component not found"}, args = @Argument("component name"))
+        ComponentNotFound,
+        
+        /**
+         * Component type argument is missing
+         */
+        @LocalizedMessageList(value = {"Missing component type name", "%1$s"}, severity = MessageSeverityType.Error)
+        @MessageComment(value = {"Component type argument is missing"}, args = @Argument("command usage"))
+        ComponentTypeNameMissing,
+        
+        /**
+         * Component type not found
+         */
+        @LocalizedMessage(defaultMessage = "Component type " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.ERROR_COLOR + "not found", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"Component type not found"}, args = @Argument("component type name"))
+        ComponentTypeNotFound,
         
         /**
          * Name argument is missing

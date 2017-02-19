@@ -56,7 +56,7 @@ public abstract class ClassicSinglePlayerArena implements ArenaTypeProvider
     @Override
     public Collection<ArenaRuleSetType> getOptionalArenaRules()
     {
-        // TODO Auto-generated method stub
+        // TODO optional rules for classic simple player arena
         return Collections.emptyList();
     }
 

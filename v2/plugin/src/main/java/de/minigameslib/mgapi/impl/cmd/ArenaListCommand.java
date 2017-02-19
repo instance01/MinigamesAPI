@@ -75,7 +75,7 @@ public class ArenaListCommand extends AbstractPagableCommandHandler
     @Override
     protected Serializable[] getLines(CommandInterface command, int start, int limit)
     {
-        return this.arenas.get().skip(start).limit(limit).map(p -> p.getDisplayName()).toArray(Serializable[]::new);
+        return this.arenas.get().skip(start).limit(limit).map(p -> p.getInternalName()).toArray(Serializable[]::new);
     }
     
 }

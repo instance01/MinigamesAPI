@@ -121,7 +121,7 @@ public class ManualCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 manual
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 manual <name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 manual <name>")
         @MessageComment({"Usage of /mg2 manual"})
         Usage,
         

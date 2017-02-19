@@ -113,14 +113,14 @@ public class AdminStopCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin stop
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin stop <internal-name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin stop <internal-name>")
         @MessageComment({"Usage of /mg2 admin stop"})
         Usage,
         
         /**
          * Arena stopped
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s " + LocalizedMessage.GREEN + " match was stopped. Players can join after starting was finished.", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s " + LocalizedMessage.SUCCESS_COLOR + " match was stopped. Players can join after starting was finished.", severity = MessageSeverityType.Success)
         @MessageComment(value = {"Arena stopped"}, args = @Argument("arena name"))
         ArenaStopped,
         

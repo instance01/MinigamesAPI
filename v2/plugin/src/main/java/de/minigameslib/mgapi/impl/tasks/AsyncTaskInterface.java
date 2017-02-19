@@ -24,34 +24,14 @@
 
 package de.minigameslib.mgapi.impl.tasks;
 
-import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.util.function.McRunnable;
-import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 
 /**
- * A task to check and start a arena.
+ * An interface marker for executing asynchronous tasks.
  * 
  * @author mepeisen
  */
-public class ArenaRestartTask implements McRunnable
+public interface AsyncTaskInterface extends McRunnable
 {
-    
-    /**
-     * @param arenaImpl
-     */
-    public ArenaRestartTask(ArenaImpl arenaImpl)
-    {
-        // TODO Auto-generated constructor stub
-    }
-
-    /* (non-Javadoc)
-     * @see de.minigameslib.mclib.api.util.function.McRunnable#run()
-     */
-    @Override
-    public void run() throws McException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-    
+    // marker only
 }

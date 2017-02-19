@@ -64,7 +64,9 @@ public class AdminCheckCommand implements SubCommandHandlerInterface
         
         final ArenaInterface arena = Mg2Command.getArenaFromPlayer(command, Messages.Usage);
         
+        // TODO maybe async?
         final Collection<CheckFailure> checks = arena.check();
+        command.send(Messages.CheckHeader, arena.getDisplayName());
         for (final CheckFailure failure : checks)
         {
             switch (failure.getSeverity())
@@ -131,28 +133,35 @@ public class AdminCheckCommand implements SubCommandHandlerInterface
         /**
          * Usage of /mg2 admin check
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.BLUE + "/mg2 admin check <internal-name>")
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin check <internal-name>")
         @MessageComment({"Usage of /mg2 admin check"})
         Usage,
         
         /**
+         * Arena check result
+         */
+        @LocalizedMessage(defaultMessage = "check results (arena " + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.INFORMATION_COLOR + ")", severity = MessageSeverityType.Information)
+        @MessageComment(value = {"Arena check result"}, args = {@Argument("arena display name")})
+        CheckHeader,
+        
+        /**
          * Arena check error line
          */
-        @LocalizedMessage(defaultMessage = "[" + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.DARK_RED + "] %2$s", severity = MessageSeverityType.Success)
+        @LocalizedMessage(defaultMessage = "[" + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.ERROR_COLOR + "] %2$s", severity = MessageSeverityType.Error)
         @MessageComment(value = {"Arena check error line"}, args = {@Argument("arena display name"), @Argument("title text")})
         ArenaError,
         
         /**
          * Arena check warning line
          */
-        @LocalizedMessage(defaultMessage = "[" + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.YELLOW + "] %2$s", severity = MessageSeverityType.Warning)
+        @LocalizedMessage(defaultMessage = "[" + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.WARNING_COLOR + "] %2$s", severity = MessageSeverityType.Warning)
         @MessageComment(value = {"Arena check warning line"}, args = {@Argument("arena display name"), @Argument("title text")})
         ArenaWarning,
         
         /**
          * Arena check info line
          */
-        @LocalizedMessage(defaultMessage = "[" + LocalizedMessage.BLUE + "%1$s" + LocalizedMessage.GREEN + "] %2$s", severity = MessageSeverityType.Information)
+        @LocalizedMessage(defaultMessage = "[" + LocalizedMessage.CODE_COLOR + "%1$s" + LocalizedMessage.INFORMATION_COLOR + "] %2$s", severity = MessageSeverityType.Information)
         @MessageComment(value = {"Arena check info line"}, args = {@Argument("arena display name"), @Argument("title text")})
         ArenaInfo,
         

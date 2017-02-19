@@ -43,6 +43,9 @@ import de.minigameslib.mgapi.impl.cmd.AdminGuiCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminInviteCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminMaintainCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminSGuiCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminSignCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminSignCreateCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminSignListCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminStartCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminStopCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminTestCommand;
@@ -58,6 +61,7 @@ import de.minigameslib.mgapi.impl.cmd.LeaveCommand;
 import de.minigameslib.mgapi.impl.cmd.ManualCommand;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 import de.minigameslib.mgapi.impl.cmd.SpectateCommand;
+import de.minigameslib.mgapi.impl.cmd.tool.AdminToolHelper;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
 
 /**
@@ -97,11 +101,22 @@ import de.minigameslib.mgapi.impl.rules.BasicMatch;
     AdminInviteCommand.Messages.class,
     AdminGuiCommand.Messages.class,
     AdminSGuiCommand.Messages.class,
+    // admin sign commands
+    AdminSignCommand.Messages.class,
+    AdminSignListCommand.Messages.class,
+    AdminSignCreateCommand.Messages.class,
+    // admin tools
+    AdminToolHelper.Messages.class,
     // rules
     BasicMatch.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {
+    
+    /** Arena is booting. */
+    @LocalizedMessage(defaultMessage = "BOOTING/ERROR", severity = MessageSeverityType.Error)
+    @MessageComment({"Arena is booting or has loading errors."})
+    ArenaStateBooting,
     
     /** Arena is disabled. */
     @LocalizedMessage(defaultMessage = "DISABLED", severity = MessageSeverityType.Error)
@@ -213,7 +228,7 @@ public enum MglibMessages implements LocalizedMessageInterface
         /**
          * Arena is duplicate
          */
-        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already exists", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Arena " + LocalizedMessage.CODE_COLOR + "%1$s.yml" + LocalizedMessage.ERROR_COLOR + " already exists", severity = MessageSeverityType.Error)
         @MessageComment(
                 value = {"Arena is duplicate"},
                 args = {@Argument("Arena name")})
@@ -222,7 +237,7 @@ public enum MglibMessages implements LocalizedMessageInterface
         /**
          * Plugin tries to register multiple minigames
          */
-        @LocalizedMessage(defaultMessage = "Plugin " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered a minigame", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Plugin " + LocalizedMessage.CODE_COLOR + "%1$s.yml" + LocalizedMessage.ERROR_COLOR + " already registered a minigame", severity = MessageSeverityType.Error)
         @MessageComment(
             value = {"Plugin tries to register multiple minigames"},
             args = {@Argument("Plugin name")})
@@ -231,7 +246,7 @@ public enum MglibMessages implements LocalizedMessageInterface
         /**
          * Minigame with given name is already registered
          */
-        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Minigame " + LocalizedMessage.CODE_COLOR + "%1$s.yml" + LocalizedMessage.ERROR_COLOR + " already registered", severity = MessageSeverityType.Error)
         @MessageComment(
             value = {"Minigame with given name is already registered"},
             args = {@Argument("Minigame name")})
@@ -240,7 +255,7 @@ public enum MglibMessages implements LocalizedMessageInterface
         /**
          * Plugin tries to register multiple extensions
          */
-        @LocalizedMessage(defaultMessage = "Plugin " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered an extension", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Plugin " + LocalizedMessage.CODE_COLOR + "%1$s.yml" + LocalizedMessage.ERROR_COLOR + " already registered an extension", severity = MessageSeverityType.Error)
         @MessageComment(
             value = {"Plugin tries to register multiple extensions"},
             args = {@Argument("Plugin name")})
@@ -249,7 +264,7 @@ public enum MglibMessages implements LocalizedMessageInterface
         /**
          * Extension with given name is already registered
          */
-        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.BLUE + "%1$s.yml" + LocalizedMessage.DARK_RED + " already registered", severity = MessageSeverityType.Error)
+        @LocalizedMessage(defaultMessage = "Extension " + LocalizedMessage.CODE_COLOR + "%1$s.yml" + LocalizedMessage.ERROR_COLOR + " already registered", severity = MessageSeverityType.Error)
         @MessageComment(
             value = {"Extension with given name is already registered"},
             args = {@Argument("Extension name")})

@@ -136,254 +136,168 @@ public class ArenaMatchImpl implements ArenaMatchInterface
         return this.teams.keySet();
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getPreferredTeam()
-     */
     @Override
     public TeamIdType getPreferredTeam()
     {
-        // TODO Auto-generated method stub
+        // TODO implement team mode
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#join(de.minigameslib.mgapi.api.player.ArenaPlayerInterface, de.minigameslib.mgapi.api.team.TeamIdType)
-     */
     @Override
     public void join(ArenaPlayerInterface player, TeamIdType team) throws McException
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement joins
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#isTeamMatch()
-     */
     @Override
     public boolean isTeamMatch()
     {
-        // TODO Auto-generated method stub
+        // TODO implement team mode
         return false;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getTeam(java.util.UUID)
-     */
     @Override
     public TeamIdType getTeam(UUID uuid)
     {
-        // TODO Auto-generated method stub
+        // TODO implement team mode
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getParticipants()
-     */
     @Override
     public Collection<UUID> getParticipants()
     {
-        // TODO Auto-generated method stub
+        // TODO implement participants
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getWinners()
-     */
     @Override
     public Collection<UUID> getWinners()
     {
-        // TODO Auto-generated method stub
+        // TODO implement winners/losers
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getLosers()
-     */
     @Override
     public Collection<UUID> getLosers()
     {
-        // TODO Auto-generated method stub
+        // TODO implement winners/losers
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getResults()
-     */
     @Override
     public Collection<MatchResult> getResults()
     {
-        // TODO Auto-generated method stub
+        // TODO implement match results
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getResultCount()
-     */
     @Override
     public int getResultCount()
     {
-        // TODO Auto-generated method stub
+        // TODO implement match results
         return 0;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getResult(int)
-     */
     @Override
     public MatchResult getResult(int place)
     {
-        // TODO Auto-generated method stub
+        // TODO implement match results
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getSpawn(java.util.UUID)
-     */
     @Override
     public ComponentIdInterface getSpawn(UUID uuid)
     {
-        // TODO Auto-generated method stub
+        // TODO implement spawn selector
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#selectSpawn(java.util.UUID, de.minigameslib.mclib.api.objects.ComponentIdInterface)
-     */
     @Override
     public void selectSpawn(UUID player, ComponentIdInterface spawn) throws McException
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement spawn selector
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getStatistic(java.util.UUID, de.minigameslib.mgapi.api.match.MatchStatisticId)
-     */
     @Override
     public int getStatistic(UUID player, MatchStatisticId statistic)
     {
-        // TODO Auto-generated method stub
+        // TODO implement statistics
         return 0;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getStatistic(de.minigameslib.mgapi.api.team.TeamIdType, de.minigameslib.mgapi.api.match.MatchStatisticId)
-     */
     @Override
     public int getStatistic(TeamIdType team, MatchStatisticId statistic)
     {
-        // TODO Auto-generated method stub
+        // TODO implement statistics
         return 0;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#setStatistic(java.util.UUID, de.minigameslib.mgapi.api.match.MatchStatisticId, int)
-     */
     @Override
     public void setStatistic(UUID player, MatchStatisticId statistic, int value)
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement statistics
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#setStatistic(de.minigameslib.mgapi.api.team.TeamIdType, de.minigameslib.mgapi.api.match.MatchStatisticId, int)
-     */
     @Override
     public void setStatistic(TeamIdType team, MatchStatisticId statistic, int value)
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement statistics
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#addStatistic(java.util.UUID, de.minigameslib.mgapi.api.match.MatchStatisticId, int)
-     */
     @Override
     public void addStatistic(UUID player, MatchStatisticId statistic, int amount)
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement statistics
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#addStatistic(de.minigameslib.mgapi.api.team.TeamIdType, de.minigameslib.mgapi.api.match.MatchStatisticId, int)
-     */
     @Override
     public void addStatistic(TeamIdType team, MatchStatisticId statistic, int amount)
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement statistics
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getPlayTime(java.util.UUID)
-     */
     @Override
     public int getPlayTime(UUID player)
     {
-        // TODO Auto-generated method stub
+        // TODO implement played time
         return 0;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getKillerTracking(java.util.UUID)
-     */
     @Override
     public KillerTracking getKillerTracking(UUID player)
     {
-        // TODO Auto-generated method stub
+        // TODO implement killer tracker
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#trackDamageForKill(java.util.UUID, java.util.UUID)
-     */
     @Override
     public void trackDamageForKill(UUID targetPlayer, UUID damager) throws McException
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement dmg tracker
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#setLoser(java.util.UUID[])
-     */
     @Override
     public void setLoser(UUID... players) throws McException
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement setting losers
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#setWinner(java.util.UUID[])
-     */
     @Override
     public void setWinner(UUID... players) throws McException
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement setting winners
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#setLoser(de.minigameslib.mgapi.api.team.TeamIdType[])
-     */
     @Override
     public void setLoser(TeamIdType... teams) throws McException
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement setting losers
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#setWinner(de.minigameslib.mgapi.api.team.TeamIdType[])
-     */
     @Override
     public void setWinner(TeamIdType... teams) throws McException
     {
-        // TODO Auto-generated method stub
-        
+        // TODO implement setting winners
     }
     
 }

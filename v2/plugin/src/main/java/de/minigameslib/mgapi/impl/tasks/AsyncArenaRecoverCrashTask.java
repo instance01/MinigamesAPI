@@ -24,34 +24,45 @@
 
 package de.minigameslib.mgapi.impl.tasks;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import de.minigameslib.mclib.api.McException;
-import de.minigameslib.mclib.api.util.function.McRunnable;
+import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
+import de.minigameslib.mgapi.impl.internal.TaskManager;
 
 /**
  * A task to check and start a arena.
  * 
  * @author mepeisen
  */
-public class ArenaRecoverCrashTask implements McRunnable
+public class AsyncArenaRecoverCrashTask extends AbstractAsyncArenaTask
 {
+    
+    /** logger. */
+    private static final Logger LOGGER = Logger.getLogger(AsyncArenaRecoverCrashTask.class.getName());
     
     /**
      * @param arenaImpl
      */
-    public ArenaRecoverCrashTask(ArenaImpl arenaImpl)
+    public AsyncArenaRecoverCrashTask(ArenaImpl arenaImpl)
     {
-        // TODO Auto-generated constructor stub
+        super(arenaImpl);
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mclib.api.util.function.McRunnable#run()
-     */
     @Override
     public void run() throws McException
     {
-        // TODO Auto-generated method stub
+        LOGGER.log(Level.INFO, "loading crashed arena " + this.arena.getInternalName()); //$NON-NLS-1$
+        if (this.arena.getState() == ArenaState.Booting)
+        {
+            this.arena.resume();
+        }
         
+        // TODO do some crash recovery
+        
+        TaskManager.instance().queue(new AsyncArenaStartTask(this.arena));
     }
     
 }

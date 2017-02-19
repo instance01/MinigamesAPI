@@ -73,6 +73,6 @@ public class LastManStanding implements ArenaRuleSetInterface
         return this.arena;
     }
     
-    // TODO
+    // TODO implement last man standing rule
     
 }

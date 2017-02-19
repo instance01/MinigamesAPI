@@ -90,8 +90,8 @@ import de.minigameslib.mgapi.impl.MglibObjectTypes;
 import de.minigameslib.mgapi.impl.MinigamesPlugin;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
 import de.minigameslib.mgapi.impl.rules.AbstractRuleSetContainer;
-import de.minigameslib.mgapi.impl.tasks.ArenaRestartTask;
-import de.minigameslib.mgapi.impl.tasks.ArenaStartTask;
+import de.minigameslib.mgapi.impl.tasks.AsyncArenaRestartTask;
+import de.minigameslib.mgapi.impl.tasks.AsyncArenaStartTask;
 
 /**
  * Arena data.
@@ -140,7 +140,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         @Override
         protected void checkModifications() throws McException
         {
-            if (ArenaImpl.this.getState() != ArenaState.Maintenance)
+            if (ArenaImpl.this.getState() != ArenaState.Maintenance && ArenaImpl.this.getState() != ArenaState.Booting)
             {
                 throw new McException(Messages.ModificationWrongState);
             }
@@ -167,11 +167,14 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     
     /**
      * Constructor to create an arena by using given data file.
+     * @param name 
      * @param dataFile
      */
-    public ArenaImpl(File dataFile)
+    public ArenaImpl(String name, File dataFile)
     {
         this.dataFile = dataFile;
+        this.state = ArenaState.Booting;
+        this.arenaData = new ArenaData(name, null);
     }
     
     /**
@@ -218,6 +221,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             this.arenaData = section.getFragment(ArenaData.class, "data"); //$NON-NLS-1$
             this.logger = new ArenaLogger(this.getInternalName());
             this.type = this.arenaData.getArenaType();
+            if (this.type == null)
+            {
+                throw new McException(CommonMessages.InternalError, "Missing arena type. Did you install the minigame plugin? Arena: " + this.getInternalName()); //$NON-NLS-1$
+            }
             this.object = ObjectServiceInterface.instance().createObject(MglibObjectTypes.Arena, this, false);
             try
             {
@@ -232,8 +239,14 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 this.object = null;
                 throw ex;
             }
+            catch (RuntimeException ex)
+            {
+                this.object.delete();
+                this.object = null;
+                throw new McException(CommonMessages.InternalError, ex, ex.getMessage());
+            }
         }
-        catch (IOException e)
+        catch (IOException | RuntimeException e)
         {
             throw new McException(CommonMessages.InternalError, e, e.getMessage());
         }
@@ -300,7 +313,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             {
                 this.arenaData.getOptionalRules().remove(ruleset);
                 this.arenaData.getFixedRules().add(ruleset);
-                this.saveData();
+                this.saveDataInternal();
             }
             this.ruleSets.applyFixedRuleSet(ruleset);
         }
@@ -308,7 +321,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         {
             this.arenaData.getFixedRules().remove(ruleset);
             this.arenaData.getOptionalRules().add(ruleset);
-            this.saveData();
+            this.saveDataInternal();
         }
         for (final ArenaRuleSetType ruleset :  this.arenaData.getOptionalRules())
         {
@@ -369,6 +382,19 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
 
     @Override
     public void saveData() throws McException
+    {
+        if (this.state == ArenaState.Booting)
+        {
+            // booting arenas will never be ready for manipulation or save.
+            throw new McException(Messages.InvalidArenaType);
+        }
+        saveDataInternal();
+    }
+
+    /**
+     * @throws McException
+     */
+    private void saveDataInternal() throws McException
     {
         final DataSection section = new MemoryDataSection();
         section.set("data", this.arenaData); //$NON-NLS-1$
@@ -457,6 +483,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         }
         switch (this.state)
         {
+            case Booting:
             case Disabled:
             case Join:
             case Maintenance:
@@ -491,7 +518,38 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         this.saveData();
         
         this.state = ArenaState.Starting;
-        TaskManager.instance().queue(new ArenaStartTask(this));
+        TaskManager.instance().queue(new AsyncArenaStartTask(this));
+    }
+
+    /**
+     * Non-api function to force disabled state, not meant to be called by minigames.
+     * @throws McException
+     */
+    public void setDisabled0() throws McException
+    {
+        this.arenaData.setEnabled(false);
+        this.saveDataInternal();
+        this.state = ArenaState.Disabled;
+    }
+
+    /**
+     * Non-api function to force maintenance state, not meant to be called by minigames.
+     * @throws McException
+     */
+    public void setMaintenance0() throws McException
+    {
+        this.arenaData.setMaintenance(true);
+        this.saveDataInternal();
+        this.state = ArenaState.Maintenance;
+    }
+
+    /**
+     * Non-api function to force join state, not meant to be called by minigames.
+     * @throws McException
+     */
+    public void setJoin0() throws McException
+    {
+        this.state = ArenaState.Join;
     }
 
     @Override
@@ -500,6 +558,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         switch (this.state)
         {
             default:
+            case Booting:
             case Disabled:
                 throw new McException(Messages.DisableWrongState);
             case Maintenance:
@@ -515,7 +574,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 // abort current game to kick players being in waiting lobby.
                 this.abortGame(Messages.KickReasonDisable);
                 this.state = ArenaState.Restarting;
-                TaskManager.instance().queue(new ArenaRestartTask(this));
+                TaskManager.instance().queue(new AsyncArenaRestartTask(this));
                 break;
             case Match:
             case PostMatch:
@@ -528,7 +587,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                     // abort current game.
                     this.abortGame(Messages.KickReasonDisable);
                     this.state = ArenaState.Restarting;
-                    TaskManager.instance().queue(new ArenaRestartTask(this));
+                    TaskManager.instance().queue(new AsyncArenaRestartTask(this));
                 }
                 break;
         }
@@ -573,6 +632,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         {
             default:
             case Maintenance:
+            case Booting:
                 throw new McException(Messages.MaintenanceWrongState);
             case Disabled:
                 if (this.arenaData.getArenaType() == null)
@@ -598,7 +658,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                     // abort current game.
                     this.abortGame(Messages.KickReasonMaintenance);
                     this.state = ArenaState.Restarting;
-                    TaskManager.instance().queue(new ArenaRestartTask(this));
+                    TaskManager.instance().queue(new AsyncArenaRestartTask(this));
                 }
                 break;
         }
@@ -649,6 +709,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         switch (this.state)
         {
+            case Booting:
             case Join:
             case Disabled:
             case Maintenance:
@@ -707,7 +768,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     @Override
     public Collection<CheckFailure> check()
     {
-        // TODO Auto-generated method stub
+        // TODO implement checkup
         return Collections.emptyList();
     }
 
@@ -800,7 +861,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     @Override
     public void canDelete() throws McException
     {
-        if (ArenaImpl.this.getState() != ArenaState.Maintenance)
+        if (ArenaImpl.this.getState() != ArenaState.Maintenance && ArenaImpl.this.getState() != ArenaState.Booting)
         {
             throw new McException(Messages.ModificationWrongState);
         }
@@ -876,7 +937,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     @Override
     public Collection<ArenaRuleSetType> getAvailableRuleSetTypes()
     {
-        // TODO Auto-generated method stub
+        // TODO implement available rule sets
         return Collections.emptyList();
     }
 
@@ -901,7 +962,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     @Override
     public boolean isAvailable(ArenaRuleSetType ruleset)
     {
-        // TODO Auto-generated method stub
+        // TODO implement available rule sets
         return false;
     }
 
@@ -1063,13 +1124,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         return (T) handler;
     }
 
-    /* (non-Javadoc)
-     * @see de.minigameslib.mgapi.api.arena.ArenaInterface#getCurrentMatch()
-     */
     @Override
     public ArenaMatchInterface getCurrentMatch()
     {
-        // TODO Auto-generated method stub
+        // TODO implement current matches
         return null;
     }
     

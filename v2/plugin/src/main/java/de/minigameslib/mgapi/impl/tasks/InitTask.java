@@ -24,6 +24,9 @@
 
 package de.minigameslib.mgapi.impl.tasks;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
@@ -39,23 +42,33 @@ import de.minigameslib.mgapi.impl.internal.TaskManager;
  */
 public class InitTask extends BukkitRunnable
 {
+    
+    /** logger. */
+    private static final Logger LOGGER = Logger.getLogger(InitTask.class.getName());
 
     @Override
     public void run()
     {
         for (final ArenaInterface arena : MinigamesLibInterface.instance().getArenas(0, Integer.MAX_VALUE))
         {
-            if (arena.getState() == ArenaState.Starting)
+            LOGGER.log(Level.INFO, "initializing arena " + arena.getInternalName()); //$NON-NLS-1$
+            if (arena.getState() == ArenaState.Booting)
             {
                 final ArenaImpl impl = (ArenaImpl) arena;
                 if (impl.isMatchPending())
                 {
-                    TaskManager.instance().queue(new ArenaRecoverCrashTask((ArenaImpl) arena));
+                    LOGGER.log(Level.INFO, "trying crash recovery of arena " + arena.getInternalName()); //$NON-NLS-1$
+                    TaskManager.instance().queue(new AsyncArenaRecoverCrashTask((ArenaImpl) arena));
                 }
                 else
                 {
-                    TaskManager.instance().queue(new ArenaStartTask((ArenaImpl) arena));
+                    LOGGER.log(Level.INFO, "trying to start arena " + arena.getInternalName()); //$NON-NLS-1$
+                    TaskManager.instance().queue(new AsyncArenaStartTask((ArenaImpl) arena));
                 }
+            }
+            else
+            {
+                LOGGER.log(Level.WARNING, "Wrong arena state. Expected booting for arena " + arena.getInternalName()); //$NON-NLS-1$
             }
         }
     }
