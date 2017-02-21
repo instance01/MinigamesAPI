@@ -25,11 +25,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
+import com.comze_instancelabs.minigamesapi.MinecraftVersionsType;
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
 
@@ -275,6 +277,27 @@ public class ArenaScoreboard
         }
     }
     
+    public static Score get(Objective objective, String name)
+    {
+        if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_7_R3))
+        {
+            return objective.getScore(name);
+        }
+        return objective.getScore(Bukkit.getOfflinePlayer(name));
+    }
+    
+    public static void reset(Scoreboard sb, String name)
+    {
+        if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_7_R3))
+        {
+            sb.resetScores(name);
+        }
+        else
+        {
+            sb.resetScores(Bukkit.getOfflinePlayer(name));
+        }
+    }
+    
     public void clearScoreboard(final String arenaname)
     {
         if (this.ascore.containsKey(arenaname))
@@ -282,9 +305,19 @@ public class ArenaScoreboard
             try
             {
                 final Scoreboard sc = this.ascore.get(arenaname);
-                for (final OfflinePlayer player : sc.getPlayers())
+                if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_7_R3))
                 {
-                    sc.resetScores(player);
+                    for (final String player : sc.getEntries())
+                    {
+                        sc.resetScores(player);
+                    }
+                }
+                else
+                {
+                    for (final OfflinePlayer player : sc.getPlayers())
+                    {
+                        sc.resetScores(player);
+                    }
                 }
             }
             catch (final Exception e)
