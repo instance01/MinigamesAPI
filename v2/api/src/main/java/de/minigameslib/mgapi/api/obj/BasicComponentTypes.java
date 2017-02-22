@@ -41,6 +41,24 @@ public enum BasicComponentTypes implements ComponentTypeId
     Spawn,
     
     /**
+     * A generic spawn block used for spectators.
+     * @see SpawnComponentHandler
+     */
+    SpectatorSpawn,
+    
+    /**
+     * A generic spawn block used for join phase.
+     * @see JoinSpawnComponentHandler
+     */
+    JoinSpawn,
+    
+    /**
+     * A generic spawn block used after match.
+     * @see MainLobbySpawnComponentHandler
+     */
+    MainLobbySpawn,
+    
+    /**
      * Some empty component that can be used with new rule sets for minigame developers.
      * @see EmptyComponentHandler
      */

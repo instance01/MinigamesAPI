@@ -25,9 +25,15 @@
 package de.minigameslib.mgapi.impl.arena;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import de.minigameslib.mclib.api.McException;
@@ -37,6 +43,7 @@ import de.minigameslib.mgapi.api.match.MatchStatisticId;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.team.CommonTeams;
 import de.minigameslib.mgapi.api.team.TeamIdType;
+import de.minigameslib.mgapi.impl.arena.ArenaData.TeamData;
 
 /**
  * Arena Match implementation
@@ -63,16 +70,42 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     
     /** teams. */
     private Map<TeamIdType, MatchTeam> teams = new HashMap<>();
+    
+    /**
+     * the current results.
+     * The first entry represents the first place.
+     */
+    private final List<MatchResultImpl> results = new ArrayList<>();    
+    
+    /**
+     * the position of the first loser.
+     */
+    private int firstLoser;
+    
+    /**
+     * flag for team match
+     */
+    private boolean teamMatch;
 
     /**
      * Constructor
+     * @param teamMatch flag for team matches
      */
-    public ArenaMatchImpl()
+    public ArenaMatchImpl(boolean teamMatch)
     {
-        this.teams.put(CommonTeams.Unknown, new MatchTeam(CommonTeams.Unknown));
-        this.teams.put(CommonTeams.Spectators, new MatchTeam(CommonTeams.Spectators));
-        this.teams.put(CommonTeams.Losers, new MatchTeam(CommonTeams.Losers));
-        this.teams.put(CommonTeams.Winners, new MatchTeam(CommonTeams.Winners));
+        this.getOrCreate(CommonTeams.Unknown);
+        this.getOrCreate(CommonTeams.Spectators);
+        this.getOrCreate(CommonTeams.Losers);
+        this.getOrCreate(CommonTeams.Winners);
+        this.teamMatch = teamMatch;
+    }
+
+    /**
+     * @param team
+     */
+    public void createTeam(TeamData team)
+    {
+        this.getOrCreate(team.getId());
     }
 
     @Override
@@ -139,165 +172,406 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     @Override
     public TeamIdType getPreferredTeam()
     {
-        // TODO implement team mode
-        return null;
+        final Optional<MatchTeam> team = this.teams.values().stream()
+            .filter(t -> !t.getTeamId().isSpecial())
+            .min((t1, t2) -> Integer.compare(t1.getTeamMembers().size(), t2.getTeamMembers().size()));
+        return team.isPresent() ? team.get().getTeamId() : null;
     }
 
     @Override
     public void join(ArenaPlayerInterface player, TeamIdType team) throws McException
     {
-        // TODO implement joins
+        this.getOrCreate(player.getPlayerUUID()).setTeam(team);
     }
 
     @Override
     public boolean isTeamMatch()
     {
-        // TODO implement team mode
-        return false;
+        return this.teamMatch;
     }
 
     @Override
     public TeamIdType getTeam(UUID uuid)
     {
-        // TODO implement team mode
+        final MatchPlayer player = this.players.get(uuid);
+        if (player != null)
+        {
+            return player.getTeam();
+        }
         return null;
     }
 
     @Override
     public Collection<UUID> getParticipants()
     {
-        // TODO implement participants
-        return null;
+        return this.players.keySet();
     }
 
     @Override
     public Collection<UUID> getWinners()
     {
-        // TODO implement winners/losers
-        return null;
+        return this.teams.get(CommonTeams.Winners).getTeamMembers();
     }
 
     @Override
     public Collection<UUID> getLosers()
     {
-        // TODO implement winners/losers
-        return null;
+        return this.teams.get(CommonTeams.Losers).getTeamMembers();
     }
 
     @Override
     public Collection<MatchResult> getResults()
     {
-        // TODO implement match results
-        return null;
+        return new ArrayList<>(this.results);
     }
 
     @Override
     public int getResultCount()
     {
-        // TODO implement match results
-        return 0;
+        return this.results.size();
     }
 
     @Override
     public MatchResult getResult(int place)
     {
-        // TODO implement match results
-        return null;
+        int pos = place - 1;
+        return this.results.size() >= pos ? null : this.results.get(pos);
     }
 
     @Override
     public ComponentIdInterface getSpawn(UUID uuid)
     {
-        // TODO implement spawn selector
-        return null;
+        final MatchPlayer player = this.players.get(uuid);
+        return player == null ? null : player.getSpawn();
+    }
+    
+    /**
+     * Get or creates a match player.
+     * @param uuid
+     * @return match player.
+     */
+    private MatchPlayer getOrCreate(UUID uuid)
+    {
+        return this.players.computeIfAbsent(uuid, MatchPlayer::new);
     }
 
     @Override
     public void selectSpawn(UUID player, ComponentIdInterface spawn) throws McException
     {
-        // TODO implement spawn selector
+        final MatchPlayer p = this.players.get(player);
+        if (p != null)
+        {
+            p.setSpawn(spawn);
+        }
     }
 
     @Override
     public int getStatistic(UUID player, MatchStatisticId statistic)
     {
-        // TODO implement statistics
+        final MatchPlayer p = this.players.get(player);
+        if (p != null)
+        {
+            return p.getStatistic(statistic);
+        }
         return 0;
+    }
+    
+    /**
+     * Get or creates a match player.
+     * @param team
+     * @return match player.
+     */
+    private MatchTeam getOrCreate(TeamIdType team)
+    {
+        return this.teams.computeIfAbsent(team, MatchTeam::new);
     }
 
     @Override
     public int getStatistic(TeamIdType team, MatchStatisticId statistic)
     {
-        // TODO implement statistics
+        final MatchTeam p = this.teams.get(team);
+        if (p != null)
+        {
+            return p.getStatistic(statistic);
+        }
         return 0;
     }
 
     @Override
     public void setStatistic(UUID player, MatchStatisticId statistic, int value)
     {
-        // TODO implement statistics
+        final MatchPlayer p = this.players.get(player);
+        if (p != null)
+        {
+            p.setStatistic(statistic, value);
+        }
     }
 
     @Override
     public void setStatistic(TeamIdType team, MatchStatisticId statistic, int value)
     {
-        // TODO implement statistics
+        final MatchTeam p = this.teams.get(team);
+        if (p != null)
+        {
+            p.setStatistic(statistic, value);
+        }
     }
 
     @Override
     public void addStatistic(UUID player, MatchStatisticId statistic, int amount)
     {
-        // TODO implement statistics
+        final MatchPlayer p = this.players.get(player);
+        if (p != null)
+        {
+            p.addStatistic(statistic, amount);
+        }
     }
 
     @Override
     public void addStatistic(TeamIdType team, MatchStatisticId statistic, int amount)
     {
-        // TODO implement statistics
+        final MatchTeam p = this.teams.get(team);
+        if (p != null)
+        {
+            p.addStatistic(statistic, amount);
+        }
     }
 
     @Override
-    public int getPlayTime(UUID player)
+    public void decStatistic(UUID player, MatchStatisticId statistic, int amount)
     {
-        // TODO implement played time
+        final MatchPlayer p = this.players.get(player);
+        if (p != null)
+        {
+            p.decStatistic(statistic, amount);
+        }
+    }
+
+    @Override
+    public void decStatistic(TeamIdType team, MatchStatisticId statistic, int amount)
+    {
+        final MatchTeam p = this.teams.get(team);
+        if (p != null)
+        {
+            p.decStatistic(statistic, amount);
+        }
+    }
+
+    @Override
+    public long getPlayTime(UUID player)
+    {
+        if (this.started != null)
+        {
+            return 0;
+        }
+        final MatchPlayer p = this.players.get(player);
+        if (player != null)
+        {
+            if (p.getLeft() != null)
+            {
+                return this.started.until(p.getLeft(), ChronoUnit.SECONDS);
+            }
+            return this.started.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+        }
         return 0;
     }
 
     @Override
     public KillerTracking getKillerTracking(UUID player)
     {
-        // TODO implement killer tracker
-        return null;
+        return this.players.get(player);
     }
 
     @Override
     public void trackDamageForKill(UUID targetPlayer, UUID damager) throws McException
     {
-        // TODO implement dmg tracker
+        final MatchPlayer p = this.players.get(targetPlayer);
+        if (p != null)
+        {
+            p.setKillerTracking(damager);
+        }
     }
 
     @Override
     public void setLoser(UUID... players) throws McException
     {
-        // TODO implement setting losers
+        if (players != null && players.length > 0)
+        {
+            final MatchTeam team = this.teams.get(CommonTeams.Losers);
+            for (final UUID uuid : players)
+            {
+                final MatchPlayer p = this.players.get(uuid);
+                if (p != null)
+                {
+                    p.setTeam(CommonTeams.Losers);
+                    p.setLeft(LocalDateTime.now());
+                    team.getTeamMembers().add(uuid);
+                }
+            }
+            final MatchResultImpl result = new MatchResultImpl(false, players);
+            this.results.add(this.firstLoser, result);
+            for (int i = this.firstLoser; i < this.results.size(); i++)
+            {
+                this.results.get(i).setPlace(i + 1);
+            }
+        }
     }
 
     @Override
     public void setWinner(UUID... players) throws McException
     {
-        // TODO implement setting winners
+        if (players != null && players.length > 0)
+        {
+            final MatchTeam team = this.teams.get(CommonTeams.Winners);
+            for (final UUID uuid : players)
+            {
+                final MatchPlayer p = this.players.get(uuid);
+                if (p != null)
+                {
+                    p.setTeam(CommonTeams.Winners);
+                    p.setLeft(LocalDateTime.now());
+                    team.getTeamMembers().add(uuid);
+                }
+            }
+            final MatchResultImpl result = new MatchResultImpl(true, players);
+            this.results.add(this.firstLoser, result);
+            for (int i = this.firstLoser; i < this.results.size(); i++)
+            {
+                this.results.get(i).setPlace(i + 1);
+            }
+            this.firstLoser++;
+        }
     }
 
     @Override
     public void setLoser(TeamIdType... teams) throws McException
     {
-        // TODO implement setting losers
+        if (teams != null && teams.length > 0)
+        {
+            final Set<UUID> playerSet = new HashSet<>();
+            for (final TeamIdType team : teams)
+            {
+                final MatchTeam t = this.teams.get(team);
+                if (t != null)
+                {
+                    playerSet.addAll(t.getTeamMembers());
+                }
+            }
+            if (playerSet.size() > 0)
+            {
+                final MatchTeam team = this.teams.get(CommonTeams.Losers);
+                for (final UUID uuid : playerSet)
+                {
+                    final MatchPlayer p = this.players.get(uuid);
+                    if (p != null)
+                    {
+                        p.setTeam(CommonTeams.Losers);
+                        p.setLeft(LocalDateTime.now());
+                        team.getTeamMembers().add(uuid);
+                    }
+                }
+                final MatchResultImpl result = new MatchResultImpl(false, playerSet.toArray(new UUID[playerSet.size()]));
+                this.results.add(this.firstLoser, result);
+                for (int i = this.firstLoser; i < this.results.size(); i++)
+                {
+                    this.results.get(i).setPlace(i + 1);
+                }
+            }
+        }
     }
 
     @Override
     public void setWinner(TeamIdType... teams) throws McException
     {
-        // TODO implement setting winners
+        if (teams != null && teams.length > 0)
+        {
+            final Set<UUID> playerSet = new HashSet<>();
+            for (final TeamIdType team : teams)
+            {
+                final MatchTeam t = this.teams.get(team);
+                if (t != null)
+                {
+                    playerSet.addAll(t.getTeamMembers());
+                }
+            }
+            if (playerSet.size() > 0)
+            {
+                final MatchTeam team = this.teams.get(CommonTeams.Winners);
+                for (final UUID uuid : playerSet)
+                {
+                    final MatchPlayer p = this.players.get(uuid);
+                    if (p != null)
+                    {
+                        p.setTeam(CommonTeams.Winners);
+                        p.setLeft(LocalDateTime.now());
+                        team.getTeamMembers().add(uuid);
+                    }
+                }
+                final MatchResultImpl result = new MatchResultImpl(true, playerSet.toArray(new UUID[playerSet.size()]));
+                this.results.add(this.firstLoser, result);
+                for (int i = this.firstLoser; i < this.results.size(); i++)
+                {
+                    this.results.get(i).setPlace(i + 1);
+                }
+                this.firstLoser++;
+            }
+        }
+    }
+    
+    /**
+     * Implementation of match results.
+     */
+    private final static class MatchResultImpl implements MatchResult
+    {
+        
+        /** the place this result represents. */
+        private int place;
+        
+        /** winning flag. */
+        private final boolean isWin;
+        
+        /** players on this place. */
+        private final List<UUID> players = new ArrayList<>();
+
+        /**
+         * @param isWin
+         * @param uuids
+         */
+        public MatchResultImpl(boolean isWin, UUID... uuids)
+        {
+            this.isWin = isWin;
+            for (final UUID player : uuids)
+            {
+                this.players.add(player);
+            }
+        }
+
+        /**
+         * @param place the place to set
+         */
+        public void setPlace(int place)
+        {
+            this.place = place;
+        }
+
+        @Override
+        public int getPlace()
+        {
+            return this.place;
+        }
+
+        @Override
+        public Collection<UUID> getPlayers()
+        {
+            return this.players;
+        }
+
+        @Override
+        public boolean isWin()
+        {
+            return this.isWin;
+        }
+        
     }
     
 }

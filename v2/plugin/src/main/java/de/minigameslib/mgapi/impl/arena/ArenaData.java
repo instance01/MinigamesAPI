@@ -37,6 +37,7 @@ import de.minigameslib.mclib.shared.api.com.AnnotatedDataFragment;
 import de.minigameslib.mclib.shared.api.com.PersistentField;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
  * @author mepeisen
@@ -133,6 +134,10 @@ public class ArenaData extends AnnotatedDataFragment
      */
     @PersistentField
     private Set<EntityIdInterface> entities = new HashSet<>();
+    
+    /** the teams used in this arena; empty set for non-team mode. */
+    @PersistentField
+    private Set<TeamData> teams = new HashSet<>();
     
     /**
      * Constructor
@@ -326,6 +331,109 @@ public class ArenaData extends AnnotatedDataFragment
     public Set<EntityIdInterface> getEntities()
     {
         return this.entities;
+    }
+
+    /**
+     * @return the teams
+     */
+    public Set<TeamData> getTeams()
+    {
+        return this.teams;
+    }
+    
+    /**
+     * Team data.
+     */
+    public static final class TeamData extends AnnotatedDataFragment
+    {
+        
+        /** the team id. */
+        @PersistentField
+        private TeamIdType id;
+        
+        /** the team display name. */
+        @PersistentField
+        private LocalizedConfigString name;
+        
+        /**
+         * Constructor
+         */
+        public TeamData()
+        {
+            super();
+        }
+
+        /**
+         * @param id
+         * @param name
+         */
+        public TeamData(TeamIdType id, LocalizedConfigString name)
+        {
+            this.id = id;
+            this.name = name;
+        }
+
+        /**
+         * @return the id
+         */
+        public TeamIdType getId()
+        {
+            return this.id;
+        }
+
+        /**
+         * @param id the id to set
+         */
+        public void setId(TeamIdType id)
+        {
+            this.id = id;
+        }
+
+        /**
+         * @return the name
+         */
+        public LocalizedConfigString getName()
+        {
+            return this.name;
+        }
+
+        /**
+         * @param name the name to set
+         */
+        public void setName(LocalizedConfigString name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            TeamData other = (TeamData) obj;
+            if (this.id == null)
+            {
+                if (other.id != null)
+                    return false;
+            }
+            else if (!this.id.equals(other.id))
+                return false;
+            return true;
+        }
+        
     }
     
 }

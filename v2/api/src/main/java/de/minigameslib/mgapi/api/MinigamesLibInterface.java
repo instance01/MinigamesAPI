@@ -50,6 +50,8 @@ import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetType;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
+import de.minigameslib.mgapi.api.team.CommonTeams;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
  * Base interface to access the minigames API.
@@ -96,6 +98,21 @@ public interface MinigamesLibInterface
      * @return api version.
      */
     int getApiVersion();
+    
+    // teams
+    
+    /**
+     * Checks if given team is a special team.
+     * A "special" team is a team not being a real party on team arenas. "special" teams cannnot be confiugured as teams on arenas.
+     * Instead they are used for special features on arenas, for example the "Winners" and "Spectators" have their own team.
+     * @param id
+     * @return {@code true} for special teams
+     * @see CommonTeams#Winners
+     * @see CommonTeams#Losers
+     * @see CommonTeams#Unknown
+     * @see CommonTeams#Spectators
+     */
+    boolean isSpecialTeam(TeamIdType id);
     
     // initialization
     

@@ -24,26 +24,41 @@
 
 package de.minigameslib.mgapi.api.team;
 
-import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
-import de.minigameslib.mgapi.api.MinigamesLibInterface;
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.locale.LocalizedConfigString;
+import de.minigameslib.mgapi.api.arena.ArenaInterface;
 
 /**
- * Use this interface on ernumerations to declare team types.
+ * Represents a team configured for an arena.
  * 
  * @author mepeisen
  */
-public interface TeamIdType extends McUniqueEnumInterface
+public interface ArenaTeamInterface
 {
     
     /**
-     * Checks if this team is a special team.
-     * A "special" team is a team not being a real party on team arenas. "special" teams cannnot be confiugured as teams on arenas.
-     * Instead they are used for special features on arenas, for example the "Winners" and "Spectators" have their own team.
-     * @return {@code true} for special teams
+     * Returns the underlying team id
+     * @return team id
      */
-    default boolean isSpecial()
-    {
-        return MinigamesLibInterface.instance().isSpecialTeam(this);
-    }
+    TeamIdType getId();
+    
+    /**
+     * Returns the arena of this team
+     * @return arena team
+     */
+    ArenaInterface getArena();
+    
+    /**
+     * Returns the display name of the team
+     * @return display name of the team
+     */
+    LocalizedConfigString getName();
+    
+    /**
+     * Sets the team name
+     * @param name
+     * @throws McException thrown if arena is not in maintenance state
+     */
+    void setName(LocalizedConfigString name) throws McException;
     
 }

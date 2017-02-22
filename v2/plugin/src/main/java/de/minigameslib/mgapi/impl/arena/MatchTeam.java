@@ -24,10 +24,13 @@
 
 package de.minigameslib.mgapi.impl.arena;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import de.minigameslib.mgapi.api.match.MatchStatisticId;
 import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
@@ -44,6 +47,11 @@ class MatchTeam
     
     /** registered team members. */
     private final Set<UUID> teamMembers = new HashSet<>();
+    
+    /**
+     * the match statistics.
+     */
+    private final Map<MatchStatisticId, Integer> statistics = new HashMap<>();
 
     /**
      * Constructor
@@ -68,6 +76,47 @@ class MatchTeam
     public Set<UUID> getTeamMembers()
     {
         return this.teamMembers;
+    }
+
+    /**
+     * Statistic function
+     * @param statistic
+     * @return current statistic
+     */
+    public int getStatistic(MatchStatisticId statistic)
+    {
+        final Integer result = this.statistics.get(statistic);
+        return result == null ? 0 : result.intValue();
+    }
+    
+    /**
+     * Statistic function
+     * @param statistic
+     * @param newValue
+     */
+    public void setStatistic(MatchStatisticId statistic, int newValue)
+    {
+        this.statistics.put(statistic, Integer.valueOf(newValue));
+    }
+    
+    /**
+     * Adds the match statistic for given statistic id.
+     * @param statistic
+     * @param amount delta value
+     */
+    void addStatistic(MatchStatisticId statistic, int amount)
+    {
+        this.setStatistic(statistic, this.getStatistic(statistic) + amount);
+    }
+    
+    /**
+     * Decrements the match statistic for given statistic id.
+     * @param statistic
+     * @param amount delta value
+     */
+    void decStatistic(MatchStatisticId statistic, int amount)
+    {
+        this.setStatistic(statistic, this.getStatistic(statistic) - amount);
     }
     
 }

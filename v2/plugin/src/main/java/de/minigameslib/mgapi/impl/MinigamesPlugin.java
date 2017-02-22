@@ -76,8 +76,9 @@ import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
-import de.minigameslib.mgapi.api.events.ArenaStateChangeEvent;
 import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
+import de.minigameslib.mgapi.api.events.MatchStartedEvent;
+import de.minigameslib.mgapi.api.events.MatchStoppedEvent;
 import de.minigameslib.mgapi.api.match.CommonMatchStatistics;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
@@ -102,6 +103,7 @@ import de.minigameslib.mgapi.api.rules.SignRuleSetType;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 import de.minigameslib.mgapi.api.team.CommonTeams;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerImpl;
@@ -116,12 +118,15 @@ import de.minigameslib.mgapi.impl.obj.GenericComponent;
 import de.minigameslib.mgapi.impl.obj.GenericSign;
 import de.minigameslib.mgapi.impl.obj.GenericZone;
 import de.minigameslib.mgapi.impl.obj.JoinSign;
+import de.minigameslib.mgapi.impl.obj.JoinSpawnComponent;
 import de.minigameslib.mgapi.impl.obj.JoinZone;
 import de.minigameslib.mgapi.impl.obj.LeaveSign;
 import de.minigameslib.mgapi.impl.obj.LeaveZone;
 import de.minigameslib.mgapi.impl.obj.LobbyZone;
+import de.minigameslib.mgapi.impl.obj.MainLobbySpawnComponent;
 import de.minigameslib.mgapi.impl.obj.MainZone;
 import de.minigameslib.mgapi.impl.obj.SpawnComponent;
+import de.minigameslib.mgapi.impl.obj.SpectatorSpawnComponent;
 import de.minigameslib.mgapi.impl.obj.SpectatorZone;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
 import de.minigameslib.mgapi.impl.rules.BasicMatchTime;
@@ -280,7 +285,8 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         McLibInterface.instance().registerEvent(this, ArenaDeletedEvent.class);
         McLibInterface.instance().registerEvent(this, ArenaDeleteEvent.class);
         McLibInterface.instance().registerEvent(this, ArenaStateChangedEvent.class);
-        McLibInterface.instance().registerEvent(this, ArenaStateChangeEvent.class);
+        McLibInterface.instance().registerEvent(this, MatchStartedEvent.class);
+        McLibInterface.instance().registerEvent(this, MatchStoppedEvent.class);
         
         this.registerRuleset(this, BasicArenaRuleSets.BasicMatch, BasicMatch::new);
         this.registerRuleset(this, BasicArenaRuleSets.BasicSpawns, BasicSpawns::new);
@@ -298,6 +304,9 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         this.registerArenaComponent(this, BasicComponentTypes.Empty, EmptyComponent::new);
         this.registerArenaComponent(this, BasicComponentTypes.Generic, GenericComponent::new);
         this.registerArenaComponent(this, BasicComponentTypes.Spawn, SpawnComponent::new);
+        this.registerArenaComponent(this, BasicComponentTypes.JoinSpawn, JoinSpawnComponent::new);
+        this.registerArenaComponent(this, BasicComponentTypes.MainLobbySpawn, MainLobbySpawnComponent::new);
+        this.registerArenaComponent(this, BasicComponentTypes.SpectatorSpawn, SpectatorSpawnComponent::new);
         this.registerArenaSign(this, BasicSignTypes.Empty, EmptySign::new);
         this.registerArenaSign(this, BasicSignTypes.Generic, GenericSign::new);
         this.registerArenaSign(this, BasicSignTypes.Join, JoinSign::new);
@@ -817,6 +826,12 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     {
         this.signsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(type);
         this.signs.put(type, creator);
+    }
+
+    @Override
+    public boolean isSpecialTeam(TeamIdType id)
+    {
+        return id == CommonTeams.Unknown || id == CommonTeams.Winners || id == CommonTeams.Losers || id == CommonTeams.Spectators;
     }
     
 }

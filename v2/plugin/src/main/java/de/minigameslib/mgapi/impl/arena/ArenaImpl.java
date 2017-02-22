@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -79,15 +81,21 @@ import de.minigameslib.mgapi.api.arena.CheckFailure;
 import de.minigameslib.mgapi.api.arena.CheckSeverity;
 import de.minigameslib.mgapi.api.events.ArenaDeleteEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeletedEvent;
+import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
 import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
+import de.minigameslib.mgapi.api.obj.BasicComponentTypes;
+import de.minigameslib.mgapi.api.obj.SpectatorSpawnComponentHandler;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.api.team.ArenaTeamInterface;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 import de.minigameslib.mgapi.impl.MglibObjectTypes;
 import de.minigameslib.mgapi.impl.MinigamesPlugin;
+import de.minigameslib.mgapi.impl.arena.ArenaData.TeamData;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
 import de.minigameslib.mgapi.impl.rules.AbstractRuleSetContainer;
 import de.minigameslib.mgapi.impl.tasks.AsyncArenaRestartTask;
@@ -131,6 +139,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     
     /** the current arena match. */
     private ArenaMatchImpl match;
+    
+    /** current random. */
+    private Random random = new Random();
     
     /**
      * rule set container
@@ -253,15 +264,21 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         
         if (!this.arenaData.isEnabled())
         {
+            final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Disabled);
             this.state = ArenaState.Disabled;
+            Bukkit.getPluginManager().callEvent(changedEvent);
         }
         else if (this.arenaData.isMaintenance())
         {
+            final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Maintenance);
             this.state = ArenaState.Maintenance;
+            Bukkit.getPluginManager().callEvent(changedEvent);
         }
         else
         {
+            final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Starting);
             this.state = ArenaState.Starting;
+            Bukkit.getPluginManager().callEvent(changedEvent);
         }
     }
 
@@ -439,9 +456,62 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     private void leaveSpec(ArenaPlayerInterface player)
     {
         ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
-        // TODO port to main lobby....
         this.spectators.remove(player.getPlayerUUID());
         player.getMcPlayer().sendMessage(Messages.YouLeft, this.getDisplayName());
+        // port to main lobby
+        this.teleportRandom(player, this.getComponents(BasicComponentTypes.MainLobbySpawn));
+    }
+
+    /**
+     * Port player to a random component taken from given list
+     * @param player
+     * @param components
+     * @return {@code true} if player was ported
+     */
+    private boolean teleportRandom(ArenaPlayerInterface player, Collection<?> components)
+    {
+        if (components.size() > 0)
+        {
+            final Object id = components.stream().skip(this.random.nextInt(components.size())).findFirst().get();
+            ComponentInterface comp = null;
+            if (id instanceof ComponentInterface)
+            {
+                comp = (ComponentInterface) id;
+            }
+            else
+            {
+                comp = ObjectServiceInterface.instance().findComponent((ComponentIdInterface) id);
+            }
+            player.getMcPlayer().getBukkitPlayer().teleport(comp.getLocation());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Port player to a component
+     * @param player
+     * @param component
+     */
+    private void teleport(ArenaPlayerInterface player, ComponentIdInterface component)
+    {
+        if (component != null)
+        {
+            player.getMcPlayer().getBukkitPlayer().teleport(ObjectServiceInterface.instance().findComponent(component).getLocation());
+        }
+    }
+
+    /**
+     * Port player to a component
+     * @param player
+     * @param component
+     */
+    private void teleport(ArenaPlayerInterface player, ComponentInterface component)
+    {
+        if (component != null)
+        {
+            player.getMcPlayer().getBukkitPlayer().teleport(component.getLocation());
+        }
     }
 
     /**
@@ -451,9 +521,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     private void leaveMatch(ArenaPlayerInterface player)
     {
         ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
-        // TODO port to main lobby....
         this.players.remove(player.getPlayerUUID());
         player.getMcPlayer().sendMessage(Messages.YouLeft, this.getDisplayName());
+        // port to main lobby
+        this.teleportRandom(player, this.getComponents(BasicComponentTypes.MainLobbySpawn));
     }
 
     @Override
@@ -470,8 +541,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         
         this.players.add(player.getPlayerUUID());
         ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), false);
-        // TODO port to waiting lobby etc.
         player.getMcPlayer().sendMessage(Messages.JoinedArena, this.getDisplayName());
+        // port to main lobby
+        this.teleportRandom(player, this.getComponents(BasicComponentTypes.JoinSpawn));
     }
 
     @Override
@@ -496,10 +568,37 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             case PreMatch:
                 this.spectators.add(player.getPlayerUUID());
                 ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), true);
-                // TODO port to spectator spawn etc.
                 player.getMcPlayer().sendMessage(Messages.SpectatingArena, this.getDisplayName());
+                this.teleportToSpectate(player);
                 break;
         }
+    }
+
+    /**
+     * Teleports given player to spectators
+     * @param player
+     */
+    private void teleportToSpectate(ArenaPlayerInterface player)
+    {
+        if (this.isMatch())
+        {
+            // match in progress
+            final TeamIdType team = this.match.getTeam(player.getPlayerUUID());
+            if (team != null)
+            {
+                final ObjectServiceInterface osi = ObjectServiceInterface.instance();
+                final Collection<ComponentInterface> teamspawns = this.getComponents(BasicComponentTypes.SpectatorSpawn).stream()
+                        .map(osi::findComponent)
+                        .filter(c -> ((SpectatorSpawnComponentHandler)c.getHandler()).getTeam() == team)
+                        .collect(Collectors.toList());
+                if (this.teleportRandom(player, teamspawns))
+                {
+                    // succeeded
+                    return;
+                }
+            }
+        }
+        this.teleportRandom(player, this.getComponents(BasicComponentTypes.SpectatorSpawn));
     }
 
     @Override
@@ -516,8 +615,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         
         this.arenaData.setEnabled(true);
         this.saveData();
-        
+
+        final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Starting);
         this.state = ArenaState.Starting;
+        Bukkit.getPluginManager().callEvent(changedEvent);
         TaskManager.instance().queue(new AsyncArenaStartTask(this));
     }
 
@@ -529,7 +630,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         this.arenaData.setEnabled(false);
         this.saveDataInternal();
+        final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Disabled);
+        this.match = null;
         this.state = ArenaState.Disabled;
+        Bukkit.getPluginManager().callEvent(changedEvent);
     }
 
     /**
@@ -540,7 +644,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         this.arenaData.setMaintenance(true);
         this.saveDataInternal();
+        final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Maintenance);
+        this.match = null;
         this.state = ArenaState.Maintenance;
+        Bukkit.getPluginManager().callEvent(changedEvent);
     }
 
     /**
@@ -549,7 +656,15 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
      */
     public void setJoin0() throws McException
     {
+        final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Join);
         this.state = ArenaState.Join;
+        final Set<TeamData> teams = this.arenaData.getTeams();
+        this.match = new ArenaMatchImpl(teams.size() > 0);
+        for (final TeamData team : teams)
+        {
+            this.match.createTeam(team);
+        }
+        Bukkit.getPluginManager().callEvent(changedEvent);
     }
 
     @Override
@@ -566,15 +681,24 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 this.arenaData.setMaintenance(false);
                 this.arenaData.setEnabled(false);
                 this.saveData();
-                this.state = ArenaState.Disabled;
+                {
+                    final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Disabled);
+                    this.match = null;
+                    this.state = ArenaState.Disabled;
+                    Bukkit.getPluginManager().callEvent(changedEvent);
+                }
                 break;
             case Join:
                 this.arenaData.setEnabled(false);
                 this.saveData();
                 // abort current game to kick players being in waiting lobby.
                 this.abortGame(Messages.KickReasonDisable);
-                this.state = ArenaState.Restarting;
-                TaskManager.instance().queue(new AsyncArenaRestartTask(this));
+                {
+                    final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Restarting);
+                    this.state = ArenaState.Restarting;
+                    Bukkit.getPluginManager().callEvent(changedEvent);
+                    TaskManager.instance().queue(new AsyncArenaRestartTask(this));
+                }
                 break;
             case Match:
             case PostMatch:
@@ -586,7 +710,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 {
                     // abort current game.
                     this.abortGame(Messages.KickReasonDisable);
+                    final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Disabled);
                     this.state = ArenaState.Restarting;
+                    Bukkit.getPluginManager().callEvent(changedEvent);
                     TaskManager.instance().queue(new AsyncArenaRestartTask(this));
                 }
                 break;
@@ -620,9 +746,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     private void kick(UUID uuid, LocalizedMessageInterface kickReason)
     {
         final McPlayerInterface player = ObjectServiceInterface.instance().getPlayer(uuid);
-        // TODO port to main lobby....
-        ((ArenaPlayerImpl)MinigamesLibInterface.instance().getPlayer(player)).switchArenaOrMode(null, false);
+        final ArenaPlayerImpl arenaPlayerImpl = (ArenaPlayerImpl)MinigamesLibInterface.instance().getPlayer(player);
+        arenaPlayerImpl.switchArenaOrMode(null, false);
         player.sendMessage(Messages.YouWereKicked, kickReason);
+        this.teleportRandom(arenaPlayerImpl, this.getComponents(BasicComponentTypes.MainLobbySpawn));
     }
 
     @Override
@@ -644,7 +771,11 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 this.arenaData.setMaintenance(true);
                 this.arenaData.setEnabled(true);
                 this.saveData();
-                this.state = ArenaState.Maintenance;
+                {
+                    final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Maintenance);
+                    this.state = ArenaState.Maintenance;
+                    Bukkit.getPluginManager().callEvent(changedEvent);
+                }
                 break;
             case Join:
             case Match:
@@ -657,7 +788,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 {
                     // abort current game.
                     this.abortGame(Messages.KickReasonMaintenance);
+                    final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Restarting);
                     this.state = ArenaState.Restarting;
+                    Bukkit.getPluginManager().callEvent(changedEvent);
                     TaskManager.instance().queue(new AsyncArenaRestartTask(this));
                 }
                 break;
@@ -671,7 +804,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         {
             throw new McException(Messages.StartWrongState);
         }
+        final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.PreMatch);
         this.state = ArenaState.PreMatch;
+        Bukkit.getPluginManager().callEvent(changedEvent);
         // TODO Start pre match phase, teleport to spawns etc.
     }
 
@@ -689,7 +824,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 throw new McException(Messages.TestCheckFailure);
             }
         }
-        this.state = ArenaState.Join;
+        this.setJoin0();
     }
 
     @Override
@@ -1127,8 +1262,92 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     @Override
     public ArenaMatchInterface getCurrentMatch()
     {
-        // TODO implement current matches
-        return null;
+        return this.match;
+    }
+
+    @Override
+    public void setSinglePlayerMode() throws McException
+    {
+        if (this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
+        this.arenaData.getTeams().clear();
+        this.saveData();
+    }
+
+    @Override
+    public void addTeam(TeamIdType team, LocalizedConfigString name) throws McException
+    {
+        if (this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
+        if (team.isSpecial())
+        {
+            // TODO disallow special teams
+        }
+        this.arenaData.getTeams().removeIf(t -> t.getId() == team);
+        this.arenaData.getTeams().add(new TeamData(team, name));
+        this.saveData();
+    }
+
+    @Override
+    public void removeTeam(TeamIdType team) throws McException
+    {
+        if (this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
+        this.arenaData.getTeams().removeIf(t -> t.getId() == team);
+        this.saveData();
+    }
+
+    @Override
+    public Collection<TeamIdType> getTeams()
+    {
+        return this.arenaData.getTeams().stream().map(TeamData::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    public ArenaTeamInterface getTeam(TeamIdType team)
+    {
+        final Optional<TeamData> data = this.arenaData.getTeams().stream().filter(t -> t.getId() == team).findFirst();
+        return !data.isPresent() ? null : new ArenaTeamInterface() {
+            
+            @Override
+            public void setName(LocalizedConfigString name) throws McException
+            {
+                if (ArenaImpl.this.getState() != ArenaState.Maintenance)
+                {
+                    throw new McException(Messages.ModificationWrongState);
+                }
+                if (team.isSpecial())
+                {
+                    // TODO disallow special teams
+                }
+                data.get().setName(name);
+                ArenaImpl.this.saveData();
+            }
+            
+            @Override
+            public LocalizedConfigString getName()
+            {
+                return data.get().getName();
+            }
+            
+            @Override
+            public TeamIdType getId()
+            {
+                return team;
+            }
+            
+            @Override
+            public ArenaInterface getArena()
+            {
+                return ArenaImpl.this;
+            }
+        };
     }
     
     /**

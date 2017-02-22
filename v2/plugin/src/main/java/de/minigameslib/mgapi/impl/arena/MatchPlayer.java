@@ -25,7 +25,15 @@
 package de.minigameslib.mgapi.impl.arena;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+
+import de.minigameslib.mclib.api.objects.ComponentIdInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
+import de.minigameslib.mgapi.api.match.MatchStatisticId;
+import de.minigameslib.mgapi.api.team.CommonTeams;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
  * Data class for players being present in a match
@@ -33,17 +41,40 @@ import java.util.UUID;
  * @author mepeisen
  *
  */
-class MatchPlayer
+class MatchPlayer implements ArenaMatchInterface.KillerTracking
 {
     
     /** join timestamp */
-    private LocalDateTime joined;
+    private LocalDateTime joined = LocalDateTime.now();
     
     /** the players uuid. */
     private final UUID playerUuid;
     
     /** left timestamp */
     private LocalDateTime left;
+    
+    /** the associated team. */
+    private TeamIdType team = CommonTeams.Unknown;
+    
+    /**
+     * the match statistics.
+     */
+    private final Map<MatchStatisticId, Integer> statistics = new HashMap<>();
+    
+    /**
+     * the selected spawn.
+     */
+    private ComponentIdInterface spawn;
+
+    /**
+     * Last damager for killer tracking
+     */
+    private UUID lastDamager;
+
+    /**
+     * Last damage timestamp
+     */
+    private LocalDateTime damageTimestamp;
 
     /**
      * Constructor
@@ -92,6 +123,107 @@ class MatchPlayer
     public UUID getPlayerUuid()
     {
         return this.playerUuid;
+    }
+
+    /**
+     * @return the spawn
+     */
+    public ComponentIdInterface getSpawn()
+    {
+        return this.spawn;
+    }
+
+    /**
+     * @param spawn the spawn to set
+     */
+    public void setSpawn(ComponentIdInterface spawn)
+    {
+        this.spawn = spawn;
+    }
+
+    /**
+     * Statistic function
+     * @param statistic
+     * @return current statistic
+     */
+    public int getStatistic(MatchStatisticId statistic)
+    {
+        final Integer result = this.statistics.get(statistic);
+        return result == null ? 0 : result.intValue();
+    }
+    
+    /**
+     * Statistic function
+     * @param statistic
+     * @param newValue
+     */
+    public void setStatistic(MatchStatisticId statistic, int newValue)
+    {
+        this.statistics.put(statistic, Integer.valueOf(newValue));
+    }
+    
+    /**
+     * Adds the match statistic for given statistic id.
+     * @param statistic
+     * @param amount delta value
+     */
+    void addStatistic(MatchStatisticId statistic, int amount)
+    {
+        this.setStatistic(statistic, this.getStatistic(statistic) + amount);
+    }
+    
+    /**
+     * Decrements the match statistic for given statistic id.
+     * @param statistic
+     * @param amount delta value
+     */
+    void decStatistic(MatchStatisticId statistic, int amount)
+    {
+        this.setStatistic(statistic, this.getStatistic(statistic) - amount);
+    }
+
+    @Override
+    public UUID getPlayer()
+    {
+        return this.playerUuid;
+    }
+
+    @Override
+    public UUID getLastDamager()
+    {
+        return this.lastDamager;
+    }
+
+    @Override
+    public LocalDateTime getDamageTimestamp()
+    {
+        return this.damageTimestamp;
+    }
+    
+    /**
+     * Sets the killer tracking
+     * @param damager
+     */
+    public void setKillerTracking(UUID damager)
+    {
+        this.lastDamager = damager;
+        this.damageTimestamp = LocalDateTime.now();
+    }
+
+    /**
+     * @return the team
+     */
+    public TeamIdType getTeam()
+    {
+        return this.team;
+    }
+
+    /**
+     * @param team the team to set
+     */
+    public void setTeam(TeamIdType team)
+    {
+        this.team = team;
     }
     
 }

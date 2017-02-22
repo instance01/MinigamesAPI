@@ -53,6 +53,9 @@ import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
+import de.minigameslib.mgapi.api.team.ArenaTeamInterface;
+import de.minigameslib.mgapi.api.team.CommonTeams;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
  * Basic interface for arenas.
@@ -276,6 +279,43 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
     ArenaMatchInterface getCurrentMatch();
     
     // TODO historic matches
+    
+    // team support
+
+    /**
+     * Sets the single player mode (removes all teams)
+     * @throws McException thrown if arena is not in maintenance state
+     */
+    void setSinglePlayerMode() throws McException;
+    
+    /**
+     * Adds team with given name
+     * @param team
+     * @param name the team name to be used for display
+     * @throws McException thrown if arena is not in maintenance state; thrown for special teams
+     * @see TeamIdType#isSpecial()
+     */
+    void addTeam(TeamIdType team, LocalizedConfigString name) throws McException;
+    
+    /**
+     * Removes given team
+     * @param team
+     * @throws McException thrown if arena is not in maintenance state
+     */
+    void removeTeam(TeamIdType team) throws McException;
+    
+    /**
+     * Returns all preconfigured teams.
+     * @return all preconfigured teams; empty list for single player arenas
+     */
+    Collection<TeamIdType> getTeams();
+    
+    /**
+     * Returns the arena team object for given team id
+     * @param team
+     * @return arena team object or {@code null} if team is not configured via {@link #addTeam(TeamIdType, LocalizedConfigString)}
+     */
+    ArenaTeamInterface getTeam(TeamIdType team);
     
     // components and objects
         

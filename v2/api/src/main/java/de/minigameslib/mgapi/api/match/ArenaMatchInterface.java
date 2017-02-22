@@ -243,7 +243,7 @@ public interface ArenaMatchInterface
      * Adds the match statistic for given player and statistic id.
      * @param player
      * @param statistic
-     * @param amount delta value; positive to increase statistics and negativ to decrease statistics
+     * @param amount delta value
      */
     void addStatistic(UUID player, MatchStatisticId statistic, int amount);
     
@@ -251,16 +251,32 @@ public interface ArenaMatchInterface
      * Adds the match statistic for given team and statistic id.
      * @param team
      * @param statistic
-     * @param amount delta value; positive to increase statistics and negativ to decrease statistics
+     * @param amount delta value
      */
     void addStatistic(TeamIdType team, MatchStatisticId statistic, int amount);
+    
+    /**
+     * Decrement the match statistic for given player and statistic id.
+     * @param player
+     * @param statistic
+     * @param amount delta value
+     */
+    void decStatistic(UUID player, MatchStatisticId statistic, int amount);
+    
+    /**
+     * Decrement the match statistic for given team and statistic id.
+     * @param team
+     * @param statistic
+     * @param amount delta value
+     */
+    void decStatistic(TeamIdType team, MatchStatisticId statistic, int amount);
     
     /**
      * Returns the play time of given player in seconds
      * @param player
      * @return play time in seconds
      */
-    int getPlayTime(UUID player);
+    long getPlayTime(UUID player);
     
     // killer tracking
     
@@ -291,7 +307,7 @@ public interface ArenaMatchInterface
     /**
      * Returns the killer tracking; only works on pending matches
      * @param player
-     * @return killer tracking or {@code null} if no killer tracking was registered for given player.
+     * @return killer tracking or {@code null} if player is not registered in this arena match
      */
     KillerTracking getKillerTracking(UUID player);
     

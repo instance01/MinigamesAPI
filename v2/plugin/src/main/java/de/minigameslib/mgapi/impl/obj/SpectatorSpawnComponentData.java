@@ -22,28 +22,39 @@
 
 */
 
-package de.minigameslib.mgapi.api.team;
+package de.minigameslib.mgapi.impl.obj;
 
-import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
-import de.minigameslib.mgapi.api.MinigamesLibInterface;
+import de.minigameslib.mclib.shared.api.com.PersistentField;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetType;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
- * Use this interface on ernumerations to declare team types.
- * 
  * @author mepeisen
+ *
  */
-public interface TeamIdType extends McUniqueEnumInterface
+public class SpectatorSpawnComponentData extends AbstractObjectData<ComponentRuleSetType>
 {
     
     /**
-     * Checks if this team is a special team.
-     * A "special" team is a team not being a real party on team arenas. "special" teams cannnot be confiugured as teams on arenas.
-     * Instead they are used for special features on arenas, for example the "Winners" and "Spectators" have their own team.
-     * @return {@code true} for special teams
+     * The team this spawn is associated to
      */
-    default boolean isSpecial()
+    @PersistentField
+    protected TeamIdType team;
+
+    /**
+     * @return the team
+     */
+    public TeamIdType getTeam()
     {
-        return MinigamesLibInterface.instance().isSpecialTeam(this);
+        return this.team;
+    }
+
+    /**
+     * @param team the team to set
+     */
+    public void setTeam(TeamIdType team)
+    {
+        this.team = team;
     }
     
 }
