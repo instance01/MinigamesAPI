@@ -36,6 +36,7 @@
 ###### MobEscape
 
 * fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+* added scoreboard text to messages.yml (https://github.com/MysticCity/MinigamesAPI/issues/218)
 
 ###### OITC
 
