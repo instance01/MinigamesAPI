@@ -197,6 +197,8 @@ public interface ArenaConfigStrings
     /** TODO: describe config option. */
     String CONFIG_USE_CUSTOM_SCOREBOARD = "config.use_custom_scoreboard"; //$NON-NLS-1$
     /** TODO: describe config option. */
+    String CONFIG_USE_SPECTATOR_SCOREBOARD = "config.use_spectator_scoreboard"; //$NON-NLS-1$
+    /** TODO: describe config option. */
     String CONFIG_DELAY_ENABLED = "config.delay.enabled"; //$NON-NLS-1$
     /** TODO: describe config option. */
     String CONFIG_DELAY_AMOUNT_SECONDS = "config.delay.amount_seconds"; //$NON-NLS-1$

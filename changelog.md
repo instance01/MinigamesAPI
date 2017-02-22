@@ -12,6 +12,44 @@
 * fixed NPE if main lobby is missing (https://github.com/MysticCity/MinigamesAPI/issues/201)
 * some api extension (https://github.com/MysticCity/MinigamesAPI/issues/203)
 * compass tracking fixed (https://github.com/MysticCity/MinigamesAPI/issues/206)
+* new config flag: "use\_spectator\_scoreboard" (https://github.com/MysticCity/MinigamesAPI/issues/194)
+
+###### BedWars
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+
+###### BowBash
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+
+###### ColorMatch
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+
+###### Conquer
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+
+###### GunGame
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+
+###### MobEscape
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+* added scoreboard text to messages.yml (https://github.com/MysticCity/MinigamesAPI/issues/218)
+
+###### OITC
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+
+###### SeaBattle
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+
+###### Snake
+
+* fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
 
 #### 1.14.14
 
