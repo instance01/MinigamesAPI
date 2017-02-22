@@ -110,6 +110,7 @@ public class DefaultConfig
             config.addDefault(ArenaConfigStrings.CONFIG_POWERUP_BROADCAST, false);
             config.addDefault(ArenaConfigStrings.CONFIG_POWERUP_FIREWORKS, false);
             config.addDefault(ArenaConfigStrings.CONFIG_USE_CUSTOM_SCOREBOARD, false);
+            config.addDefault(ArenaConfigStrings.CONFIG_USE_SPECTATOR_SCOREBOARD, true);
             config.addDefault(ArenaConfigStrings.CONFIG_DELAY_ENABLED, false);
             config.addDefault(ArenaConfigStrings.CONFIG_DELAY_AMOUNT_SECONDS, 5);
             config.addDefault(ArenaConfigStrings.CONFIG_SEND_GAME_STARTED_MSG, false);

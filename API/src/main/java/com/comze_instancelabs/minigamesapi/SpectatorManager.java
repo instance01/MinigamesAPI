@@ -17,6 +17,9 @@ package com.comze_instancelabs.minigamesapi;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,6 +45,8 @@ public class SpectatorManager
     JavaPlugin                              plugin;
     private final HashMap<String, IconMenu> lasticonm = new HashMap<>();
     
+    private static final Set<UUID> spectators = new HashSet<>();
+    
     public SpectatorManager(final JavaPlugin plugin)
     {
         this.plugin = plugin;
@@ -62,17 +67,28 @@ public class SpectatorManager
     {
         try
         {
+            boolean useScoreboard = this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_USE_SPECTATOR_SCOREBOARD);
             if (spectate)
             {
+                spectators.add(p.getUniqueId());
                 p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 9999999, 5), true);
-                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").addPlayer(p);
+                if (useScoreboard)
+                {
+                    Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").addPlayer(p);
+                }
             }
             else
             {
-                if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p))
+                if (spectators.remove(p.getUniqueId()))
                 {
-                    Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").removePlayer(p);
                     p.removePotionEffect(PotionEffectType.INVISIBILITY);
+                    if (useScoreboard)
+                    {
+                        if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p))
+                        {
+                            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").removePlayer(p);
+                        }
+                    }
                 }
             }
         }
@@ -85,17 +101,17 @@ public class SpectatorManager
     @Deprecated
     public static boolean isSpectating(final Player p)
     {
-        return Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p);
+        return spectators.contains(p.getUniqueId());
     }
     
     private void clear()
     {
+        spectators.clear();
         final Team t = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators");
         final ArrayList<OfflinePlayer> offp_set = new ArrayList<>(t.getPlayers());
         for (final OfflinePlayer offp : offp_set)
         {
             t.removePlayer(offp);
-            
         }
     }
     

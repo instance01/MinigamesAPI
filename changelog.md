@@ -12,6 +12,7 @@
 * fixed NPE if main lobby is missing (https://github.com/MysticCity/MinigamesAPI/issues/201)
 * some api extension (https://github.com/MysticCity/MinigamesAPI/issues/203)
 * compass tracking fixed (https://github.com/MysticCity/MinigamesAPI/issues/206)
+* new config flag: "use\_spectator\_scoreboard" (https://github.com/MysticCity/MinigamesAPI/issues/194)
 
 ###### BedWars
 
