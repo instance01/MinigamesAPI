@@ -123,9 +123,17 @@ public interface ArenaMatchInterface
     
     /**
      * Returns the match participants
+     * @param returnSpectators {@code true} to return spectators not being active within the game, {@code false} to filter and only return players being active
      * @return match participants; player uuids
      */
-    Collection<UUID> getParticipants();
+    Collection<UUID> getParticipants(boolean returnSpectators);
+    
+    /**
+     * Returns the number of remaining players
+     * @param returnSpectators {@code true} to return spectators not being active within the game, {@code false} to filter and only return players being active
+     * @return match participants count
+     */
+    int getParticipantCount(boolean returnSpectators);
     
     /**
      * Returns the winners
@@ -244,32 +252,36 @@ public interface ArenaMatchInterface
      * @param player
      * @param statistic
      * @param amount delta value
+     * @return the new statistic value
      */
-    void addStatistic(UUID player, MatchStatisticId statistic, int amount);
+    int addStatistic(UUID player, MatchStatisticId statistic, int amount);
     
     /**
      * Adds the match statistic for given team and statistic id.
      * @param team
      * @param statistic
      * @param amount delta value
+     * @return the new statistic value
      */
-    void addStatistic(TeamIdType team, MatchStatisticId statistic, int amount);
+    int addStatistic(TeamIdType team, MatchStatisticId statistic, int amount);
     
     /**
      * Decrement the match statistic for given player and statistic id.
      * @param player
      * @param statistic
      * @param amount delta value
+     * @return the new statistic value
      */
-    void decStatistic(UUID player, MatchStatisticId statistic, int amount);
+    int decStatistic(UUID player, MatchStatisticId statistic, int amount);
     
     /**
      * Decrement the match statistic for given team and statistic id.
      * @param team
      * @param statistic
      * @param amount delta value
+     * @return the new statistic value
      */
-    void decStatistic(TeamIdType team, MatchStatisticId statistic, int amount);
+    int decStatistic(TeamIdType team, MatchStatisticId statistic, int amount);
     
     /**
      * Returns the play time of given player in seconds

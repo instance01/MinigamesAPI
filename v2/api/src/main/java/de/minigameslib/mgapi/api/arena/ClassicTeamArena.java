@@ -24,8 +24,8 @@
 
 package de.minigameslib.mgapi.api.arena;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
@@ -46,17 +46,17 @@ public abstract class ClassicTeamArena implements ArenaTypeProvider
 {
 
     @Override
-    public Collection<ArenaRuleSetType> getFixedArenaRules()
+    public Set<ArenaRuleSetType> getFixedArenaRules()
     {
         // TODO implement oitc team arena
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 
     @Override
-    public Collection<ArenaRuleSetType> getOptionalArenaRules()
+    public Set<ArenaRuleSetType> getOptionalArenaRules()
     {
         // TODO implement oitc team arena
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 
     @Override

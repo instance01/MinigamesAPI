@@ -202,7 +202,7 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     }
 
     @Override
-    public Collection<UUID> getParticipants()
+    public Collection<UUID> getParticipants(boolean flg) // TODO
     {
         return this.players.keySet();
     }
@@ -318,43 +318,47 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     }
 
     @Override
-    public void addStatistic(UUID player, MatchStatisticId statistic, int amount)
+    public int addStatistic(UUID player, MatchStatisticId statistic, int amount)
     {
         final MatchPlayer p = this.players.get(player);
         if (p != null)
         {
             p.addStatistic(statistic, amount);
         }
+        return 0; // TODO
     }
 
     @Override
-    public void addStatistic(TeamIdType team, MatchStatisticId statistic, int amount)
+    public int addStatistic(TeamIdType team, MatchStatisticId statistic, int amount)
     {
         final MatchTeam p = this.teams.get(team);
         if (p != null)
         {
             p.addStatistic(statistic, amount);
         }
+        return 0; // TODO
     }
 
     @Override
-    public void decStatistic(UUID player, MatchStatisticId statistic, int amount)
+    public int decStatistic(UUID player, MatchStatisticId statistic, int amount)
     {
         final MatchPlayer p = this.players.get(player);
         if (p != null)
         {
             p.decStatistic(statistic, amount);
         }
+        return 0; // TODO
     }
 
     @Override
-    public void decStatistic(TeamIdType team, MatchStatisticId statistic, int amount)
+    public int decStatistic(TeamIdType team, MatchStatisticId statistic, int amount)
     {
         final MatchTeam p = this.teams.get(team);
         if (p != null)
         {
             p.decStatistic(statistic, amount);
         }
+        return 0; // TODO
     }
 
     @Override
@@ -572,6 +576,16 @@ public class ArenaMatchImpl implements ArenaMatchInterface
             return this.isWin;
         }
         
+    }
+
+    /* (non-Javadoc)
+     * @see de.minigameslib.mgapi.api.match.ArenaMatchInterface#getParticipantCount(boolean)
+     */
+    @Override
+    public int getParticipantCount(boolean returnSpectators)
+    {
+        // TODO Auto-generated method stub
+        return 0;
     }
     
 }

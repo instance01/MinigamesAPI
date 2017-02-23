@@ -24,7 +24,7 @@
 
 package de.minigameslib.mgapi.api.arena;
 
-import java.util.Collection;
+import java.util.Set;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
@@ -67,13 +67,13 @@ public interface ArenaTypeProvider
      * Returns the fixed arena rule set types.
      * @return fixed arena rule sets.
      */
-    Collection<ArenaRuleSetType> getFixedArenaRules();
+    Set<ArenaRuleSetType> getFixedArenaRules();
     
     /**
      * Returns optional arena rule sets
      * @return optional arena rule sets.
      */
-    Collection<ArenaRuleSetType> getOptionalArenaRules();
+    Set<ArenaRuleSetType> getOptionalArenaRules();
     
     /**
      * Creates a configuration with defaults for given rule set

@@ -54,7 +54,6 @@ import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
 import de.minigameslib.mgapi.api.team.ArenaTeamInterface;
-import de.minigameslib.mgapi.api.team.CommonTeams;
 import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
