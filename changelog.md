@@ -34,6 +34,11 @@
 
 * fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
 
+###### HorseRacing
+
+* moved hard coded strings to config (for translation)
+* added config option announce\_title (https://github.com/MysticCity/MinigamesAPI/issues/187)
+
 ###### MobEscape
 
 * fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
