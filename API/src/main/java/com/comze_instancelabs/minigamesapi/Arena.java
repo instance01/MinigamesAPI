@@ -1631,37 +1631,12 @@ public class Arena
             if (Arena.this.currentlobbycount == 60 || Arena.this.currentlobbycount == 30 || Arena.this.currentlobbycount == 15 || Arena.this.currentlobbycount == 10
                     || Arena.this.currentlobbycount < 6)
             {
-                for (final String p_1 : a.getAllPlayers())
-                {
-                    if (Validator.isPlayerOnline(p_1))
-                    {
-                        final Player p1 = Bukkit.getPlayer(p_1);
-                        if (countdown)
-                        {
-                            Util.sendMessage(Arena.this.plugin, p1, Arena.this.pli.getMessagesConfig().teleporting_to_arena_in.replaceAll(ArenaMessageStrings.COUNT, Integer.toString(Arena.this.currentlobbycount)));
-                            if (lobbycountdown_sound != null)
-                            {
-                                p1.playSound(p1.getLocation(), lobbycountdown_sound, 1F, 0F);
-                            }
-                        }
-                    }
-                }
+                sendLobbyCountdownMsg(countdown, a, lobbycountdown_sound);
             }
-            for (final String p_2 : a.getAllPlayers())
-            {
-                if (Validator.isPlayerOnline(p_2))
-                {
-                    final Player p2 = Bukkit.getPlayer(p_2);
-                    p2.setExp(1F * ((1F * Arena.this.currentlobbycount) / (1F * Arena.this.pli.getLobbyCountdown())));
-                    if (Arena.this.pli.use_xp_bar_level)
-                    {
-                        p2.setLevel(Arena.this.currentlobbycount);
-                    }
-                }
-            }
+            setLobbyCountdownLevel(a);
             if (Arena.this.currentlobbycount < 1)
             {
-                Bukkit.getScheduler().runTaskLater(Arena.this.plugin, () -> Arena.this.start(true), 10L);
+                onLobbyCountdownComplete();
                 try
                 {
                     Bukkit.getScheduler().cancelTask(Arena.this.currenttaskid);
@@ -1672,6 +1647,46 @@ public class Arena
                 }
             }
         }, 5L, 20).getTaskId();
+    }
+
+    protected void onLobbyCountdownComplete()
+    {
+        Bukkit.getScheduler().runTaskLater(Arena.this.plugin, () -> Arena.this.start(true), 10L);
+    }
+
+    protected void setLobbyCountdownLevel(final Arena a)
+    {
+        for (final String p_2 : a.getAllPlayers())
+        {
+            if (Validator.isPlayerOnline(p_2))
+            {
+                final Player p2 = Bukkit.getPlayer(p_2);
+                p2.setExp(1F * ((1F * Arena.this.currentlobbycount) / (1F * Arena.this.pli.getLobbyCountdown())));
+                if (Arena.this.pli.use_xp_bar_level)
+                {
+                    p2.setLevel(Arena.this.currentlobbycount);
+                }
+            }
+        }
+    }
+
+    protected void sendLobbyCountdownMsg(final boolean countdown, final Arena a, final Sound lobbycountdown_sound)
+    {
+        for (final String p_1 : a.getAllPlayers())
+        {
+            if (Validator.isPlayerOnline(p_1))
+            {
+                final Player p1 = Bukkit.getPlayer(p_1);
+                if (countdown)
+                {
+                    Util.sendMessage(Arena.this.plugin, p1, Arena.this.pli.getMessagesConfig().teleporting_to_arena_in.replaceAll(ArenaMessageStrings.COUNT, Integer.toString(Arena.this.currentlobbycount)));
+                    if (lobbycountdown_sound != null)
+                    {
+                        p1.playSound(p1.getLocation(), lobbycountdown_sound, 1F, 0F);
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -2125,6 +2140,15 @@ public class Arena
             Util.clearDrops(this.getBoundaries());
         }
         
+    }
+    
+    protected void abortStarting()
+    {
+        if (this.currentstate == ArenaState.STARTING)
+        {
+            this.currentstate = ArenaState.JOIN;
+            Util.updateSign(this.plugin, this);
+        }
     }
     
     /**

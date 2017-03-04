@@ -17,6 +17,7 @@
 ###### BedWars
 
 * fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+* fixed unbalanced teams (https://github.com/MysticCity/MinigamesAPI/issues/215)
 
 ###### BowBash
 
