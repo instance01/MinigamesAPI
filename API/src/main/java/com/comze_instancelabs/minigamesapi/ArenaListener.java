@@ -866,10 +866,10 @@ public class ArenaListener implements Listener
                 {
                     if (a.getArenaState() == ArenaState.INGAME)
                     {
-                        if (MinigamesAPI.debug)
-                        {
-                            plugin.getLogger().log(Level.INFO, "Player " + p + " moved ingame to " + event.getTo());
-                        }
+//                        if (MinigamesAPI.debug)
+//                        {
+//                            plugin.getLogger().log(Level.INFO, "Player " + p + " moved ingame to " + event.getTo());
+//                        }
                         if (event.getTo().getBlockY() + this.loseY < a.getSpawns().get(0).getBlockY())
                         {
 //                            if (a.getArenaType() == ArenaType.JUMPNRUN)
@@ -924,10 +924,10 @@ public class ArenaListener implements Listener
                 {
                     if (a.getArenaState() == ArenaState.INGAME)
                     {
-                        if (MinigamesAPI.debug)
-                        {
-                            plugin.getLogger().log(Level.INFO, "Player " + p + " moved ingame to " + p.getLocation());
-                        }
+//                        if (MinigamesAPI.debug)
+//                        {
+//                            plugin.getLogger().log(Level.INFO, "Player " + p + " moved ingame to " + p.getLocation());
+//                        }
                         if (p.getLocation().getBlockY() + this.loseY < a.getSpawns().get(0).getBlockY())
                         {
                             if (a.getArenaType() == ArenaType.JUMPNRUN)

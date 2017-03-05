@@ -55,6 +55,7 @@
 ###### SeaBattle
 
 * fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
+* fixed boat under water (https://github.com/MysticCity/MinigamesAPI/issues/185)
 
 ###### Snake
 
