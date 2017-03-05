@@ -18,6 +18,7 @@
 
 * fixed lags/performance issues (https://github.com/MysticCity/MinigamesAPI/issues/198, https://github.com/MysticCity/MinigamesAPI/issues/207, https://github.com/MysticCity/MinigamesAPI/issues/213)
 * fixed unbalanced teams (https://github.com/MysticCity/MinigamesAPI/issues/215)
+* fixed localization/ hard coded strings (https://github.com/MysticCity/MinigamesAPI/issues/215)
 
 ###### BowBash
 
