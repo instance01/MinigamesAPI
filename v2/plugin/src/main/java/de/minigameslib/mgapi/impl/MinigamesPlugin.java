@@ -147,7 +147,7 @@ import de.minigameslib.mgapi.impl.tasks.InitTask;
  * 
  * @author mepeisen
  */
-public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
+public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface, MinigamesPluginInterface
 {
     
     /**
@@ -242,7 +242,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     private static final Pattern                                                                                                  ARENA_NAME_PATTERN    = Pattern.compile("[^\\d\\p{L}-]"); //$NON-NLS-1$
     
     /** plugin instance. */
-    private static MinigamesPlugin                                                                                                INSTANCE;
+    private static MinigamesPluginInterface                                                                                       INSTANCE;
     
     @Override
     public void onEnable()
@@ -355,7 +355,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
      * 
      * @return singleton instance
      */
-    public static MinigamesPlugin instance()
+    public static MinigamesPluginInterface instance()
     {
         return INSTANCE;
     }
@@ -709,78 +709,43 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         this.arenaRuleSetTypes.put(ruleset, creator);
     }
     
-    /**
-     * Returns the create function for given rule set type
-     * 
-     * @param type
-     * @return creator function
-     */
+    @Override
     public McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator(ArenaRuleSetType type)
     {
         return this.arenaRuleSetTypes.get(type);
     }
     
-    /**
-     * Returns the create function for given rule set type
-     * 
-     * @param type
-     * @return creator function
-     */
+    @Override
     public McBiFunction<ComponentRuleSetType, ArenaComponentHandler, ComponentRuleSetInterface> creator(ComponentRuleSetType type)
     {
         return this.componentRuleSetTypes.get(type);
     }
     
-    /**
-     * Returns the create function for given rule set type
-     * 
-     * @param type
-     * @return creator function
-     */
+    @Override
     public McBiFunction<SignRuleSetType, ArenaSignHandler, SignRuleSetInterface> creator(SignRuleSetType type)
     {
         return this.signRuleSetTypes.get(type);
     }
     
-    /**
-     * Returns the create function for given rule set type
-     * 
-     * @param type
-     * @return creator function
-     */
+    @Override
     public McBiFunction<ZoneRuleSetType, ArenaZoneHandler, ZoneRuleSetInterface> creator(ZoneRuleSetType type)
     {
         return this.zoneRuleSetTypes.get(type);
     }
     
-    /**
-     * Returns the create function for given type
-     * 
-     * @param type
-     * @return creator function
-     */
+    @Override
     public McSupplier<ArenaComponentHandler> creator(ComponentTypeId type)
     {
         return this.components.get(type);
     }
     
-    /**
-     * Returns the create function for given type
-     * 
-     * @param type
-     * @return creator function
-     */
+    @Override
     public McSupplier<ArenaZoneHandler> creator(ZoneTypeId type)
     {
         return this.zones.get(type);
     }
     
-    /**
-     * Returns the create function for given type
-     * 
-     * @param type
-     * @return creator function
-     */
+    @Override
     public McSupplier<ArenaSignHandler> creator(SignTypeId type)
     {
         return this.signs.get(type);
@@ -832,6 +797,12 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     public boolean isSpecialTeam(TeamIdType id)
     {
         return id == CommonTeams.Unknown || id == CommonTeams.Winners || id == CommonTeams.Losers || id == CommonTeams.Spectators;
+    }
+
+    @Override
+    public Plugin getPlugin()
+    {
+        return this;
     }
     
 }

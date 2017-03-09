@@ -24,11 +24,11 @@
 
 package de.minigameslib.mgapi.api.events;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
-import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
@@ -36,14 +36,19 @@ import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
  * Event fired after a player joined an arena.
  * 
  * @author mepeisen
+ * 
+ * @see ArenaMatchInterface#join(ArenaPlayerInterface, TeamIdType)
+ * @see ArenaInterface#join(ArenaPlayerInterface)
  */
-public class ArenaPlayerJoinedEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinedEvent, ArenaPlayerJoinedEvent>
+public class ArenaPlayerJoinedEvent extends Event implements MinecraftEvent<ArenaPlayerJoinedEvent, ArenaPlayerJoinedEvent>
 {
     
     /** handlers list. */
@@ -53,7 +58,7 @@ public class ArenaPlayerJoinedEvent extends AbstractVetoEvent implements Minecra
     private final ArenaInterface arena;
     
     /** the arena player. */
-    private final ArenaPlayerInterface player;
+    private final ArenaPlayerInterface player; 
 
     /**
      * @param arena

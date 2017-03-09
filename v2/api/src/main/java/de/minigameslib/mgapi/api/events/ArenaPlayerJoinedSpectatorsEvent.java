@@ -24,11 +24,11 @@
 
 package de.minigameslib.mgapi.api.events;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
-import de.minigameslib.mclib.api.mcevent.AbstractVetoEvent;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
@@ -36,14 +36,18 @@ import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
  * Event fired after a player joines spectators.
  * 
  * @author mepeisen
+ * 
+ * @see ArenaMatchInterface#spectate(ArenaPlayerInterface)
+ * @see ArenaInterface#spectate(ArenaPlayerInterface)
  */
-public class ArenaPlayerJoinedSpectatorsEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinedSpectatorsEvent, ArenaPlayerJoinedSpectatorsEvent>
+public class ArenaPlayerJoinedSpectatorsEvent extends Event implements MinecraftEvent<ArenaPlayerJoinedSpectatorsEvent, ArenaPlayerJoinedSpectatorsEvent>
 {
     
     /** handlers list. */
@@ -54,15 +58,28 @@ public class ArenaPlayerJoinedSpectatorsEvent extends AbstractVetoEvent implemen
     
     /** the arena player. */
     private final ArenaPlayerInterface player;
+    
+    /** {@code true} if player had played before joining spectators. */
+    private final boolean playedBefore;
 
     /**
      * @param arena
      * @param player
+     * @param playedBefore
      */
-    public ArenaPlayerJoinedSpectatorsEvent(ArenaInterface arena, ArenaPlayerInterface player)
+    public ArenaPlayerJoinedSpectatorsEvent(ArenaInterface arena, ArenaPlayerInterface player, boolean playedBefore)
     {
         this.arena = arena;
         this.player = player;
+        this.playedBefore = playedBefore;
+    }
+
+    /**
+     * @return the playedBefore
+     */
+    public boolean isPlayedBefore()
+    {
+        return this.playedBefore;
     }
 
     /**

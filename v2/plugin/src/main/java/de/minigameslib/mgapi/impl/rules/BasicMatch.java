@@ -164,7 +164,7 @@ public class BasicMatch implements ArenaRuleSetInterface
         {
             // start lobby countdown
             this.countdownTimer = this.lobbyCountdown - 1;
-            McLibInterface.instance().runTaskTimer(MinigamesPlugin.instance(), 20, 20, this::onCountdown);
+            McLibInterface.instance().runTaskTimer(MinigamesPlugin.instance().getPlugin(), 20, 20, this::onCountdown);
             
             // notify all players
             this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.CountdownStarted, this.lobbyCountdown));

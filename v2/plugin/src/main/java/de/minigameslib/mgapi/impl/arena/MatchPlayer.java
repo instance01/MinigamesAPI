@@ -26,13 +26,14 @@ package de.minigameslib.mgapi.impl.arena;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import de.minigameslib.mclib.api.objects.ComponentIdInterface;
-import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
+import de.minigameslib.mgapi.api.match.MatchPlayerInterface;
 import de.minigameslib.mgapi.api.match.MatchStatisticId;
-import de.minigameslib.mgapi.api.team.CommonTeams;
 import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
@@ -41,7 +42,7 @@ import de.minigameslib.mgapi.api.team.TeamIdType;
  * @author mepeisen
  *
  */
-class MatchPlayer implements ArenaMatchInterface.KillerTracking
+class MatchPlayer implements MatchPlayerInterface
 {
     
     /** join timestamp */
@@ -50,11 +51,20 @@ class MatchPlayer implements ArenaMatchInterface.KillerTracking
     /** the players uuid. */
     private final UUID playerUuid;
     
-    /** left timestamp */
+    /** left timestamp (leaving the match itself) */
     private LocalDateTime left;
     
     /** the associated team. */
-    private TeamIdType team = CommonTeams.Unknown;
+    private TeamIdType team;
+    
+    /** flag to control if player is playing. */
+    private boolean isPlaying = false;
+    
+    /** flag to control if player is spectator. */
+    private boolean isSpec = false;
+    
+    /** the additional team array. */
+    private final Set<TeamIdType> additionalTeams = new HashSet<>();
     
     /**
      * the match statistics.
@@ -85,9 +95,7 @@ class MatchPlayer implements ArenaMatchInterface.KillerTracking
         this.playerUuid = playerUuid;
     }
 
-    /**
-     * @return the joined
-     */
+    @Override
     public LocalDateTime getJoined()
     {
         return this.joined;
@@ -101,9 +109,7 @@ class MatchPlayer implements ArenaMatchInterface.KillerTracking
         this.joined = joined;
     }
 
-    /**
-     * @return the left
-     */
+    @Override
     public LocalDateTime getLeft()
     {
         return this.left;
@@ -117,69 +123,45 @@ class MatchPlayer implements ArenaMatchInterface.KillerTracking
         this.left = left;
     }
 
-    /**
-     * @return the playerUuid
-     */
-    public UUID getPlayerUuid()
-    {
-        return this.playerUuid;
-    }
-
-    /**
-     * @return the spawn
-     */
+    @Override
     public ComponentIdInterface getSpawn()
     {
         return this.spawn;
     }
 
-    /**
-     * @param spawn the spawn to set
-     */
+    @Override
     public void setSpawn(ComponentIdInterface spawn)
     {
         this.spawn = spawn;
     }
 
-    /**
-     * Statistic function
-     * @param statistic
-     * @return current statistic
-     */
+    @Override
     public int getStatistic(MatchStatisticId statistic)
     {
         final Integer result = this.statistics.get(statistic);
         return result == null ? 0 : result.intValue();
     }
     
-    /**
-     * Statistic function
-     * @param statistic
-     * @param newValue
-     */
+    @Override
     public void setStatistic(MatchStatisticId statistic, int newValue)
     {
         this.statistics.put(statistic, Integer.valueOf(newValue));
     }
     
-    /**
-     * Adds the match statistic for given statistic id.
-     * @param statistic
-     * @param amount delta value
-     */
-    void addStatistic(MatchStatisticId statistic, int amount)
+    @Override
+    public int addStatistic(MatchStatisticId statistic, int amount)
     {
-        this.setStatistic(statistic, this.getStatistic(statistic) + amount);
+        final int newvalue = this.getStatistic(statistic) + amount;
+        this.setStatistic(statistic, newvalue);
+        return newvalue;
     }
     
-    /**
-     * Decrements the match statistic for given statistic id.
-     * @param statistic
-     * @param amount delta value
-     */
-    void decStatistic(MatchStatisticId statistic, int amount)
+    @Override
+    public int decStatistic(MatchStatisticId statistic, int amount)
     {
-        this.setStatistic(statistic, this.getStatistic(statistic) - amount);
+        final int newValue = this.getStatistic(statistic) - amount;
+        this.setStatistic(statistic, newValue);
+        return newValue;
     }
 
     @Override
@@ -207,15 +189,21 @@ class MatchPlayer implements ArenaMatchInterface.KillerTracking
     public void setKillerTracking(UUID damager)
     {
         this.lastDamager = damager;
-        this.damageTimestamp = LocalDateTime.now();
+        this.damageTimestamp = damager == null ? null : LocalDateTime.now();
     }
 
-    /**
-     * @return the team
-     */
+    @Override
     public TeamIdType getTeam()
     {
         return this.team;
+    }
+
+    /**
+     * @return the additionalTeams
+     */
+    public Set<TeamIdType> getAdditionalTeams()
+    {
+        return this.additionalTeams;
     }
 
     /**
@@ -224,6 +212,34 @@ class MatchPlayer implements ArenaMatchInterface.KillerTracking
     public void setTeam(TeamIdType team)
     {
         this.team = team;
+    }
+
+    @Override
+    public boolean isPlaying()
+    {
+        return this.isPlaying;
+    }
+
+    /**
+     * @param isPlaying the isPlaying to set
+     */
+    public void setPlaying(boolean isPlaying)
+    {
+        this.isPlaying = isPlaying;
+    }
+
+    @Override
+    public boolean isSpec()
+    {
+        return this.isSpec;
+    }
+
+    /**
+     * @param isSpec the isSpec to set
+     */
+    public void setSpec(boolean isSpec)
+    {
+        this.isSpec = isSpec;
     }
     
 }

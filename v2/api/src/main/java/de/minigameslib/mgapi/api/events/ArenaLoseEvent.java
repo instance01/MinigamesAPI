@@ -24,6 +24,8 @@
 
 package de.minigameslib.mgapi.api.events;
 
+import java.util.stream.Collectors;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -31,23 +33,25 @@ import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.MinecraftEvent;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectInterface;
+import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
 import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
-import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface.MatchResult;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
- * Event fired after a player left an arena spectators team. The player was spectator before leaving.
+ * One or more player were marked as loser
  * 
  * @author mepeisen
  * 
- * @see ArenaMatchInterface#leave(ArenaPlayerInterface)
- * @see ArenaInterface#leave(ArenaPlayerInterface)
+ * @see ArenaMatchInterface#setLoser(TeamIdType...)
+ * @see ArenaMatchInterface#setLoser(java.util.UUID...)
  */
-public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEvent<ArenaPlayerLeftSpectatorsEvent, ArenaPlayerLeftSpectatorsEvent>
+public class ArenaLoseEvent extends Event implements MinecraftEvent<ArenaLoseEvent, ArenaLoseEvent>
 {
     
     /** handlers list. */
@@ -56,17 +60,17 @@ public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEv
     /** the arena instance. */
     private final ArenaInterface arena;
     
-    /** the arena player. */
-    private final ArenaPlayerInterface player;
+    /** the arena players. */
+    private final MatchResult result;
 
     /**
      * @param arena
-     * @param player
+     * @param result
      */
-    public ArenaPlayerLeftSpectatorsEvent(ArenaInterface arena, ArenaPlayerInterface player)
+    public ArenaLoseEvent(ArenaInterface arena, MatchResult result)
     {
         this.arena = arena;
-        this.player = player;
+        this.result = result;
     }
 
     /**
@@ -78,11 +82,11 @@ public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEv
     }
 
     /**
-     * @return the arena player
+     * @return the match result
      */
-    public ArenaPlayerInterface getArenaPlayer()
+    public MatchResult getMatchResult()
     {
-        return this.player;
+        return this.result;
     }
 
     /**
@@ -107,7 +111,7 @@ public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEv
     }
 
     @Override
-    public ArenaPlayerLeftSpectatorsEvent getBukkitEvent()
+    public ArenaLoseEvent getBukkitEvent()
     {
         return this;
     }
@@ -121,11 +125,18 @@ public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEv
     @Override
     public McPlayerInterface getPlayer()
     {
-        return this.player.getMcPlayer();
+        return ObjectServiceInterface.instance().getPlayer(this.result.getPlayers().iterator().next());
     }
 
     @Override
-    public McOutgoingStubbing<ArenaPlayerLeftSpectatorsEvent> when(McPredicate<ArenaPlayerLeftSpectatorsEvent> test) throws McException
+    public Iterable<McPlayerInterface> getPlayers()
+    {
+        final ObjectServiceInterface osi = ObjectServiceInterface.instance();
+        return this.result.getPlayers().stream().map(osi::getPlayer).collect(Collectors.toList());
+    }
+
+    @Override
+    public McOutgoingStubbing<ArenaLoseEvent> when(McPredicate<ArenaLoseEvent> test) throws McException
     {
         if (test.test(this))
         {

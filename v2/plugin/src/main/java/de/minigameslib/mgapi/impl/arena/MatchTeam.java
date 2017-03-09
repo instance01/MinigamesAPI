@@ -24,6 +24,7 @@
 
 package de.minigameslib.mgapi.impl.arena;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,6 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import de.minigameslib.mgapi.api.match.MatchStatisticId;
+import de.minigameslib.mgapi.api.match.MatchTeamInterface;
 import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
@@ -39,7 +41,7 @@ import de.minigameslib.mgapi.api.team.TeamIdType;
  * @author mepeisen
  *
  */
-class MatchTeam
+class MatchTeam implements MatchTeamInterface
 {
     
     /** the team id. */
@@ -62,12 +64,16 @@ class MatchTeam
         this.teamId = teamId;
     }
 
-    /**
-     * @return the teamId
-     */
+    @Override
     public TeamIdType getTeamId()
     {
         return this.teamId;
+    }
+    
+    @Override
+    public Set<UUID> getMembers()
+    {
+        return Collections.unmodifiableSet(this.teamMembers);
     }
 
     /**
@@ -78,45 +84,33 @@ class MatchTeam
         return this.teamMembers;
     }
 
-    /**
-     * Statistic function
-     * @param statistic
-     * @return current statistic
-     */
+    @Override
     public int getStatistic(MatchStatisticId statistic)
     {
         final Integer result = this.statistics.get(statistic);
         return result == null ? 0 : result.intValue();
     }
     
-    /**
-     * Statistic function
-     * @param statistic
-     * @param newValue
-     */
+    @Override
     public void setStatistic(MatchStatisticId statistic, int newValue)
     {
         this.statistics.put(statistic, Integer.valueOf(newValue));
     }
     
-    /**
-     * Adds the match statistic for given statistic id.
-     * @param statistic
-     * @param amount delta value
-     */
-    void addStatistic(MatchStatisticId statistic, int amount)
+    @Override
+    public int addStatistic(MatchStatisticId statistic, int amount)
     {
-        this.setStatistic(statistic, this.getStatistic(statistic) + amount);
+        final int newvalue = this.getStatistic(statistic) + amount;
+        this.setStatistic(statistic, newvalue);
+        return newvalue;
     }
     
-    /**
-     * Decrements the match statistic for given statistic id.
-     * @param statistic
-     * @param amount delta value
-     */
-    void decStatistic(MatchStatisticId statistic, int amount)
+    @Override
+    public int decStatistic(MatchStatisticId statistic, int amount)
     {
-        this.setStatistic(statistic, this.getStatistic(statistic) - amount);
+        final int newvalue = this.getStatistic(statistic) - amount;
+        this.setStatistic(statistic, newvalue);
+        return newvalue;
     }
     
 }

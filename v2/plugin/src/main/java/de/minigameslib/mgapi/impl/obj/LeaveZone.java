@@ -140,13 +140,13 @@ public class LeaveZone extends AbstractBaseArenaObjectHandler<ZoneRuleSetType, Z
     @Override
     protected void applyListeners(ZoneRuleSetInterface listeners)
     {
-        this.zone.registerHandlers(MinigamesPlugin.instance(), listeners);
+        this.zone.registerHandlers(MinigamesPlugin.instance().getPlugin(), listeners);
     }
 
     @Override
     protected void removeListeners(ZoneRuleSetInterface listeners)
     {
-        this.zone.unregisterHandlers(MinigamesPlugin.instance(), listeners);
+        this.zone.unregisterHandlers(MinigamesPlugin.instance().getPlugin(), listeners);
     }
 
     @Override
