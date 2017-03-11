@@ -214,7 +214,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /**
      * Component creator functions
      */
-    private final Map<ComponentTypeId, McSupplier<ArenaComponentHandler>>                                                         components            = new HashMap<>();
+    private final Map<ComponentTypeId, McSupplier<? extends ArenaComponentHandler>>                                               components            = new HashMap<>();
     
     /**
      * Zones per plugin
@@ -224,7 +224,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /**
      * Zone creator functions
      */
-    private final Map<ZoneTypeId, McSupplier<ArenaZoneHandler>>                                                                   zones                 = new HashMap<>();
+    private final Map<ZoneTypeId, McSupplier<? extends ArenaZoneHandler>>                                                         zones                 = new HashMap<>();
     
     /**
      * Signs per plugin
@@ -234,7 +234,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     /**
      * Sign creator functions
      */
-    private final Map<SignTypeId, McSupplier<ArenaSignHandler>>                                                                   signs                 = new HashMap<>();
+    private final Map<SignTypeId, McSupplier<? extends ArenaSignHandler>>                                                         signs                 = new HashMap<>();
     
     // TODO Watch for disabled plugins
     
@@ -301,27 +301,27 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         this.registerRuleset(this, BasicZoneRuleSets.PlayerNoEntry, PlayerNoEntry::new);
         this.registerRuleset(this, BasicZoneRuleSets.PvPMode, PvPMode::new);
         
-        this.registerArenaComponent(this, BasicComponentTypes.Empty, EmptyComponent::new);
-        this.registerArenaComponent(this, BasicComponentTypes.Generic, GenericComponent::new);
-        this.registerArenaComponent(this, BasicComponentTypes.Spawn, SpawnComponent::new);
-        this.registerArenaComponent(this, BasicComponentTypes.JoinSpawn, JoinSpawnComponent::new);
-        this.registerArenaComponent(this, BasicComponentTypes.MainLobbySpawn, MainLobbySpawnComponent::new);
-        this.registerArenaComponent(this, BasicComponentTypes.SpectatorSpawn, SpectatorSpawnComponent::new);
-        this.registerArenaSign(this, BasicSignTypes.Empty, EmptySign::new);
-        this.registerArenaSign(this, BasicSignTypes.Generic, GenericSign::new);
-        this.registerArenaSign(this, BasicSignTypes.Join, JoinSign::new);
-        this.registerArenaSign(this, BasicSignTypes.Leave, LeaveSign::new);
-        this.registerArenaZone(this, BasicZoneTypes.Empty, EmptyZone::new);
-        this.registerArenaZone(this, BasicZoneTypes.Generic, GenericZone::new);
-        this.registerArenaZone(this, BasicZoneTypes.Battle, BattleZone::new);
-        this.registerArenaZone(this, BasicZoneTypes.Join, JoinZone::new);
-        this.registerArenaZone(this, BasicZoneTypes.Leave, LeaveZone::new);
-        this.registerArenaZone(this, BasicZoneTypes.Lobby, LobbyZone::new);
-        this.registerArenaZone(this, BasicZoneTypes.Main, MainZone::new);
-        this.registerArenaZone(this, BasicZoneTypes.Spectator, SpectatorZone::new);
-        
         try
         {
+            this.registerArenaComponent(this, BasicComponentTypes.Empty, EmptyComponent::new, EmptyComponent.class);
+            this.registerArenaComponent(this, BasicComponentTypes.Generic, GenericComponent::new, GenericComponent.class);
+            this.registerArenaComponent(this, BasicComponentTypes.Spawn, SpawnComponent::new, SpawnComponent.class);
+            this.registerArenaComponent(this, BasicComponentTypes.JoinSpawn, JoinSpawnComponent::new, JoinSpawnComponent.class);
+            this.registerArenaComponent(this, BasicComponentTypes.MainLobbySpawn, MainLobbySpawnComponent::new, MainLobbySpawnComponent.class);
+            this.registerArenaComponent(this, BasicComponentTypes.SpectatorSpawn, SpectatorSpawnComponent::new, SpectatorSpawnComponent.class);
+            this.registerArenaSign(this, BasicSignTypes.Empty, EmptySign::new, EmptySign.class);
+            this.registerArenaSign(this, BasicSignTypes.Generic, GenericSign::new, GenericSign.class);
+            this.registerArenaSign(this, BasicSignTypes.Join, JoinSign::new, JoinSign.class);
+            this.registerArenaSign(this, BasicSignTypes.Leave, LeaveSign::new, LeaveSign.class);
+            this.registerArenaZone(this, BasicZoneTypes.Empty, EmptyZone::new, EmptyZone.class);
+            this.registerArenaZone(this, BasicZoneTypes.Generic, GenericZone::new, GenericZone.class);
+            this.registerArenaZone(this, BasicZoneTypes.Battle, BattleZone::new, BattleZone.class);
+            this.registerArenaZone(this, BasicZoneTypes.Join, JoinZone::new, JoinZone.class);
+            this.registerArenaZone(this, BasicZoneTypes.Leave, LeaveZone::new, LeaveZone.class);
+            this.registerArenaZone(this, BasicZoneTypes.Lobby, LobbyZone::new, LobbyZone.class);
+            this.registerArenaZone(this, BasicZoneTypes.Main, MainZone::new, MainZone.class);
+            this.registerArenaZone(this, BasicZoneTypes.Spectator, SpectatorZone::new, SpectatorZone.class);
+            
             ObjectServiceInterface.instance().register(MglibObjectTypes.Arena, ArenaImpl.class);
             ObjectServiceInterface.instance().resumeObjects(this);
         }
@@ -759,7 +759,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
      * @param type
      * @return creator function
      */
-    public McSupplier<ArenaComponentHandler> creator(ComponentTypeId type)
+    public McSupplier<? extends ArenaComponentHandler> creator(ComponentTypeId type)
     {
         return this.components.get(type);
     }
@@ -770,7 +770,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
      * @param type
      * @return creator function
      */
-    public McSupplier<ArenaZoneHandler> creator(ZoneTypeId type)
+    public McSupplier<? extends ArenaZoneHandler> creator(ZoneTypeId type)
     {
         return this.zones.get(type);
     }
@@ -781,7 +781,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
      * @param type
      * @return creator function
      */
-    public McSupplier<ArenaSignHandler> creator(SignTypeId type)
+    public McSupplier<? extends ArenaSignHandler> creator(SignTypeId type)
     {
         return this.signs.get(type);
     }
@@ -808,22 +808,25 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     }
     
     @Override
-    public void registerArenaComponent(Plugin plugin, ComponentTypeId type, McSupplier<ArenaComponentHandler> creator)
+    public <T extends ArenaComponentHandler> void registerArenaComponent(Plugin plugin, ComponentTypeId type, McSupplier<T> creator, Class<T> clazz) throws McException
     {
+        ObjectServiceInterface.instance().register(type, clazz);
         this.componentsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(type);
         this.components.put(type, creator);
     }
     
     @Override
-    public void registerArenaZone(Plugin plugin, ZoneTypeId type, McSupplier<ArenaZoneHandler> creator)
+    public <T extends ArenaZoneHandler> void registerArenaZone(Plugin plugin, ZoneTypeId type, McSupplier<T> creator, Class<T> clazz) throws McException
     {
+        ObjectServiceInterface.instance().register(type, clazz);
         this.zonesPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(type);
         this.zones.put(type, creator);
     }
     
     @Override
-    public void registerArenaSign(Plugin plugin, SignTypeId type, McSupplier<ArenaSignHandler> creator)
+    public <T extends ArenaSignHandler> void registerArenaSign(Plugin plugin, SignTypeId type, McSupplier<T> creator, Class<T> clazz) throws McException
     {
+        ObjectServiceInterface.instance().register(type, clazz);
         this.signsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(type);
         this.signs.put(type, creator);
     }

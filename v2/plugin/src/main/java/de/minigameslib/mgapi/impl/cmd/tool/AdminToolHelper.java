@@ -71,6 +71,7 @@ public class AdminToolHelper
             .onLeftClick((p, evt) -> onCreateSign(evt, p, arena, name, type, finish))
             .onRightClick((p, evt) -> onCreateSign(evt, p, arena, name, type, finish))
             .description(Messages.CreateSign_Description, type.getPluginName() + '/' + type.name(), arena.getInternalName(), name)
+            .singleUse()
             .build();
     }
     
@@ -86,6 +87,7 @@ public class AdminToolHelper
      */
     private static void onCreateSign(McPlayerInteractEvent evt, McPlayerInterface player, ArenaInterface arena, String name, SignTypeId type, McConsumer<ArenaSignHandler> finish) throws McException
     {
+        // TODO set sign name
         // security checks
         if (!(player.getBukkitPlayer().isOp() || player.checkPermission(MglibPerms.CommandAdminSign)))
         {
@@ -95,8 +97,6 @@ public class AdminToolHelper
         {
             throw new McException(ArenaImpl.Messages.ModificationWrongState);
         }
-        
-        System.out.println(evt.getBukkitEvent().getClickedBlock() + " / " + evt.getBukkitEvent().getBlockFace()); //$NON-NLS-1$
         
         Block target = null;
         byte opposite;
@@ -169,9 +169,13 @@ public class AdminToolHelper
             target.setData(opposite);
         }
         
-//        final Sign sign = evt.getBukkitEvent().getClickedBlock();
-//        final ArenaSignHandler result = arena.createSign(sign, type);
-//        finish.accept(result);
+        final Sign sign = (Sign) target.getState();
+        final ArenaSignHandler result = arena.createSign(sign, type);
+        result.setName(name);
+        if (finish != null)
+        {
+            finish.accept(result);
+        }
     }
     
     /**

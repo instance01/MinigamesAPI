@@ -29,9 +29,14 @@ import java.io.File;
 import org.bukkit.Location;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mclib.api.objects.SignInterface;
 import de.minigameslib.mclib.shared.api.com.DataSection;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedSpectatorsEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
 import de.minigameslib.mgapi.api.obj.GenericSignHandler;
 import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetType;
@@ -59,6 +64,92 @@ public class GenericSign extends AbstractBaseArenaObjectHandler<SignRuleSetType,
         else
         {
             this.saveData();
+        }
+        this.updateSign();
+    }
+    
+    /**
+     * Player joined event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerJoin(ArenaPlayerJoinedEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * Player joined event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerSpecsJoin(ArenaPlayerJoinedSpectatorsEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * Player left event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerLeft(ArenaPlayerLeftEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * Player left event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerLeftSpecs(ArenaPlayerLeftSpectatorsEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * Returns the sign text to set
+     * @return sign text
+     */
+    protected String[] getLines()
+    {
+        // TODO join lines
+        return new String[]{
+                "GENERIC",
+                this.getArena().getInternalName(),
+                String.valueOf(System.currentTimeMillis())
+        };
+    }
+
+    /**
+     * Set sign text
+     */
+    private void updateSign()
+    {
+        final String[] lines = this.getLines();
+        for (int i = 0; i < 4; i++)
+        {
+            if (i < lines.length)
+            {
+                this.sign.setLine(i, lines[i]);
+            }
+            else
+            {
+                this.sign.setLine(i, ""); //$NON-NLS-1$
+            }
         }
     }
 

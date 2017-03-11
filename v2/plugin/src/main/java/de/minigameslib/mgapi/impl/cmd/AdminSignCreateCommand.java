@@ -74,7 +74,7 @@ public class AdminSignCreateCommand implements SubCommandHandlerInterface
         @SuppressWarnings("cast")
         final Optional<ArenaSignHandler> handler = arena.getSigns().stream().
                 map(s -> (ArenaSignHandler) arena.getHandler(s)).
-                filter(s -> s.getName().equals(name)).
+                filter(s -> name.equals(s.getName())).
                 findFirst();
         if (handler.isPresent())
         {
@@ -126,29 +126,29 @@ public class AdminSignCreateCommand implements SubCommandHandlerInterface
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_admin_delete")
+    @LocalizedMessages(value = "cmd.mg2_admin_sign_create")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 admin delete
+         * Short description of /mg2 admin sign create
          */
-        @LocalizedMessage(defaultMessage = "deletes an existing arena")
-        @MessageComment({"Short description of /mg2 admin delete"})
+        @LocalizedMessage(defaultMessage = "Creates a new arena sign")
+        @MessageComment({"Short description of /mg2 sign create"})
         ShortDescription,
         
         /**
          * Long description of /mg2 admin delete
          */
-        @LocalizedMessage(defaultMessage = "deletes an existing arena")
-        @MessageComment({"Long description of /mg2 admin delete"})
+        @LocalizedMessage(defaultMessage = "Creates a new arena sign")
+        @MessageComment({"Long description of /mg2 admin sign create"})
         Description,
         
         /**
          * Usage of /mg2 admin delete
          */
         @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin sign create <arena> <name> <type>")
-        @MessageComment({"Usage of /mg2 admin delete"})
+        @MessageComment({"Usage of /mg2 admin sign create"})
         Usage,
         
     }

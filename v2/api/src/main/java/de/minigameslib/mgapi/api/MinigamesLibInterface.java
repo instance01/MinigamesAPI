@@ -219,24 +219,30 @@ public interface MinigamesLibInterface
      * @param plugin
      * @param type
      * @param creator
+     * @param clazz 
+     * @throws McException
      */
-    void registerArenaComponent(Plugin plugin, ComponentTypeId type, McSupplier<ArenaComponentHandler> creator);
+    <T extends ArenaComponentHandler> void registerArenaComponent(Plugin plugin, ComponentTypeId type, McSupplier<T> creator, Class<T> clazz) throws McException;
     
     /**
      * Registers a new zone with arena support.
      * @param plugin
      * @param type
      * @param creator
+     * @param clazz 
+     * @throws McException
      */
-    void registerArenaZone(Plugin plugin, ZoneTypeId type, McSupplier<ArenaZoneHandler> creator);
+    <T extends ArenaZoneHandler> void registerArenaZone(Plugin plugin, ZoneTypeId type, McSupplier<T> creator, Class<T> clazz) throws McException;
     
     /**
      * Registers a new sign with arena support.
      * @param plugin
      * @param type
      * @param creator
+     * @param clazz 
+     * @throws McException
      */
-    void registerArenaSign(Plugin plugin, SignTypeId type, McSupplier<ArenaSignHandler> creator);
+    <T extends ArenaSignHandler> void registerArenaSign(Plugin plugin, SignTypeId type, McSupplier<T> creator, Class<T> clazz) throws McException;
     
     /**
      * Returns the number of registered minigames.

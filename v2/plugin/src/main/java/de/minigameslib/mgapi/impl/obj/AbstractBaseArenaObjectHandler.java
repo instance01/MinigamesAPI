@@ -111,6 +111,10 @@ public abstract class AbstractBaseArenaObjectHandler<
         {
             final DataSection section = McLibInterface.instance().readYmlFile(this.dataFile);
             this.data = section.getFragment(this.getDataClass(), "data"); //$NON-NLS-1$
+            if (this.data == null)
+            {
+                this.data = this.createData();
+            }
             
             this.resumeRuleSets();
         }
@@ -217,7 +221,7 @@ public abstract class AbstractBaseArenaObjectHandler<
     @Override
     protected void checkModifications() throws McException
     {
-        if (this.arena.getState() != ArenaState.Maintenance)
+        if (this.arena != null && this.arena.getState() != ArenaState.Maintenance)
         {
             throw new McException(Messages.ModificationWrongState);
         }

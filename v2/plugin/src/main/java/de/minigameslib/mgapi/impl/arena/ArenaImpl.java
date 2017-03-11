@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -246,12 +247,14 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             }
             catch (McException ex)
             {
+                this.logger.log(Level.WARNING, "Error while resume", ex); //$NON-NLS-1$
                 this.object.delete();
                 this.object = null;
                 throw ex;
             }
             catch (RuntimeException ex)
             {
+                this.logger.log(Level.WARNING, "Error while resume", ex); //$NON-NLS-1$
                 this.object.delete();
                 this.object = null;
                 throw new McException(CommonMessages.InternalError, ex, ex.getMessage());
@@ -289,7 +292,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final ComponentIdInterface id : this.getComponents())
         {
-            final ArenaComponentHandler handler = (ArenaComponentHandler) ObjectServiceInterface.instance().findComponent(id);
+            final ArenaComponentHandler handler = (ArenaComponentHandler) ObjectServiceInterface.instance().findComponent(id).getHandler();
             handler.initArena(this);
         }
     }
@@ -301,7 +304,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final SignIdInterface id : this.getSigns())
         {
-            final ArenaSignHandler handler = (ArenaSignHandler) ObjectServiceInterface.instance().findSign(id);
+            final ArenaSignHandler handler = (ArenaSignHandler) ObjectServiceInterface.instance().findSign(id).getHandler();
             handler.initArena(this);
         }
     }
@@ -313,7 +316,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final ZoneIdInterface id : this.getZones())
         {
-            final ArenaZoneHandler handler = (ArenaZoneHandler) ObjectServiceInterface.instance().findZone(id);
+            final ArenaZoneHandler handler = (ArenaZoneHandler) ObjectServiceInterface.instance().findZone(id).getHandler();
             handler.initArena(this);
         }
     }

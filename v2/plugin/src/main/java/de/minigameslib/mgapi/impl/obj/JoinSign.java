@@ -29,9 +29,17 @@ import java.io.File;
 import org.bukkit.Location;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEventHandler;
+import de.minigameslib.mclib.api.event.McListener;
+import de.minigameslib.mclib.api.event.McPlayerInteractEvent;
 import de.minigameslib.mclib.api.objects.SignInterface;
 import de.minigameslib.mclib.shared.api.com.DataSection;
+import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedSpectatorsEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
 import de.minigameslib.mgapi.api.obj.JoinSignInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetType;
@@ -41,8 +49,12 @@ import de.minigameslib.mgapi.impl.MinigamesPlugin;
  * @author mepeisen
  *
  */
-public class JoinSign extends AbstractBaseArenaObjectHandler<SignRuleSetType, SignRuleSetInterface, JoinSignData> implements JoinSignInterface
+public class JoinSign extends AbstractBaseArenaObjectHandler<SignRuleSetType, SignRuleSetInterface, JoinSignData> implements JoinSignInterface, McListener
 {
+    
+    // TODO clear out what variables will be shown on signs.
+    // TODO clear out what events will be caught to update signs
+    // TODO change the code of other signs as well
     
     /** the underlying sign. */
     protected SignInterface sign;
@@ -59,6 +71,109 @@ public class JoinSign extends AbstractBaseArenaObjectHandler<SignRuleSetType, Si
         else
         {
             this.saveData();
+        }
+        this.updateSign();
+    }
+    
+    /**
+     * Player joined event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerJoin(ArenaPlayerJoinedEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * Player joined event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerSpecsJoin(ArenaPlayerJoinedSpectatorsEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * Player left event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerLeft(ArenaPlayerLeftEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * Player left event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerLeftSpecs(ArenaPlayerLeftSpectatorsEvent evt)
+    {
+        if (evt.getArena() == this.getArena())
+        {
+            this.updateSign();
+        }
+    }
+    
+    /**
+     * right click event
+     * @param evt
+     */
+    @McEventHandler
+    public void onRightClick(McPlayerInteractEvent evt)
+    {
+        try
+        {
+            this.arena.join(MinigamesLibInterface.instance().getPlayer(evt.getPlayer()));
+        }
+        catch (McException ex)
+        {
+            evt.getPlayer().sendMessage(ex.getErrorMessage(), ex.getArgs());
+        }
+    }
+    
+    /**
+     * Returns the sign text to set
+     * @return sign text
+     */
+    protected String[] getLines()
+    {
+        // TODO join lines
+        return new String[]{
+                "JOIN",
+                this.getArena().getInternalName(),
+                String.valueOf(System.currentTimeMillis())
+        };
+    }
+
+    /**
+     * Set sign text
+     */
+    private void updateSign()
+    {
+        final String[] lines = this.getLines();
+        for (int i = 0; i < 4; i++)
+        {
+            if (i < lines.length)
+            {
+                this.sign.setLine(i, lines[i]);
+            }
+            else
+            {
+                this.sign.setLine(i, ""); //$NON-NLS-1$
+            }
         }
     }
 
