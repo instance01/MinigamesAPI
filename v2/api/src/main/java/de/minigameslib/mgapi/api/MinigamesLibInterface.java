@@ -105,16 +105,16 @@ public interface MinigamesLibInterface
     int APIVERSION_2_0_0 = 20000;
     
     /**
-     * Returns the api version of MinigamesLib.
+     * Returns the api version of McLib.
      * 
      * <p>
      * The api version is found with int constants on this interface. The integer is built with following schematic:
+     * </p>
      * <ul>
      * <li>major version number</li>
      * <li>minor version number (to digits)</li>
      * <li>fix level (two digits)</li>
      * </ul>
-     * </p>
      * 
      * <p>
      * Different fix levels are returned for new minecraft versions. It indicates that the mclib version type enum
@@ -133,7 +133,7 @@ public interface MinigamesLibInterface
      * </p>
      * 
      * <p>
-     * <b>In most situations it is ok to check for any version below the newest major version. (getApiVersion() &lt; APIVERSION_2_0_0).
+     * In most situations it is ok to check for any version below the newest major version. (getApiVersion() &lt; APIVERSION_2_0_0).
      * </p>
      * 
      * @return api version.

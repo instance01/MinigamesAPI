@@ -24,54 +24,49 @@
 
 package de.minigameslib.mgapi.impl.cmd;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.McLibInterface;
+import de.minigameslib.mclib.api.cmd.AbstractPagableCommandHandler;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
+import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.impl.MglibPerms;
 
 /**
- * Let users join an arena.
- * 
  * @author mepeisen
+ *
  */
-public class JoinCommand implements SubCommandHandlerInterface
+public class AdminComponentListCommand extends AbstractPagableCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOnline() && command.checkOpPermission(MglibPerms.CommandJoin);
+        return command.checkOpPermission(MglibPerms.CommandAdminComp);
     }
     
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandJoin, command.getCommandPath());
-        command.checkOnline();
+        command.permOpThrowException(MglibPerms.CommandAdminComp, command.getCommandPath());
         
-        command.checkMinArgCount(1, Mg2Command.Messages.ArenaNameMissing, Messages.Usage);
-        final ArenaInterface arena = command.fetch(Mg2Command::getArena).get();
-        command.checkMaxArgCount(0, CommonMessages.TooManyArguments);
+        final ArenaInterface arena = Mg2Command.getArena(command, Messages.Usage);
         
-        if (arena.isMaintenance())
-        {
-            command.send(Messages.ArenaUnderMaintenance, arena.getDisplayName());
-            return;
-        }
-        
-        // do the join
-        arena.join(MinigamesLibInterface.instance().getPlayer(command.getPlayer()));
+        McLibInterface.instance().setContext(ArenaInterface.class, arena);
+        super.handle(command);
     }
     
     @Override
@@ -80,6 +75,7 @@ public class JoinCommand implements SubCommandHandlerInterface
         if (command.getArgs().length == 0)
         {
             return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream()
+                    .filter(a -> a.getState() == ArenaState.Maintenance)
                     .map(ArenaInterface::getInternalName)
                     .filter(a -> a.toLowerCase().startsWith(lastArg))
                     .collect(Collectors.toList());
@@ -98,43 +94,71 @@ public class JoinCommand implements SubCommandHandlerInterface
     {
         return Messages.Description;
     }
+
+    @Override
+    protected int getLineCount(CommandInterface command)
+    {
+        final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+        return arena.getZones().size();
+    }
+
+    @Override
+    protected Serializable getHeader(CommandInterface command)
+    {
+        final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+        return Messages.Header.toArg(arena.getInternalName());
+    }
+
+    @SuppressWarnings("cast")
+    @Override
+    protected Serializable[] getLines(CommandInterface command, int start, int count)
+    {
+        final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+        return arena.getComponents().stream().
+                skip(start).
+                limit(count).
+                map(s -> (ArenaComponentHandler) arena.getHandler(s)).
+                map(ArenaComponentHandler::getName).
+                toArray(Serializable[]::new);
+    }
     
     /**
      * The common messages.
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_join")
+    @LocalizedMessages(value = "cmd.mg2_admin_component_list")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 join
+         * Short description of /mg2 admin comp list
          */
-        @LocalizedMessage(defaultMessage = "Joins an arena.")
-        @MessageComment({"Short description of /mg2 join"})
+        @LocalizedMessage(defaultMessage = "lists arena components")
+        @MessageComment({"Short description of /mg2 admin comp list"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 join
+         * Long description of /mg2 admin zone list
          */
-        @LocalizedMessage(defaultMessage = "Joins an arena.")
-        @MessageComment({"Long description of /mg2 join"})
+        @LocalizedMessage(defaultMessage = "lists arena components")
+        @MessageComment({"Long description of /mg2 admin comp list"})
         Description,
         
         /**
-         * Usage of /mg2 join
+         * Usage of /mg2 admin zone list
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 join <name>")
-        @MessageComment({"Usage of /mg2 join"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin comp list <arena-name> [page]")
+        @MessageComment({"Usage of /mg2 admin comp list"})
         Usage,
         
         /**
-         * Arena is under maintenance
+         * Pageable header line
          */
-        @LocalizedMessage(defaultMessage = "Cannot join. Arena is under maintenance.")
-        @MessageComment({"Arena is under maintenance"})
-        ArenaUnderMaintenance
+        @LocalizedMessage(defaultMessage = "Components of " + LocalizedMessage.CODE_COLOR + "%1$s")
+        @MessageComment(value = {"Pageable header line of /mg2 admin comp list"}, args=@Argument("arena internal name"))
+        Header
+        
     }
     
 }

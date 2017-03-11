@@ -39,33 +39,33 @@ import de.minigameslib.mgapi.impl.MglibPerms;
  * @author mepeisen
  *
  */
-public class AdminSignCommand extends AbstractCompositeCommandHandler implements SubCommandHandlerInterface
+public class AdminComponentCommand extends AbstractCompositeCommandHandler implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.checkOpPermission(MglibPerms.CommandAdminSign);
+        return command.checkOpPermission(MglibPerms.CommandAdminComp);
     }
     
     @Override
     protected boolean pre(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandAdminSign, command.getCommandPath());
+        command.permOpThrowException(MglibPerms.CommandAdminComp, command.getCommandPath());
         return true;
     }
 
     /**
      * Constructor to register sub commands.
      */
-    public AdminSignCommand()
+    public AdminComponentCommand()
     {
         this.subCommands.put("help", new HelpCommandHandler((AbstractCompositeCommandHandler) this)); //$NON-NLS-1$
-        this.subCommands.put("list", new AdminSignListCommand()); //$NON-NLS-1$
-        this.subCommands.put("create", new AdminSignCreateCommand()); //$NON-NLS-1$
-        this.subCommands.put("delete", new AdminSignDeleteCommand()); //$NON-NLS-1$
+        this.subCommands.put("list", new AdminComponentListCommand()); //$NON-NLS-1$
+        this.subCommands.put("create", new AdminComponentCreateCommand()); //$NON-NLS-1$
+        this.subCommands.put("delete", new AdminComponentDeleteCommand()); //$NON-NLS-1$
 //        this.subCommands.put("move", new AdminSignMoveCommand()); //$NON-NLS-1$
-        this.subCommands.put("tp", new AdminSignTpCommand()); //$NON-NLS-1$
+        this.subCommands.put("tp", new AdminComponentTpCommand()); //$NON-NLS-1$
     }
     
     @Override
@@ -91,29 +91,29 @@ public class AdminSignCommand extends AbstractCompositeCommandHandler implements
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_admin_sign")
+    @LocalizedMessages(value = "cmd.mg2_admin_component")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 admin sign
+         * Short description of /mg2 admin component
          */
-        @LocalizedMessage(defaultMessage = "Manipulate arena signs")
-        @MessageComment({"Short description of /mg2 admin sign"})
+        @LocalizedMessage(defaultMessage = "Manipulate arena components")
+        @MessageComment({"Short description of /mg2 admin comp"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 admin sign
+         * Long description of /mg2 admin component
          */
-        @LocalizedMessage(defaultMessage = "Manipulate arena signs")
-        @MessageComment({"Long description of /mg2 admin sign"})
+        @LocalizedMessage(defaultMessage = "Manipulate arena components")
+        @MessageComment({"Long description of /mg2 admin comp"})
         Description,
         
         /**
-         * Usage of /mg2 admin sign
+         * Usage of /mg2 admin component
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin sign <sub-command>")
-        @MessageComment({"Usage of /mg2 admin sign"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin comp <sub-command>")
+        @MessageComment({"Usage of /mg2 admin comp"})
         Usage
         
     }

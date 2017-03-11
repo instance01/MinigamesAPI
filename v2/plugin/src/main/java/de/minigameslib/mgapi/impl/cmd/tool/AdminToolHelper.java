@@ -24,6 +24,7 @@
 
 package de.minigameslib.mgapi.impl.cmd.tool;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -40,11 +41,17 @@ import de.minigameslib.mclib.api.locale.LocalizedMessageList;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
+import de.minigameslib.mclib.api.locale.MessageSeverityType;
+import de.minigameslib.mclib.api.objects.ComponentTypeId;
+import de.minigameslib.mclib.api.objects.Cuboid;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.SignTypeId;
+import de.minigameslib.mclib.api.objects.ZoneTypeId;
 import de.minigameslib.mclib.api.util.function.McConsumer;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.impl.MglibPerms;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 
@@ -55,6 +62,143 @@ import de.minigameslib.mgapi.impl.arena.ArenaImpl;
  */
 public class AdminToolHelper
 {
+
+    /**
+     * Registers the tooling to select a block for component creation.
+     * @param player
+     * @param arena
+     * @param name
+     * @param type
+     * @param finish the finish action
+     */
+    public static void onCreateComponent(McPlayerInterface player, ArenaInterface arena, String name, ComponentTypeId type, McConsumer<ArenaComponentHandler> finish)
+    {
+        final ItemServiceInterface itemService = ItemServiceInterface.instance();
+        itemService.prepareTool(CommonItems.App_Pinion, player, Messages.CreateComponent_Title)
+            .onLeftClick((p, evt) -> onCreateComponent(evt, p, arena, name, type, finish))
+            .onRightClick((p, evt) -> onCreateComponent(evt, p, arena, name, type, finish))
+            .description(Messages.CreateComponent_Description, type.getPluginName() + '/' + type.name(), arena.getInternalName(), name)
+            .build();
+        player.sendMessage(Messages.CreateComponent_ClickBlock);
+    }
+    
+    /**
+     * Registers the tooling to select the block for component creation.
+     * @param evt 
+     * @param player
+     * @param arena
+     * @param name
+     * @param type
+     * @param finish the finish action
+     * @throws McException 
+     */
+    private static void onCreateComponent(McPlayerInteractEvent evt, McPlayerInterface player, ArenaInterface arena, String name, ComponentTypeId type, McConsumer<ArenaComponentHandler> finish) throws McException
+    {
+        // security checks
+        if (!(player.getBukkitPlayer().isOp() || player.checkPermission(MglibPerms.CommandAdminComp)))
+        {
+            throw new McException(CommonMessages.NoPermissionForCommand, "/mg2 admin comp create"); //$NON-NLS-1$
+        }
+        if (!arena.isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        
+        final Location loc = evt.getBukkitEvent().getClickedBlock().getLocation();
+        final ArenaComponentHandler result = arena.createComponent(loc, type);
+        result.setName(name);
+        player.sendMessage(Messages.CreateComponent_Created);
+        if (finish != null)
+        {
+            finish.accept(result);
+        }
+    }
+
+    /**
+     * Registers the tooling to select a block for zone creation.
+     * @param player
+     * @param arena
+     * @param name
+     * @param type
+     * @param finish the finish action
+     */
+    public static void onCreateZone(McPlayerInterface player, ArenaInterface arena, String name, ZoneTypeId type, McConsumer<ArenaZoneHandler> finish)
+    {
+        final ItemServiceInterface itemService = ItemServiceInterface.instance();
+        itemService.prepareTool(CommonItems.App_Pinion, player, Messages.CreateZone_Title)
+            .onLeftClick((p, evt) -> onCreateZone1(evt, p, arena, name, type, finish))
+            .onRightClick((p, evt) -> onCreateZone1(evt, p, arena, name, type, finish))
+            .description(Messages.CreateZone_Description, type.getPluginName() + '/' + type.name(), arena.getInternalName(), name)
+            .build();
+        player.sendMessage(Messages.CreateZone_ClickBlockLower);
+    }
+    
+    /**
+     * Registers the tooling to select the lower block for zone creation.
+     * @param evt 
+     * @param player
+     * @param arena
+     * @param name
+     * @param type
+     * @param finish the finish action
+     * @throws McException 
+     */
+    private static void onCreateZone1(McPlayerInteractEvent evt, McPlayerInterface player, ArenaInterface arena, String name, ZoneTypeId type, McConsumer<ArenaZoneHandler> finish) throws McException
+    {
+        // security checks
+        if (!(player.getBukkitPlayer().isOp() || player.checkPermission(MglibPerms.CommandAdminZone)))
+        {
+            throw new McException(CommonMessages.NoPermissionForCommand, "/mg2 admin zone create"); //$NON-NLS-1$
+        }
+        if (!arena.isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        
+        final Location lower = evt.getBukkitEvent().getClickedBlock().getLocation();
+        final ItemServiceInterface itemService = ItemServiceInterface.instance();
+        itemService.prepareTool(CommonItems.App_Pinion, player, Messages.CreateZone_Title)
+            .onLeftClick((p, evt2) -> onCreateZone2(evt2, p, arena, name, type, lower, finish))
+            .onRightClick((p, evt2) -> onCreateZone2(evt2, p, arena, name, type, lower, finish))
+            .description(Messages.CreateZone_Description, type.getPluginName() + '/' + type.name(), arena.getInternalName(), name)
+            .singleUse()
+            .build();
+        player.sendMessage(Messages.CreateZone_ClickBlockHigher);
+    }
+    
+    /**
+     * Registers the tooling to select the higher block for zone creation.
+     * @param evt 
+     * @param player
+     * @param arena
+     * @param name
+     * @param type
+     * @param lower 
+     * @param finish the finish action
+     * @throws McException 
+     */
+    private static void onCreateZone2(McPlayerInteractEvent evt, McPlayerInterface player, ArenaInterface arena, String name, ZoneTypeId type, Location lower, McConsumer<ArenaZoneHandler> finish) throws McException
+    {
+        // security checks
+        if (!(player.getBukkitPlayer().isOp() || player.checkPermission(MglibPerms.CommandAdminZone)))
+        {
+            throw new McException(CommonMessages.NoPermissionForCommand, "/mg2 admin zone create"); //$NON-NLS-1$
+        }
+        if (!arena.isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        
+        final Location higher = evt.getBukkitEvent().getClickedBlock().getLocation();
+        
+        final ArenaZoneHandler result = arena.createZone(new Cuboid(lower, higher), type);
+        result.setName(name);
+        player.sendMessage(Messages.CreateZone_Created);
+        if (finish != null)
+        {
+            finish.accept(result);
+        }
+    }
 
     /**
      * Registers the tooling to select a block for sign creation.
@@ -73,6 +217,7 @@ public class AdminToolHelper
             .description(Messages.CreateSign_Description, type.getPluginName() + '/' + type.name(), arena.getInternalName(), name)
             .singleUse()
             .build();
+        player.sendMessage(Messages.CreateSign_ClickBlock);
     }
     
     /**
@@ -87,7 +232,6 @@ public class AdminToolHelper
      */
     private static void onCreateSign(McPlayerInteractEvent evt, McPlayerInterface player, ArenaInterface arena, String name, SignTypeId type, McConsumer<ArenaSignHandler> finish) throws McException
     {
-        // TODO set sign name
         // security checks
         if (!(player.getBukkitPlayer().isOp() || player.checkPermission(MglibPerms.CommandAdminSign)))
         {
@@ -172,6 +316,7 @@ public class AdminToolHelper
         final Sign sign = (Sign) target.getState();
         final ArenaSignHandler result = arena.createSign(sign, type);
         result.setName(name);
+        player.sendMessage(Messages.CreateSign_Created);
         if (finish != null)
         {
             finish.accept(result);
@@ -186,6 +331,8 @@ public class AdminToolHelper
     @LocalizedMessages(value = "admintool")
     public enum Messages implements LocalizedMessageInterface
     {
+        
+        // signs
         
         /**
          * Title for create sign
@@ -221,6 +368,101 @@ public class AdminToolHelper
         @LocalizedMessage(defaultMessage = "Cannot replace solid blocks with signs")
         @MessageComment({"Cannot create solid blocks with signs"})
         CreateSign_CannotCreateBlocked,
+        
+        /**
+         * Message to advice the user to click the block
+         */
+        @LocalizedMessage(defaultMessage = "Use the Pinion tool and click a block to create the sign")
+        @MessageComment({"Message to advice the user to click the block"})
+        CreateSign_ClickBlock,
+        
+        /**
+         * Sign was created
+         */
+        @LocalizedMessage(defaultMessage = "Sign created", severity = MessageSeverityType.Success)
+        @MessageComment({"Sign was created"})
+        CreateSign_Created,
+        
+        // zones
+        
+        /**
+         * Title for create zone
+         */
+        @LocalizedMessage(defaultMessage = "Creating zone")
+        @MessageComment({"Create zone title"})
+        CreateZone_Title,
+        
+        /**
+         * Description for create zone
+         */
+        @LocalizedMessageList({
+            "Zone type: " + LocalizedMessage.CODE_COLOR + "%1$s",
+            "Arena: " + LocalizedMessage.CODE_COLOR + "%2$s",
+            "Name: " + LocalizedMessage.CODE_COLOR + "%3$s"})
+        @MessageComment(value = "Create zone description", args = {
+            @Argument("zone type name"),
+            @Argument("arena internal name"),
+            @Argument("new zone name")
+        })
+        CreateZone_Description,
+        
+        /**
+         * Message to advice the user to click the block
+         */
+        @LocalizedMessage(defaultMessage = "Use the Pinion tool and click the lower bound of your zone")
+        @MessageComment({"Message to advice the user to click the block"})
+        CreateZone_ClickBlockLower,
+        
+        /**
+         * Message to advice the user to click the block
+         */
+        @LocalizedMessage(defaultMessage = "Use the Pinion tool and click the higher bound of your zone")
+        @MessageComment({"Message to advice the user to click the block"})
+        CreateZone_ClickBlockHigher,
+        
+        /**
+         * Zone was created
+         */
+        @LocalizedMessage(defaultMessage = "Zone created", severity = MessageSeverityType.Success)
+        @MessageComment({"Zone was created"})
+        CreateZone_Created,
+        
+        // components
+        
+        /**
+         * Title for create component
+         */
+        @LocalizedMessage(defaultMessage = "Creating component")
+        @MessageComment({"Create component title"})
+        CreateComponent_Title,
+        
+        /**
+         * Description for create component
+         */
+        @LocalizedMessageList({
+            "Component type: " + LocalizedMessage.CODE_COLOR + "%1$s",
+            "Arena: " + LocalizedMessage.CODE_COLOR + "%2$s",
+            "Name: " + LocalizedMessage.CODE_COLOR + "%3$s"})
+        @MessageComment(value = "Create component description", args = {
+            @Argument("component type name"),
+            @Argument("arena internal name"),
+            @Argument("new component name")
+        })
+        CreateComponent_Description,
+        
+        /**
+         * Message to advice the user to click the block
+         */
+        @LocalizedMessage(defaultMessage = "Use the Pinion tool and click a block to create the component")
+        @MessageComment({"Message to advice the user to click the block"})
+        CreateComponent_ClickBlock,
+        
+        /**
+         * Component was created
+         */
+        @LocalizedMessage(defaultMessage = "Component created", severity = MessageSeverityType.Success)
+        @MessageComment({"Component was created"})
+        CreateComponent_Created,
     }
     
 }

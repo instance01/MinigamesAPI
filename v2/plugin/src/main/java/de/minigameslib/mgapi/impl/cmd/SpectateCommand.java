@@ -73,7 +73,10 @@ public class SpectateCommand implements SubCommandHandlerInterface
     {
         if (command.getArgs().length == 0)
         {
-            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().map(ArenaInterface::getInternalName).collect(Collectors.toList());
+            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream()
+                    .map(ArenaInterface::getInternalName)
+                    .filter(a -> a.toLowerCase().startsWith(lastArg))
+                    .collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

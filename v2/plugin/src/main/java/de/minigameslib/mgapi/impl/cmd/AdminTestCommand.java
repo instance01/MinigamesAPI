@@ -71,7 +71,11 @@ public class AdminTestCommand implements SubCommandHandlerInterface
     {
         if (command.getArgs().length == 0)
         {
-            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().filter(a -> a.getState() == ArenaState.Maintenance).map(ArenaInterface::getInternalName).collect(Collectors.toList());
+            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream()
+                    .filter(a -> a.getState() == ArenaState.Maintenance)
+                    .map(ArenaInterface::getInternalName)
+                    .filter(a -> a.toLowerCase().startsWith(lastArg))
+                    .collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

@@ -24,11 +24,13 @@
 
 package de.minigameslib.mgapi.impl.cmd;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
@@ -36,42 +38,34 @@ import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
+import de.minigameslib.mclib.api.objects.ZoneInterface;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.impl.MglibPerms;
 
 /**
- * Let users join an arena.
- * 
  * @author mepeisen
+ *
  */
-public class JoinCommand implements SubCommandHandlerInterface
+public class AdminZoneDeleteCommand implements SubCommandHandlerInterface
 {
     
     @Override
     public boolean visible(CommandInterface command)
     {
-        return command.isOnline() && command.checkOpPermission(MglibPerms.CommandJoin);
+        return command.isOnline() && command.checkOpPermission(MglibPerms.CommandAdminZone);
     }
     
     @Override
     public void handle(CommandInterface command) throws McException
     {
-        command.permOpThrowException(MglibPerms.CommandJoin, command.getCommandPath());
         command.checkOnline();
+        command.permOpThrowException(MglibPerms.CommandAdminZone, command.getCommandPath());
         
-        command.checkMinArgCount(1, Mg2Command.Messages.ArenaNameMissing, Messages.Usage);
-        final ArenaInterface arena = command.fetch(Mg2Command::getArena).get();
-        command.checkMaxArgCount(0, CommonMessages.TooManyArguments);
-        
-        if (arena.isMaintenance())
-        {
-            command.send(Messages.ArenaUnderMaintenance, arena.getDisplayName());
-            return;
-        }
-        
-        // do the join
-        arena.join(MinigamesLibInterface.instance().getPlayer(command.getPlayer()));
+        final ArenaInterface arena = Mg2Command.getArena(command, Messages.Usage);
+        final ZoneInterface zone = Mg2Command.getZone(arena, command, Messages.Usage);
+        zone.delete();
     }
     
     @Override
@@ -80,9 +74,23 @@ public class JoinCommand implements SubCommandHandlerInterface
         if (command.getArgs().length == 0)
         {
             return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream()
+                    .filter(a -> a.getState() == ArenaState.Maintenance)
                     .map(ArenaInterface::getInternalName)
                     .filter(a -> a.toLowerCase().startsWith(lastArg))
                     .collect(Collectors.toList());
+        }
+        if (command.getArgs().length == 1)
+        {
+            final Set<String> result = new TreeSet<>();
+            final ArenaInterface arena = Mg2Command.getArenaOptional(command, Messages.Usage);
+            if (arena != null)
+            {
+                arena.getZones().stream().
+                    map(s -> arena.getHandler(s).getName()).
+                    filter(s -> s.toLowerCase().startsWith(lastArg)).
+                    forEach(result::add);
+            }
+            return new ArrayList<>(result);
         }
         return Collections.emptyList();
     }
@@ -104,37 +112,31 @@ public class JoinCommand implements SubCommandHandlerInterface
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "cmd.mg2_join")
+    @LocalizedMessages(value = "cmd.mg2_admin_zone_delete")
     public enum Messages implements LocalizedMessageInterface
     {
         
         /**
-         * Short description of /mg2 join
+         * Short description of /mg2 admin zone delete
          */
-        @LocalizedMessage(defaultMessage = "Joins an arena.")
-        @MessageComment({"Short description of /mg2 join"})
+        @LocalizedMessage(defaultMessage = "Delete a zone")
+        @MessageComment({"Short description of /mg2 zone delete"})
         ShortDescription,
         
         /**
-         * Long description of /mg2 join
+         * Long description of /mg2 admin zone delete
          */
-        @LocalizedMessage(defaultMessage = "Joins an arena.")
-        @MessageComment({"Long description of /mg2 join"})
+        @LocalizedMessage(defaultMessage = "Delete a zone")
+        @MessageComment({"Long description of /mg2 admin zone delete"})
         Description,
         
         /**
-         * Usage of /mg2 join
+         * Usage of /mg2 admin zone delete
          */
-        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 join <name>")
-        @MessageComment({"Usage of /mg2 join"})
+        @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin zone delete <arena> <name>")
+        @MessageComment({"Usage of /mg2 admin zone delete"})
         Usage,
         
-        /**
-         * Arena is under maintenance
-         */
-        @LocalizedMessage(defaultMessage = "Cannot join. Arena is under maintenance.")
-        @MessageComment({"Arena is under maintenance"})
-        ArenaUnderMaintenance
     }
     
 }

@@ -73,8 +73,8 @@ public class AdminCommand extends AbstractCompositeCommandHandler implements Sub
         this.subCommands.put("test", new AdminTestCommand()); //$NON-NLS-1$
         this.subCommands.put("invite", new AdminInviteCommand()); //$NON-NLS-1$
         this.subCommands.put("sign", new AdminSignCommand()); //$NON-NLS-1$
-//        TODO this.subCommands.put("zone", new AdminZoneCommand()); //$NON-NLS-1$
-//        TODO this.subCommands.put("comp", new AdminCompCommand()); //$NON-NLS-1$
+        this.subCommands.put("zone", new AdminZoneCommand()); //$NON-NLS-1$
+        this.subCommands.put("comp", new AdminComponentCommand()); //$NON-NLS-1$
         this.subCommands.put("gui", new AdminGuiCommand()); //$NON-NLS-1$
         this.subCommands.put("sgui", new AdminSGuiCommand()); //$NON-NLS-1$
     }

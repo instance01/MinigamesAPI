@@ -67,7 +67,7 @@ public class AdminSignCreateCommand implements SubCommandHandlerInterface
         command.checkOnline();
         command.permOpThrowException(MglibPerms.CommandAdminSign, command.getCommandPath());
         
-        final ArenaInterface arena = Mg2Command.getArenaFromPlayer(command, Messages.Usage);
+        final ArenaInterface arena = Mg2Command.getArena(command, Messages.Usage);
         final String name = command.fetchString(Mg2Command.Messages.ComponentNameMissing, Messages.Usage);
         final String typeName = command.fetchString(Mg2Command.Messages.ComponentTypeNameMissing, Messages.Usage);
         
@@ -94,7 +94,11 @@ public class AdminSignCreateCommand implements SubCommandHandlerInterface
     {
         if (command.getArgs().length == 0)
         {
-            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream().filter(a -> a.getState() == ArenaState.Maintenance).map(ArenaInterface::getInternalName).collect(Collectors.toList());
+            return MinigamesLibInterface.instance().getArenas(lastArg, 0, Integer.MAX_VALUE).stream()
+                    .filter(a -> a.getState() == ArenaState.Maintenance)
+                    .map(ArenaInterface::getInternalName)
+                    .filter(a -> a.toLowerCase().startsWith(lastArg))
+                    .collect(Collectors.toList());
         }
         if (command.getArgs().length == 2)
         {
@@ -103,7 +107,6 @@ public class AdminSignCreateCommand implements SubCommandHandlerInterface
             {
                 result.add(signType.getPluginName() + "/" + signType.name()); //$NON-NLS-1$
             }
-            System.out.println(lastArg);
             return result.stream().filter(a -> a.toLowerCase().startsWith(lastArg)).collect(Collectors.toList());
         }
         return Collections.emptyList();
@@ -138,14 +141,14 @@ public class AdminSignCreateCommand implements SubCommandHandlerInterface
         ShortDescription,
         
         /**
-         * Long description of /mg2 admin delete
+         * Long description of /mg2 admin sign create
          */
         @LocalizedMessage(defaultMessage = "Creates a new arena sign")
         @MessageComment({"Long description of /mg2 admin sign create"})
         Description,
         
         /**
-         * Usage of /mg2 admin delete
+         * Usage of /mg2 admin sign create
          */
         @LocalizedMessage(defaultMessage = "Usage: " + LocalizedMessage.CODE_COLOR + "/mg2 admin sign create <arena> <name> <type>")
         @MessageComment({"Usage of /mg2 admin sign create"})

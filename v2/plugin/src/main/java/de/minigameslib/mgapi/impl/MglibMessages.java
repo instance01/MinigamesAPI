@@ -35,6 +35,11 @@ import de.minigameslib.mgapi.impl.MglibMessages.MglibCoreErrors;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.AdminCheckCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminComponentCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminComponentCreateCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminComponentDeleteCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminComponentListCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminComponentTpCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminCreateCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminDeleteCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminDisableCommand;
@@ -45,10 +50,17 @@ import de.minigameslib.mgapi.impl.cmd.AdminMaintainCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminSGuiCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminSignCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminSignCreateCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminSignDeleteCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminSignListCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminSignTpCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminStartCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminStopCommand;
 import de.minigameslib.mgapi.impl.cmd.AdminTestCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminZoneCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminZoneCreateCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminZoneDeleteCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminZoneListCommand;
+import de.minigameslib.mgapi.impl.cmd.AdminZoneTpCommand;
 import de.minigameslib.mgapi.impl.cmd.ArenaCommand;
 import de.minigameslib.mgapi.impl.cmd.ArenasCommand;
 import de.minigameslib.mgapi.impl.cmd.InfoCommand;
@@ -105,6 +117,20 @@ import de.minigameslib.mgapi.impl.rules.BasicMatch;
     AdminSignCommand.Messages.class,
     AdminSignListCommand.Messages.class,
     AdminSignCreateCommand.Messages.class,
+    AdminSignDeleteCommand.Messages.class,
+    AdminSignTpCommand.Messages.class,
+    // admin zone commands
+    AdminZoneCommand.Messages.class,
+    AdminZoneListCommand.Messages.class,
+    AdminZoneCreateCommand.Messages.class,
+    AdminZoneDeleteCommand.Messages.class,
+    AdminZoneTpCommand.Messages.class,
+    // admin component commands
+    AdminComponentCommand.Messages.class,
+    AdminComponentListCommand.Messages.class,
+    AdminComponentCreateCommand.Messages.class,
+    AdminComponentDeleteCommand.Messages.class,
+    AdminComponentTpCommand.Messages.class,
     // admin tools
     AdminToolHelper.Messages.class,
     // rules

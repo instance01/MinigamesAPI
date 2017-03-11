@@ -24,6 +24,8 @@
 
 package de.minigameslib.mgapi.impl.cmd;
 
+import java.util.Optional;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -38,15 +40,21 @@ import de.minigameslib.mclib.api.locale.LocalizedMessageList;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
+import de.minigameslib.mclib.api.locale.MessageSeverityType;
+import de.minigameslib.mclib.api.objects.ComponentInterface;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
+import de.minigameslib.mclib.api.objects.SignInterface;
+import de.minigameslib.mclib.api.objects.ZoneInterface;
 import de.minigameslib.mclib.shared.api.com.UniqueEnumerationValue;
-import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.ExtensionInterface;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaTypeInterface;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
@@ -109,6 +117,107 @@ public class Mg2Command extends AbstractCompositeCommandHandler
             throw new McException(Messages.ArenaNameMissing, usage);
         }
         return getArena(command, command.fetchString(Messages.ArenaNameMissing, usage));
+    }
+    
+    /**
+     * Maps argument to sign interface
+     * @param arena
+     * @param command
+     * @param usage 
+     * @return sign instance
+     * @throws McException thrown if sign was not found
+     */
+    public static SignInterface getSign(ArenaInterface arena, CommandInterface command, LocalizedMessageInterface usage) throws McException
+    {
+        final String name = command.fetchString(Messages.ComponentNameMissing, usage);
+        @SuppressWarnings("cast")
+        final Optional<ArenaSignHandler> handler = arena.getSigns().stream().
+                map(s -> (ArenaSignHandler) arena.getHandler(s)).
+                filter(s -> name.equals(s.getName())).
+                findFirst();
+        if (handler.isPresent())
+        {
+            return handler.get().getSign();
+        }
+        throw new McException(Messages.ComponentNotFound, usage);
+    }
+    
+    /**
+     * Maps argument to zone interface
+     * @param arena
+     * @param command
+     * @param usage 
+     * @return sign instance
+     * @throws McException thrown if zone was not found
+     */
+    public static ZoneInterface getZone(ArenaInterface arena, CommandInterface command, LocalizedMessageInterface usage) throws McException
+    {
+        final String name = command.fetchString(Messages.ComponentNameMissing, usage);
+        @SuppressWarnings("cast")
+        final Optional<ArenaZoneHandler> handler = arena.getZones().stream().
+                map(s -> (ArenaZoneHandler) arena.getHandler(s)).
+                filter(s -> name.equals(s.getName())).
+                findFirst();
+        if (handler.isPresent())
+        {
+            return handler.get().getZone();
+        }
+        throw new McException(Messages.ComponentNotFound, usage);
+    }
+    
+    /**
+     * Maps argument to component interface
+     * @param arena
+     * @param command
+     * @param usage 
+     * @return sign instance
+     * @throws McException thrown if zone was not found
+     */
+    public static ComponentInterface getComponent(ArenaInterface arena, CommandInterface command, LocalizedMessageInterface usage) throws McException
+    {
+        final String name = command.fetchString(Messages.ComponentNameMissing, usage);
+        @SuppressWarnings("cast")
+        final Optional<ArenaComponentHandler> handler = arena.getComponents().stream().
+                map(s -> (ArenaComponentHandler) arena.getHandler(s)).
+                filter(s -> name.equals(s.getName())).
+                findFirst();
+        if (handler.isPresent())
+        {
+            return handler.get().getComponent();
+        }
+        throw new McException(Messages.ComponentNotFound, usage);
+    }
+    
+    /**
+     * Maps argument to arena interface
+     * @param command
+     * @param usage
+     * @return arena instance
+     * @throws McException thrown if arena was not found
+     */
+    public static ArenaInterface getArena(CommandInterface command, LocalizedMessageInterface usage) throws McException
+    {
+        return getArena(command, command.fetchString(Messages.ArenaNameMissing, usage));
+    }
+    
+    /**
+     * Maps argument to arena interface
+     * @param command
+     * @param usage
+     * @return arena instance
+     */
+    public static ArenaInterface getArenaOptional(CommandInterface command, LocalizedMessageInterface usage)
+    {
+        if (command.getArgs().length == 0) return null;
+        try
+        {
+            return getArenaOptional(command, command.fetchString(Messages.ArenaNameMissing, usage));
+        }
+        catch (@SuppressWarnings("unused") McException e)
+        {
+            // silently ignore (will not happen)
+            return null;
+        }
     }
     
     /**
