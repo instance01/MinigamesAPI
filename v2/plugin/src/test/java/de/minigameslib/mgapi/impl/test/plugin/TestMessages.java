@@ -22,19 +22,24 @@
 
 */
 
-package de.minigameslib.mgapi.impl.arena;
+package de.minigameslib.mgapi.impl.test.plugin;
 
-import java.util.UUID;
+import de.minigameslib.mclib.api.locale.LocalizedMessage;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessages;
 
 /**
- * Basic team implementation.
- * 
  * @author mepeisen
+ *
  */
-public class TeamImpl
+@LocalizedMessages("core")
+public enum TestMessages implements LocalizedMessageInterface
 {
- 
-    /** a generic uuid to identify a team. */
-    private final UUID teamUuid = UUID.randomUUID();
+    
+    /**
+     * dummy msg
+     */
+    @LocalizedMessage(defaultMessage = "dummy")
+    Dummy,
     
 }

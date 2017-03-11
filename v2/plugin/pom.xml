@@ -26,6 +26,13 @@
 			<groupId>de.minigameslib.mclib</groupId>
 			<artifactId>mclib</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>de.minigameslib.mclib</groupId>
+			<artifactId>spigot-testsupport</artifactId>
+			<version>${mclib.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

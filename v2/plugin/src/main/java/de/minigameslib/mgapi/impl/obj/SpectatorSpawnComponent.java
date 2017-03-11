@@ -142,13 +142,13 @@ public class SpectatorSpawnComponent extends AbstractBaseArenaObjectHandler<Comp
     @Override
     protected void applyListeners(ComponentRuleSetInterface listeners)
     {
-        this.component.registerHandlers(MinigamesPlugin.instance(), listeners);
+        this.component.registerHandlers(MinigamesPlugin.instance().getPlugin(), listeners);
     }
 
     @Override
     protected void removeListeners(ComponentRuleSetInterface listeners)
     {
-        this.component.unregisterHandlers(MinigamesPlugin.instance(), listeners);
+        this.component.unregisterHandlers(MinigamesPlugin.instance().getPlugin(), listeners);
     }
 
     @Override

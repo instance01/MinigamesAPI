@@ -244,13 +244,13 @@ public class JoinSign extends AbstractBaseArenaObjectHandler<SignRuleSetType, Si
     @Override
     protected void applyListeners(SignRuleSetInterface listeners)
     {
-        this.sign.registerHandlers(MinigamesPlugin.instance(), listeners);
+        this.sign.registerHandlers(MinigamesPlugin.instance().getPlugin(), listeners);
     }
 
     @Override
     protected void removeListeners(SignRuleSetInterface listeners)
     {
-        this.sign.unregisterHandlers(MinigamesPlugin.instance(), listeners);
+        this.sign.unregisterHandlers(MinigamesPlugin.instance().getPlugin(), listeners);
     }
 
     @Override

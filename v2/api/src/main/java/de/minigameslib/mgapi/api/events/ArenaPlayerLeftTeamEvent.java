@@ -38,16 +38,16 @@ import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.team.TeamIdType;
 
 /**
- * Event fired after a player left an arena spectators team. The player was spectator before leaving.
+ * Event fired after a player left a team.
  * 
  * @author mepeisen
  * 
- * @see ArenaMatchInterface#leave(ArenaPlayerInterface)
- * @see ArenaInterface#leave(ArenaPlayerInterface)
+ * @see ArenaMatchInterface#leave(ArenaPlayerInterface, TeamIdType)
  */
-public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEvent<ArenaPlayerLeftSpectatorsEvent, ArenaPlayerLeftSpectatorsEvent>
+public class ArenaPlayerLeftTeamEvent extends Event implements MinecraftEvent<ArenaPlayerLeftTeamEvent, ArenaPlayerLeftTeamEvent>
 {
     
     /** handlers list. */
@@ -58,15 +58,28 @@ public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEv
     
     /** the arena player. */
     private final ArenaPlayerInterface player;
+    
+    /** pre selected team. */
+    private final TeamIdType team; 
 
     /**
      * @param arena
      * @param player
+     * @param team
      */
-    public ArenaPlayerLeftSpectatorsEvent(ArenaInterface arena, ArenaPlayerInterface player)
+    public ArenaPlayerLeftTeamEvent(ArenaInterface arena, ArenaPlayerInterface player, TeamIdType team)
     {
         this.arena = arena;
         this.player = player;
+        this.team = team;
+    }
+
+    /**
+     * @return the team
+     */
+    public TeamIdType getTeam()
+    {
+        return this.team;
     }
 
     /**
@@ -107,7 +120,7 @@ public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEv
     }
 
     @Override
-    public ArenaPlayerLeftSpectatorsEvent getBukkitEvent()
+    public ArenaPlayerLeftTeamEvent getBukkitEvent()
     {
         return this;
     }
@@ -125,7 +138,7 @@ public class ArenaPlayerLeftSpectatorsEvent extends Event implements MinecraftEv
     }
 
     @Override
-    public McOutgoingStubbing<ArenaPlayerLeftSpectatorsEvent> when(McPredicate<ArenaPlayerLeftSpectatorsEvent> test) throws McException
+    public McOutgoingStubbing<ArenaPlayerLeftTeamEvent> when(McPredicate<ArenaPlayerLeftTeamEvent> test) throws McException
     {
         if (test.test(this))
         {

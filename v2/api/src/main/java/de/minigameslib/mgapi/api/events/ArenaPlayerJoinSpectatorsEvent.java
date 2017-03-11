@@ -36,12 +36,16 @@ import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
  * Event fired before an arena player joined spectators team.
  * 
  * @author mepeisen
+ * 
+ * @see ArenaMatchInterface#spectate(ArenaPlayerInterface)
+ * @see ArenaInterface#spectate(ArenaPlayerInterface)
  */
 public class ArenaPlayerJoinSpectatorsEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinSpectatorsEvent, ArenaPlayerJoinSpectatorsEvent>
 {
@@ -54,15 +58,28 @@ public class ArenaPlayerJoinSpectatorsEvent extends AbstractVetoEvent implements
     
     /** the arena player. */
     private final ArenaPlayerInterface player;
+    
+    /** {@code true} if player had played before joining spectators. */
+    private final boolean playedBefore;
 
     /**
      * @param arena
      * @param player
+     * @param playedBefore 
      */
-    public ArenaPlayerJoinSpectatorsEvent(ArenaInterface arena, ArenaPlayerInterface player)
+    public ArenaPlayerJoinSpectatorsEvent(ArenaInterface arena, ArenaPlayerInterface player, boolean playedBefore)
     {
         this.arena = arena;
         this.player = player;
+        this.playedBefore = playedBefore;
+    }
+
+    /**
+     * @return the playedBefore
+     */
+    public boolean isPlayedBefore()
+    {
+        return this.playedBefore;
     }
 
     /**

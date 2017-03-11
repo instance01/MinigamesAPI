@@ -36,12 +36,16 @@ import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
- * Event fired after a player left an arena.
+ * Event fired after a player left an arena. The player has played before leaving.
  * 
  * @author mepeisen
+ * 
+ * @see ArenaMatchInterface#leave(ArenaPlayerInterface)
+ * @see ArenaInterface#leave(ArenaPlayerInterface)
  */
 public class ArenaPlayerLeftEvent extends Event implements MinecraftEvent<ArenaPlayerLeftEvent, ArenaPlayerLeftEvent>
 {

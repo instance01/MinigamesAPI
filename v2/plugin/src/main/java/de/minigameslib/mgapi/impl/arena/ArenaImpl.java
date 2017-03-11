@@ -84,6 +84,7 @@ import de.minigameslib.mgapi.api.events.ArenaDeleteEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeletedEvent;
 import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
 import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
+import de.minigameslib.mgapi.api.match.MatchPlayerInterface;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
@@ -93,6 +94,7 @@ import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.team.ArenaTeamInterface;
+import de.minigameslib.mgapi.api.team.CommonTeams;
 import de.minigameslib.mgapi.api.team.TeamIdType;
 import de.minigameslib.mgapi.impl.MglibObjectTypes;
 import de.minigameslib.mgapi.impl.MinigamesPlugin;
@@ -125,12 +127,6 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     
     /** current arena state. */
     private ArenaState state = ArenaState.Disabled;
-    
-    /** the players within this arena. */
-    private final Set<UUID> players = new HashSet<>();
-    
-    /** the spectators. */
-    private final Set<UUID> spectators = new HashSet<>();
 
     /** the mclib object */
     ObjectInterface object;
@@ -438,28 +434,20 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     public void leave(ArenaPlayerInterface player) throws McException
     {
         final UUID uuid = player.getPlayerUUID();
-        if (this.players.contains(uuid))
-        {
-            this.leaveMatch(player);
-        }
-        else if (this.spectators.contains(uuid))
-        {
-            this.leaveSpec(player);
-        }
-        else
+        if (this.match == null)
         {
             throw new McException(Messages.CannotLeaveNotInArena, this.getDisplayName());
         }
-    }
-
-    /**
-     * Leave spectator mode
-     * @param player
-     */
-    private void leaveSpec(ArenaPlayerInterface player)
-    {
+        
+        final MatchPlayerInterface mp = this.match.get(uuid);
+        if (mp == null || (!mp.isPlaying() && !mp.isSpec()))
+        {
+            throw new McException(Messages.CannotLeaveNotInArena, this.getDisplayName());
+        }
+        
+        this.match.leave(player);
+        
         ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
-        this.spectators.remove(player.getPlayerUUID());
         player.getMcPlayer().sendMessage(Messages.YouLeft, this.getDisplayName());
         // port to main lobby
         this.teleportRandom(player, this.getComponents(BasicComponentTypes.MainLobbySpawn));
@@ -517,19 +505,6 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         }
     }
 
-    /**
-     * Leaves a running match
-     * @param player
-     */
-    private void leaveMatch(ArenaPlayerInterface player)
-    {
-        ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
-        this.players.remove(player.getPlayerUUID());
-        player.getMcPlayer().sendMessage(Messages.YouLeft, this.getDisplayName());
-        // port to main lobby
-        this.teleportRandom(player, this.getComponents(BasicComponentTypes.MainLobbySpawn));
-    }
-
     @Override
     public void join(ArenaPlayerInterface player) throws McException
     {
@@ -542,7 +517,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             throw new McException(Messages.JoinWrongState);
         }
         
-        this.players.add(player.getPlayerUUID());
+        this.match.join(player);
         ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), false);
         player.getMcPlayer().sendMessage(Messages.JoinedArena, this.getDisplayName());
         // port to main lobby
@@ -569,7 +544,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             case Match:
             case PostMatch:
             case PreMatch:
-                this.spectators.add(player.getPlayerUUID());
+                this.match.spectate(player);
                 ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), true);
                 player.getMcPlayer().sendMessage(Messages.SpectatingArena, this.getDisplayName());
                 this.teleportToSpectate(player);
@@ -662,7 +637,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Join);
         this.state = ArenaState.Join;
         final Set<TeamData> teams = this.arenaData.getTeams();
-        this.match = new ArenaMatchImpl(teams.size() > 0);
+        this.match = new ArenaMatchImpl(this, teams.size() > 0);
         for (final TeamData team : teams)
         {
             this.match.createTeam(team);
@@ -728,17 +703,10 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
      */
     private void abortGame(LocalizedMessageInterface kickReason)
     {
-        for (final UUID uuid : this.players)
+        for (final UUID uuid : this.match.getParticipants(true))
         {
             this.kick(uuid, kickReason);
         }
-        this.players.clear();
-        
-        for (final UUID uuid : this.spectators)
-        {
-            this.kick(uuid, kickReason);
-        }
-        this.spectators.clear();
     }
 
     /**
@@ -928,53 +896,89 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     @Override
     public int getPlayerCount()
     {
-        return this.players.size();
+        if (this.match == null)
+        {
+            return 0;
+        }
+        return this.match.getParticipantCount(false);
     }
 
     @Override
     public int getSpectatorCount()
     {
-        return this.spectators.size();
+        if (this.match == null)
+        {
+            return 0;
+        }
+        return ((MatchTeam) this.match.get(CommonTeams.Spectators)).getTeamMembers().size();
     }
 
     @Override
     public Collection<ArenaPlayerInterface> getPlayers()
     {
+        if (this.match == null)
+        {
+            return Collections.emptyList();
+        }
         final ObjectServiceInterface osi = ObjectServiceInterface.instance();
         final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        return this.players.stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
+        return this.match.getParticipants(false).stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
     }
 
     @Override
     public Collection<ArenaPlayerInterface> getSpectators()
     {
+        if (this.match == null)
+        {
+            return Collections.emptyList();
+        }
         final ObjectServiceInterface osi = ObjectServiceInterface.instance();
         final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        return this.spectators.stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
+        return ((MatchTeam) this.match.get(CommonTeams.Spectators)).getTeamMembers().stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
     }
 
     @Override
     public boolean isPlaying(McPlayerInterface player)
     {
-        return this.players.contains(player.getPlayerUUID());
+        if (this.match == null)
+        {
+            return false;
+        }
+        final MatchPlayerInterface p = this.match.get(player.getPlayerUUID());
+        return p == null ? false : p.isPlaying();
     }
 
     @Override
     public boolean isSpectating(McPlayerInterface player)
     {
-        return this.spectators.contains(player.getPlayerUUID());
+        if (this.match == null)
+        {
+            return false;
+        }
+        final MatchPlayerInterface p = this.match.get(player.getPlayerUUID());
+        return p == null ? false : p.isSpec();
     }
 
     @Override
     public boolean isPlaying(ArenaPlayerInterface player)
     {
-        return this.players.contains(player.getPlayerUUID());
+        if (this.match == null)
+        {
+            return false;
+        }
+        final MatchPlayerInterface p = this.match.get(player.getPlayerUUID());
+        return p == null ? false : p.isPlaying();
     }
 
     @Override
     public boolean isSpectating(ArenaPlayerInterface player)
     {
-        return this.spectators.contains(player.getPlayerUUID());
+        if (this.match == null)
+        {
+            return false;
+        }
+        final MatchPlayerInterface p = this.match.get(player.getPlayerUUID());
+        return p == null ? false : p.isSpec();
     }
 
     @Override
@@ -1487,6 +1491,55 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         @LocalizedMessage(defaultMessage = "You left arena %1$s.", severity = MessageSeverityType.Error)
         @MessageComment(value = {"You left the arena"}, args = @Argument("arena display name"))
         YouLeft,
+        
+        /**
+         * There was an invalid modification after match was finished
+         */
+        @LocalizedMessage(defaultMessage = "Invalid modification within arena match (%1$s).", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"There was an invalid modification after match was finished"}, args = @Argument("arena display name"))
+        InvalidModificationAfterFinish,
+        
+        /**
+         * There was an invalid modification before match was started
+         */
+        @LocalizedMessage(defaultMessage = "Invalid modification before arena match starts (%1$s).", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"There was an invalid modification before match was started"}, args = @Argument("arena display name"))
+        InvalidModificationBeforeStart,
+        
+        /**
+         * There was an invalid team action on single player matches
+         */
+        @LocalizedMessage(defaultMessage = "Invalid team action in single player arena match (%1$s).", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"There was an invalid team action on single player matches"}, args = @Argument("arena display name"))
+        InvalidTeamActionOnSinglePlayerMatch,
+        
+        /**
+         * There was an invalid leave action
+         */
+        @LocalizedMessage(defaultMessage = "Invalid team leave action in arena match (%1$s).", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"There was an invalid leave action"}, args = @Argument("arena display name"))
+        InvalidLeaveAction,
+        
+        /**
+         * There was an invalid join action
+         */
+        @LocalizedMessage(defaultMessage = "Invalid team join action in arena match (%1$s).", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"There was an invalid join action"}, args = @Argument("arena display name"))
+        InvalidJoinAction,
+        
+        /**
+         * There was an invalid team switch
+         */
+        @LocalizedMessage(defaultMessage = "Invalid team switch action in arena match (%1$s).", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"There was an invalid team switch"}, args = @Argument("arena display name"))
+        InvalidTeamSwitch,
+        
+        /**
+         * Cannot rejoin same match
+         */
+        @LocalizedMessage(defaultMessage = "Unable to re-join a match you already played (%1$s).", severity = MessageSeverityType.Error)
+        @MessageComment(value = {"Cannot rejoin same match"}, args = @Argument("arena display name"))
+        CannotRejoin,
         
     }
     

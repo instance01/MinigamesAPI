@@ -36,6 +36,7 @@ import de.minigameslib.mclib.api.util.function.McOutgoingStubbing;
 import de.minigameslib.mclib.api.util.function.McPredicate;
 import de.minigameslib.mclib.api.util.function.TrueStub;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.team.TeamIdType;
 
@@ -43,6 +44,9 @@ import de.minigameslib.mgapi.api.team.TeamIdType;
  * Event fired before an arena player joined.
  * 
  * @author mepeisen
+ * 
+ * @see ArenaMatchInterface#join(ArenaPlayerInterface, TeamIdType)
+ * @see ArenaInterface#join(ArenaPlayerInterface)
  */
 public class ArenaPlayerJoinEvent extends AbstractVetoEvent implements MinecraftEvent<ArenaPlayerJoinEvent, ArenaPlayerJoinEvent>
 {
