@@ -24,11 +24,25 @@
 
 package de.minigameslib.mgapi.impl.rules;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEventHandler;
+import de.minigameslib.mclib.api.objects.ComponentIdInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
+import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
+import de.minigameslib.mgapi.api.obj.BasicComponentTypes;
+import de.minigameslib.mgapi.api.rules.AbstractArenaRule;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
+import de.minigameslib.mgapi.api.rules.BasicSpawnsConfig;
+import de.minigameslib.mgapi.api.rules.BasicSpawnsConfig.SpawnType;
+import de.minigameslib.mgapi.api.rules.BasicSpawnsRuleInterface;
 
 /**
  * The implementation of BasicSpawns rule set
@@ -37,18 +51,19 @@ import de.minigameslib.mgapi.api.rules.BasicArenaRuleSets;
  * 
  * @author mepeisen
  */
-public class BasicSpawns implements ArenaRuleSetInterface
+public class BasicSpawns extends AbstractArenaRule implements BasicSpawnsRuleInterface
 {
     
-    /**
-     * the underlying arena.
-     */
-    private final ArenaInterface arena;
+    /** the spawn type. */
+    private SpawnType spawnType;
     
     /**
-     * rule set type.
+     * the current spawns
      */
-    private final ArenaRuleSetType type;
+    private List<ComponentIdInterface> currentSpawns = new ArrayList<>();
+    
+    /** random number generator. */
+    private final Random random = new Random();
     
     /**
      * @param type
@@ -57,22 +72,134 @@ public class BasicSpawns implements ArenaRuleSetInterface
      */
     public BasicSpawns(ArenaRuleSetType type, ArenaInterface arena) throws McException
     {
-        this.type = type;
-        this.arena = arena;
+        super(type, arena);
+        this.runInCopiedContext(() -> {
+            this.spawnType = BasicSpawnsConfig.SpawnOption.getEnum(SpawnType.class);
+            if (this.spawnType == null)
+            {
+                this.spawnType = SpawnType.RandomAtStart;
+            }
+        });
     }
 
     @Override
-    public ArenaRuleSetType getType()
+    public SpawnType getSpawnType()
     {
-        return this.type;
+        return this.spawnType;
     }
 
     @Override
-    public ArenaInterface getArena()
+    public void setSpawnType(SpawnType type) throws McException
     {
-        return this.arena;
+        this.arena.checkModifications();
+        this.runInCopiedContext(() -> {
+            BasicSpawnsConfig.SpawnOption.setEnum(this.spawnType);
+        });
+        this.arena.reconfigure(this.type);
     }
     
-    // TODO implement BasicSpawnsRule
+    /**
+     * Arena state change
+     * @param evt
+     */
+    @McEventHandler
+    public void onArenaState(ArenaStateChangedEvent evt)
+    {
+        if (evt.getNewState() == ArenaState.PreMatch)
+        {
+            this.shuffleSpawns();
+        }
+    }
+
+    /**
+     * Shuffle spawns
+     */
+    private void shuffleSpawns()
+    {
+        switch (this.spawnType)
+        {
+            case Fixed:
+                this.fillSpawns();
+                this.setPlayerSpawns();
+                break;
+            default:
+            case RandomAtStart:
+                this.fillShuffledSpawns();
+                this.setPlayerSpawns();
+                break;
+            case FullyRandom:
+                this.fillShuffledSpawns();
+                this.setPlayerSpawnsAndReshuffle();
+                break;
+        }
+    }
+
+    /**
+     * Sets the players spawns using the current spawns list
+     */
+    private void setPlayerSpawns()
+    {
+        int i = 0;
+        for (final UUID player : this.arena.getCurrentMatch().getPlayers())
+        {
+            try
+            {
+                this.arena.getCurrentMatch().selectSpawn(player, this.currentSpawns.get(i));
+            }
+            catch (McException e)
+            {
+                // TODO Logging
+            }
+            i++;
+            if (i >= this.currentSpawns.size())
+            {
+                i = 0;
+            }
+        }
+    }
+
+    /**
+     * Sets the players spawns using the current spawns list, reshuffle if spawns are exceeded
+     */
+    private void setPlayerSpawnsAndReshuffle()
+    {
+        for (final UUID player : this.arena.getCurrentMatch().getPlayers())
+        {
+            try
+            {
+                this.arena.getCurrentMatch().selectSpawn(player, this.currentSpawns.remove(0));
+            }
+            catch (McException e)
+            {
+                // TODO Logging
+            }
+            if (this.currentSpawns.size() == 0)
+            {
+                this.setPlayerSpawnsAndReshuffle();
+            }
+        }
+    }
+
+    /**
+     * Fills the spawns in order
+     */
+    private void fillSpawns()
+    {
+        this.currentSpawns.clear();
+        this.currentSpawns.addAll(this.arena.getComponents(BasicComponentTypes.Spawn));
+    }
+
+    /**
+     * Fills the spawns in order
+     */
+    private void fillShuffledSpawns()
+    {
+        this.fillSpawns();
+        Collections.shuffle(this.currentSpawns, this.random);
+    }
+    
+    // TODO watch for player die event and re-select a spawn
+    
+    // TODO implement spawns for Team mode
     
 }

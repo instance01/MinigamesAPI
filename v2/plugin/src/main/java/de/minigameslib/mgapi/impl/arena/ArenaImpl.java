@@ -71,6 +71,8 @@ import de.minigameslib.mclib.api.objects.SignTypeId;
 import de.minigameslib.mclib.api.objects.ZoneIdInterface;
 import de.minigameslib.mclib.api.objects.ZoneInterface;
 import de.minigameslib.mclib.api.objects.ZoneTypeId;
+import de.minigameslib.mclib.api.util.function.McRunnable;
+import de.minigameslib.mclib.api.util.function.McSupplier;
 import de.minigameslib.mclib.shared.api.com.DataSection;
 import de.minigameslib.mclib.shared.api.com.MemoryDataSection;
 import de.minigameslib.mgapi.api.MinigameInterface;
@@ -169,7 +171,9 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         @Override
         protected ArenaRuleSetInterface create(ArenaRuleSetType ruleset) throws McException
         {
-            return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, ArenaImpl.this);
+            return ArenaImpl.this.calculateInCopiedContext(() -> {
+                return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, ArenaImpl.this);
+            });
         }
     };
     
@@ -215,6 +219,15 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             throw ex;
         }
         this.saveData();
+    }
+    
+    @Override
+    public void checkModifications() throws McException
+    {
+        if (this.getState() != ArenaState.Maintenance)
+        {
+            throw new McException(Messages.ModificationWrongState);
+        }
     }
     
     /**
@@ -782,6 +795,34 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     }
 
     @Override
+    public void finish() throws McException
+    {
+        if (!this.isMatch())
+        {
+            throw new McException(Messages.FinishWrongState);
+        }
+        final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Restarting);
+        this.state = ArenaState.Restarting;
+        this.match.finish();
+        Bukkit.getPluginManager().callEvent(changedEvent);
+        // TODO Teleport players back to main lobby
+    }
+
+    @Override
+    public void abort() throws McException
+    {
+        if (!this.isMatch())
+        {
+            throw new McException(Messages.AbortWrongState);
+        }
+        final ArenaStateChangedEvent changedEvent = new ArenaStateChangedEvent(this, this.state, ArenaState.Restarting);
+        this.state = ArenaState.Restarting;
+        this.match.abort();
+        Bukkit.getPluginManager().callEvent(changedEvent);
+        // TODO Teleport players back to main lobby
+    }
+
+    @Override
     public void setTestState() throws McException
     {
         if (this.state != ArenaState.Maintenance)
@@ -1315,6 +1356,76 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         return this.arenaData.getTeams().stream().map(TeamData::getId).collect(Collectors.toList());
     }
+    
+    /**
+     * Runs the code in new context; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @throws McException
+     *             rethrown from runnable.
+     */
+    void runInNewContext(McRunnable runnable) throws McException
+    {
+        McLibInterface.instance().runInNewContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this);
+            runnable.run();
+        });
+    }
+    
+    /**
+     * Runs the code in new context but copies all context variables before; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @throws McException
+     *             rethrown from runnable.
+     */
+    void runInCopiedContext(McRunnable runnable) throws McException
+    {
+        McLibInterface.instance().runInCopiedContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this);
+            runnable.run();
+        });
+    }
+    
+    /**
+     * Runs the code in new context; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @return result from runnable
+     * @throws McException
+     *             rethrown from runnable.
+     * @param <T>
+     *            Type of return value
+     */
+    <T> T calculateInNewContext(McSupplier<T> runnable) throws McException
+    {
+        return McLibInterface.instance().calculateInNewContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this);
+            return runnable.get();
+        });
+    }
+    
+    /**
+     * Runs the code but copies all context variables before; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @return result from runnable
+     * @throws McException
+     *             rethrown from runnable.
+     * @param <T>
+     *            Type of return value
+     */
+    <T> T calculateInCopiedContext(McSupplier<T> runnable) throws McException
+    {
+        return McLibInterface.instance().calculateInCopiedContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this);
+            return runnable.get();
+        });
+    }
 
     @Override
     public ArenaTeamInterface getTeam(TeamIdType team)
@@ -1447,8 +1558,22 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
          * Cannot start match because arena is not in join mode
          */
         @LocalizedMessage(defaultMessage = "Cannot start match because arena ist not in join mode.", severity = MessageSeverityType.Error)
-        @MessageComment({"Cannot start test match because arena is not in join mode"})
+        @MessageComment({"Cannot start match because arena is not in join mode"})
         StartWrongState,
+        
+        /**
+         * Cannot abort match because arena is not in match mode
+         */
+        @LocalizedMessage(defaultMessage = "Cannot abort match because arena ist not running a match.", severity = MessageSeverityType.Error)
+        @MessageComment({"Cannot abort match because arena is not running a match"})
+        AbortWrongState,
+        
+        /**
+         * Cannot finish match because arena is not in match mode
+         */
+        @LocalizedMessage(defaultMessage = "Cannot start match because arena ist not running a match.", severity = MessageSeverityType.Error)
+        @MessageComment({"Cannot finish match because arena is not in match mode"})
+        FinishWrongState,
         
         /**
          * Cannot start test match because arena has errors

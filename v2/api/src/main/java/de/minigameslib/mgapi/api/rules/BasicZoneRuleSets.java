@@ -24,16 +24,11 @@
 
 package de.minigameslib.mgapi.api.rules;
 
-import de.minigameslib.mclib.api.enums.ChildEnum;
-
 /**
  * Basic zone rule sets
  * 
  * @author mepeisen
  */
-@ChildEnum({
-    BasicPvpModeConfig.class
-})
 public enum BasicZoneRuleSets implements ZoneRuleSetType
 {
     
@@ -69,6 +64,7 @@ public enum BasicZoneRuleSets implements ZoneRuleSetType
     
     /**
      * Pvp-Rules
+     * @see PvPModeRuleInterface
      */
     @RuleSetConfigurable(config = BasicPvpModeConfig.class)
     PvPMode,

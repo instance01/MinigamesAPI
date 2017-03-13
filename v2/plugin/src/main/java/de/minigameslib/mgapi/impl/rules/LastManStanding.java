@@ -25,8 +25,11 @@
 package de.minigameslib.mgapi.impl.rules;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
+import de.minigameslib.mgapi.api.events.ArenaLoseEvent;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
+import de.minigameslib.mgapi.api.rules.AbstractArenaRule;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.BasicWinningRuleSets;
 
@@ -37,18 +40,8 @@ import de.minigameslib.mgapi.api.rules.BasicWinningRuleSets;
  * 
  * @author mepeisen
  */
-public class LastManStanding implements ArenaRuleSetInterface
+public class LastManStanding extends AbstractArenaRule
 {
-    
-    /**
-     * the underlying arena.
-     */
-    private final ArenaInterface arena;
-    
-    /**
-     * rule set type.
-     */
-    private final ArenaRuleSetType type;
     
     /**
      * @param type
@@ -57,22 +50,22 @@ public class LastManStanding implements ArenaRuleSetInterface
      */
     public LastManStanding(ArenaRuleSetType type, ArenaInterface arena) throws McException
     {
-        this.type = type;
-        this.arena = arena;
-    }
-
-    @Override
-    public ArenaRuleSetType getType()
-    {
-        return this.type;
-    }
-
-    @Override
-    public ArenaInterface getArena()
-    {
-        return this.arena;
+        super(type, arena);
     }
     
-    // TODO implement last man standing rule
+    /**
+     * On player lose.
+     * @param evt 
+     * @throws McException 
+     */
+    @McEventHandler
+    public void onLose(ArenaLoseEvent evt) throws McException
+    {
+        final ArenaMatchInterface match = evt.getArena().getCurrentMatch();
+        if (match.getPlayerCount() == 1)
+        {
+            match.setWinner(match.getPlayers().iterator().next());
+        }
+    }
     
 }

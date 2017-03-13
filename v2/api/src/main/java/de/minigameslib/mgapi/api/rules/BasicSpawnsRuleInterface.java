@@ -24,35 +24,27 @@
 
 package de.minigameslib.mgapi.api.rules;
 
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.rules.BasicSpawnsConfig.SpawnType;
+
 /**
- * Basic arena rule sets
- * 
  * @author mepeisen
+ *
  */
-public enum BasicArenaRuleSets implements ArenaRuleSetType
+public interface BasicSpawnsRuleInterface extends ArenaRuleSetInterface
 {
     
     /**
-     * A basic match rule containing:
-     * - min player handling
-     * - max player handling
-     * @see BasicMatchRuleInterface
+     * Returns the spawn rule
+     * @return the spawn rule
      */
-    @RuleSetConfigurable(config = BasicMatchConfig.class)
-    BasicMatch,
-    
+    SpawnType getSpawnType();
+
     /**
-     * Spawn modes
-     * @see BasicSpawnsRuleInterface
+     * Sets the spawn type
+     * @param type
+     * @throws McException thrown if the config is invalid or if arena is not in maintenance mode
      */
-    @RuleSetConfigurable(config = BasicSpawnsConfig.class)
-    BasicSpawns,
-    
-    /**
-     * Maximum timer for matches
-     * @see BasicMatchTimerRuleInterface
-     */
-    @RuleSetConfigurable(config = BasicMatchTimerConfig.class)
-    BasicMatchTimer,
-    
+    void setSpawnType(SpawnType type) throws McException;
+
 }

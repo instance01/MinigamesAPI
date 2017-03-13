@@ -25,8 +25,12 @@
 package de.minigameslib.mgapi.impl.rules;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEventHandler;
+import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
+import de.minigameslib.mgapi.api.events.ArenaPlayerDieEvent;
+import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
+import de.minigameslib.mgapi.api.rules.AbstractArenaRule;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
 import de.minigameslib.mgapi.api.rules.BasicLosingRuleSets;
 
@@ -37,18 +41,8 @@ import de.minigameslib.mgapi.api.rules.BasicLosingRuleSets;
  * 
  * @author mepeisen
  */
-public class LoseOnDeath implements ArenaRuleSetInterface
+public class LoseOnDeath extends AbstractArenaRule
 {
-    
-    /**
-     * the underlying arena.
-     */
-    private final ArenaInterface arena;
-    
-    /**
-     * rule set type.
-     */
-    private final ArenaRuleSetType type;
     
     /**
      * @param type
@@ -57,22 +51,21 @@ public class LoseOnDeath implements ArenaRuleSetInterface
      */
     public LoseOnDeath(ArenaRuleSetType type, ArenaInterface arena) throws McException
     {
-        this.type = type;
-        this.arena = arena;
-    }
-
-    @Override
-    public ArenaRuleSetType getType()
-    {
-        return this.type;
-    }
-
-    @Override
-    public ArenaInterface getArena()
-    {
-        return this.arena;
+        super(type, arena);
     }
     
-    // TODO implement lose on death rule
+    /**
+     * On player die.
+     * @param evt 
+     */
+    @McEventHandler
+    public void onPlayerDie(ArenaPlayerDieEvent evt)
+    {
+        final ArenaPlayerInterface player = MinigamesLibInterface.instance().getPlayer(evt.getPlayer());
+        if (player.isPlaying())
+        {
+            player.lose();
+        }
+    }
     
 }

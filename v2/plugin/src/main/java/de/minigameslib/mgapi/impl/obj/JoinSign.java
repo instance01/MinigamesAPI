@@ -29,10 +29,13 @@ import java.io.File;
 import org.bukkit.Location;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mclib.api.event.McListener;
 import de.minigameslib.mclib.api.event.McPlayerInteractEvent;
 import de.minigameslib.mclib.api.objects.SignInterface;
+import de.minigameslib.mclib.api.util.function.McRunnable;
+import de.minigameslib.mclib.api.util.function.McSupplier;
 import de.minigameslib.mclib.shared.api.com.DataSection;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
@@ -40,6 +43,7 @@ import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
+import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.api.obj.JoinSignInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.SignRuleSetType;
@@ -256,7 +260,83 @@ public class JoinSign extends AbstractBaseArenaObjectHandler<SignRuleSetType, Si
     @Override
     protected SignRuleSetInterface create(SignRuleSetType ruleset) throws McException
     {
-        return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
+        return calculateInCopiedContext(() -> {
+            return MinigamesPlugin.instance().creator(ruleset).apply(ruleset, this);
+        });
+    }
+    
+    /**
+     * Runs the code in new context; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @throws McException
+     *             rethrown from runnable.
+     */
+    void runInNewContext(McRunnable runnable) throws McException
+    {
+        McLibInterface.instance().runInNewContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this.arena);
+            McLibInterface.instance().setContext(ArenaSignHandler.class, this);
+            runnable.run();
+        });
+    }
+    
+    /**
+     * Runs the code in new context but copies all context variables before; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @throws McException
+     *             rethrown from runnable.
+     */
+    void runInCopiedContext(McRunnable runnable) throws McException
+    {
+        McLibInterface.instance().runInCopiedContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this.arena);
+            McLibInterface.instance().setContext(ArenaSignHandler.class, this);
+            runnable.run();
+        });
+    }
+    
+    /**
+     * Runs the code in new context; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @return result from runnable
+     * @throws McException
+     *             rethrown from runnable.
+     * @param <T>
+     *            Type of return value
+     */
+    <T> T calculateInNewContext(McSupplier<T> runnable) throws McException
+    {
+        return McLibInterface.instance().calculateInNewContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this.arena);
+            McLibInterface.instance().setContext(ArenaSignHandler.class, this);
+            return runnable.get();
+        });
+    }
+    
+    /**
+     * Runs the code but copies all context variables before; changes made inside the runnable will be undone.
+     * 
+     * @param runnable
+     *            the runnable to execute.
+     * @return result from runnable
+     * @throws McException
+     *             rethrown from runnable.
+     * @param <T>
+     *            Type of return value
+     */
+    <T> T calculateInCopiedContext(McSupplier<T> runnable) throws McException
+    {
+        return McLibInterface.instance().calculateInCopiedContext(() -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this.arena);
+            McLibInterface.instance().setContext(ArenaSignHandler.class, this);
+            return runnable.get();
+        });
     }
 
     @Override

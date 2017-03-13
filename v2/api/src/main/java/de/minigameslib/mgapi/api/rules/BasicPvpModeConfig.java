@@ -25,7 +25,7 @@
 package de.minigameslib.mgapi.api.rules;
 
 import de.minigameslib.mclib.api.config.ConfigComment;
-import de.minigameslib.mclib.api.config.ConfigurationString;
+import de.minigameslib.mclib.api.config.ConfigurationEnum;
 import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
 import de.minigameslib.mclib.api.config.ConfigurationValues;
 
@@ -40,11 +40,10 @@ import de.minigameslib.mclib.api.config.ConfigurationValues;
 public enum BasicPvpModeConfig implements ConfigurationValueInterface
 {
     
-    // TODO enumeration value
     /**
      * The pvp option
      */
-    @ConfigurationString(defaultValue = "NoPvp")
+    @ConfigurationEnum
     @ConfigComment({"The pvp option"})
     PvpOption;
     

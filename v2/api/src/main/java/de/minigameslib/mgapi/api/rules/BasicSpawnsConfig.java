@@ -25,9 +25,10 @@
 package de.minigameslib.mgapi.api.rules;
 
 import de.minigameslib.mclib.api.config.ConfigComment;
-import de.minigameslib.mclib.api.config.ConfigurationString;
+import de.minigameslib.mclib.api.config.ConfigurationEnum;
 import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
 import de.minigameslib.mclib.api.config.ConfigurationValues;
+import de.minigameslib.mclib.shared.api.com.EnumerationValue;
 
 /**
  * Basic spawns configurations
@@ -40,18 +41,17 @@ import de.minigameslib.mclib.api.config.ConfigurationValues;
 public enum BasicSpawnsConfig implements ConfigurationValueInterface
 {
     
-    // TODO enumeration value
     /**
      * The spawn option
      */
-    @ConfigurationString(defaultValue = "RandomAtStart")
+    @ConfigurationEnum()
     @ConfigComment({"The spawn option"})
     SpawnOption;
     
     /**
      * Enumeration for type of spawns
      */
-    public enum SpawnType
+    public enum SpawnType implements EnumerationValue
     {
         /**
          * fully fixed spawns, first players gets first spawn etc.

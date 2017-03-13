@@ -50,6 +50,8 @@ import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.cmd.CommandImpl;
+import de.minigameslib.mclib.api.config.ConfigServiceInterface;
+import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
 import de.minigameslib.mclib.api.enums.EnumServiceInterface;
 import de.minigameslib.mclib.api.objects.ComponentTypeId;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
@@ -70,6 +72,9 @@ import de.minigameslib.mgapi.api.events.ArenaCreateEvent;
 import de.minigameslib.mgapi.api.events.ArenaCreatedEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeleteEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeletedEvent;
+import de.minigameslib.mgapi.api.events.ArenaLoseEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerDieEvent;
+import de.minigameslib.mgapi.api.events.ArenaPlayerDiesEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
@@ -77,6 +82,7 @@ import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
+import de.minigameslib.mgapi.api.events.ArenaWinEvent;
 import de.minigameslib.mgapi.api.events.MatchStartedEvent;
 import de.minigameslib.mgapi.api.events.MatchStoppedEvent;
 import de.minigameslib.mgapi.api.match.CommonMatchStatistics;
@@ -129,7 +135,7 @@ import de.minigameslib.mgapi.impl.obj.SpawnComponent;
 import de.minigameslib.mgapi.impl.obj.SpectatorSpawnComponent;
 import de.minigameslib.mgapi.impl.obj.SpectatorZone;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
-import de.minigameslib.mgapi.impl.rules.BasicMatchTime;
+import de.minigameslib.mgapi.impl.rules.BasicMatchTimer;
 import de.minigameslib.mgapi.impl.rules.BasicSpawns;
 import de.minigameslib.mgapi.impl.rules.DieOnLeave;
 import de.minigameslib.mgapi.impl.rules.LastManStanding;
@@ -287,10 +293,14 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         McLibInterface.instance().registerEvent(this, ArenaStateChangedEvent.class);
         McLibInterface.instance().registerEvent(this, MatchStartedEvent.class);
         McLibInterface.instance().registerEvent(this, MatchStoppedEvent.class);
+        McLibInterface.instance().registerEvent(this, ArenaWinEvent.class);
+        McLibInterface.instance().registerEvent(this, ArenaLoseEvent.class);
+        McLibInterface.instance().registerEvent(this, ArenaPlayerDieEvent.class);
+        McLibInterface.instance().registerEvent(this, ArenaPlayerDiesEvent.class);
         
         this.registerRuleset(this, BasicArenaRuleSets.BasicMatch, BasicMatch::new);
         this.registerRuleset(this, BasicArenaRuleSets.BasicSpawns, BasicSpawns::new);
-        this.registerRuleset(this, BasicArenaRuleSets.BasicMatchTimer, BasicMatchTime::new);
+        this.registerRuleset(this, BasicArenaRuleSets.BasicMatchTimer, BasicMatchTimer::new);
         this.registerRuleset(this, BasicWinningRuleSets.LastManStanding, LastManStanding::new);
         this.registerRuleset(this, BasicLosingRuleSets.LoseOnDeath, LoseOnDeath::new);
         this.registerRuleset(this, BasicZoneRuleSets.DieOnLeave, DieOnLeave::new);
@@ -703,13 +713,6 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     }
     
     @Override
-    public void registerRuleset(Plugin plugin, ArenaRuleSetType ruleset, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator)
-    {
-        this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
-        this.arenaRuleSetTypes.put(ruleset, creator);
-    }
-    
-    @Override
     public McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator(ArenaRuleSetType type)
     {
         return this.arenaRuleSetTypes.get(type);
@@ -752,10 +755,49 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     }
     
     @Override
+    public void registerRuleset(Plugin plugin, ArenaRuleSetType ruleset, McBiFunction<ArenaRuleSetType, ArenaInterface, ArenaRuleSetInterface> creator)
+    {
+        this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
+        this.arenaRuleSetTypes.put(ruleset, creator);
+        final String pluginName = ruleset.getPluginName();
+        final String ruleSetName = ruleset.name();
+        this.registerConfigEnum(plugin, ruleset, () -> {
+            final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+            // final ArenaRuleSetInterface ruleSet = McLibInterface.instance().getContext(ArenaRuleSetInterface.class);
+            final File folder = new File(this.getDataFolder(), "arenas/" + arena.getInternalName() + "/arenarule-" + pluginName + "-" + ruleSetName); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            return folder;
+        });
+    }
+    
+    /**
+     * registers config from rule set
+     * @param plugin
+     * @param ruleset
+     * @param supplier 
+     */
+    private <T extends Enum<?> & ConfigurationValueInterface> void registerConfigEnum(Plugin plugin, RuleSetType ruleset, McSupplier<File> supplier)
+    {
+        final Class<T> configEnum = ruleset.getConfigClass();
+        if (configEnum != null)
+        {
+            EnumServiceInterface.instance().registerEnumClass(plugin, configEnum);
+            ConfigServiceInterface.instance().registerFileProvider(plugin, configEnum, supplier);
+        }
+    }
+    
+    @Override
     public void registerRuleset(Plugin plugin, ComponentRuleSetType ruleset, McBiFunction<ComponentRuleSetType, ArenaComponentHandler, ComponentRuleSetInterface> creator)
     {
         this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
         this.componentRuleSetTypes.put(ruleset, creator);
+        final String pluginName = ruleset.getPluginName();
+        final String ruleSetName = ruleset.name();
+        this.registerConfigEnum(plugin, ruleset, () -> {
+            final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+            final ArenaComponentHandler component = McLibInterface.instance().getContext(ArenaComponentHandler.class);
+            final File folder = new File(this.getDataFolder(), "arenas/" + arena.getInternalName() + "/componentrule-" + pluginName + "-" + ruleSetName + "/" + component.getComponent().getComponentId().toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            return folder;
+        });
     }
     
     @Override
@@ -763,6 +805,14 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     {
         this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
         this.signRuleSetTypes.put(ruleset, creator);
+        final String pluginName = ruleset.getPluginName();
+        final String ruleSetName = ruleset.name();
+        this.registerConfigEnum(plugin, ruleset, () -> {
+            final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+            final ArenaSignHandler sign = McLibInterface.instance().getContext(ArenaSignHandler.class);
+            final File folder = new File(this.getDataFolder(), "arenas/" + arena.getInternalName() + "/signrule-" + pluginName + "-" + ruleSetName + "/" + sign.getSign().getSignId().toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            return folder;
+        });
     }
     
     @Override
@@ -770,6 +820,14 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     {
         this.ruleSetsPerPlugin.computeIfAbsent(plugin.getName(), k -> new HashSet<>()).add(ruleset);
         this.zoneRuleSetTypes.put(ruleset, creator);
+        final String pluginName = ruleset.getPluginName();
+        final String ruleSetName = ruleset.name();
+        this.registerConfigEnum(plugin, ruleset, () -> {
+            final ArenaInterface arena = McLibInterface.instance().getContext(ArenaInterface.class);
+            final ArenaZoneHandler zone = McLibInterface.instance().getContext(ArenaZoneHandler.class);
+            final File folder = new File(this.getDataFolder(), "arenas/" + arena.getInternalName() + "/componentrule-" + pluginName + "-" + ruleSetName + "/" + zone.getZone().getZoneId().toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            return folder;
+        });
     }
     
     @Override

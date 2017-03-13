@@ -24,35 +24,27 @@
 
 package de.minigameslib.mgapi.api.rules;
 
+import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mgapi.api.rules.BasicPvpModeConfig.PvpModes;
+
 /**
- * Basic arena rule sets
- * 
  * @author mepeisen
+ *
  */
-public enum BasicArenaRuleSets implements ArenaRuleSetType
+public interface PvPModeRuleInterface
 {
     
     /**
-     * A basic match rule containing:
-     * - min player handling
-     * - max player handling
-     * @see BasicMatchRuleInterface
+     * Returns the pvp mode.
+     * @return pvp mode.
      */
-    @RuleSetConfigurable(config = BasicMatchConfig.class)
-    BasicMatch,
+    PvpModes getPvpMode();
     
     /**
-     * Spawn modes
-     * @see BasicSpawnsRuleInterface
+     * Sets the pvp mode
+     * @param mode
+     * @throws McException
      */
-    @RuleSetConfigurable(config = BasicSpawnsConfig.class)
-    BasicSpawns,
-    
-    /**
-     * Maximum timer for matches
-     * @see BasicMatchTimerRuleInterface
-     */
-    @RuleSetConfigurable(config = BasicMatchTimerConfig.class)
-    BasicMatchTimer,
+    void setPvpMode(PvpModes mode) throws McException;
     
 }

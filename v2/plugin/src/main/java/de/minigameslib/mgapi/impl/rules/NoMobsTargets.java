@@ -30,26 +30,15 @@ import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.McEntityTargetEvent;
 import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
-import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.AbstractZoneRule;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
 /**
  * @author mepeisen
  *
  */
-public class NoMobsTargets implements ZoneRuleSetInterface
+public class NoMobsTargets extends AbstractZoneRule
 {
-    
-    /**
-     * the underlying zone.
-     */
-    @SuppressWarnings("unused")
-    private final ArenaZoneHandler zone;
-    
-    /**
-     * rule set type.
-     */
-    private final ZoneRuleSetType type;
     
     /**
      * @param type
@@ -58,14 +47,7 @@ public class NoMobsTargets implements ZoneRuleSetInterface
      */
     public NoMobsTargets(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
     {
-        this.type = type;
-        this.zone = zone;
-    }
-
-    @Override
-    public ZoneRuleSetType getType()
-    {
-        return this.type;
+        super(type, zone);
     }
     
     /**

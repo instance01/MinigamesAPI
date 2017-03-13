@@ -26,28 +26,17 @@ package de.minigameslib.mgapi.impl.rules;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
+import de.minigameslib.mgapi.api.rules.AbstractZoneRule;
 import de.minigameslib.mgapi.api.rules.BasicPvpModeConfig;
 import de.minigameslib.mgapi.api.rules.BasicPvpModeConfig.PvpModes;
-import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
 /**
  * @author mepeisen
  *
  */
-public class PvPMode implements ZoneRuleSetInterface
+public class PvPMode extends AbstractZoneRule
 {
-    
-    /**
-     * the underlying zone.
-     */
-    @SuppressWarnings("unused")
-    private final ArenaZoneHandler zone;
-    
-    /**
-     * rule set type.
-     */
-    private final ZoneRuleSetType type;
     
     /** 
      * the current pvp mode.
@@ -61,8 +50,7 @@ public class PvPMode implements ZoneRuleSetInterface
      */
     public PvPMode(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
     {
-        this.type = type;
-        this.zone = zone;
+        super(type, zone);
         this.mode = PvpModes.valueOf(BasicPvpModeConfig.PvpOption.getString());
         if (this.mode == null)
         {

@@ -34,25 +34,15 @@ import de.minigameslib.mclib.api.event.McCreatureSpawnEvent;
 import de.minigameslib.mclib.api.event.McEntityTeleportEvent;
 import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
-import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.AbstractZoneRule;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
 /**
  * @author mepeisen
  *
  */
-public class NoWorldMobs implements ZoneRuleSetInterface
+public class NoWorldMobs extends AbstractZoneRule
 {
-    
-    /**
-     * the underlying zone.
-     */
-    private final ArenaZoneHandler zone;
-    
-    /**
-     * rule set type.
-     */
-    private final ZoneRuleSetType type;
     
     /**
      * @param type
@@ -61,14 +51,7 @@ public class NoWorldMobs implements ZoneRuleSetInterface
      */
     public NoWorldMobs(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
     {
-        this.type = type;
-        this.zone = zone;
-    }
-
-    @Override
-    public ZoneRuleSetType getType()
-    {
-        return this.type;
+        super(type, zone);
     }
     
     /**

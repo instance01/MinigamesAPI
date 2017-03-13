@@ -52,6 +52,7 @@ import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedTeamEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftSpectatorsEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftTeamEvent;
+import de.minigameslib.mgapi.api.events.ArenaWinEvent;
 import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.match.MatchPlayerInterface;
 import de.minigameslib.mgapi.api.match.MatchStatisticId;
@@ -849,6 +850,8 @@ public class ArenaMatchImpl implements ArenaMatchInterface
             {
                 this.results.get(i).setPlace(i + 1);
             }
+            final ArenaLoseEvent event = new ArenaLoseEvent(this.getArena(), result);
+            Bukkit.getPluginManager().callEvent(event);
         }
     }
 
@@ -881,6 +884,8 @@ public class ArenaMatchImpl implements ArenaMatchInterface
                 this.results.get(i).setPlace(i + 1);
             }
             this.firstLoser++;
+            final ArenaWinEvent event = new ArenaWinEvent(this.getArena(), result);
+            Bukkit.getPluginManager().callEvent(event);
         }
     }
 
@@ -923,6 +928,8 @@ public class ArenaMatchImpl implements ArenaMatchInterface
                 {
                     this.results.get(i).setPlace(i + 1);
                 }
+                final ArenaLoseEvent event = new ArenaLoseEvent(this.getArena(), result);
+                Bukkit.getPluginManager().callEvent(event);
             }
         }
     }
@@ -967,6 +974,8 @@ public class ArenaMatchImpl implements ArenaMatchInterface
                     this.results.get(i).setPlace(i + 1);
                 }
                 this.firstLoser++;
+                final ArenaWinEvent event = new ArenaWinEvent(this.getArena(), result);
+                Bukkit.getPluginManager().callEvent(event);
             }
         }
     }

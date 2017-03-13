@@ -228,6 +228,18 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
     void start() throws McException;
 
     /**
+     * Finish a match regularly
+     * @throws McException thrown if arena is not in match state 
+     */
+    void finish() throws McException;
+
+    /**
+     * Abort a match
+     * @throws McException thrown if arena is not in match state 
+     */
+    void abort() throws McException;
+
+    /**
      * Sets test mode for a maintained arena; ensures that arena gets to maintenance mode one the match was finished.
      * @throws McException thrown if arena is not in maintenance state.
      */
@@ -434,6 +446,12 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
      *             thrown if the zone could not be created
      */
     <T extends ArenaZoneHandler> T createZone(Cuboid cuboid, ZoneTypeId type) throws McException;
+
+    /**
+     * Checks if arena can be modified.
+     * @throws McException thrown if arena is in invalid state for modifications
+     */
+    void checkModifications() throws McException;
     
     // TODO Entity support
 //    /**

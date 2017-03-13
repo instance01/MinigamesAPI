@@ -24,35 +24,46 @@
 
 package de.minigameslib.mgapi.api.rules;
 
+import de.minigameslib.mclib.api.McException;
+
 /**
- * Basic arena rule sets
- * 
  * @author mepeisen
+ *
  */
-public enum BasicArenaRuleSets implements ArenaRuleSetType
+public interface BasicMatchRuleInterface extends ArenaRuleSetInterface
 {
     
     /**
-     * A basic match rule containing:
-     * - min player handling
-     * - max player handling
-     * @see BasicMatchRuleInterface
+     * Returns the minimum players when the match countdown starts
+     * @return the minPlayers
      */
-    @RuleSetConfigurable(config = BasicMatchConfig.class)
-    BasicMatch,
+    int getMinPlayers();
+
+    /**
+     * Returns the maximum players allowed in a match
+     * @return the maxPlayers
+     */
+    int getMaxPlayers();
+
+    /**
+     * Returns the lobby countdown in seconds
+     * @return the lobbyCountdown
+     */
+    int getLobbyCountdown();
     
     /**
-     * Spawn modes
-     * @see BasicSpawnsRuleInterface
+     * Sets the min and max players
+     * @param minPlayers
+     * @param maxPlayers
+     * @throws McException thrown if the config is invalid or if arena is not in maintenance mode
      */
-    @RuleSetConfigurable(config = BasicSpawnsConfig.class)
-    BasicSpawns,
+    void setPlayers(int minPlayers, int maxPlayers) throws McException;
     
     /**
-     * Maximum timer for matches
-     * @see BasicMatchTimerRuleInterface
+     * Sets the lobby countdown
+     * @param seconds
+     * @throws McException thrown if the config is invalid or if arena is not in maintenance mode
      */
-    @RuleSetConfigurable(config = BasicMatchTimerConfig.class)
-    BasicMatchTimer,
-    
+    void setLobbyCountdown(int seconds) throws McException;
+
 }

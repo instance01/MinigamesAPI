@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.api.rules;
 
 import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
+import de.minigameslib.mclib.shared.api.com.EnumerationValue;
 
 /**
  * Base interface for rule sets
@@ -34,6 +35,27 @@ import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
 public interface RuleSetType extends McUniqueEnumInterface
 {
     
-    // marker only
+    /**
+     * Returns the configuration class used for rule set configuration.
+     * @return confuiguration class or {@code null} if this types has no configuration.
+     */
+    @SuppressWarnings("unchecked")
+    default <T extends Enum<?> & EnumerationValue> Class<T> getConfigClass()
+    {
+        RuleSetConfigurable result;
+        try
+        {
+            result = this.getClass().getDeclaredField(this.name()).getAnnotation(RuleSetConfigurable.class);
+            if (result != null)
+            {
+                return (Class<T>) result.config();
+            }
+        }
+        catch (@SuppressWarnings("unused") NoSuchFieldException | SecurityException e)
+        {
+            // silently ignore
+        }
+        return null;
+    }
     
 }

@@ -28,27 +28,16 @@ import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.McEventHandler;
 import de.minigameslib.mclib.api.mcevent.PlayerLeftZoneEvent;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
-import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
-import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
+import de.minigameslib.mgapi.api.rules.AbstractZoneRule;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
 /**
  * @author mepeisen
  *
  */
-public class DieOnLeave implements ZoneRuleSetInterface
+public class DieOnLeave extends AbstractZoneRule
 {
-    
-    /**
-     * the underlying zone.
-     */
-    private final ArenaZoneHandler zone;
-    
-    /**
-     * rule set type.
-     */
-    private final ZoneRuleSetType type;
     
     /**
      * @param type
@@ -57,14 +46,7 @@ public class DieOnLeave implements ZoneRuleSetInterface
      */
     public DieOnLeave(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
     {
-        this.type = type;
-        this.zone = zone;
-    }
-
-    @Override
-    public ZoneRuleSetType getType()
-    {
-        return this.type;
+        super(type, zone);
     }
     
     /**
@@ -74,10 +56,9 @@ public class DieOnLeave implements ZoneRuleSetInterface
     @McEventHandler
     public void onLeave(PlayerLeftZoneEvent evt)
     {
-        final ArenaInterface arena = this.zone.getArena();
-        if (arena.isMatch())
+        if (this.arena.isMatch())
         {
-            if (arena.isPlaying(evt.getPlayer()))
+            if (this.arena.isPlaying(evt.getPlayer()))
             {
                 MinigamesLibInterface.instance().getPlayer(evt.getPlayer()).die();
             }
