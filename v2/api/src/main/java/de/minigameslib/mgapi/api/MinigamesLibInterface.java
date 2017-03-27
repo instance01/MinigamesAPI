@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.api;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.plugin.Plugin;
@@ -431,7 +432,7 @@ public interface MinigamesLibInterface
      *            maximum amount of arenas to return
      * @return the arenas
      */
-    Collection<ArenaInterface> getArenas(int index, int limit);
+    List<ArenaInterface> getArenas(int index, int limit);
     
     /**
      * Returns the arenas
@@ -444,7 +445,7 @@ public interface MinigamesLibInterface
      *            maximum amount of arenas to return
      * @return the arenas
      */
-    Collection<ArenaInterface> getArenas(String prefix, int index, int limit);
+    List<ArenaInterface> getArenas(String prefix, int index, int limit);
     
     /**
      * Returns the arenas
@@ -457,7 +458,7 @@ public interface MinigamesLibInterface
      *            maximum amount of arenas to return
      * @return the arenas
      */
-    Collection<ArenaInterface> getArenas(Plugin plugin, int index, int limit);
+    List<ArenaInterface> getArenas(Plugin plugin, int index, int limit);
     
     /**
      * Returns the arenas
@@ -472,7 +473,7 @@ public interface MinigamesLibInterface
      *            maximum amount of arenas to return
      * @return the arenas
      */
-    Collection<ArenaInterface> getArenas(Plugin plugin, String prefix, int index, int limit);
+    List<ArenaInterface> getArenas(Plugin plugin, String prefix, int index, int limit);
     
     /**
      * Returns the arenas
@@ -485,7 +486,7 @@ public interface MinigamesLibInterface
      *            maximum amount of arenas to return
      * @return the arenas
      */
-    Collection<ArenaInterface> getArenas(ArenaTypeInterface type, int index, int limit);
+    List<ArenaInterface> getArenas(ArenaTypeInterface type, int index, int limit);
     
     /**
      * Returns the arenas
@@ -500,7 +501,7 @@ public interface MinigamesLibInterface
      *            maximum amount of arenas to return
      * @return the arenas
      */
-    Collection<ArenaInterface> getArenas(ArenaTypeInterface type, String prefix, int index, int limit);
+    List<ArenaInterface> getArenas(ArenaTypeInterface type, String prefix, int index, int limit);
     
     /**
      * Returns the arena for given name

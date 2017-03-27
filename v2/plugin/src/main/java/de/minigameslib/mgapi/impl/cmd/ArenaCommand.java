@@ -86,7 +86,7 @@ public class ArenaCommand implements SubCommandHandlerInterface
      * @param state
      * @return string message
      */
-    private LocalizedMessageInterface toString(ArenaState state)
+    public static LocalizedMessageInterface toString(ArenaState state)
     {
         switch (state)
         {

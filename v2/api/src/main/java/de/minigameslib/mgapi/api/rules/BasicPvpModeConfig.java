@@ -28,6 +28,7 @@ import de.minigameslib.mclib.api.config.ConfigComment;
 import de.minigameslib.mclib.api.config.ConfigurationEnum;
 import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
 import de.minigameslib.mclib.api.config.ConfigurationValues;
+import de.minigameslib.mclib.shared.api.com.EnumerationValue;
 
 /**
  * Basic pvp configurations
@@ -50,7 +51,7 @@ public enum BasicPvpModeConfig implements ConfigurationValueInterface
     /**
      * Enumeration for type of pvp modes
      */
-    public enum PvpModes
+    public enum PvpModes implements EnumerationValue
     {
         /**
          * No Pvp at all

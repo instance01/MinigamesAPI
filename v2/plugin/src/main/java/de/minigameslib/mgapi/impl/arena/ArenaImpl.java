@@ -460,7 +460,6 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         
         this.match.leave(player);
         
-        ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
         player.getMcPlayer().sendMessage(Messages.YouLeft, this.getDisplayName());
         // port to main lobby
         this.teleportRandom(player, this.getComponents(BasicComponentTypes.MainLobbySpawn));
@@ -531,7 +530,6 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         }
         
         this.match.join(player);
-        ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), false);
         player.getMcPlayer().sendMessage(Messages.JoinedArena, this.getDisplayName());
         // port to main lobby
         this.teleportRandom(player, this.getComponents(BasicComponentTypes.JoinSpawn));
@@ -558,7 +556,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             case PostMatch:
             case PreMatch:
                 this.match.spectate(player);
-                ((ArenaPlayerImpl)player).switchArenaOrMode(this.getInternalName(), true);
+                
                 player.getMcPlayer().sendMessage(Messages.SpectatingArena, this.getDisplayName());
                 this.teleportToSpectate(player);
                 break;
@@ -731,6 +729,17 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         final McPlayerInterface player = ObjectServiceInterface.instance().getPlayer(uuid);
         final ArenaPlayerImpl arenaPlayerImpl = (ArenaPlayerImpl)MinigamesLibInterface.instance().getPlayer(player);
+        if (this.match != null)
+        {
+            try
+            {
+                this.match.leave(arenaPlayerImpl);
+            }
+            catch (McException ex)
+            {
+                this.getLogger().log(Level.WARNING, "Problems kicking player", ex); //$NON-NLS-1$
+            }
+        }
         arenaPlayerImpl.switchArenaOrMode(null, false);
         player.sendMessage(Messages.YouWereKicked, kickReason);
         this.teleportRandom(arenaPlayerImpl, this.getComponents(BasicComponentTypes.MainLobbySpawn));
@@ -1333,7 +1342,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         }
         if (team.isSpecial())
         {
-            // TODO disallow special teams
+            throw new McException(CommonMessages.InternalError, "Unable to add special teams"); //$NON-NLS-1$
         }
         this.arenaData.getTeams().removeIf(t -> t.getId() == team);
         this.arenaData.getTeams().add(new TeamData(team, name));
@@ -1442,7 +1451,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 }
                 if (team.isSpecial())
                 {
-                    // TODO disallow special teams
+                    throw new McException(CommonMessages.InternalError, "Unable to rename special teams"); //$NON-NLS-1$
                 }
                 data.get().setName(name);
                 ArenaImpl.this.saveData();

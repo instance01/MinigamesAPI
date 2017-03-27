@@ -57,9 +57,10 @@ public class LoseOnDeath extends AbstractArenaRule
     /**
      * On player die.
      * @param evt 
+     * @throws McException 
      */
     @McEventHandler
-    public void onPlayerDie(ArenaPlayerDieEvent evt)
+    public void onPlayerDie(ArenaPlayerDieEvent evt) throws McException
     {
         final ArenaPlayerInterface player = MinigamesLibInterface.instance().getPlayer(evt.getPlayer());
         if (player.isPlaying())

@@ -29,8 +29,6 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
-
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mgapi.impl.tasks.AsyncTaskInterface;
 
@@ -54,8 +52,7 @@ public class TaskManager
      */
     public static TaskManager instance()
     {
-        // TODO caching of task manager interface
-        return Bukkit.getServicesManager().load(TaskManager.class);
+        return TaskManagerCache.get();
     }
 
     /**

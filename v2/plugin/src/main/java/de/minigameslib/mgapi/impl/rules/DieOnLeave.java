@@ -52,9 +52,10 @@ public class DieOnLeave extends AbstractZoneRule
     /**
      * Event on player zone leave
      * @param evt
+     * @throws McException 
      */
     @McEventHandler
-    public void onLeave(PlayerLeftZoneEvent evt)
+    public void onLeave(PlayerLeftZoneEvent evt) throws McException
     {
         if (this.arena.isMatch())
         {

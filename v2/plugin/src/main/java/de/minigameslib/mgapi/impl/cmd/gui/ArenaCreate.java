@@ -22,49 +22,44 @@
 
 */
 
-package de.minigameslib.mgapi.impl.test;
+package de.minigameslib.mgapi.impl.cmd.gui;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.io.Serializable;
 
-import de.minigameslib.mclib.spigottest.SpigotInject;
-import de.minigameslib.mclib.spigottest.SpigotJunit4Runner;
-import de.minigameslib.mclib.spigottest.SpigotServer;
-import de.minigameslib.mclib.spigottest.SpigotTest;
+import de.minigameslib.mclib.api.gui.ClickGuiItem;
+import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
 
 /**
- * Test case for arena impl.
+ * Click gui for creating arenas.
  * 
  * @author mepeisen
  */
-@RunWith(SpigotJunit4Runner.class)
-@SpigotTest(all = true)
-public class ArenaImplTest
+public class ArenaCreate implements ClickGuiPageInterface
 {
     
+    /** previous page. */
+    private ClickGuiPageInterface prevPage;
+
     /**
-     * the spigot server.
+     * @param prevPage
      */
-    @SpigotInject
-    private SpigotServer server;
-    
-    /**
-     * Loads the test plugin.
-     */
-    @Before
-    public void loadPlugin()
+    public ArenaCreate(ClickGuiPageInterface prevPage)
     {
-        // TODO assertTrue(this.server.loadTestPlugin("JUNIT", TestPlugin.class)); //$NON-NLS-1$
+        this.prevPage = prevPage;
     }
-    
-    /**
-     * Tests constructor to create new arenas
-     */
-    @Test
-    public void testConstructorNew()
+
+    @Override
+    public ClickGuiItem[][] getItems()
     {
-        // TODO
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Serializable getPageName()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

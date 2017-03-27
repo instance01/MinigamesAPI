@@ -24,6 +24,8 @@
 
 package de.minigameslib.mgapi.impl.arena;
 
+import org.bukkit.Bukkit;
+
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.util.function.FalseStub;
@@ -34,6 +36,8 @@ import de.minigameslib.mclib.shared.api.com.AnnotatedDataFragment;
 import de.minigameslib.mclib.shared.api.com.PersistentField;
 import de.minigameslib.mgapi.api.MinigamesLibInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
+import de.minigameslib.mgapi.api.events.ArenaPlayerDieEvent;
+import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 
 /**
@@ -150,27 +154,65 @@ public class ArenaPlayerImpl extends AnnotatedDataFragment implements ArenaPlaye
     }
 
     @Override
-    public void die()
+    public void die() throws McException
     {
-        // TODO implement player die
+        this.die(null);
     }
 
     @Override
-    public void lose()
+    public void die(ArenaPlayerInterface killer) throws McException
     {
-        // TODO implement player lose
+        if (this.inArena())
+        {
+            final ArenaMatchInterface match = this.getArena().getCurrentMatch();
+            if (match != null)
+            {
+                if (killer != null)
+                {
+                    match.trackDamageForKill(this.getPlayerUUID(), killer.getPlayerUUID());
+                }
+                
+                final ArenaPlayerDieEvent event = new ArenaPlayerDieEvent(this.getArena(), this);
+                Bukkit.getPluginManager().callEvent(event);
+                
+                // TODO do respawn if player is still in match
+                return;
+            }
+        }
+
+        throw new McException(ArenaImpl.Messages.InvalidModificationBeforeStart, "?"); //$NON-NLS-1$
     }
 
     @Override
-    public void win()
+    public void lose() throws McException
     {
-        // TODO implement player win
+        if (this.inArena())
+        {
+            final ArenaMatchInterface match = this.getArena().getCurrentMatch();
+            if (match != null)
+            {
+                match.setLoser(this.getPlayerUUID());
+                return;
+            }
+        }
+
+        throw new McException(ArenaImpl.Messages.InvalidModificationBeforeStart, "?"); //$NON-NLS-1$
     }
 
     @Override
-    public void die(ArenaPlayerInterface killer)
+    public void win() throws McException
     {
-        // TODO implement player die
+        if (this.inArena())
+        {
+            final ArenaMatchInterface match = this.getArena().getCurrentMatch();
+            if (match != null)
+            {
+                match.setWinner(this.getPlayerUUID());
+                return;
+            }
+        }
+
+        throw new McException(ArenaImpl.Messages.InvalidModificationBeforeStart, "?"); //$NON-NLS-1$
     }
     
 }

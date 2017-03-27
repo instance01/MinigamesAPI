@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.event.McEventHandler;
@@ -64,6 +66,9 @@ public class BasicSpawns extends AbstractArenaRule implements BasicSpawnsRuleInt
     
     /** random number generator. */
     private final Random random = new Random();
+    
+    /** logger. */
+    private static final Logger LOGGER = Logger.getLogger(BasicSpawns.class.getName());
     
     /**
      * @param type
@@ -148,7 +153,7 @@ public class BasicSpawns extends AbstractArenaRule implements BasicSpawnsRuleInt
             }
             catch (McException e)
             {
-                // TODO Logging
+                LOGGER.log(Level.WARNING, "Unable to select player spawn", e); //$NON-NLS-1$
             }
             i++;
             if (i >= this.currentSpawns.size())
@@ -171,7 +176,7 @@ public class BasicSpawns extends AbstractArenaRule implements BasicSpawnsRuleInt
             }
             catch (McException e)
             {
-                // TODO Logging
+                LOGGER.log(Level.WARNING, "Unable to select player spawn", e); //$NON-NLS-1$
             }
             if (this.currentSpawns.size() == 0)
             {

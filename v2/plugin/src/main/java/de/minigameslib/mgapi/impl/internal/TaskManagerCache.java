@@ -22,49 +22,32 @@
 
 */
 
-package de.minigameslib.mgapi.impl.test;
+package de.minigameslib.mgapi.impl.internal;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import de.minigameslib.mclib.spigottest.SpigotInject;
-import de.minigameslib.mclib.spigottest.SpigotJunit4Runner;
-import de.minigameslib.mclib.spigottest.SpigotServer;
-import de.minigameslib.mclib.spigottest.SpigotTest;
+import org.bukkit.Bukkit;
 
 /**
- * Test case for arena impl.
+ * Helper to cache the task manager class.
  * 
  * @author mepeisen
  */
-@RunWith(SpigotJunit4Runner.class)
-@SpigotTest(all = true)
-public class ArenaImplTest
+class TaskManagerCache
 {
     
-    /**
-     * the spigot server.
-     */
-    @SpigotInject
-    private SpigotServer server;
+    /** the task manager services. */
+    private static TaskManager SERVICES;
     
     /**
-     * Loads the test plugin.
+     * Returns the task manager instance.
+     * @return task manager.
      */
-    @Before
-    public void loadPlugin()
+    static TaskManager get()
     {
-        // TODO assertTrue(this.server.loadTestPlugin("JUNIT", TestPlugin.class)); //$NON-NLS-1$
-    }
-    
-    /**
-     * Tests constructor to create new arenas
-     */
-    @Test
-    public void testConstructorNew()
-    {
-        // TODO
+        if (SERVICES == null)
+        {
+            SERVICES = Bukkit.getServicesManager().load(TaskManager.class);
+        }
+        return SERVICES;
     }
     
 }

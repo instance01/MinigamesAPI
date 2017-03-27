@@ -94,7 +94,7 @@ public abstract class ClassicSinglePlayerArena implements ArenaTypeProvider
     @Override
     public void configure(ArenaZoneHandler handler) throws McException
     {
-        // TODO if (handler.getZone().getChildZones())
+        // no configuration
     }
 
     @Override

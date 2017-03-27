@@ -24,18 +24,25 @@
 
 package de.minigameslib.mgapi.impl.rules;
 
+import org.bukkit.entity.Player;
+
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.event.McEntityDamageByEntityEvent;
+import de.minigameslib.mclib.api.event.McEventHandler;
+import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
+import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.AbstractZoneRule;
 import de.minigameslib.mgapi.api.rules.BasicPvpModeConfig;
 import de.minigameslib.mgapi.api.rules.BasicPvpModeConfig.PvpModes;
+import de.minigameslib.mgapi.api.rules.PvPModeRuleInterface;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetType;
 
 /**
  * @author mepeisen
  *
  */
-public class PvPMode extends AbstractZoneRule
+public class PvPMode extends AbstractZoneRule implements PvPModeRuleInterface
 {
     
     /** 
@@ -51,11 +58,13 @@ public class PvPMode extends AbstractZoneRule
     public PvPMode(ZoneRuleSetType type, ArenaZoneHandler zone) throws McException
     {
         super(type, zone);
-        this.mode = PvpModes.valueOf(BasicPvpModeConfig.PvpOption.getString());
-        if (this.mode == null)
-        {
-            // TODO implement pvp mode rule
-        }
+        this.runInCopiedContext(() -> {
+            this.mode = BasicPvpModeConfig.PvpOption.getEnum(PvpModes.class);
+            if (this.mode == null)
+            {
+                this.mode = PvpModes.NoPvp;
+            }
+        });
     }
 
     @Override
@@ -63,7 +72,53 @@ public class PvPMode extends AbstractZoneRule
     {
         return this.type;
     }
+
+    @Override
+    public PvpModes getPvpMode()
+    {
+        return this.mode;
+    }
+
+    @Override
+    public void setPvpMode(PvpModes mode) throws McException
+    {
+        this.arena.checkModifications();
+        this.runInCopiedContext(() -> {
+            BasicPvpModeConfig.PvpOption.setEnum(mode);
+        });
+        this.zone.reconfigure(this.type);
+    }
     
-    // TODO implement pvp mode rule
+    /**
+     * Player dmg event
+     * @param evt
+     */
+    @McEventHandler
+    public void onPlayerDmg(McEntityDamageByEntityEvent evt)
+    {
+        if (evt.getPlayer() != null && evt.getBukkitEvent().getDamager() instanceof Player)
+        {
+            final Player damager = (Player) evt.getBukkitEvent().getDamager();
+            if (!ObjectServiceInterface.instance().isHuman(damager))
+            {
+                switch (this.mode)
+                {
+                    default:
+                    case NoPvp:
+                        evt.getBukkitEvent().setCancelled(true);
+                        break;
+                    case Normal:
+                        // allow  everything
+                        break;
+                    case PvpDuringMatch:
+                        if (this.arena.getState() != ArenaState.Match)
+                        {
+                            evt.getBukkitEvent().setCancelled(true);
+                        }
+                        break;
+                }
+            }
+        }
+    }
     
 }

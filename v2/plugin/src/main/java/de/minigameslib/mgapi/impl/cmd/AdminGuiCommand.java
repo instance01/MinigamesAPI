@@ -30,11 +30,13 @@ import java.util.List;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.cmd.CommandInterface;
 import de.minigameslib.mclib.api.cmd.SubCommandHandlerInterface;
+import de.minigameslib.mclib.api.items.ResourceServiceInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mgapi.impl.MglibPerms;
+import de.minigameslib.mgapi.impl.cmd.gui.Main;
 
 /**
  * @author mepeisen
@@ -54,7 +56,14 @@ public class AdminGuiCommand implements SubCommandHandlerInterface
     {
         command.permOpThrowException(MglibPerms.CommandAdminGui, command.getCommandPath());
         
-        // TODO Support gui
+        if (ResourceServiceInterface.instance().hasResourcePack(command.getPlayer()))
+        {
+            command.getPlayer().openClickGui(new Main());
+        }
+        else
+        {
+            ResourceServiceInterface.instance().forceDownload(command.getPlayer(), () -> { command.getPlayer().openClickGui(new Main()); });
+        }
     }
     
     @Override

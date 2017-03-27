@@ -22,49 +22,29 @@
 
 */
 
-package de.minigameslib.mgapi.impl.test;
+package de.minigameslib.mgapi.impl.cmd.gui;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import de.minigameslib.mclib.spigottest.SpigotInject;
-import de.minigameslib.mclib.spigottest.SpigotJunit4Runner;
-import de.minigameslib.mclib.spigottest.SpigotServer;
-import de.minigameslib.mclib.spigottest.SpigotTest;
+import de.minigameslib.mclib.api.enums.ChildEnum;
+import de.minigameslib.mclib.api.gui.ClickGuiId;
 
 /**
- * Test case for arena impl.
+ * Enumeration to identify guis.
  * 
  * @author mepeisen
  */
-@RunWith(SpigotJunit4Runner.class)
-@SpigotTest(all = true)
-public class ArenaImplTest
+@ChildEnum({
+    Main.Messages.class,
+    ArenasPage.Messages.class,
+    ArenaEdit.Messages.class,
+    // ArenaCreate.Messages.class,
+    YesNoQuestion.Messages.class,
+    LocalizedStringList.Messages.class,
+    LocalizedStringEditor.Messages.class,
+})
+public enum MgClickGuis implements ClickGuiId
 {
     
-    /**
-     * the spigot server.
-     */
-    @SpigotInject
-    private SpigotServer server;
-    
-    /**
-     * Loads the test plugin.
-     */
-    @Before
-    public void loadPlugin()
-    {
-        // TODO assertTrue(this.server.loadTestPlugin("JUNIT", TestPlugin.class)); //$NON-NLS-1$
-    }
-    
-    /**
-     * Tests constructor to create new arenas
-     */
-    @Test
-    public void testConstructorNew()
-    {
-        // TODO
-    }
+    /** the main gui. */
+    Main
     
 }

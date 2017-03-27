@@ -104,30 +104,34 @@ public interface ArenaPlayerInterface
     /**
      * Let the player die; does nothing if there is no game pending.
      * Adds a new kill to kill statistic and performs a kill.
+     * @throws McException thrown if no match is running.
      */
-    void die();
+    void die() throws McException;
     
     /**
      * Let the player die; does nothing if there is no game pending.
      * Adds a new kill to kill statistic and performs a kill while the killer gets a statistic bonus
      * for killing this player.
      * @param killer the opposite player causing the death
+     * @throws McException thrown if no match is running.
      */
-    void die(ArenaPlayerInterface killer);
+    void die(ArenaPlayerInterface killer) throws McException;
     
     /**
      * Let the player lose the game; does nothing if there is no game pending.
      * May cause to end the game (depending on gaming rules).
      * Identical to invoke {@link ArenaMatchInterface#setLoser(UUID...)} with this players uuid.
+     * @throws McException thrown if no match is running.
      */
-    void lose();
+    void lose() throws McException;
     
     /**
      * Let the player win the game; does nothing if there is no game pending
      * May cause to end the game (depending on gaming rules).
      * Identical to invoke {@link ArenaMatchInterface#setWinner(UUID...)} with this players uuid.
+     * @throws McException thrown if no match is running.
      */
-    void win();
+    void win() throws McException;
     
     // stubbing
     

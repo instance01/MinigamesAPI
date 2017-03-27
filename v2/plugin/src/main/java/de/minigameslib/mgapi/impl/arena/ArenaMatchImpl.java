@@ -61,6 +61,7 @@ import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.team.CommonTeams;
 import de.minigameslib.mgapi.api.team.TeamIdType;
 import de.minigameslib.mgapi.impl.arena.ArenaData.TeamData;
+import de.minigameslib.mgapi.impl.arena.ArenaImpl.Messages;
 
 /**
  * Arena Match implementation
@@ -267,8 +268,14 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     @Override
     public void spectate(ArenaPlayerInterface player) throws McException
     {
-        // TODO move some code from ArenaImpl to this method. (invocation of switchArenaOrMode and save)
         checkMatchNotFinished();
+        
+        if (player.inArena() && player.getArena() != this.getArena())
+        {
+            throw new McException(Messages.AlreadyInArena, player.getArena().getDisplayName());
+        }
+        ((ArenaPlayerImpl)player).switchArenaOrMode(this.getArena().getInternalName(), false);
+        
         final MatchPlayer mplayer = this.players.computeIfAbsent(player.getPlayerUUID(), MatchPlayer::new);
         
         if (mplayer.getTeam() == null)
@@ -310,8 +317,14 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     @Override
     public void leave(ArenaPlayerInterface player) throws McException
     {
-        // TODO move some code from ArenaImpl to this method. (invocation of switchArenaOrMode and save)
         checkMatchNotFinished();
+        
+        if (player.getArena() != this.getArena())
+        {
+            throw new McException(Messages.CannotLeaveNotInArena, this.getArena().getDisplayName());
+        }
+        ((ArenaPlayerImpl)player).switchArenaOrMode(null, false);
+        
         final MatchPlayer mplayer = this.players.get(player.getPlayerUUID());
         if (mplayer != null)
         {
@@ -366,8 +379,14 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     @Override
     public void join(ArenaPlayerInterface player) throws McException
     {
-        // TODO move some code from ArenaImpl to this method. (invocation of switchArenaOrMode and save)
         checkMatchNotFinished();
+        
+        if (player.inArena())
+        {
+            throw new McException(Messages.AlreadyInArena, player.getArena().getDisplayName());
+        }
+        ((ArenaPlayerImpl)player).switchArenaOrMode(this.getArena().getInternalName(), false);
+        
         TeamIdType preTeam = this.isTeamMatch() ? this.getPreferredTeam() : CommonTeams.Unknown;
         if (preTeam == null) preTeam = CommonTeams.Unknown;
         

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mgapi.api.rules.RuleSetInterface;
 import de.minigameslib.mgapi.api.rules.RuleSetType;
@@ -204,7 +205,7 @@ public abstract class AbstractRuleSetContainer<T extends RuleSetType, Q extends 
     public Q reapplyRuleSet(T ruleset) throws McException
     {
         this.checkModifications();
-        if (!this.isApplied(ruleset)) throw new IllegalStateException(); // TODO throw mcexception instead
+        if (!this.isApplied(ruleset)) throw new McException(CommonMessages.InternalError, "Cannot reconfigure unapplied rule"); //$NON-NLS-1$
         final Q result = create(ruleset);
         this.removeListeners(this.ruleSets.get(ruleset));
         this.ruleSets.put(ruleset, result);

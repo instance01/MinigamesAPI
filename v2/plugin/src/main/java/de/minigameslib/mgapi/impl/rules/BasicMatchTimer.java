@@ -26,6 +26,8 @@ package de.minigameslib.mgapi.impl.rules;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.scheduler.BukkitTask;
 
@@ -81,6 +83,9 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
      * The timer task
      */
     private BukkitTask timerTask;
+    
+    /** logger. */
+    private static final Logger LOGGER = Logger.getLogger(BasicMatchTimer.class.getName());
     
     /**
      * @param type
@@ -278,7 +283,7 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
                 }
                 catch (McException e)
                 {
-                    // TODO logging
+                    LOGGER.log(Level.WARNING, "Unable to abort arena after reaching maximum game time", e); //$NON-NLS-1$
                 }
             }
             else

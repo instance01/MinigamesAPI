@@ -77,6 +77,9 @@ public class AdminCommand extends AbstractCompositeCommandHandler implements Sub
         this.subCommands.put("comp", new AdminComponentCommand()); //$NON-NLS-1$
         this.subCommands.put("gui", new AdminGuiCommand()); //$NON-NLS-1$
         this.subCommands.put("sgui", new AdminSGuiCommand()); //$NON-NLS-1$
+        // TODO missing command: change display name/ short desc/ desc/ manual
+        // TODO missing command: export/ import
+        // TODO missing command: marketplace
     }
 
     @Override

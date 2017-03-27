@@ -36,7 +36,6 @@ import de.minigameslib.mclib.api.config.ConfigurationValues;
  * 
  * @see BasicArenaRuleSets#BasicMatch
  */
-// TODO external provider to read from rule set config
 @ConfigurationValues(path = "core")
 public enum BasicMatchConfig implements ConfigurationValueInterface
 {

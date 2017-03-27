@@ -115,6 +115,8 @@ import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerImpl;
 import de.minigameslib.mgapi.impl.arena.ArenaPlayerPersistentData;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
+import de.minigameslib.mgapi.impl.cmd.gui.MgAnvilGuis;
+import de.minigameslib.mgapi.impl.cmd.gui.MgClickGuis;
 import de.minigameslib.mgapi.impl.internal.TaskManager;
 import de.minigameslib.mgapi.impl.obj.BattleZone;
 import de.minigameslib.mgapi.impl.obj.EmptyComponent;
@@ -263,6 +265,9 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         EnumServiceInterface.instance().registerEnumClass(this, MglibMessages.class);
         EnumServiceInterface.instance().registerEnumClass(this, MglibPerms.class);
         EnumServiceInterface.instance().registerEnumClass(this, MglibObjectTypes.class);
+        
+        EnumServiceInterface.instance().registerEnumClass(this, MgClickGuis.class);
+        EnumServiceInterface.instance().registerEnumClass(this, MgAnvilGuis.class);
         
         EnumServiceInterface.instance().registerEnumClass(this, BasicArenaRuleSets.class);
         EnumServiceInterface.instance().registerEnumClass(this, BasicWinningRuleSets.class);
@@ -611,38 +616,38 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
     }
     
     @Override
-    public Collection<ArenaInterface> getArenas(int index, int limit)
+    public List<ArenaInterface> getArenas(int index, int limit)
     {
         return this.arenasPerName.values().stream().skip(index).limit(limit).collect(Collectors.toList());
     }
     
     @Override
-    public Collection<ArenaInterface> getArenas(String prefix, int index, int limit)
+    public List<ArenaInterface> getArenas(String prefix, int index, int limit)
     {
         return this.arenasPerName.values().stream().filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit).collect(Collectors.toList());
     }
     
     @Override
-    public Collection<ArenaInterface> getArenas(Plugin plugin, int index, int limit)
+    public List<ArenaInterface> getArenas(Plugin plugin, int index, int limit)
     {
         return this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).skip(index).limit(limit).collect(Collectors.toList());
     }
     
     @Override
-    public Collection<ArenaInterface> getArenas(Plugin plugin, String prefix, int index, int limit)
+    public List<ArenaInterface> getArenas(Plugin plugin, String prefix, int index, int limit)
     {
         return this.arenasPerName.values().stream().filter(p -> p.getPlugin() == plugin).filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit)
                 .collect(Collectors.toList());
     }
     
     @Override
-    public Collection<ArenaInterface> getArenas(ArenaTypeInterface type, int index, int limit)
+    public List<ArenaInterface> getArenas(ArenaTypeInterface type, int index, int limit)
     {
         return this.arenasPerName.values().stream().filter(p -> p.getType() == type).skip(index).limit(limit).collect(Collectors.toList());
     }
     
     @Override
-    public Collection<ArenaInterface> getArenas(ArenaTypeInterface type, String prefix, int index, int limit)
+    public List<ArenaInterface> getArenas(ArenaTypeInterface type, String prefix, int index, int limit)
     {
         return this.arenasPerName.values().stream().filter(p -> p.getType() == type).filter(p -> p.getInternalName().toLowerCase().startsWith(prefix.toLowerCase())).skip(index).limit(limit)
                 .collect(Collectors.toList());
