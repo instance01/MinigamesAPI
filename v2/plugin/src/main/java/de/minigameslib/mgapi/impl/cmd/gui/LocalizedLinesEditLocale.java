@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.impl.cmd.gui;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
@@ -34,9 +35,9 @@ import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
 import de.minigameslib.mclib.api.gui.GuiSessionInterface;
 import de.minigameslib.mclib.api.items.CommonItems;
 import de.minigameslib.mclib.api.items.ItemServiceInterface;
+import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
-import de.minigameslib.mclib.api.locale.LocalizedMessageList;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
@@ -44,18 +45,15 @@ import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.util.function.McConsumer;
 
 /**
- * Click gui for editing localized strings; single locale
+ * Click gui for editing localized lines; single locale
  * 
  * @author mepeisen
  */
-public class LocalizedStringEditor implements ClickGuiPageInterface
+public class LocalizedLinesEditLocale implements ClickGuiPageInterface
 {
 
-    /** consumer to save user strings */
-    private McConsumer<String> onSaveUserString;
-
-    /** consumer to save admin strings */
-    private McConsumer<String> onSaveAdminString;
+    /** consumer to save strings */
+    private McConsumer<LocalizedConfigLine> onSave;
     
     /** consumer to display prev page */
     private ClickGuiItem.GuiItemHandler onPrev;
@@ -63,37 +61,29 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
     /** consumer to delete language */
     private ClickGuiItem.GuiItemHandler onDelete;
     
-    /** current admin string */
-    private String adminString;
-    
-    /** current user string */
-    private String userString;
-    
     /** title */
     private Serializable title;
     
     /** locale */
-    private String locale;
+    private Locale locale;
+
+    /** the config line. */
+    private LocalizedConfigLine line;
     
     /**
      * @param title
      * @param locale
-     * @param userString
-     * @param adminString
-     * @param onSaveUserString
-     * @param onSaveAdminString
+     * @param line
+     * @param onSave
      * @param onPrev
      * @param onDelete
      */
-    public LocalizedStringEditor(Serializable title, String locale, String userString, String adminString, McConsumer<String> onSaveUserString, McConsumer<String> onSaveAdminString, GuiItemHandler onPrev,
-            GuiItemHandler onDelete)
+    public LocalizedLinesEditLocale(Serializable title, Locale locale, LocalizedConfigLine line, McConsumer<LocalizedConfigLine> onSave, GuiItemHandler onPrev, GuiItemHandler onDelete)
     {
         this.title = title;
         this.locale = locale;
-        this.userString = userString;
-        this.adminString = adminString;
-        this.onSaveUserString = onSaveUserString;
-        this.onSaveAdminString = onSaveAdminString;
+        this.line = line;
+        this.onSave = onSave;
         this.onPrev = onPrev;
         this.onDelete = onDelete;
     }
@@ -108,8 +98,8 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
                 null,
                 Main.itemDelete(this.onDelete, Messages.IconDelete),
                 null,
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_People), Messages.IconEditUser, this::onUserString, this.title, this.locale),
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Boss), Messages.IconEditAdmin, this::onAdminString, this.title, this.locale),
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_People), Messages.IconEditUser, this::onUserString, this.title, this.locale.toString()),
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Boss), Messages.IconEditAdmin, this::onAdminString, this.title, this.locale.toString()),
                 null,
                 Main.itemCloseGui()
             },
@@ -131,26 +121,20 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
      */
     private void onUserString(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        player.openAnvilGui(new QueryText(
-                this.userString == null ? "" : this.userString, //$NON-NLS-1$
-                () -> {player.openClickGui(new Main(this));},
-                (s) -> this.onUserString(player, session, gui, s),
-                player.encodeMessage(Messages.EditTextDescription, this.title, this.locale)));
-    }
-    
-    /**
-     * edit user string
-     * @param player
-     * @param session
-     * @param gui
-     * @param content
-     * @throws McException 
-     */
-    private void onUserString(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, String content) throws McException
-    {
-        this.userString = content != null && content.length() == 0 ? null : content;
-        this.onSaveUserString.accept(this.userString);
-        player.openClickGui(new Main(this));
+        final String[] lines = this.line.getUnformattedUserMessageLine(this.locale);
+        session.setNewPage(new LocalizedLinesEditLocaleList(
+                this.title,
+                lines,
+                (p,  s, g) -> s.setNewPage(this),
+                (p, s, g) -> {
+                    this.line.setUserMessages(this.locale, null);
+                    this.onSave.accept(this.line);
+                    s.setNewPage(this);
+                },
+                (s) -> {
+                    this.line.setUserMessages(this.locale, s);
+                    this.onSave.accept(this.line);
+                }));
     }
     
     /**
@@ -162,26 +146,20 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
      */
     private void onAdminString(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        player.openAnvilGui(new QueryText(
-                this.adminString == null ? "" : this.adminString, //$NON-NLS-1$
-                () -> {player.openClickGui(new Main(this));},
-                (s) -> this.onAdminString(player, session, gui, s),
-                player.encodeMessage(Messages.EditAdminDescription, this.title, this.locale)));
-    }
-    
-    /**
-     * edit admin string
-     * @param player
-     * @param session
-     * @param gui
-     * @param content
-     * @throws McException 
-     */
-    private void onAdminString(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, String content) throws McException
-    {
-        this.adminString = content != null && content.length() == 0 ? null : content;
-        this.onSaveAdminString.accept(this.adminString);
-        player.openClickGui(new Main(this));
+        final String[] lines = this.line.getUnformattedAdminMessageLine(this.locale);
+        session.setNewPage(new LocalizedLinesEditLocaleList(
+                this.title,
+                lines,
+                (p,  s, g) -> s.setNewPage(this),
+                (p, s, g) -> {
+                    this.line.setAdminMessages(this.locale, null);
+                    this.onSave.accept(this.line);
+                    s.setNewPage(this);
+                },
+                (s) -> {
+                    this.line.setAdminMessages(this.locale, s);
+                    this.onSave.accept(this.line);
+                }));
     }
 
     /**
@@ -189,7 +167,7 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "admingui.string_edit")
+    @LocalizedMessages(value = "admingui.line_edit_locale")
     public enum Messages implements LocalizedMessageInterface
     {
         
@@ -220,20 +198,6 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
         @LocalizedMessage(defaultMessage = "Edit admin text for %1$s - %2$s")
         @MessageComment(value = "Edit icon", args = {@Argument("title"),@Argument("locale name")})
         IconEditAdmin,
-        
-        /**
-         * Edit existing: user text description
-         */
-        @LocalizedMessageList({"Edit user text for %1$s - %2$s.", "Use percent sign to create minecraft color codes.", "For example: '%%0' for black."})
-        @MessageComment(value = "Edit existing: user text description", args = {@Argument("title"), @Argument("locale")})
-        EditTextDescription,
-        
-        /**
-         * Edit existing: admin text description
-         */
-        @LocalizedMessageList({"Edit admin text for %1$s - %2$s.", "Use percent sign to create minecraft color codes.", "For example: '%%0' for black."})
-        @MessageComment(value = "Edit existing: admin text description", args = {@Argument("title"), @Argument("locale")})
-        EditAdminDescription,
         
     }
     

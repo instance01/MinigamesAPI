@@ -338,7 +338,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
             this.registerArenaZone(this, BasicZoneTypes.Spectator, SpectatorZone::new, SpectatorZone.class);
             
             ObjectServiceInterface.instance().register(MglibObjectTypes.Arena, ArenaImpl.class);
-            ObjectServiceInterface.instance().resumeObjects(this);
+            ObjectServiceInterface.instance().resumeObjects(this, null); // TODO check for resume errors
         }
         catch (McException ex)
         {

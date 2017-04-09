@@ -94,19 +94,19 @@ public class YesNoQuestion implements ClickGuiPageInterface
     {
         return Main.withFillers(new ClickGuiItem[][]{
             {
-                this.details == null ? null : new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Help, ""), Messages.IconHelp, this::onHelp), //$NON-NLS-1$
+                this.details == null ? null : new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Help), Messages.IconHelp, this::onHelp), 
             },
             null,
             null,
             {
                 null,
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Yes, ""), Messages.IconYes, this.onYes), //$NON-NLS-1$
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Yes), Messages.IconYes, this.onYes), 
                 null,
                 null,
                 null,
                 null,
                 null,
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_No, ""), Messages.IconNo, this.onNo), //$NON-NLS-1$
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_No), Messages.IconNo, this.onNo), 
                 null
             }
         });

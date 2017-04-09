@@ -24,7 +24,9 @@
 
 package de.minigameslib.mgapi.impl.cmd.gui;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
@@ -43,10 +45,10 @@ public abstract class AbstractPage<T> implements ClickGuiPageInterface
 {
     
     /** number of items per page */
-    private static final int ITEMS_PER_LINE = Main.COL_COUNT;
+    protected static final int ITEMS_PER_LINE = Main.COL_COUNT;
     
     /** number of items per page */
-    private static final int ITEMS_PER_PAGE = ITEMS_PER_LINE * 4;
+    protected static final int ITEMS_PER_PAGE = ITEMS_PER_LINE * 4;
     
     /** numeric page num */
     private int pageNum = 1;
@@ -102,10 +104,13 @@ public abstract class AbstractPage<T> implements ClickGuiPageInterface
     
     /**
      * Maps elements to click gui item
+     * @param line 
+     * @param col 
+     * @param index 
      * @param elm
      * @return click gui item
      */
-    protected abstract ClickGuiItem map(T elm);
+    protected abstract ClickGuiItem map(int line, int col, int index, T elm);
 
     @Override
     public ClickGuiItem[][] getItems()
@@ -135,7 +140,17 @@ public abstract class AbstractPage<T> implements ClickGuiPageInterface
      */
     private ClickGuiItem[] itemsLine(Collection<T> items, int start)
     {
-        return items.stream().skip(start).limit(ITEMS_PER_LINE).map(this::map).toArray(ClickGuiItem[]::new);
+        int col = 0;
+        int i = start + (this.pageNum - 1) * ITEMS_PER_PAGE;
+        final List<ClickGuiItem> result = new ArrayList<>();
+        final Iterator<T> iter = items.stream().skip(start).limit(ITEMS_PER_LINE).iterator();
+        while (iter.hasNext())
+        {
+            result.add(this.map(start / ITEMS_PER_LINE, col, i, iter.next()));
+            col++;
+            i++;
+        }
+        return result.toArray(new ClickGuiItem[result.size()]);
     }
     
     /**

@@ -76,7 +76,7 @@ public class ArenasPage extends AbstractPage<ArenaInterface>
     }
 
     @Override
-    protected ClickGuiItem map(ArenaInterface elm)
+    protected ClickGuiItem map(int line, int col, int index, ArenaInterface elm)
     {
         return Main.itemArena(elm, (p, s, g) -> onArena(p, s, g, elm));
     }
@@ -91,7 +91,7 @@ public class ArenasPage extends AbstractPage<ArenaInterface>
                 Main.itemNextPage(this::onNextPage),
                 null,
                 Main.itemNew(this::onNew, Messages.IconNewArena),
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Save, ""), Messages.IconImport, this::onImport), //$NON-NLS-1$
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Save), Messages.IconImport, this::onImport),
                 null,
                 Main.itemCloseGui()
                 };

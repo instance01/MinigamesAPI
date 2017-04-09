@@ -86,39 +86,39 @@ public class ArenaEdit implements ClickGuiPageInterface
             },
             null,
             {
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Info, ""), Messages.IconInfo, this::onInfo), //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text, ""), Messages.IconDisplayName, this::onDisplayName), //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text, ""), Messages.IconShortDescription, this::onShortDescription), //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text, ""), Messages.IconLongDescription, this::onLongDescription), //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text, ""), Messages.IconManual, this::onManual), //$NON-NLS-1$
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Info), Messages.IconInfo, this::onInfo), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text), Messages.IconDisplayName, this::onDisplayName), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text), Messages.IconShortDescription, this::onShortDescription), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text), Messages.IconLongDescription, this::onLongDescription), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text), Messages.IconManual, this::onManual), 
             },
             {
-                this.arena.isDisabled() || this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Question, ""), Messages.IconCheck, this::onCheck) : null, //$NON-NLS-1$
-                this.arena.isDisabled() || this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Apply, ""), Messages.IconEnable, this::onEnable) : null, //$NON-NLS-1$
-                !this.arena.isDisabled() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Flag, ""), Messages.IconDisable, this::onDisable) : null, //$NON-NLS-1$
-                this.arena.isDisabled() || this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Save, ""), Messages.IconExport, this::onExport) : null, //$NON-NLS-1$,
-                !this.arena.isDisabled() && !this.arena.isMaintenance() && !this.arena.isMatch() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Play, ""), Messages.IconStart, this::onStart) : null, //$NON-NLS-1$
-                this.arena.isMatch() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Stop, ""), Messages.IconStop, this::onStop) : null, //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Redo, ""), Messages.IconHardReset, this::onHardReset), //$NON-NLS-1$
+                this.arena.isDisabled() || this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Question), Messages.IconCheck, this::onCheck) : null, 
+                this.arena.isDisabled() || this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Apply), Messages.IconEnable, this::onEnable) : null, 
+                !this.arena.isDisabled() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Flag), Messages.IconDisable, this::onDisable) : null, 
+                this.arena.isDisabled() || this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Save), Messages.IconExport, this::onExport) : null, //,
+                !this.arena.isDisabled() && !this.arena.isMaintenance() && !this.arena.isMatch() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Play), Messages.IconStart, this::onStart) : null, 
+                this.arena.isMatch() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Stop), Messages.IconStop, this::onStop) : null, 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Redo), Messages.IconHardReset, this::onHardReset), 
                 null,
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_People, ""), Messages.IconPlayers, this::onPlayers), //$NON-NLS-1$
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_People), Messages.IconPlayers, this::onPlayers), 
             },
             {
-                !this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Modify, ""), Messages.IconMaintenance, this::onMaintenance) : null, //$NON-NLS-1$
+                !this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Modify), Messages.IconMaintenance, this::onMaintenance) : null, 
                 null,
-                this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Erase, ""), Messages.IconDelete, this::onDelete) : null, //$NON-NLS-1$
-                this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Retort, ""), Messages.IconTest, this::onTest) : null, //$NON-NLS-1$
-                this.arena.getState() == ArenaState.Join ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Person, ""), Messages.IconInvite, this::onInvite) : null, //$NON-NLS-1$
+                this.arena.isMaintenance() ? Main.itemDelete(this::onDelete, Messages.IconDelete) : null, 
+                this.arena.isMaintenance() ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Retort), Messages.IconTest, this::onTest) : null, 
+                this.arena.getState() == ArenaState.Join ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Person), Messages.IconInvite, this::onInvite) : null, 
                 null,
-                this.arena.getTeams().size() > 0 ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_User_group, ""), Messages.IconTeams, this::onTeams) : null, //$NON-NLS-1$
+                this.arena.getTeams().size() > 0 ? new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_User_group), Messages.IconTeams, this::onTeams) : null, 
             },
             {
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Script, ""), Messages.IconRules, this::onRules), //$NON-NLS-1$
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Script), Messages.IconRules, this::onRules), 
                 null,
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench, ""), Messages.IconComponents, this::onComponents), //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench, ""), Messages.IconZones, this::onZones), //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench, ""), Messages.IconSigns, this::onSigns), //$NON-NLS-1$
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench, ""), Messages.IconEntities, this::onEntities), //$NON-NLS-1$
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench), Messages.IconComponents, this::onComponents), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench), Messages.IconZones, this::onZones), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench), Messages.IconSigns, this::onSigns), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench), Messages.IconEntities, this::onEntities), 
             }
         });
     }
@@ -143,8 +143,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onSigns(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        session.setNewPage(new SignsPage(this.arena, this));
     }
     
     /**
@@ -236,11 +235,12 @@ public class ArenaEdit implements ClickGuiPageInterface
      * @param player
      * @param session
      * @param gui
+     * @throws McException 
      */
-    private void onDeleteEx(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
+    private void onDeleteEx(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        this.arena.delete();
+        session.setNewPage(this.prevPage);
     }
     
     /**
@@ -352,8 +352,10 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onManual(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        session.setNewPage(new LocalizedLinesList(
+                Messages.IconManual,
+                this.arena.getManual(), (s) -> { this.arena.saveData(); },
+                this));
     }
     
     /**
@@ -364,8 +366,10 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onLongDescription(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        session.setNewPage(new LocalizedLinesList(
+                Messages.IconLongDescription,
+                this.arena.getDescription(), (s) -> { this.arena.saveData(); },
+                this));
     }
     
     /**
@@ -466,7 +470,7 @@ public class ArenaEdit implements ClickGuiPageInterface
         /**
          * Gui title (arena edit page)
          */
-        @LocalizedMessage(defaultMessage = "Arena %1$d - %2$d")
+        @LocalizedMessage(defaultMessage = "Arena %1$s - %2$s")
         @MessageComment(value = {"Gui title (arena edit)"}, args = {@Argument("internal name"), @Argument("display name")})
         Title,
         

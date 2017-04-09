@@ -36,7 +36,7 @@ import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
 import de.minigameslib.mclib.api.gui.GuiSessionInterface;
 import de.minigameslib.mclib.api.items.CommonItems;
 import de.minigameslib.mclib.api.items.ItemServiceInterface;
-import de.minigameslib.mclib.api.locale.LocalizedConfigString;
+import de.minigameslib.mclib.api.locale.LocalizedConfigLine;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessageList;
@@ -47,21 +47,21 @@ import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.util.function.McConsumer;
 
 /**
- * Click gui for editing localized strings
+ * Click gui for editing localized lines
  * 
  * @author mepeisen
  */
-public class LocalizedStringList extends AbstractPage<Locale>
+public class LocalizedLinesList extends AbstractPage<Locale>
 {
     
     /** title */
     private Serializable title;
     
     /** config string */
-    private LocalizedConfigString string;
+    private LocalizedConfigLine string;
     
     /** save function */
-    private McConsumer<LocalizedConfigString> save;
+    private McConsumer<LocalizedConfigLine> save;
     
     /** previous page. */
     private ClickGuiPageInterface prevPage;
@@ -72,7 +72,7 @@ public class LocalizedStringList extends AbstractPage<Locale>
      * @param save
      * @param prevPage
      */
-    public LocalizedStringList(Serializable title, LocalizedConfigString string, McConsumer<LocalizedConfigString> save, ClickGuiPageInterface prevPage)
+    public LocalizedLinesList(Serializable title, LocalizedConfigLine string, McConsumer<LocalizedConfigLine> save, ClickGuiPageInterface prevPage)
     {
         this.title = title;
         this.string = string;
@@ -139,30 +139,33 @@ public class LocalizedStringList extends AbstractPage<Locale>
      */
     private void onNew(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, Locale locale) throws McException
     {
+        this.string.setUserMessages(locale, new String[]{"<text>"}); //$NON-NLS-1$
+        this.save.accept(this.string);
         session.close();
-        player.openAnvilGui(new QueryText(
-                "<text>", //$NON-NLS-1$
-                () -> {player.openClickGui(new Main(this));},
-                (str2) -> this.onNew(player, session, gui, locale, str2),
-                player.encodeMessage(Messages.CreateTextDescription, this.title, locale.toString())));
+        player.openClickGui(new Main(new LocalizedLinesEditLocale(
+                this.title,
+                locale,
+                this.string,
+                this.save,
+                this::onRefresh,
+                (p, s, g) -> this.onDelete(p, s, g, locale))));
     }
     
     /**
-     * new language
-     * @param player
-     * @param session
-     * @param gui
+     * @param p
+     * @param s
+     * @param g
      * @param locale
-     * @param content
      * @throws McException 
      */
-    private void onNew(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, Locale locale, String content) throws McException
+    private void onDelete(McPlayerInterface p, GuiSessionInterface s, ClickGuiInterface g, Locale locale) throws McException
     {
-        this.string.setUserMessage(locale, content);
-        player.openClickGui(new Main(this));
+        this.string.setUserMessages(locale, null);
+        this.string.setAdminMessages(locale, null);
         this.save.accept(this.string);
+        s.setNewPage(this);
     }
-    
+
     /**
      * edit language
      * @param player
@@ -172,25 +175,13 @@ public class LocalizedStringList extends AbstractPage<Locale>
      */
     private void onEdit(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, Locale locale)
     {
-        session.setNewPage(new LocalizedStringEditor(
+        session.setNewPage(new LocalizedLinesEditLocale(
                 this.title,
-                locale.toString(),
-                this.string.getUnformattedUserMessage(locale),
-                this.string.getUnformattedAdminMessage(locale),
-                (s) -> {
-                    this.string.setUserMessage(locale, s);
-                    this.save.accept(this.string);
-                },
-                (s) -> {
-                    this.string.setAdminMessage(locale, s);
-                    this.save.accept(this.string);
-                },
+                locale,
+                this.string,
+                this.save,
                 this::onRefresh,
-                (p, s, g) -> {
-                    this.string.setUserMessage(locale, null);
-                    this.string.setAdminMessage(locale, null);
-                    this.onRefresh(p, s, g);
-                }));
+                (p, s, g) -> this.onDelete(p, s, g, locale)));
     }
     
     /**
@@ -215,7 +206,7 @@ public class LocalizedStringList extends AbstractPage<Locale>
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "admingui.string_editor")
+    @LocalizedMessages(value = "admingui.lines_editor")
     public enum Messages implements LocalizedMessageInterface
     {
         
@@ -246,13 +237,6 @@ public class LocalizedStringList extends AbstractPage<Locale>
         @LocalizedMessageList({"Enter a new language for %1$s.", "Use 2 or 3 letter iso codes.", "For example: 'en' or 'de'."})
         @MessageComment(value = "Create new: locale description", args = @Argument("title"))
         CreateLocaleDescription,
-        
-        /**
-         * Create new: text description
-         */
-        @LocalizedMessageList({"Enter a new user text for %1$s - %2$s.", "Use percent sign to create minecraft color codes.", "For example: '%%0' for black."})
-        @MessageComment(value = "Create new: text description", args = {@Argument("title"), @Argument("locale")})
-        CreateTextDescription,
         
     }
     

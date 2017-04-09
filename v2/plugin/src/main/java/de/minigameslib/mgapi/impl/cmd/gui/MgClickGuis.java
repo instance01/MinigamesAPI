@@ -38,8 +38,14 @@ import de.minigameslib.mclib.api.gui.ClickGuiId;
     ArenaEdit.Messages.class,
     // ArenaCreate.Messages.class,
     YesNoQuestion.Messages.class,
+    LocalizedLinesList.Messages.class,
+    LocalizedLinesEditLocale.Messages.class,
+    LocalizedLinesEditLocaleList.Messages.class,
     LocalizedStringList.Messages.class,
     LocalizedStringEditor.Messages.class,
+    SignsPage.Messages.class,
+    SignEdit.Messages.class,
+    SignsCreateChooseType.Messages.class,
 })
 public enum MgClickGuis implements ClickGuiId
 {

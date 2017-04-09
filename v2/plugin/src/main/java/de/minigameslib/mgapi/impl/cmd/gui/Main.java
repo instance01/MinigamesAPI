@@ -243,7 +243,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemMarketplace(ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Euro, ""), Messages.IconMarketplace, handler); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Euro), Messages.IconMarketplace, handler); 
     }
     
     /**
@@ -308,7 +308,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemExtensions(ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Toolbox, ""), Messages.IconExtensions, handler); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Toolbox), Messages.IconExtensions, handler); 
     }
     
     /**
@@ -319,7 +319,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemExtension(ExtensionInterface extension, ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Toolbox, ""), extension.getDisplayName(), handler); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Toolbox), extension.getDisplayName(), handler); 
     }
     
     /**
@@ -328,7 +328,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemHome()
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Home, ""), Messages.IconBackToMainMenu, Main::onHome); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Home), Messages.IconBackToMainMenu, Main::onHome); 
     }
     
     /**
@@ -338,7 +338,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemOptions(ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Pinion, ""), Messages.IconOptions, handler); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Pinion), Messages.IconOptions, handler); 
     }
     
     /**
@@ -347,7 +347,31 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemCloseGui()
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Close, ""), Messages.IconClose, Main::onClose); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Close), Messages.IconClose, Main::onClose); 
+    }
+    
+    /**
+     * delete icon
+     * @param handler
+     * @param name
+     * @param nameargs 
+     * @return new icon
+     */
+    public static ClickGuiItem itemDelete(ClickGuiItem.GuiItemHandler handler, LocalizedMessageInterface name, Serializable... nameargs)
+    {
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Erase), name, handler, nameargs); 
+    }
+    
+    /**
+     * cancel icon
+     * @param handler
+     * @param name
+     * @param nameargs 
+     * @return new icon
+     */
+    public static ClickGuiItem itemCancel(ClickGuiItem.GuiItemHandler handler, LocalizedMessageInterface name, Serializable... nameargs)
+    {
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Erase), name, handler, nameargs); 
     }
     
     /**
@@ -359,7 +383,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemNew(ClickGuiItem.GuiItemHandler handler, LocalizedMessageInterface name, Serializable... nameargs)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_New, ""), name, handler, nameargs); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_New), name, handler, nameargs); 
     }
     
     /**
@@ -371,7 +395,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemBack(ClickGuiItem.GuiItemHandler handler, LocalizedMessageInterface name, Serializable... nameargs)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Back, ""), name, handler, nameargs); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Back), name, handler, nameargs); 
     }
     
     /**
@@ -381,7 +405,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemRefresh(ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Refresh, ""), Messages.IconRefresh, handler); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Refresh), Messages.IconRefresh, handler); 
     }
     
     /**
@@ -391,7 +415,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemPrevPage(ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Previous, ""), Messages.IconPreviousPage, handler); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Previous), Messages.IconPreviousPage, handler); 
     }
     
     /**
@@ -401,7 +425,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemNextPage(ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Next, ""), Messages.IconNextPage, handler); //$NON-NLS-1$
+        return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Next), Messages.IconNextPage, handler); 
     }
     
     /**
