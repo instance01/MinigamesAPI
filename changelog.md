@@ -6,6 +6,10 @@
 
 * (Bungeecord) Clicking a join sign will now throw all players of a party to the minigame server (https://github.com/MysticCity/MinigamesAPI/issues/208)
 
+###### Conquer
+
+* Team selector gui (https://github.com/MysticCity/MinigamesAPI/issues/216)
+
 ###### MobEscape
 
 * Fixed runtime error in 1.8.5 to 1.8.9
