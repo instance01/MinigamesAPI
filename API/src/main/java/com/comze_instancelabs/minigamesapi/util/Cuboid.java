@@ -88,7 +88,7 @@ public final class Cuboid
      */
     public boolean containsLoc(final Location loc)
     {
-        if (loc == null || !loc.getWorld().equals(this.highPoints.getWorld()))
+        if (loc == null || loc.getWorld() == null || !loc.getWorld().equals(this.highPoints.getWorld()))
         {
             return false;
         }
@@ -103,7 +103,7 @@ public final class Cuboid
         {
             return false;
         }
-        if (loc == null || !loc.getWorld().equals(this.highPoints.getWorld()))
+        if (loc == null || loc.getWorld() == null || !loc.getWorld().equals(this.highPoints.getWorld()))
         {
             return false;
         }
@@ -118,7 +118,7 @@ public final class Cuboid
         {
             return false;
         }
-        if (loc == null || !loc.getWorld().equals(this.highPoints.getWorld()))
+        if (loc == null || loc.getWorld() == null || !loc.getWorld().equals(this.highPoints.getWorld()))
         {
             return false;
         }

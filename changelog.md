@@ -5,6 +5,7 @@
 ###### All
 
 * (Bungeecord) Clicking a join sign will now throw all players of a party to the minigame server (https://github.com/MysticCity/MinigamesAPI/issues/208)
+* fixed NullPointerException (https://github.com/MysticCity/MinigamesAPI/issues/243)
 
 ###### Conquer
 
