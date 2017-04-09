@@ -1,5 +1,17 @@
 # Changelog
 
+#### 1.14.16
+
+###### All
+
+* (Bungeecord) Clicking a join sign will now throw all players of a party to the minigame server (https://github.com/MysticCity/MinigamesAPI/issues/208)
+
+###### MobEscape
+
+* Fixed runtime error in 1.8.5 to 1.8.9
+
+
+
 #### 1.14.15
 
 ###### All

@@ -68,6 +68,7 @@ import com.comze_instancelabs.minigamesapi.util.ParticleEffectNew;
 import com.comze_instancelabs.minigamesapi.util.Signs;
 import com.comze_instancelabs.minigamesapi.util.UpdaterNexus;
 import com.comze_instancelabs.minigamesapi.util.Util;
+import com.comze_instancelabs.minigamesapi.util.Validator;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -1519,39 +1520,77 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                 String server = getServerBySignLocation(s.getLocation());
                 if (server != null && server != "")
                 {
-                    try
+                    final Player player = event.getPlayer();
+                    final String signInfo = getInfoBySignLocation(s.getLocation());
+                    
+                    if (MinigamesAPI.getAPI().global_party.containsKey(player.getName()))
                     {
-                        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                        try
+                        final Party party = MinigamesAPI.getAPI().global_party.remove(player.getName());
+                        for (final String p_ : party.getPlayers())
                         {
-                            out.writeUTF("Forward");
-                            out.writeUTF("ALL");
-                            out.writeUTF(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_BACK);
-                            
-                            ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
-                            DataOutputStream msgout = new DataOutputStream(msgbytes);
-                            String info = getInfoBySignLocation(s.getLocation()) + ":" + event.getPlayer().getName();
-                            msgout.writeUTF(info);
-                            
-                            out.writeShort(msgbytes.toByteArray().length);
-                            out.write(msgbytes.toByteArray());
-                            
-                            Bukkit.getServer().sendPluginMessage(this, ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
-                        }
-                        catch (Exception e)
-                        {
-                            this.getLogger().log(Level.WARNING, "error sending message", e);
+                            if (Validator.isPlayerOnline(p_))
+                            {
+                                boolean cont = true;
+                                MinigamesAPI.getAPI();
+                                for (final PluginInstance pli_ : MinigamesAPI.pinstances.values())
+                                {
+                                    if (pli_.containsGlobalPlayer(p_))
+                                    {
+                                        cont = false;
+                                    }
+                                }
+                                if (cont)
+                                {
+                                    letPlayerJoinServer(server, Bukkit.getPlayer(p_), signInfo);
+                                }
+                            }
                         }
                     }
-                    catch (Exception e)
-                    {
-                        this.getLogger().log(Level.WARNING, "Error occurred while sending first sign request - Invalid server/minigame/arena?", e);
-                    }
-                    connectToServer(this, event.getPlayer().getName(), server);
+                    
+                    letPlayerJoinServer(server, player, signInfo);
                 }
             }
         }
         
+    }
+
+    /**
+     * Let a player join a server over bungeecord network
+     * @param server
+     * @param player
+     * @param signInfo
+     */
+    private void letPlayerJoinServer(String server, final Player player, final String signInfo)
+    {
+        try
+        {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            try
+            {
+                out.writeUTF("Forward");
+                out.writeUTF("ALL");
+                out.writeUTF(ChannelStrings.SUBCHANNEL_MINIGAMESLIB_BACK);
+                
+                ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+                DataOutputStream msgout = new DataOutputStream(msgbytes);
+                String info = signInfo + ":" + player.getName();
+                msgout.writeUTF(info);
+                
+                out.writeShort(msgbytes.toByteArray().length);
+                out.write(msgbytes.toByteArray());
+                
+                Bukkit.getServer().sendPluginMessage(this, ChannelStrings.CHANNEL_BUNGEE_CORD, out.toByteArray());
+            }
+            catch (Exception e)
+            {
+                this.getLogger().log(Level.WARNING, "error sending message", e);
+            }
+        }
+        catch (Exception e)
+        {
+            this.getLogger().log(Level.WARNING, "Error occurred while sending first sign request - Invalid server/minigame/arena?", e);
+        }
+        connectToServer(this, player.getName(), server);
     }
     
     @EventHandler
