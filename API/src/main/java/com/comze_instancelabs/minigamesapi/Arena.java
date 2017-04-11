@@ -2478,7 +2478,7 @@ public class Arena
     }
     
     /**
-     * Resumes the current match; causing the timer to restart after {@link #pause()} was called
+     * Resumes the current match; causing the timer to restart after {@link #timerPause()} was called
      */
     public void timerResume()
     {
