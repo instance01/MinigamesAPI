@@ -6,6 +6,9 @@
 
 * (Bungeecord) Clicking a join sign will now throw all players of a party to the minigame server (https://github.com/MysticCity/MinigamesAPI/issues/208)
 * fixed NullPointerException (https://github.com/MysticCity/MinigamesAPI/issues/243)
+* *v2-backport* new chat countdown while reaching max game time (https://github.com/MysticCity/MinigamesAPI/issues/224)
+* *v2-backport* api extension for minigames that want to influence the max game time (https://github.com/MysticCity/MinigamesAPI/issues/224)
+* *v2-backport* support for unlimited games (max game time set to zero) (https://github.com/MysticCity/MinigamesAPI/issues/224)
 
 ###### Conquer
 

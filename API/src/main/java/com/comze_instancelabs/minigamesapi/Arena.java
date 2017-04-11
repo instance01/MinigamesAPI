@@ -34,7 +34,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.comze_instancelabs.minigamesapi.arcade.ArcadeInstance;
 import com.comze_instancelabs.minigamesapi.events.ArenaStartEvent;
@@ -231,7 +230,7 @@ public class Arena
     
     int                                   global_coin_multiplier    = 1;
     
-    private BukkitTask                    maximum_game_time;
+    // private BukkitTask maximum_game_time;
     
     ArrayList<ItemStack>                  global_drops              = new ArrayList<>();
     
@@ -251,6 +250,8 @@ public class Arena
     /** the arenam logger. */
     protected ArenaLogger                 logger;
     
+    protected MatchTimer                  timer;
+    
     /**
      * Creates a normal singlespawn arena
      * 
@@ -266,6 +267,26 @@ public class Arena
         this.sr = new SmartReset(this);
         this.pli = MinigamesAPI.getAPI().getPluginInstance(plugin);
         this.logger = new ArenaLogger(this.plugin.getLogger(), this.name);
+        
+        // Maximum game time:
+        this.timer = new MatchTimer((int) this.plugin.getConfig().getDouble(ArenaConfigStrings.CONFIG_DEFAULT_MAX_GAME_TIME_IN_MINUTES) * 60, () -> {
+            for (final String p_ : Arena.this.getAllPlayers())
+            {
+                if (Validator.isPlayerValid(Arena.this.plugin, p_, Arena.this))
+                {
+                    Bukkit.getPlayer(p_).sendMessage(Arena.this.pli.getMessagesConfig().stop_cause_maximum_game_time_now);
+                }
+            }
+            Bukkit.getScheduler().runTaskLater(Arena.this.plugin, () -> this.stopArena(), 1);
+        }, (sec) -> {
+            for (final String p_ : Arena.this.getAllPlayers())
+            {
+                if (Validator.isPlayerValid(Arena.this.plugin, p_, Arena.this))
+                {
+                    Bukkit.getPlayer(p_).sendMessage(Arena.this.pli.getMessagesConfig().stop_cause_maximum_game_time_sec.replace("<sec>", String.valueOf(sec)));
+                }
+            }
+        });
     }
     
     /**
@@ -814,7 +835,8 @@ public class Arena
             // arena full
             
             // if player vip -> kick someone and continue
-            this.logger.fine(playername + " is vip: " + player.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP)); //$NON-NLS-1$
+            this.logger.fine(playername + " is vip: " //$NON-NLS-1$
+                    + player.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP));
             if (!player.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP))
             {
                 // no VIP.
@@ -829,7 +851,8 @@ public class Arena
                 if (Validator.isPlayerOnline(p_))
                 {
                     final Player player_ = Bukkit.getPlayer(p_);
-                    if (!player_.hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP))
+                    if (!player_
+                            .hasPermission(MinigamesAPI.getAPI().getPermissionGamePrefix(this.plugin.getName()) + ArenaPermissionStrings.PREFIX + this.getInternalName() + ArenaPermissionStrings.VIP))
                     {
                         this.leavePlayer(p_, false, true);
                         player_.sendMessage(this.pli.getMessagesConfig().you_got_kicked_because_vip_joined);
@@ -1186,7 +1209,7 @@ public class Arena
                 {
                     this.pli.global_arcade_spectator.remove(playername);
                 }
-
+                
                 p.removePotionEffect(PotionEffectType.JUMP);
                 p.removePotionEffect(PotionEffectType.INVISIBILITY);
                 Util.teleportPlayerFixed(p, this.mainlobby);
@@ -1196,8 +1219,10 @@ public class Arena
                 {
                     p.setAllowFlight(false);
                 }
-                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_GAMEMMODE)) p.setGameMode(ap.getOriginalGamemode());
-                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_XP)) p.setLevel(ap.getOriginalXplvl());
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_GAMEMMODE))
+                    p.setGameMode(ap.getOriginalGamemode());
+                if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_XP))
+                    p.setLevel(ap.getOriginalXplvl());
                 if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.RESET_INVENTORY))
                 {
                     p.getInventory().setContents(ap.getInventory());
@@ -1561,6 +1586,7 @@ public class Arena
     
     /**
      * Checks if the items should be removed from lobby bounds during lobby startup
+     * 
      * @return clears items during arena startup
      */
     protected boolean removeItemsOnLobbyStartup()
@@ -1570,6 +1596,7 @@ public class Arena
     
     /**
      * Checks if the items should be removed from arena bounds during game startup
+     * 
      * @return clears items during arena startup
      */
     protected boolean removeItemsOnGameStartup()
@@ -1579,6 +1606,7 @@ public class Arena
     
     /**
      * Checks if the items should be removed from arena bounds during game stop
+     * 
      * @return clears items during arena stop
      */
     protected boolean removeItemsOnGameStop()
@@ -1648,12 +1676,12 @@ public class Arena
             }
         }, 5L, 20).getTaskId();
     }
-
+    
     protected void onLobbyCountdownComplete()
     {
         Bukkit.getScheduler().runTaskLater(Arena.this.plugin, () -> Arena.this.start(true), 10L);
     }
-
+    
     protected void setLobbyCountdownLevel(final Arena a)
     {
         for (final String p_2 : a.getAllPlayers())
@@ -1669,7 +1697,7 @@ public class Arena
             }
         }
     }
-
+    
     protected void sendLobbyCountdownMsg(final boolean countdown, final Arena a, final Sound lobbycountdown_sound)
     {
         for (final String p_1 : a.getAllPlayers())
@@ -1679,7 +1707,8 @@ public class Arena
                 final Player p1 = Bukkit.getPlayer(p_1);
                 if (countdown)
                 {
-                    Util.sendMessage(Arena.this.plugin, p1, Arena.this.pli.getMessagesConfig().teleporting_to_arena_in.replaceAll(ArenaMessageStrings.COUNT, Integer.toString(Arena.this.currentlobbycount)));
+                    Util.sendMessage(Arena.this.plugin, p1,
+                            Arena.this.pli.getMessagesConfig().teleporting_to_arena_in.replaceAll(ArenaMessageStrings.COUNT, Integer.toString(Arena.this.currentlobbycount)));
                     if (lobbycountdown_sound != null)
                     {
                         p1.playSound(p1.getLocation(), lobbycountdown_sound, 1F, 0F);
@@ -1692,7 +1721,8 @@ public class Arena
     /**
      * Instantly starts the arena, teleports players and udpates the arena.
      * 
-     * @param tp {@code true} to teleport players to spawns
+     * @param tp
+     *            {@code true} to teleport players to spawns
      */
     public void start(final boolean tp)
     {
@@ -1866,16 +1896,7 @@ public class Arena
         }
         
         // Maximum game time:
-        this.maximum_game_time = Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-            for (final String p_ : Arena.this.getAllPlayers())
-            {
-                if (Validator.isPlayerValid(Arena.this.plugin, p_, Arena.this))
-                {
-                    Bukkit.getPlayer(p_).sendMessage(Arena.this.pli.getMessagesConfig().stop_cause_maximum_game_time);
-                }
-            }
-            Bukkit.getScheduler().runTaskLater(Arena.this.plugin, () -> this.stopArena(), 5 * 20L);
-        }, 20L * 60L * (long) this.plugin.getConfig().getDouble(ArenaConfigStrings.CONFIG_DEFAULT_MAX_GAME_TIME_IN_MINUTES) - 5 * 20L);
+        this.timer.onArenaStart(this.plugin);
     }
     
     /**
@@ -1899,6 +1920,7 @@ public class Arena
     
     /**
      * Returns the possible entites to be removed for reset
+     * 
      * @param player
      * @return entites
      */
@@ -1909,6 +1931,7 @@ public class Arena
     
     /**
      * Checks if given entity is removed for resetting the map
+     * 
      * @param player
      * @param e
      * @return {@code true} for removing the entity
@@ -1920,6 +1943,7 @@ public class Arena
     
     /**
      * Returns the possible entites to be removed for reset
+     * 
      * @param player
      * @return entites
      */
@@ -1930,15 +1954,16 @@ public class Arena
     
     /**
      * Checks if given entity is removed for resetting the map
+     * 
      * @param player
      * @param e
      * @return {@code true} for removing the entity
      */
     protected boolean isEntityReset(String player, Entity e)
     {
-        return e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.ENDERMAN || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE
-                || e.getType() == EntityType.SKELETON || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER || e.getType() == EntityType.VILLAGER
-                || e.getType() == EntityType.ARMOR_STAND || e.getType() == EntityType.ARROW;
+        return e.getType() == EntityType.DROPPED_ITEM || e.getType() == EntityType.ENDERMAN || e.getType() == EntityType.SLIME || e.getType() == EntityType.ZOMBIE || e.getType() == EntityType.SKELETON
+                || e.getType() == EntityType.SPIDER || e.getType() == EntityType.CREEPER || e.getType() == EntityType.VILLAGER || e.getType() == EntityType.ARMOR_STAND
+                || e.getType() == EntityType.ARROW;
     }
     
     /**
@@ -1948,10 +1973,7 @@ public class Arena
     {
         Bukkit.getServer().getPluginManager().callEvent(new ArenaStopEvent(this.plugin, this));
         final Arena a = this;
-        if (this.maximum_game_time != null)
-        {
-            this.maximum_game_time.cancel();
-        }
+        this.timer.onArenaStop();
         this.temp_players = new ArrayList<>(this.players);
         if (!this.temp_delay_stopped)
         {
@@ -2199,8 +2221,8 @@ public class Arena
                     {
                         if (Validator.isPlayerOnline(p_))
                         {
-                            Bukkit.getPlayer(p_).sendMessage(MinigamesAPI.getAPI().getPluginInstance(this.plugin).getMessagesConfig().player_was_killed_by.replaceAll(ArenaMessageStrings.PLAYER, playername)
-                                    .replaceAll(ArenaMessageStrings.KILLER, killer.getName()));
+                            Bukkit.getPlayer(p_).sendMessage(MinigamesAPI.getAPI().getPluginInstance(this.plugin).getMessagesConfig().player_was_killed_by
+                                    .replaceAll(ArenaMessageStrings.PLAYER, playername).replaceAll(ArenaMessageStrings.KILLER, killer.getName()));
                         }
                     }
                 }
@@ -2440,9 +2462,125 @@ public class Arena
         ap.setInventories(p.getInventory().getContents(), p.getInventory().getArmorContents());
         ap.setOriginalGamemode(p.getGameMode());
         ap.setOriginalXplvl(p.getLevel());
-        pli.global_players.put(playername, this);
-        pli.global_lost.put(playername, this);
+        this.pli.global_players.put(playername, this);
+        this.pli.global_lost.put(playername, this);
         this.spectateGame(playername);
+    }
+    
+    // match timer
+    
+    /**
+     * Pauses the current match; causing the timer to halt
+     */
+    public void timerPause()
+    {
+        this.timer.pause();
+    }
+    
+    /**
+     * Resumes the current match; causing the timer to restart after {@link #pause()} was called
+     */
+    public void timerResume()
+    {
+        this.timer.resume();
+    }
+    
+    /**
+     * Resets the timer; starting the timer from zero
+     */
+    public void timerResetAndResume()
+    {
+        this.timer.resetAndResume();
+    }
+    
+    /**
+     * Resets the timer; pausing the timer at zero
+     */
+    public void timerResetAndPause()
+    {
+        this.timer.resetAndPause();
+    }
+    
+    /**
+     * Returns the current match time in millis
+     * 
+     * @return match time; respects any call to the methods on this interface
+     */
+    public long timerGetDurationMillis()
+    {
+        return this.timer.getDurationMillis();
+    }
+    
+    /**
+     * Returns the maximum time in millis
+     * 
+     * @return maximum time; respects any call to the methods on this interface
+     */
+    public long timerGetMaxMillis()
+    {
+        return this.timer.getMaxMillis();
+    }
+    
+    /**
+     * Adds milliseconds to maximum time
+     * 
+     * @param millis
+     */
+    public void timerAddMaxMillis(long millis)
+    {
+        this.timer.addMaxMillis(this.plugin, millis);
+    }
+    
+    /**
+     * Substracts milliseconds from maximum time; if duration gets below max millis the game ends
+     * 
+     * @param millis
+     */
+    public void timerSubstractMaxMillis(long millis)
+    {
+        this.timer.substractMaxMillis(millis);
+    }
+    
+    /**
+     * Sets the maximum time milliseconds
+     * 
+     * @param millis
+     *            new millis; zero or below zero to stop timer; if set to positive value and previous value was set to zero or below zero the timer starts
+     */
+    public void timerSetMaxMillis(long millis)
+    {
+        this.timer.setMaxMillis(millis);
+    }
+    
+    /**
+     * Adds milliseconds to played time
+     * 
+     * @param millis
+     */
+    public void timerAddDurationMillis(long millis)
+    {
+        this.timer.addDurationMillis(millis);
+    }
+    
+    /**
+     * Substracts milliseconds from played time; if duration gets below max millis the game ends
+     * 
+     * @param millis
+     */
+    public void timerSubstractDurationMillis(long millis)
+    {
+        this.timer.substractDurationMillis(millis);
+    }
+    
+    /**
+     * Sets the played time milliseconds
+     * 
+     * @param millis
+     *            new millis
+     */
+    public void timerSetDurationMillis(long millis)
+    {
+        this.timer.setDurationMillis(millis);
     }
     
 }
