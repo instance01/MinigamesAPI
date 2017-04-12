@@ -9,6 +9,8 @@
 * *v2-backport* new chat countdown while reaching max game time (https://github.com/MysticCity/MinigamesAPI/issues/224)
 * *v2-backport* api extension for minigames that want to influence the max game time (https://github.com/MysticCity/MinigamesAPI/issues/224)
 * *v2-backport* support for unlimited games (max game time set to zero) (https://github.com/MysticCity/MinigamesAPI/issues/224)
+* Fixed ArrayIndexOutOfBounds in stop and spectate command
+* Fixed exceptions and several bugs related to spectation (https://github.com/MysticCity/MinigamesAPI/issues/230)
 
 ###### Conquer
 

@@ -793,7 +793,7 @@ public class CommandHandler
             {
                 final Arena a = pli.global_players.get(p.getName());
                 a.stopArena();
-                sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", args[1]).replaceAll("<action>", "stopped"));
+                sender.sendMessage(pli.getMessagesConfig().arena_action.replaceAll("<arena>", a.getInternalName()).replaceAll("<action>", "stopped"));
                 return true;
             }
             sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
@@ -1080,35 +1080,42 @@ public class CommandHandler
                     playername = args[2];
                 }
             }
-            final Arena temp = pli.getArenaByName(args[1]);
-            if (temp != null)
+            else if (args.length > 1)
             {
-                if (temp.getArenaState() == ArenaState.INGAME)
+                final Arena temp = pli.getArenaByName(args[1]);
+                if (temp != null)
                 {
-                    if (!temp.containsPlayer(playername))
+                    if (temp.getArenaState() == ArenaState.INGAME)
                     {
-                        if (!sender.hasPermission(uber_permission + ".spectate"))
+                        if (!temp.containsPlayer(playername))
                         {
-                            sender.sendMessage(pli.getMessagesConfig().no_perm);
+                            if (!sender.hasPermission(uber_permission + ".spectate"))
+                            {
+                                sender.sendMessage(pli.getMessagesConfig().no_perm);
+                            }
+                            else
+                            {
+                                temp.joinSpectate(p);
+                            }
                         }
                         else
                         {
-                            temp.joinSpectate(p);
+                            sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
                         }
                     }
                     else
                     {
-                        sender.sendMessage(pli.getMessagesConfig().you_already_are_in_arena.replaceAll("<arena>", temp.getInternalName()));
+                        sender.sendMessage(pli.getMessagesConfig().no_game_started.replaceAll("<arena>", args[1]));
                     }
                 }
                 else
                 {
-                    sender.sendMessage(pli.getMessagesConfig().no_game_started.replaceAll("<arena>", args[1]));
+                    sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
                 }
             }
             else
             {
-                sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", args[1]));
+                sender.sendMessage(pli.getMessagesConfig().arena_invalid.replaceAll("<arena>", "Arena"));
             }
         }
         return true;

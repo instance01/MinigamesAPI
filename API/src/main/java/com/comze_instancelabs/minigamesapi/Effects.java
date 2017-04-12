@@ -121,29 +121,36 @@ public class Effects
             
             final int id = -p.getEntityId() - 1000;
             
-            final Object packet = packetPlayOutNamedEntityConstr.newInstance(getHandle.invoke(p));
-            Effects.setValue(packet, "a", id);
+            final Object packetNamedEntity = packetPlayOutNamedEntityConstr.newInstance(getHandle.invoke(p));
+            Effects.setValue(packetNamedEntity, "a", id);
             
-            final Object packet_ = packetPlayOutBedConstr.newInstance();
-            Effects.setValue(packet_, "a", id);
+            final Object packetFakeBed = packetPlayOutBedConstr.newInstance();
+            Effects.setValue(packetFakeBed, "a", id);
+            final Object packetFakeBed2 = packetPlayOutBedConstr.newInstance();
+            Effects.setValue(packetFakeBed2, "a", id);
             if (MinigamesAPI.SERVER_VERSION.isAtLeast(MinecraftVersionsType.V1_8_R1))
             {
                 final Class<?> bpClazz = Class.forName("net.minecraft.server." + MinigamesAPI.getAPI().internalServerVersion + ".BlockPosition");
-                final Constructor<?> ctor = bpClazz.getDeclaredConstructor(Integer.class, Integer.class, Integer.class);
-                Effects.setValue(packet_, "b", ctor.newInstance(x, y, z));
+                final Constructor<?> ctor = bpClazz.getDeclaredConstructor(int.class, int.class, int.class);
+                Effects.setValue(packetFakeBed, "b", ctor.newInstance(x, y, z));
+                
+                Effects.setValue(packetFakeBed2, "b", ctor.newInstance(0, 0, 0));
             }
             else
             {
-                Effects.setValue(packet_, "b", x);
-                Effects.setValue(packet_, "c", y);
-                Effects.setValue(packet_, "d", z);
+                Effects.setValue(packetFakeBed, "b", x);
+                Effects.setValue(packetFakeBed, "c", y);
+                Effects.setValue(packetFakeBed, "d", z);
+                Effects.setValue(packetFakeBed2, "b", 0);
+                Effects.setValue(packetFakeBed2, "c", 0);
+                Effects.setValue(packetFakeBed2, "d", 0);
             }
             
             for (final String p_ : a.getAllPlayers())
             {
                 final Player p__ = Bukkit.getPlayer(p_);
-                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet);
-                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packetNamedEntity);
+                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packetFakeBed);
             }
             
             // Move the effect (fake player) to 0 0 0 after 4 seconds
@@ -152,10 +159,6 @@ public class Effects
             return Bukkit.getScheduler().runTaskLater(MinigamesAPI.getAPI(), () -> {
                 try
                 {
-                    Effects.setValue(packet_, "a", id);
-                    Effects.setValue(packet_, "b", 0);
-                    Effects.setValue(packet_, "c", 0);
-                    Effects.setValue(packet_, "d", 0);
                     for (final String p_ : tempp)
                     {
                         if (Validator.isPlayerOnline(p_))
@@ -163,8 +166,8 @@ public class Effects
                             final Player p__ = Bukkit.getPlayer(p_);
                             if (p__.getWorld() == currentworld)
                             {
-                                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet);
-                                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packet_);
+                                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packetNamedEntity);
+                                sendPacket.invoke(playerConnection.get(getHandle.invoke(p__)), packetFakeBed2);
                             }
                         }
                     }
