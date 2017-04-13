@@ -88,6 +88,10 @@ public final class Cuboid
      */
     public boolean containsLoc(final Location loc)
     {
+        if (this.highPoints == null || this.lowPoints == null)
+        {
+            return false;
+        }
         if (loc == null || loc.getWorld() == null || !loc.getWorld().equals(this.highPoints.getWorld()))
         {
             return false;
