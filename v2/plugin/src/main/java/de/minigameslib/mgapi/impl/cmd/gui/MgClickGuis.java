@@ -41,6 +41,8 @@ import de.minigameslib.mclib.api.gui.ClickGuiId;
     YesNoQuestion.Messages.class,
     SelectMarkerPage.Messages.class,
     
+    RulesPage.Messages.class,
+    
     LocalizedLinesList.Messages.class,
     LocalizedLinesEditLocale.Messages.class,
     LocalizedLinesEditLocaleList.Messages.class,
@@ -50,6 +52,14 @@ import de.minigameslib.mclib.api.gui.ClickGuiId;
     SignsPage.Messages.class,
     SignEdit.Messages.class,
     SignsCreateChooseType.Messages.class,
+    
+    ComponentsPage.Messages.class,
+    ComponentEdit.Messages.class,
+    ComponentsCreateChooseType.Messages.class,
+    
+    ZonesPage.Messages.class,
+    ZoneEdit.Messages.class,
+    ZonesCreateChooseType.Messages.class,
 })
 public enum MgClickGuis implements ClickGuiId
 {

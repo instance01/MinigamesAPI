@@ -43,16 +43,16 @@ import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 
 /**
- * Click gui for editing signs.
+ * Click gui for editing zones.
  * 
  * @author mepeisen
  */
-public class SignEdit implements ClickGuiPageInterface
+public class ZoneEdit implements ClickGuiPageInterface
 {
 
     /** arena to be edited. */
@@ -61,18 +61,18 @@ public class SignEdit implements ClickGuiPageInterface
     /** previous page. */
     private ClickGuiPageInterface prevPage;
 
-    /** sign to be edited. */
-    private ArenaSignHandler sign;
+    /** zone to be edited. */
+    private ArenaZoneHandler zone;
 
     /**
      * @param arena
-     * @param sign
+     * @param zone
      * @param prevPage
      */
-    public SignEdit(ArenaInterface arena, ArenaSignHandler sign, ClickGuiPageInterface prevPage)
+    public ZoneEdit(ArenaInterface arena, ArenaZoneHandler zone, ClickGuiPageInterface prevPage)
     {
         this.arena = arena;
-        this.sign = sign;
+        this.zone = zone;
         this.prevPage = prevPage;
     }
 
@@ -96,7 +96,8 @@ public class SignEdit implements ClickGuiPageInterface
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Info), Messages.IconInfo, this::onInfo), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text), Messages.IconName, this::onName), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Target), Messages.IconDisplayMarker, this::onDisplayMarker), 
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleport, this::onTeleport), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleportLower, this::onTeleportLower), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleportHigher, this::onTeleportHigher), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Script), Messages.IconRules, this::onRules)
             }
         });
@@ -113,9 +114,9 @@ public class SignEdit implements ClickGuiPageInterface
         player.sendMessage(Messages.InfoOutput,
                 this.arena.getDisplayName().toArg(),
                 this.arena.getShortDescription().toArg(),
-                this.sign.getName(),
-                this.sign.getSign().getTypeId().getPluginName(),
-                this.sign.getSign().getTypeId().name());
+                this.zone.getName(),
+                this.zone.getZone().getTypeId().getPluginName(),
+                this.zone.getZone().getTypeId().name());
     }
     
     /**
@@ -128,7 +129,7 @@ public class SignEdit implements ClickGuiPageInterface
     private void onName(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
         player.openAnvilGui(new QueryText(
-                this.sign.getName(),
+                this.zone.getName(),
                 () -> {player.openClickGui(new Main(this));},
                 (s) -> this.onName(player, session, gui, s),
                 player.encodeMessage(Messages.NameDescription)));
@@ -144,15 +145,15 @@ public class SignEdit implements ClickGuiPageInterface
      */
     private void onName(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, String name) throws McException
     {
-        if (name.equals(this.sign.getName()))
+        if (name.equals(this.zone.getName()))
         {
             player.openClickGui(new Main(this));
             return;
         }
         
         @SuppressWarnings("cast")
-        final Optional<ArenaSignHandler> handler = this.arena.getSigns().stream().
-                map(s -> (ArenaSignHandler) this.arena.getHandler(s)).
+        final Optional<ArenaZoneHandler> handler = this.arena.getZones().stream().
+                map(s -> (ArenaZoneHandler) this.arena.getHandler(s)).
                 filter(s -> name.equals(s.getName())).
                 findFirst();
         if (handler.isPresent())
@@ -164,8 +165,8 @@ public class SignEdit implements ClickGuiPageInterface
             throw new McException(ArenaImpl.Messages.ModificationWrongState);
         }
         
-        this.sign.setName(name);
-        this.sign.getSign().saveConfig();
+        this.zone.setName(name);
+        this.zone.getZone().saveConfig();
         player.openClickGui(new Main(this));
     }
     
@@ -183,7 +184,7 @@ public class SignEdit implements ClickGuiPageInterface
         }
         else
         {
-            session.setNewPage(new SelectMarkerPage(player, this.sign.getSign(), this));
+            session.setNewPage(new SelectMarkerPage(player, this.zone.getZone(), this));
         }
     }
     
@@ -194,9 +195,22 @@ public class SignEdit implements ClickGuiPageInterface
      * @param gui
      * @throws McException 
      */
-    private void onTeleport(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    private void onTeleportLower(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        player.getBukkitPlayer().teleport(this.sign.getSign().getLocation());
+        player.getBukkitPlayer().teleport(this.zone.getZone().getCuboid().getLowLoc());
+        player.openClickGui(new Main(this));
+    }
+    
+    /**
+     * teleport
+     * @param player
+     * @param session
+     * @param gui
+     * @throws McException 
+     */
+    private void onTeleportHigher(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    {
+        player.getBukkitPlayer().teleport(this.zone.getZone().getCuboid().getHighLoc());
         player.openClickGui(new Main(this));
     }
     
@@ -208,7 +222,7 @@ public class SignEdit implements ClickGuiPageInterface
      */
     private void onRules(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        session.setNewPage(new RulesPage<>(this.getPageName(), this.sign, this));
+        session.setNewPage(new RulesPage<>(this.getPageName(), this.zone, this));
     }
     
     /**
@@ -224,7 +238,7 @@ public class SignEdit implements ClickGuiPageInterface
         {
             throw new McException(ArenaImpl.Messages.ModificationWrongState);
         }
-        this.sign.getSign().delete();
+        this.zone.getZone().delete();
         session.setNewPage(this.prevPage);
     }
     
@@ -242,43 +256,43 @@ public class SignEdit implements ClickGuiPageInterface
     @Override
     public Serializable getPageName()
     {
-        return Messages.Title.toArg(this.arena.getInternalName(), this.sign.getName());
+        return Messages.Title.toArg(this.arena.getInternalName(), this.zone.getName());
     }
     
     /**
-     * The sign create messages.
+     * The zone create messages.
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "admingui.signs_edit")
+    @LocalizedMessages(value = "admingui.zones_edit")
     public enum Messages implements LocalizedMessageInterface
     {
         /**
-         * Gui title (sign edit page)
+         * Gui title (zone edit page)
          */
-        @LocalizedMessage(defaultMessage = "Sign %1$s - %2$s")
-        @MessageComment(value = {"Gui title (sign edit)"}, args = {@Argument("arena internal name"), @Argument("sign name")})
+        @LocalizedMessage(defaultMessage = "Zone %1$s - %2$s")
+        @MessageComment(value = {"Gui title (zone edit)"}, args = {@Argument("arena internal name"), @Argument("zone name")})
         Title,
         
         /**
          * back to arenas
          */
-        @LocalizedMessage(defaultMessage = "Back to signs list")
-        @MessageComment({"back to signs"})
+        @LocalizedMessage(defaultMessage = "Back to zones list")
+        @MessageComment({"back to zones"})
         IconBack,
         
         /**
          * info
          */
-        @LocalizedMessage(defaultMessage = "Sign info")
+        @LocalizedMessage(defaultMessage = "Zone info")
         @MessageComment({"info"})
         IconInfo,
         
         /**
          * name
          */
-        @LocalizedMessage(defaultMessage = "Sign name")
-        @MessageComment({"sign name"})
+        @LocalizedMessage(defaultMessage = "Zone name")
+        @MessageComment({"zone name"})
         IconName,
         
         /**
@@ -291,9 +305,16 @@ public class SignEdit implements ClickGuiPageInterface
         /**
          * teleport
          */
-        @LocalizedMessage(defaultMessage = "Teleport to sign")
+        @LocalizedMessage(defaultMessage = "Teleport to zone (lower bounds)")
         @MessageComment({"teleport"})
-        IconTeleport,
+        IconTeleportLower,
+        
+        /**
+         * teleport
+         */
+        @LocalizedMessage(defaultMessage = "Teleport to zone (higher bounds)")
+        @MessageComment({"teleport"})
+        IconTeleportHigher,
         
         /**
          * delete
@@ -314,25 +335,25 @@ public class SignEdit implements ClickGuiPageInterface
          */
         @LocalizedMessageList({
             "arena: %1$s - %2$s",
-            "sign-name: %3$s",
-            "sign-type: %4$s/%5$s"
+            "zone-name: %3$s",
+            "zone-type: %4$s/%5$s"
         })
         @MessageComment(value = {
             "The info"
         },args = {
                 @Argument("arena display name"),
                 @Argument("arena short description"),
-                @Argument("sign name"),
-                @Argument("sign type plugin"),
-                @Argument("sign type name"),
+                @Argument("zone name"),
+                @Argument("zone type plugin"),
+                @Argument("zone type name"),
                 })
         InfoOutput,
         
         /**
          * Name description
          */
-        @LocalizedMessageList({"Enter the name of the sign.", "The name is only used internal."})
-        @MessageComment("Text description for sign name")
+        @LocalizedMessageList({"Enter the name of the zone.", "The name is only used internal."})
+        @MessageComment("Text description for zone name")
         NameDescription,
     }
     

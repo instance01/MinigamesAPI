@@ -43,16 +43,16 @@ import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
+import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 
 /**
- * Click gui for editing signs.
+ * Click gui for editing components.
  * 
  * @author mepeisen
  */
-public class SignEdit implements ClickGuiPageInterface
+public class ComponentEdit implements ClickGuiPageInterface
 {
 
     /** arena to be edited. */
@@ -61,18 +61,18 @@ public class SignEdit implements ClickGuiPageInterface
     /** previous page. */
     private ClickGuiPageInterface prevPage;
 
-    /** sign to be edited. */
-    private ArenaSignHandler sign;
+    /** component to be edited. */
+    private ArenaComponentHandler component;
 
     /**
      * @param arena
-     * @param sign
+     * @param component
      * @param prevPage
      */
-    public SignEdit(ArenaInterface arena, ArenaSignHandler sign, ClickGuiPageInterface prevPage)
+    public ComponentEdit(ArenaInterface arena, ArenaComponentHandler component, ClickGuiPageInterface prevPage)
     {
         this.arena = arena;
-        this.sign = sign;
+        this.component = component;
         this.prevPage = prevPage;
     }
 
@@ -113,9 +113,9 @@ public class SignEdit implements ClickGuiPageInterface
         player.sendMessage(Messages.InfoOutput,
                 this.arena.getDisplayName().toArg(),
                 this.arena.getShortDescription().toArg(),
-                this.sign.getName(),
-                this.sign.getSign().getTypeId().getPluginName(),
-                this.sign.getSign().getTypeId().name());
+                this.component.getName(),
+                this.component.getComponent().getTypeId().getPluginName(),
+                this.component.getComponent().getTypeId().name());
     }
     
     /**
@@ -128,7 +128,7 @@ public class SignEdit implements ClickGuiPageInterface
     private void onName(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
         player.openAnvilGui(new QueryText(
-                this.sign.getName(),
+                this.component.getName(),
                 () -> {player.openClickGui(new Main(this));},
                 (s) -> this.onName(player, session, gui, s),
                 player.encodeMessage(Messages.NameDescription)));
@@ -144,15 +144,15 @@ public class SignEdit implements ClickGuiPageInterface
      */
     private void onName(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, String name) throws McException
     {
-        if (name.equals(this.sign.getName()))
+        if (name.equals(this.component.getName()))
         {
             player.openClickGui(new Main(this));
             return;
         }
         
         @SuppressWarnings("cast")
-        final Optional<ArenaSignHandler> handler = this.arena.getSigns().stream().
-                map(s -> (ArenaSignHandler) this.arena.getHandler(s)).
+        final Optional<ArenaComponentHandler> handler = this.arena.getComponents().stream().
+                map(s -> (ArenaComponentHandler) this.arena.getHandler(s)).
                 filter(s -> name.equals(s.getName())).
                 findFirst();
         if (handler.isPresent())
@@ -164,8 +164,8 @@ public class SignEdit implements ClickGuiPageInterface
             throw new McException(ArenaImpl.Messages.ModificationWrongState);
         }
         
-        this.sign.setName(name);
-        this.sign.getSign().saveConfig();
+        this.component.setName(name);
+        this.component.getComponent().saveConfig();
         player.openClickGui(new Main(this));
     }
     
@@ -183,7 +183,7 @@ public class SignEdit implements ClickGuiPageInterface
         }
         else
         {
-            session.setNewPage(new SelectMarkerPage(player, this.sign.getSign(), this));
+            session.setNewPage(new SelectMarkerPage(player, this.component.getComponent(), this));
         }
     }
     
@@ -196,7 +196,7 @@ public class SignEdit implements ClickGuiPageInterface
      */
     private void onTeleport(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        player.getBukkitPlayer().teleport(this.sign.getSign().getLocation());
+        player.getBukkitPlayer().teleport(this.component.getComponent().getLocation());
         player.openClickGui(new Main(this));
     }
     
@@ -208,7 +208,7 @@ public class SignEdit implements ClickGuiPageInterface
      */
     private void onRules(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        session.setNewPage(new RulesPage<>(this.getPageName(), this.sign, this));
+        session.setNewPage(new RulesPage<>(this.getPageName(), this.component, this));
     }
     
     /**
@@ -224,7 +224,7 @@ public class SignEdit implements ClickGuiPageInterface
         {
             throw new McException(ArenaImpl.Messages.ModificationWrongState);
         }
-        this.sign.getSign().delete();
+        this.component.getComponent().delete();
         session.setNewPage(this.prevPage);
     }
     
@@ -242,43 +242,43 @@ public class SignEdit implements ClickGuiPageInterface
     @Override
     public Serializable getPageName()
     {
-        return Messages.Title.toArg(this.arena.getInternalName(), this.sign.getName());
+        return Messages.Title.toArg(this.arena.getInternalName(), this.component.getName());
     }
     
     /**
-     * The sign create messages.
+     * The component create messages.
      * 
      * @author mepeisen
      */
-    @LocalizedMessages(value = "admingui.signs_edit")
+    @LocalizedMessages(value = "admingui.components_edit")
     public enum Messages implements LocalizedMessageInterface
     {
         /**
-         * Gui title (sign edit page)
+         * Gui title (component edit page)
          */
-        @LocalizedMessage(defaultMessage = "Sign %1$s - %2$s")
-        @MessageComment(value = {"Gui title (sign edit)"}, args = {@Argument("arena internal name"), @Argument("sign name")})
+        @LocalizedMessage(defaultMessage = "Component %1$s - %2$s")
+        @MessageComment(value = {"Gui title (component edit)"}, args = {@Argument("arena internal name"), @Argument("component name")})
         Title,
         
         /**
          * back to arenas
          */
-        @LocalizedMessage(defaultMessage = "Back to signs list")
-        @MessageComment({"back to signs"})
+        @LocalizedMessage(defaultMessage = "Back to components list")
+        @MessageComment({"back to components"})
         IconBack,
         
         /**
          * info
          */
-        @LocalizedMessage(defaultMessage = "Sign info")
+        @LocalizedMessage(defaultMessage = "Component info")
         @MessageComment({"info"})
         IconInfo,
         
         /**
          * name
          */
-        @LocalizedMessage(defaultMessage = "Sign name")
-        @MessageComment({"sign name"})
+        @LocalizedMessage(defaultMessage = "Component name")
+        @MessageComment({"component name"})
         IconName,
         
         /**
@@ -291,7 +291,7 @@ public class SignEdit implements ClickGuiPageInterface
         /**
          * teleport
          */
-        @LocalizedMessage(defaultMessage = "Teleport to sign")
+        @LocalizedMessage(defaultMessage = "Teleport to component")
         @MessageComment({"teleport"})
         IconTeleport,
         
@@ -314,25 +314,25 @@ public class SignEdit implements ClickGuiPageInterface
          */
         @LocalizedMessageList({
             "arena: %1$s - %2$s",
-            "sign-name: %3$s",
-            "sign-type: %4$s/%5$s"
+            "component-name: %3$s",
+            "component-type: %4$s/%5$s"
         })
         @MessageComment(value = {
             "The info"
         },args = {
                 @Argument("arena display name"),
                 @Argument("arena short description"),
-                @Argument("sign name"),
-                @Argument("sign type plugin"),
-                @Argument("sign type name"),
+                @Argument("component name"),
+                @Argument("component type plugin"),
+                @Argument("component type name"),
                 })
         InfoOutput,
         
         /**
          * Name description
          */
-        @LocalizedMessageList({"Enter the name of the sign.", "The name is only used internal."})
-        @MessageComment("Text description for sign name")
+        @LocalizedMessageList({"Enter the name of the component.", "The name is only used internal."})
+        @MessageComment("Text description for component name")
         NameDescription,
     }
     

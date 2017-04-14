@@ -154,8 +154,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onZones(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        session.setNewPage(new ZonesPage(this.arena, this));
     }
     
     /**
@@ -178,8 +177,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onRules(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        session.setNewPage(new RulesPage<>(this.getPageName(), this.arena, this));
     }
     
     /**
