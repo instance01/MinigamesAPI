@@ -73,8 +73,10 @@ import de.minigameslib.mgapi.impl.cmd.LeaveCommand;
 import de.minigameslib.mgapi.impl.cmd.ManualCommand;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 import de.minigameslib.mgapi.impl.cmd.SpectateCommand;
+import de.minigameslib.mgapi.impl.cmd.marker.MarkerColorProvider;
 import de.minigameslib.mgapi.impl.cmd.tool.AdminToolHelper;
 import de.minigameslib.mgapi.impl.rules.BasicMatch;
+import de.minigameslib.mgapi.impl.rules.BasicMatchTimer;
 
 /**
  * The common messages.
@@ -86,6 +88,7 @@ import de.minigameslib.mgapi.impl.rules.BasicMatch;
     // core
     MglibCoreErrors.class,
     ArenaImpl.Messages.class,
+    MarkerColorProvider.Messages.class,
     // commands
     Mg2Command.Messages.class,
     InfoCommand.Messages.class,
@@ -135,6 +138,7 @@ import de.minigameslib.mgapi.impl.rules.BasicMatch;
     AdminToolHelper.Messages.class,
     // rules
     BasicMatch.Messages.class,
+    BasicMatchTimer.Messages.class,
 })
 public enum MglibMessages implements LocalizedMessageInterface
 {

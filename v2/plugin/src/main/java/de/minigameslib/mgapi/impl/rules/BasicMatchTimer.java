@@ -34,6 +34,12 @@ import org.bukkit.scheduler.BukkitTask;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.event.McEventHandler;
+import de.minigameslib.mclib.api.locale.LocalizedMessage;
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
+import de.minigameslib.mclib.api.locale.LocalizedMessages;
+import de.minigameslib.mclib.api.locale.MessageComment;
+import de.minigameslib.mclib.api.locale.MessageSeverityType;
+import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
@@ -86,6 +92,33 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
     
     /** logger. */
     private static final Logger LOGGER = Logger.getLogger(BasicMatchTimer.class.getName());
+    
+    /** {@code true} for warning about 60 seconds left */
+    private boolean warn60 = true;
+    
+    /** {@code true} for warning about 30 seconds left */
+    private boolean warn30 = true;
+    
+    /** {@code true} for warning about 20 seconds left */
+    private boolean warn20 = true;
+    
+    /** {@code true} for warning about 10 seconds left */
+    private boolean warn10 = true;
+    
+    /** {@code true} for warning about 5 seconds left */
+    private boolean warn5 = true;
+    
+    /** {@code true} for warning about 4 seconds left */
+    private boolean warn4 = true;
+    
+    /** {@code true} for warning about 3 seconds left */
+    private boolean warn3 = true;
+    
+    /** {@code true} for warning about 2 seconds left */
+    private boolean warn2 = true;
+    
+    /** {@code true} for warning about 1 seconds left */
+    private boolean warn1 = true;
     
     /**
      * @param type
@@ -143,6 +176,7 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
         this.paused = false;
         this.lastStart = LocalDateTime.now();
         this.matchDuration = 0;
+        this.fixWarnings();
     }
 
     @Override
@@ -150,6 +184,7 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
     {
         this.paused = true;
         this.matchDuration = 0;
+        this.fixWarnings();
     }
 
     @Override
@@ -176,6 +211,7 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
         {
             this.startTimer();
         }
+        this.fixWarnings();
     }
 
     @Override
@@ -186,6 +222,7 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
         {
             this.stopTimer();
         }
+        this.fixWarnings();
     }
 
     @Override
@@ -196,24 +233,28 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
         {
             this.stopTimer();
         }
+        this.fixWarnings();
     }
 
     @Override
     public void addDurationMillis(long millis)
     {
         this.matchDuration += millis;
+        this.fixWarnings();
     }
 
     @Override
     public void substractDurationMillis(long millis)
     {
         this.matchDuration -= millis;
+        this.fixWarnings();
     }
 
     @Override
     public void setDurationMillis(long millis)
     {
         this.matchDuration = millis;
+        this.fixWarnings();
     }
     
     /**
@@ -233,6 +274,7 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
             {
                 this.startTimer();
             }
+            this.fixWarnings();
         }
         else
         {
@@ -264,6 +306,24 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
     }
     
     /**
+     * Fixes warnings depending on remaining game time
+     */
+    private void fixWarnings()
+    {
+        long delta = this.getMaxMillis() - this.getDurationMillis();
+        final int sec = (int) (delta / 1000);
+        this.warn60 = sec >= 60;
+        this.warn30 = sec >= 30;
+        this.warn20 = sec >= 20;
+        this.warn10 = sec >= 10;
+        this.warn5 = sec >= 5;
+        this.warn4 = sec >= 4;
+        this.warn3 = sec >= 3;
+        this.warn2 = sec >= 2;
+        this.warn1 = sec >= 1;
+    }
+    
+    /**
      * On timer tick
      * 
      * @param task
@@ -279,6 +339,8 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
                 this.timerTask = null;
                 try
                 {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.Abort));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.Abort));
                     this.arena.abort();
                 }
                 catch (McException e)
@@ -288,10 +350,88 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
             }
             else
             {
-                // TODO send messages to players about the pending game time
-                // TODO interval: before ending: 1 minute, 30 seconds, 20 seconds, 10 seconds, 5 seconds, 4 seconds, 3 seconds, 2 seconds, 1 second... Respect game time changes...
+                final int sec = (int) (delta / 1000);
+                if (this.warn60 && sec <= 60)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 60));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 60));
+                    this.warn60 = false;
+                }
+                else if (this.warn30 && sec <= 30)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 30));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 30));
+                    this.warn30 = false;
+                }
+                else if (this.warn20 && sec <= 20)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 20));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 20));
+                    this.warn20 = false;
+                }
+                else if (this.warn10 && sec <= 10)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 10));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 10));
+                    this.warn10 = false;
+                }
+                else if (this.warn5 && sec <= 5)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 5));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 5));
+                    this.warn5 = false;
+                }
+                else if (this.warn4 && sec <= 4)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 4));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 4));
+                    this.warn4 = false;
+                }
+                else if (this.warn3 && sec <= 3)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 3));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 3));
+                    this.warn3 = false;
+                }
+                else if (this.warn2 && sec <= 2)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 2));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 2));
+                    this.warn2 = false;
+                }
+                else if (this.warn1 && sec <= 1)
+                {
+                    this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 1));
+                    this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.WarnSeconds, 1));
+                    this.warn1 = false;
+                }
             }
         }
+    }
+    
+    /**
+     * The common messages.
+     * 
+     * @author mepeisen
+     */
+    @LocalizedMessages(value = "cmd.rules.BasicMatchTimer")
+    public enum Messages implements LocalizedMessageInterface
+    {
+        
+        /**
+         * Warning of match timer
+         */
+        @LocalizedMessage(defaultMessage = "The match is stopping in %1$d seconds because the maximum game time was reached.", severity = MessageSeverityType.Warning)
+        @MessageComment(value = { "Warning of match timer" }, args = { @Argument(type = "Numeric", value = "Remaining seconds") })
+        WarnSeconds,
+        
+        /**
+         * match timer expired
+         */
+        @LocalizedMessage(defaultMessage = "The match is stopping now because the maximum game time was reached.", severity = MessageSeverityType.Loser)
+        @MessageComment(value = { "match timer expired" })
+        Abort,
+     
     }
     
 }

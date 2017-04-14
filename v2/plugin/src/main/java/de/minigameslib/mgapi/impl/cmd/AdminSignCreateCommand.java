@@ -84,7 +84,7 @@ public class AdminSignCreateCommand implements SubCommandHandlerInterface
         {
             throw new McException(ArenaImpl.Messages.ModificationWrongState);
         }
-        final SignTypeId type = Mg2Command.getEnum(SignTypeId.class, typeName);
+        final SignTypeId type = Mg2Command.getEnum(command, SignTypeId.class, typeName);
         
         AdminToolHelper.onCreateSign(command.getPlayer(), arena, name, type, null);
     }

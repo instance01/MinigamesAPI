@@ -252,6 +252,12 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
     int getPlayerCount();
 
     /**
+     * Returns the players playing the match
+     * @return player count
+     */
+    int getActivePlayerCount();
+
+    /**
      * Returns the spectators being in the arena
      * @return spectators count
      */
@@ -262,6 +268,12 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
      * @return current player list
      */
     Collection<ArenaPlayerInterface> getPlayers();
+
+    /**
+     * Returns the players playing the match
+     * @return current player list
+     */
+    Collection<ArenaPlayerInterface> getActivePlayers();
 
     /**
      * Returns the spectators

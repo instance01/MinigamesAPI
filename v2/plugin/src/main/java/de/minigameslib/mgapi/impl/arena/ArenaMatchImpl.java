@@ -614,6 +614,23 @@ public class ArenaMatchImpl implements ArenaMatchInterface
     }
 
     @Override
+    public Collection<UUID> getSpectators()
+    {
+        return this.players.entrySet().stream()
+                .filter(p -> p.getValue().isSpec())
+                .map(p -> p.getKey())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getSpectatorCount()
+    {
+        return (int) this.players.entrySet().stream()
+                .filter(p -> p.getValue().isSpec())
+                .count();
+    }
+
+    @Override
     public int getWinnerCount()
     {
         return this.teams.get(CommonTeams.Winners).getTeamMembers().size();

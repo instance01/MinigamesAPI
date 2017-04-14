@@ -27,7 +27,9 @@ package de.minigameslib.mgapi.impl.cmd.gui;
 import java.io.Serializable;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import de.minigameslib.mclib.api.gui.ClickGuiId;
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
@@ -266,7 +268,11 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemArenas(ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(new ItemStack(Material.DIAMOND_SWORD), Messages.IconArenas, handler);
+        final ItemStack itemStack = new ItemStack(Material.DIAMOND_SWORD);
+        final ItemMeta meta = itemStack.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemStack.setItemMeta(meta);
+        return new ClickGuiItem(itemStack, Messages.IconArenas, handler);
     }
     
     /**
@@ -277,7 +283,11 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     public static ClickGuiItem itemArena(ArenaInterface arena, ClickGuiItem.GuiItemHandler handler)
     {
-        return new ClickGuiItem(new ItemStack(Material.DIAMOND_SWORD), arena.getDisplayName(), handler);
+        final ItemStack itemStack = new ItemStack(Material.DIAMOND_SWORD);
+        final ItemMeta meta = itemStack.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemStack.setItemMeta(meta);
+        return new ClickGuiItem(itemStack, arena.getDisplayName(), handler);
     }
     
     /**

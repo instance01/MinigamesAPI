@@ -84,7 +84,7 @@ public class AdminZoneCreateCommand implements SubCommandHandlerInterface
         {
             throw new McException(ArenaImpl.Messages.ModificationWrongState);
         }
-        final ZoneTypeId type = Mg2Command.getEnum(ZoneTypeId.class, typeName);
+        final ZoneTypeId type = Mg2Command.getEnum(command, ZoneTypeId.class, typeName);
         
         AdminToolHelper.onCreateZone(command.getPlayer(), arena, name, type, null);
     }

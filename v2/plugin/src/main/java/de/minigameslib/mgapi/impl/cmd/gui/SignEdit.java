@@ -25,7 +25,9 @@
 package de.minigameslib.mgapi.impl.cmd.gui;
 
 import java.io.Serializable;
+import java.util.Optional;
 
+import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
@@ -40,11 +42,10 @@ import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
-import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
-import de.minigameslib.mgapi.api.arena.ArenaState;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
-import de.minigameslib.mgapi.impl.cmd.ArenaCommand;
+import de.minigameslib.mgapi.impl.arena.ArenaImpl;
+import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 
 /**
  * Click gui for editing signs.
@@ -109,8 +110,12 @@ public class SignEdit implements ClickGuiPageInterface
      */
     private void onInfo(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        player.sendMessage(Messages.InfoOutput,
+                this.arena.getDisplayName().toArg(),
+                this.arena.getShortDescription().toArg(),
+                this.sign.getName(),
+                this.sign.getSign().getTypeId().getPluginName(),
+                this.sign.getSign().getTypeId().name());
     }
     
     /**
@@ -118,11 +123,50 @@ public class SignEdit implements ClickGuiPageInterface
      * @param player
      * @param session
      * @param gui
+     * @throws McException 
      */
-    private void onName(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
+    private void onName(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        player.openAnvilGui(new QueryText(
+                this.sign.getName(),
+                () -> {player.openClickGui(new Main(this));},
+                (s) -> this.onName(player, session, gui, s),
+                player.encodeMessage(Messages.NameDescription)));
+    }
+    
+    /**
+     * name
+     * @param player
+     * @param session
+     * @param gui
+     * @param name 
+     * @throws McException 
+     */
+    private void onName(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, String name) throws McException
+    {
+        if (name.equals(this.sign.getName()))
+        {
+            player.openClickGui(new Main(this));
+            return;
+        }
+        
+        @SuppressWarnings("cast")
+        final Optional<ArenaSignHandler> handler = this.arena.getSigns().stream().
+                map(s -> (ArenaSignHandler) this.arena.getHandler(s)).
+                filter(s -> name.equals(s.getName())).
+                findFirst();
+        if (handler.isPresent())
+        {
+            throw new McException(Mg2Command.Messages.ComponentAlreadyExists, name);
+        }
+        if (!this.arena.isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        
+        this.sign.setName(name);
+        this.sign.getSign().saveConfig();
+        player.openClickGui(new Main(this));
     }
     
     /**
@@ -133,8 +177,14 @@ public class SignEdit implements ClickGuiPageInterface
      */
     private void onDisplayMarker(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        if (!player.hasSmartGui())
+        {
+            player.sendMessage(CommonMessages.NoSmartGui);
+        }
+        else
+        {
+            session.setNewPage(new SelectMarkerPage(player, this.sign.getSign(), this));
+        }
     }
     
     /**
@@ -142,11 +192,12 @@ public class SignEdit implements ClickGuiPageInterface
      * @param player
      * @param session
      * @param gui
+     * @throws McException 
      */
-    private void onTeleport(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
+    private void onTeleport(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        player.getBukkitPlayer().teleport(this.sign.getSign().getLocation());
+        player.openClickGui(new Main(this));
     }
     
     /**
@@ -202,106 +253,43 @@ public class SignEdit implements ClickGuiPageInterface
          * Gui title (sign edit page)
          */
         @LocalizedMessage(defaultMessage = "Sign %1$s - %2$s")
-        @MessageComment(value = {"Gui title (arena edit)"}, args = {@Argument("internal name"), @Argument("display name")})
+        @MessageComment(value = {"Gui title (sign edit)"}, args = {@Argument("arena internal name"), @Argument("sign name")})
         Title,
         
         /**
          * back to arenas
          */
-        @LocalizedMessage(defaultMessage = "Back to arenas list")
-        @MessageComment({"back to arenas"})
+        @LocalizedMessage(defaultMessage = "Back to signs list")
+        @MessageComment({"back to signs"})
         IconBack,
         
         /**
          * info
          */
-        @LocalizedMessage(defaultMessage = "Arena info")
+        @LocalizedMessage(defaultMessage = "Sign info")
         @MessageComment({"info"})
         IconInfo,
         
         /**
-         * display name
+         * name
          */
-        @LocalizedMessage(defaultMessage = "Display name")
-        @MessageComment({"display name"})
-        IconDisplayName,
+        @LocalizedMessage(defaultMessage = "Sign name")
+        @MessageComment({"sign name"})
+        IconName,
         
         /**
-         * short description
+         * display marker
          */
-        @LocalizedMessage(defaultMessage = "Short description")
-        @MessageComment({"short description"})
-        IconShortDescription,
+        @LocalizedMessage(defaultMessage = "Show display marker")
+        @MessageComment({"display marker"})
+        IconDisplayMarker,
         
         /**
-         * long description
+         * teleport
          */
-        @LocalizedMessage(defaultMessage = "Long description")
-        @MessageComment({"long description"})
-        IconLongDescription,
-        
-        /**
-         * Manual
-         */
-        @LocalizedMessage(defaultMessage = "Manual")
-        @MessageComment({"manual"})
-        IconManual,
-        
-        /**
-         * check
-         */
-        @LocalizedMessage(defaultMessage = "Arena check")
-        @MessageComment({"check"})
-        IconCheck,
-        
-        /**
-         * enable
-         */
-        @LocalizedMessage(defaultMessage = "Enable")
-        @MessageComment({"enable"})
-        IconEnable,
-        
-        /**
-         * disable
-         */
-        @LocalizedMessage(defaultMessage = "Disable")
-        @MessageComment({"disable"})
-        IconDisable,
-        
-        /**
-         * start match
-         */
-        @LocalizedMessage(defaultMessage = "Start match")
-        @MessageComment({"start match"})
-        IconStart,
-        
-        /**
-         * stop match
-         */
-        @LocalizedMessage(defaultMessage = "Stop match")
-        @MessageComment({"stop match"})
-        IconStop,
-        
-        /**
-         * hard reset
-         */
-        @LocalizedMessage(defaultMessage = "Hard reset")
-        @MessageComment({"hard reset"})
-        IconHardReset,
-        
-        /**
-         * players
-         */
-        @LocalizedMessage(defaultMessage = "Players")
-        @MessageComment({"players"})
-        IconPlayers,
-        
-        /**
-         * maintenance
-         */
-        @LocalizedMessage(defaultMessage = "Maintenance (edit arena)")
-        @MessageComment({"maintenance"})
-        IconMaintenance,
+        @LocalizedMessage(defaultMessage = "Teleport to sign")
+        @MessageComment({"teleport"})
+        IconTeleport,
         
         /**
          * delete
@@ -311,20 +299,6 @@ public class SignEdit implements ClickGuiPageInterface
         IconDelete,
         
         /**
-         * test
-         */
-        @LocalizedMessage(defaultMessage = "Test mode")
-        @MessageComment({"test"})
-        IconTest,
-        
-        /**
-         * invite
-         */
-        @LocalizedMessage(defaultMessage = "Invite")
-        @MessageComment({"invite"})
-        IconInvite,
-        
-        /**
          * rules
          */
         @LocalizedMessage(defaultMessage = "Rules")
@@ -332,82 +306,30 @@ public class SignEdit implements ClickGuiPageInterface
         IconRules,
         
         /**
-         * components
-         */
-        @LocalizedMessage(defaultMessage = "Components")
-        @MessageComment({"components"})
-        IconComponents,
-        
-        /**
-         * zones
-         */
-        @LocalizedMessage(defaultMessage = "Zones")
-        @MessageComment({"zones"})
-        IconZones,
-        
-        /**
-         * signs
-         */
-        @LocalizedMessage(defaultMessage = "Signs")
-        @MessageComment({"Signs"})
-        IconSigns,
-        
-        /**
-         * entites
-         */
-        @LocalizedMessage(defaultMessage = "Entities")
-        @MessageComment({"entities"})
-        IconEntities,
-        
-        /**
-         * teams
-         */
-        @LocalizedMessage(defaultMessage = "Teams")
-        @MessageComment({"teams"})
-        IconTeams,
-        
-        /**
-         * export
-         */
-        @LocalizedMessage(defaultMessage = "Export")
-        @MessageComment({"export"})
-        IconExport,
-        
-        /**
-         * question: really delete arena
-         */
-        @LocalizedMessage(defaultMessage = "Really delete arena?")
-        @MessageComment({"question: Really delete arena"})
-        QuestionReallyDelete,
-        
-        /**
-         * question: really delete arena
-         */
-        @LocalizedMessageList({"Do you really want to delete this arena?", "The deletion can not be undone.", "If you want to use the arena later please export it first."})
-        @MessageComment({"question: Really delete arena"})
-        QuestionReallyDeleteDetails,
-        
-        /**
-         * The command output of /mg2 arena
-         * @see ArenaEdit (onInfo)
+         * The info
          */
         @LocalizedMessageList({
-            "minigame: %1$s",
-            "arena: %2$s - %3$s",
-            "state: %4$s",
-            "----------",
-            "%5$s"
+            "arena: %1$s - %2$s",
+            "sign-name: %3$s",
+            "sign-type: %4$s/%5$s"
         })
         @MessageComment(value = {
-            "The command output of /mg2 arena"
+            "The info"
         },args = {
-                @Argument("minigame display name"),
                 @Argument("arena display name"),
                 @Argument("arena short description"),
-                @Argument("arena state"),
-                @Argument("arena long description"),
+                @Argument("sign name"),
+                @Argument("sign type plugin"),
+                @Argument("sign type name"),
                 })
         InfoOutput,
+        
+        /**
+         * Name description
+         */
+        @LocalizedMessageList({"Enter the name of the sign.", "The name is only used internal."})
+        @MessageComment("Text description for sign name")
+        NameDescription,
     }
     
 }

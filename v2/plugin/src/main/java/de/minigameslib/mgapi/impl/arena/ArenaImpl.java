@@ -954,13 +954,23 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     }
 
     @Override
+    public int getActivePlayerCount()
+    {
+        if (this.match == null)
+        {
+            return 0;
+        }
+        return this.match.getPlayerCount();
+    }
+
+    @Override
     public int getSpectatorCount()
     {
         if (this.match == null)
         {
             return 0;
         }
-        return ((MatchTeam) this.match.get(CommonTeams.Spectators)).getTeamMembers().size();
+        return this.match.getSpectators().size();
     }
 
     @Override
@@ -976,6 +986,18 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     }
 
     @Override
+    public Collection<ArenaPlayerInterface> getActivePlayers()
+    {
+        if (this.match == null)
+        {
+            return Collections.emptyList();
+        }
+        final ObjectServiceInterface osi = ObjectServiceInterface.instance();
+        final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
+        return this.match.getPlayers().stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
+    }
+
+    @Override
     public Collection<ArenaPlayerInterface> getSpectators()
     {
         if (this.match == null)
@@ -984,7 +1006,7 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         }
         final ObjectServiceInterface osi = ObjectServiceInterface.instance();
         final MinigamesLibInterface mglib = MinigamesLibInterface.instance();
-        return ((MatchTeam) this.match.get(CommonTeams.Spectators)).getTeamMembers().stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
+        return this.match.getSpectators().stream().map(osi::getPlayer).map(mglib::getPlayer).collect(Collectors.toList());
     }
 
     @Override

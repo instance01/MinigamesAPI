@@ -22,39 +22,54 @@
 
 */
 
-package de.minigameslib.mgapi.impl.cmd.gui;
+package de.minigameslib.mgapi.impl.cmd.marker;
 
-import de.minigameslib.mclib.api.enums.ChildEnum;
-import de.minigameslib.mclib.api.gui.ClickGuiId;
+import org.bukkit.inventory.ItemStack;
+
+import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 
 /**
- * Enumeration to identify guis.
+ * Common marker colors. Implementing classes must implement hashcode and equals.
  * 
  * @author mepeisen
  */
-@ChildEnum({
-    Main.Messages.class,
-    ArenasPage.Messages.class,
-    ArenaEdit.Messages.class,
-    // ArenaCreate.Messages.class,
-    
-    YesNoQuestion.Messages.class,
-    SelectMarkerPage.Messages.class,
-    
-    LocalizedLinesList.Messages.class,
-    LocalizedLinesEditLocale.Messages.class,
-    LocalizedLinesEditLocaleList.Messages.class,
-    LocalizedStringList.Messages.class,
-    LocalizedStringEditor.Messages.class,
-    
-    SignsPage.Messages.class,
-    SignEdit.Messages.class,
-    SignsCreateChooseType.Messages.class,
-})
-public enum MgClickGuis implements ClickGuiId
+public interface MarkerColorInterface
 {
     
-    /** the main gui. */
-    Main
+    /**
+     * Title of this color
+     * @return color title
+     */
+    LocalizedMessageInterface getTitle();
+    
+    /**
+     * Red color component
+     * @return red color
+     */
+    int getR();
+    
+    /**
+     * Green color component
+     * @return green color
+     */
+    int getG();
+    
+    /**
+     * Blue color component
+     * @return blue color
+     */
+    int getB();
+    
+    /**
+     * Alpha color component
+     * @return alpha color
+     */
+    int getAlpha();
+    
+    /**
+     * Returns gui icon
+     * @return gui icon
+     */
+    ItemStack getIcon();
     
 }

@@ -194,6 +194,18 @@ public interface ArenaMatchInterface
     int getPlayerCount();
     
     /**
+     * Returns the current spectators
+     * @return spectators
+     */
+    Collection<UUID> getSpectators();
+    
+    /**
+     * Returns the number of current spectators
+     * @return match spectators count
+     */
+    int getSpectatorCount();
+    
+    /**
      * Returns the match participants (players having played or spectated the game).
      * This method includes players already marked as winners or losers.
      * @param returnSpectators {@code true} to return spectators not being active within the game, {@code false} to filter and only return players being active

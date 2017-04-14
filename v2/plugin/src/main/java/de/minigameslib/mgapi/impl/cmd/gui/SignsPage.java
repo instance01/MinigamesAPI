@@ -37,8 +37,6 @@ import de.minigameslib.mclib.api.gui.ClickGuiInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
 import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
 import de.minigameslib.mclib.api.gui.GuiSessionInterface;
-import de.minigameslib.mclib.api.items.CommonItems;
-import de.minigameslib.mclib.api.items.ItemServiceInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
@@ -47,12 +45,10 @@ import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mclib.api.objects.ObjectServiceInterface;
 import de.minigameslib.mclib.api.objects.SignTypeId;
-import de.minigameslib.mclib.impl.skin.SkinFromPlayer;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.obj.ArenaSignHandler;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
-import de.minigameslib.mgapi.impl.cmd.gui.LocalizedLinesEditLocaleList.Messages;
 import de.minigameslib.mgapi.impl.cmd.tool.AdminToolHelper;
 
 /**
@@ -98,9 +94,10 @@ public class SignsPage extends AbstractPage<ArenaSignHandler>
         final ObjectServiceInterface osi = ObjectServiceInterface.instance();
         return this.arena.getSigns().
                 stream().
-                skip(start).limit(limit).
                 map(osi::findSign).
                 map(s -> (ArenaSignHandler) s.getHandler()).
+                sorted((a, b) -> a.getName().compareTo(b.getName())).
+                skip(start).limit(limit).
                 collect(Collectors.toList());
     }
 
