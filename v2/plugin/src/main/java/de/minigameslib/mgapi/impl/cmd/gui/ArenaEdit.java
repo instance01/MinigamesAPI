@@ -27,6 +27,7 @@ package de.minigameslib.mgapi.impl.cmd.gui;
 import java.io.Serializable;
 
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
 import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
@@ -43,6 +44,7 @@ import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mgapi.api.MinigameInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.impl.cmd.ArenaCommand;
 
 /**
@@ -177,7 +179,10 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onRules(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        session.setNewPage(new RulesPage<>(this.getPageName(), this.arena, this));
+        session.setNewPage(new RulesPage<>(this.getPageName(), this.arena, this, rt -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this.arena);
+            McLibInterface.instance().setContext(ArenaRuleSetInterface.class, this.arena.getRuleSet(rt));
+        }));
     }
     
     /**

@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
 import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
@@ -44,6 +45,7 @@ import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
+import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 
@@ -222,7 +224,11 @@ public class ZoneEdit implements ClickGuiPageInterface
      */
     private void onRules(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        session.setNewPage(new RulesPage<>(this.getPageName(), this.zone, this));
+        session.setNewPage(new RulesPage<>(this.getPageName(), this.zone, this, rt -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this.arena);
+            McLibInterface.instance().setContext(ArenaZoneHandler.class, this.zone);
+            McLibInterface.instance().setContext(ZoneRuleSetInterface.class, this.zone.getRuleSet(rt));
+        }));
     }
     
     /**

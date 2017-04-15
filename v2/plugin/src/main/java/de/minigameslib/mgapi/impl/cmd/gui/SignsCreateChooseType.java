@@ -127,8 +127,8 @@ public class SignsCreateChooseType extends AbstractPage<SignTypeId>
         return new ClickGuiItem[]{
                 null,
                 null,
-                Main.itemPrevPage(this::onPrevPage),
-                Main.itemNextPage(this::onNextPage),
+                this.itemPrevPage(),
+                this.itemNextPage(),
                 null,
                 null,
                 null,

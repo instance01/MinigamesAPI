@@ -42,6 +42,7 @@ import de.minigameslib.mclib.api.gui.ClickGuiId;
     SelectMarkerPage.Messages.class,
     
     RulesPage.Messages.class,
+    RuleEdit.Messages.class,
     
     LocalizedLinesList.Messages.class,
     LocalizedLinesEditLocale.Messages.class,

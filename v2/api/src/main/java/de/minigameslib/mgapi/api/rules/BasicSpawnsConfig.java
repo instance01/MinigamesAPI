@@ -44,7 +44,7 @@ public enum BasicSpawnsConfig implements ConfigurationValueInterface
     /**
      * The spawn option
      */
-    @ConfigurationEnum()
+    @ConfigurationEnum(clazz = SpawnType.class)
     @ConfigComment({"The spawn option"})
     SpawnOption;
     

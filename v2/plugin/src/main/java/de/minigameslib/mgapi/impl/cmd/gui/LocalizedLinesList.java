@@ -104,8 +104,8 @@ public class LocalizedLinesList extends AbstractPage<Locale>
         return new ClickGuiItem[]{
                 Main.itemHome(),
                 Main.itemRefresh(this::onRefresh),
-                Main.itemPrevPage(this::onPrevPage),
-                Main.itemNextPage(this::onNextPage),
+                this.itemPrevPage(),
+                this.itemNextPage(),
                 Main.itemBack(this::onBack, Messages.IconBack),
                 null,
                 Main.itemNew(this::onNew, Messages.IconCreate),

@@ -87,8 +87,8 @@ public class ArenasPage extends AbstractPage<ArenaInterface>
         return new ClickGuiItem[]{
                 Main.itemHome(),
                 Main.itemRefresh(this::onRefresh),
-                Main.itemPrevPage(this::onPrevPage),
-                Main.itemNextPage(this::onNextPage),
+                this.itemPrevPage(),
+                this.itemNextPage(),
                 null,
                 Main.itemNew(this::onNew, Messages.IconNewArena),
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Save), Messages.IconImport, this::onImport),

@@ -25,19 +25,30 @@
 package de.minigameslib.mgapi.impl.cmd.gui;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import de.minigameslib.mclib.api.McException;
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
 import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
 import de.minigameslib.mclib.api.gui.GuiSessionInterface;
+import de.minigameslib.mclib.api.items.CommonItems;
+import de.minigameslib.mclib.api.items.ItemServiceInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessage;
 import de.minigameslib.mclib.api.locale.LocalizedMessageInterface;
 import de.minigameslib.mclib.api.locale.LocalizedMessages;
 import de.minigameslib.mclib.api.locale.MessageComment;
 import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
+import de.minigameslib.mclib.api.util.function.McConsumer;
 import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
 import de.minigameslib.mgapi.api.rules.RuleSetInterface;
 import de.minigameslib.mgapi.api.rules.RuleSetType;
@@ -61,16 +72,21 @@ public class RulesPage<T extends RuleSetType, Q extends RuleSetInterface<T>> ext
     /** page title */
     private Serializable title;
 
+    /** context provider */
+    private McConsumer<T> contextProvider;
+
     /**
      * @param title 
      * @param container 
      * @param prev 
+     * @param contextProvider 
      */
-    public RulesPage(Serializable title, RuleSetContainerInterface<T, Q> container, ClickGuiPageInterface prev)
+    public RulesPage(Serializable title, RuleSetContainerInterface<T, Q> container, ClickGuiPageInterface prev, McConsumer<T> contextProvider)
     {
         this.title = title;
         this.container = container;
         this.prev = prev;
+        this.contextProvider = contextProvider;
     }
     
     @Override
@@ -82,23 +98,55 @@ public class RulesPage<T extends RuleSetType, Q extends RuleSetInterface<T>> ext
     @Override
     protected int count()
     {
-        // TODO
-        return 0;
+        return this.container.getAppliedRuleSetTypes().size() + this.container.getAvailableRuleSetTypes().size();
+    }
+    
+    /**
+     * Converts ruleset type to string
+     * @param type
+     * @return ruleset type
+     */
+    private String toString(T type)
+    {
+        return type.getPluginName() + "/" + type.name(); //$NON-NLS-1$
     }
 
     @Override
     protected List<T> getElements(int start, int limit)
     {
-        // TODO
-        return Collections.emptyList();
+        final Set<T> result = new TreeSet<>((a, b) -> toString(a).compareTo(toString(b)));
+        result.addAll(this.container.getAppliedRuleSetTypes());
+        result.addAll(this.container.getAvailableRuleSetTypes());
+        return result.
+                stream().
+                skip(start).limit(limit).
+                collect(Collectors.toList());
     }
 
     @Override
     protected ClickGuiItem map(int line, int col, int index, T elm)
     {
-        // return Main.itemArena(elm, (p, s, g) -> onArena(p, s, g, elm));
-        // TODO
-        return null;
+        final ItemStack item = ItemServiceInterface.instance().createItem(CommonItems.App_Script);
+        final boolean isSet = this.container.isApplied(elm);
+        
+        if (isSet)
+        {
+            final ItemMeta meta = item.getItemMeta();
+            meta.addEnchant(Enchantment.LURE, 1, false);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            item.setItemMeta(meta);
+        }
+        
+        return new ClickGuiItem(item, Messages.IconRule, (p, s, g) -> {
+            if (isSet)
+            {
+                this.onRule(p, s, g, elm);
+            }
+            else
+            {
+                this.onCreate(p, s, g, elm);
+            }
+        }, toString(elm));
     }
 
     @Override
@@ -108,8 +156,8 @@ public class RulesPage<T extends RuleSetType, Q extends RuleSetInterface<T>> ext
                 Main.itemHome(),
                 Main.itemBack((p, s, g) -> s.setNewPage(this.prev), Messages.IconBack, this.title),
                 Main.itemRefresh(this::onRefresh),
-                Main.itemPrevPage(this::onPrevPage),
-                Main.itemNextPage(this::onNextPage),
+                this.itemPrevPage(),
+                this.itemNextPage(),
                 null,
                 null,
                 null,
@@ -123,10 +171,25 @@ public class RulesPage<T extends RuleSetType, Q extends RuleSetInterface<T>> ext
      * @param session
      * @param gui
      * @param rule
+     * @throws McException 
+     */
+    @SuppressWarnings("unchecked")
+    private void onCreate(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, T rule) throws McException
+    {
+        this.container.applyRuleSets(rule);
+        session.setNewPage(new RuleEdit<>(this.title, this.container, rule, this, () -> this.contextProvider.accept(rule)));
+    }
+    
+    /**
+     * rule
+     * @param player
+     * @param session
+     * @param gui
+     * @param rule
      */
     private void onRule(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui, T rule)
     {
-        // TODO session.setNewPage(new ArenaEdit(arena, this));
+        session.setNewPage(new RuleEdit<>(this.title, this.container, rule, this, () -> this.contextProvider.accept(rule)));
     }
     
     /**

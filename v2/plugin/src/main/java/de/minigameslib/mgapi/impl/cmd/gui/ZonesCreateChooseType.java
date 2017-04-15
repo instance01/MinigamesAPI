@@ -128,8 +128,8 @@ public class ZonesCreateChooseType extends AbstractPage<ZoneTypeId>
         return new ClickGuiItem[]{
                 null,
                 null,
-                Main.itemPrevPage(this::onPrevPage),
-                Main.itemNextPage(this::onNextPage),
+                this.itemPrevPage(),
+                this.itemNextPage(),
                 null,
                 null,
                 null,

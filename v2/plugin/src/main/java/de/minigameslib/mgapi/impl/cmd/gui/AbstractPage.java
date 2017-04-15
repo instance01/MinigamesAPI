@@ -24,16 +24,8 @@
 
 package de.minigameslib.mgapi.impl.cmd.gui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import de.minigameslib.mclib.api.gui.ClickGuiInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
-import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
-import de.minigameslib.mclib.api.gui.GuiSessionInterface;
-import de.minigameslib.mclib.api.objects.McPlayerInterface;
+import de.minigameslib.mclib.api.gui.PagableClickGuiPage;
 
 /**
  * Abstract base class for pagable elements.
@@ -41,17 +33,8 @@ import de.minigameslib.mclib.api.objects.McPlayerInterface;
  * @author mepeisen
  * @param <T> element type
  */
-public abstract class AbstractPage<T> implements ClickGuiPageInterface
+public abstract class AbstractPage<T> extends PagableClickGuiPage<T>
 {
-    
-    /** number of items per page */
-    protected static final int ITEMS_PER_LINE = Main.COL_COUNT;
-    
-    /** number of items per page */
-    protected static final int ITEMS_PER_PAGE = ITEMS_PER_LINE * 4;
-    
-    /** numeric page num */
-    private int pageNum = 1;
     
     /**
      * Constructor to create the first page
@@ -67,131 +50,31 @@ public abstract class AbstractPage<T> implements ClickGuiPageInterface
      */
     public AbstractPage(int pageNum)
     {
-        this.pageNum = pageNum;
+        super(pageNum);
     }
-    
-    /**
-     * Returns the number of elements
-     * @return count of elements
-     */
-    protected abstract int count();
-    
-    /**
-     * Returns total number of pages.
-     * @return total page number.
-     */
-    protected int totalPages()
-    {
-        return (int) Math.ceil(this.count() / ITEMS_PER_PAGE);
-    }
-    
-    /**
-     * Returns current page
-     * @return current page.
-     */
-    protected int page()
-    {
-        return this.pageNum;
-    }
-    
-    /**
-     * Returns the elements for this page
-     * @param start start index
-     * @param limit maximum limit
-     * @return list of elements to be displayed 
-     */
-    protected abstract List<T> getElements(int start, int limit);
-    
-    /**
-     * Maps elements to click gui item
-     * @param line 
-     * @param col 
-     * @param index 
-     * @param elm
-     * @return click gui item
-     */
-    protected abstract ClickGuiItem map(int line, int col, int index, T elm);
 
     @Override
     public ClickGuiItem[][] getItems()
     {
-        final List<T> list = this.getElements((this.pageNum - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
-        return Main.withFillers(new ClickGuiItem[][]{
-            firstLine(),
-            null,
-            // arenas
-            itemsLine(list, 0),
-            itemsLine(list, ITEMS_PER_LINE),
-            itemsLine(list, ITEMS_PER_LINE * 2),
-            itemsLine(list, ITEMS_PER_LINE * 3),
-        });
+        return Main.withFillers(super.getItems());
     }
     
     /**
-     * Returns the first line
-     * @return first line
+     * prev page icon
+     * @return prev page icon
      */
-    protected abstract ClickGuiItem[] firstLine();
-
-    /**
-     * @param items
-     * @param start
-     * @return line of icons
-     */
-    private ClickGuiItem[] itemsLine(Collection<T> items, int start)
+    public ClickGuiItem itemPrevPage()
     {
-        int col = 0;
-        int i = start + (this.pageNum - 1) * ITEMS_PER_PAGE;
-        final List<ClickGuiItem> result = new ArrayList<>();
-        final Iterator<T> iter = items.stream().skip(start).limit(ITEMS_PER_LINE).iterator();
-        while (iter.hasNext())
-        {
-            result.add(this.map(start / ITEMS_PER_LINE, col, i, iter.next()));
-            col++;
-            i++;
-        }
-        return result.toArray(new ClickGuiItem[result.size()]);
+        return this.page() > 1 ? Main.itemPrevPage(this::onPrevPage) : null;
     }
     
     /**
-     * refresh gui
-     * @param player
-     * @param session
-     * @param gui
+     * next page icon
+     * @return next page icon
      */
-    protected void onRefresh(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
+    public ClickGuiItem itemNextPage()
     {
-        session.setNewPage(this);
-    }
-
-    /**
-     * prev page
-     * @param player
-     * @param session
-     * @param gui
-     */
-    protected void onPrevPage(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
-    {
-        if (this.pageNum > 1)
-        {
-            this.pageNum--;
-            session.setNewPage(this);
-        }
-    }
-    
-    /**
-     * next page
-     * @param player
-     * @param session
-     * @param gui
-     */
-    protected void onNextPage(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
-    {
-        if (this.pageNum < this.totalPages())
-        {
-            this.pageNum++;
-            session.setNewPage(this);
-        }
+        return this.page() < this.totalPages() ? Main.itemNextPage(this::onNextPage) : null;
     }
     
 }

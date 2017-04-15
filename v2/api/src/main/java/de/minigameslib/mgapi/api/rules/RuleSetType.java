@@ -24,8 +24,8 @@
 
 package de.minigameslib.mgapi.api.rules;
 
+import de.minigameslib.mclib.api.config.ConfigurationValueInterface;
 import de.minigameslib.mclib.api.enums.McUniqueEnumInterface;
-import de.minigameslib.mclib.shared.api.com.EnumerationValue;
 
 /**
  * Base interface for rule sets
@@ -40,7 +40,7 @@ public interface RuleSetType extends McUniqueEnumInterface
      * @return confuiguration class or {@code null} if this types has no configuration.
      */
     @SuppressWarnings("unchecked")
-    default <T extends Enum<?> & EnumerationValue> Class<T> getConfigClass()
+    default <T extends Enum<?> & ConfigurationValueInterface> Class<T> getConfigClass()
     {
         RuleSetConfigurable result;
         try

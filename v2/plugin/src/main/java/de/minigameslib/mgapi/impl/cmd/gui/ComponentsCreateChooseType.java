@@ -128,8 +128,8 @@ public class ComponentsCreateChooseType extends AbstractPage<ComponentTypeId>
         return new ClickGuiItem[]{
                 null,
                 null,
-                Main.itemPrevPage(this::onPrevPage),
-                Main.itemNextPage(this::onNextPage),
+                this.itemPrevPage(),
+                this.itemNextPage(),
                 null,
                 null,
                 null,

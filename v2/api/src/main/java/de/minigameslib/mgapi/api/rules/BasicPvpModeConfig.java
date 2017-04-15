@@ -44,7 +44,7 @@ public enum BasicPvpModeConfig implements ConfigurationValueInterface
     /**
      * The pvp option
      */
-    @ConfigurationEnum
+    @ConfigurationEnum(clazz = PvpModes.class)
     @ConfigComment({"The pvp option"})
     PvpOption;
     

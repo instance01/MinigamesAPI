@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import de.minigameslib.mclib.api.CommonMessages;
 import de.minigameslib.mclib.api.McException;
+import de.minigameslib.mclib.api.McLibInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiInterface;
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
 import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
@@ -44,6 +45,7 @@ import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.objects.McPlayerInterface;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.obj.ArenaComponentHandler;
+import de.minigameslib.mgapi.api.rules.ComponentRuleSetInterface;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
 
@@ -208,7 +210,11 @@ public class ComponentEdit implements ClickGuiPageInterface
      */
     private void onRules(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        session.setNewPage(new RulesPage<>(this.getPageName(), this.component, this));
+        session.setNewPage(new RulesPage<>(this.getPageName(), this.component, this, rt -> {
+            McLibInterface.instance().setContext(ArenaInterface.class, this.arena);
+            McLibInterface.instance().setContext(ArenaComponentHandler.class, this.component);
+            McLibInterface.instance().setContext(ComponentRuleSetInterface.class, this.component.getRuleSet(rt));
+        }));
     }
     
     /**
