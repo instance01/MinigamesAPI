@@ -27,6 +27,8 @@ package de.minigameslib.mgapi.impl.cmd.gui;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import de.minigameslib.mclib.api.McException;
@@ -74,6 +76,9 @@ public class RuleEdit<T extends RuleSetType, Q extends RuleSetInterface<T>> exte
 
     /** title */
     private Serializable title;
+    
+    /** logger */
+    private static final Logger LOGGER = Logger.getLogger(RuleEdit.class.getName());
 
     /**
      * @param title
@@ -127,16 +132,14 @@ public class RuleEdit<T extends RuleSetType, Q extends RuleSetInterface<T>> exte
                         }
                         catch (McException e)
                         {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            LOGGER.log(Level.WARNING, "problems while reconfigure rule " + this.rule, e); //$NON-NLS-1$
                         }
                     },
                     this.contextProvider);
         }
         catch (McException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "problems while mapping config element " + elm, e); //$NON-NLS-1$
             return null;
         }
     }

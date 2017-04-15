@@ -26,6 +26,8 @@ package de.minigameslib.mgapi.impl.cmd.gui;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -54,6 +56,9 @@ public class QueryLocale implements AnvilGuiInterface
     
     /** description */
     private String[] description;
+    
+    /** logger */
+    private static final Logger LOGGER = Logger.getLogger(QueryLocale.class.getName());
 
     /**
      * Constructor
@@ -89,11 +94,14 @@ public class QueryLocale implements AnvilGuiInterface
     {
         try
         {
-            this.onCancel.run();
+            if (this.onCancel != null)
+            {
+                this.onCancel.run();
+            }
         }
         catch (McException e)
         {
-            // TODO logging
+            LOGGER.log(Level.WARNING, "Problems on cancelling query locale", e); //$NON-NLS-1$
         }
     }
 

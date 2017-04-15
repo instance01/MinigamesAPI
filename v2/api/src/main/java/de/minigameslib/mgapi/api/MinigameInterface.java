@@ -95,6 +95,14 @@ public interface MinigameInterface
 
     /**
      * Returns the arena types
+     * @param start starting index
+     * @param limit maximum countt return
+     * @return collection of arena types.
+     */
+    Collection<ArenaTypeInterface> getTypes(int start, int limit);
+
+    /**
+     * Returns the arena types
      * @param prefix type name prefix
      * @param start starting index
      * @param limit maximum countt return

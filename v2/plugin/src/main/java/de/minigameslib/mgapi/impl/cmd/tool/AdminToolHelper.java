@@ -230,6 +230,7 @@ public class AdminToolHelper
      * @param finish the finish action
      * @throws McException 
      */
+    @SuppressWarnings("deprecation")
     private static void onCreateSign(McPlayerInteractEvent evt, McPlayerInterface player, ArenaInterface arena, String name, SignTypeId type, McConsumer<ArenaSignHandler> finish) throws McException
     {
         // security checks

@@ -105,7 +105,7 @@ public class ArenasPage extends AbstractPage<ArenaInterface>
      */
     private void onImport(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support import
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -129,7 +129,10 @@ public class ArenasPage extends AbstractPage<ArenaInterface>
      */
     private void onNew(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        session.setNewPage(new ArenaCreate(this));
+        session.setNewPage(new ArenaCreateChooseMinigame((type, name) -> {
+                final ArenaInterface arena = MinigamesLibInterface.instance().create(name, type);
+                player.openClickGui(new Main(new ArenaEdit(arena, this)));
+            },this));
     }
     
     /**

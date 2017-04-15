@@ -198,7 +198,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     private void onOptions(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support options
         player.sendMessage(Messages.NotAvailable);
     }
     
@@ -210,7 +210,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     private void onMinigames(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support minigames
         player.sendMessage(Messages.NotAvailable);
     }
     
@@ -222,7 +222,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     private void onExtensions(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support extensions
         player.sendMessage(Messages.NotAvailable);
     }
     
@@ -234,7 +234,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
      */
     private void onMarketplace(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support marketplace
         player.sendMessage(Messages.NotAvailable);
     }
     

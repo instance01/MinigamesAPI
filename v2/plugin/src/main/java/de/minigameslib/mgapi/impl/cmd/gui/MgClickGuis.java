@@ -35,8 +35,9 @@ import de.minigameslib.mclib.api.gui.ClickGuiId;
 @ChildEnum({
     Main.Messages.class,
     ArenasPage.Messages.class,
+    ArenaCreateChooseMinigame.Messages.class,
+    ArenaCreateChooseArenaType.Messages.class,
     ArenaEdit.Messages.class,
-    // ArenaCreate.Messages.class,
     
     YesNoQuestion.Messages.class,
     SelectMarkerPage.Messages.class,

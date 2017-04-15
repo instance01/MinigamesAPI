@@ -133,7 +133,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onEntities(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui edit entities
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -167,8 +167,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onComponents(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
-        player.sendMessage(Main.Messages.NotAvailable);
+        session.setNewPage(new ComponentsPage(this.arena, this));
     }
     
     /**
@@ -193,7 +192,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onTeams(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui edit teams
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -205,7 +204,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onInvite(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui invite
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -268,7 +267,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onPlayers(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui edit players
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -280,7 +279,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onHardReset(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui edit hard reset
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -292,7 +291,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onStop(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support stop
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -304,7 +303,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onStart(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support start
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -343,7 +342,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onCheck(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support check
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
@@ -430,7 +429,7 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onExport(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
     {
-        // TODO
+        // TODO gui support export
         player.sendMessage(Main.Messages.NotAvailable);
     }
     
