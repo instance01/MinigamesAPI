@@ -92,7 +92,7 @@ public class YesNoQuestion implements ClickGuiPageInterface
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return Main.withFillers(new ClickGuiItem[][]{
+        return ClickGuiPageInterface.withFillers(new ClickGuiItem[][]{
             {
                 this.details == null ? null : new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Help), Messages.IconHelp, this::onHelp), 
             },
@@ -109,7 +109,7 @@ public class YesNoQuestion implements ClickGuiPageInterface
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_No), Messages.IconNo, this.onNo), 
                 null
             }
-        });
+        }, 6);
     }
 
     /**

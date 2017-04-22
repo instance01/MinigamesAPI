@@ -52,6 +52,7 @@ import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.player.ArenaPlayerInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetInterface;
 import de.minigameslib.mgapi.api.rules.ArenaRuleSetType;
+import de.minigameslib.mgapi.api.rules.BasicMatchRuleInterface;
 import de.minigameslib.mgapi.api.rules.RuleSetContainerInterface;
 import de.minigameslib.mgapi.api.team.ArenaTeamInterface;
 import de.minigameslib.mgapi.api.team.TeamIdType;
@@ -222,10 +223,16 @@ public interface ArenaInterface extends RuleSetContainerInterface<ArenaRuleSetTy
     void delete() throws McException;
 
     /**
-     * Starts a match
+     * Starts a match (without countdown); will be invoked on game rules, f.e.{@link BasicMatchRuleInterface}
      * @throws McException thrown if arena is not in join state or if there is no player. 
      */
     void start() throws McException;
+
+    /**
+     * Forces a match start even if match rules may not allow this; will request the gaming rules to start countdown
+     * @throws McException thrown if arena is not in JOIN state
+     */
+    void forceStart() throws McException;
 
     /**
      * Finish a match regularly

@@ -25,6 +25,7 @@
 package de.minigameslib.mgapi.impl.cmd.gui;
 
 import de.minigameslib.mclib.api.gui.ClickGuiItem;
+import de.minigameslib.mclib.api.gui.ClickGuiPageInterface;
 import de.minigameslib.mclib.api.gui.PagableClickGuiPage;
 
 /**
@@ -56,7 +57,7 @@ public abstract class AbstractPage<T> extends PagableClickGuiPage<T>
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return Main.withFillers(super.getItems());
+        return ClickGuiPageInterface.withFillers(super.getItems(), 6);
     }
     
     /**

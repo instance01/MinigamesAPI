@@ -81,7 +81,7 @@ public class ComponentEdit implements ClickGuiPageInterface
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return Main.withFillers(new ClickGuiItem[][]{
+        return ClickGuiPageInterface.withFillers(new ClickGuiItem[][]{
             {
                 Main.itemHome(),
                 Main.itemBack(this::onBack, Messages.IconBack),
@@ -101,7 +101,7 @@ public class ComponentEdit implements ClickGuiPageInterface
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleport, this::onTeleport), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Script), Messages.IconRules, this::onRules)
             }
-        });
+        }, 6);
     }
     
     /**

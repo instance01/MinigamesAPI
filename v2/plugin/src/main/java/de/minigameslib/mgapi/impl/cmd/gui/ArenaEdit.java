@@ -74,7 +74,7 @@ public class ArenaEdit implements ClickGuiPageInterface
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return Main.withFillers(new ClickGuiItem[][]{
+        return ClickGuiPageInterface.withFillers(new ClickGuiItem[][]{
             {
                 Main.itemHome(),
                 Main.itemBack(this::onBack, Messages.IconBack),
@@ -122,7 +122,7 @@ public class ArenaEdit implements ClickGuiPageInterface
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench), Messages.IconSigns, this::onSigns), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Wrench), Messages.IconEntities, this::onEntities), 
             }
-        });
+        }, 6);
     }
     
     /**
@@ -254,7 +254,35 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onMaintenance(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        // TODO support force parameter
+        session.setNewPage(new YesNoQuestion(
+                Messages.QuestionMaintenanceKickPlayers,
+                this::onMaintenanceForce,
+                this::onMaintenanceAfterMatch,
+                Messages.QuestionMaintenanceKickPlayersDetails));
+    }
+    
+    /**
+     * Maintenance
+     * @param player
+     * @param session
+     * @param gui
+     * @throws McException 
+     */
+    private void onMaintenanceForce(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    {
+        this.arena.setMaintenance(true);
+        this.onRefresh(player, session, gui);
+    }
+    
+    /**
+     * Maintenance
+     * @param player
+     * @param session
+     * @param gui
+     * @throws McException 
+     */
+    private void onMaintenanceAfterMatch(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    {
         this.arena.setMaintenance(false);
         this.onRefresh(player, session, gui);
     }
@@ -288,11 +316,12 @@ public class ArenaEdit implements ClickGuiPageInterface
      * @param player
      * @param session
      * @param gui
+     * @throws McException 
      */
-    private void onStop(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
+    private void onStop(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        // TODO gui support stop
-        player.sendMessage(Main.Messages.NotAvailable);
+        this.arena.abort();
+        this.onRefresh(player, session, gui);
     }
     
     /**
@@ -300,11 +329,12 @@ public class ArenaEdit implements ClickGuiPageInterface
      * @param player
      * @param session
      * @param gui
+     * @throws McException 
      */
-    private void onStart(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui)
+    private void onStart(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        // TODO gui support start
-        player.sendMessage(Main.Messages.NotAvailable);
+        this.arena.forceStart();
+        this.onRefresh(player, session, gui);
     }
     
     /**
@@ -316,7 +346,35 @@ public class ArenaEdit implements ClickGuiPageInterface
      */
     private void onDisable(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
     {
-        // TODO support force parameter
+        session.setNewPage(new YesNoQuestion(
+                Messages.QuestionDisableKickPlayers,
+                this::onDisableForce,
+                this::onDisableAfterMatch,
+                Messages.QuestionDisableKickPlayersDetails));
+    }
+    
+    /**
+     * disable arena
+     * @param player
+     * @param session
+     * @param gui
+     * @throws McException 
+     */
+    private void onDisableForce(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    {
+        this.arena.setDisabledState(true);
+        this.onRefresh(player, session, gui);
+    }
+    
+    /**
+     * disable arena
+     * @param player
+     * @param session
+     * @param gui
+     * @throws McException 
+     */
+    private void onDisableAfterMatch(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    {
         this.arena.setDisabledState(false);
         this.onRefresh(player, session, gui);
     }
@@ -657,6 +715,34 @@ public class ArenaEdit implements ClickGuiPageInterface
         @LocalizedMessageList({"Do you really want to delete this arena?", "The deletion can not be undone.", "If you want to use the arena later please export it first."})
         @MessageComment({"question: Really delete arena"})
         QuestionReallyDeleteDetails,
+        
+        /**
+         * question: kick players
+         */
+        @LocalizedMessage(defaultMessage = "Kick players in lobby/match?")
+        @MessageComment({"question: kick players"})
+        QuestionMaintenanceKickPlayers,
+        
+        /**
+         * question: kick players
+         */
+        @LocalizedMessageList({"Do you want to kick all players?", "If you choose yes all players are kicked and the arena is going to maintenance asap.", "If you choose no the arena is going to maintenance after current match."})
+        @MessageComment({"question: kick players"})
+        QuestionMaintenanceKickPlayersDetails,
+        
+        /**
+         * question: kick players
+         */
+        @LocalizedMessage(defaultMessage = "Kick players in lobby/match?")
+        @MessageComment({"question: kick players"})
+        QuestionDisableKickPlayers,
+        
+        /**
+         * question: kick players
+         */
+        @LocalizedMessageList({"Do you want to kick all players?", "If you choose yes all players are kicked and the arena is disabled asap.", "If you choose no the arena is disabled after current match."})
+        @MessageComment({"question: kick players"})
+        QuestionDisableKickPlayersDetails,
         
         /**
          * The command output of /mg2 arena

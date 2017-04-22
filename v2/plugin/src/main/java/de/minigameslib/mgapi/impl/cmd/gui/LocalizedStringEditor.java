@@ -101,7 +101,7 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return Main.withFillers(new ClickGuiItem[][]{
+        return ClickGuiPageInterface.withFillers(new ClickGuiItem[][]{
             {
                 Main.itemHome(),
                 Main.itemBack(this.onPrev, Messages.IconBack),
@@ -113,7 +113,7 @@ public class LocalizedStringEditor implements ClickGuiPageInterface
                 null,
                 Main.itemCloseGui()
             },
-        });
+        }, 6);
     }
 
     @Override

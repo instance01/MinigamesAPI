@@ -115,6 +115,102 @@ public class AdminToolHelper
     }
 
     /**
+     * Registers the tooling to select a block for changing zone lower bounds.
+     * @param player
+     * @param zone
+     * @param finish the finish action
+     */
+    public static void onRelocateZoneLower(McPlayerInterface player, ArenaZoneHandler zone, McConsumer<ArenaZoneHandler> finish)
+    {
+        final ItemServiceInterface itemService = ItemServiceInterface.instance();
+        itemService.prepareTool(CommonItems.App_Pinion, player, Messages.CreateZone_Title)
+            .onLeftClick((p, evt) -> onRelocateZoneLower1(evt, p, zone, finish))
+            .onRightClick((p, evt) -> onRelocateZoneLower1(evt, p, zone, finish))
+            .description(Messages.RelocateZone_Description, zone.getName(), zone.getArena().getInternalName())
+            .singleUse()
+            .build();
+        player.sendMessage(Messages.RelocateZone_ClickBlockLower);
+    }
+
+    /**
+     * Registers the tooling to select a block for changing zone higher bounds.
+     * @param player
+     * @param zone
+     * @param finish the finish action
+     */
+    public static void onRelocateZoneHigher(McPlayerInterface player, ArenaZoneHandler zone, McConsumer<ArenaZoneHandler> finish)
+    {
+        final ItemServiceInterface itemService = ItemServiceInterface.instance();
+        itemService.prepareTool(CommonItems.App_Pinion, player, Messages.CreateZone_Title)
+            .onLeftClick((p, evt) -> onRelocateZoneHigher1(evt, p, zone, finish))
+            .onRightClick((p, evt) -> onRelocateZoneHigher1(evt, p, zone, finish))
+            .description(Messages.RelocateZone_Description, zone.getName(), zone.getArena().getInternalName())
+            .singleUse()
+            .build();
+        player.sendMessage(Messages.RelocateZone_ClickBlockHigher);
+    }
+    
+    /**
+     * Registers the tooling to select the lower block for zone relocation.
+     * @param evt 
+     * @param player
+     * @param zone 
+     * @param finish the finish action
+     * @throws McException 
+     */
+    private static void onRelocateZoneLower1(McPlayerInteractEvent evt, McPlayerInterface player, ArenaZoneHandler zone, McConsumer<ArenaZoneHandler> finish) throws McException
+    {
+        // security checks
+        if (!(player.getBukkitPlayer().isOp() || player.checkPermission(MglibPerms.CommandAdminZone)))
+        {
+            throw new McException(CommonMessages.NoPermissionForCommand, "/mg2 admin zone create"); //$NON-NLS-1$
+        }
+        if (!zone.getArena().isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        
+        final Location loc = evt.getBukkitEvent().getClickedBlock().getLocation();
+        zone.getZone().setCuboid(new Cuboid(loc, zone.getZone().getCuboid().getHighLoc()));
+        zone.getZone().saveConfig();
+        player.sendMessage(Messages.RelocateZone_Relocated);
+        if (finish != null)
+        {
+            finish.accept(zone);
+        }
+    }
+    
+    /**
+     * Registers the tooling to select the higher block for zone relocation.
+     * @param evt 
+     * @param player
+     * @param zone 
+     * @param finish the finish action
+     * @throws McException 
+     */
+    private static void onRelocateZoneHigher1(McPlayerInteractEvent evt, McPlayerInterface player, ArenaZoneHandler zone, McConsumer<ArenaZoneHandler> finish) throws McException
+    {
+        // security checks
+        if (!(player.getBukkitPlayer().isOp() || player.checkPermission(MglibPerms.CommandAdminZone)))
+        {
+            throw new McException(CommonMessages.NoPermissionForCommand, "/mg2 admin zone create"); //$NON-NLS-1$
+        }
+        if (!zone.getArena().isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        
+        final Location loc = evt.getBukkitEvent().getClickedBlock().getLocation();
+        zone.getZone().setCuboid(new Cuboid(zone.getZone().getCuboid().getLowLoc(), loc));
+        zone.getZone().saveConfig();
+        player.sendMessage(Messages.RelocateZone_Relocated);
+        if (finish != null)
+        {
+            finish.accept(zone);
+        }
+    }
+
+    /**
      * Registers the tooling to select a block for zone creation.
      * @param player
      * @param arena
@@ -394,6 +490,13 @@ public class AdminToolHelper
         CreateZone_Title,
         
         /**
+         * Title for relocating zone
+         */
+        @LocalizedMessage(defaultMessage = "Relocating zone")
+        @MessageComment({"Relocate zone title"})
+        RelocateZone_Title,
+        
+        /**
          * Description for create zone
          */
         @LocalizedMessageList({
@@ -406,6 +509,18 @@ public class AdminToolHelper
             @Argument("new zone name")
         })
         CreateZone_Description,
+        
+        /**
+         * Description for relocate zone
+         */
+        @LocalizedMessageList({
+            "Zone: " + LocalizedMessage.CODE_COLOR + "%1$s",
+            "Arena: " + LocalizedMessage.CODE_COLOR + "%2$s"})
+        @MessageComment(value = "Create zone description", args = {
+            @Argument("zone name"),
+            @Argument("arena internal name")
+        })
+        RelocateZone_Description,
         
         /**
          * Message to advice the user to click the block
@@ -422,11 +537,32 @@ public class AdminToolHelper
         CreateZone_ClickBlockHigher,
         
         /**
+         * Message to advice the user to click the block
+         */
+        @LocalizedMessage(defaultMessage = "Use the Pinion tool and click the new lower bound of your zone")
+        @MessageComment({"Message to advice the user to click the block"})
+        RelocateZone_ClickBlockLower,
+        
+        /**
+         * Message to advice the user to click the block
+         */
+        @LocalizedMessage(defaultMessage = "Use the Pinion tool and click the new higher bound of your zone")
+        @MessageComment({"Message to advice the user to click the block"})
+        RelocateZone_ClickBlockHigher,
+        
+        /**
          * Zone was created
          */
         @LocalizedMessage(defaultMessage = "Zone created", severity = MessageSeverityType.Success)
         @MessageComment({"Zone was created"})
         CreateZone_Created,
+        
+        /**
+         * Zone was relocated
+         */
+        @LocalizedMessage(defaultMessage = "Zone relocated", severity = MessageSeverityType.Success)
+        @MessageComment({"Zone was relocated"})
+        RelocateZone_Relocated,
         
         // components
         

@@ -39,6 +39,7 @@ import de.minigameslib.mclib.api.locale.MessageComment.Argument;
 import de.minigameslib.mclib.api.locale.MessageSeverityType;
 import de.minigameslib.mgapi.api.arena.ArenaInterface;
 import de.minigameslib.mgapi.api.arena.ArenaState;
+import de.minigameslib.mgapi.api.events.ArenaForceStartRequestedEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerJoinedEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerLeftEvent;
@@ -171,15 +172,37 @@ public class BasicMatch extends AbstractArenaRule implements BasicMatchRuleInter
     public void onPlayerJoined(ArenaPlayerJoinedEvent evt)
     {
         // check min players
-        if (this.arena.getPlayerCount() == this.minPlayers)
+        if (this.arena.getPlayerCount() >= this.minPlayers && this.countdownTask == null)
         {
-            // start lobby countdown
-            this.countdownTimer = this.lobbyCountdown - 1;
-            this.countdownTask = McLibInterface.instance().runTaskTimer(MinigamesPlugin.instance().getPlugin(), 20, 20, this::onCountdown);
-            
-            // notify all players
-            this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.CountdownStarted, this.lobbyCountdown));
-            this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.CountdownStarted, this.lobbyCountdown));
+            startCountdown();
+        }
+    }
+
+    /**
+     * Starts game countdown
+     */
+    private void startCountdown()
+    {
+        // start lobby countdown
+        this.countdownTimer = this.lobbyCountdown - 1;
+        this.countdownTask = McLibInterface.instance().runTaskTimer(MinigamesPlugin.instance().getPlugin(), 20, 20, this::onCountdown);
+        
+        // notify all players
+        this.arena.getPlayers().forEach(p -> p.getMcPlayer().sendMessage(Messages.CountdownStarted, this.lobbyCountdown));
+        this.arena.getSpectators().forEach(p -> p.getMcPlayer().sendMessage(Messages.CountdownStarted, this.lobbyCountdown));
+    }
+    
+    /**
+     * Invoked to force arena start
+     * 
+     * @param evt
+     */
+    @McEventHandler
+    public void onForceStart(ArenaForceStartRequestedEvent evt)
+    {
+        if (this.countdownTask == null)
+        {
+            startCountdown();
         }
     }
     

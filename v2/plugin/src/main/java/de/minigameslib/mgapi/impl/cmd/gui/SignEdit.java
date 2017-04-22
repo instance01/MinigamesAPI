@@ -81,7 +81,7 @@ public class SignEdit implements ClickGuiPageInterface
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return Main.withFillers(new ClickGuiItem[][]{
+        return ClickGuiPageInterface.withFillers(new ClickGuiItem[][]{
             {
                 Main.itemHome(),
                 Main.itemBack(this::onBack, Messages.IconBack),
@@ -101,7 +101,10 @@ public class SignEdit implements ClickGuiPageInterface
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleport, this::onTeleport), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Script), Messages.IconRules, this::onRules)
             }
-        });
+            // TODO export/import signs
+            // TODO copy&paste signs
+            // TODO move/relocate signs with content (destroy original)/ without content (leave original untouched)
+        }, 6);
     }
     
     /**

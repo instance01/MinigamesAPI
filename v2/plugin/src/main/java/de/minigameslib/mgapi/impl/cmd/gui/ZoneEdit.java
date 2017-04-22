@@ -48,6 +48,9 @@ import de.minigameslib.mgapi.api.obj.ArenaZoneHandler;
 import de.minigameslib.mgapi.api.rules.ZoneRuleSetInterface;
 import de.minigameslib.mgapi.impl.arena.ArenaImpl;
 import de.minigameslib.mgapi.impl.cmd.Mg2Command;
+import de.minigameslib.mgapi.impl.cmd.marker.MarkerColorInterface;
+import de.minigameslib.mgapi.impl.cmd.tool.AdminToolHelper;
+import de.minigameslib.mgapi.impl.cmd.tool.MarkerToolHelper;
 
 /**
  * Click gui for editing zones.
@@ -81,7 +84,7 @@ public class ZoneEdit implements ClickGuiPageInterface
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return Main.withFillers(new ClickGuiItem[][]{
+        return ClickGuiPageInterface.withFillers(new ClickGuiItem[][]{
             {
                 Main.itemHome(),
                 Main.itemBack(this::onBack, Messages.IconBack),
@@ -99,10 +102,16 @@ public class ZoneEdit implements ClickGuiPageInterface
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Text), Messages.IconName, this::onName), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Target), Messages.IconDisplayMarker, this::onDisplayMarker), 
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleportLower, this::onTeleportLower), 
-                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleportHigher, this::onTeleportHigher), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Trackback), Messages.IconTeleportHigher, this::onTeleportHigher),
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Pinion), Messages.IconRelocateLower, this::onRelocateLower), 
+                new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Pinion), Messages.IconRelocateHigher, this::onRelocateHigher),
+                null,
                 new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Script), Messages.IconRules, this::onRules)
             }
-        });
+            // TODO export/import zones
+            // TODO copy&paste zones
+            // TODO move zones with content/ without content
+        }, 6);
     }
     
     /**
@@ -188,6 +197,66 @@ public class ZoneEdit implements ClickGuiPageInterface
         {
             session.setNewPage(new SelectMarkerPage(player, this.zone.getZone(), this));
         }
+    }
+    
+    /**
+     * relocate
+     * @param player
+     * @param session
+     * @param gui
+     * @throws McException 
+     */
+    private void onRelocateLower(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    {
+        if (!this.arena.isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        session.close();
+        AdminToolHelper.onRelocateZoneLower(player, this.zone, z -> {
+            // change (=re-create) marker if displayed
+            if (player.hasSmartGui())
+            {
+                final MarkerToolHelper helper = MarkerToolHelper.instance(player);
+                final MarkerColorInterface color = helper.getColor(z.getZone());
+                if (color != null)
+                {
+                    helper.clearMarker(z.getZone());
+                    helper.createMarker(z.getZone(), color);
+                }
+            }
+            player.openClickGui(new Main(this));
+        });
+    }
+    
+    /**
+     * relocate
+     * @param player
+     * @param session
+     * @param gui
+     * @throws McException 
+     */
+    private void onRelocateHigher(McPlayerInterface player, GuiSessionInterface session, ClickGuiInterface gui) throws McException
+    {
+        if (!this.arena.isMaintenance())
+        {
+            throw new McException(ArenaImpl.Messages.ModificationWrongState);
+        }
+        session.close();
+        AdminToolHelper.onRelocateZoneHigher(player, this.zone, z -> {
+            // change (=re-create) marker if displayed
+            if (player.hasSmartGui())
+            {
+                final MarkerToolHelper helper = MarkerToolHelper.instance(player);
+                final MarkerColorInterface color = helper.getColor(z.getZone());
+                if (color != null)
+                {
+                    helper.clearMarker(z.getZone());
+                    helper.createMarker(z.getZone(), color);
+                }
+            }
+            player.openClickGui(new Main(this));
+        });
     }
     
     /**
@@ -321,6 +390,20 @@ public class ZoneEdit implements ClickGuiPageInterface
         @LocalizedMessage(defaultMessage = "Teleport to zone (higher bounds)")
         @MessageComment({"teleport"})
         IconTeleportHigher,
+        
+        /**
+         * relocate
+         */
+        @LocalizedMessage(defaultMessage = "Relocate lower bounds")
+        @MessageComment({"relocate"})
+        IconRelocateLower,
+        
+        /**
+         * relocate
+         */
+        @LocalizedMessage(defaultMessage = "Relocate higher bounds")
+        @MessageComment({"relocate"})
+        IconRelocateHigher,
         
         /**
          * delete

@@ -84,6 +84,7 @@ import de.minigameslib.mgapi.api.arena.CheckFailure;
 import de.minigameslib.mgapi.api.arena.CheckSeverity;
 import de.minigameslib.mgapi.api.events.ArenaDeleteEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeletedEvent;
+import de.minigameslib.mgapi.api.events.ArenaForceStartRequestedEvent;
 import de.minigameslib.mgapi.api.events.ArenaStateChangedEvent;
 import de.minigameslib.mgapi.api.match.ArenaMatchInterface;
 import de.minigameslib.mgapi.api.match.MatchPlayerInterface;
@@ -828,6 +829,14 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
         this.match.abort();
         Bukkit.getPluginManager().callEvent(changedEvent);
         // TODO Teleport players back to main lobby
+    }
+
+    @Override
+    public void forceStart() throws McException
+    {
+        // raise event and let the gaming rules do the rest
+        final ArenaForceStartRequestedEvent event = new ArenaForceStartRequestedEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override

@@ -110,7 +110,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
     @Override
     public ClickGuiItem[][] getItems()
     {
-        return withFillers(new ClickGuiItem[][]{
+        return ClickGuiPageInterface.withFillers(new ClickGuiItem[][]{
             {
                 itemOptions(this::onOptions),
                 null,
@@ -126,35 +126,7 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
             {
                 itemArenas(this::onArenas),
             }
-        });
-    }
-    
-    /**
-     * Creates an inventory with filler icons
-     * @param src
-     * @return inventory
-     */
-    public static ClickGuiItem[][] withFillers(ClickGuiItem[][] src)
-    {
-        final ClickGuiItem[][] result = new ClickGuiItem[LINE_COUNT][];
-        for (int line = 0; line < LINE_COUNT; line++)
-        {
-            final ClickGuiItem[] lineArr = new ClickGuiItem[COL_COUNT];
-            for (int col = 0; col < COL_COUNT; col++)
-            {
-                if (line < src.length && src[line] != null && col < src[line].length)
-                {
-                    lineArr[col] = src[line][col];
-                }
-                else
-                {
-                    lineArr[col] = itemFill(line, col);
-                }
-            }
-            result[line] = lineArr;
-        }
-        return result;
-        
+        }, 6);
     }
     
     /**
@@ -246,19 +218,6 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
     public static ClickGuiItem itemMarketplace(ClickGuiItem.GuiItemHandler handler)
     {
         return new ClickGuiItem(ItemServiceInterface.instance().createItem(CommonItems.App_Euro), Messages.IconMarketplace, handler); 
-    }
-    
-    /**
-     * dummy fill item
-     * @param line
-     * @param col
-     * @return dummy fill icon
-     */
-    public static ClickGuiItem itemFill(int line, int col)
-    {
-        byte color = 0;
-        if ((line * COL_COUNT + col) % 2 == 1) color = 1;
-        return new ClickGuiItem(new ItemStack(Material.STAINED_GLASS_PANE, 1, color), Messages.IconFill, (player, session, gui) -> {/*empty*/});
     }
     
     /**
@@ -452,13 +411,6 @@ public class Main implements ClickGuiInterface, ClickGuiPageInterface
         @LocalizedMessage(defaultMessage = "MAIN - Minigames v2")
         @MessageComment({"Gui title (main menu)"})
         Title,
-        
-        /**
-         * A dummy filler
-         */
-        @LocalizedMessage(defaultMessage = "")
-        @MessageComment({"dummy filler icon"})
-        IconFill,
         
         /**
          * The arenas icon
