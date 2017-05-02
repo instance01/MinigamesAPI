@@ -86,7 +86,7 @@ public class PvPMode extends AbstractZoneRule implements PvPModeRuleInterface
         this.runInCopiedContext(() -> {
             BasicPvpModeConfig.PvpOption.setEnum(mode);
         });
-        this.zone.reconfigure(this.type);
+        this.zone.reconfigureRuleSets(this.type);
     }
     
     /**

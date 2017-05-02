@@ -147,7 +147,7 @@ public class BasicMatchTimer extends AbstractArenaRule implements BasicMatchTime
         this.runInCopiedContext(() -> {
             BasicMatchTimerConfig.MaxSeconds.setInt(this.seconds);
         });
-        this.arena.reconfigure(this.type);
+        this.arena.reconfigureRuleSets(this.type);
     }
 
     @Override

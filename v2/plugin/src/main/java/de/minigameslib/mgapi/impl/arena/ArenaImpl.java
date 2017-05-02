@@ -257,14 +257,28 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
             catch (McException ex)
             {
                 this.logger.log(Level.WARNING, "Error while resume", ex); //$NON-NLS-1$
-                this.object.delete();
+                try
+                {
+                    this.object.delete();
+                }
+                catch (RuntimeException ex2)
+                {
+                    this.logger.log(Level.WARNING, "Error while deleting", ex2); //$NON-NLS-1$
+                }
                 this.object = null;
                 throw ex;
             }
             catch (RuntimeException ex)
             {
                 this.logger.log(Level.WARNING, "Error while resume", ex); //$NON-NLS-1$
-                this.object.delete();
+                try
+                {
+                    this.object.delete();
+                }
+                catch (RuntimeException ex2)
+                {
+                    this.logger.log(Level.WARNING, "Error while deleting", ex2); //$NON-NLS-1$
+                }
                 this.object = null;
                 throw new McException(CommonMessages.InternalError, ex, ex.getMessage());
             }
@@ -301,8 +315,16 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final ComponentIdInterface id : this.getComponents())
         {
-            final ArenaComponentHandler handler = (ArenaComponentHandler) ObjectServiceInterface.instance().findComponent(id).getHandler();
-            handler.initArena(this);
+            final ComponentInterface comp = ObjectServiceInterface.instance().findComponent(id);
+            if (comp == null)
+            {
+                this.logger.warning("Unable to find arena component " + id); //$NON-NLS-1$
+            }
+            else
+            {
+                final ArenaComponentHandler handler = (ArenaComponentHandler) comp.getHandler();
+                handler.initArena(this);
+            }
         }
     }
 
@@ -313,8 +335,16 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final SignIdInterface id : this.getSigns())
         {
-            final ArenaSignHandler handler = (ArenaSignHandler) ObjectServiceInterface.instance().findSign(id).getHandler();
-            handler.initArena(this);
+            final SignInterface sign = ObjectServiceInterface.instance().findSign(id);
+            if (sign == null)
+            {
+                this.logger.warning("Unable to find arena sign " + id); //$NON-NLS-1$
+            }
+            else
+            {
+                final ArenaSignHandler handler = (ArenaSignHandler) sign.getHandler();
+                handler.initArena(this);
+            }
         }
     }
 
@@ -325,8 +355,16 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     {
         for (final ZoneIdInterface id : this.getZones())
         {
-            final ArenaZoneHandler handler = (ArenaZoneHandler) ObjectServiceInterface.instance().findZone(id).getHandler();
-            handler.initArena(this);
+            final ZoneInterface zone = ObjectServiceInterface.instance().findZone(id);
+            if (zone == null)
+            {
+                this.logger.warning("Unable to find arena zone " + id); //$NON-NLS-1$
+            }
+            else
+            {
+                final ArenaZoneHandler handler = (ArenaZoneHandler) zone.getHandler();
+                handler.initArena(this);
+            }
         }
     }
 
@@ -1189,12 +1227,18 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     }
 
     @Override
-    public void reconfigure(ArenaRuleSetType... rulesets) throws McException
+    public void reconfigureRuleSets(ArenaRuleSetType... rulesets) throws McException
     {
         for (final ArenaRuleSetType t : rulesets)
         {
             this.ruleSets.reapplyRuleSet(t);
         }
+    }
+
+    @Override
+    public void reconfigureRuleSet(ArenaRuleSetType ruleset) throws McException
+    {
+        this.ruleSets.reapplyRuleSet(ruleset);
     }
 
     @Override
@@ -1212,6 +1256,17 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
     }
 
     @Override
+    public void applyRuleSet(ArenaRuleSetType ruleset) throws McException
+    {
+        if (!this.ruleSets.isApplied(ruleset))
+        {
+            this.ruleSets.applyOptionalRuleSet(ruleset);
+            this.arenaData.getOptionalRules().add(ruleset);
+            this.saveData();
+        }
+    }
+
+    @Override
     public void removeRuleSets(ArenaRuleSetType... rulesets) throws McException
     {
         for (final ArenaRuleSetType t : rulesets)
@@ -1222,6 +1277,17 @@ public class ArenaImpl implements ArenaInterface, ObjectHandlerInterface
                 this.arenaData.getOptionalRules().remove(t);
                 this.saveData();
             }
+        }
+    }
+
+    @Override
+    public void removeRuleSet(ArenaRuleSetType ruleset) throws McException
+    {
+        if (this.ruleSets.isOptional(ruleset))
+        {
+            this.ruleSets.removeOptionalRuleSet(ruleset);
+            this.arenaData.getOptionalRules().remove(ruleset);
+            this.saveData();
         }
     }
 

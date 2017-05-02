@@ -210,8 +210,8 @@ public class RulesPage<T extends RuleSetType, Q extends RuleSetInterface<T>> ext
         /**
          * The rules icon
          */
-        @LocalizedMessage(defaultMessage = "rule %1$s/%2$s")
-        @MessageComment(value = {"rule icon"}, args={@Argument("rule plugin name"), @Argument("rule enum name")})
+        @LocalizedMessage(defaultMessage = "rule %1$s")
+        @MessageComment(value = {"rule icon"}, args={@Argument("rule type name")})
         IconRule,
         
         /**

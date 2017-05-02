@@ -72,6 +72,7 @@ import de.minigameslib.mgapi.api.events.ArenaCreateEvent;
 import de.minigameslib.mgapi.api.events.ArenaCreatedEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeleteEvent;
 import de.minigameslib.mgapi.api.events.ArenaDeletedEvent;
+import de.minigameslib.mgapi.api.events.ArenaForceStartRequestedEvent;
 import de.minigameslib.mgapi.api.events.ArenaLoseEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerDieEvent;
 import de.minigameslib.mgapi.api.events.ArenaPlayerDiesEvent;
@@ -302,6 +303,7 @@ public class MinigamesPlugin extends JavaPlugin implements MinigamesLibInterface
         McLibInterface.instance().registerEvent(this, ArenaLoseEvent.class);
         McLibInterface.instance().registerEvent(this, ArenaPlayerDieEvent.class);
         McLibInterface.instance().registerEvent(this, ArenaPlayerDiesEvent.class);
+        McLibInterface.instance().registerEvent(this, ArenaForceStartRequestedEvent.class);
         
         this.registerRuleset(this, BasicArenaRuleSets.BasicMatch, BasicMatch::new);
         this.registerRuleset(this, BasicArenaRuleSets.BasicSpawns, BasicSpawns::new);

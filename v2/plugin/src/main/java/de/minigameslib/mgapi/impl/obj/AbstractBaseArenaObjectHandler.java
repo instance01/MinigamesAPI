@@ -155,12 +155,18 @@ public abstract class AbstractBaseArenaObjectHandler<
     }
 
     @Override
-    public void reconfigure(@SuppressWarnings("unchecked") T... rulesets) throws McException
+    public void reconfigureRuleSets(@SuppressWarnings("unchecked") T... rulesets) throws McException
     {
         for (final T t : rulesets)
         {
             this.reapplyRuleSet(t);
         }
+    }
+
+    @Override
+    public void reconfigureRuleSet(T t) throws McException
+    {
+        this.reapplyRuleSet(t);
     }
 
     @Override
@@ -178,6 +184,17 @@ public abstract class AbstractBaseArenaObjectHandler<
     }
 
     @Override
+    public void applyRuleSet(T t) throws McException
+    {
+        if (!this.isApplied(t))
+        {
+            this.applyOptionalRuleSet(t);
+            this.data.getOptionalRules().add(t);
+            this.saveData();
+        }
+    }
+
+    @Override
     public void removeRuleSets(@SuppressWarnings("unchecked") T... rulesets) throws McException
     {
         for (final T t : rulesets)
@@ -188,6 +205,17 @@ public abstract class AbstractBaseArenaObjectHandler<
                 this.data.getOptionalRules().remove(t);
                 this.saveData();
             }
+        }
+    }
+
+    @Override
+    public void removeRuleSet(T t) throws McException
+    {
+        if (this.isOptional(t))
+        {
+            this.removeOptionalRuleSet(t);
+            this.data.getOptionalRules().remove(t);
+            this.saveData();
         }
     }
 

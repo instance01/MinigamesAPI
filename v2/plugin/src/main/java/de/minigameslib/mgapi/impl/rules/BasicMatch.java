@@ -295,7 +295,7 @@ public class BasicMatch extends AbstractArenaRule implements BasicMatchRuleInter
             BasicMatchConfig.MinPlayers.setInt(minPlayers);
             BasicMatchConfig.MaxPlayers.setInt(maxPlayers);
         });
-        this.arena.reconfigure(this.type);
+        this.arena.reconfigureRuleSets(this.type);
     }
     
     @Override
@@ -313,7 +313,7 @@ public class BasicMatch extends AbstractArenaRule implements BasicMatchRuleInter
         this.runInCopiedContext(() -> {
             BasicMatchConfig.LobbyCountdown.setInt(lobbyCountdown);
         });
-        this.arena.reconfigure(this.type);
+        this.arena.reconfigureRuleSets(this.type);
     }
     
     /**

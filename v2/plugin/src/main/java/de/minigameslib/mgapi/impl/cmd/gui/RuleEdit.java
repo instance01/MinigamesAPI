@@ -117,7 +117,6 @@ public class RuleEdit<T extends RuleSetType, Q extends RuleSetInterface<T>> exte
         return this.configOptions.stream().skip(start).limit(limit).collect(Collectors.toList());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected ClickGuiItem map(int line, int col, int index, ConfigurationValueInterface elm)
     {
@@ -128,7 +127,8 @@ public class RuleEdit<T extends RuleSetType, Q extends RuleSetInterface<T>> exte
                     () -> {
                         try
                         {
-                            this.container.reconfigure(this.rule);
+                            // TODO let components check the rule before being saved to config file
+                            this.container.reconfigureRuleSet(this.rule);
                         }
                         catch (McException e)
                         {

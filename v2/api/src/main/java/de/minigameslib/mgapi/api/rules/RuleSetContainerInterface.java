@@ -92,7 +92,14 @@ public interface RuleSetContainerInterface<T extends RuleSetType, Q extends Rule
      * @param rulesets
      * @throws McException
      */
-    void reconfigure(@SuppressWarnings("unchecked") T... rulesets) throws McException;
+    void reconfigureRuleSets(@SuppressWarnings("unchecked") T... rulesets) throws McException;
+    
+    /**
+     * Reconfigure applied rule set.
+     * @param ruleset
+     * @throws McException
+     */
+    void reconfigureRuleSet(T ruleset) throws McException;
     
     /**
      * Adds rule sets to this element. The rule set can be removed later on.
@@ -105,6 +112,16 @@ public interface RuleSetContainerInterface<T extends RuleSetType, Q extends Rule
     void applyRuleSets(@SuppressWarnings("unchecked") T... rulesets) throws McException;
     
     /**
+     * Adds rule sets to this element. The rule set can be removed later on.
+     * @param ruleset new rule sets
+     * @throws McException thrown if one of the rule sets already is applied,
+     *     if the rule sets are illegal (not in available list),
+     *     if the arena is not in maintainence mode
+     *     or if the configuration cannot be saved.
+     */
+    void applyRuleSet(T ruleset) throws McException;
+    
+    /**
      * Removes rule sets from this element.
      * @param rulesets existing rule sets
      * @throws McException thrown if one of the rule sets is not applied,
@@ -113,5 +130,15 @@ public interface RuleSetContainerInterface<T extends RuleSetType, Q extends Rule
      *     or if the configuration cannot be saved.
      */
     void removeRuleSets(@SuppressWarnings("unchecked") T... rulesets) throws McException;
+    
+    /**
+     * Removes rule sets from this element.
+     * @param ruleset existing rule sets
+     * @throws McException thrown if one of the rule sets is not applied,
+     *     if the rule sets must not be removed (fixed rule set),
+     *     if the arena is not in maintainence mode
+     *     or if the configuration cannot be saved.
+     */
+    void removeRuleSet(T ruleset) throws McException;
     
 }
