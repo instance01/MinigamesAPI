@@ -1,4 +1,4 @@
-MinigamesAPI [![Build Status](https://drone.io/github.com/instance01/MinigamesAPI/status.png?1)](https://drone.io/github.com/instance01/MinigamesAPI/latest) (Link will be updated soon)
+MinigamesAPI [![Build Status](http://www.minigameslib.de/build.php?app=all&major=1)](http://www.minigameslib.de/buildref.php?app=all&major=1)
 ============
 
 Rich MinigamesAPI supporting different types of Minigames.
@@ -7,8 +7,7 @@ Rich MinigamesAPI supporting different types of Minigames.
 Release builds can be found at http://nexus.xworlds.eu/nexus/content/repositories/mce-releases/
 Development Files can be found at http://nexus.xworlds.eu/nexus/content/repositories/mce-snapshots/
 
-Tested with 1.9.X, 1.10
-
+Tested with 1.8.X, 1.9.X, 1.10, 1.11
 
 Features
 --------
@@ -34,9 +33,34 @@ Features
 - More stuff
 
 
-Oh and of course a bunch of [premade Minigames and examples](https://github.com/MC-Minigames/) (to be updated soon).
+For details on premium services and for downloads see our [Homepage](http://www.minigameslib.de/index_en.php).
 
-See the [wiki](https://github.com/instance01/MinigamesAPI/wiki) (to be updated soon) or the [JavaDocs](http://www.instancedev.com/bukkitdev/MinigamesAPI/javadocs/) (to be updated soon) for more information on API usage.
+See the [wiki](https://github.com/MysticCity/MinigamesAPI/wiki) or the JavaDocs for more information on API usage.
+
+
+Games
+-----
+
+- [BedWars](https://github.com/MysticCity/BedWars)
+- [BowBash](https://github.com/MysticCity/BowBash)
+- [ColorMatch](https://github.com/MysticCity/ColorMatch)
+- [Conquer](https://github.com/MysticCity/Conquer)
+- [DeathRun](https://github.com/MysticCity/MGDeathRun)
+- [FlyingCars](https://github.com/MysticCity/FlyingCars)
+- [GunGame](https://github.com/MysticCity/GunGame)
+- [HorseRacingPlus](https://github.com/MysticCity/HorseRacingPlus)
+- [Jumper](https://github.com/MysticCity/Jumper)
+- [MobEscape](https://github.com/MysticCity/MGMobEscape)
+- [NoteBlockBlitz](https://github.com/MysticCity/NoteblockBlitz)
+- [OneInTheChamber](https://github.com/MysticCity/MGOneInTheChamber)
+- [SeaBattle](https://github.com/MysticCity/SeaBattle)
+- [SkyWars](https://github.com/MysticCity/MGSkyWars)
+- [Snake](https://github.com/MysticCity/Snake)
+- [Splegg](https://github.com/MysticCity/MGSplegg)
+- [Sudoku](https://github.com/MysticCity/Sudoku)
+- [TrapdoorSpleef](https://github.com/MysticCity/TrapdoorSpleef)
+- [Warlock](https://github.com/MysticCity/Warlock)
+- [WarlockTactical](https://github.com/MysticCity/Warlock-Tactical)
 
 
 Maven
@@ -53,7 +77,7 @@ Maven
 <dependency>
   <groupId>com.github.MCE-Plugins</groupId>
   <artifactId>MinigamesLib</artifactId>
-  <version>1.14.9-SNAPSHOT</version>
+  <version>1.14.16-SNAPSHOT</version>
 </dependency>
 
 
