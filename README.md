@@ -1,17 +1,18 @@
 MinigamesAPI [![Build Status](http://www.minigameslib.de/build.php?app=all&major=1)](http://www.minigameslib.de/buildref.php?app=all&major=1)
 ============
 
-Rich MinigamesAPI supporting different types of Minigames.
+Rich MinigamesAPI supporting different types of Minigames in spigot-minecraft.
+Originally written by instancelabs.
 
-
-Release builds can be found at http://nexus.xworlds.eu/nexus/content/repositories/mce-releases/
-Development Files can be found at http://nexus.xworlds.eu/nexus/content/repositories/mce-snapshots/
+Release builds can be found at (Nexus repository)[http://nexus.xworlds.eu/nexus/content/repositories/mce-releases/]
+Development Files can be found at (Nexus repository)[http://nexus.xworlds.eu/nexus/content/repositories/mce-snapshots/]
+Complete download package at (Minigameslib.de)[http://www.minigameslib.de/downloads_en.php#all]
 
 Tested with 1.8.X, 1.9.X, 1.10, 1.11
 
+
 Features
 --------
-
 
 - Arenasystem
 - Customizable messages
@@ -31,7 +32,6 @@ Features
 - Additional shops with Gui
 - Included effects like blood or dead bodies lying around
 - More stuff
-
 
 For details on premium services and for downloads see our [Homepage](http://www.minigameslib.de/index_en.php).
 
@@ -61,6 +61,15 @@ Games
 - [TrapdoorSpleef](https://github.com/MysticCity/TrapdoorSpleef)
 - [Warlock](https://github.com/MysticCity/Warlock)
 - [WarlockTactical](https://github.com/MysticCity/Warlock-Tactical)
+
+
+Links
+-----
+
+- (Wiki)[https://github.com/MysticCity/MinigamesAPI/wiki]
+- (Issues/Support)[https://github.com/MysticCity/MinigamesAPI/issues]
+- (Resource@spigotmc)[https://www.spigotmc.org/resources/minigameslib.23844/]
+- (Forum@Spigotmc)[https://www.spigotmc.org/threads/minigameslib.150548/]
 
 
 Maven
