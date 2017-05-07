@@ -1,4 +1,4 @@
-MinigamesAPI [![Build Status](http://www.minigameslib.de/build.php?app=all&major=1)](http://www.minigameslib.de/buildref.php?app=all&major=1)
+MinigamesAPI [![Build Status](http://www.minigameslib.de/build.png?app=all&major=1)](http://www.minigameslib.de/buildref.php?app=all&major=1)
 ============
 
 Rich MinigamesAPI supporting different types of Minigames in spigot-minecraft.
