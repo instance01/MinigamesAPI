@@ -13,6 +13,10 @@
 * Fixed exceptions and several bugs related to spectation (https://github.com/MysticCity/MinigamesAPI/issues/230)
 * Added SQLite support (https://github.com/MysticCity/MinigamesAPI/issues/220)
 
+###### BedWars
+
+* Option to disable GUI for servers that have there own gui implementation (https://github.com/MysticCity/MinigamesAPI/issues/253)
+
 ###### Conquer
 
 * Team selector gui (https://github.com/MysticCity/MinigamesAPI/issues/216)
