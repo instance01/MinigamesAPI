@@ -21,7 +21,7 @@ import java.util.logging.Level;
 
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
-public class SQLite extends Database
+public class SQLite
 {
     String     user     = "";
     String     database = "";
@@ -40,7 +40,7 @@ public class SQLite extends Database
         try
         {
             Class.forName("org.sqlite.JDBC");
-            this.c = DriverManager.getConnection("jdbc:sqlite:main.db");
+            this.c = DriverManager.getConnection("jdbc:sqlite:" + this.database);
             return this.c;
         }
         catch (final SQLException e)
@@ -54,22 +54,4 @@ public class SQLite extends Database
         return this.c;
     }
     
-    public boolean checkConnection()
-    {
-        if (this.c != null)
-        {
-            return true;
-        }
-        return false;
-    }
-    
-    public Connection getConn()
-    {
-        return this.c;
-    }
-    
-    public void closeConnection(Connection c)
-    {
-        this.c = null;
-    }
 }

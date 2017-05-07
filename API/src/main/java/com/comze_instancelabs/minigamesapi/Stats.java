@@ -110,22 +110,19 @@ public class Stats
      */
     public void update(final String playername)
     {
-        if (this.plugin.getConfig().getBoolean(ArenaConfigStrings.CONFIG_MYSQL_ENABLED))
+        final Player p = Bukkit.getPlayer(playername);
+        final String uuid = p.getUniqueId().toString();
+        if (this.pli.getStatsConfig().getConfig().isSet("players." + uuid + ".wins"))
         {
-            final Player p = Bukkit.getPlayer(playername);
-            final String uuid = p.getUniqueId().toString();
-            if (this.pli.getStatsConfig().getConfig().isSet("players." + uuid + ".wins"))
-            {
-                final int wins = this.getWins(playername);
-                final int sqlwins = this.pli.getSQLInstance().getWins(p);
-                this.setWins(playername, Math.max(wins, sqlwins));
-            }
-            if (this.pli.getStatsConfig().getConfig().isSet("players." + uuid + ".points"))
-            {
-                final int points = this.getPoints(playername);
-                final int sqlpoints = this.pli.getSQLInstance().getPoints(p);
-                this.setPoints(playername, Math.max(points, sqlpoints));
-            }
+            final int wins = this.getWins(playername);
+            final int sqlwins = this.pli.getSQLInstance().getWins(p);
+            this.setWins(playername, Math.max(wins, sqlwins));
+        }
+        if (this.pli.getStatsConfig().getConfig().isSet("players." + uuid + ".points"))
+        {
+            final int points = this.getPoints(playername);
+            final int sqlpoints = this.pli.getSQLInstance().getPoints(p);
+            this.setPoints(playername, Math.max(points, sqlpoints));
         }
     }
     

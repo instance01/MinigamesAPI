@@ -355,7 +355,7 @@ public class PluginInstance
         this.plugin = plugin;
         this.rew = new Rewards(plugin);
         this.stats = new Stats(this, plugin);
-        this.sql = new MainSQL(plugin, true);
+        this.sql = new MainSQL(plugin);
         this.classes = new Classes(this, plugin);
         this.shop = new Shop(this, plugin);
         this.spectatormanager = new SpectatorManager(plugin);

@@ -21,7 +21,7 @@ import java.util.logging.Level;
 
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 
-public class MySQL extends Database
+public class MySQL
 {
     String     user     = "";
     String     database = "";
@@ -37,7 +37,7 @@ public class MySQL extends Database
         this.database = database;
         this.user = username;
         this.password = password;
-    }
+    } 
     
     public Connection open()
     {
@@ -58,33 +58,4 @@ public class MySQL extends Database
         return this.c;
     }
     
-    public boolean checkConnection()
-    {
-        if (this.c != null)
-        {
-            return true;
-        }
-        return false;
-    }
-    
-    public Connection getConn()
-    {
-        return this.c;
-    }
-    
-    public void closeConnection(Connection c)
-    {
-        try
-        {
-            c.close();
-        }
-        catch (final SQLException e)
-        {
-            if (MinigamesAPI.debug)
-            {
-                MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "exception", e);
-            }
-        }
-        this.c = null;
-    }
 }

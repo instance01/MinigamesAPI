@@ -11,6 +11,7 @@
 * *v2-backport* support for unlimited games (max game time set to zero) (https://github.com/MysticCity/MinigamesAPI/issues/224)
 * Fixed ArrayIndexOutOfBounds in stop and spectate command
 * Fixed exceptions and several bugs related to spectation (https://github.com/MysticCity/MinigamesAPI/issues/230)
+* Added SQLite support (https://github.com/MysticCity/MinigamesAPI/issues/220)
 
 ###### Conquer
 

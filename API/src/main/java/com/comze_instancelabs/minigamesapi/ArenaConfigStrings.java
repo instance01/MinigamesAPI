@@ -256,16 +256,25 @@ public interface ArenaConfigStrings
     /** TODO: describe config option. */
     String CONFIG_EXTRA_LOBBY_ITEM_COMMAND_SUFFIX = ".command"; //$NON-NLS-1$
     
-    /** TODO: describe config option. */
+    /** flag to enable mysql */
     String CONFIG_MYSQL_ENABLED = "mysql.enabled"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** host name of mysql server */
     String CONFIG_MYSQL_HOST = "mysql.host"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** user name of mysql user */
     String CONFIG_MYSQL_USER = "mysql.user"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** password to connect to mysql */
     String CONFIG_MYSQL_PW = "mysql.pw"; //$NON-NLS-1$
-    /** TODO: describe config option. */
+    /** mysql database name */
     String CONFIG_MYSQL_DATABASE = "mysql.database"; //$NON-NLS-1$
+    
+    /** flag to enable sqlite */
+    String CONFIG_SQLITE_ENABLED = "sqlite.enabled"; //$NON-NLS-1$
+    /** sqlite database user name */
+    String CONFIG_SQLITE_USER = "sqlite.user"; //$NON-NLS-1$
+    /** sqlite database password */
+    String CONFIG_SQLITE_PW = "sqlite.pw"; //$NON-NLS-1$
+    /** sqlite database name/file. */
+    String CONFIG_SQLITE_DATABASE = "sqlite.database"; //$NON-NLS-1$
     
     /**
      * Activation of inventory reset on leave.

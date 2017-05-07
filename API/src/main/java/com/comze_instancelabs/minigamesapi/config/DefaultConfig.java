@@ -136,12 +136,17 @@ public class DefaultConfig
             config.addDefault(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_ITEM_SUFFIX, 9);
             config.addDefault(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_NAME_SUFFIX, "Custom Name".replace("&", "§"));
             config.addDefault(ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_PREFIX + "item0" + ArenaConfigStrings.CONFIG_EXTRA_LOBBY_ITEM_COMMAND_SUFFIX, "say This is a custom extra lobby item.");
-            
+
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_ENABLED, false);
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_HOST, "127.0.0.1");
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_USER, "root");
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_PW, "root");
             config.addDefault(ArenaConfigStrings.CONFIG_MYSQL_DATABASE, "mcminigames");
+            
+            config.addDefault(ArenaConfigStrings.CONFIG_SQLITE_ENABLED, false);
+            config.addDefault(ArenaConfigStrings.CONFIG_SQLITE_USER, "root");
+            config.addDefault(ArenaConfigStrings.CONFIG_SQLITE_PW, "root");
+            config.addDefault(ArenaConfigStrings.CONFIG_SQLITE_DATABASE, "mcminigames.sqlite");
             
             config.addDefault(ArenaConfigStrings.RESET_GAMEMMODE, true);
             config.addDefault(ArenaConfigStrings.RESET_INVENTORY, true);
