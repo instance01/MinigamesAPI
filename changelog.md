@@ -26,6 +26,10 @@
 * Fixed runtime error in 1.8.5 to 1.8.9
 * Fixed false positive error: Destroy mode invalid (https://github.com/MysticCity/MinigamesAPI/issues/225)
 
+###### SkyWars
+
+* Added new mode 'items' for filling the chests. (https://github.com/MysticCity/MinigamesAPI/issues/254). For details siki wiki at https://github.com/MysticCity/MinigamesAPI/wiki/MGSkyWars
+
 ###### Splegg
 
 * Fixed exception plaxying projectile sound in 1.7.X/1.8.X (https://github.com/MysticCity/MinigamesAPI/issues/241)
