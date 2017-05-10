@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
+import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
 import com.comze_instancelabs.minigamesapi.util.Util;
 import com.comze_instancelabs.minigamesapi.util.Validator;
@@ -55,11 +56,11 @@ public class SpectatorManager
     
     public void setup()
     {
-        if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators") == null)
+        final Team t = ArenaScoreboard.getMainScoreboardTeam("spectators");
+        if (t != null)
         {
-            Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("spectators");
+            t.setCanSeeFriendlyInvisibles(true);
         }
-        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").setCanSeeFriendlyInvisibles(true);
         this.clear();
     }
     
@@ -74,7 +75,7 @@ public class SpectatorManager
                 p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 9999999, 5), true);
                 if (useScoreboard)
                 {
-                    Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").addPlayer(p);
+                    ArenaScoreboard.mainScoreboardAddPlayer("spectators", p);
                 }
             }
             else
@@ -84,9 +85,9 @@ public class SpectatorManager
                     p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     if (useScoreboard)
                     {
-                        if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p))
+                        if (ArenaScoreboard.mainScoreboardHasPlayer("spectators", p))
                         {
-                            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").removePlayer(p);
+                            ArenaScoreboard.mainScoreboardRemovePlayer("spectators", p);
                         }
                     }
                 }
@@ -107,11 +108,14 @@ public class SpectatorManager
     private void clear()
     {
         spectators.clear();
-        final Team t = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators");
-        final ArrayList<OfflinePlayer> offp_set = new ArrayList<>(t.getPlayers());
-        for (final OfflinePlayer offp : offp_set)
+        final Team t = ArenaScoreboard.getMainScoreboardTeam("spectators");
+        if (t != null)
         {
-            t.removePlayer(offp);
+            final ArrayList<OfflinePlayer> offp_set = new ArrayList<>(t.getPlayers());
+            for (final OfflinePlayer offp : offp_set)
+            {
+                t.removePlayer(offp);
+            }
         }
     }
     

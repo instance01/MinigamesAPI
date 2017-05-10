@@ -28,6 +28,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.ArenaConfigStrings;
@@ -48,6 +49,56 @@ public class ArenaScoreboard
     PluginInstance              pli;
     
     ArrayList<String>           loaded_custom_strings = new ArrayList<>();
+    
+    public static Scoreboard getMainScoreboard()
+    {
+        final ScoreboardManager sbm = Bukkit.getScoreboardManager();
+        return sbm == null ? null : sbm.getMainScoreboard();
+    }
+    
+    public static Team getMainScoreboardTeam(String team)
+    {
+        final Scoreboard main = getMainScoreboard();
+        return main == null ? null : main.getTeam(team);
+    }
+    
+    public static boolean mainScoreboardHasPlayer(String team, Player p)
+    {
+        final Team t = getMainScoreboardTeam(team);
+        return t == null ? false : t.hasPlayer(p);
+    }
+    
+    public static void mainScoreboardAddPlayer(String team, Player p)
+    {
+        final Team t = getMainScoreboardTeam(team);
+        if (t != null)
+        {
+            t.addPlayer(p);
+        }
+    }
+    
+    public static void mainScoreboardRemovePlayer(String team, Player p)
+    {
+        final Team t = getMainScoreboardTeam(team);
+        if (t != null)
+        {
+            t.removePlayer(p);
+        }
+    }
+    
+    public static Team mainScoreboardRegisterTeam(String team)
+    {
+        final Scoreboard main = getMainScoreboard();
+        if (main != null)
+        {
+            final Team t = main.getTeam(team);
+            if (t == null)
+            {
+                main.registerNewTeam(team);
+            }
+        }
+        return getMainScoreboardTeam(team);
+    }
     
     public ArenaScoreboard()
     {
@@ -94,11 +145,15 @@ public class ArenaScoreboard
                     return;
                 }
                 final Player p = Bukkit.getPlayer(playername);
+                final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
                 if (!ArenaScoreboard.this.custom)
                 {
                     if (!ArenaScoreboard.this.ascore.containsKey(arena.getInternalName()))
                     {
-                        ArenaScoreboard.this.ascore.put(arena.getInternalName(), Bukkit.getScoreboardManager().getNewScoreboard());
+                        if (scoreboardManager != null)
+                        {
+                            ArenaScoreboard.this.ascore.put(arena.getInternalName(), scoreboardManager.getNewScoreboard());
+                        }
                     }
                     if (!ArenaScoreboard.this.aobjective.containsKey(arena.getInternalName()))
                     {
@@ -112,7 +167,10 @@ public class ArenaScoreboard
                 {
                     if (!ArenaScoreboard.this.ascore.containsKey(playername))
                     {
-                        ArenaScoreboard.this.ascore.put(playername, Bukkit.getScoreboardManager().getNewScoreboard());
+                        if (scoreboardManager != null)
+                        {
+                            ArenaScoreboard.this.ascore.put(playername, scoreboardManager.getNewScoreboard());
+                        }
                     }
                     if (!ArenaScoreboard.this.aobjective.containsKey(playername))
                     {
@@ -267,9 +325,12 @@ public class ArenaScoreboard
         try
         {
             final ScoreboardManager manager = Bukkit.getScoreboardManager();
-            final Scoreboard sc = manager.getNewScoreboard();
-            
-            p.setScoreboard(sc);
+            if (manager != null)
+            {
+                final Scoreboard sc = manager.getNewScoreboard();
+                
+                p.setScoreboard(sc);
+            }
         }
         catch (final Exception e)
         {

@@ -12,6 +12,7 @@
 * Fixed ArrayIndexOutOfBounds in stop and spectate command
 * Fixed exceptions and several bugs related to spectation (https://github.com/MysticCity/MinigamesAPI/issues/230)
 * Added SQLite support (https://github.com/MysticCity/MinigamesAPI/issues/220)
+* Fixed NullPointerException (https://github.com/MysticCity/MinigamesAPI/issues/249)
 
 ###### BedWars
 

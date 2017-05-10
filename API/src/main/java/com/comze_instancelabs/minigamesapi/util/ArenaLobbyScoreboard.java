@@ -82,7 +82,11 @@ public class ArenaLobbyScoreboard
                 final Player p = Bukkit.getPlayer(playername);
                 if (!ArenaLobbyScoreboard.this.ascore.containsKey(playername))
                 {
-                    ArenaLobbyScoreboard.this.ascore.put(playername, Bukkit.getScoreboardManager().getNewScoreboard());
+                    final ScoreboardManager sbm = Bukkit.getScoreboardManager();
+                    if (sbm != null)
+                    {
+                        ArenaLobbyScoreboard.this.ascore.put(playername, sbm.getNewScoreboard());
+                    }
                 }
                 if (!ArenaLobbyScoreboard.this.aobjective.containsKey(playername))
                 {
@@ -163,9 +167,11 @@ public class ArenaLobbyScoreboard
         try
         {
             final ScoreboardManager manager = Bukkit.getScoreboardManager();
-            final Scoreboard sc = manager.getNewScoreboard();
-            
-            p.setScoreboard(sc);
+            if (manager != null)
+            {
+                final Scoreboard sc = manager.getNewScoreboard();
+                p.setScoreboard(sc);
+            }
         }
         catch (final Exception e)
         {

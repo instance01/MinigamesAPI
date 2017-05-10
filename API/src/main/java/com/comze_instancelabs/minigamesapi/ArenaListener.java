@@ -84,6 +84,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.comze_instancelabs.minigamesapi.util.ArenaScoreboard;
 import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.Cuboid;
 import com.comze_instancelabs.minigamesapi.util.Util;
@@ -2173,7 +2174,7 @@ public class ArenaListener implements Listener
     @Deprecated
     public static boolean isSpectating(final Player p)
     {
-        return Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators").hasPlayer(p);
+        return ArenaScoreboard.mainScoreboardHasPlayer("spectators", p);
     }
     
     /**
