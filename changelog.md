@@ -1,5 +1,13 @@
 # Changelog
 
+#### 1.14.17
+
+###### All
+
+###### SkyWars
+
+* fixed NPE (https://github.com/MysticCity/MinigamesAPI/issues/262)
+
 #### 1.14.16
 
 ###### All
