@@ -5,6 +5,7 @@
 ###### All
 
 * Support for minecraft 1.12 (https://github.com/MysticCity/MinigamesAPI/issues/263)
+* Fixed chest handling during smart reset (https://github.com/MysticCity/MinigamesAPI/issues/230)
 
 ###### MobEscape
 

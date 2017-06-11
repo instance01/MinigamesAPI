@@ -47,7 +47,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
-import com.comze_instancelabs.minigamesapi.util.ChangeCause;
 import com.comze_instancelabs.minigamesapi.util.SmartArenaBlock;
 import com.comze_instancelabs.minigamesapi.util.Util;
 
@@ -134,76 +133,6 @@ public class SmartReset implements Runnable
     }
     
     /**
-     * Adds changed block.
-     * 
-     * @param b
-     *            block to be added
-     * @param isChest
-     *            true if block is a chest
-     * @return the smart arena block or {@code null} if the block already was added before
-     */
-    public SmartArenaBlock addChanged(final Block b, final boolean isChest)
-    {
-        if (!this.changed.hasBlock(b.getLocation()))
-        {
-            if (MinigamesAPI.debug)
-            {
-                MinigamesAPI.getAPI().getLogger().info("(2) adding changed block for location " + b.getLocation());
-            }
-            final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
-            this.changed.putBlock(b.getLocation(), sablock);
-            return sablock;
-        }
-        return null;
-    }
-    
-    /**
-     * Adds changed block.
-     * 
-     * @param b
-     *            block to be added
-     * @param isChest
-     *            true if block is a chest
-     * @param cause
-     *            the cause for adding the change (currently ignore)
-     * @return the smart arena block or {@code null} if the block already was added before
-     */
-    public SmartArenaBlock addChanged(final Block b, final boolean isChest, final ChangeCause cause)
-    {
-        if (!this.changed.hasBlock(b.getLocation()))
-        {
-            if (MinigamesAPI.debug)
-            {
-                MinigamesAPI.getAPI().getLogger().info("(3) adding changed block for location " + b.getLocation());
-            }
-            final SmartArenaBlock sablock = new SmartArenaBlock(b, isChest, b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST);
-            this.changed.putBlock(b.getLocation(), sablock);
-            return sablock;
-        }
-        return null;
-    }
-    
-    /**
-     * Adds changed block
-     * 
-     * @param l
-     *            location of the block
-     * @deprecated will be removed in future versions.
-     */
-    @Deprecated
-    public void addChanged(final Location l)
-    {
-        if (!this.changed.hasBlock(l))
-        {
-            if (MinigamesAPI.debug)
-            {
-                MinigamesAPI.getAPI().getLogger().info("(4) adding changed block for location " + l);
-            }
-            this.changed.putBlock(l, new SmartArenaBlock(l, Material.AIR, (byte) 0));
-        }
-    }
-    
-    /**
      * Adds changed block
      * 
      * @param l
@@ -223,6 +152,10 @@ public class SmartReset implements Runnable
                 MinigamesAPI.getAPI().getLogger().info("(5) adding changed block for location " + l);
             }
             final SmartArenaBlock sab = new SmartArenaBlock(l, m, data);
+            if (m == Material.CHEST)
+            {
+                sab.setInventory(((Chest)l.getBlock().getState()).getInventory());
+            }
             this.changed.putBlock(l, sab);
             return sab;
         }
