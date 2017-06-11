@@ -4,6 +4,12 @@
 
 ###### All
 
+* Support for minecraft 1.12 (https://github.com/MysticCity/MinigamesAPI/issues/263)
+
+###### MobEscape
+
+* fixed detecting of first player waypoint (https://github.com/MysticCity/MinigamesAPI/issues/247)
+
 ###### SkyWars
 
 * fixed NPE (https://github.com/MysticCity/MinigamesAPI/issues/262)
