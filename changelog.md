@@ -10,6 +10,10 @@
 
 * fixed detecting of first player waypoint (https://github.com/MysticCity/MinigamesAPI/issues/247)
 
+###### OITC
+
+* fixed crushing crops (https://github.com/MysticCity/MinigamesAPI/issues/257)
+
 ###### SkyWars
 
 * fixed NPE (https://github.com/MysticCity/MinigamesAPI/issues/262)
