@@ -16,48 +16,35 @@ package com.comze_instancelabs.minigamesapi.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 
-public class PlayerEvent extends Event
+public abstract class PlayerEvent extends Event
 {
-    private static final HandlerList handlers = new HandlerList();
     private final Arena              arena;
     private final JavaPlugin         plugin;
     private final Player             player;
-    
+
     public PlayerEvent(final Player p, final JavaPlugin plugin, final Arena a)
     {
         this.arena = a;
         this.plugin = plugin;
         this.player = p;
     }
-    
+
     public Arena getArena()
     {
         return this.arena;
     }
-    
+
     public Player getPlayer()
     {
         return this.player;
     }
-    
+
     public JavaPlugin getPlugin()
     {
         return this.plugin;
-    }
-    
-    @Override
-    public HandlerList getHandlers()
-    {
-        return PlayerEvent.handlers;
-    }
-    
-    public static HandlerList getHandlerList()
-    {
-        return PlayerEvent.handlers;
     }
 }
