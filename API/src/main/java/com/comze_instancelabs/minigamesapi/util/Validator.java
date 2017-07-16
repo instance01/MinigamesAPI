@@ -14,6 +14,8 @@
 */
 package com.comze_instancelabs.minigamesapi.util;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -42,6 +44,23 @@ public class Validator
      * @return true if the player is online.
      */
     public static boolean isPlayerOnline(final String player)
+    {
+        final Player p = Bukkit.getPlayer(player);
+        if (p != null)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    /***
+     * returns true if given player is online
+     * 
+     * @param player
+     *            name of the player.
+     * @return true if the player is online.
+     */
+    public static boolean isPlayerOnline(final UUID player)
     {
         final Player p = Bukkit.getPlayer(player);
         if (p != null)

@@ -1947,14 +1947,15 @@ public class ArenaListener implements Listener
                 MinigamesAPI.getAPI().getLogger().log(Level.WARNING, "Error occurred while refreshing sign. ", e);
             }
         }
-        if (MinigamesAPI.getAPI().global_party.containsKey(event.getPlayer().getName()))
+        if (MinigamesAPI.getAPI().hasParty(event.getPlayer().getUniqueId()))
         {
-            MinigamesAPI.getAPI().global_party.get(event.getPlayer().getName()).disband();
+            MinigamesAPI.getAPI().getParty(event.getPlayer().getUniqueId()).disband();
         }
+        MinigamesAPI.getAPI().removePartyInvites(event.getPlayer().getUniqueId());
         Party party_ = null;
-        for (final Party party : MinigamesAPI.getAPI().global_party.values())
+        for (final Party party : MinigamesAPI.getAPI().getParties())
         {
-            if (party.containsPlayer(event.getPlayer().getName()))
+            if (party.containsPlayer(event.getPlayer().getUniqueId()))
             {
                 party_ = party;
                 break;
@@ -1962,7 +1963,7 @@ public class ArenaListener implements Listener
         }
         if (party_ != null)
         {
-            party_.removePlayer(event.getPlayer().getName());
+            party_.removePlayer(event.getPlayer().getUniqueId());
         }
     }
     

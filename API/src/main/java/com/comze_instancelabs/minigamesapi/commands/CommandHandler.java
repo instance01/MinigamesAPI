@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -1431,15 +1432,23 @@ public class CommandHandler
     {
         if (args.length > 1)
         {
-            if (p.getName().equalsIgnoreCase(args[1]))
+            final Player target = Bukkit.getPlayer(args[1]);
+            if (target == null)
+            {
+                p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
+                return true;
+            }
+            
+            if (p.getUniqueId().equals(target.getUniqueId()))
             {
                 p.sendMessage(MinigamesAPI.getAPI().partymessages.cannot_invite_yourself);
                 return true;
             }
+            
             boolean isInParty = false;
-            for (final Party party : MinigamesAPI.getAPI().global_party.values())
+            for (final Party party : MinigamesAPI.getAPI().getParties())
             {
-                if (party.containsPlayer(p.getName()))
+                if (party.containsPlayer(p.getUniqueId()))
                 {
                     isInParty = true;
                 }
@@ -1452,27 +1461,18 @@ public class CommandHandler
                     return true;
                 }
                 Party party = null;
-                if (!MinigamesAPI.getAPI().global_party.containsKey(p.getName()))
+                if (!MinigamesAPI.getAPI().hasParty(p.getUniqueId()))
                 {
-                    party = new Party(p.getName());
-                    MinigamesAPI.getAPI().global_party.put(p.getName(), party);
+                    party = MinigamesAPI.getAPI().createParty(p.getUniqueId());
                 }
                 else
                 {
-                    party = MinigamesAPI.getAPI().global_party.get(p.getName());
+                    party = MinigamesAPI.getAPI().getParty(p.getUniqueId());
                 }
-                final ArrayList<Party> parties = new ArrayList<>();
-                if (MinigamesAPI.getAPI().global_party_invites.containsKey(p.getName()))
-                {
-                    parties.addAll(MinigamesAPI.getAPI().global_party_invites.get(p.getName()));
-                }
-                if (!parties.contains(party))
-                {
-                    parties.add(party);
-                }
-                MinigamesAPI.getAPI().global_party_invites.put(args[1], parties);
+                final Player invited = Bukkit.getPlayer(args[1]);
+                MinigamesAPI.getAPI().addPartyInvite(invited.getUniqueId(), party);
                 p.sendMessage(MinigamesAPI.getAPI().partymessages.you_invited.replaceAll("<player>", args[1]));
-                Bukkit.getPlayer(args[1]).sendMessage(MinigamesAPI.getAPI().partymessages.you_were_invited.replaceAll("<player>", p.getName()));
+                invited.sendMessage(MinigamesAPI.getAPI().partymessages.you_were_invited.replaceAll("<player>", p.getName()));
             }
         }
         else
@@ -1491,7 +1491,7 @@ public class CommandHandler
                 p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
                 return true;
             }
-            if (!MinigamesAPI.getAPI().global_party_invites.containsKey(p.getName()))
+            if (!MinigamesAPI.getAPI().hasPartyInvites(p.getUniqueId()))
             {
                 p.sendMessage(MinigamesAPI.getAPI().partymessages.not_invited_to_any_party);
                 return true;
@@ -1499,9 +1499,9 @@ public class CommandHandler
             
             boolean isInParty = false;
             Party party_ = null;
-            for (final Party party : MinigamesAPI.getAPI().global_party.values())
+            for (final Party party : MinigamesAPI.getAPI().getParties())
             {
-                if (party.containsPlayer(p.getName()))
+                if (party.containsPlayer(p.getUniqueId()))
                 {
                     isInParty = true;
                     party_ = party;
@@ -1511,18 +1511,18 @@ public class CommandHandler
             {
                 if (party_ != null)
                 {
-                    party_.removePlayer(p.getName());
+                    party_.removePlayer(p.getUniqueId());
                 }
             }
-            if (MinigamesAPI.getAPI().global_party.containsKey(p.getName()))
+            if (MinigamesAPI.getAPI().hasParty(p.getUniqueId()))
             {
-                MinigamesAPI.getAPI().global_party.get(p.getName()).disband();
+                MinigamesAPI.getAPI().getParty(p.getUniqueId()).disband();
             }
             
             Party party__ = null;
-            for (final Party party : MinigamesAPI.getAPI().global_party_invites.get(p.getName()))
+            for (final Party party : MinigamesAPI.getAPI().getPartyInvites(p.getUniqueId()))
             {
-                if (party.getOwner().equalsIgnoreCase(args[1]))
+                if (party.getOwner().equals(Bukkit.getPlayer(args[1]).getUniqueId()))
                 {
                     party__ = party;
                     break;
@@ -1530,8 +1530,8 @@ public class CommandHandler
             }
             if (party__ != null)
             {
-                party__.addPlayer(p.getName());
-                MinigamesAPI.getAPI().global_party_invites.remove(p.getName());
+                party__.addPlayer(p.getUniqueId());
+                MinigamesAPI.getAPI().removePartyInvites(p.getUniqueId());
             }
             else
             {
@@ -1554,12 +1554,13 @@ public class CommandHandler
                 p.sendMessage(MinigamesAPI.getAPI().partymessages.player_not_online.replaceAll("<player>", args[1]));
                 return true;
             }
-            if (MinigamesAPI.getAPI().global_party.containsKey(p.getName()))
+            if (MinigamesAPI.getAPI().hasParty(p.getUniqueId()))
             {
-                final Party party = MinigamesAPI.getAPI().global_party.get(p.getName());
-                if (party.containsPlayer(args[1]))
+                final Party party = MinigamesAPI.getAPI().getParty(p.getUniqueId());
+                final Player target = Bukkit.getPlayer(args[1]);
+                if (party.containsPlayer(target.getUniqueId()))
                 {
-                    party.removePlayer(args[1]);
+                    party.removePlayer(target.getUniqueId());
                 }
                 else
                 {
@@ -1579,23 +1580,23 @@ public class CommandHandler
         if (args.length > 0)
         {
             Party party_ = null;
-            for (final Party party : MinigamesAPI.getAPI().global_party.values())
+            for (final Party party : MinigamesAPI.getAPI().getParties())
             {
-                if (party.containsPlayer(p.getName()))
+                if (party.containsPlayer(p.getUniqueId()))
                 {
                     party_ = party;
                 }
             }
-            if (MinigamesAPI.getAPI().global_party.containsKey(p.getName()))
+            if (MinigamesAPI.getAPI().hasParty(p.getUniqueId()))
             {
-                party_ = MinigamesAPI.getAPI().global_party.get(p.getName());
+                party_ = MinigamesAPI.getAPI().getParty(p.getUniqueId());
             }
             if (party_ != null)
             {
-                String ret = ChatColor.DARK_GREEN + party_.getOwner();
-                for (final String p_ : party_.getPlayers())
+                String ret = ChatColor.DARK_GREEN + Bukkit.getPlayer(party_.getOwner()).getName();
+                for (final UUID p_ : party_.getPlayers())
                 {
-                    ret += ChatColor.GREEN + ", " + p_;
+                    ret += ChatColor.GREEN + ", " + Bukkit.getPlayer(p_).getName();
                 }
                 p.sendMessage(ret);
             }
@@ -1611,9 +1612,9 @@ public class CommandHandler
     {
         if (args.length > 0)
         {
-            if (MinigamesAPI.getAPI().global_party.containsKey(p.getName()))
+            if (MinigamesAPI.getAPI().hasParty(p.getUniqueId()))
             {
-                MinigamesAPI.getAPI().global_party.get(p.getName()).disband();
+                MinigamesAPI.getAPI().getParty(p.getUniqueId()).disband();
             }
         }
         else
@@ -1627,22 +1628,22 @@ public class CommandHandler
     {
         if (args.length > 0)
         {
-            if (MinigamesAPI.getAPI().global_party.containsKey(p.getName()))
+            if (MinigamesAPI.getAPI().hasParty(p.getUniqueId()))
             {
-                MinigamesAPI.getAPI().global_party.get(p.getName()).disband();
+                MinigamesAPI.getAPI().getParty(p.getUniqueId()).disband();
                 return true;
             }
             Party party_ = null;
-            for (final Party party : MinigamesAPI.getAPI().global_party.values())
+            for (final Party party : MinigamesAPI.getAPI().getParties())
             {
-                if (party.containsPlayer(p.getName()))
+                if (party.containsPlayer(p.getUniqueId()))
                 {
                     party_ = party;
                 }
             }
             if (party_ != null)
             {
-                party_.removePlayer(p.getName());
+                party_.removePlayer(p.getUniqueId());
             }
         }
         else

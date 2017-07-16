@@ -5,6 +5,7 @@
 ###### All
 
 * Merged PullRequest for event class fixes (https://github.com/MysticCity/MinigamesAPI/pull/283)
+* (!API change!) Fixed party command for typing player names with wrong case (https://github.com/MysticCity/MinigamesAPI/pull/282)
 
 ###### BedWars
 

@@ -15,6 +15,7 @@
 package com.comze_instancelabs.minigamesapi;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -28,10 +29,10 @@ public class Party
 {
     
     /** party owner. */
-    private String            owner;
+    private UUID            owner;
     
     /** party members. */
-    private ArrayList<String> players = new ArrayList<>();
+    private ArrayList<UUID> players = new ArrayList<>();
     
     /**
      * Constructor.
@@ -39,7 +40,7 @@ public class Party
      * @param owner
      *            party owner (player name)
      */
-    public Party(final String owner)
+    public Party(final UUID owner)
     {
         this.owner = owner;
     }
@@ -49,7 +50,7 @@ public class Party
      * 
      * @return player name
      */
-    public String getOwner()
+    public UUID getOwner()
     {
         return this.owner;
     }
@@ -59,7 +60,7 @@ public class Party
      * 
      * @return party members.
      */
-    public ArrayList<String> getPlayers()
+    public ArrayList<UUID> getPlayers()
     {
         return this.players;
     }
@@ -70,14 +71,14 @@ public class Party
      * @param p
      *            player to add.
      */
-    public void addPlayer(final String p)
+    public void addPlayer(final UUID p)
     {
         if (!this.players.contains(p))
         {
             this.players.add(p);
         }
-        Bukkit.getPlayer(p).sendMessage(MinigamesAPI.getAPI().partymessages.you_joined_party.replaceAll("<player>", this.getOwner()));
-        this.tellAll(MinigamesAPI.getAPI().partymessages.player_joined_party.replaceAll("<player>", p));
+        Bukkit.getPlayer(p).sendMessage(MinigamesAPI.getAPI().partymessages.you_joined_party.replaceAll("<player>", Bukkit.getPlayer(this.getOwner()).getName()));
+        this.tellAll(MinigamesAPI.getAPI().partymessages.player_joined_party.replaceAll("<player>", Bukkit.getPlayer(p).getName()));
     }
     
     /**
@@ -87,7 +88,7 @@ public class Party
      *            player to remove
      * @return {@code true} if the player was contained in the list
      */
-    public boolean removePlayer(final String p)
+    public boolean removePlayer(final UUID p)
     {
         if (this.players.contains(p))
         {
@@ -95,9 +96,9 @@ public class Party
             final Player p___ = Bukkit.getPlayer(p);
             if (p___ != null)
             {
-                p___.sendMessage(MinigamesAPI.getAPI().partymessages.you_left_party.replaceAll("<player>", this.getOwner()));
+                p___.sendMessage(MinigamesAPI.getAPI().partymessages.you_left_party.replaceAll("<player>", Bukkit.getPlayer(this.getOwner()).getName()));
+                this.tellAll(MinigamesAPI.getAPI().partymessages.player_left_party.replaceAll("<player>", p___.getName()));
             }
-            this.tellAll(MinigamesAPI.getAPI().partymessages.player_left_party.replaceAll("<player>", p));
             return true;
         }
         return false;
@@ -110,7 +111,7 @@ public class Party
      *            playeer to be checked.
      * @return {@code true} if the player is within the party list.
      */
-    public boolean containsPlayer(final String p)
+    public boolean containsPlayer(final UUID p)
     {
         return this.players.contains(p);
     }
@@ -121,10 +122,10 @@ public class Party
     public void disband()
     {
         this.tellAll(MinigamesAPI.getAPI().partymessages.party_disbanded);
-        if (MinigamesAPI.getAPI().global_party.containsKey(this.owner))
+        if (MinigamesAPI.getAPI().hasParty(this.owner))
         {
             this.players.clear();
-            MinigamesAPI.getAPI().global_party.remove(this.owner);
+            MinigamesAPI.getAPI().removeParty(this.owner);
         }
     }
     
@@ -136,7 +137,7 @@ public class Party
      */
     private void tellAll(final String msg)
     {
-        for (final String p_ : this.getPlayers())
+        for (final UUID p_ : this.getPlayers())
         {
             final Player p__ = Bukkit.getPlayer(p_);
             if (p__ != null)

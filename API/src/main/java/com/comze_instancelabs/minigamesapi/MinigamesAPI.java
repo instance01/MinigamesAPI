@@ -126,20 +126,14 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
     int                                               updatetime            = 20 * 10;
     
     /**
-     * TODO decribe this field.
-     * 
-     * @deprecated will be be private in 1.5.0; replaced by new method
+     * Party per owning player
      */
-    @Deprecated
-    public HashMap<String, Party>                     global_party          = new HashMap<>();
+    private HashMap<UUID, Party>                     global_party          = new HashMap<>();
     
     /**
-     * TODO decribe this field.
-     * 
-     * @deprecated will be be private in 1.5.0; replaced by new method
+     * Invites per player
      */
-    @Deprecated
-    public HashMap<String, ArrayList<Party>>          global_party_invites  = new HashMap<>();
+    private HashMap<UUID, ArrayList<Party>>          global_party_invites  = new HashMap<>();
     
     /**
      * Hash map with internal plugin representations of each registered minigame.
@@ -1576,10 +1570,10 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                     final Player player = event.getPlayer();
                     final String signInfo = getInfoBySignLocation(s.getLocation());
                     
-                    if (MinigamesAPI.getAPI().global_party.containsKey(player.getName()))
+                    if (MinigamesAPI.getAPI().global_party.containsKey(player.getUniqueId()))
                     {
-                        final Party party = MinigamesAPI.getAPI().global_party.remove(player.getName());
-                        for (final String p_ : party.getPlayers())
+                        final Party party = MinigamesAPI.getAPI().global_party.remove(player.getUniqueId());
+                        for (final UUID p_ : party.getPlayers())
                         {
                             if (Validator.isPlayerOnline(p_))
                             {
@@ -1587,7 +1581,7 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
                                 MinigamesAPI.getAPI();
                                 for (final PluginInstance pli_ : MinigamesAPI.pinstances.values())
                                 {
-                                    if (pli_.containsGlobalPlayer(p_))
+                                    if (pli_.containsGlobalPlayer(Bukkit.getPlayer(p_).getName()))
                                     {
                                         cont = false;
                                     }
@@ -1908,6 +1902,95 @@ public class MinigamesAPI extends JavaPlugin implements PluginMessageListener, L
         {
             evt.setMotd(this.motd);
         }
+    }
+    
+    // party
+    
+    /**
+     * Checks if given player has a party.
+     * @param owner
+     * @return
+     */
+    public boolean hasParty(UUID owner)
+    {
+        return this.global_party.containsKey(owner);
+    }
+    
+    /**
+     * Returns a party.
+     * @param owner
+     * @return
+     */
+    public Party getParty(UUID owner)
+    {
+        return this.global_party.get(owner);
+    }
+    
+    /**
+     * Returns all known parties.
+     * @param owner
+     * @return
+     */
+    public Iterable<Party> getParties()
+    {
+        return this.global_party.values();
+    }
+    
+    /**
+     * Creates a new party
+     * @param owner
+     * @return
+     */
+    public Party createParty(UUID owner)
+    {
+        final Party party = new Party(owner);
+        this.global_party.put(owner, party);
+        return party;
+    }
+
+    /**
+     * Removes existing party from list
+     * @param owner
+     */
+    public void removeParty(UUID owner)
+    {
+        this.global_party.remove(owner);
+    }
+    
+    /**
+     * Adds a party invite
+     * @param invitedPlayer
+     * @param party
+     */
+    public void addPartyInvite(UUID invitedPlayer, Party party)
+    {
+        this.global_party_invites.computeIfAbsent(invitedPlayer, u -> new ArrayList<>()).add(party);
+    }
+
+    /**
+     * @param invitedPlayer
+     * @return
+     */
+    public boolean hasPartyInvites(UUID invitedPlayer)
+    {
+        return this.global_party_invites.containsKey(invitedPlayer);
+    }
+
+    /**
+     * @param invitedPlayer
+     * @return
+     */
+    public Iterable<Party> getPartyInvites(UUID invitedPlayer)
+    {
+        return this.global_party_invites.get(invitedPlayer);
+    }
+
+    /**
+     * @param invitedPlayer
+     */
+    public void removePartyInvites(UUID invitedPlayer)
+    {
+        this.global_party_invites.remove(invitedPlayer);
     }
     
 }

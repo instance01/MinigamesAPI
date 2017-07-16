@@ -34,6 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Before;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.reflect.Whitebox;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 import com.comze_instancelabs.minigamesapi.MinecraftVersionsType;
@@ -78,7 +79,7 @@ public abstract class TestUtil extends SpigotTestSupport
         when(MinigamesAPI.uuidToPlayer(any(UUID.class))).thenCallRealMethod();
         
         this.minigameTest.api = api;
-        api.global_party = new HashMap<>();
+        Whitebox.setInternalState(api, "global_party", new HashMap<>());
         
         final Field field = PowerMockito.field(MinigamesAPI.class, "SERVER_VERSION");
         field.setAccessible(true);

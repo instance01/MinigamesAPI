@@ -18,6 +18,8 @@ package com.comze_instancelabs.minigamesapi.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -25,6 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -51,13 +54,13 @@ public class PartyTest
 {
     
     /** owner name. */
-    private static final String OWNER = "OWNER"; //$NON-NLS-1$
+    private static final UUID OWNER = UUID.randomUUID();
     
     /** friend name. */
-    private static final String FRIEND_1 = "FRIEND1"; //$NON-NLS-1$
+    private static final UUID FRIEND_1 = UUID.randomUUID();
     
     /** friend name. */
-    private static final String FRIEND_2 = "FRIEND2"; //$NON-NLS-1$
+    private static final UUID FRIEND_2 = UUID.randomUUID();
     
     /**
      * Test that owner name is returned.
@@ -96,6 +99,12 @@ public class PartyTest
         
         mockStatic(MinigamesAPI.class);
         when(MinigamesAPI.getAPI()).thenReturn(api);
+
+        when(api.createParty(any(UUID.class))).thenCallRealMethod();
+        when(api.getParties()).thenCallRealMethod();
+        when(api.hasParty(any(UUID.class))).thenCallRealMethod();
+        when(api.getParty(any(UUID.class))).thenCallRealMethod();
+        doCallRealMethod().when(api).removeParty(any(UUID.class));
     }
     
     /**
@@ -106,10 +115,17 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
+        
+        final Player owner = mock(Player.class);
+        when(owner.getName()).thenReturn(OWNER.toString());
+        when(owner.getUniqueId()).thenReturn(OWNER);
+        
+        when(Bukkit.getPlayer(OWNER)).thenReturn(owner);
         
         this.mockAPI();
         
@@ -120,7 +136,7 @@ public class PartyTest
         assertEquals(FRIEND_1, party.getPlayers().get(0));
         
         // epilog
-        verify(player1, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
     }
     
     /**
@@ -131,10 +147,17 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
+        
+        final Player owner = mock(Player.class);
+        when(owner.getName()).thenReturn(OWNER.toString());
+        when(owner.getUniqueId()).thenReturn(OWNER);
+        
+        when(Bukkit.getPlayer(OWNER)).thenReturn(owner);
         
         this.mockAPI();
         
@@ -153,15 +176,23 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
         
         final Player player2 = mock(Player.class);
-        when(player2.getName()).thenReturn(FRIEND_2);
+        when(player2.getName()).thenReturn(FRIEND_2.toString());
+        when(player2.getUniqueId()).thenReturn(FRIEND_2);
         
         when(Bukkit.getPlayer(FRIEND_2)).thenReturn(player2);
+        
+        final Player owner = mock(Player.class);
+        when(owner.getName()).thenReturn(OWNER.toString());
+        when(owner.getUniqueId()).thenReturn(OWNER);
+        
+        when(Bukkit.getPlayer(OWNER)).thenReturn(owner);
         
         this.mockAPI();
         
@@ -174,9 +205,9 @@ public class PartyTest
         assertEquals(FRIEND_2, party.getPlayers().get(1));
         
         // epilog
-        verify(player1, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
-        verify(player2, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
-        verify(player1, times(1)).sendMessage("PLAYER FRIEND2 JOINED"); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player2, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("PLAYER " + FRIEND_2.toString() + " JOINED"); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     /**
@@ -187,10 +218,17 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
+        
+        final Player owner = mock(Player.class);
+        when(owner.getName()).thenReturn(OWNER.toString());
+        when(owner.getUniqueId()).thenReturn(OWNER);
+        
+        when(Bukkit.getPlayer(OWNER)).thenReturn(owner);
         
         this.mockAPI();
         
@@ -201,8 +239,8 @@ public class PartyTest
         assertEquals(0, party.getPlayers().size());
         
         // epilog
-        verify(player1, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
-        verify(player1, times(1)).sendMessage("LEFT PARTY OWNER"); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("LEFT PARTY " + OWNER.toString()); //$NON-NLS-1$
     }
     
     /**
@@ -213,13 +251,21 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
         
+        final Player owner = mock(Player.class);
+        when(owner.getName()).thenReturn(OWNER.toString());
+        when(owner.getUniqueId()).thenReturn(OWNER);
+        
+        when(Bukkit.getPlayer(OWNER)).thenReturn(owner);
+        
         final Player player2 = mock(Player.class);
-        when(player2.getName()).thenReturn(FRIEND_2);
+        when(player2.getName()).thenReturn(FRIEND_2.toString());
+        when(player2.getUniqueId()).thenReturn(FRIEND_2);
         
         when(Bukkit.getPlayer(FRIEND_2)).thenReturn(player2);
         
@@ -234,11 +280,11 @@ public class PartyTest
         assertEquals(FRIEND_2, party.getPlayers().get(0));
         
         // epilog
-        verify(player1, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
-        verify(player2, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
-        verify(player1, times(1)).sendMessage("PLAYER FRIEND2 JOINED"); //$NON-NLS-1$
-        verify(player1, times(1)).sendMessage("LEFT PARTY OWNER"); //$NON-NLS-1$
-        verify(player2, times(1)).sendMessage("PLAYER FRIEND1 LEFT"); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player2, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("PLAYER " + FRIEND_2.toString() + " JOINED"); //$NON-NLS-1$ //$NON-NLS-2$
+        verify(player1, times(1)).sendMessage("LEFT PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player2, times(1)).sendMessage("PLAYER " + FRIEND_1.toString() + " LEFT"); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     /**
@@ -249,22 +295,29 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
         
         final Player player2 = mock(Player.class);
-        when(player2.getName()).thenReturn(FRIEND_2);
+        when(player2.getName()).thenReturn(FRIEND_2.toString());
+        when(player2.getUniqueId()).thenReturn(FRIEND_2);
         
         when(Bukkit.getPlayer(FRIEND_2)).thenReturn(player2);
+        
+        final Player owner = mock(Player.class);
+        when(owner.getName()).thenReturn(OWNER.toString());
+        when(owner.getUniqueId()).thenReturn(OWNER);
+        
+        when(Bukkit.getPlayer(OWNER)).thenReturn(owner);
         
         this.mockAPI();
         
         // test
-        final Party party = new Party(OWNER);
         // TODO clearing the list should not depend on finding it in global_party
-        MinigamesAPI.getAPI().global_party.put(OWNER, party);
+        final Party party = MinigamesAPI.getAPI().createParty(OWNER);
         party.addPlayer(FRIEND_1);
         party.addPlayer(FRIEND_2);
         party.disband();
@@ -279,15 +332,23 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
         
         final Player player2 = mock(Player.class);
-        when(player2.getName()).thenReturn(FRIEND_2);
+        when(player2.getName()).thenReturn(FRIEND_2.toString());
+        when(player2.getUniqueId()).thenReturn(FRIEND_2);
         
         when(Bukkit.getPlayer(FRIEND_2)).thenReturn(player2);
+        
+        final Player owner = mock(Player.class);
+        when(owner.getName()).thenReturn(OWNER.toString());
+        when(owner.getUniqueId()).thenReturn(OWNER);
+        
+        when(Bukkit.getPlayer(OWNER)).thenReturn(owner);
         
         this.mockAPI();
         
@@ -298,9 +359,9 @@ public class PartyTest
         party.disband();
         
         // epilog
-        verify(player1, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
-        verify(player2, times(1)).sendMessage("JOINED PARTY OWNER"); //$NON-NLS-1$
-        verify(player1, times(1)).sendMessage("PLAYER FRIEND2 JOINED"); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player2, times(1)).sendMessage("JOINED PARTY " + OWNER.toString()); //$NON-NLS-1$
+        verify(player1, times(1)).sendMessage("PLAYER " + FRIEND_2.toString() + " JOINED"); //$NON-NLS-1$ //$NON-NLS-2$
         verify(player1, times(1)).sendMessage("DISBAND"); //$NON-NLS-1$
         verify(player2, times(1)).sendMessage("DISBAND"); //$NON-NLS-1$
     }
@@ -313,23 +374,24 @@ public class PartyTest
     {
         // prolog
         final Player player1 = mock(Player.class);
-        when(player1.getName()).thenReturn(FRIEND_1);
+        when(player1.getName()).thenReturn(FRIEND_1.toString());
+        when(player1.getUniqueId()).thenReturn(FRIEND_1);
         
         mockStatic(Bukkit.class);
         when(Bukkit.getPlayer(FRIEND_1)).thenReturn(player1);
         
         final Player player2 = mock(Player.class);
-        when(player2.getName()).thenReturn(FRIEND_2);
+        when(player2.getName()).thenReturn(FRIEND_2.toString());
+        when(player2.getUniqueId()).thenReturn(FRIEND_2);
         
         when(Bukkit.getPlayer(FRIEND_2)).thenReturn(player2);
         
         this.mockAPI();
         
         // test
-        final Party party = new Party(OWNER);
-        MinigamesAPI.getAPI().global_party.put(OWNER, party);
+        final Party party = MinigamesAPI.getAPI().createParty(OWNER);
         party.disband();
-        assertFalse(MinigamesAPI.getAPI().global_party.containsKey(OWNER));
+        assertFalse(MinigamesAPI.getAPI().hasParty(OWNER));
     }
     
 }

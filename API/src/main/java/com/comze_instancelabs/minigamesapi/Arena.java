@@ -868,9 +868,9 @@ public class Arena
             }
         }
         
-        if (MinigamesAPI.getAPI().global_party.containsKey(playername))
+        if (MinigamesAPI.getAPI().hasParty(player.getUniqueId()))
         {
-            final Party party = MinigamesAPI.getAPI().global_party.get(playername);
+            final Party party = MinigamesAPI.getAPI().getParty(player.getUniqueId());
             final int playersize = party.getPlayers().size() + 1;
             if (this.getAllPlayers().size() + playersize > this.max_players)
             {
@@ -878,7 +878,7 @@ public class Arena
                 return;
             }
             
-            for (final String p_ : party.getPlayers())
+            for (final UUID p_ : party.getPlayers())
             {
                 if (Validator.isPlayerOnline(p_))
                 {
@@ -887,7 +887,7 @@ public class Arena
                     for (final PluginInstance pli_ : MinigamesAPI.pinstances.values())
                     {
                         // if (!pli_.getPlugin().getName().equalsIgnoreCase("MGArcade") && pli_.global_players.containsKey(p_)) {
-                        if (pli_.containsGlobalPlayer(p_))
+                        if (pli_.containsGlobalPlayer(Bukkit.getPlayer(p_).getName()))
                         {
                             cont = false;
                         }
