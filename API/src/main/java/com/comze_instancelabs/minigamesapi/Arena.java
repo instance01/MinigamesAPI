@@ -2178,6 +2178,13 @@ public class Arena
      */
     public void reset()
     {
+        if (!this.pli.getArenasConfig().getConfig().getBoolean(
+        		ArenaConfigStrings.ARENAS_PREFIX + this.getInternalName() + ArenaConfigStrings.SMART_RESET_SUFFIX, true))
+        {
+        	ArenaLogger.debug("Skipping arena smart reset (config)."); //$NON-NLS-1$
+        	return;
+        }
+
         if (this.pli.old_reset)
         {
             ArenaLogger.debug("Resetting using old method."); //$NON-NLS-1$

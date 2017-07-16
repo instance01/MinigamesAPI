@@ -58,6 +58,9 @@ public interface ArenaConfigStrings
     /** suffix for arenas description. */
     String DESCRIPTION_SUFFIX = ".description"; //$NON-NLS-1$
     
+    /** suffix for smart reset activation. */
+    String SMART_RESET_SUFFIX = ".smart_reset"; //$NON-NLS-1$
+    
     
     
     /** TODO: describe config option. */

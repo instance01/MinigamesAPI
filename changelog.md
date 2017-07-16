@@ -8,6 +8,7 @@
 * (!API change!) Fixed party command for typing player names with wrong case (https://github.com/MysticCity/MinigamesAPI/issues/282)
 * MySQL fixed (https://github.com/MysticCity/MinigamesAPI/issues/281)
 * Moved "Done: true" for achivements into messages.yml (https://github.com/MysticCity/MinigamesAPI/issues/280)
+* Added flag to deactivate smart reset (https://github.com/MysticCity/MinigamesAPI/issues/286)
 
 ###### BedWars
 
