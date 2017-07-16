@@ -15,16 +15,28 @@
 package com.comze_instancelabs.minigamesapi.events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.Arena;
 
 public class PlayerJoinLobbyEvent extends PlayerEvent
 {
-    
+
     public PlayerJoinLobbyEvent(final Player p, final JavaPlugin plugin, final Arena a)
     {
         super(p, plugin, a);
     }
-    
+
+    private static final HandlerList handlers = new HandlerList();
+    @Override
+    public HandlerList getHandlers()
+    {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList()
+    {
+        return handlers;
+    }
 }
