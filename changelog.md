@@ -4,14 +4,20 @@
 
 ###### All
 
+* Merged PullRequest for event class fixes (https://github.com/MysticCity/MinigamesAPI/pull/283)
+
+###### BedWars
+
+* (1.12) Colored beds (https://github.com/MysticCity/MinigamesAPI/issues/284)
+
+###### ColorMatch
+
+* Fixed broken start sound (https://github.com/MysticCity/MinigamesAPI/issues/273)
+
 ###### HorseRacingPlus
 
 * Fixed NPE if plugin folder does not exist (https://github.com/MysticCity/MinigamesAPI/issues/273)
 * Fixed NPE if plugin folder does not exist (https://github.com/MysticCity/MinigamesAPI/issues/273)
-* Fixed broken start sound (https://github.com/MysticCity/MinigamesAPI/issues/273)
-
-###### ColorMatch
-
 * Fixed broken start sound (https://github.com/MysticCity/MinigamesAPI/issues/273)
 
 #### 1.14.17
