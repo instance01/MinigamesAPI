@@ -7,6 +7,7 @@
 * Merged PullRequest for event class fixes (https://github.com/MysticCity/MinigamesAPI/pull/283)
 * (!API change!) Fixed party command for typing player names with wrong case (https://github.com/MysticCity/MinigamesAPI/issues/282)
 * MySQL fixed (https://github.com/MysticCity/MinigamesAPI/issues/281)
+* Moved "Done: true" for achivements into messages.yml (https://github.com/MysticCity/MinigamesAPI/issues/280)
 
 ###### BedWars
 

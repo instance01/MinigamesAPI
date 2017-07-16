@@ -25,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comze_instancelabs.minigamesapi.MinigamesAPI;
 import com.comze_instancelabs.minigamesapi.PluginInstance;
+import com.comze_instancelabs.minigamesapi.config.MessagesConfig;
 import com.comze_instancelabs.minigamesapi.util.IconMenu;
 
 public class ArenaAchievements
@@ -45,13 +46,14 @@ public class ArenaAchievements
         IconMenu iconm;
         final ArrayList<AAchievement> alist = this.loadPlayerAchievements(p, sql);
         final int mincount = alist.size();
+        final MessagesConfig messagesConfig = MinigamesAPI.getAPI().getPluginInstance(this.plugin).getMessagesConfig();
         if (this.lasticonm.containsKey(p))
         {
             iconm = this.lasticonm.get(p);
         }
         else
         {
-            iconm = new IconMenu(MinigamesAPI.getAPI().getPluginInstance(this.plugin).getMessagesConfig().achievement_item, (9 > mincount - 1) ? 9 * 1 : Math.round(mincount / 9) * 9 + 9,
+            iconm = new IconMenu(messagesConfig.achievement_item, (9 > mincount - 1) ? 9 * 1 : Math.round(mincount / 9) * 9 + 9,
                     event -> event.setWillClose(true), this.plugin);
         }
         
@@ -63,8 +65,11 @@ public class ArenaAchievements
             {
                 icon = new ItemStack(Material.STAINED_CLAY, 1, (short) 5);
             }
-            iconm.setOption(c, icon, ChatColor.translateAlternateColorCodes('&', this.pli.getAchievementsConfig().getConfig().getString("config.achievements." + aa.getAchievementNameRaw() + ".name")),
-                    "Done: " + aa.isDone());
+            iconm.setOption(
+                    c,
+                    icon,
+                    ChatColor.translateAlternateColorCodes('&', this.pli.getAchievementsConfig().getConfig().getString("config.achievements." + aa.getAchievementNameRaw() + ".name")),
+                    aa.isDone() ? messagesConfig.achievement_done_true : messagesConfig.achievement_done_false);
             c++;
         }
         
