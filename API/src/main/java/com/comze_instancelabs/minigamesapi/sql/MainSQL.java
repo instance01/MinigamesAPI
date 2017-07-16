@@ -239,7 +239,7 @@ public class MainSQL
                 if (!res3.isBeforeFirst())
                 {
                     // there's no such user
-                    c.createStatement().executeUpdate("INSERT INTO " + this.plugin.getName() + " ('player', 'points', 'wins', 'loses', 'kills', 'deaths', 'uuid', 'gamepoints') " //$NON-NLS-1$ //$NON-NLS-2$
+                    c.createStatement().executeUpdate("INSERT INTO `" + this.plugin.getName() + "` (`player`, `points`, `wins`, `loses`, `kills`, `deaths`, `uuid`, `gamepoints`) " //$NON-NLS-1$ //$NON-NLS-2$
                             + "VALUES('" + p.getName() + "', " + reward + ", " + wincount   //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
                             + ", 0, 0, 0, '" + uuid + "', 0)"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
@@ -303,7 +303,7 @@ public class MainSQL
                 if (!res3.isBeforeFirst())
                 {
                     // there's no such user
-                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " ('player', 'points', 'wins', 'loses', 'kills', 'deaths', 'uuid', 'gamepoints') " //$NON-NLS-1$ //$NON-NLS-2$
+                    stmt.executeUpdate("INSERT INTO `" + this.plugin.getName() + "` (`player`, `points`, `wins`, `loses`, `kills`, `deaths`, `uuid`, `gamepoints`) " //$NON-NLS-1$ //$NON-NLS-2$
                             + "VALUES('" + p.getName() + "', 0, 0, 1, 0, 0, '" + uuid + "', 0)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 }
                 else
@@ -367,7 +367,7 @@ public class MainSQL
                 if (!res3.isBeforeFirst())
                 {
                     // there's no such user
-                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " ('player', 'points', 'wins', 'loses', 'kills', 'deaths', 'uuid', 'gamepoints') " //$NON-NLS-1$ //$NON-NLS-2$
+                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " (`player`, `points`, `wins`, `loses`, `kills`, `deaths`, `uuid`, `gamepoints`) " //$NON-NLS-1$ //$NON-NLS-2$
                             + "VALUES('" + p.getName() + "', 0, 0, 0, 1, 0, '" + uuid + "', 0)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 }
                 else
@@ -431,7 +431,7 @@ public class MainSQL
                 if (!res3.isBeforeFirst())
                 {
                     // there's no such user
-                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " ('player', 'points', 'wins', 'loses', 'kills', 'deaths', 'uuid', 'gamepoints') "  //$NON-NLS-1$//$NON-NLS-2$
+                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " (`player`, `points`, `wins`, `loses`, `kills`, `deaths`, `uuid`, `gamepoints`) "  //$NON-NLS-1$//$NON-NLS-2$
                             + "VALUES('" + p.getName() + "', 0, 0, 0, 0, 1, '" + uuid + "', 0)");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
                 }
                 else
@@ -672,7 +672,7 @@ public class MainSQL
                 if (!res3.isBeforeFirst())
                 {
                     // there's no such user
-                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " ('player', 'points', 'wins', 'loses', 'kills', 'deaths', 'uuid', 'gamepoints') "  //$NON-NLS-1$//$NON-NLS-2$
+                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " (`player`, `points`, `wins`, `loses`, `kills`, `deaths`, `uuid`, `gamepoints`) "  //$NON-NLS-1$//$NON-NLS-2$
                             + "VALUES('" + p.getName() + "', 0, 0, 0, 0, 1, '" + uuid + "', " + points + ")");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 }
                 else
@@ -733,7 +733,7 @@ public class MainSQL
                 if (!res3.isBeforeFirst())
                 {
                     // there's no such user
-                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " ('player', 'points', 'wins', 'loses', 'kills', 'deaths', 'uuid', 'gamepoints') "  //$NON-NLS-1$//$NON-NLS-2$
+                    stmt.executeUpdate("INSERT INTO " + this.plugin.getName() + " (`player`, `points`, `wins`, `loses`, `kills`, `deaths`, `uuid`, `gamepoints`) "  //$NON-NLS-1$//$NON-NLS-2$
                             + "VALUES('" + p.getName() + "', 0, 0, 0, 0, 1, '" + uuid + "', " + points + ")");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 }
                 else
