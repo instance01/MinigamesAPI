@@ -25,6 +25,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.block.SignChangeEvent;
@@ -180,6 +181,11 @@ public class LobbySignManager
         LocalDateTime          lastResponse   = this.lastRequest;
         
         /**
+         * timestamp a log warning was posted
+         */
+        LocalDateTime lastSignWarning = null;
+        
+        /**
          * @param location
          * @param serverName
          * @param minigameName
@@ -273,13 +279,25 @@ public class LobbySignManager
                     .replace("<arena>", this.arenaName).replace("<minigame>", this.minigameName)); //$NON-NLS-1$ //$NON-NLS-2$
             if (evt == null)
             {
-                final Sign sign = (Sign) this.location.getBlock().getState();
-                sign.setLine(0, line0);
-                sign.setLine(1, line1);
-                sign.setLine(2, line2);
-                sign.setLine(3, line3);
-                sign.getBlock().getChunk().load();
-                sign.update();
+                final BlockState state = this.location.getBlock().getState();
+                if (state instanceof Sign)
+                {
+                    final Sign sign = (Sign) state;
+                    sign.setLine(0, line0);
+                    sign.setLine(1, line1);
+                    sign.setLine(2, line2);
+                    sign.setLine(3, line3);
+                    sign.getBlock().getChunk().load();
+                    sign.update();
+                }
+                else
+                {
+                    if (this.lastSignWarning == null || this.lastSignWarning.until(LocalDateTime.now(), ChronoUnit.SECONDS) > 30)
+                    {
+                        this.lastSignWarning = LocalDateTime.now();
+                        LobbySignManager.this.plugin.getLogger().log(Level.WARNING, "Cannot find lobby sign for " + this.minigameName + "/" + this.arenaName + " at position " + this.location); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    } 
+                }
             }
             else
             {

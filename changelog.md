@@ -9,6 +9,7 @@
 * MySQL fixed (https://github.com/MysticCity/MinigamesAPI/issues/281)
 * Moved "Done: true" for achivements into messages.yml (https://github.com/MysticCity/MinigamesAPI/issues/280)
 * Added flag to deactivate smart reset (https://github.com/MysticCity/MinigamesAPI/issues/286)
+* Fixed ClassCastException (https://github.com/MysticCity/MinigamesAPI/issues/288)
 
 ###### BedWars
 
