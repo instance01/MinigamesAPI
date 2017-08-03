@@ -27,6 +27,11 @@
 * Fixed NPE if plugin folder does not exist (https://github.com/MysticCity/MinigamesAPI/issues/273)
 * Fixed broken start sound (https://github.com/MysticCity/MinigamesAPI/issues/273)
 
+###### MobEscape
+
+* Fixed lags while destroying liquids (https://github.com/MysticCity/MinigamesAPI/issues/291)
+* Added block blacklist (https://github.com/MysticCity/MinigamesAPI/issues/291)
+
 #### 1.14.17
 
 ###### All
