@@ -37,9 +37,9 @@ import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_11_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_11_R1.scoreboard.CraftScoreboard;
-import org.bukkit.craftbukkit.v1_11_R1.scoreboard.CraftScoreboardManager;
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_12_R1.scoreboard.CraftScoreboard;
+import org.bukkit.craftbukkit.v1_12_R1.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -59,7 +59,7 @@ import org.spigotmc.SpigotConfig;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
-import net.minecraft.server.v1_11_R1.DispenserRegistry;
+import net.minecraft.server.v1_12_R1.DispenserRegistry;
 
 /**
  * Test tooling for minigames API.
@@ -249,7 +249,6 @@ public abstract class SpigotTestSupport
         try
         {
             doNothing().when(config).load(any(File.class));
-            doNothing().when(config).load(any(InputStream.class));
             doNothing().when(config).load(any(Reader.class));
             doNothing().when(config).load(anyString());
             doNothing().when(config).loadFromString(anyString());

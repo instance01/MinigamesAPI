@@ -50,8 +50,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
 
 /**
@@ -1405,6 +1407,26 @@ public class DummyWorld implements World
     {
         // TODO Auto-generated method stub
         
+    }
+
+    /* (non-Javadoc)
+     * @see org.bukkit.World#spawn(org.bukkit.Location, java.lang.Class, org.bukkit.util.Consumer)
+     */
+    @Override
+    public <T extends Entity> T spawn(Location paramLocation, Class<T> paramClass, Consumer<T> paramConsumer) throws IllegalArgumentException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.bukkit.World#spawnFallingBlock(org.bukkit.Location, org.bukkit.material.MaterialData)
+     */
+    @Override
+    public FallingBlock spawnFallingBlock(Location paramLocation, MaterialData paramMaterialData) throws IllegalArgumentException
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

@@ -15,10 +15,10 @@
 
 package com.comze_instancelabs.minigamesapi.spigottest;
 
-import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryPlayer;
 import org.bukkit.inventory.InventoryHolder;
 
-import net.minecraft.server.v1_11_R1.PlayerInventory;
+import net.minecraft.server.v1_12_R1.PlayerInventory;
 
 /**
  * Helper class for player inventories.

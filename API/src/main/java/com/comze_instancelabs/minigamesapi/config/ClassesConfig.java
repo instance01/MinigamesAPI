@@ -17,6 +17,7 @@ package com.comze_instancelabs.minigamesapi.config;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -87,7 +88,7 @@ public class ClassesConfig
         final InputStream defConfigStream = this.plugin.getResource("classes.yml");
         if (defConfigStream != null)
         {
-            final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream));
             this.classesConfig.setDefaults(defConfig);
         }
     }

@@ -18,6 +18,7 @@ package com.comze_instancelabs.minigamesapi.spigottest;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
@@ -285,6 +286,26 @@ class DummyScoreboardTeam implements Team
      */
     @Override
     public void setOption(Option option, OptionStatus status) throws IllegalStateException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see org.bukkit.scoreboard.Team#getColor()
+     */
+    @Override
+    public ChatColor getColor() throws IllegalStateException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.bukkit.scoreboard.Team#setColor(org.bukkit.ChatColor)
+     */
+    @Override
+    public void setColor(ChatColor paramChatColor)
     {
         // TODO Auto-generated method stub
         

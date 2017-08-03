@@ -10,6 +10,8 @@
 * Moved "Done: true" for achivements into messages.yml (https://github.com/MysticCity/MinigamesAPI/issues/280)
 * Added flag to deactivate smart reset (https://github.com/MysticCity/MinigamesAPI/issues/286)
 * Fixed ClassCastException (https://github.com/MysticCity/MinigamesAPI/issues/288)
+* Fixed 1.12 deprecated event (https://github.com/MysticCity/MinigamesAPI/issues/295)
+* Fixed 1.12 yml file loading
 
 ###### BedWars
 
