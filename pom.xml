@@ -11,7 +11,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
-		<powermock.version>1.6.5</powermock.version>
+		<powermock.version>1.7.1</powermock.version>
 		<junit.version>4.12</junit.version>
 		<minigames.releaseversion>1.14.18</minigames.releaseversion>
 		<minigames.timestamp>${maven.build.timestamp}</minigames.timestamp>
