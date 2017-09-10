@@ -38,6 +38,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Team;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.spigotmc.SpigotConfig;
 
 import net.minecraft.server.v1_12_R1.Chunk;
 import net.minecraft.server.v1_12_R1.DedicatedPlayerList;
@@ -519,6 +520,7 @@ class DummyServer implements InvocationHandler, Answer {
             final WorldSettings worldsettings = new WorldSettings(seed, EnumGamemode.SURVIVAL, true, false, mctype);
             final WorldData worlddata = new WorldData(worldsettings, name);
             final Map<Integer, Map<Integer, Chunk>> chunks = new HashMap<>();
+            SpigotConfig.disabledAdvancements = new ArrayList<>();
             
             final MinecraftServer mock = mock(MinecraftServer.class);
             when(mock.getPlayerList()).thenReturn(playerList);
