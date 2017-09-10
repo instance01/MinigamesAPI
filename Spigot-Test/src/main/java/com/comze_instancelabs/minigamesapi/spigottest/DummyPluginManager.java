@@ -63,6 +63,15 @@ class DummyPluginManager implements PluginManager
     private final Map<String, Map<Permissible, Boolean>> permSubs = new HashMap<String, Map<Permissible, Boolean>>();
     private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<Boolean, Map<Permissible, Boolean>>();
     
+    /**
+     * 
+     */
+    public DummyPluginManager()
+    {
+        this.defaultPerms.put(Boolean.TRUE, new HashSet<>());
+        this.defaultPerms.put(Boolean.FALSE, new HashSet<>());
+    }
+    
     @Override
     public void registerInterface(Class<? extends PluginLoader> loader) throws IllegalArgumentException
     {
