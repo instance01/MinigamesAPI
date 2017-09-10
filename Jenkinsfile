@@ -28,7 +28,7 @@ pipeline {
         	script {
         		env.BUILDTYPE = readPomVersion().endsWith("-SNAPSHOT") ? "snapshots" : "releases";
         	}
-            sh '/srv/hudson/upload_product.sh ${env.BUILDTYPE} API/target 1 minigameslib MinigamesLib'
+            sh "/srv/hudson/upload_product.sh ${env.BUILDTYPE} API/target 1 minigameslib MinigamesLib"
       	}
       }
       
