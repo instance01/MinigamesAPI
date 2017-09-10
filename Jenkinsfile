@@ -23,6 +23,15 @@ pipeline {
           }
       }
       
+      stage ('Upload') {
+        steps {
+        	script {
+        		env.BUILDTYPE = readPomVersion().endsWith("-SNAPSHOT") ? "snapshots" : "releases";
+        	}
+            sh '/srv/hudson/upload_product.sh ${env.BUILDTYPE} API/target 1 minigameslib MinigamesLib'
+      	}
+      }
+      
       stage ('Deploy') {
           when {
               expression {
@@ -40,3 +49,13 @@ pipeline {
       }
    }
 }
+
+def readPomVersion() {
+	// Reference: http://stackoverflow.com/a/26514030/1851299
+	mvn "--quiet --non-recursive -Dexec.executable='echo' -Dexec.args='\${project.version}' org.codehaus.mojo:exec-maven-plugin:1.3.1:exec > pom.project.version.txt"
+	pomProjectVersion = readFile('pom.project.version.txt').trim()
+	sh "rm -f pom.project.version.txt"
+	echo "Current POM version: ${pomProjectVersion}"
+	return pomProjectVersion
+}
+

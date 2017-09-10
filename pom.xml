@@ -99,5 +99,15 @@
         </dependency>
 	</dependencies>
 	</dependencyManagement>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>xworlds-snapshots</id>
+			<url>${deployUrlSnapshots}</url>
+		</snapshotRepository>
+		<repository>
+			<id>xworlds-releases</id>
+			<url>${deployUrlReleases}</url>
+		</repository>
+	</distributionManagement>
 
 </project>
