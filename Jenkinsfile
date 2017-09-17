@@ -39,7 +39,7 @@ pipeline {
               }
           }
           steps {
-              sh 'mvn -Deisenschmiede.deployment=true -Dmaven.test.skip=true -DskipTests deploy'
+              sh 'mvn -Dmce.deployment=true -Dmaven.test.skip=true -DskipTests deploy'
           }
           post {
               failure {
