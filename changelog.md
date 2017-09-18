@@ -21,6 +21,10 @@
 
 * Fixed broken start sound (https://github.com/MysticCity/MinigamesAPI/issues/273)
 
+###### Conquer
+
+* Fixed NullPointerException (https://github.com/MysticCity/MinigamesAPI/issues/286)
+
 ###### HorseRacingPlus
 
 * Fixed NPE if plugin folder does not exist (https://github.com/MysticCity/MinigamesAPI/issues/273)
